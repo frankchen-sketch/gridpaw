@@ -1,0 +1,134 @@
+---
+// Reusable SEO head component for all game sites
+// Usage: <SEOHead title="..." description="..." canonical="/play" />
+// Auto-generates Article + BreadcrumbList JSON-LD for article pages
+// Requires site-config.ts in src/lib/ with ga4Id, clarityId, domain, brandName
+
+import { siteConfig } from '../lib/site-config';
+const { ga4Id, clarityId, domain, brandName } = siteConfig;
+
+export interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  type?: 'website' | 'article';
+  image?: string;
+  noindex?: boolean;
+  breadcrumbTitle?: string; // Override breadcrumb label (defaults to page title)
+}
+
+const {
+  title,
+  description,
+  canonical,
+  type = 'website',
+  image = '/og-default.png',
+  noindex = false,
+  breadcrumbTitle,
+} = Astro.props;
+
+// Normalize: ensure trailing slash (match sitemap convention)
+const normalizedCanonical = canonical === '/' ? '/' : (canonical.endsWith('/') ? canonical : `${canonical}/`);
+const fullUrl = `https://${domain}${normalizedCanonical}`;
+const fullTitle = canonical === '/' ? title : (title.includes(brandName) ? title : `${title} | ${brandName}`);
+
+// Build BreadcrumbList from canonical path
+const pathParts = normalizedCanonical.split('/').filter(Boolean);
+const breadcrumbs = [
+  { name: 'Home', url: `https://${domain}/` },
+  ...pathParts.map((part, i) => {
+    const url = `https://${domain}/` + pathParts.slice(0, i + 1).join('/') + '/';
+    // Derive readable name from slug
+    const name = part
+      .replace(/^puzzle-/, 'Puzzle #')
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, c => c.toUpperCase());
+    return { name, url };
+  })
+];
+
+// Use breadcrumbTitle for the last crumb if provided
+if (breadcrumbTitle && breadcrumbs.length > 1) {
+  breadcrumbs[breadcrumbs.length - 1].name = breadcrumbTitle;
+}
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbs.map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: b.name,
+    item: b.url,
+  })),
+};
+
+const articleJsonLd = type === 'article' ? {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title.replace(new RegExp(` \\| ${brandName}$`), ''),
+  description,
+  url: fullUrl,
+  image: `https://${domain}${image}`,
+  author: { '@type': 'Organization', name: brandName, url: `https://${domain}/` },
+  publisher: { '@type': 'Organization', name: brandName, url: `https://${domain}/` },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': fullUrl },
+} : null;
+---
+
+<!-- Primary Meta -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{fullTitle}</title>
+<meta name="description" content={description}>
+<link rel="canonical" href={fullUrl}>
+{noindex && <meta name="robots" content="noindex">}
+
+<!-- Open Graph -->
+<meta property="og:type" content={type}>
+<meta property="og:title" content={fullTitle}>
+<meta property="og:description" content={description}>
+<meta property="og:url" content={fullUrl}>
+<meta property="og:image" content={`https://${domain}${image}`}>
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content={`${brandName} — Free Puzzle Game`}>
+<meta property="og:site_name" content={brandName}>
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content={fullTitle}>
+<meta name="twitter:description" content={description}>
+<meta name="twitter:image" content={`https://${domain}${image}`}>
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+<!-- Preconnect for performance -->
+<link rel="preconnect" href={`https://${domain}`}>
+
+<!-- llms.txt reference -->
+<link rel="alternate" type="text/plain" href="/llms.txt" title="AI-friendly site map">
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+{articleJsonLd && <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />}
+
+<!-- Google Analytics 4 -->
+<script async src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}></script>
+<script define:vars={{ ga4Id }}>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', ga4Id);
+</script>
+
+<!-- Microsoft Clarity -->
+<script define:vars={{ clarityId }}>
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", clarityId);
+</script>
