@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Pictomino – Free Spatial Reasoning Game for Kids</title>
+<meta name="description" content="Play Pictomino, a free cat picture puzzle game for kids. Drag pieces into place with logic — 5 lives, no guessing. Boost spatial reasoning while having fun.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://gridpaw.com/pictomino/game">
+<!-- Open Graph -->
+<meta property="og:title" content="Pictomino – Free Spatial Reasoning Game for Kids">
+<meta property="og:description" content="Play Pictomino, a free cat picture puzzle game for kids. Drag pieces into place with logic — 5 lives, no guessing. Boost spatial reasoning while having fun.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gridpaw.com/pictomino/game">
+<meta property="og:image" content="https://gridpaw.com/pictomino/assets/cats/british-shorthair.jpg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Pictomino",
+  "description": "Free cat picture puzzle game for kids that builds spatial reasoning. Drag puzzle pieces into place with logic — 5 lives, no guessing.",
+  "url": "https://gridpaw.com/pictomino/game",
+  "applicationCategory": "GameApplication",
+  "operatingSystem": "Any",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "image": "https://gridpaw.com/pictomino/assets/cats/british-shorthair.jpg",
+  "audience": {"@type": "EducationalAudience", "educationalRole": "student", "audienceType": "children"},
+  "inLanguage": "en"
+}
+</script>
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-94SYHXWGZM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-94SYHXWGZM');
+</script>
+<script src="/ph.js" defer></script>
+<!-- Microsoft Clarity -->
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "yaj0b0i0y2");
+</script>
+<style>
+/* ===== 全局与配色 ===== */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#FFF6EC; --card:#FFFFFF; --ink:#4A3B32;
+  --pink:#FF8FAB; --orange:#FFB26B; --teal:#5ECFB9; --yellow:#FFD66B;
+  --shadow:0 6px 0 rgba(74,59,50,.08);
+}
+html,body{height:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--bg);
+  background-image:radial-gradient(#FFE3C2 1.5px,transparent 1.5px);
+  background-size:26px 26px;
+  color:var(--ink);
+  display:flex;flex-direction:column;align-items:center;
+  min-height:100%;overflow-x:hidden;
+  user-select:none;-webkit-user-select:none;touch-action:manipulation;
+}
+/* ===== 顶栏 ===== */
+#topbar{
+  width:100%;max-width:560px;padding:10px 14px;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;
+  position:sticky;top:0;z-index:500;
+  background:rgba(255,246,236,0.92);backdrop-filter:blur(8px);
+  border-radius:0 0 16px 16px;box-shadow:0 2px 12px rgba(74,59,50,0.08);
+}
+#logo{
+  font-size:24px;font-weight:900;letter-spacing:1px;
+  color:#fff;background:linear-gradient(135deg,var(--pink),var(--orange));
+  padding:4px 14px;border-radius:999px;box-shadow:var(--shadow);
+  text-shadow:0 1px 0 rgba(0,0,0,.12);
+}
+#logo span{font-size:18px}
+.hud{display:flex;align-items:center;gap:8px;font-weight:800;font-size:14px}
+.hud .pill{
+  background:var(--card);border-radius:999px;padding:4px 10px;box-shadow:var(--shadow);
+}
+#hearts{letter-spacing:1px}
+/* ===== 主区域 ===== */
+#stage{
+  width:100%;max-width:560px;flex:1;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  padding:4px 14px 20px;
+}
+#round-info{font-size:14px;font-weight:700;color:#8a7466;display:flex;align-items:center;justify-content:center;gap:4px;flex-wrap:wrap}
+/* 主画布卡片 */
+#board-wrap{position:relative}
+#board{
+  display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr;gap:4px;
+  background:var(--card);padding:6px;border-radius:18px;box-shadow:var(--shadow);
+  width:min(88vw,440px);aspect-ratio:1;
+}
+.cell{
+  border-radius:8px;overflow:hidden;position:relative;background:#F3E7DA;
+}
+.cell canvas{width:100%;height:100%;display:block}
+.cell.hole{
+  cursor:pointer;
+  background:rgba(255,178,107,.16);
+  outline:3px dashed var(--orange);outline-offset:-3px;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s ease;
+}
+.cell.hole::after{
+  content:'+';font-size:36px;font-weight:900;color:var(--orange);opacity:.85;
+  line-height:1;pointer-events:none;
+}
+.cell.hole:active{background:rgba(255,178,107,.35)}
+/* 待填但未点亮 + 号的空白格：虚线框，不可点击 */
+.cell.pending{
+  background:rgba(94,207,185,.08);
+  outline:3px dashed #C9B8A8;outline-offset:-3px;
+}
+.cell.hole.wrong-flash{animation:flash .45s ease}
+@keyframes flash{
+  0%,100%{background:rgba(255,178,107,.16);outline-color:var(--orange)}
+  50%{background:rgba(255,80,80,.55);outline-color:#FF5050}
+}
+.cell.just-placed{animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(.7)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+/* 候选碎片区 */
+#tray-label{font-size:14px;font-weight:800;color:#8a7466;margin-top:2px}
+#tray{
+  display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;
+  width:100%;padding:8px 4px;min-height:96px;
+}
+.piece{
+  width:72px;height:72px;border-radius:12px;overflow:hidden;
+  background:#fff;box-shadow:var(--shadow);cursor:pointer;
+  transition:transform .15s ease,opacity .15s ease,filter .15s ease;
+}
+.piece canvas{width:100%;height:100%;display:block;pointer-events:none}
+.piece.selected{
+  outline:4px solid var(--teal);outline-offset:3px;
+  transform:scale(1.12);box-shadow:0 10px 22px rgba(94,207,185,.5);
+}
+.piece.weak{opacity:.75;filter:blur(0.4px) saturate(0.85)}
+.piece.super-weak{opacity:.6;filter:blur(0.6px) saturate(0.7)}
+.piece.weak.selected,.piece.super-weak.selected{opacity:1;filter:none}
+.piece.shake{animation:shake .4s ease}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-8px)}40%{transform:translateX(8px)}
+  60%{transform:translateX(-6px)}80%{transform:translateX(6px)}
+}
+.piece.selected.shake{animation:shake-sel .4s ease}
+@keyframes shake-sel{
+  0%,100%{transform:scale(1.12) translateX(0)}
+  20%{transform:scale(1.12) translateX(-8px)}40%{transform:scale(1.12) translateX(8px)}
+  60%{transform:scale(1.12) translateX(-6px)}80%{transform:scale(1.12) translateX(6px)}
+}
+/* Sound on/off按钮 */
+#sound-btn{
+  border:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:800;
+}
+/* ===== 遮罩层（通关/失败/胜利） ===== */
+.overlay{
+  position:fixed;inset:0;background:rgba(74,59,50,.45);
+  display:none;align-items:center;justify-content:center;z-index:50;padding:20px;
+}
+.overlay.show{display:flex}
+.dialog{
+  background:var(--card);border-radius:24px;box-shadow:0 20px 50px rgba(0,0,0,.25);
+  padding:28px 24px;max-width:340px;width:100%;text-align:center;
+  animation:pop .35s ease;
+}
+.dialog h2{font-size:26px;margin-bottom:8px}
+.dialog p{font-size:15px;color:#8a7466;margin-bottom:6px;line-height:1.6}
+.dialog .big{font-size:34px;font-weight:900;color:var(--pink);margin:8px 0}
+.btn{
+  display:inline-block;border:none;cursor:pointer;font-family:inherit;
+  font-size:18px;font-weight:900;color:#fff;
+  background:linear-gradient(135deg,var(--teal),#3FBF9F);
+  padding:12px 30px;border-radius:999px;margin-top:14px;
+  box-shadow:0 5px 0 rgba(0,0,0,.12);
+  transition:transform .12s ease;
+}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.12)}
+.btn.pink{background:linear-gradient(135deg,var(--pink),#F76D8F)}
+.btn.share{font-size:14px;padding:8px 14px}
+.share-row{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+.hud a.pill{text-decoration:none;color:inherit}
+/* 通关庆祝：emoji + 彩带 */
+.confetti{position:fixed;font-size:28px;z-index:60;pointer-events:none;animation:fall 1.6s ease-in forwards;top:-40px}
+@keyframes fall{
+  0%{transform:translateY(0) rotate(0);opacity:1}
+  100%{transform:translateY(110vh) rotate(540deg);opacity:0}
+}
+.confetti.strip{
+  width:8px;height:18px;border-radius:2px;font-size:0;
+  animation:fall-spin linear forwards;
+}
+@keyframes fall-spin{
+  0%{transform:translateY(0) rotate(0) rotateX(0);opacity:1}
+  100%{transform:translateY(110vh) rotate(720deg) rotateX(360deg);opacity:.5}
+}
+/* 开局完整图预览层 */
+#preview-img{
+  width:min(70vw,280px);aspect-ratio:1;margin:10px auto 4px;
+  border-radius:14px;overflow:hidden;box-shadow:var(--shadow);
+}
+#preview-img canvas{width:100%;height:100%;display:block}
+#preview-count{font-size:24px;font-weight:900;color:var(--orange)}
+/* 通关星级 */
+#win-stars{font-size:36px;letter-spacing:6px;margin:2px 0 6px;color:var(--yellow);text-shadow:0 2px 0 rgba(0,0,0,.10)}
+#win-stars .off{color:#E3D5C8;text-shadow:none}
+/* 通关科普卡 */
+#cat-fact-card{
+  margin:14px auto 2px;max-width:300px;text-align:left;
+  background:#FFF6EC;border:2px dashed #FFB26B;border-radius:14px;
+  padding:10px 14px;
+}
+#fact-cat-name{
+  font-size:15px;font-weight:900;color:var(--orange);
+  margin-bottom:6px;text-align:center;
+}
+#fact-list{margin:0;padding-left:20px;font-size:13px;line-height:1.7;color:#8a7466}
+#fact-list li{margin-bottom:2px}
+/* How to Play 规则卡示意图 */
+#help-visual{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  margin:10px auto 8px;
+}
+#help-board{
+  display:grid;grid-template-columns:repeat(3,44px);gap:3px;
+  background:#F3E7DA;padding:5px;border-radius:10px;
+}
+.help-cell{
+  width:44px;height:44px;border-radius:6px;display:flex;
+  align-items:center;justify-content:center;
+}
+.help-cell.filled{background:#fff}
+.help-cell.target{
+  background:rgba(255,178,107,.18);
+  outline:3px dashed var(--orange);outline-offset:-3px;
+  font-size:22px;font-weight:900;color:var(--orange);
+  animation:help-pulse 1.4s ease-in-out infinite;
+}
+@keyframes help-pulse{
+  0%,100%{background:rgba(255,178,107,.18)}
+  50%{background:rgba(255,178,107,.45)}
+}
+.help-arrow{font-size:22px;line-height:1}
+.help-piece{
+  width:40px;height:40px;border-radius:8px;
+  background:linear-gradient(135deg,var(--pink),#F76D8F);
+  box-shadow:var(--shadow);
+}
+#help-text{
+  font-size:15px;font-weight:800;color:var(--ink);
+  line-height:1.5;margin:4px 0 2px;
+}
+/* Auto-show 开关（iOS 风格 toggle） */
+.help-toggle{
+  display:inline-flex;align-items:center;gap:8px;
+  cursor:pointer;user-select:none;margin:8px 0 4px;
+}
+.help-toggle input{display:none}
+.help-toggle-track{
+  width:40px;height:24px;border-radius:999px;
+  background:#D8CCC0;position:relative;
+  transition:background .2s ease;flex-shrink:0;
+}
+.help-toggle-track::after{
+  content:'';position:absolute;top:2px;left:2px;
+  width:20px;height:20px;border-radius:50%;background:#fff;
+  box-shadow:0 1px 3px rgba(0,0,0,.25);
+  transition:transform .2s ease;
+}
+.help-toggle input:checked + .help-toggle-track{background:var(--teal)}
+.help-toggle input:checked + .help-toggle-track::after{transform:translateX(16px)}
+.help-toggle-label{font-size:13px;font-weight:700;color:#8a7466}
+/* 加载提示 */
+#loading{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  background:var(--bg);z-index:100;font-size:18px;font-weight:800;color:#8a7466;
+}
+/* 新手引导 Coach：首次访问的 1 步交互课 */
+#coach{
+  width:100%;max-width:440px;border-radius:16px;padding:12px 42px 10px 14px;
+  background:linear-gradient(135deg,var(--teal),#3FBF9F);color:#fff;
+  font-size:16px;font-weight:900;text-align:center;line-height:1.4;
+  box-shadow:var(--shadow);position:relative;
+  animation:coach-in .3s ease;
+}
+#coach .coach-arrow{display:block;font-size:26px;margin-top:2px;animation:bounce .8s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+@keyframes coach-in{0%{opacity:0;transform:scale(.9)}100%{opacity:1;transform:scale(1)}}
+#coach-skip{
+  position:absolute;top:6px;right:8px;border:none;background:rgba(255,255,255,.28);
+  color:#fff;font-family:inherit;font-size:12px;font-weight:800;
+  padding:3px 10px;border-radius:999px;cursor:pointer;
+}
+body.tut-mode #round-info,body.tut-mode #tray-label{display:none}
+.piece.tut-step1{animation:tut-ring 1.1s ease-in-out infinite}
+@keyframes tut-ring{
+  0%,100%{transform:scale(1);outline:3px dashed var(--orange);outline-offset:3px}
+  50%{transform:scale(1.08);outline-color:#FF5050;outline-offset:8px}
+}
+.cell.hole.tut-step2{animation:hole-pulse .9s ease-in-out infinite}
+@keyframes hole-pulse{
+  0%,100%{outline-color:var(--orange);background:rgba(255,178,107,.18)}
+  50%{outline-color:#FF5050;background:rgba(255,80,80,.25)}
+}
+/* 移动端微调 */
+@media (max-width:400px){
+  #logo{font-size:19px}
+  .piece{width:60px;height:60px}
+  .cell.hole::after{font-size:26px}
+}
+</style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+</head>
+<body>
+<div id="loading">🐱 Loading…</div>
+
+<!-- 顶栏已上移至外层页面统一工具栏（iframe 外）；game.html 直接打开时无 HUD，数据仍正常 -->
+<main id="stage">
+  <div id="round-info">Fill 0/4 · Tap a piece, then tap its spot! <span id="timer" style="display:none;font-weight:800;color:#E85D75;margin-left:8px"></span></div>
+  <div id="board-wrap">
+    <div id="board"></div>
+  </div>
+  <div id="tray-label">👇 Find where this piece belongs, then tap the + !</div>
+  <div id="tray"></div>
+  <!-- 新手引导 Coach：首次访问自动触发，可 Skip（JS 会把它移动到棋盘/碎片区上方） -->
+  <div id="coach" style="display:none">
+    <button id="coach-skip">Skip ➜</button>
+    <span id="coach-text"></span>
+    <span class="coach-arrow">👇</span>
+  </div>
+</main>
+
+<!-- How to Play 规则卡：首局自动弹出（Got it! 后开始），之后仅 ? 按钮触发 -->
+<div class="overlay" id="help-overlay">
+  <div class="dialog">
+    <h2>🐱 How to Play</h2>
+    <div id="help-visual">
+      <div id="help-board">
+        <div class="help-cell filled"></div>
+        <div class="help-cell filled"></div>
+        <div class="help-cell filled"></div>
+        <div class="help-cell filled"></div>
+        <div class="help-cell target">+</div>
+        <div class="help-cell filled"></div>
+        <div class="help-cell filled"></div>
+        <div class="help-cell filled"></div>
+        <div class="help-cell filled"></div>
+      </div>
+      <div class="help-arrow">⬆️</div>
+      <div class="help-piece"></div>
+    </div>
+    <p id="help-text">Look at the pieces. Find where they fit. Tap to place.</p>
+    <label class="help-toggle">
+      <input type="checkbox" id="help-auto-toggle" checked>
+      <span class="help-toggle-track"></span>
+      <span class="help-toggle-label">Auto-show at start</span>
+    </label>
+    <button class="btn" id="help-gotit-btn">Got it!</button>
+  </div>
+</div>
+
+<!-- 开局完整图预览（2 秒倒计时） -->
+<div class="overlay" id="preview-overlay">
+  <div class="dialog">
+    <h2>👀 Remember the picture!</h2>
+    <div id="preview-img"></div>
+    <p>Remember this cat — you'll rebuild it!</p>
+    <div id="preview-count">2</div>
+  </div>
+</div>
+
+<!-- 引导完成（1 步交互课做完后弹出） -->
+<div class="overlay" id="tut-done-overlay">
+  <div class="dialog">
+    <h2>You did it! 🎉</h2>
+    <p>That's how you play Pictomino.<br>Ready for the real puzzle?</p>
+    <button class="btn" id="tut-go-btn">Let's go! 🚀</button>
+  </div>
+</div>
+
+<!-- 单关通关 -->
+<div class="overlay" id="win-overlay">
+  <div class="dialog">
+    <h2 id="win-title">Well Done! 🎉</h2>
+    <div id="win-stars"></div>
+    <p id="win-cat"></p>
+    <p>Level score</p>
+    <div class="big" id="win-score">+0</div>
+    <p id="win-detail"></p>
+    <div id="daily-streak-card" style="display:none;background:#FFF6EC;border:1.5px solid #FFE3C2;border-radius:12px;padding:12px 16px;margin:8px 0;text-align:center">
+      <div style="font-size:1.3rem;font-weight:800;color:var(--ink)">🔥 Streak: <span id="daily-streak-count">0</span> days</div>
+      <div id="daily-streak-badge" style="font-size:.85rem;color:#b5a396;margin-top:4px"></div>
+    </div>
+    <div id="cat-fact-card">
+      <div id="fact-cat-name"></div>
+      <ul id="fact-list"></ul>
+    </div>
+    <button class="btn" id="next-btn">Next level ➜</button>
+    <div class="share-row">
+      <button class="btn share" id="share-reddit-btn">📣 Share on Reddit</button>
+      <button class="btn share" id="copy-share-btn">🔗 Copy link</button>
+    </div>
+    <button id="win-close-btn" style="background:none;border:2px solid #FFE3C2;color:#b5a396;font-family:inherit;font-weight:800;font-size:15px;padding:10px 28px;border-radius:999px;cursor:pointer;margin-top:6px">Continue ✓</button>
+  </div>
+</div>
+
+<!-- 失败 -->
+<div class="overlay" id="lose-overlay">
+  <div class="dialog">
+    <h2>😿 No lives left</h2>
+    <p>Don't give up — your cat believes in you!</p>
+    <button class="btn pink" id="retry-btn">Try again 💪</button>
+  </div>
+</div>
+
+<!-- 全部通关 -->
+<div class="overlay" id="victory-overlay">
+  <div class="dialog">
+    <h2>👑 Puzzle Master!</h2>
+    <p>You finished all 10 cat puzzles!</p>
+    <p>Total score</p>
+    <div class="big" id="final-score">0</div>
+    <button class="btn" id="restart-btn">Play again 🔁</button>
+  </div>
+</div>
+
+<script>
+"use strict";
+/* =========================================================
+ * Pictomino · 猫咪空间推理拼图 MVP
+ * 单文件实现：canvas 切块 + 分轮判定 + 拖拽（Pointer 事件，鼠标/触屏通用）
+ * ========================================================= */
+/* ---------- 常量与关卡数据 ---------- */
+/*
+ * 难度系统（参照 meowtrail / meowblock 阶梯式递进）
+ * 各关难度由关卡号决定，RNG 对每关推送 cat_pool 剩余猫图。
+ *
+ * 网格/洞数/候选数/碎片弱化/生命 全部按关卡阶梯分配。
+ */
+const TUTORIAL_LEVELS = 3;
+const isTutorial = lv => lv < TUTORIAL_LEVELS;
+
+// 等级参数表（index 以外的边界用最末档兜底）
+const DIFF_TABLE = [
+  //               time=0 表示不限时（Tutorial/Easy），其他为每轮秒数
+  { until: 3,  label: 'Tutorial',     grid: 3, holes: 4,  candidates: 2, degrade: 0,  time: 0   },
+  { until: 6,  label: 'Easy',         grid: 4, holes: 6,  candidates: 2, degrade: 0,  time: 0   },
+  { until: 8,  label: 'Medium',       grid: 4, holes: 8,  candidates: 3, degrade: 33, time: 40  },  // 每轮40秒
+  { until: 9,  label: 'Hard',         grid: 4, holes: 10, candidates: 4, degrade: 50, time: 50  },  // 每轮50秒
+  { until: 99, label: 'Super Hard 💀', grid: 4, holes: 12, candidates: 4, degrade: 66, time: 60  },  // 每轮60秒
+];
+
+function getDiffForLevel(lv) {
+  // Daily 模式：固定 Super Hard（最高难度档）
+  if (typeof IS_DAILY_MODE !== 'undefined' && IS_DAILY_MODE) return DIFF_TABLE[DIFF_TABLE.length - 1];
+  // Classic 模式：lv 是 0-indexed；diff 表 until 是 1-indexed（level 1 → until=3 行）
+  const n = lv + 1;
+  for (const row of DIFF_TABLE) { if (n <= row.until) return row; }
+  return DIFF_TABLE[DIFF_TABLE.length - 1];
+}
+
+const gridOf  = lv => getDiffForLevel(lv).grid;
+const cellsOf = lv => gridOf(lv) * gridOf(lv);
+const fillsOf = lv => getDiffForLevel(lv).holes;
+const candidatesOf = lv => getDiffForLevel(lv).candidates;
+const degradeOf    = lv => getDiffForLevel(lv).degrade;
+const timeLimitOf  = lv => getDiffForLevel(lv).time;
+const getDiffLabel = lv => getDiffForLevel(lv).label;
+const MAX_LIVES = 5;
+const OFF_SIZE = 480;           // 离屏画布（源图 cover 适配后）边长
+
+// 15 张猫图素材池：图片路径 + 展示名（困难标记由 buildLevels 按关卡位置分配）
+const CAT_POOL = [
+  { src: 'assets/cats/abyssinian.jpg',         name: '阿比西尼亚' },
+  { src: 'assets/cats/american-shorthair.jpg', name: '美短' },
+  { src: 'assets/cats/bengal.jpg',             name: '孟加拉豹猫' },
+  { src: 'assets/cats/birman.jpg',             name: '伯曼猫' },
+  { src: 'assets/cats/british-shorthair.jpg',  name: '英短' },
+  { src: 'assets/cats/devon-rex.jpg',          name: '德文卷毛猫' },
+  { src: 'assets/cats/maine-coon.jpg',         name: '缅因猫' },
+  { src: 'assets/cats/norwegian-forest.jpg',   name: '挪威森林猫' },
+  { src: 'assets/cats/persian.jpg',            name: '波斯猫' },
+  { src: 'assets/cats/ragdoll.jpg',            name: '布偶猫' },
+  { src: 'assets/cats/russian-blue.jpg',       name: '俄罗斯蓝猫' },
+  { src: 'assets/cats/scottish-fold.jpg',      name: '苏格兰折耳猫' },
+  { src: 'assets/cats/siamese.jpg',            name: '暹罗' },
+  { src: 'assets/cats/siberian.jpg',           name: '西伯利亚猫' },
+  { src: 'assets/cats/sphynx.jpg',             name: '斯芬克斯猫' },
+];
+// 15 种猫科普数据（英文版，源自 furriq 品种数据库）：id 与图片文件名一致，通关面板展示
+const CAT_FACTS = {
+  'abyssinian': { name: "阿比西尼亚", nameEn: "Abyssinian", facts: ["One of the oldest cat breeds ever.", "Every hair has colorful stripes on it.", "Stays playful like a kitten forever."] },
+  'american-shorthair': { name: "美短", nameEn: "American Shorthair", facts: ["Sailed to America with early settlers.", "Its hard coat keeps out rain and dirt.", "A calm, quiet friend who loves kids."] },
+  'bengal': { name: "孟加拉豹猫", nameEn: "Bengal", facts: ["Looks like a tiny wild leopard.", "Many Bengals love playing in water.", "Its coat can sparkle with golden glitter."] },
+  'birman': { name: "伯曼猫", nameEn: "Birman", facts: ["Called the Sacred Cat of Burma.", "Always wears four white mitten paws.", "Has deep blue eyes and silky fur."] },
+  'british-shorthair': { name: "英短", nameEn: "British Shorthair", facts: ["Its fur feels like thick velvet.", "Famous for its round, smiling face.", "Takes up to five years to grow up."] },
+  'devon-rex': { name: "德文卷毛猫", nameEn: "Devon Rex", facts: ["Has huge ears like a bat.", "Its curly coat feels like lamb's wool.", "First found in England in 1960."] },
+  'maine-coon': { name: "缅因猫", nameEn: "Maine Coon", facts: ["One of the biggest house cats ever.", "Has furry feet like built-in snowshoes.", "Acts like a dog and plays fetch."] },
+  'norwegian-forest': { name: "挪威森林猫", nameEn: "Norwegian Forest Cat", facts: ["Built to survive cold Norwegian winters.", "Its fluffy coat keeps out rain and snow.", "An amazing climber who loves tall trees."] },
+  'persian': { name: "波斯猫", nameEn: "Persian", facts: ["The world's most popular fancy cat.", "Has a flat face and big round eyes.", "Needs brushing every single day."] },
+  'ragdoll': { name: "布偶猫", nameEn: "Ragdoll", facts: ["Goes limp like a rag doll when held.", "Always has beautiful blue eyes.", "Gentle with children, dogs, and other pets."] },
+  'russian-blue': { name: "俄罗斯蓝猫", nameEn: "Russian Blue", facts: ["Its gray coat shimmers with silver tips.", "Born with yellow eyes that turn green.", "Shy with strangers but loves its family."] },
+  'scottish-fold': { name: "苏格兰折耳猫", nameEn: "Scottish Fold", facts: ["Its ears fold down like a hat.", "Looks a little bit like an owl.", "First found on a Scottish farm in 1961."] },
+  'siamese': { name: "暹罗", nameEn: "Siamese", facts: ["Loves to talk to you all day.", "Its dark ears, paws, and tail stand out.", "Can live up to twenty years."] },
+  'siberian': { name: "西伯利亚猫", nameEn: "Siberian", facts: ["Comes from the snowy forests of Russia.", "Has a triple coat that repels water.", "Jumps and climbs like an athlete."] },
+  'sphynx': { name: "斯芬克斯猫", nameEn: "Sphynx", facts: ["A cat with no fur at all.", "Its skin feels warm like soft suede.", "Needs a bath every week."] },
+};
+// 运行时关卡表：每次页面加载由 buildLevels() 从素材池洗牌抽取生成
+let LEVELS = [];
+// candidatesOf 已在上方 DIFF_TABLE 系统定义
+
+/* ---------- 全局状态 ---------- */
+const state = {
+  level: 0,        // 当前关卡下标
+  grid: 3,         // 当前关网格边长（3=新手关 / 4=正式关，startLevel 按关卡设置）
+  cells: 9,        // 当前关总格数 = grid*grid
+  fills: 4,        // 当前关待填块数（新手 4 / 正式 8）
+  lives: MAX_LIVES,
+  score: 0,        // 累计总分
+  levelStart: 0,   // 本关开始时间戳（算速度奖励）
+  offCanvas: null, // 当前关 cover 适配后的离屏画布
+  prefilled: [],   // 预填锚点格子下标（直接画好，不可交互）
+  toFill: [],      // 待填格子下标（长度 = state.fills）
+  activeHoles: [], // 当前点亮 + 号的待填格（长度 = 难度候选数）
+  filled: [],      // 玩家已填入的待填格下标（length===4 即通关）
+  targetIdx: -1,   // 当前碎片对应的正确洞
+  selected: false, // 碎片是否已被点选
+  busy: false,     // 判定动画期间锁输入
+  tutorial: false, // 新手引导模式：1 步交互课（固定 1 洞，不扣命，填完进引导完成弹窗）
+  muted: localStorage.getItem('pictomino_muted') === '1',
+  timeLeft: 0,       // 当前轮剩余秒数
+  timerInterval: null, // setInterval id
+};
+
+/* ---------- 账号 & 云同步（登录可选，全链路静默降级） ---------- */
+let currentUser = null;
+function ptFetch(url, opts, ms = 8000) {
+  opts = opts || {};
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), ms);
+  return fetch(url, Object.assign({}, opts, { signal: ctrl.signal })).finally(() => clearTimeout(t));
+}
+function ptToday() { return new Date().toISOString().split('T')[0]; }
+const DAILY_KEY = 'pictomino_daily';
+function ptLoadDaily() {
+  try {
+    const d = JSON.parse(localStorage.getItem(DAILY_KEY) || 'null');
+    if (!d) return null;
+    const today = ptToday();
+    if (d.date === today) return d;
+    const y = new Date(); y.setDate(y.getDate() - 1);
+    const yStr = y.toISOString().split('T')[0];
+    if ((d.lastPlayedDate || d.date) === yStr) return { date: today, streak: d.streak, bestStreak: d.bestStreak, solved: false, bestTime: d.bestTime };
+    return { date: today, streak: 0, bestStreak: d.bestStreak, solved: false, bestTime: d.bestTime };
+  } catch (e) { return null; }
+}
+function ptSaveDailyWin(timeSeconds) {
+  const today = ptToday();
+  let st = ptLoadDaily() || { date: today, streak: 0, bestStreak: 0, bestTime: null };
+  if (!st.solved) {
+    st.streak = (st.streak || 0) + 1;
+    st.bestStreak = Math.max(st.bestStreak || 0, st.streak);
+    st.solved = true;
+    if (timeSeconds && (!st.bestTime || timeSeconds < st.bestTime)) st.bestTime = timeSeconds;
+  }
+  st.lastPlayedDate = today; st.date = today;
+  localStorage.setItem(DAILY_KEY, JSON.stringify(st));
+  return st;
+}
+function ptRenderAccount() {
+  // 账号 UI 已移至外层页面工具栏（iframe 外）；game.html 只保留登录态变量供云同步用
+  // 保留函数为空实现，调用方无需改动
+}
+function ptSyncOnLoad() {
+  ptFetch('/api/auth/me').then(r => r.json()).then(me => {
+    currentUser = me && me.user ? me.user : null;
+    ptRenderAccount();
+    if (!currentUser) return;
+    ptFetch('/api/progress').then(r => r.ok ? r.json() : null).then(data => {
+      if (!data) return;
+      const cloud = data.progress, local = ptLoadDaily();
+      const localBestSec = local && local.bestTime != null ? local.bestTime : null;
+      const cloudBestMs = cloud && cloud.bestTime != null ? cloud.bestTime : null;
+      const localHasMore = local && (!cloud ||
+        (local.streak || 0) > (cloud.streak || 0) ||
+        (local.bestStreak || 0) > (cloud.bestStreak || 0) ||
+        (localBestSec != null && localBestSec * 1000 < (cloudBestMs == null ? Infinity : cloudBestMs)));
+      if (localHasMore) {
+        ptFetch('/api/progress', { method: 'POST', headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ date: (local && (local.lastPlayedDate || local.date)) || null, streak: local.streak || 0, bestStreak: local.bestStreak || 0, bestTime: localBestSec != null ? localBestSec * 1000 : null }) })
+          .then(r => r.ok ? r.json() : null).then(m => {}).catch(() => {});
+      }
+    }).catch(() => {});
+  }).catch(() => {});
+}
+function ptSyncWin(state, elapsedSeconds) {
+  if (!currentUser) return;
+  ptFetch('/api/progress', { method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ date: ptToday(), streak: state.streak || 0, bestStreak: state.bestStreak || 0, bestTime: state.bestTime != null ? state.bestTime * 1000 : null }) }).catch(() => {});
+  ptFetch('/api/leaderboard', { method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ date: ptToday(), timeMs: Math.round(elapsedSeconds * 1000) }) }).catch(() => {});
+}
+ptSyncOnLoad();
+
+// 登录回跳错误提示（iframe 内）
+try {
+  const authErr = new URLSearchParams(window.location.search).get('auth_error');
+  if (authErr) {
+    const msg = authErr === 'access_denied' ? 'Sign-in was cancelled.' : 'Sign-in failed. Please try again.';
+    const ri = document.getElementById('round-info');
+    if (ri) { ri.textContent = '⚠️ ' + msg; ri.style.color = '#FF8FAB'; }
+    history.replaceState(null, '', window.location.pathname);
+  }
+} catch (e) {}
+
+// Daily 入口已移至外层页面工具栏（iframe 外），game.html 内不再渲染
+
+// ─── Level cloud sync（关卡进度上云，max 合并）──────────────────────
+let levelCloudSynced = false;
+function ptSyncLevel() {
+  if (levelCloudSynced || !currentUser) return;
+  levelCloudSynced = true;
+  const localLevel = Object.keys(JSON.parse(localStorage.getItem('pictomino_stars') || '{}')).length;
+  if (localLevel <= 0) return;
+  fetch('/api/level', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ level: localLevel + 1 }) }).catch(() => {});
+  fetch('/api/level').then(r => r.ok ? r.json() : null).then(data => {
+    if (data && data.level != null && data.level > localLevel + 1) {
+      // 云端领先：提示用户（关卡跳转需重开游戏，保守只提示）
+      const ri = document.getElementById('round-info');
+      if (ri) ri.textContent = '☁️ Progress synced — level ' + data.level + ' unlocked';
+    }
+  }).catch(() => {});
+}
+setTimeout(() => { if (currentUser) ptSyncLevel(); }, 2500);
+
+/* ---------- DOM 引用 ---------- */
+const $ = id => document.getElementById(id);
+const boardEl = $('board'), trayEl = $('tray'), roundInfoEl = $('round-info');
+
+/* ---------- Web Audio 音效（纯合成，无外部文件） ---------- */
+let audioCtx = null;
+function ac() { // 首次用户交互时创建/恢复（浏览器自动播放策略）
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+function tone(freq, t0, dur, type = 'sine', vol = 0.18, slideTo = null) {
+  if (state.muted) return;
+  const ctx = ac();
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  const t = ctx.currentTime + t0;
+  o.type = type;
+  o.frequency.setValueAtTime(freq, t);
+  if (slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, t + dur);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(vol, t + 0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(g).connect(ctx.destination);
+  o.start(t); o.stop(t + dur + 0.05);
+}
+const sfxCorrect = () => { tone(523, 0, 0.12); tone(784, 0.1, 0.2); };       // 双上行短音
+const sfxWrong   = () => tone(220, 0, 0.3, 'square', 0.12, 110);             // 低音下滑
+const sfxWin     = () => [523, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.12, 0.24)); // 上行琶音
+
+/* ---------- 工具函数 ---------- */
+// Fisher-Yates 洗牌
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+// 日期种子洗牌：daily 模式下同一日期全球玩家拿到同一套关卡（mulberry32 确定性 RNG）
+function shuffleSeeded(arr, seed) {
+  const a = arr.slice();
+  let s = seed >>> 0;
+  for (let i = a.length - 1; i > 0; i--) {
+    s = (s + 0x6D2B79F5) >>> 0;
+    let t = s;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    const r = ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    const j = Math.floor(r * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+// 当前是否 daily 模式（daily-puzzle.html iframe 以 ?mode=daily 打开）
+const IS_DAILY_MODE = (() => {
+  try { return new URLSearchParams(window.location.search).get('mode') === 'daily'; } catch (e) { return false; }
+})();
+// 日期种子：UTC 日期 → 整数（20260902），跨天自动换盘
+const DAILY_SEED = (() => {
+  const d = new Date();
+  return d.getUTCFullYear() * 10000 + (d.getUTCMonth() + 1) * 100 + d.getUTCDate();
+})();
+// 新手关固定素材（最易辨认的 2 种）：暹罗 → 美短，顺序固定（英短留给引导专用）
+const TUTORIAL_SRCS = [
+  'assets/cats/siamese.jpg',
+  'assets/cats/american-shorthair.jpg',
+];
+// 引导专用猫图（1 步交互课用）：英短蓝眼白猫特写，独立于关卡池，避免与 Level 1 重复
+const TUTORIAL_CAT = 'assets/cats/british-shorthair.jpg';
+const TUTORIAL_HOLE = 4; // 3×3 中心格 = 双眼+鼻子，一眼可辨认（引导只留这 1 洞）
+// 生成本局关卡表：前 2 关新手固定（按序），后 8 关从剩余 12 张洗牌抽取；难度按关卡位置分配
+// daily 模式：用日期种子确定性洗牌（全球同盘）；普通模式：随机洗牌（每次新鲜感）
+function buildLevels() {
+  if (IS_DAILY_MODE) {
+    // Daily Challenge：仅 1 关，每天日期种子确定性洗牌，难度随机 super
+    const rest = CAT_POOL.filter(c => c.src !== TUTORIAL_CAT);
+    const picked = shuffleSeeded(rest, DAILY_SEED).slice(0, 1);
+    LEVELS = picked;
+    return;
+  }
+  const tutorial = TUTORIAL_SRCS.map(s => CAT_POOL.find(c => c.src === s));
+  const rest = CAT_POOL.filter(c => !TUTORIAL_SRCS.includes(c.src) && c.src !== TUTORIAL_CAT); // 剩余 12 张（英短留给引导）
+  const picked = IS_DAILY_MODE ? shuffleSeeded(rest, DAILY_SEED).slice(0, 8) : shuffle(rest).slice(0, 8);
+  LEVELS = [...tutorial, ...picked];
+  // difficulty 由 DIFF_TABLE 按关卡号自动分配，不再手动设 lv.difficulty
+}
+// 格子下标 → 行列（按当前关网格动态计算）
+const rowOf = i => Math.floor(i / state.grid);
+const colOf = i => i % state.grid;
+
+/* ---------- 图片加载 ---------- */
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error('Image load failed: ' + src));
+    img.src = src;
+  });
+}
+
+/**
+ * 把源图按 cover 方式画进 480×480 离屏画布。
+ * 竖图（如阿比西尼亚 1000×1427）会以短边为基准放大后居中裁切，
+ * 保证每个碎片都是真实画面的一部分且网格为正方形。
+ */
+function makeOffscreen(img) {
+  const cv = document.createElement('canvas');
+  cv.width = cv.height = OFF_SIZE;
+  const ctx = cv.getContext('2d');
+  const scale = Math.max(OFF_SIZE / img.width, OFF_SIZE / img.height);
+  const w = img.width * scale, h = img.height * scale;
+  ctx.drawImage(img, (OFF_SIZE - w) / 2, (OFF_SIZE - h) / 2, w, h);
+  return cv;
+}
+
+/**
+ * 从离屏画布裁出第 idx 格的碎片；边长 = OFF_SIZE / 当前关 grid（3 关 160px / 4 关 120px）。
+ */
+function cutPiece(idx) {
+  const PIECE = OFF_SIZE / state.grid;
+  const cv = document.createElement('canvas');
+  cv.width = cv.height = PIECE;
+  cv.getContext('2d').drawImage(
+    state.offCanvas,
+    colOf(idx) * PIECE, rowOf(idx) * PIECE, PIECE, PIECE, // 源区域
+    0, 0, PIECE, PIECE                                     // 目标区域
+  );
+  return cv;
+}
+
+/* ---------- HUD 更新 ---------- */
+function updateHUD() {
+  const hud = {
+    level: `Level ${state.level + 1}/${LEVELS.length}`,
+    diff: getDiffLabel(state.level),
+    hearts: '❤️'.repeat(state.lives) + '🤍'.repeat(MAX_LIVES - state.lives),
+    score: '⭐ ' + state.score
+  };
+  // HUD 元素留在 iframe 内（standalone 直接打开 game.html 时仍可用）
+  if ($('level-pill')) $('level-pill').textContent = hud.level;
+  if ($('diff-pill')) $('diff-pill').textContent = hud.diff;
+  if ($('hearts')) $('hearts').textContent = hud.hearts;
+  if ($('score')) $('score').textContent = hud.score;
+  // postMessage 推给外层页面工具栏（iframe 模式）
+  hud.timer = timeLimitOf(state.level) ? state.timeLeft : null;
+  try { if (window.parent !== window) window.parent.postMessage({ type: 'pictomino_hud', hud }, '*'); } catch (e) {}
+  roundInfoEl.textContent = `Filled ${state.filled.length}/${state.fills} · Find the piece\\'s spot and tap the + !`;
+}
+
+/* ---------- 渲染主棋盘 ----------
+ * 预填/已填格画碎片；点亮 + 号的待填格可点击判定；其余待填格为空白虚线框。
+ */
+function renderBoard() {
+  boardEl.innerHTML = '';
+  for (let i = 0; i < state.cells; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.dataset.idx = i;
+    if (state.prefilled.includes(i) || state.filled.includes(i)) {
+      cell.appendChild(cutPiece(i));
+    } else if (state.activeHoles.includes(i)) {
+      cell.classList.add('hole');
+      cell.addEventListener('click', () => onHoleClick(cell, i));
+    } else {
+      cell.classList.add('pending'); // 待填但未点亮的空白虚线格
+    }
+    boardEl.appendChild(cell);
+  }
+}
+
+/* ---------- 渲染候选区：每轮只有 1 块（本轮正确碎片），纯展示 ---------- */
+function renderTray() {
+  trayEl.innerHTML = '';
+  const piece = document.createElement('div');
+  piece.className = 'piece';
+  const deg = degradeOf(state.level);
+  if (deg >= 66) piece.classList.add('super-weak');
+  else if (deg >= 33) piece.classList.add('weak');
+  piece.appendChild(cutPiece(state.targetIdx));
+  piece.addEventListener('click', () => {
+    if (state.busy) return;
+    ac(); // 借首次点击解锁 AudioContext
+    piece.classList.add('selected');
+    setTimeout(() => piece.classList.remove('selected'), 400);
+  });
+  trayEl.appendChild(piece);
+}
+
+/* ---------- 点击洞判定（直接判定，无需先点碎片）---------- */
+function onHoleClick(cell, i) {
+  if (state.busy) return;
+  ac();
+  if (!window.__firstMoveTracked) {
+    window.__firstMoveTracked = true;
+    if (typeof gtag === 'function') gtag('event', 'first_move', { level: state.level + 1 });
+    if (typeof window.clarity === 'function') window.clarity('event', 'first_move');
+  }
+  if (i === state.targetIdx) {
+    onCorrect(cell);
+  } else {
+    onWrong(cell); // 点错洞：扣命 + 红闪
+  }
+}
+
+/* 点中正确洞：碎片填入、+50 分、该 + 号消失并点亮新 + 号；4 格填满即通关 */
+function onCorrect(cell) {
+  state.busy = true;
+  state.score += 50;
+  sfxCorrect();
+  state.activeHoles = state.activeHoles.filter(i => i !== state.targetIdx);
+  cell.classList.remove('hole');
+  cell.classList.add('just-placed');
+  cell.innerHTML = '';
+  cell.appendChild(cutPiece(state.targetIdx));
+  state.filled.push(state.targetIdx);
+  updateHUD();
+  setTimeout(() => {
+    state.busy = false;
+    nextPick(); // 补充 1 个新 + 号保持选择题规模，或触发通关
+  }, 500);
+}
+
+/* 点错洞：扣 1 条命、该洞红闪、碎片保持选中可重试；命尽则 Game Over */
+function onWrong(cell) {
+  state.busy = true;
+  state.lives--;
+  sfxWrong();
+  updateHUD();
+  cell.classList.add('wrong-flash');
+  const piece = trayEl.querySelector('.piece');
+  if (piece) piece.classList.add('shake');
+  setTimeout(() => {
+    cell.classList.remove('wrong-flash');
+    if (piece) piece.classList.remove('shake');
+    state.busy = false;
+    if (state.lives <= 0) showLose();
+  }, 500);
+}
+/* ---------- 关卡棋盘初始化：预填锚点 + 待填格（数量按关卡动态） ---------- */
+function startRound() {
+  const idx = shuffle([...Array(state.cells).keys()]);
+  const prefill = state.cells - state.fills;
+  state.prefilled = idx.slice(0, prefill);
+  state.toFill = idx.slice(prefill);
+  state.filled = [];
+  state.activeHoles = [];
+  startTimer();
+  nextPick();
+}
+
+/* ---------- 倒计时（Medium 及以上难度） ---------- */
+function startTimer() {
+  stopTimer();
+  const limit = timeLimitOf(state.level);
+  if (!limit) { // Tutorial/Easy 不限时
+    const el = document.getElementById('timer');
+    if (el) el.style.display = 'none';
+    return;
+  }
+  state.timeLeft = limit;
+  const el = document.getElementById('timer');
+  if (el) { el.style.display = ''; el.textContent = '⏱ ' + state.timeLeft + 's'; }
+  state.timerInterval = setInterval(() => {
+    state.timeLeft--;
+    if (el) { el.textContent = '⏱ ' + state.timeLeft + 's'; el.style.display = ''; }
+    if (state.timeLeft <= 5 && el) el.style.color = '#E85D75';
+    // 同步外层工具栏
+    try { if (window.parent !== window) window.parent.postMessage({ type: 'pictomino_timer', timeLeft: state.timeLeft }, '*'); } catch(e) {}
+    if (state.timeLeft <= 0) {
+      stopTimer();
+      state.lives--;
+      sfxWrong();
+      updateHUD();
+      if (state.lives <= 0) { showLose(); return; }
+      // 时间到：重新开始本轮（不换拼图，只重置填入状态）
+      state.filled = [];
+      state.activeHoles = [];
+      nextPick();
+      startTimer();
+    }
+  }, 1000);
+}
+function stopTimer() {
+  if (state.timerInterval) { clearInterval(state.timerInterval); state.timerInterval = null; }
+  const el = document.getElementById('timer');
+  if (el) { el.style.color = '#E85D75'; }
+}
+
+/* 点亮/补充 + 号并选出新目标碎片：始终保持 N 个选择（N 按难度），填满全部待填格通关 */
+function nextPick() {
+  if (state.filled.length >= state.fills) {
+    if (state.tutorial) { tutorialComplete(); } else { winLevel(); }
+    return;
+  }
+  const remaining = state.toFill.filter(i => !state.filled.includes(i) && !state.activeHoles.includes(i));
+  const want = Math.min(candidatesOf(state.level), state.fills - state.filled.length);
+  while (state.activeHoles.length < want && remaining.length) {
+    state.activeHoles.push(remaining.splice(Math.floor(Math.random() * remaining.length), 1)[0]);
+  }
+  state.targetIdx = state.activeHoles[Math.floor(Math.random() * state.activeHoles.length)];
+  renderBoard();
+  renderTray();
+  updateHUD();
+}
+
+/* ---------- 单关通关 ----------
+ * 得分 = 剩余命×100 + 速度奖励（60 秒内每快 1 秒 +5，上限 300）
+ */
+function winLevel() {
+  stopTimer();
+  const elapsed = (Date.now() - state.levelStart) / 1000;
+  const speedBonus = Math.max(0, Math.round((60 - elapsed) * 5));
+  const lifeBonus = state.lives * 100;
+  const total = speedBonus + lifeBonus;
+  state.score += total;
+  // 星级评级：剩余生命 >=4 → 3 星；2-3 → 2 星；1 → 1 星
+  const stars = state.lives >= 4 ? 3 : state.lives >= 2 ? 2 : 1;
+  saveStars(state.level, stars);
+  // 每日挑战 streak：daily-puzzle.html 的 iframe 以 ?mode=daily 打开时，通关记 1 次/天并上报云端
+  if (new URLSearchParams(window.location.search).get('mode') === 'daily') {
+    const dailyState = ptSaveDailyWin(elapsed);
+    gtag('event', 'daily_solved', { streak: dailyState.streak });
+    ptSyncWin(dailyState, elapsed);
+  }
+  updateHUD();
+  sfxWin();
+  $('win-stars').innerHTML =
+    '★'.repeat(stars) + '<span class="off">' + '★'.repeat(3 - stars) + '</span>';
+  gtag('event', 'level_completed', { difficulty: getDifficulty(), level: state.level, stars: stars });
+  if (typeof window.clarity === 'function') {
+    window.clarity('event', 'level_completed');
+    window.clarity('set', 'difficulty', String(getDifficulty()));
+    window.clarity('set', 'level', String(state.level));
+    window.clarity('set', 'stars', String(stars));
+  }
+  const catId = LEVELS[state.level].src.split('/').pop().replace('.jpg', '');
+  const catFacts = CAT_FACTS[catId] || {};
+  const catName = catFacts.nameEn || LEVELS[state.level].name;
+  $('win-cat').textContent = `You completed the ${catName} puzzle! 🐱`;
+  // 科普卡：品种名标题 + 3 条趣味事实
+  $('fact-cat-name').textContent = `🐱 ${catName}`;
+  const factListEl = $('fact-list');
+  factListEl.innerHTML = '';
+  (catFacts.facts || []).forEach(f => {
+    const li = document.createElement('li');
+    li.textContent = f;
+    factListEl.appendChild(li);
+  });
+  $('cat-fact-card').style.display = (catFacts.facts && catFacts.facts.length) ? '' : 'none';
+  $('win-score').textContent = '+' + total;
+  $('win-detail').textContent = `Lives bonus +${lifeBonus} · Speed bonus +${speedBonus}`;
+  // Daily 模式：只有 1 关，隐藏 Next level，显示 streak；普通模式正常
+  if (IS_DAILY_MODE) {
+    $('next-btn').style.display = 'none';
+    $('win-close-btn').textContent = 'Done ✓';
+    // 在 daily 胜利面板中显示 streak
+    const streakCard = document.getElementById('daily-streak-card');
+    if (streakCard) {
+      streakCard.style.display = '';
+      const d = ptLoadDaily();
+      const sc = document.getElementById('daily-streak-count');
+      const sb = document.getElementById('daily-streak-badge');
+      if (sc) sc.textContent = d ? d.streak : 0;
+      if (sb) {
+        const s = d ? d.streak : 0;
+        sb.textContent = s >= 30 ? '🏆 30-day champion!' : s >= 14 ? '⭐ Two-week legend!' : s >= 7 ? '🔥 Week warrior!' : s >= 3 ? '💪 Keep it up!' : '';
+      }
+    }
+    // 通知外层页面显示排行榜（postMessage）
+    try { window.parent.postMessage({ type: 'pictomino_daily_solved' }, '*'); } catch(e) {}
+  } else {
+    $('next-btn').style.display = '';
+    $('next-btn').textContent = state.level < LEVELS.length - 1 ? 'Next level ➜' : 'See total 🏆';
+    const streakCard = document.getElementById('daily-streak-card');
+    if (streakCard) streakCard.style.display = 'none';
+    $('win-close-btn').textContent = 'Continue ✓';
+  }
+  state.lastStars = stars; // 供分享文案使用
+  $('win-overlay').classList.add('show');
+  celebrate();
+}
+
+/* ---------- 失败 ---------- */
+function showLose() {
+  stopTimer();
+  $('lose-overlay').classList.add('show');
+}
+
+/* ---------- 星级存档：localStorage('pictomino_stars') = {levelIndex: stars}，取历史最高 ---------- */
+function saveStars(levelIdx, stars) {
+  try {
+    const all = JSON.parse(localStorage.getItem('pictomino_stars') || '{}');
+    all[levelIdx] = Math.max(all[levelIdx] || 0, stars);
+    localStorage.setItem('pictomino_stars', JSON.stringify(all));
+  } catch (e) { /* 隐私模式等场景下静默失败 */ }
+}
+
+/* ---------- 全部通关 ---------- */
+function showVictory() {
+  $('final-score').textContent = state.score;
+  $('victory-overlay').classList.add('show');
+  sfxWin();
+  celebrate();
+}
+
+/* ---------- 庆祝动画：彩带雨（48 条旋转彩带）+ 少量 emoji ---------- */
+function celebrate() {
+  const colors = ['#FF8FAB', '#FFB26B', '#5ECFB9', '#FFD66B', '#7FB5FF', '#C79BF2'];
+  for (let i = 0; i < 48; i++) {
+    const s = document.createElement('span');
+    s.className = 'confetti strip';
+    s.style.left = Math.random() * 100 + 'vw';
+    s.style.background = colors[i % colors.length];
+    s.style.animationDelay = (Math.random() * 0.9) + 's';
+    s.style.animationDuration = (1.4 + Math.random() * 1.2) + 's';
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 3400);
+  }
+  const emojis = ['🎉', '⭐', '🐱', '🧡', '✨', '🐾'];
+  for (let i = 0; i < 12; i++) {
+    const s = document.createElement('span');
+    s.className = 'confetti';
+    s.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    s.style.left = Math.random() * 100 + 'vw';
+    s.style.animationDelay = (Math.random() * 0.8) + 's';
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 2600);
+  }
+}
+
+/* ---------- 开局完整图预览：整图展示 2 秒后进入游戏 ---------- */
+function showPreview() {
+  return new Promise(resolve => {
+    const box = $('preview-img');
+    box.innerHTML = '';
+    const cv = document.createElement('canvas');
+    cv.width = cv.height = OFF_SIZE;
+    cv.getContext('2d').drawImage(state.offCanvas, 0, 0);
+    box.appendChild(cv);
+    const countEl = $('preview-count');
+    $('preview-overlay').classList.add('show');
+    let left = 2;
+    countEl.textContent = left;
+    const t = setInterval(() => {
+      left--;
+      if (left <= 0) {
+        clearInterval(t);
+        $('preview-overlay').classList.remove('show');
+        resolve();
+      } else {
+        countEl.textContent = left;
+      }
+    }, 1000);
+  });
+}
+
+/* ---------- How to Play 规则卡 ----------
+ * 首局自动弹出（Got it! 后 markHelpDone 并开始游戏），之后仅 ? 按钮触发。
+ * Auto-show 开关（pictomino_help_auto，默认 1）：关掉后首局也不自动弹，仅 ? 按钮查看。
+ * openHelp(onClose)：显示规则卡；点 Got it! 关闭并回调 onClose。
+ */
+function isHelpDone() { try { return localStorage.getItem('pictomino_help_done') === '1'; } catch (e) { return false; } }
+function markHelpDone() { try { localStorage.setItem('pictomino_help_done', '1'); } catch (e) { /* 隐私模式静默 */ } }
+function isHelpAuto() { try { return localStorage.getItem('pictomino_help_auto') !== '0'; } catch (e) { return true; } }
+function openHelp(onClose) {
+  const toggleEl = $('help-auto-toggle');
+  toggleEl.checked = isHelpAuto(); // 回显开关状态
+  $('help-overlay').classList.add('show');
+  const close = () => {
+    $('help-overlay').classList.remove('show');
+    $('help-gotit-btn').removeEventListener('click', close);
+    if (onClose) onClose();
+  };
+  $('help-gotit-btn').addEventListener('click', close);
+}
+// Auto-show 开关状态持久化
+$('help-auto-toggle').addEventListener('change', e => {
+  localStorage.setItem('pictomino_help_auto', e.target.checked ? '1' : '0');
+});
+
+/* ---------- 新手引导：1 步交互课（P0） ----------
+ * 触发：首次访问（localStorage 无 pictomino_tutorial_done 标记）。
+ * Step1 点碎片（唯一可交互元素）→ Step2 点唯一 + 号 → 填入动画 → 完成弹窗 → 正式 Level 1。
+ * 复用正式引擎：targetIdx 固定 = 中心格，activeHoles 只有 1 个，8 格预填，碎片不弱化。
+ */
+const stageEl = $('stage');
+const coachEl = $('coach'), coachTextEl = $('coach-text');
+const TUT_DONE_KEY = 'pictomino_tutorial_done';
+function isTutorialDone() { try { return localStorage.getItem(TUT_DONE_KEY) === '1'; } catch (e) { return false; } }
+function markTutorialDone() { try { localStorage.setItem(TUT_DONE_KEY, '1'); } catch (e) { /* 隐私模式静默 */ } }
+function setCoach(text, beforeEl) {
+  coachTextEl.textContent = text;
+  coachEl.style.display = 'block';
+  stageEl.insertBefore(coachEl, beforeEl); // 移到目标元素上方，箭头指向它
+}
+function hideCoach() { coachEl.style.display = 'none'; }
+
+function tutorialComplete() {
+  hideCoach();
+  trayEl.innerHTML = ''; // 碎片已填入棋盘，清空候选区避免重复显示
+  $('tut-done-overlay').classList.add('show');
+}
+
+async function runTutorial() {
+  // 引导棋盘是 3×3 迷你关；先存下 startLevel 设好的正式关状态，结束时恢复
+  const saved = {
+    offCanvas: state.offCanvas, grid: state.grid, cells: state.cells, fills: state.fills,
+    cols: boardEl.style.gridTemplateColumns,
+  };
+  state.tutorial = true;
+  document.body.classList.add('tut-mode');
+  const loading = $('loading');
+  loading.textContent = '🐱 Loading…';
+  loading.style.display = 'flex';
+  try {
+    const img = await loadImage(TUTORIAL_CAT);
+    state.offCanvas = makeOffscreen(img);
+  } catch (err) {
+    console.error('Tutorial image failed', err);
+  }
+  loading.style.display = 'none';
+  // 3×3、只留中心 1 洞、其余 8 格预填：唯一适配点，点 + 必对
+  state.grid = 3; state.cells = 9; state.fills = 1;
+  state.prefilled = [0, 1, 2, 3, 5, 6, 7, 8];
+  state.toFill = [TUTORIAL_HOLE];
+  state.filled = []; state.activeHoles = []; state.targetIdx = TUTORIAL_HOLE;
+  boardEl.style.gridTemplateColumns = 'repeat(3,1fr)';
+  renderBoard();  // Step 1：洞是 pending（虚线不可点），只有碎片可交互
+  renderTray();
+  const pieceEl = trayEl.querySelector('.piece');
+  pieceEl.classList.add('tut-step1');
+  setCoach('This is a puzzle piece! Tap it to pick it up.', $('tray'));
+  const done = () => {
+    // 结束引导：恢复正式关卡状态并标记完成（Skip 与 Let's go! 都走这里）
+    hideCoach();
+    $('tut-done-overlay').classList.remove('show');
+    document.body.classList.remove('tut-mode');
+    state.tutorial = false;
+    state.grid = saved.grid; state.cells = saved.cells; state.fills = saved.fills;
+    state.offCanvas = saved.offCanvas;
+    state.prefilled = []; state.toFill = []; state.filled = []; state.activeHoles = []; state.targetIdx = -1;
+    boardEl.style.gridTemplateColumns = saved.cols;
+    markTutorialDone();
+    $('coach-skip').onclick = null;
+    $('tut-go-btn').onclick = null;
+  };
+  return new Promise(resolve => {
+    const finish = () => { done(); resolve(); };
+    $('coach-skip').onclick = finish;
+    $('tut-go-btn').onclick = finish;
+    // Step 1 → Step 2：点碎片后点亮唯一 + 号
+    pieceEl.addEventListener('click', function step1() {
+      if (!state.tutorial) return;
+      pieceEl.removeEventListener('click', step1);
+      pieceEl.classList.remove('tut-step1');
+      state.activeHoles = [TUTORIAL_HOLE];
+      renderBoard();
+      const holeEl = boardEl.querySelector('.cell[data-idx="' + TUTORIAL_HOLE + '"]');
+      if (holeEl) holeEl.classList.add('tut-step2');
+      setCoach('Now tap the + where it fits! It is the only spot.', $('board-wrap'));
+      // Step 2 的填入走正式引擎：onHoleClick → onCorrect → nextPick → tutorialComplete
+    });
+  });
+}
+
+/* ---------- 关卡流程 ---------- */
+function getDifficulty() {
+  return getDiffLabel(state.level).toLowerCase();
+}
+
+async function startLevel(n) {
+  state.level = n;
+  state.grid  = gridOf(n);   // 新手关 3×3 / 正式关 4×4
+  state.cells = cellsOf(n);
+  state.fills = fillsOf(n);
+  boardEl.style.gridTemplateColumns = `repeat(${state.grid},1fr)`; // CSS 列数动态适配
+  state.lives = MAX_LIVES;
+  state.filled = [];
+  state.prefilled = [];
+  state.toFill = [];
+  state.activeHoles = [];
+  state.targetIdx = -1;
+  const loading = $('loading');
+  loading.textContent = '🐱 Loading…';
+  loading.style.display = 'flex';
+  try {
+    const img = await loadImage(LEVELS[n].src);
+    state.offCanvas = makeOffscreen(img);
+  } catch (err) {
+    loading.textContent = '😿 Failed to load image. Please refresh.';
+    console.error(err);
+    return;
+  }
+  if (degradeOf(n) > 0) { // 非 Tutorial/Easy 关预告 1.5 秒
+    loading.textContent = degradeOf(n) >= 66
+      ? '💀 Super hard level! Watch the piece and find its spot'
+      : '⚠️ Hard level! Watch the piece and find its spot';
+    await new Promise(r => setTimeout(r, 1500));
+  }
+  loading.style.display = 'none';
+  if (n === 0) {
+    if (isHelpAuto() && !isHelpDone()) { // 首局且开关开启：规则卡 → Got it! → 继续
+      await new Promise(r => openHelp(r));
+      markHelpDone();
+    }
+    if (!isTutorialDone()) { // 首次访问：1 步交互课，亲手做对一次（P0）
+      await runTutorial();
+    }
+  }
+  await showPreview(); // 完整图预览 2 秒（重开本关也会预览，方便记图）
+  state.levelStart = Date.now(); // 预览播完才计时，速度奖励不吃亏
+  startRound();
+  gtag('event', 'game_started', { difficulty: getDifficulty(), level: n });
+  if (typeof window.clarity === 'function') {
+    window.clarity('event', 'game_started');
+    window.clarity('set', 'difficulty', String(getDifficulty()));
+    window.clarity('set', 'level', String(n));
+  }
+}
+
+/* ---------- 按钮事件 ---------- */
+$('next-btn').addEventListener('click', () => {
+  $('win-overlay').classList.remove('show');
+  if (state.level < LEVELS.length - 1) {
+    startLevel(state.level + 1);
+  } else {
+    showVictory();
+  }
+});
+// 纯关闭（不给 Next 副作用）：看排行榜/留在当前关
+$('win-close-btn').addEventListener('click', () => {
+  $('win-overlay').classList.remove('show');
+  // Daily 模式：关了面板后通知外层滚动到排行榜
+  if (IS_DAILY_MODE) {
+    try { window.parent.postMessage({ type: 'pictomino_daily_scroll_lb' }, '*'); } catch(e) {}
+  }
+});
+$('retry-btn').addEventListener('click', () => {
+  $('lose-overlay').classList.remove('show');
+  startLevel(state.level); // 重开本关
+});
+$('restart-btn').addEventListener('click', () => {
+  $('victory-overlay').classList.remove('show');
+  state.score = 0;
+  buildLevels(); // 再玩一次：重新洗牌，避免背答案
+  startLevel(0);
+});
+// ? 按钮：随时查看规则卡（不打断游戏流程，仅显示/关闭）
+// 帮助按钮已移至外层工具栏（通过 postMessage 触发）
+window.addEventListener('message', function(ev){
+  if (!ev.data || ev.data.type !== 'pictomino_help') return;
+  gtag('event', 'help_click', { difficulty: getDifficulty(), level: state.level });
+  if (typeof window.clarity === 'function') {
+    window.clarity('event', 'help_click');
+    window.clarity('set', 'difficulty', String(getDifficulty()));
+    window.clarity('set', 'level', String(state.level));
+  }
+  openHelp();
+});
+
+/* ---------- 通关面板分享：Reddit 分享 + 复制链接（GA4 埋点） ---------- */
+function shareMessage() {
+  const stars = state.lastStars || 3;
+  const diff = getDifficulty();
+  return '🐱 Beat Pictomino Level ' + (state.level + 1) + ' (' + diff + ') ' + '⭐'.repeat(stars) + ' — can you do better? → gridpaw.com/pictomino';
+}
+
+async function captureBoardToClipboard() {
+  try {
+    const boardEl = document.getElementById('board');
+    if (!boardEl || typeof html2canvas === 'undefined') return;
+    const canvas = await html2canvas(boardEl, { backgroundColor: '#FFF6EC', scale: 2 });
+    canvas.toBlob(async (blob) => {
+      if (!blob) return;
+      try { await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]); } catch(e) {}
+    }, 'image/png');
+  } catch(e) {}
+}
+
+$('share-reddit-btn').addEventListener('click', async () => {
+  gtag('event', 'share_reddit', { difficulty: getDifficulty(), level: state.level, stars: state.lastStars || 3 });
+  if (typeof window.clarity === 'function') {
+    window.clarity('event', 'share_reddit');
+    window.clarity('set', 'difficulty', String(getDifficulty()));
+    window.clarity('set', 'level', String(state.level));
+    window.clarity('set', 'stars', String(state.lastStars || 3));
+  }
+  await captureBoardToClipboard();
+  const url = 'https://www.reddit.com/r/pictomino/submit?url=' + encodeURIComponent('https://gridpaw.com/pictomino') +
+              '&title=' + encodeURIComponent(shareMessage());
+  window.open(url, '_blank', 'noopener');
+});
+$('copy-share-btn').addEventListener('click', async () => {
+  gtag('event', 'share_copy', { difficulty: getDifficulty(), level: state.level, stars: state.lastStars || 3 });
+  if (typeof window.clarity === 'function') {
+    window.clarity('event', 'share_copy');
+    window.clarity('set', 'difficulty', String(getDifficulty()));
+    window.clarity('set', 'level', String(state.level));
+    window.clarity('set', 'stars', String(state.lastStars || 3));
+  }
+  const text = shareMessage();
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (e) { /* 非安全上下文等场景降级：隐藏 textarea + execCommand */
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e2) { /* 静默失败 */ }
+    ta.remove();
+  }
+  const btn = $('copy-share-btn');
+  btn.textContent = '✅ Copied!';
+  setTimeout(() => { btn.textContent = '🔗 Copy link'; }, 1600);
+});
+
+/* ---------- 顶栏 Community 入口 ---------- */
+const cbtn = $('community-btn');
+if (cbtn) cbtn.addEventListener('click', () => {
+  gtag('event', 'community_click', { difficulty: getDifficulty(), level: state.level, source: 'game_topbar' });
+  if (typeof window.clarity === 'function') {
+    window.clarity('event', 'community_click');
+    window.clarity('set', 'difficulty', String(getDifficulty()));
+    window.clarity('set', 'level', String(state.level));
+    window.clarity('set', 'source', 'game_topbar');
+  }
+});
+
+/* ---------- Sound on/off（按钮在外层工具栏，通过 postMessage 双向控制；直接打开 game.html 时无按钮仅静默） ---------- */
+function refreshSoundBtn() {
+  // iframe 内原按钮已移除；静音状态变化通知外层
+  try { if (window.parent !== window) window.parent.postMessage({ type: 'pictomino_mute', muted: state.muted }, '*'); } catch (e) {}
+}
+window.addEventListener('message', function(ev){
+  if (!ev.data || ev.data.type !== 'pictomino_mute_toggle') return;
+  state.muted = !state.muted;
+  localStorage.setItem('pictomino_muted', state.muted ? '1' : '0');
+  if (!state.muted) { ac(); sfxCorrect(); }
+});
+
+/* ---------- 首次任意交互解锁 AudioContext（自动播放策略） ---------- */
+document.addEventListener('pointerdown', () => ac(), { once: true });
+
+/* ---------- 启动！---------- */
+buildLevels(); // 每次页面加载：洗牌抽取 10 张生成关卡表
+startLevel(0);
+</script>
+</body>
+</html>
