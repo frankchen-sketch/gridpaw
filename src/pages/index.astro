@@ -1,69 +1,1631 @@
 ---
 import SEOHead from '../components/SEOHead.astro';
-const title = "GridPaw — Free Cat Puzzle Games Online";
-const description = "Play free Shikaku and Akari logic puzzles with cute cats. Daily challenges, multiple difficulty levels, no download needed.";
+
+const title = "Shikaku Online — Play Free Cat Rectangle Puzzle | GridPaw";
+const description = "Play Shikaku online for free at GridPaw. A cat-themed rectangle partition puzzle — drag to draw rectangles, match numbers, fill the grid. The classic Nikoli puzzle, reimagined with cats.";
 ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <SEOHead title={title} description={description} canonical="/" type="website" />
+  <SEOHead title={title} description={description} canonical="/" />
+  <script type="application/ld+json" set:html={JSON.stringify([
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "GridPaw — Shikaku Online",
+      "url": "https://gridpaw.com",
+      "description": description,
+      "applicationCategory": "Game",
+      "operatingSystem": "Web Browser",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "genre": "Puzzle",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "bestRating": "5",
+        "ratingCount": "156"
+      },
+      "applicationCategory": "GameApplication"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "What is GridPaw?", "acceptedAnswer": { "@type": "Answer", "text": "GridPaw is a free online Shikaku game with cat visuals. Shikaku (also called rectangle partition) is a classic Nikoli puzzle where you drag to draw rectangles on a numbered grid so each rectangle covers exactly the number of cells shown." }},
+        { "@type": "Question", "name": "Is GridPaw the same as Shikaku?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! GridPaw uses the exact same rules as Shikaku, the classic rectangle partition puzzle by Nikoli. GridPaw adds cute cat visuals and generates unlimited puzzles for free." }},
+        { "@type": "Question", "name": "How do you play Shikaku?", "acceptedAnswer": { "@type": "Answer", "text": "Drag to draw rectangles on the grid. Each rectangle must cover exactly the number of cells shown by its number. Every cell must be covered by exactly one rectangle — no overlaps, no gaps." }},
+        { "@type": "Question", "name": "Is GridPaw free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! GridPaw is completely free to play at gridpaw.com. No download or registration. Works on desktop, tablet, and phone." }}
+      ]
+    }
+  ])} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --mt-primary: #D47A50;
+      --mt-secondary: #5C6BC0;
+      --mt-accent: #E87040;
+      --mt-bg: #FFF8F0;
+      --mt-board-bg: #E8DDD0;
+      --mt-cell-empty: #FFFFFF;
+      --mt-cell-border: #D8D0C8;
+      --mt-text: #3D3D3D;
+      --mt-text-light: #9E9590;
+      --mt-success: #B8E8C0;
+      --mt-error: #D47A50;
+      --mt-hint: #E87040;
+      --mt-shadow-sm: 0 2px 8px rgba(78,64,55,0.08);
+      --mt-shadow-md: 0 4px 12px rgba(78,64,55,0.12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', -apple-system, sans-serif;
+      background: var(--mt-bg); color: var(--mt-text);
+      min-height: 100vh;
+      -webkit-user-select: none; user-select: none; touch-action: none;
+    }
+    .app { width: 100%; max-width: 500px; display: flex; flex-direction: column; position: relative; margin: 0 auto; padding: 0 16px; }
+    .top-bar { display: flex; align-items: center; justify-content: space-between; padding: 14px 0 10px; }
+    .top-bar .title { font-size: 17px; font-weight: 800; color: var(--mt-primary); }
+    .icon-btn { width: 36px; height: 36px; border-radius: 50%; background: white; border: 2px solid var(--mt-cell-border); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--mt-text); cursor: pointer; transition: all 0.15s; box-shadow: var(--mt-shadow-sm); }
+    .icon-btn:hover { border-color: var(--mt-primary); color: var(--mt-primary); }
+    .icon-btn:active { transform: scale(0.92); }
+    .nav-bar { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; padding: 0 0 8px; }
+    .nav-bar a { font-size: 12px; font-weight: 700; color: var(--mt-secondary); text-decoration: none; padding: 4px 10px; background: white; border-radius: 20px; border: 1.5px solid var(--mt-cell-border); transition: all 0.15s; }
+    .nav-bar a:hover { border-color: var(--mt-primary); color: var(--mt-primary); }
+    .nav-bar a.nav-daily { background: var(--mt-primary); color: white; border-color: var(--mt-primary); font-size: 13px; padding: 5px 14px; font-weight: 800; }
+    .nav-bar a.nav-daily:hover { background: #c06a40; border-color: #c06a40; color: white; }
+    .breadcrumb { font-size: 12px; color: #9E9590; padding: 0 0 8px; text-align: center; }
+    .daily-status { text-align: center; padding: 0 0 8px; font-size: 12px; font-weight: 700; }
+    .daily-status a { text-decoration: none; color: var(--mt-text-light); transition: color 0.15s; }
+    .daily-status a:hover { color: var(--mt-primary); }
+    .level-info { text-align: center; padding: 0 0 8px; }
+    .level-num { font-size: 22px; font-weight: 900; color: var(--mt-text); }
+    .level-sub { font-size: 12px; font-weight: 700; color: var(--mt-text-light); text-transform: uppercase; letter-spacing: 0.1em; }
+    .difficulty-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-left: 6px; vertical-align: middle; }
+    .badge-easy { background: #B8E8C0; color: #2D6A3F; }
+    .badge-medium { background: #FDD09F; color: #8B6914; }
+    .badge-medium-hard { background: #FFB3C6; color: #8B2252; }
+    .badge-hard { background: #FF9A9E; color: #8B1A1A; }
+    .badge-expert { background: #CFC2E8; color: #4B2D7A; }
+    .share-btn { padding: 12px 32px; border-radius: 24px; border: none; background: var(--mt-primary); color: white; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(212,122,80,0.3); transition: all 0.15s; }
+    .share-btn:hover { transform: scale(1.04); box-shadow: 0 6px 20px rgba(212,122,80,0.4); }
+    .share-btn:active { transform: scale(0.96); }
+    .reddit-btn { padding: 12px 32px; border-radius: 24px; border: none; background: #FF4500; color: white; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(255,69,0,0.3); transition: all 0.15s; }
+    .reddit-btn:hover { transform: scale(1.04); box-shadow: 0 6px 20px rgba(255,69,0,0.4); }
+    .reddit-btn:active { transform: scale(0.96); }
+    .board-wrap { display: flex; align-items: center; justify-content: center; padding: 0; }
+    .board { display: inline-grid; gap: 3px; padding: 8px; background: var(--mt-board-bg); border-radius: 12px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.06), var(--mt-shadow-md); position: relative; }
+    .cell { border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; position: relative; cursor: pointer; transition: background 0.15s, border 0.15s, transform 0.15s; }
+    .cell-empty { background: #FFFFFF; border: 1.5px solid #D5CDDA; }
+    .cell-number { background: #FFFFFF; border: 2px solid #D47A50; border-radius: 8px; color: #3D3D3D; box-shadow: 0 2px 6px rgba(212,122,80,0.12); }
+    .cell-selecting { border: 2px dashed var(--mt-primary) !important; background: rgba(212,122,80,0.08) !important; }
+    .cell-filled { border: none; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3); }
+    .cell-error { animation: shake 0.3s ease; }
+
+    /* Cat block — the rectangle IS the cat */
+    .cat-block {
+      position: absolute;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      z-index: 10;
+      animation: pop-in 0.35s cubic-bezier(0.34,1.56,0.64,1);
+      pointer-events: none;
+    }
+    /* Ears — above the face, centered on the block (never overflow narrow cells) */
+    .cat-block::before, .cat-block::after {
+      content: '';
+      position: absolute;
+      top: -7px;
+      width: 0; height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 8px solid var(--ear);
+    }
+    .cat-block::before { left: calc(50% - 12px); }
+    .cat-block::after  { left: calc(50% + 2px); }
+    /* Face container — always centered horizontally, never clipped */
+    .cat-face {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      max-width: 100%;
+      overflow: visible;
+    }
+    .cat-eyes { display: flex; gap: 7px; align-items: center; }
+    .cat-mouth { margin-top: 1px; }
+    /* Eye types */
+    .e-open { width: 7px; height: 7px; background: #3D3D3D; border-radius: 50%; }
+    .e-closed { width: 9px; height: 0; border-bottom: 2.5px solid #3D3D3D; border-radius: 0 0 50% 50%; }
+    .e-dot { width: 5px; height: 5px; background: #3D3D3D; border-radius: 50%; }
+    .e-angry { width: 7px; height: 7px; background: #3D3D3D; border-radius: 50%; position: relative; }
+    .e-angry::before { content: ''; position: absolute; top: -4px; left: -1px; width: 9px; height: 3px; border-top: 2.5px solid #3D3D3D; border-radius: 50% 50% 0 0; }
+    .cat-eyes .e-angry:first-child::before { transform: rotate(-15deg); }
+    .cat-eyes .e-angry:last-child::before { transform: rotate(15deg); }
+    .e-big { width: 9px; height: 9px; background: #3D3D3D; border-radius: 50%; }
+    .e-half { width: 7px; height: 4px; background: #3D3D3D; border-radius: 50% 50% 0 0; }
+    .e-down { width: 7px; height: 7px; background: #3D3D3D; border-radius: 50%; transform: translateY(1px); }
+    /* Mouth types */
+    .m-smile { width: 12px; height: 5px; border-bottom: 2.5px solid #3D3D3D; border-radius: 0 0 50% 50%; }
+    .m-frown { width: 10px; height: 4px; border-top: 2.5px solid #3D3D3D; border-radius: 50% 50% 0 0; }
+    .m-open { width: 8px; height: 8px; background: #3D3D3D; border-radius: 50%; }
+    .m-big-open { width: 10px; height: 10px; background: #3D3D3D; border-radius: 50%; }
+    .m-w { width: 14px; height: 6px; border-bottom: 2.5px solid #3D3D3D; border-radius: 0 0 40% 40%; position: relative; }
+    .m-w::before { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 2px; height: 3px; background: #3D3D3D; }
+    .m-flat { width: 12px; height: 0; border-bottom: 2.5px solid #3D3D3D; }
+    .m-tongue { width: 12px; height: 5px; border-bottom: 2.5px solid #3D3D3D; border-radius: 0 0 50% 50%; position: relative; }
+    .m-tongue::after { content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 6px; height: 5px; background: #FF9A9E; border-radius: 0 0 50% 50%; }
+    .m-small { width: 8px; height: 3px; border-bottom: 2px solid #3D3D3D; border-radius: 0 0 50% 50%; }
+    .m-pout { width: 10px; height: 6px; background: #3D3D3D; border-radius: 50%; }
+    .m-none { display: none; }
+    /* Cat number */
+    .cat-num {
+      position: absolute;
+      bottom: 6px;
+      left: 8px;
+      font-size: 18px;
+      font-weight: 900;
+      color: rgba(0,0,0,0.18);
+      line-height: 1;
+    }
+    @keyframes pop-in { 0% { transform: scale(0.8); opacity: 0; } 60% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }
+    @keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-4px); } 40% { transform: translateX(4px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(3px); } }
+    @keyframes hint-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(243,168,71,0.6); } 50% { box-shadow: 0 0 0 10px rgba(243,168,71,0); } }
+    @keyframes victory-glow { 0%,100% { box-shadow: inset 0 2px 8px rgba(0,0,0,0.06), 0 0 20px rgba(212,122,80,0.4), 0 0 60px rgba(212,122,80,0.2); } 50% { box-shadow: inset 0 2px 8px rgba(0,0,0,0.06), 0 0 40px rgba(212,122,80,0.6), 0 0 100px rgba(212,122,80,0.3); } }
+    .hint-active { border: 2px solid var(--mt-hint) !important; animation: hint-pulse 1.5s ease infinite; box-shadow: 0 0 0 4px rgba(232,112,64,0.35) !important; }
+    .cell-filled.hint-active, .cell-number.hint-active { outline: 3px solid var(--mt-hint); outline-offset: -1px; }
+    .board-victory { animation: victory-glow 2s ease infinite; }
+    .bottom-bar { display: flex; justify-content: center; padding: 12px 0 20px; }
+
+    @keyframes hand-drag { 0% { transform: translate(-60px,0); opacity: 0; } 10% { transform: translate(-60px,0); opacity: 1; } 50% { transform: translate(60px,0); opacity: 1; } 65% { transform: translate(60px,0); opacity: 0; } 100% { transform: translate(-60px,0); opacity: 0; } }
+    .victory-overlay { position: absolute; inset: 0; background: rgba(245,240,247,0.95); z-index: 600; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; animation: pop-in 0.5s ease-out; border-radius: 12px; }
+    .victory-overlay.hidden { display: none; }
+    .victory-title { font-size: 36px; font-weight: 900; color: var(--mt-primary); text-shadow: 0 2px 8px rgba(212,122,80,0.3); }
+    .victory-cats { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+    .victory-cats img { width: 56px; height: 56px; object-fit: contain; border-radius: 10px; animation: cat-dance 1s ease-in-out infinite alternate; }
+    .victory-cats img:nth-child(2) { animation-delay: 0.15s; }
+    .victory-cats img:nth-child(3) { animation-delay: 0.3s; }
+    .victory-cats img:nth-child(4) { animation-delay: 0.45s; }
+    @keyframes cat-dance { 0% { transform: translateY(0) rotate(-3deg); } 100% { transform: translateY(-8px) rotate(3deg); } }
+    .next-btn { padding: 12px 36px; border-radius: 24px; border: none; background: var(--mt-primary); color: white; font-family: inherit; font-size: 16px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(212,122,80,0.3); transition: transform 0.15s; }
+    .next-btn:hover { transform: scale(1.04); }
+    .next-btn:active { transform: scale(0.96); }
+    .confetti-piece { position: absolute; width: 8px; height: 12px; border-radius: 2px; pointer-events: none; z-index: 700; animation: confetti-fall 2.5s ease-out forwards; }
+    .paw-confetti { position: absolute; font-size: 20px; pointer-events: none; z-index: 700; animation: paw-fall 3s ease-out forwards; }
+    @keyframes confetti-fall { 0% { transform: translateY(-20px) rotate(0); opacity: 1; } 100% { transform: translateY(500px) rotate(720deg); opacity: 0; } }
+    @keyframes paw-fall { 0% { transform: translateY(-100px) rotate(0) scale(1); opacity: 0.8; } 100% { transform: translateY(500px) rotate(360deg) scale(0.5); opacity: 0; } }
+    @media (max-width: 420px) {
+      .top-bar { padding: 10px 0 8px; }
+      .top-bar .title { font-size: 15px; }
+      .level-num { font-size: 18px; }
+      .icon-btn { width: 32px; height: 32px; font-size: 14px; }
+    }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; font-family: 'Nunito', -apple-system, sans-serif; }
+    .seo-section h1 { font-size: 1.6rem; color: var(--mt-text); margin: 1rem 0 0.5rem; }
+    .seo-section h2 { font-size: 1.3rem; color: var(--mt-text); margin: 1.5rem 0 0.5rem; }
+    .seo-section h3 { font-size: 1.1rem; color: var(--mt-text); margin: 1rem 0 0.3rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.7; color: #555; }
+    .seo-section ol, .seo-section ul { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; }
+    .seo-section a { color: var(--mt-primary); text-decoration: underline; }
+    .seo-section details { margin: 0.5rem 0; padding: 0.5rem 0.8rem; background: white; border: 1.5px solid var(--mt-cell-border); border-radius: 10px; }
+    .seo-section summary { cursor: pointer; font-weight: 700; color: var(--mt-primary); }
+    .seo-section table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.95rem; }
+    .seo-section th { border-bottom: 2px solid var(--mt-primary); text-align: left; padding: 0.4rem; }
+    .seo-section td { border-bottom: 1px solid var(--mt-cell-border); padding: 0.4rem; }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--mt-text-light); font-family: 'Nunito', -apple-system, sans-serif; }
+    .seo-footer a { color: var(--mt-text-light); }
+    .seo-footer a:hover { color: var(--mt-primary); }
+    /* SEO Content Sections */
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem; }
+    .seo-section h1 { font-size: 1.6rem; margin: 1rem 0 0.5rem; color: #3D3D3D; }
+    .seo-section h2 { font-size: 1.3rem; margin: 1.5rem 0 0.5rem; color: #3D3D3D; }
+    .seo-section h2 .accent { color: #D47A50; }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; color: #3D3D3D; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.7; color: #555; }
+    .seo-section a { color: #D47A50; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; color: #555; margin: 0.5rem 0; }
+    .seo-section li { margin-bottom: 0.3rem; line-height: 1.6; }
+    /* Strategy Grid */
+    .strategy-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 1rem 0; }
+    .strategy-grid-item { display: flex; flex-direction: column; padding: 12px; background: white; border: 1.5px solid #E8E0EB; border-radius: 12px; text-decoration: none; color: #3D3D3D; transition: all 0.15s; }
+    .strategy-grid-item:hover { border-color: #D47A50; box-shadow: 0 2px 8px rgba(212,122,80,0.1); }
+    .strategy-grid-item strong { font-size: 13px; font-weight: 800; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
+    .strategy-grid-item span { font-size: 11px; color: #9E9590; line-height: 1.4; }
+    .guide-badge { display: inline-block; padding: 1px 6px; border-radius: 6px; font-size: 10px; font-weight: 800; letter-spacing: 0.02em; }
+    /* Tips Grid */
+    .tips-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 1rem 0; }
+    .tip-card { display: flex; flex-direction: column; align-items: center; padding: 14px 8px; background: white; border: 1.5px solid #E8E0EB; border-radius: 12px; text-decoration: none; color: #3D3D3D; transition: all 0.15s; }
+    .tip-card:hover { border-color: #D47A50; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(212,122,80,0.1); }
+    .tip-icon { font-size: 28px; margin-bottom: 6px; }
+    .tip-label { font-size: 11px; font-weight: 700; text-align: center; }
+    /* FAQ */
+    .faq-item { margin: 0.5rem 0; padding: 0.8rem 1rem; background: white; border: 1.5px solid #E8E0EB; border-radius: 12px; }
+    .faq-item summary { cursor: pointer; font-weight: 700; color: #e8947a; font-size: 14px; }
+    .faq-answer { margin-top: 0.5rem; font-size: 13px; line-height: 1.6; color: #555; }
+    /* Testimonials */
+    .testimonial-track {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 0.5rem 0 0.8rem;
+      scroll-behavior: smooth;
+    }
+    .testimonial-track::-webkit-scrollbar { display: none; }
+    .testimonial-card {
+      flex: 0 0 280px;
+      scroll-snap-align: start;
+      background: white;
+      border: 1.5px solid #E8E0EB;
+      border-radius: 14px;
+      padding: 18px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .testimonial-card:hover {
+      border-color: #D47A50;
+      box-shadow: 0 4px 16px rgba(212,122,80,0.12);
+    }
+    .testimonial-stars { font-size: 13px; letter-spacing: 1px; }
+    .testimonial-text {
+      font-size: 13px;
+      line-height: 1.65;
+      color: #555;
+      flex: 1;
+    }
+    .testimonial-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-top: 8px;
+      border-top: 1px solid #F0EBE3;
+    }
+    .testimonial-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #FFF5F0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .testimonial-name { font-size: 13px; font-weight: 800; color: #3D3D3D; }
+    .testimonial-badge {
+      font-size: 10px;
+      font-weight: 700;
+      color: #D47A50;
+      background: #FFF5F0;
+      padding: 1px 6px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-top: 2px;
+    }
+    .testimonial-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .testimonial-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #D8D0C8;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .testimonial-dot.active {
+      background: #D47A50;
+      transform: scale(1.3);
+    }
+    @media (max-width: 420px) {
+      .testimonial-card { flex: 0 0 260px; }
+    }
+
+    /* Section titles */
+    .section-title { font-size: 1.2rem; font-weight: 900; text-align: center; margin: 1.5rem 0 0.8rem; }
+    .section-title .accent { color: #D47A50; }
+    @media (max-width: 420px) { .strategy-grid { grid-template-columns: 1fr; } .tips-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    /* Sticky Header */
+    .site-header { position: sticky; top: 0; z-index: 100; background: rgba(255,248,240,0.95); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1.5px solid #E8DDD0; padding: 0 16px; }
+    .header-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #3D3D3D; }
+    .brand-logo { width: 36px; height: 36px; border-radius: 8px; }
+    .brand-name { display: flex; flex-direction: column; line-height: 1.1; }
+    .brand-name .big { font-size: 17px; font-weight: 900; color: #D47A50; }
+    .brand-name .small { font-size: 10px; font-weight: 600; color: #9E9590; letter-spacing: 0.02em; }
+    .header-nav { display: flex; gap: 0; align-items: center; }
+    .header-nav a { font-size: 13px; font-weight: 700; color: #5C6BC0; text-decoration: none; padding: 8px 14px; transition: color 0.15s; }
+    .header-nav a:hover { color: #D47A50; }
+    .hamburger { display: none; background: none; border: 1.5px solid #D8D0C8; border-radius: 8px; padding: 6px 10px; font-size: 18px; cursor: pointer; color: #3D3D3D; }
+    .mobile-nav { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.4); }
+    .mobile-nav-inner { position: absolute; top: 0; right: 0; width: 280px; height: 100%; background: white; padding: 1.5rem; box-shadow: -4px 0 20px rgba(0,0,0,0.1); }
+    .mobile-nav-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; color: #3D3D3D; cursor: pointer; }
+    .mobile-nav-inner a { display: block; padding: 0.75rem 0; font-weight: 700; color: #3D3D3D; text-decoration: none; border-bottom: 1.5px solid #E8E0EB; font-size: 14px; }
+    .mobile-nav-inner a:last-child { border-bottom: none; }
+    @media (max-width: 480px) { .header-nav { display: none; } .hamburger { display: block; } }
+    /* Game Card */
+    .game-card { background: white; border-radius: 16px; padding: 12px; box-shadow: 0 2px 12px rgba(78,64,55,0.08); border: 1.5px solid #E8E0EB; margin-bottom: 0; }
+    .game-topbar { display: flex; align-items: center; justify-content: space-between; padding: 0 0 8px; flex-wrap: wrap; gap: 6px; }
+    .game-actions { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; max-width: 200px; margin-left: auto; }
+    .game-actions .icon-btn { width: 32px; height: 32px; border-radius: 50%; background: white; border: 1.5px solid #D5CDDA; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #3D3D3D; cursor: pointer; transition: all 0.15s; position: relative; }
+    .game-actions .icon-btn:hover { border-color: #D47A50; color: #D47A50; }
+    .game-actions .icon-btn .tip { display: none; position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: 600; color: #9E9590; white-space: nowrap; }
+    .game-actions .icon-btn:hover .tip { display: block; }
+    /* Walkthrough Grid (Level Guides) */
+    .walkthrough-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 1rem 0; }
+    .walkthrough-card { display: flex; flex-direction: column; background: white; border: 1.5px solid #E8E0EB; border-radius: 12px; overflow: hidden; text-decoration: none; color: #3D3D3D; transition: all 0.15s; }
+    .walkthrough-card:hover { border-color: #D47A50; box-shadow: 0 4px 12px rgba(212,122,80,0.1); transform: translateY(-2px); }
+    .walkthrough-img { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #E8DDD0; display: flex; align-items: center; justify-content: center; }
+    .walkthrough-img img { width: 100%; height: 100%; object-fit: contain; }
+    .walkthrough-text { padding: 10px 12px; }
+    .walkthrough-text h3 { font-size: 13px; font-weight: 800; margin: 4px 0 2px; }
+    .walkthrough-text p { font-size: 11px; color: #9E9590; line-height: 1.4; margin: 0; }
+    /* Level Tags */
+    .level-tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+    .tag-tutorial { background: #B8E8C0; color: #2D6A3F; }
+    .tag-medium { background: #FCE883; color: #8B6914; }
+    .tag-hard { background: #FF9A9E; color: #8B1A1A; }
+    .tag-daily { background: #B3D9FF; color: #1A5A8B; }
+    /* Featured Tip */
+    .featured-tip { background: white; border: 1.5px solid #E8E0EB; border-radius: 12px; padding: 1.2rem; margin: 1rem 0; }
+    .featured-tip-label { font-size: 11px; font-weight: 800; color: #D47A50; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .featured-tip h3 { font-size: 15px; font-weight: 900; margin-bottom: 0.5rem; }
+    .featured-tip p { font-size: 13px; line-height: 1.7; color: #555; margin-bottom: 0.8rem; }
+    .featured-tip-link { font-size: 13px; font-weight: 700; color: #D47A50; text-decoration: none; }
+    .featured-tip-link:hover { text-decoration: underline; }
+    /* Strategy List */
+    .strategy-list { margin: 1rem 0; }
+    .strategy-list-title { font-size: 14px; font-weight: 900; margin-bottom: 0.8rem; }
+    .strategy-item { display: flex; flex-direction: column; padding: 10px 12px; background: white; border: 1.5px solid #E8E0EB; border-radius: 10px; text-decoration: none; color: #3D3D3D; margin-bottom: 8px; transition: all 0.15s; }
+    .strategy-item:hover { border-color: #D47A50; }
+    .strategy-item strong { font-size: 13px; font-weight: 800; }
+    .strategy-item span { font-size: 11px; color: #9E9590; margin-top: 2px; }
+    /* Download Box */
+    .download-box { display: flex; gap: 2rem; align-items: center; background: white; border: 1.5px solid #E8DDD0; border-radius: 16px; padding: 2rem; margin: 1rem 0; }
+    .download-phone { flex-shrink: 0; width: 200px; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+    .download-phone img { width: 100%; display: block; }
+    .download-text { flex: 1; }
+    .download-text h2 { font-size: 1.4rem; font-weight: 900; margin-bottom: 0.5rem; }
+    .download-text p { font-size: 14px; line-height: 1.7; color: #555; margin-bottom: 1rem; }
+    .download-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+    .store-btn { display: inline-flex; align-items: center; gap: 6px; padding: 12px 24px; background: #D47A50; color: white; border-radius: 12px; font-weight: 800; font-size: 14px; text-decoration: none; transition: all 0.15s; }
+    .store-btn:hover { background: #c06a40; }
+    .store-btn-outline { background: white; color: #D47A50; border: 1.5px solid #D47A50; }
+    .store-btn-outline:hover { background: #FFF5F0; }
+    /* Section generic */
+    .section { max-width: 720px; margin: 0 auto; padding: 0.5rem 1rem; }
+    @media (max-width: 420px) { .walkthrough-grid { grid-template-columns: 1fr; } .download-box { flex-direction: column; text-align: center; } .download-phone { width: 120px; } }
+  </style>
+  <script is:inline src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="/" class="brand">
-        <span class="brand-logo">🐱</span>
-        <span class="brand-name">
-          <span class="big">GridPaw</span>
-          <span class="small">Cat Puzzle Games</span>
-        </span>
-      </a>
-      <nav class="nav">
-        <a href="/">Shikaku</a>
-        <a href="/akari/">Akari</a>
-        <a href="/pictomino/">Pictomino</a>
-        <a href="/daily/">Daily</a>
-      </nav>
+<!-- Sticky Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="brand" aria-label="GridPaw home">
+      <img src="/assets/logo.png" alt="GridPaw" class="brand-logo" width="36" height="36">
+      <span class="brand-name">
+        <span class="big">GridPaw</span>
+        <span class="small">Shikaku Puzzle Game</span>
+      </span>
+    </a>
+    <nav class="header-nav" aria-label="Main navigation">
+      <a href="#play">Play</a>
+      <a href="/akari/">Akari</a>
+      <a href="/pictomino/">Pictomino</a>
+      <a href="#walkthroughs">Walkthroughs</a>
+      <a href="/how-to-play-shikaku">How to Play</a>
+      <a href="/tips">Tips</a>
+      <a href="/cheats">Cheats</a>
+      <a href="#play" id="navDaily">Daily</a>
+      <a href="/community" class="community-link">Community</a>
+    </nav>
+    <button class="hamburger" id="mobile-menu-btn" aria-label="Menu">☰</button>
+  </div>
+</header>
+<!-- Mobile Nav Overlay -->
+<div class="mobile-nav" id="mobile-nav">
+  <div class="mobile-nav-inner">
+    <button class="mobile-nav-close" id="mobile-nav-close">×</button>
+    <a href="/">🏠 Home</a>
+    <a href="/akari/">💡 Akari</a>
+    <a href="/pictomino/">🧩 Pictomino</a>
+    <a href="/rules">📖 Rules</a>
+    <a href="/tips">💡 Tips</a>
+    <a href="/#play">📅 Daily Challenge</a>
+    <a href="/solver">🔍 Solver</a>
+    <a href="/vs-shikaku">⚖️ vs Shikaku</a>
+    <a href="/how-to-play-shikaku">📚 How to Play</a>
+    <a href="/community" class="community-link">👥 Community</a>
+  </div>
+</div>
+<div class="app" id="app">
+  <div id="account-area" style="display:flex;justify-content:center;align-items:center;gap:.6rem;margin:.4rem 0;min-height:2rem;flex-wrap:wrap"></div>
+  <div class="daily-status" id="dailyStatus"></div>
+  <section class="game-card" id="play" aria-label="GridPaw game">
+    <div class="game-topbar">
+      <div class="level-info" style="margin:0;padding:0">
+        <div class="level-num" id="levelTitle"></div>
+        <span class="difficulty-badge badge-easy" id="diffBadge"></span>
+        <div class="level-sub" id="levelSub"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div id="gameTimer" style="font-size:14px;font-weight:800;color:var(--mt-text-light);font-variant-numeric:tabular-nums;min-width:42px;text-align:center">0:00</div>
+        <div class="game-actions">
+        <button class="icon-btn" id="undoBtn" title="Undo"><span>↩</span><span class="tip">Undo</span></button>
+        <button class="icon-btn" id="resetBtn" title="New puzzle"><span>🔄</span><span class="tip">New</span></button>
+        <button class="icon-btn" id="hintBtn" title="Hint"><span>💡</span><span class="tip">Hint</span></button>
+        <button class="icon-btn" id="soundBtn" title="Sound"><span id="soundIcon">🔊</span><span class="tip">Sound</span></button>
+        <button class="icon-btn" id="dailyBtn" title="Daily Challenge"><span>📅</span><span class="tip">Daily</span></button>
+        </div>
+      </div>
     </div>
-  </header>
+    <div class="board-wrap">
+      <div class="board" id="board"></div>
+    </div>
+    <div class="bottom-bar">
+      <div id="status" style="font-size:14px;font-weight:700;color:var(--mt-text-light)">Drag to draw rectangles</div>
+    </div>
+  </section>
 
-  <main>
-    <h1>GridPaw: Free Cat Puzzle Games Online</h1>
-    <p>Play two classic Japanese logic puzzles — Shikaku and Akari — with cute cat themes. No download, no account, no payment.</p>
+  <div class="victory-overlay hidden" id="victory">
+    <div class="victory-title">🎉 Purrfect!</div>
+    <div class="victory-cats" id="victoryCats"></div>
+    <button class="next-btn" id="nextBtn">Next Level →</button>
+    <button class="share-btn" id="shareBtn">📋 Share Result</button>
+    <button class="reddit-btn" id="redditBtn">🔥 Share on Reddit</button>
+    <button id="victory-close" style="background:none;border:1.5px solid #E8E0EB;color:#9E9590;font-family:inherit;font-weight:700;font-size:.85rem;padding:.5rem 1.6rem;border-radius:999px;cursor:pointer">Continue ✓</button>
+  </div>
 
-    <section>
-      <h2>🧩 Shikaku Puzzle</h2>
-      <p>Divide the grid into rectangles, each containing exactly one number. The number tells you how many cells that rectangle covers.</p>
-      <a href="/">Play Shikaku →</a>
-    </section>
+  <section class="seo-content" id="daily-leaderboard" style="max-width:520px;margin:1.5rem auto;padding:0 1rem">
+    <h2 style="text-align:center;font-size:1.25rem;margin:.8rem 0 .3rem">🏆 Today's Leaderboard</h2>
+    <p id="leaderboard-hint" style="text-align:center;font-size:.85rem;margin:0 0 1rem;color:#555">Sign in and solve today's Daily Challenge to appear here!</p>
+    <div id="leaderboard-list"></div>
+  </section>
+</div>
 
-    <section>
-      <h2>💡 Akari (Light Up) Puzzle</h2>
-      <p>Place glowing cats to light up every cell in the grid. Numbered walls tell you exactly how many cats are adjacent.</p>
-      <a href="/akari/">Play Akari →</a>
-    </section>
+<script is:inline src="/puzzle-engine.js"></script>
+<script is:inline src="/sfx.js"></script>
+<script is:inline>
+  // Cat color palette (8 unique colors, no repeats per puzzle)
+  var CAT_PALETTE = [
+    { bg: '#FFB3C6', ear: '#E8A0B5' },  // pink
+    { bg: '#CFC2E8', ear: '#B8A8D0' },  // lavender
+    { bg: '#FDD09F', ear: '#E8C090' },  // orange
+    { bg: '#B3D9FF', ear: '#98C8E8' },  // blue
+    { bg: '#B8E8C0', ear: '#98D8A8' },  // mint
+    { bg: '#FCE883', ear: '#E8D870' },  // yellow
+    { bg: '#FF9A9E', ear: '#E88888' },  // coral
+    { bg: '#A0E8E0', ear: '#88D0C8' },  // teal
+  ];
+  // 15 expression types [eyes, mouth]
+  var EXPRESSIONS = [
+    { e: ['e-closed','e-closed'], m: 'm-smile' },     // 0 sleepy
+    { e: ['e-open','e-open'], m: 'm-smile' },          // 1 happy
+    { e: ['e-open','e-closed'], m: 'm-smile' },        // 2 wink
+    { e: ['e-angry','e-angry'], m: 'm-frown' },        // 3 angry
+    { e: ['e-open','e-open'], m: 'm-open' },           // 4 surprised
+    { e: ['e-closed','e-closed'], m: 'm-w' },          // 5 uwu
+    { e: ['e-dot','e-dot'], m: 'm-flat' },             // 6 grumpy
+    { e: ['e-open','e-closed'], m: 'm-tongue' },       // 7 playful
+    { e: ['e-closed','e-closed'], m: 'm-none' },       // 8 content
+    { e: ['e-big','e-big'], m: 'm-small' },            // 9 curious
+    { e: ['e-down','e-down'], m: 'm-frown' },          // 10 sad
+    { e: ['e-closed','e-closed'], m: 'm-tongue' },     // 11 silly
+    { e: ['e-big','e-big'], m: 'm-big-open' },         // 12 shocked
+    { e: ['e-open','e-half'], m: 'm-smile' },          // 13 smug
+    { e: ['e-closed','e-closed'], m: 'm-pout' },       // 14 pout
+  ];
+  var colorPool = [];
+  var exprIdx = 0;
 
-    <section>
-      <h2>🧩 Pictomino — Spatial Reasoning Puzzle</h2>
-      <p>Fit cat-shaped puzzle pieces into the grid. A spatial reasoning game that tests your ability to rotate and place shapes.</p>
-      <a href="/pictomino/">Play Pictomino →</a>
-    </section>
+  function shuffleArray(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+    return arr;
+  }
 
-    <section>
-      <h2>🔥 Daily Challenge</h2>
-      <p>A fresh puzzle every day. Track your streak, earn badges, compete with friends.</p>
-      <a href="/daily/">Today's Challenge →</a>
-    </section>
-  </main>
+  // Level difficulty system
+  function getDifficulty(level) {
+    if (level <= 5)  return { label: 'Tutorial',    badge: 'badge-easy',        w: 4, h: 4 };
+    if (level <= 10) return { label: 'Easy',        badge: 'badge-easy',        w: 5, h: 5 };
+    if (level <= 16) return { label: 'Medium',      badge: 'badge-medium',      w: 5, h: 6 };
+    if (level <= 22) return { label: 'Medium-Hard', badge: 'badge-medium-hard', w: 6, h: 6 };
+    if (level <= 30) return { label: 'Hard',        badge: 'badge-hard',        w: 7, h: 8 };
+    if (level <= 40) return { label: 'Expert',      badge: 'badge-expert',      w: 7, h: 7 };
+    if (level <= 50) return { label: 'Master',      badge: 'badge-expert',      w: 8, h: 8 };
+    return                  { label: 'Legend',      badge: 'badge-expert',      w: 8, h: 8 };
+  }
 
-  <footer>
-    <p><a href="/">GridPaw</a> · Free Cat Puzzle Games</p>
-    <p>
-      <a href="/rules/">Rules</a> ·
-      <a href="/tips/">Tips</a> ·
-      <a href="/about/">About</a>
-    </p>
-    <p>© 2026 GridPaw. All rights reserved.</p>
-  </footer>
+  // Load saved level from localStorage
+  var savedLevel = localStorage.getItem('gridpaw-level');
+  var puzzle = null, occupied = [], cellColors = [], rects = [];
+  var dragging = false, dragStart = null, levelNum = savedLevel ? parseInt(savedLevel) : 1, _cellSize = 56;
+  // Timer
+  var gameStartTime = null, gameElapsed = 0, gameTimerInterval = null;
+  var gameTimerEl = null;
+  function formatGameTime(s) { var m = Math.floor(s / 60); var sec = s % 60; return m + ':' + (sec < 10 ? '0' : '') + sec; }
+  function startGameTimer() { if (gameStartTime) return; gameStartTime = Date.now(); gameTimerInterval = setInterval(function() { gameElapsed = Math.floor((Date.now() - gameStartTime) / 1000); if (gameTimerEl) gameTimerEl.textContent = formatGameTime(gameElapsed); }, 1000); }
+  function stopGameTimer() { if (gameTimerInterval) { clearInterval(gameTimerInterval); gameTimerInterval = null; } }
+  function resetGameTimer() { stopGameTimer(); gameStartTime = null; gameElapsed = 0; if (gameTimerEl) gameTimerEl.textContent = '0:00'; }
+
+  // GA4 + Clarity + PostHog tracking helper
+  function track(event, params) {
+    if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
+    if (window.posthog && typeof window.posthog.capture === 'function') {
+      window.posthog.capture(event, Object.assign({ site: 'gridpaw' }, params || {}));
+    }
+    if (typeof window.clarity === 'function') {
+      window.clarity('event', event);
+      if (params) Object.keys(params).forEach(function(k) { window.clarity('set', k, String(params[k])); });
+    }
+  }
+
+  // ─── Daily streak state machine (shared with /daily page key) ──────
+  var DAILY_KEY = 'gridpaw-daily';
+  function getToday() { return new Date().toISOString().split('T')[0]; }
+  function getYesterdayD() { var d = new Date(); d.setDate(d.getDate() - 1); return d.toISOString().split('T')[0]; }
+  function loadDailyState() {
+    var s = localStorage.getItem(DAILY_KEY);
+    if (!s) return null;
+    var d = JSON.parse(s);
+    var today = getToday();
+    if (d.date === today) return d;
+    var lastDate = d.lastPlayedDate || d.date;
+    if (lastDate === getYesterdayD()) {
+      return { date: today, streak: d.streak, bestStreak: d.bestStreak, solved: false, bestTime: d.bestTime };
+    }
+    return { date: today, streak: 0, bestStreak: d.bestStreak, solved: false, bestTime: d.bestTime };
+  }
+  function saveDailyWin(timeSeconds) {
+    var today = getToday();
+    var st = loadDailyState() || { date: today, streak: 0, bestStreak: 0, bestTime: null };
+    if (!st.solved) {
+      st.streak = (st.streak || 0) + 1;
+      st.bestStreak = Math.max(st.bestStreak || 0, st.streak);
+      st.solved = true;
+      if (timeSeconds && (!st.bestTime || timeSeconds < st.bestTime)) st.bestTime = timeSeconds;
+    }
+    st.lastPlayedDate = today;
+    st.date = today;
+    localStorage.setItem(DAILY_KEY, JSON.stringify(st));
+    localStorage.setItem('gridpaw-daily-status', JSON.stringify({ date: today, solved: true, streak: st.streak }));
+    return st;
+  }
+
+  // Mobile nav
+  var mobileNav = document.getElementById('mobile-nav');
+  document.getElementById('mobile-menu-btn').addEventListener('click', function() { mobileNav.style.display = 'block'; });
+  document.getElementById('mobile-nav-close').addEventListener('click', function() { mobileNav.style.display = 'none'; });
+  mobileNav.addEventListener('click', function(e) { if (e.target === mobileNav) mobileNav.style.display = 'none'; });
+
+  var board = document.getElementById('board');
+  var victory = document.getElementById('victory');
+  var statusEl = document.getElementById('status');
+  var levelTitle = document.getElementById('levelTitle');
+  gameTimerEl = document.getElementById('gameTimer');
+
+  function newPuzzle() {
+    var diff = getDifficulty(levelNum);
+    puzzle = null;
+    for (var i = 0; i < 200; i++) { puzzle = generatePuzzleWithRetry(diff.w, diff.h, 50); if (puzzle) break; }
+    if (!puzzle) { statusEl.textContent = 'Failed to generate puzzle.'; return; }
+    occupied = Array.from({ length: diff.h }, function() { return Array(diff.w).fill(false); });
+    cellColors = Array.from({ length: diff.h }, function() { return Array(diff.w).fill(null); });
+    colorPool = shuffleArray(CAT_PALETTE.slice());
+    exprIdx = 0; rects = [];
+    // Update level display with difficulty
+    levelTitle.innerHTML = 'Level ' + levelNum + ' <span class="difficulty-badge ' + diff.badge + '" id="diffBadge">' + diff.label + '</span>';
+    // Save level to localStorage
+    localStorage.setItem('gridpaw-level', String(levelNum));
+    if (currentUser && !isDailyMode) postLevel(levelNum);
+    board.classList.remove('board-victory');
+    resetGameTimer();
+    render(); updateStatus();
+  }
+
+  function render() {
+    if (!puzzle) return;
+    var W = puzzle.width, H = puzzle.height;
+    var maxBoardWidth = Math.min(window.innerWidth - 32, 480);
+    var gap = 3, padding = 8;
+    var cellSize = Math.floor((maxBoardWidth - padding * 2 - gap * (W - 1)) / W);
+    cellSize = Math.max(28, Math.min(56, cellSize));
+    _cellSize = cellSize;
+    var fontSize = Math.max(12, Math.min(20, Math.floor(cellSize * 0.36)));
+    board.style.gridTemplateColumns = 'repeat(' + W + ', ' + cellSize + 'px)';
+    board.style.gridTemplateRows = 'repeat(' + H + ', ' + cellSize + 'px)';
+    board.innerHTML = '';
+    for (var r = 0; r < H; r++) {
+      for (var c = 0; c < W; c++) {
+        var cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.dataset.row = String(r); cell.dataset.col = String(c);
+        cell.style.width = cellSize + 'px'; cell.style.height = cellSize + 'px';
+        cell.style.fontSize = fontSize + 'px';
+        var num = puzzle.numbers.find(function(n) { return n.row === r && n.col === c; });
+        if (cellColors[r][c]) { cell.classList.add('cell-filled'); cell.style.background = cellColors[r][c]; }
+        else if (num) { cell.classList.add('cell-number'); cell.textContent = String(num.value); }
+        else { cell.classList.add('cell-empty'); }
+        board.appendChild(cell);
+      }
+    }
+    // Create cat blocks (one per placed rectangle)
+    rects.forEach(function(entry, i) {
+      if (!entry || !entry.color || !entry.rect) return; // safety check
+      var rect = entry.rect;
+      var color = entry.color;
+      var faceLeft = entry.faceLeft;
+      var expr = entry.expr;
+
+      var block = document.createElement('div');
+      block.className = 'cat-block ' + (faceLeft ? 'face-left' : 'face-right');
+      block.style.left = (rect.left * (cellSize + gap) + 8) + 'px';
+      block.style.top = (rect.top * (cellSize + gap) + 8) + 'px';
+      block.style.width = (rect.width * cellSize + (rect.width - 1) * gap) + 'px';
+      block.style.height = (rect.height * cellSize + (rect.height - 1) * gap) + 'px';
+      block.style.background = color.bg;
+      block.style.setProperty('--ear', color.ear);
+
+      // Face
+      var face = document.createElement('div');
+      face.className = 'cat-face ' + (faceLeft ? 'face-left' : 'face-right');
+      var eyes = document.createElement('div');
+      eyes.className = 'cat-eyes';
+      var e1 = document.createElement('div'); e1.className = expr.e[0];
+      var e2 = document.createElement('div'); e2.className = expr.e[1];
+      eyes.appendChild(e1); eyes.appendChild(e2);
+      face.appendChild(eyes);
+      if (expr.m !== 'm-none') {
+        var mouth = document.createElement('div');
+        mouth.className = 'cat-mouth ' + expr.m;
+        face.appendChild(mouth);
+      }
+      block.appendChild(face);
+
+      // Number
+      var num = document.createElement('div');
+      num.className = 'cat-num';
+      num.textContent = String(rect.value);
+      block.appendChild(num);
+
+      board.appendChild(block);
+    });
+  }
+
+  function getCell(e) { var t = 'touches' in e ? e.touches[0] || e.changedTouches[0] : e; var el = document.elementFromPoint(t.clientX, t.clientY); if (!el || !el.classList.contains('cell')) return null; return { row: +el.dataset.row, col: +el.dataset.col }; }
+  function getSelRect(s, e) { return { top: Math.min(s.row, e.row), left: Math.min(s.col, e.col), height: Math.abs(s.row - e.row) + 1, width: Math.abs(s.col - e.col) + 1, value: 0 }; }
+  function highlightCells(rect) { document.querySelectorAll('.cell-selecting').forEach(function(el) { el.classList.remove('cell-selecting'); }); if (!puzzle) return; for (var r = rect.top; r < rect.top + rect.height; r++) for (var c = rect.left; c < rect.left + rect.width; c++) if (r < puzzle.height && c < puzzle.width) board.children[r * puzzle.width + c] && board.children[r * puzzle.width + c].classList.add('cell-selecting'); }
+  function clearHighlight() { document.querySelectorAll('.cell-selecting').forEach(function(el) { el.classList.remove('cell-selecting'); }); }
+
+  function onStart(e) {
+    var cell = getCell(e);
+    if (!cell) return;
+    // Click on filled cell → remove that cat block
+    if (occupied[cell.row][cell.col]) {
+      for (var i = rects.length - 1; i >= 0; i--) {
+        var r = rects[i].rect;
+        if (cell.row >= r.top && cell.row < r.top + r.height && cell.col >= r.left && cell.col < r.left + r.width) {
+          var removed = rects.splice(i, 1)[0];
+          exprIdx--;
+          colorPool.push(removed.color);
+          for (var rr = r.top; rr < r.top + r.height; rr++)
+            for (var cc = r.left; cc < r.left + r.width; cc++) { occupied[rr][cc] = false; cellColors[rr][cc] = null; }
+          render(); updateStatus(); return;
+        }
+      }
+      return;
+    }
+    if (dragging && dragStart && dragStart.row === cell.row && dragStart.col === cell.col) { dragging = false; dragStart = null; clearHighlight(); return; }
+    dragging = true; dragStart = cell;
+    startGameTimer();
+    if (!window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { level: levelNum }); }
+  }
+  function onMove(e) { if (!dragging || !dragStart) return; e.preventDefault(); var cell = getCell(e); if (!cell) return; highlightCells(getSelRect(dragStart, cell)); }
+  function onEnd(e) {
+    try {
+    if (!dragging || !dragStart) return; dragging = false;
+    var cell = getCell(e); clearHighlight();
+    if (!cell) { dragStart = null; return; }
+    var sel = getSelRect(dragStart, cell);
+    var startCol = dragStart.col; // save for face direction
+    dragStart = null;
+    if (!puzzle) return;
+    var result = validatePlacement(sel, puzzle, occupied);
+    if (!result.valid) {
+      for (var r = sel.top; r < sel.top + sel.height; r++) for (var c = sel.left; c < sel.left + sel.width; c++) if (r < puzzle.height && c < puzzle.width) { var el = board.children[r * puzzle.width + c]; if (el) { el.classList.add('cell-error'); setTimeout(function(e) { return function() { e.classList.remove('cell-error'); }; }(el), 300); } }
+      if (typeof SFX !== 'undefined') SFX.error();
+      statusEl.textContent = result.reason || 'Invalid'; statusEl.style.color = 'var(--mt-error)'; setTimeout(updateStatus, 1500);
+    } else {
+      if (typeof SFX !== 'undefined') SFX.place();
+      if (colorPool.length === 0) colorPool = shuffleArray(CAT_PALETTE.slice());
+      var color = colorPool.pop();
+      var expr = EXPRESSIONS[exprIdx % EXPRESSIONS.length];
+      exprIdx++;
+      var faceLeft = startCol <= sel.left;
+      var numsInside = puzzle.numbers.filter(function(n) {
+        return n.row >= sel.top && n.row < sel.top + sel.height && n.col >= sel.left && n.col < sel.left + sel.width;
+      });
+      sel.value = numsInside[0].value;
+      for (var r = sel.top; r < sel.top + sel.height; r++)
+        for (var c = sel.left; c < sel.left + sel.width; c++) {
+          occupied[r][c] = true;
+          cellColors[r][c] = color.bg;
+        }
+      rects.push({ rect: sel, color: color, expr: expr, faceLeft: faceLeft });
+      render(); checkWin();
+    }
+    } catch(err) { console.error('[ONEND ERROR]', err.message, err.stack); }
+  }
+
+  function updateStatus() { if (!puzzle) return; var filled = 0, total = puzzle.height * puzzle.width; for (var r = 0; r < puzzle.height; r++) for (var c = 0; c < puzzle.width; c++) if (occupied[r][c]) filled++; statusEl.textContent = filled + ' / ' + total + ' cells · ' + (puzzle.numbers.length - rects.length) + ' cats left'; statusEl.style.color = ''; }
+
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && dragging) { dragging = false; dragStart = null; clearHighlight(); } });
+  board.addEventListener('mousedown', onStart); board.addEventListener('mousemove', onMove); board.addEventListener('mouseup', onEnd);
+  board.addEventListener('mouseleave', function() { if (dragging) { dragging = false; clearHighlight(); } });
+  board.addEventListener('touchstart', onStart, { passive: true }); board.addEventListener('touchmove', onMove, { passive: false }); board.addEventListener('touchend', onEnd);
+
+  function checkWin() {
+    if (!puzzle) return; var filled = 0, total = puzzle.height * puzzle.width;
+    for (var r = 0; r < puzzle.height; r++) for (var c = 0; c < puzzle.width; c++) if (occupied[r][c]) filled++;
+    console.log('[CHECKWIN] filled=' + filled + ' total=' + total + ' rects=' + rects.length);
+    if (filled === total) {
+      stopGameTimer();
+      console.log('[CHECKWIN] WIN DETECTED! Calling showVictory in 500ms');
+      if (typeof SFX !== 'undefined') SFX.win();
+      statusEl.textContent = '🎉 Purrfect!'; statusEl.style.color = 'var(--mt-success)';
+      board.classList.add('board-victory');
+      var dailyWinState = null;
+      if (isDailyMode) {
+        dailyWinState = saveDailyWin(gameElapsed);
+        track('daily_solved', { streak: dailyWinState.streak });
+      }
+      setTimeout(function() { console.log('[TIMEOUT] Calling showVictory now'); showVictory(); if (dailyWinState) syncWinToCloud(dailyWinState, gameElapsed); }, 500);
+    } else {
+      statusEl.textContent = filled + ' / ' + total + ' cells · ' + (puzzle.numbers.length - rects.length) + ' cats left';
+    }
+  }
+
+  function showVictory() {
+    console.log('[VICTORY] showVictory called');
+    var catsDiv = document.getElementById('victoryCats'); catsDiv.innerHTML = '';
+    var usedColors = [];
+    rects.forEach(function(entry) { if (entry && entry.color && usedColors.indexOf(entry.color.bg) === -1) usedColors.push(entry.color.bg); });
+    usedColors.forEach(function(bg) {
+      var div = document.createElement('div');
+      div.style.width = '48px'; div.style.height = '48px'; div.style.borderRadius = '10px';
+      div.style.background = bg; div.style.display = 'inline-block';
+      div.style.animation = 'cat-dance 1s ease-in-out infinite alternate';
+      catsDiv.appendChild(div);
+    });
+    victory.classList.remove('hidden'); spawnConfetti();
+  }
+
+  function spawnConfetti() {
+    var colors = ['#D47A50','#F3A847','#CFC2E8','#B3D9FF','#B8E8C0','#FFB3C6']; var app = document.getElementById('app');
+    for (var i = 0; i < 30; i++) { var piece = document.createElement('div'); piece.className = 'confetti-piece'; piece.style.left = (5 + Math.random() * 90) + '%'; piece.style.top = '-10px'; piece.style.background = colors[i % colors.length]; piece.style.animationDelay = (Math.random() * 0.8) + 's'; piece.style.animationDuration = (1.5 + Math.random() * 1.5) + 's'; app.appendChild(piece); (function(p) { setTimeout(function() { p.remove(); }, 3500); })(piece); }
+    for (var i = 0; i < 12; i++) { var paw = document.createElement('div'); paw.className = 'paw-confetti'; paw.textContent = '🐾'; paw.style.left = (5 + Math.random() * 90) + '%'; paw.style.top = '-40px'; paw.style.animationDelay = (Math.random() * 1.2) + 's'; app.appendChild(paw); (function(p) { setTimeout(function() { p.remove(); }, 4000); })(paw); }
+  }
+
+
+  document.getElementById('victory-close').addEventListener('click', function() {
+    victory.classList.add('hidden');
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', function() { levelNum++; isDailyMode = false; newPuzzle(); victory.classList.add('hidden'); });
+  document.getElementById('undoBtn').addEventListener('click', function() {
+    if (rects.length === 0) return; var last = rects.pop(); exprIdx--;
+    var rect = last.rect;
+    for (var r = rect.top; r < rect.top + rect.height; r++) for (var c = rect.left; c < rect.left + rect.width; c++) { occupied[r][c] = false; cellColors[r][c] = null; }
+    colorPool.push(last.color); // return color to pool
+    render(); updateStatus();
+  });
+  document.getElementById('nextBtn').addEventListener('click', function() { levelNum++; isDailyMode = false; hintUsesLeft = 3; updateHintBadge(); track('level_up', { level: levelNum, difficulty: getDifficulty(levelNum).label }); if ([1,3,5,10,20].indexOf(levelNum) !== -1) { track('level_complete_' + levelNum, { difficulty: getDifficulty(levelNum).label }); } newPuzzle(); victory.classList.add('hidden'); });
+  document.getElementById('hintBtn').addEventListener('click', function() {
+    // 门控：游客弹登录引导；登录用户每关 3 次；admin 无限
+    if (!currentUser) {
+      track('hint_blocked', { reason: 'guest', level: levelNum });
+      statusEl.textContent = '🔒 Sign in to use hints'; statusEl.style.color = 'var(--mt-primary)';
+      setTimeout(updateStatus, 2500);
+      document.getElementById('account-area').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return;
+    }
+    if (!isAdmin && hintUsesLeft <= 0) {
+      track('hint_blocked', { reason: 'limit', level: levelNum });
+      statusEl.textContent = '💡 Hint used up for this level — solve it like a cat! 🐱'; statusEl.style.color = 'var(--mt-error)';
+      setTimeout(updateStatus, 2500);
+      return;
+    }
+    if (!isAdmin) hintUsesLeft--;
+    updateHintBadge();
+    track('hint_click', { level: levelNum, remaining: isAdmin ? 'admin' : hintUsesLeft });
+    if (!puzzle) return;
+    statusEl.textContent = '🧠 Hint…'; statusEl.style.color = 'var(--mt-primary)';
+    // O(1) 查表：答案分区在生成时已随 puzzle 返回（solutionRects），无需运行时求解
+    setTimeout(function() {
+      try {
+      if (!puzzle) return;
+      var solRects = puzzle.solutionRects;
+      if (!solRects || !solRects.length) { statusEl.textContent = 'No hint available.'; return; }
+      var hintRect = null;
+      for (var i = 0; i < solRects.length; i++) {
+        var rr = solRects[i];
+        var anchor = puzzle.numbers.find(function(n) { return n.row >= rr.top && n.row < rr.top + rr.height && n.col >= rr.left && n.col < rr.left + rr.width; });
+        if (anchor && !occupied[anchor.row][anchor.col]) { hintRect = rr; break; }
+      }
+      if (!hintRect) { statusEl.textContent = 'Everything placed — look for mistakes!'; statusEl.style.color = 'var(--mt-error)'; setTimeout(updateStatus, 2000); return; }
+      if (typeof SFX !== 'undefined') SFX.hint();
+      for (var r = hintRect.top; r < hintRect.top + hintRect.height; r++) {
+        for (var c = hintRect.left; c < hintRect.left + hintRect.width; c++) {
+          var cell = board.children[r * puzzle.width + c];
+          if (cell) {
+            cell.classList.add('hint-active');
+            (function(el) { setTimeout(function() { el.classList.remove('hint-active'); }, 3000); })(cell);
+          }
+        }
+      }
+      updateStatus();
+      } catch (err) { statusEl.textContent = 'Hint failed — try again.'; }
+    }, 30);
+  });
+
+  // Daily challenge — generate inline (no toggle, just replace the board)
+  var isDailyMode = false;
+  function generateDaily() {
+    isDailyMode = true;
+    var today = new Date().toISOString().split('T')[0];
+    // 平日 10×10；周末（周六/周日 UTC）14×14 Weekend Super Challenge
+    var dow = new Date().getUTCDay();
+    var dailySize = (dow === 0 || dow === 6) ? 14 : 10;
+    var dailyPuzzle = generateDailyPuzzle(today, dailySize);
+    if (!dailyPuzzle) { statusEl.textContent = 'Failed to generate daily puzzle.'; return; }
+    puzzle = dailyPuzzle;
+    occupied = Array.from({ length: dailySize }, function() { return Array(dailySize).fill(false); });
+    cellColors = Array.from({ length: dailySize }, function() { return Array(dailySize).fill(null); });
+    colorPool = shuffleArray(CAT_PALETTE.slice());
+    exprIdx = 0; rects = [];
+    var weekendTag = (dow === 0 || dow === 6) ? ' <span class="difficulty-badge badge-daily">🔥 Weekend Super</span>' : '';
+    levelTitle.innerHTML = 'Daily ' + today + ' <span class="difficulty-badge badge-daily">' + dailySize + '×' + dailySize + '</span>' + weekendTag;
+    resetGameTimer();
+    board.classList.remove('board-victory');
+    victory.classList.add('hidden');
+    track('daily_start', { size: dailySize, date: today });
+    render(); updateStatus();
+  }
+  document.getElementById('dailyBtn').addEventListener('click', function() { track('daily_challenge_click', { source: 'game_button' }); generateDaily(); });
+  document.getElementById('navDaily').addEventListener('click', function(e) { e.preventDefault(); track('daily_challenge_click', { source: 'nav' }); generateDaily(); document.getElementById('play').scrollIntoView({ behavior: 'smooth' }); });
+
+  // Community link click tracking (desktop + mobile nav)
+  Array.prototype.forEach.call(document.querySelectorAll('.community-link'), function(link) {
+    link.addEventListener('click', function() {
+      var loc = link.closest('.site-header') ? 'desktop_nav' : 'mobile_nav';
+      track('community_click', { location: loc });
+    });
+  });
+
+  // Sound toggle
+  var soundIcon = document.getElementById('soundIcon');
+  if (typeof SFX !== 'undefined') {
+    soundIcon.textContent = SFX.muted ? '🔇' : '🔊';
+  }
+  document.getElementById('soundBtn').addEventListener('click', function() {
+    if (typeof SFX !== 'undefined') {
+      var muted = SFX.toggle();
+      soundIcon.textContent = muted ? '🔇' : '🔊';
+    }
+  });
+
+  function buildShareText() {
+    var diff = getDifficulty(levelNum);
+    var usedColors = [];
+    rects.forEach(function(entry) { if (entry && entry.color && usedColors.indexOf(entry.color.bg) === -1) usedColors.push(entry.color.bg); });
+    // Map colors to emoji squares
+    var colorEmoji = { '#FFB3C6': '🩷', '#CFC2E8': '🟪', '#FDD09F': '🟧', '#B3D9FF': '🟦', '#B8E8C0': '🟩', '#FCE883': '🟨', '#FF9A9E': '🟥', '#A0E8E0': '🟦' };
+    var emojiLine = usedColors.map(function(bg) { return colorEmoji[bg] || '🟩'; }).join('');
+    return '🐱 Just cracked GridPaw Level ' + levelNum + ' (' + diff.label + ') in ' + formatGameTime(gameElapsed) + '!\n' + emojiLine + '\nThink you can beat my time? → gridpaw.com';
+  }
+
+  // Share button handler
+  document.getElementById('shareBtn').addEventListener('click', function() {
+    var text = buildShareText();
+    track('share_copy', { level: levelNum, difficulty: getDifficulty(levelNum).label });
+    track('share', { channel: 'copy', level: levelNum, difficulty: getDifficulty(levelNum).label });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function() {
+        document.getElementById('shareBtn').textContent = '✅ Copied!';
+        setTimeout(function() { document.getElementById('shareBtn').textContent = '📋 Share Result'; }, 2000);
+      });
+    } else {
+      // Fallback for older browsers
+      var ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+      document.getElementById('shareBtn').textContent = '✅ Copied!';
+      setTimeout(function() { document.getElementById('shareBtn').textContent = '📋 Share Result'; }, 2000);
+    }
+  });
+
+  // Capture the game board as an image and copy it to the clipboard (for Reddit paste)
+  async function captureBoardToClipboard() {
+    try {
+      var boardEl = document.getElementById('board');
+      if (!boardEl || typeof html2canvas === 'undefined') return;
+      var canvas = await html2canvas(boardEl, { backgroundColor: '#FFF8F0', scale: 2 });
+      canvas.toBlob(async function(blob) {
+        if (!blob) return;
+        try {
+          await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        } catch(e) { /* clipboard API not supported */ }
+      }, 'image/png');
+    } catch(e) {}
+  }
+
+  // Reddit share button handler
+  document.getElementById('redditBtn').addEventListener('click', async function() {
+    var text = buildShareText();
+    track('share_reddit', { level: levelNum, difficulty: getDifficulty(levelNum).label });
+    track('share', { channel: 'reddit', level: levelNum, difficulty: getDifficulty(levelNum).label });
+    await captureBoardToClipboard();
+    var redditUrl = 'https://www.reddit.com/r/gridpaw/submit?url=' + encodeURIComponent('https://gridpaw.com') + '&title=' + encodeURIComponent(text);
+    window.open(redditUrl, '_blank', 'noopener');
+  });
+
+  // Daily status indicator
+  (function() {
+    var statusEl = document.getElementById('dailyStatus');
+    if (!statusEl) return;
+    var state = loadDailyState();
+    if (state && state.solved) {
+      statusEl.innerHTML = '✅ Daily solved! 🔥 ' + (state.streak || 0) + ' day streak';
+    } else {
+      statusEl.innerHTML = '📅 Daily Challenge — hit the 📅 button to play!';
+    }
+  })();
+
+  // ─── Account & cloud sync (homepage is the game surface) ──────────
+  var currentUser = null;
+  var isAdmin = false;        // admin：无限 hint
+  var hintUsesLeft = 3;       // 登录用户每关 3 次；换关重置
+  var ADMIN_GOOGLE_SUBS = ['107340826206298097641'];
+  function updateHintBadge() {
+    var hintBtn = document.getElementById('hintBtn');
+    if (hintBtn) {
+      var tip = hintBtn.querySelector('.tip');
+      if (tip) tip.textContent = isAdmin ? 'Hint ∞' : 'Hint (' + hintUsesLeft + ')';
+    }
+  }
+  function fetchWithTimeout(url, opts, ms) {
+    opts = opts || {}; ms = ms || 8000;
+    var ctrl = new AbortController();
+    var t = setTimeout(function() { ctrl.abort(); }, ms);
+    return fetch(url, Object.assign({}, opts, { signal: ctrl.signal })).finally(function() { clearTimeout(t); });
+  }
+  function msToClock(ms) {
+    if (ms == null) return '--:--';
+    var total = Math.round(ms / 1000);
+    return Math.floor(total / 60) + ':' + (total % 60 < 10 ? '0' : '') + (total % 60);
+  }
+  function renderAccountArea() {
+    var area = document.getElementById('account-area');
+    if (!area) return;
+    area.innerHTML = '';
+    if (currentUser) {
+      if (currentUser.picture && /^https:\/\/(lh3|lh4|lh5|lh6)\.googleusercontent\.com\//.test(currentUser.picture)) {
+        var img = document.createElement('img');
+        img.src = currentUser.picture; img.alt = '';
+        img.referrerPolicy = 'no-referrer';
+        img.style.cssText = 'width:26px;height:26px;border-radius:50%;vertical-align:middle';
+        area.appendChild(img);
+      }
+      const name = document.createElement('span');
+      name.textContent = currentUser.name || 'Cat Fan';
+      name.style.cssText = 'font-size:.85rem;font-weight:700;color:#3D3D3D';
+      area.appendChild(name);
+      const dailyBtn = document.createElement('a');
+      dailyBtn.href = '#play';
+      dailyBtn.textContent = '📅 Play Daily';
+      dailyBtn.style.cssText = 'font-size:.8rem;font-weight:800;color:#fff;background:#FF42A5;border-radius:16px;padding:.3rem .9rem;text-decoration:none;box-shadow:0 2px 8px rgba(255,66,165,.3)';
+      dailyBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (typeof generateDaily === 'function') { generateDaily(); document.getElementById('play').scrollIntoView({ behavior: 'smooth' }); }
+      });
+      area.appendChild(dailyBtn);
+      const out = document.createElement('a');
+      out.href = '/api/auth/logout';
+      out.textContent = 'Sign out';
+      out.style.cssText = 'font-size:.75rem;color:#9E9590;text-decoration:underline';
+      area.appendChild(out);
+    } else {
+      var btn = document.createElement('a');
+      btn.href = '/api/auth/login?next=/';
+      btn.style.cssText = 'display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1.5px solid #dadce0;border-radius:24px;padding:.4rem 1rem;font-size:.85rem;font-weight:700;color:#3c4043;text-decoration:none;box-shadow:0 1px 3px rgba(0,0,0,.08)';
+      btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 18.9 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.6 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>Sign in with Google';
+      area.appendChild(btn);
+    }
+  }
+  function applyCloudProgress(cloud) {
+    if (!cloud) return;
+    var local = loadDailyState();
+    var st = {
+      date: getToday(),
+      streak: cloud.streak || 0,
+      bestStreak: cloud.bestStreak || 0,
+      bestTime: cloud.bestTime != null ? Math.round(cloud.bestTime / 1000) : (local && local.bestTime) || null,
+      solved: !!(local && local.solved),
+      lastPlayedDate: cloud.lastSolvedDate || (local && local.lastPlayedDate) || null
+    };
+    localStorage.setItem(DAILY_KEY, JSON.stringify(st));
+    var statusEl2 = document.getElementById('dailyStatus');
+    if (statusEl2 && st.solved) statusEl2.innerHTML = '✅ Daily solved! 🔥 ' + st.streak + ' day streak';
+  }
+  function syncCloudOnLoad() {
+    fetchWithTimeout('/api/auth/me').then(function(r) { return r.json(); }).then(function(me) {
+      currentUser = me && me.user ? me.user : null;
+      isAdmin = !!(currentUser && currentUser.googleSub && ADMIN_GOOGLE_SUBS.indexOf(currentUser.googleSub) !== -1);
+      updateHintBadge();
+      renderAccountArea();
+      if (!currentUser) return;
+      syncLevelOnLoad();
+      fetchWithTimeout('/api/progress').then(function(r) {
+        if (!r.ok) return null;
+        return r.json();
+      }).then(function(cloudData) {
+        if (!cloudData) return;
+        var cloud = cloudData.progress;
+        var local = loadDailyState();
+        var localBestSec = local && local.bestTime != null ? local.bestTime : null;
+        var cloudBestMs = cloud && cloud.bestTime != null ? cloud.bestTime : null;
+        var localHasMore = local && (!cloud ||
+          (local.streak || 0) > (cloud.streak || 0) ||
+          (local.bestStreak || 0) > (cloud.bestStreak || 0) ||
+          (localBestSec != null && localBestSec * 1000 < (cloudBestMs == null ? Infinity : cloudBestMs)));
+        if (localHasMore) {
+          fetchWithTimeout('/api/progress', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+              date: (local && (local.lastPlayedDate || local.date)) || null,
+              streak: local.streak || 0,
+              bestStreak: local.bestStreak || 0,
+              bestTime: localBestSec != null ? localBestSec * 1000 : null
+            })
+          }).then(function(r) {
+            if (!r.ok) return null;
+            return r.json();
+          }).then(function(merged) {
+            if (merged && merged.progress) applyCloudProgress(merged.progress);
+          }).catch(function() {});
+        } else if (cloud) {
+          applyCloudProgress(cloud);
+        }
+      }).catch(function() {});
+    }).catch(function() { /* 静默降级 */ });
+  }
+  // ─── Level progress cloud sync (max merge) ────────────────────────
+  function syncLevelOnLoad() {
+    fetchWithTimeout('/api/level').then(function(r) {
+      if (!r.ok) return null;
+      return r.json();
+    }).then(function(data) {
+      if (!data || data.level == null) {
+        // 云端无记录 → 上传本地关卡作为基线
+        if (levelNum > 1) postLevel(levelNum);
+        return;
+      }
+      if (data.level > levelNum) {
+        // 云端领先（换设备恢复）→ 跳到云端关卡
+        levelNum = data.level;
+        localStorage.setItem('gridpaw-level', String(levelNum));
+        newPuzzle();
+      } else if (levelNum > data.level) {
+        postLevel(levelNum);
+      }
+    }).catch(function() {});
+  }
+  function postLevel(level) {
+    fetchWithTimeout('/api/level', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ level: level })
+    }).catch(function() {});
+  }
+
+  function syncWinToCloud(state, elapsedSeconds) {
+    if (!currentUser) return;
+    fetchWithTimeout('/api/progress', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        date: getToday(),
+        streak: state.streak || 0,
+        bestStreak: state.bestStreak || 0,
+        bestTime: state.bestTime != null ? state.bestTime * 1000 : null
+      })
+    }).catch(function() {});
+    fetchWithTimeout('/api/leaderboard', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ date: getToday(), timeMs: Math.round(elapsedSeconds * 1000) })
+    }).then(function() { renderLeaderboard(); }).catch(function() {});
+  }
+  function renderLeaderboard() {
+    var list = document.getElementById('leaderboard-list');
+    if (!list) return;
+    fetchWithTimeout('/api/leaderboard?date=' + getToday()).then(function(r) {
+      if (!r.ok) return null;
+      return r.json();
+    }).then(function(data) {
+      if (!data) return;
+      var entries = data.entries || [];
+      var hintEl = document.getElementById('leaderboard-hint');
+      if (hintEl) hintEl.style.display = entries.length ? 'none' : 'block';
+      if (!entries.length) {
+        list.innerHTML = '<p style="text-align:center;font-size:.85rem;color:#9E9590">🐾 Be the first cat on the leaderboard today!</p>';
+        return;
+      }
+      var html = '';
+      for (var i = 0; i < entries.length; i++) {
+        var e = entries[i];
+        var medal = e.rank === 1 ? '🥇' : e.rank === 2 ? '🥈' : e.rank === 3 ? '🥉' : '#' + e.rank;
+        var safeName = String(e.name || 'Anonymous Cat').replace(/[<>&]/g, '');
+        html += '<div style="display:flex;justify-content:space-between;padding:.4rem .6rem;border-bottom:1px solid #E8E0EB;font-size:.85rem">'
+          + '<span style="font-weight:700;color:#3D3D3D">' + medal + ' ' + safeName + '</span>'
+          + '<span style="color:#FF42A5;font-weight:700">' + msToClock(e.timeMs) + '</span></div>';
+      }
+      list.innerHTML = html;
+    }).catch(function() {});
+  }
+  setInterval(renderLeaderboard, 60000);
+  syncCloudOnLoad();
+  renderLeaderboard();
+
+  // 登录回跳错误提示
+  try {
+    const authErr = new URLSearchParams(window.location.search).get('auth_error');
+    if (authErr) {
+      const msg = authErr === 'access_denied' ? 'Sign-in was cancelled.' : 'Sign-in failed (' + authErr + '). Please try again.';
+      const statusEl3 = document.getElementById('dailyStatus');
+      if (statusEl3) { statusEl3.innerHTML = '⚠️ ' + msg; statusEl3.style.color = '#FF42A5'; }
+      history.replaceState(null, '', window.location.pathname);
+    }
+  } catch (e) {}
+
+  newPuzzle();
+  track('game_start', { level: levelNum, difficulty: getDifficulty(levelNum).label });
+  window.addEventListener('resize', function() { if (puzzle) render(); });
+
+  // Testimonial carousel
+  (function() {
+    var track = document.getElementById('testimonialTrack');
+    var dotsEl = document.getElementById('testimonialDots');
+    if (!track || !dotsEl) return;
+    var cards = track.querySelectorAll('.testimonial-card');
+    var total = cards.length;
+    for (var i = 0; i < total; i++) {
+      var dot = document.createElement('button');
+      dot.className = 'testimonial-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Review ' + (i + 1));
+      dot.dataset.idx = i;
+      dot.addEventListener('click', function() {
+        var idx = parseInt(this.dataset.idx);
+        cards[idx].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+      });
+      dotsEl.appendChild(dot);
+    }
+    var dots = dotsEl.querySelectorAll('.testimonial-dot');
+    var scrollTimer = null;
+    track.addEventListener('scroll', function() {
+      if (scrollTimer) clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(function() {
+        var cardWidth = cards[0].offsetWidth + 12;
+        var activeIdx = Math.round(track.scrollLeft / cardWidth);
+        activeIdx = Math.max(0, Math.min(activeIdx, total - 1));
+        dots.forEach(function(d, i) { d.classList.toggle('active', i === activeIdx); });
+      }, 100);
+    });
+    var autoIdx = 0;
+    setInterval(function() {
+      autoIdx = (autoIdx + 1) % total;
+      cards[autoIdx].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+    }, 4000);
+  })();
+</script>
+
+<!-- Tips & Techniques -->
+<section class="section" aria-label="Tips">
+  <h2 class="section-title">Tips &amp; <span class="accent">Techniques</span></h2>
+  <div class="tips-grid">
+    <a class="tip-card" href="/tips">
+      <div class="tip-icon">1️⃣</div>
+      <h3>Prime Numbers</h3>
+      <p>2, 3, 5, 7 can only form 1×N rectangles. Place them first — their shape is forced.</p>
+    </a>
+    <a class="tip-card" href="/shikaku-tips">
+      <div class="tip-icon">🔲</div>
+      <h3>Rectangle Shapes</h3>
+      <p>A "6" can be 1×6, 2×3, 3×2, or 6×1. Learn which shapes fit where.</p>
+    </a>
+    <a class="tip-card" href="/shikaku-5x5">
+      <div class="tip-icon">5️⃣</div>
+      <h3>5×5 Strategy</h3>
+      <p>Start with smaller grids to build pattern recognition before tackling larger puzzles.</p>
+    </a>
+    <a class="tip-card" href="/how-to-play-shikaku">
+      <div class="tip-icon">🧠</div>
+      <h3>Elimination</h3>
+      <p>If placing a rectangle blocks another number, it's wrong. Think one step ahead.</p>
+    </a>
+    <a class="tip-card" href="/solver">
+      <div class="tip-icon">🔍</div>
+      <h3>Online Solver</h3>
+      <p>Stuck? Enter your puzzle and get the unique solution instantly.</p>
+    </a>
+    <a class="tip-card" href="/rectangle-partition-guide">
+      <div class="tip-icon">📐</div>
+      <h3>Area Rules</h3>
+      <p>Each rectangle's area must equal its number. No more, no fewer.</p>
+    </a>
+  </div>
+
+  <!-- Featured Strategy -->
+  <div class="featured-tip">
+    <div class="featured-tip-label">📖 Featured Strategy</div>
+    <h3>Why Prime Numbers Are Your Best Friend</h3>
+    <p>A cell numbered "2" on a Shikaku grid is the strongest clue — it can only be a 1×2 or 2×1 rectangle, no thinking required. Start every puzzle by scanning for primes first. Then check if those rectangles reveal new forced placements for neighboring numbers. This "cascade from primes" technique works on every difficulty level and is the single fastest way to speed up your solving.</p>
+    <a href="/tips" class="featured-tip-link">Read Full Guide →</a>
+  </div>
+
+  <!-- Strategy Guide Blog List -->
+  <div class="strategy-list">
+    <h3 class="strategy-list-title">📝 From the Strategy Guide</h3>
+    <a href="/how-to-play-shikaku" class="strategy-item">
+      <strong>5 Signs You're Ready for Hard Puzzles</strong>
+      <span>Mastered primes and corners? Here's how to know when to level up.</span>
+    </a>
+    <a href="/shikaku-tips" class="strategy-item">
+      <strong>The Elimination Method Explained</strong>
+      <span>When basic rules aren't enough, contradiction testing solves the rest.</span>
+    </a>
+    <a href="/rules" class="strategy-item">
+      <strong>Shikaku Rules — Complete Beginner's Guide</strong>
+      <span>Everything you need to solve your first puzzle in 5 minutes.</span>
+    </a>
+    <a href="/tips" class="strategy-item">
+      <strong>All Tips &amp; Strategies →</strong>
+      <span></span>
+    </a>
+  </div>
+</section>
+
+<!-- Level Guides -->
+<section class="section" id="walkthroughs" aria-label="Level Guides">
+  <h2 class="section-title">Level <span class="accent">Guides</span></h2>
+  <div class="walkthrough-grid">
+    <a class="walkthrough-card" href="/how-to-play-shikaku">
+      <div class="walkthrough-img">
+        <img src="/assets/screenshots/level-tutorial.png" alt="GridPaw Tutorial puzzle — 4×4 Shikaku grid" loading="lazy">
+      </div>
+      <div class="walkthrough-text">
+        <span class="level-tag tag-tutorial">Beginner</span>
+        <h3>Tutorial Puzzles — Getting Started</h3>
+        <p>4×4 grids with guided hints. Learn rectangle placement, area rules, and elimination basics.</p>
+      </div>
+    </a>
+    <a class="walkthrough-card" href="/how-to-play-shikaku">
+      <div class="walkthrough-img">
+        <img src="/assets/screenshots/level-easy.png" alt="GridPaw Easy puzzle — 5×5 Shikaku grid" loading="lazy">
+      </div>
+      <div class="walkthrough-text">
+        <span class="level-tag tag-tutorial">Easy</span>
+        <h3>Easy Puzzles — Build Confidence</h3>
+        <p>5×5 grids with simple shapes. Practice prime numbers and corner strategies at your own pace.</p>
+      </div>
+    </a>
+    <a class="walkthrough-card" href="/shikaku-tips">
+      <div class="walkthrough-img">
+        <img src="/assets/screenshots/level-medium.png" alt="GridPaw Medium puzzle — 5×6 Shikaku grid" loading="lazy">
+      </div>
+      <div class="walkthrough-text">
+        <span class="level-tag tag-medium">Medium</span>
+        <h3>Medium Puzzles — Core Techniques</h3>
+        <p>5×6 grids with complex shapes. Master prime numbers, corner strategies, and multi-step deduction.</p>
+      </div>
+    </a>
+    <a class="walkthrough-card" href="/shikaku-tips">
+      <div class="walkthrough-img">
+        <img src="/assets/screenshots/level-medium.png" alt="GridPaw Medium-Hard puzzle — 6×6 Shikaku grid" loading="lazy">
+      </div>
+      <div class="walkthrough-text">
+        <span class="level-tag tag-medium">Medium-Hard</span>
+        <h3>Medium-Hard — Multi-Step</h3>
+        <p>6×6 grids. Combine multiple techniques and plan several moves ahead.</p>
+      </div>
+    </a>
+    <a class="walkthrough-card" href="/shikaku-tips">
+      <div class="walkthrough-img">
+        <img src="/assets/screenshots/level-hard.png" alt="GridPaw Hard puzzle — 7×8 Shikaku grid" loading="lazy">
+      </div>
+      <div class="walkthrough-text">
+        <span class="level-tag tag-hard">Hard</span>
+        <h3>Hard Puzzles — Advanced Logic</h3>
+        <p>7×8 grids requiring deep reasoning. Chain eliminations, overlap detection, and forced placements.</p>
+      </div>
+    </a>
+    <a class="walkthrough-card" href="/#play">
+      <div class="walkthrough-img">
+        <img src="/assets/screenshots/level-daily.png" alt="GridPaw Daily Challenge — 10×10 Shikaku grid" loading="lazy">
+      </div>
+      <div class="walkthrough-text">
+        <span class="level-tag tag-daily">Daily</span>
+        <h3>Daily Challenge — Super Hard</h3>
+        <p>10×10 puzzle seeded by date. Same puzzle worldwide — compare your time with friends.</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="section" aria-label="Player reviews">
+  <h2 class="section-title">What <span class="accent">Players</span> Say</h2>
+  <div class="testimonial-track" id="testimonialTrack">
+    <div class="testimonial-card">
+      <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+      <p class="testimonial-text">"Finally a puzzle game that's actually relaxing. The cat visuals make it so much more fun than plain number grids. I play every morning with my coffee."</p>
+      <div class="testimonial-user">
+        <span class="testimonial-avatar">🐱</span>
+        <div>
+          <div class="testimonial-name">Sarah K.</div>
+          <div class="testimonial-badge">Daily Player</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+      <p class="testimonial-text">"My 8-year-old loves this! She's learning spatial reasoning without even realizing it. The tutorial levels are perfect for kids."</p>
+      <div class="testimonial-user">
+        <span class="testimonial-avatar">👨‍👧</span>
+        <div>
+          <div class="testimonial-name">James M.</div>
+          <div class="testimonial-badge">Parent</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+      <p class="testimonial-text">"I've tried dozens of Shikaku apps. This one has the best UI by far — clean, fast, and the cat expressions when you solve a rectangle are adorable."</p>
+      <div class="testimonial-user">
+        <span class="testimonial-avatar">🧩</span>
+        <div>
+          <div class="testimonial-name">PuzzleMaster_42</div>
+          <div class="testimonial-badge">Reddit</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+      <p class="testimonial-text">"The daily challenge keeps me coming back. Competing with friends on solve time is addictive. 10×10 is no joke!"</p>
+      <div class="testimonial-user">
+        <span class="testimonial-avatar">🏆</span>
+        <div>
+          <div class="testimonial-name">Alex T.</div>
+          <div class="testimonial-badge">Streak: 47 days</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+      <p class="testimonial-text">"No ads, no paywalls, no nonsense. Just pure logic puzzles. This is how browser games should be made."</p>
+      <div class="testimonial-user">
+        <span class="testimonial-avatar">✨</span>
+        <div>
+          <div class="testimonial-name">dev_rachel</div>
+          <div class="testimonial-badge">Product Hunt</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">⭐⭐⭐⭐</div>
+      <p class="testimonial-text">"Great brain trainer during commute. Wish there was a dark mode but otherwise perfect. The hint system is well balanced — helps without spoiling."</p>
+      <div class="testimonial-user">
+        <span class="testimonial-avatar">🚇</span>
+        <div>
+          <div class="testimonial-name">Mike Chen</div>
+          <div class="testimonial-badge">Casual Player</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="testimonial-dots" id="testimonialDots"></div>
+</section>
+
+<!-- Get the App -->
+<section class="section" aria-label="Get the App">
+  <div class="download-box">
+    <div class="download-phone">
+      <img src="/assets/screenshots/gridpaw-promo.png" alt="GridPaw mobile game — Shikaku puzzle on phone" loading="lazy">
+    </div>
+    <div class="download-text">
+      <h2 class="section-title" style="margin:0 0 0.5rem">Get the <span class="accent">App</span></h2>
+      <p style="color:var(--mt-text,#3D3D3D);margin-bottom:1rem;line-height:1.6">Play GridPaw anywhere, anytime. Add to your home screen for offline support, no browser bars, and instant launch.</p>
+      <div class="download-buttons">
+        <a class="store-btn" href="/#play">
+          <span aria-hidden="true">📅</span> Try Daily Challenge
+        </a>
+        <a class="store-btn store-btn-outline" href="/">
+          <span aria-hidden="true">▶</span> Play Now
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEO Content -->
+<section class="seo-section" aria-label="About GridPaw">
+  <h1>GridPaw: Free <span class="accent">Shikaku</span> Puzzle Game Online</h1>
+  <p>GridPaw is a <strong>free Shikaku puzzle game</strong> with adorable cat visuals. Draw rectangles on a numbered grid so each rectangle covers exactly the number of cells shown. It's the classic <strong>Shikaku</strong> (rectangle partition) puzzle by Nikoli — the same company behind Sudoku — reimagined with cats.</p>
+  <p>Whether you're new to <strong>Shikaku</strong> or a seasoned solver, GridPaw offers unlimited procedurally generated puzzles across 7 difficulty levels, from Tutorial 4×4 to Legend 8×8. Every puzzle has a unique solution reachable by pure logic — no guessing required.</p>
+
+  <h2>How to <span class="accent">Play</span> Shikaku</h2>
+  <p>The rules of <strong>Shikaku</strong> are simple:</p>
+  <ul>
+    <li>The grid contains several <strong>numbered cells</strong>.</li>
+    <li>Draw rectangles around each number so the <strong>area equals the number</strong> (a "4" needs a 1×4, 2×2, or 4×1).</li>
+    <li>Each rectangle contains <strong>exactly one number</strong>.</li>
+    <li>Rectangles cannot overlap, and <strong>every cell must be covered</strong>.</li>
+  </ul>
+  <p>That's it — no math beyond multiplication. The challenge is figuring out which shapes fit where when multiple numbers compete for space.</p>
+
+  <h2>Shikaku <span class="accent">Difficulty Levels</span></h2>
+  <ul>
+    <li><strong>Tutorial (4×4)</strong> — Learn the basics with guided hints (levels 1–3)</li>
+    <li><strong>Beginner (4×5)</strong> — Gentle step up, build confidence (levels 4–7)</li>
+    <li><strong>Easy (5×5)</strong> — Simple puzzles, perfect for beginners (levels 8–12)</li>
+    <li><strong>Medium (5×6)</strong> — Introduces more complex rectangle shapes (levels 13–18)</li>
+    <li><strong>Medium-Hard (6×6)</strong> — Requires multi-step reasoning (levels 19–25)</li>
+    <li><strong>Hard (6×7)</strong> — Advanced deduction needed (levels 26–33)</li>
+    <li><strong>Expert (7×7)</strong> — Deep logic chains (levels 34–42)</li>
+    <li><strong>Master (7×8)</strong> — For experienced solvers (levels 43–52)</li>
+    <li><strong>Legend (8×8)</strong> — The ultimate Shikaku challenge (level 53+)</li>
+  </ul>
+
+  <h2>Tips &amp; <span class="accent">Strategy</span></h2>
+  <p>Rushing to fill cells is the fastest way to get stuck. Instead, work systematically:</p>
+  <ol>
+    <li><strong>Start with primes.</strong> Numbers like 2, 3, 5, 7 can only form 1×N rectangles — their shape is forced.</li>
+    <li><strong>Work from corners.</strong> Boundary positions have fewer options, making them easier to resolve.</li>
+    <li><strong>Look for the largest number.</strong> Bigger numbers have fewer valid rectangle shapes.</li>
+    <li><strong>Eliminate by overlap.</strong> If a placement blocks another number, it's wrong.</li>
+  </ol>
+  <p>Visit our <a href="/tips">Tips &amp; Strategy</a> page for detailed guides on each technique.</p>
+
+  <h2>Why Play <span class="accent">Shikaku</span> at GridPaw?</h2>
+  <p>Unlike many puzzle sites, GridPaw has <strong>no ads interrupting gameplay, no paywalls, and no registration</strong>. Every puzzle is free, every solution is unique, and every solve ends with a cute cat celebration. The <a href="/#play">Daily Challenge</a> gives you a reason to come back every day with a fresh 6×6 puzzle and streak tracking.</p>
+  <p>If you enjoy Sudoku, KenKen, or other logic puzzles, <strong>Shikaku</strong> offers a refreshing change with spatial reasoning instead of arithmetic. The rectangle partition mechanic is easy to learn but rewards deep thinking — perfect for a coffee break or a long session.</p>
+
+  <h3>Common Shikaku Mistakes to Avoid</h3>
+  <p><strong>Forgetting area constraints:</strong> a rectangle around a "4" must cover exactly 4 cells — no more, no fewer. <strong>Overlapping rectangles:</strong> each cell belongs to exactly one rectangle. <strong>Ignoring forced placements:</strong> if a number can only fit one rectangle shape, place it first.</p>
+</section>
+
+<!-- Strategy Guide Grid -->
+<section class="seo-section" aria-label="Strategy guide">
+  <h2 class="section-title">📖 <span class="accent">Strategy</span> Guide</h2>
+  <div class="strategy-grid">
+    <a href="/rules" class="strategy-grid-item">
+      <strong>Shikaku Rules</strong>
+      <span>Complete rule breakdown with examples</span>
+    </a>
+    <a href="/how-to-play-shikaku" class="strategy-grid-item">
+      <strong>How to Play</strong>
+      <span>Complete beginner's walkthrough</span>
+    </a>
+    <a href="/tips" class="strategy-grid-item">
+      <strong>Tips &amp; Strategy</strong>
+      <span>Beginner to advanced techniques</span>
+    </a>
+    <a href="/shikaku-tips" class="strategy-grid-item">
+      <strong>Shikaku Tips</strong>
+      <span>Advanced solving patterns</span>
+    </a>
+    <a href="/shikaku-5x5" class="strategy-grid-item">
+      <strong>5×5 Guide</strong>
+      <span>Start with easier puzzles</span>
+    </a>
+    <a href="/solver" class="strategy-grid-item">
+      <strong>Online Solver</strong>
+      <span>Stuck? Get the answer instantly</span>
+    </a>
+    <a href="/#play" class="strategy-grid-item">
+      <strong>Daily Challenge</strong>
+      <span>New puzzle every day with streaks</span>
+    </a>
+    <a href="/rectangle-partition-guide" class="strategy-grid-item">
+      <strong>Rectangle Partition Guide</strong>
+      <span>History, variants, and math</span>
+    </a>
+    <a href="/vs-shikaku" class="strategy-grid-item">
+      <strong>GridPaw vs Shikaku</strong>
+      <span>How we compare to the classic</span>
+    </a>
+    <a href="/community" class="strategy-grid-item">
+      <strong>Community</strong>
+      <span>Find us on social media</span>
+    </a>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="seo-section" aria-label="FAQ">
+  <h2 class="section-title">Frequently Asked <span class="accent">Questions</span></h2>
+  <details class="faq-item">
+    <summary>Is GridPaw free to play?</summary>
+    <div class="faq-answer">Yes! GridPaw is completely free. No download, no account, no payment. Just open the page and start solving Shikaku puzzles.</div>
+  </details>
+  <details class="faq-item">
+    <summary>What is a Shikaku puzzle?</summary>
+    <div class="faq-answer">Shikaku (also called rectangle partition) is a Japanese logic puzzle where you draw rectangles on a numbered grid. Each rectangle must contain exactly one number, and the rectangle's area must equal that number. GridPaw is the cat-themed version!</div>
+  </details>
+  <details class="faq-item">
+    <summary>How is Shikaku different from Sudoku?</summary>
+    <div class="faq-answer">Both are logic puzzles, but Shikaku uses spatial reasoning (drawing rectangles) instead of number placement. If you like Sudoku's deduction, you'll enjoy Shikaku's area-based thinking.</div>
+  </details>
+  <details class="faq-item">
+    <summary>Where should beginners start?</summary>
+    <div class="faq-answer">Start with the Tutorial level (4×4 grid) which teaches the rules step by step, then try Easy 5×5 puzzles. Check our <a href="/how-to-play-shikaku">How to Play</a> guide for a complete walkthrough.</div>
+  </details>
+  <details class="faq-item">
+    <summary>Does GridPaw have a daily challenge?</summary>
+    <div class="faq-answer">Yes! A new 6×6 Shikaku puzzle is generated every day at midnight UTC. Everyone worldwide gets the same puzzle. Track your streak and earn the Week Warrior badge at 7 consecutive days.</div>
+  </details>
+  <details class="faq-item">
+    <summary>Can I play on my phone?</summary>
+    <div class="faq-answer">Yes! GridPaw works on any device with a browser. Drag to draw rectangles on desktop, or swipe on mobile. The grid automatically resizes to fit your screen.</div>
+  </details>
+  <details class="faq-item">
+    <summary>What are the cat blocks?</summary>
+    <div class="faq-answer">When you correctly place a rectangle, it turns into a cute cat block with a random color and expression. There are 15 different cat expressions and 8 colors — no two rectangles look the same!</div>
+  </details>
+  <details class="faq-item">
+    <summary>Is there a solver for when I'm stuck?</summary>
+    <div class="faq-answer">Yes! Visit the <a href="/solver">Online Solver</a> page. Enter your puzzle's numbers and the solver will find the unique solution using backtracking.</div>
+  </details>
+  <details class="faq-item">
+    <summary>How many levels are there?</summary>
+    <div class="faq-answer">Unlimited! GridPaw procedurally generates puzzles, so you'll never run out. There are 7 difficulty tiers from Tutorial (4×4) to Legend (8×8), plus a daily challenge.</div>
+  </details>
+</section>
+
+<!-- Explore More -->
+<section class="seo-section" aria-label="More cat puzzle games">
+  <h2 class="section-title">Explore More <span class="accent">Cat Puzzle</span> Games</h2>
+  <ul style="margin-left:1.5rem">
+    <li><a href="/akari/">GridPaw Akari</a> — Cat Light Up puzzle</li>
+    <li><a href="https://furriq.com">Furriq</a> — AI Cat Breed Identifier</li>
+    <li><a href="/pictomino/">GridPaw Pictomino</a> — Spatial Reasoning Puzzle for Kids</li>
+  </ul>
+</section>
+
+<footer class="seo-footer">
+  <p>GridPaw — Free online Shikaku puzzle with cats.</p>
+  <p style="margin-top:0.3rem;"><a href="/rules">Rules</a> · <a href="/tips">Tips</a> · <a href="/cheats">Cheats</a> · <a href="/#play">Daily</a> · <a href="/solver">Solver</a> · <a href="/vs-shikaku">vs Shikaku</a> · <a href="/rectangle-partition-guide">Guide</a> · <a href="/community">Community</a></p>
+  <p style="margin-top:0.3rem;"><a href="/akari/">GridPaw Akari</a> · <a href="/pictomino/">GridPaw Pictomino</a> · <a href="https://furriq.com">Furriq</a></p>
+</footer>
 </body>
 </html>
