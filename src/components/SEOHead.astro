@@ -5,7 +5,7 @@
 // Requires site-config.ts in src/lib/ with ga4Id, clarityId, domain, brandName
 
 import { siteConfig } from '../lib/site-config';
-const { ga4Id, clarityId, domain, brandName } = siteConfig;
+const { ga4Id, clarityId, posthogKey, domain, brandName } = siteConfig;
 
 export interface Props {
   title: string;
@@ -131,4 +131,29 @@ const articleJsonLd = type === 'article' ? {
     t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
     y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
   })(window, document, "clarity", "script", clarityId);
+</script>
+
+<!-- PostHog (quota-friendly: autocapture off, session recording off, anonymous pageview-only) -->
+<script define:vars={{ posthogKey }}>
+  (function(key){
+    var ph = window.posthog = window.posthog || [];
+    if (ph.__SV) return;
+    ph._i = ph._i || [];
+    ph.init = function(){ ph._i.push([].slice.call(arguments)); };
+    ['capture','identify','alias','reset','register','unregister','people.set'].forEach(function(fn){
+      ph[fn] = function(){ ph.push([fn].concat([].slice.call(arguments))); };
+    });
+    ph.init(key, {
+      api_host: 'https://us.i.posthog.com',
+      autocapture: false,
+      capture_pageview: true,
+      disable_session_recording: true,
+      person_profiles: 'identified_only'
+    });
+    var s = document.createElement('script');
+    s.async = true;
+    s.crossOrigin = 'anonymous';
+    s.src = 'https://us-assets.i.posthog.com/static/array.js';
+    document.head.appendChild(s);
+  })(posthogKey);
 </script>

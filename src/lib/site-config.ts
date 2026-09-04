@@ -1,6 +1,7 @@
 export const siteConfig = {
-  ga4Id: 'G-XXXXXXXXXX',        // TODO: 填入 GA4 Measurement ID
-  clarityId: 'xxxxxxxxxx',       // TODO: 填入 Clarity ID
+  ga4Id: 'G-4FWP61DJCC',
+  clarityId: 'yd0fauosa4',
+  posthogKey: '',
   domain: 'gridpaw.com',
   brandName: 'GridPaw',
   googleVerification: '',        // TODO: GSC 验证码
