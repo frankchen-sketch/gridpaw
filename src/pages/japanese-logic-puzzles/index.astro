@@ -1,0 +1,176 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+
+const title = "Japanese Logic Puzzles: A Guide to Nikoli's Best Games";
+const description = "Discover Japanese logic puzzles from Nikoli: Shikaku, Akari, Sudoku, and more. Learn rules, strategies, and play free online.";
+
+const faqJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What are Japanese logic puzzles?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Japanese logic puzzles are grid based puzzles that can be solved entirely through pure reasoning, with no vocabulary, trivia, or guessing required. Most were popularized by the Japanese puzzle publisher Nikoli. Famous examples include Sudoku, Shikaku, Akari, Kakuro, Nonograms, Slitherlink, and Hashiwokakero. Each puzzle uses one simple rule set, and every well made puzzle has exactly one solution that can be reached by logic alone."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "What is the most popular Japanese puzzle?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Sudoku is by far the most popular Japanese logic puzzle. Although number placement puzzles existed earlier, Nikoli popularized the modern version in the 1980s and gave it the name Sudoku, meaning single number. It went on to become a worldwide newspaper and app staple. Among puzzle enthusiasts, Shikaku, Kakuro, and Slitherlink are also much loved Nikoli originals."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Are Japanese puzzles harder than Sudoku?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Not necessarily. Sudoku feels familiar because most people have played it, which makes other Japanese puzzles seem harder at first. In truth, most Nikoli style puzzles like Shikaku and Akari use simpler rule sets than Sudoku and are available in gentle difficulty levels. Most new players find Shikaku easier to learn than Sudoku, though the hardest versions of any of these puzzles can be genuinely demanding."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Where can I play Japanese logic puzzles for free?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "You can play many Japanese logic puzzles free in your browser. GridPaw offers free online Shikaku and Akari with no download or sign up, plus the cat themed puzzle Pictomino. Other good options include Nikoli's own room for official puzzles, Puzzle Baron, PuzzleTeam, and the puzzle sections of sites like BrainBashers."
+        }
+      }
+    ]
+  }
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/japanese-logic-puzzles"
+    type="article"
+    breadcrumbTitle="Japanese Logic Puzzles"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --mt-primary: #D47A50;
+      --mt-secondary: #5C6BC0;
+      --mt-bg: #FFF8F0;
+      --mt-cell-border: #D8D0C8;
+      --mt-text: #3D3D3D;
+      --mt-text-light: #9E9590;
+      --mt-shadow-sm: 0 2px 8px rgba(78,64,55,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', -apple-system, sans-serif;
+      background: var(--mt-bg); color: var(--mt-text);
+      min-height: 100vh;
+    }
+    .breadcrumb { font-size: 12px; color: var(--mt-text-light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--mt-text-light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--mt-primary); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; color: var(--mt-text); margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; color: var(--mt-text); margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--mt-primary); }
+    .seo-section h3 { font-size: 1.1rem; color: var(--mt-text); margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--mt-primary); }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--mt-text-light); }
+    .seo-footer a { color: var(--mt-text-light); }
+    .seo-footer a:hover { color: var(--mt-primary); }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: white; border: 2px dashed var(--mt-primary); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--mt-text); }
+    .cta-box a { color: var(--mt-primary); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .puzzle-label { display: inline-block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--mt-secondary); margin-bottom: 0.1rem; }
+  </style>
+</head>
+<body>
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; Japanese Logic Puzzles</nav>
+
+  <main class="seo-section">
+    <h1>Japanese Logic Puzzles: A Complete Guide to Nikoli's Best Brain Teasers</h1>
+
+    <p>There is a particular kind of quiet joy in a Japanese logic puzzle. One small grid, one clean rule, and a promise: everything you need is already on the page. No trivia, no vocabulary, no guessing. Just you, some careful thinking, and the lovely click when the whole puzzle settles into place. This guide walks you through what these puzzles are, where they came from, seven classics worth your time, and how to start playing today.</p>
+    <h2>What Are Japanese Logic Puzzles?</h2>
+
+    <p>A Japanese logic puzzle is a grid based puzzle you can solve entirely through reasoning. Every puzzle gives you a starting position, a single rule set, and a guarantee that exactly one solution exists. You never need outside knowledge, and you never need to guess: every move can be justified with logic. That fairness is the genre's signature. The finished grid feels earned, like a small proof you built by hand.</p>
+
+    <p>Most of these puzzles trace back to one place: Nikoli, a small Tokyo puzzle publisher founded in 1980. Nikoli created Sudoku as we know it and invented or refined dozens of other grid puzzles, including Shikaku, Akari, Kakuro, Slitherlink, and Hashiwokakero. The company's name has become shorthand for the whole style: elegant rules, hand crafted puzzles, and a refusal to accept anything that cannot be solved by pure logic.</p>
+    <h2>The History of Japanese Logic Puzzles</h2>
+
+    <p>Nikoli began in 1980 as a self published puzzle magazine in Tokyo, founded by Maki Kaji, who is often called the godfather of Sudoku. The magazine's big break came in 1984, when it introduced a number placement puzzle under the name Sudoku, meaning single number. Puzzle grid conventions that Nikoli standardized, like symmetrical starting clues and a strict no guessing rule, turned it into a global phenomenon by the mid 2000s.</p>
+
+    <p>Why Japan? Part of the answer is cultural: commute heavy train rides created huge demand for compact, pencil friendly puzzles, and a national love of neat rules and careful craftsmanship matched the genre perfectly. Nikoli also ran reader contribution contests, so clever grid ideas from amateur setters kept arriving for decades. The result is a deep catalog of originals, most with charming Japanese names, that still sets the standard for fairness and elegance today.</p>
+    <h2>7 Classic Japanese Logic Puzzles You Should Try</h2>
+
+    <p>Here are seven of the best loved Japanese logic puzzles, each explained in plain language. Two of them, Shikaku and Akari, you can play right here on GridPaw.</p>
+
+    <h3>1. Sudoku</h3>
+    <p>Sudoku is the giant of the genre. You get a 9 by 9 grid split into nine 3 by 3 boxes, with some numbers pre filled. Fill every row, column, and box with the digits 1 through 9 without repeating any digit in a unit. That is the entire rule set, and it is enough to generate puzzles from gentle to brutal. Sudoku is a fine first Japanese puzzle precisely because it is everywhere: most people have dabbled, so stepping up to deliberate solving techniques, like scanning for naked singles or hidden pairs, feels natural. It teaches the core habit of the whole genre, which is asking what a clue forces rather than what might be true.</p>
+
+    <h3>2. Shikaku</h3>
+    <p>Shikaku means divide by squares, and the puzzle is exactly that. You get a grid with numbers scattered on it. Draw rectangles so that each rectangle contains exactly one number, and the number equals the count of cells inside the rectangle. Every cell must be covered by exactly one rectangle, with no overlaps and no leftovers. A 6 must own six cells, arranged as 1 by 6, 2 by 3, or 3 by 2, and the surrounding clues quietly eliminate most of those options. Shikaku has a lovely geometric feel, since you are visually carving up space rather than placing symbols. Small grids solve in minutes, larger ones demand real planning. It is our favorite puzzle on this list, which is why GridPaw started with it, complete with cats that nap on every rectangle you draw.</p>
+
+    <div class="cta-box">
+      <p>🐱 Love grid puzzles? <a href="/">Play Shikaku free →</a></p>
+    </div>
+
+    <h3>3. Akari</h3>
+    <p>Akari, also known as Light Up, is the atmospheric one. You place light bulbs on a grid so that every white cell ends up illuminated, while no two bulbs ever shine on each other along an unblocked row or column. Black cells block light, and numbered black cells tell you exactly how many bulbs must sit orthogonally beside them. Each bulb placement ripples across the grid, switching rows and columns on and off, so the puzzle plays a little like chess: one move constrains several future moves at once. Akari rewards thinking about what a dark region still needs, which makes it a satisfying change of pace from number placement puzzles. GridPaw's version gives every bulb a warm glow, because a light up puzzle should actually feel like light.</p>
+
+    <div class="cta-box">
+      <p>🐱 Or try the light up classic: <a href="/akari/">Play Akari free →</a></p>
+    </div>
+
+    <h3>4. Kakuro</h3>
+    <p>Kakuro is often called the mathematical cousin of Sudoku. The grid looks like a crossword, but the entries are digits 1 through 9, and each horizontal or vertical run must sum to the clue at its start, with no repeated digit inside a run. That combination of addition and non repetition is what makes Kakuro tick: a clue of 17 in three cells could be many combinations, but a clue of 3 in two cells can only be 1 and 2, so those certainties anchor the whole solve. Regular players memorize the common sums, the way crossword players learn clue patterns. Kakuro runs a notch harder than Sudoku at the same grid size, and many fans prefer it for exactly that reason.</p>
+
+    <h3>5. Nonogram</h3>
+    <p>The Nonogram, known in Japan as oekaki logic, or picture logic, hides a picture inside a grid. Numbers along each row and column list the lengths of consecutive filled runs, in order, with at least one empty cell between runs. Your job is to shade cells until every line's clues are satisfied, and when you succeed, a little drawing appears, a cat, a teacup, a sailboat. That reveal is the Nonogram's superpower: the reward for careful logic is a picture, which makes it the most charming of the genre and a great entry point for people who think they do not like numbers. Start with small 5 by 5 grids, and the run counting becomes second nature fast.</p>
+    <h3>6. Slitherlink</h3>
+    <p>Slitherlink is the drawing one. Dots sit at the intersections of a grid, and some cells contain numbers. Your task is to draw one continuous loop along the dotted lines so that every numbered cell touches exactly that many loop segments, and the loop never crosses or branches. The loop snaking through the grid has a hypnotic quality, and the deductions are pleasingly local: a 0 forbids all four of its edges, a 3 in a corner forces two edges immediately, and those certainties chain outward until the whole loop appears. Slitherlink has fewer standard techniques than Sudoku, so it rewards flexible visual thinking. It is a favorite among people who found Sudoku too mechanical and want something that feels more like sketching than bookkeeping.</p>
+
+    <h3>7. Hashiwokakero</h3>
+    <p>Hashiwokakero means build bridges, and the setup is delightful: a grid of islands, each carrying a number from 1 to 8. Connect the islands with bridges so that every island can be reached from every other island, either directly or through other islands, and each island has exactly as many bridges touching it as its number says. Bridges run horizontally or vertically, at most two between any pair of islands, and they never cross. The connectedness requirement, that the whole network must hang together as one piece, is what makes it tricky, since you cannot just satisfy numbers in isolation. Hashiwokakero solves quickly once the logic clicks, which makes it a wonderful short commute puzzle and a great reminder of how much charm a handful of circles and lines can hold.</p>
+
+    <h2>Japanese Logic Puzzles vs Western Puzzles</h2>
+
+    <p>The clearest way to see the difference is to compare a Sudoku with a crossword. A crossword leans on knowledge: spellings, synonyms, pop culture, history. A Japanese logic puzzle leans on nothing but the grid in front of you, which is why the same puzzle solves identically in Tokyo, Ohio, or Berlin. Western puzzle traditions also mix many rule types into one challenge, think of a cryptic crossword combining anagram, hidden word, and double definition clues. Japanese puzzles usually commit to a single rule and explore it deeply. One style rewards broad knowledge, the other rewards disciplined reasoning, and honestly, a healthy puzzle diet includes both.</p>
+
+    <h2>How to Get Started with Japanese Logic Puzzles</h2>
+
+    <p>Roughly ordered from friendliest to most demanding, a good learning path looks like this:</p>
+
+    <ol>
+      <li><strong>Nonogram</strong> for the picture reveal and simple run counting on small grids.</li>
+      <li><strong>Shikaku</strong> because the rectangle rule is instantly graspable and early puzzles click fast.</li>
+      <li><strong>Sudoku</strong> since you may already know it, and it builds core deduction habits.</li>
+      <li><strong>Hashiwokakero</strong> as a short, cheerful bridging puzzle.</li>
+      <li><strong>Akari</strong> once you enjoy tracking several constraints at once.</li>
+      <li><strong>Slitherlink</strong> for flexible loop logic with fewer standard tricks.</li>
+      <li><strong>Kakuro</strong> when you want sums and memory work in the mix.</li>
+    </ol>
+
+    <p>If you want a single recommendation: start with Shikaku. The rules take thirty seconds to learn, the first puzzles are gentle, and the reasoning is visual enough that you feel the logic rather than grind through it. Then try Akari for a change of pace. Both run right in your browser below, no download and no sign up.</p>
+    <!-- INSERT-PART6 -->
+  </main>
+
+  <footer class="seo-footer">
+    <p>GridPaw: Free online Japanese logic puzzles with cats.</p>
+    <p style="margin-top:0.3rem;"><a href="/">GridPaw Shikaku</a> · <a href="/akari/">GridPaw Akari</a> · <a href="/pictomino/">GridPaw Pictomino</a></p>
+  </footer>
+</body>
+</html>

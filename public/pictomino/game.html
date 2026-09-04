@@ -6,35 +6,35 @@
 <title>Pictomino – Free Spatial Reasoning Game for Kids</title>
 <meta name="description" content="Play Pictomino, a free cat picture puzzle game for kids. Drag pieces into place with logic — 5 lives, no guessing. Boost spatial reasoning while having fun.">
 <meta name="robots" content="noindex, follow">
-<link rel="canonical" href="https://spatialreasoninggame.com/game">
+<link rel="canonical" href="https://gridpaw.com/pictomino/game">
 <!-- Open Graph -->
 <meta property="og:title" content="Pictomino – Free Spatial Reasoning Game for Kids">
 <meta property="og:description" content="Play Pictomino, a free cat picture puzzle game for kids. Drag pieces into place with logic — 5 lives, no guessing. Boost spatial reasoning while having fun.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://spatialreasoninggame.com/game">
-<meta property="og:image" content="https://spatialreasoninggame.com/assets/cats/british-shorthair.jpg">
+<meta property="og:url" content="https://gridpaw.com/pictomino/game">
+<meta property="og:image" content="https://gridpaw.com/pictomino/assets/cats/british-shorthair.jpg">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "Pictomino",
   "description": "Free cat picture puzzle game for kids that builds spatial reasoning. Drag puzzle pieces into place with logic — 5 lives, no guessing.",
-  "url": "https://spatialreasoninggame.com/game",
+  "url": "https://gridpaw.com/pictomino/game",
   "applicationCategory": "GameApplication",
   "operatingSystem": "Any",
   "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
-  "image": "https://spatialreasoninggame.com/assets/cats/british-shorthair.jpg",
+  "image": "https://gridpaw.com/pictomino/assets/cats/british-shorthair.jpg",
   "audience": {"@type": "EducationalAudience", "educationalRole": "student", "audienceType": "children"},
   "inLanguage": "en"
 }
 </script>
 <!-- GA4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-94SYHXWGZM"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4FWP61DJCC"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-94SYHXWGZM');
+  gtag('config', 'G-4FWP61DJCC');
 </script>
 <script src="/ph.js" defer></script>
 <!-- Microsoft Clarity -->
@@ -43,7 +43,7 @@
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "yaj0b0i0y2");
+    })(window, document, "clarity", "script", "yd0fauosa4");
 </script>
 <style>
 /* ===== 全局与配色 ===== */
@@ -321,6 +321,23 @@ body.tut-mode #round-info,body.tut-mode #tray-label{display:none}
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
 </head>
 <body>
+
+<!-- GridPaw unified navigation -->
+<header style="position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border-bottom:1.5px solid #E8DDD0;padding:0 16px">
+  <div style="max-width:720px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:48px">
+    <a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:#3D3D3D">
+      <span style="font-size:20px">🐱</span>
+      <span style="font-size:16px;font-weight:900;color:#D47070">GridPaw</span>
+      <span style="font-size:10px;color:#9E9590;font-weight:600">Pictomino</span>
+    </a>
+    <nav style="display:flex;gap:4px;align-items:center">
+      <a href="/" style="font-size:12px;font-weight:700;color:#5C6BC0;text-decoration:none;padding:6px 10px;border-radius:16px;border:1.5px solid #E8E0EB">Shikaku</a>
+      <a href="/akari/" style="font-size:12px;font-weight:700;color:#5C6BC0;text-decoration:none;padding:6px 10px;border-radius:16px;border:1.5px solid #E8E0EB">Akari</a>
+      <a href="/pictomino/" style="font-size:12px;font-weight:700;color:#D47070;text-decoration:none;padding:6px 10px;border-radius:16px;border:1.5px solid #D47070;background:#FFF5F0">Pictomino</a>
+    </nav>
+  </div>
+</header>
+
 <div id="loading">🐱 Loading…</div>
 
 <!-- 顶栏已上移至外层页面统一工具栏（iframe 外）；game.html 直接打开时无 HUD，数据仍正常 -->
@@ -1307,7 +1324,7 @@ window.addEventListener('message', function(ev){
 function shareMessage() {
   const stars = state.lastStars || 3;
   const diff = getDifficulty();
-  return '🐱 Beat Pictomino Level ' + (state.level + 1) + ' (' + diff + ') ' + '⭐'.repeat(stars) + ' — can you do better? → spatialreasoninggame.com';
+  return '🐱 Beat Pictomino Level ' + (state.level + 1) + ' (' + diff + ') ' + '⭐'.repeat(stars) + ' — can you do better? → gridpaw.com/pictomino';
 }
 
 async function captureBoardToClipboard() {
@@ -1331,7 +1348,7 @@ $('share-reddit-btn').addEventListener('click', async () => {
     window.clarity('set', 'stars', String(state.lastStars || 3));
   }
   await captureBoardToClipboard();
-  const url = 'https://www.reddit.com/r/pictomino/submit?url=' + encodeURIComponent('https://spatialreasoninggame.com') +
+  const url = 'https://www.reddit.com/r/pictomino/submit?url=' + encodeURIComponent('https://gridpaw.com/pictomino') +
               '&title=' + encodeURIComponent(shareMessage());
   window.open(url, '_blank', 'noopener');
 });
