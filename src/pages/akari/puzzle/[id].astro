@@ -21,7 +21,7 @@ const totalPuzzles = puzzles.length;
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <SEOHead title={title} description={description} canonical={`/puzzle/${id}`} type="article" />
+  <SEOHead title={title} description={description} canonical={`/akari/puzzle/${id}`} type="article" />
   <style is:global>
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:#f8f6ef;color:#342421;min-height:100vh}
@@ -97,7 +97,7 @@ const totalPuzzles = puzzles.length;
 <body>
   <header class="site-header">
     <div class="header-inner">
-      <a href="/" class="brand" aria-label="GridPaw home">
+      <a href="/akari/" class="brand" aria-label="GridPaw home">
         <span class="brand-logo"><img src="/assets/logo-clay-cat.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
         <span class="brand-name">
           <span class="big">GridPaw</span>
@@ -105,20 +105,20 @@ const totalPuzzles = puzzles.length;
         </span>
       </a>
       <nav class="nav" aria-label="Main navigation">
-        <a href="/">Play</a>
-        <a href="/how-to-play/">How to Play</a>
-        <a href="/tips/">Tips</a>
-        <a href="/daily/">Daily</a>
-        <a href="/solver/">Solver</a>
+        <a href="/akari/">Play</a>
+        <a href="/akari/how-to-play/">How to Play</a>
+        <a href="/akari/tips/">Tips</a>
+        <a href="/akari/daily/">Daily</a>
+        <a href="/akari/solver/">Solver</a>
       </nav>
     </div>
   </header>
 
   <div class="container">
     <nav class="puzzle-nav">
-      {prevPuzzle ? <a href={`/puzzle/${prevPuzzle.id}/`} class="nav-prev">← Prev</a> : <span class="nav-prev nav-disabled">← Prev</span>}
+      {prevPuzzle ? <a href={`/akari/puzzle/${prevPuzzle.id}/`} class="nav-prev">← Prev</a> : <span class="nav-prev nav-disabled">← Prev</span>}
       <span class="nav-counter">Puzzle {num} / {totalPuzzles}</span>
-      {nextPuzzle ? <a href={`/puzzle/${nextPuzzle.id}/`} class="nav-next">Next →</a> : <span class="nav-next nav-disabled">Next →</span>}
+      {nextPuzzle ? <a href={`/akari/puzzle/${nextPuzzle.id}/`} class="nav-next">Next →</a> : <span class="nav-next nav-disabled">Next →</span>}
     </nav>
     <h1>🐱 Akari Puzzle #{num}<span class="solved-badge" id="solved-badge" style="display:none">✓ Solved</span></h1>
     <div class="meta"><span>Difficulty: <strong>{difficulty}</strong></span><span>Size: <strong>{size}×{size}</strong></span><span>Cats: <strong>{cats}</strong></span></div>
@@ -152,9 +152,9 @@ const totalPuzzles = puzzles.length;
       <h2>How to Solve</h2>
       <p>Click white cells to place cats. Each cat illuminates its row and column until blocked by a wall. Numbered black cells show how many adjacent cats they need. No two cats can see each other. All white cells must be lit to win.</p>
       <h2>More Puzzles</h2>
-      <p><a href="/">← Play GridPaw</a> · <a href="/cat-logic-puzzle/">Cat Logic Puzzle Guide</a> · <a href="/akari-puzzle/">Akari Puzzle Guide</a></p>
+      <p><a href="/akari/">← Play GridPaw</a> · <a href="/akari/cat-logic-puzzle/">Cat Logic Puzzle Guide</a> · <a href="/akari/akari-puzzle/">Akari Puzzle Guide</a></p>
     </section>
-    <footer><p>GridPaw — Cat Logic Puzzle · <a href="/" style="color:#6f5651">Play More</a></p></footer>
+    <footer><p>GridPaw — Cat Logic Puzzle · <a href="/akari/" style="color:#6f5651">Play More</a></p></footer>
   </div>
   <script is:inline src="/akari-engine.js"></script>
   <script define:vars={{ puzzleData: puzzle, nextPuzzleId: nextPuzzle ? nextPuzzle.id : null }}>
