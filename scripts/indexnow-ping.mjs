@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 // indexnow-ping.mjs — submit sitemap to IndexNow (Bing/Naver) after deploy
-// MeowBlock 独立 key
+// GridPaw IndexNow — gridpaw.com key
 // Called as: node scripts/indexnow-ping.mjs [app-url] [key]
 
-const appUrl = process.argv[2] || 'https://meow-block.com';
-const key = process.argv[3] || 'b9a0d13f07216f59a9984c12a4978c6c';
+const appUrl = process.argv[2] || 'https://gridpaw.com';
+const key = process.argv[3] || '60e0229839b33db7ea1726c1fd99abf7';
 
 const sitemapUrl = `${appUrl}/sitemap-index.xml`;
 const indexNowUrl = `https://api.indexnow.org/indexnow?url=${encodeURIComponent(sitemapUrl)}&key=${key}`;
