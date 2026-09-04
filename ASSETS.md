@@ -32,7 +32,7 @@
 
 ## 待办 / 提醒
 
-- [ ] GA4 Property 552793510：确认服务账号已加 Viewer（不加则 Data API 403）
-- [ ] Clarity gridpaw 项目：IP 屏蔽单独加一次（直达 `https://clarity.microsoft.com/settings/ip-blocking?projectId=yd0fauosa4`，每项目各一次）
+- [x] GA4 Property 552793510：服务账号已加 Viewer（2026-09-04 验证 Data API 通）
+- [x] Clarity gridpaw 项目：IP 屏蔽已加（2026-09-04 用户完成）
 - [ ] GSC 验证码（site-config TODO）+ Bing 验证码
 - [ ] 旧站 301 配置确认（meow-block.com / meowtrail.org / spatialreasoninggame.com → gridpaw）
