@@ -35,18 +35,19 @@ src/pages/
   brain-teasers-for-adults/      ← 内容页（KD 22.9）
   logic-puzzle-grid/             ← 内容页（KD 29.6）
   japanese-logic-puzzles/        ← 内容页（KD 36.6）
-  sitemap.xml.ts                 ← 动态 sitemap
+  sitemap 由 @astrojs/sitemap 插件自动生成（sitemap-index.xml + sitemap-0.xml）
 public/
   pictomino/                     ← Pictomino 纯静态 HTML 游戏
   .well-known/indexnow.txt       ← IndexNow key
   puzzle-engine.js / akari-engine.js  ← 编译后的引擎
 ```
 
-## 301 旧域名
-- meowtrail.org → gridpaw.com/akari/（Cloudflare Redirect Rule）
-- meow-block.com → gridpaw.com/（Cloudflare Redirect Rule）
-- spatialreasoninggame.com → gridpaw.com/pictomino/（Cloudflare Redirect Rule）
+## 301 旧域名（_worker.js on CF Pages，逐路径精确映射）
+- meowtrail.org → gridpaw.com/akari/（239条规则，含70个puzzle页+tips+glossary+blog+levels）
+- meow-block.com → gridpaw.com/（33条规则）
+- spatialreasoninggame.com → gridpaw.com/pictomino/（26条规则）
 - 详细映射表见 REDIRECTS.md
+- zone 级 catch-all 规则已删除，Always Use HTTPS 已开启
 
 ## 分析工具
 - GA4: G-4FWP61DJCC（Property ID: 552793510）
