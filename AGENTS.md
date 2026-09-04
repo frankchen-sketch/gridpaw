@@ -18,7 +18,7 @@ wrangler pages deploy dist --project-name=gridpaw --commit-dirty=true  # 部署
 - Pictomino：纯静态 HTML（`public/pictomino/game.html`）
 - SEOHead：`src/components/SEOHead.astro`（从 site-config.ts 读 GA4/Clarity）
 - 搜索：pagefind
-- IndexNow：`scripts/indexnow-ping.mjs`（key: 60e0229839b33db7ea1726c1fd99abf7）
+- IndexNow：`scripts/indexnow-ping.mjs`（key: 390e708d7bc94f369a866111e32df9c3，Bing Webmaster 注册）
 - 部署：Cloudflare Pages（域名 gridpaw.com）
 
 ## 关键约定
@@ -38,7 +38,7 @@ src/pages/
   sitemap 由 @astrojs/sitemap 插件自动生成（sitemap-index.xml + sitemap-0.xml）
 public/
   pictomino/                     ← Pictomino 纯静态 HTML 游戏
-  .well-known/indexnow.txt       ← IndexNow key
+  .well-known/indexnow.txt       ← IndexNow key（备用，根路径 .txt 为主）
   puzzle-engine.js / akari-engine.js  ← 编译后的引擎
 ```
 
@@ -52,7 +52,7 @@ public/
 ## 分析工具
 - GA4: G-4FWP61DJCC（Property ID: 552793510）
 - Clarity: yd0fauosa4
-- IndexNow key: 60e0229839b33db7ea1726c1fd99abf7
+- IndexNow key: 390e708d7bc94f369a866111e32df9c3
 - 详见 ASSETS.md
 
 ## 内容页规范
