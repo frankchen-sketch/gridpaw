@@ -42,7 +42,7 @@ export const comparePairs: ComparePair[] = [
     faq: [
       { question: 'Is Akari harder than Sudoku?', answer: 'Not necessarily. Easy Akari puzzles (7×7) are simpler than standard Sudoku because the rules are more intuitive. Hard Akari puzzles (12×12) can be as challenging as expert Sudoku. The difficulty depends on the puzzle, not the game type.' },
       { question: 'Can Sudoku skills help with Akari?', answer: 'Partially. Both use logical deduction and constraint satisfaction, so the general mindset transfers. However, Akari requires spatial reasoning (tracking lines of sight) which Sudoku does not. Sudoku players will pick up Akari quickly but still need to develop spatial intuition.' },
-      { question: 'Which puzzle is better for beginners?', answer: 'Akari is generally easier for beginners because the visual feedback (light spreading) makes progress tangible. Sudoku requires comfort with numbers and scanning patterns that take practice to develop. Try MeowTrail\'s Easy 7×7 puzzles to start.' },
+      { question: 'Which puzzle is better for beginners?', answer: 'Akari is generally easier for beginners because the visual feedback (light spreading) makes progress tangible. Sudoku requires comfort with numbers and scanning patterns that take practice to develop. Try GridPaw\'s Easy 7×7 puzzles to start.' },
       { question: 'Do Akari and Sudoku use the same part of the brain?', answer: 'Both engage logical reasoning, but Akari leans more on spatial processing (visualizing light paths) while Sudoku leans on working memory (tracking which numbers are possible). They complement each other well as cross-training.' },
     ],
   },
@@ -68,9 +68,9 @@ export const comparePairs: ComparePair[] = [
       { topic: 'Error Detection', a: 'Instant — conflicting bulbs light up red, and you see violations immediately.', b: 'Delayed — errors only become apparent when sums don\'t work out, often several steps later.' },
     ],
     faq: [
-      { question: 'Is Light Up the same as Akari?', answer: 'Yes. "Light Up" is the English name for Akari (あかり). They are identical puzzles with the same rules. MeowTrail uses both names interchangeably.' },
+      { question: 'Is Light Up the same as Akari?', answer: 'Yes. "Light Up" is the English name for Akari (あかり). They are identical puzzles with the same rules. GridPaw uses both names interchangeably.' },
       { question: 'Which is more relaxing — Light Up or Kakuro?', answer: 'Light Up is generally more relaxing because it has no math and provides calming visual feedback (warm light spreading across the grid). Kakuro requires arithmetic which some players find stressful.' },
-      { question: 'Can I play Light Up and Kakuro on the same site?', answer: 'MeowTrail focuses on Light Up (Akari) puzzles. For Kakuro, you would need a dedicated Kakuro site. But the logical skills from one transfer to the other.' },
+      { question: 'Can I play Light Up and Kakuro on the same site?', answer: 'GridPaw focuses on Light Up (Akari) puzzles. For Kakuro, you would need a dedicated Kakuro site. But the logical skills from one transfer to the other.' },
     ],
   },
   {
@@ -95,9 +95,9 @@ export const comparePairs: ComparePair[] = [
       { topic: 'Replayability', a: 'High — every puzzle is different, and the solving path varies. The grid never looks the same twice.', b: 'Moderate — once you solve a nonogram, the picture is revealed. Re-solving gives less novelty.' },
     ],
     faq: [
-      { question: 'Which is easier — Akari or Nonograms?', answer: 'Small Akari puzzles (7×7) are easier than most nonograms because the rules are simpler. Large nonograms (25×25) can be very challenging. For beginners, start with Akari Easy puzzles on MeowTrail.' },
+      { question: 'Which is easier — Akari or Nonograms?', answer: 'Small Akari puzzles (7×7) are easier than most nonograms because the rules are simpler. Large nonograms (25×25) can be very challenging. For beginners, start with Akari Easy puzzles on GridPaw.' },
       { question: 'Do Akari and Nonograms require the same skills?', answer: 'Both use logical deduction, but Akari emphasizes spatial reasoning (lines of sight) while Nonograms emphasize counting and pattern matching. They exercise different parts of your logical toolkit.' },
-      { question: 'Is there a cat-themed Nonogram?', answer: 'Nonograms often produce pixel art of cats as the final image, but the solving process itself is not cat-themed. MeowTrail\'s Akari puzzles use cat visuals throughout the solving experience.' },
+      { question: 'Is there a cat-themed Nonogram?', answer: 'Nonograms often produce pixel art of cats as the final image, but the solving process itself is not cat-themed. GridPaw\'s Akari puzzles use cat visuals throughout the solving experience.' },
     ],
   },
   {
@@ -113,7 +113,7 @@ export const comparePairs: ComparePair[] = [
       ['Variety', 'Dozens of rule sets', 'One rule set, many variants'],
       ['Math Level', 'None to basic', 'Basic (1–9)'],
       ['Best For', 'Players who want variety', 'Players who love number patterns'],
-      ['Daily Challenge', 'Available on MeowTrail', 'Available on many sites'],
+      ['Daily Challenge', 'Available on GridPaw', 'Available on many sites'],
       ['Brain Training', 'Spatial + logical', 'Logical + memory'],
     ],
     differences: [
@@ -123,7 +123,7 @@ export const comparePairs: ComparePair[] = [
     ],
     faq: [
       { question: 'Is Sudoku a logic puzzle?', answer: 'Yes, Sudoku is a type of logic puzzle. "Logic puzzle" is the broad category; Sudoku is one specific member. Other logic puzzles include Akari, Kakuro, Slitherlink, and Nonograms.' },
-      { question: 'What logic puzzle should I try if I like Sudoku?', answer: 'Akari (Light Up) is the natural next step. It uses similar deduction skills but adds spatial reasoning with its illumination mechanic. Try MeowTrail\'s Easy puzzles to get started.' },
+      { question: 'What logic puzzle should I try if I like Sudoku?', answer: 'Akari (Light Up) is the natural next step. It uses similar deduction skills but adds spatial reasoning with its illumination mechanic. Try GridPaw\'s Easy puzzles to get started.' },
       { question: 'Are logic puzzles better brain training than Sudoku?', answer: 'Playing multiple logic puzzle types provides more diverse brain training than Sudoku alone. Each puzzle type exercises different cognitive skills — spatial reasoning, arithmetic, pattern recognition, and more.' },
     ],
   },
@@ -151,7 +151,7 @@ export const comparePairs: ComparePair[] = [
     faq: [
       { question: 'Is Light Up easier than Slitherlink?', answer: 'Yes, Light Up is generally easier to learn and play. Slitherlink has a steeper learning curve because its edge-drawing mechanic is less intuitive than Light Up\'s bulb-placing. Both have challenging expert-level puzzles.' },
       { question: 'Which puzzle is more popular — Light Up or Slitherlink?', answer: 'Light Up (Akari) has a larger casual player base due to its approachable theme and visual feedback. Slitherlink has a dedicated following among hardcore puzzle enthusiasts who enjoy its topological reasoning.' },
-      { question: 'Can I play both on MeowTrail?', answer: 'MeowTrail specializes in Light Up (Akari) puzzles with a cat theme. Slitherlink is a different puzzle type that requires a dedicated implementation. Start with Light Up on MeowTrail, then explore Slitherlink on other Nikoli fan sites.' },
+      { question: 'Can I play both on GridPaw?', answer: 'GridPaw specializes in Light Up (Akari) puzzles with a cat theme. Slitherlink is a different puzzle type that requires a dedicated implementation. Start with Light Up on GridPaw, then explore Slitherlink on other Nikoli fan sites.' },
     ],
   },
 ];

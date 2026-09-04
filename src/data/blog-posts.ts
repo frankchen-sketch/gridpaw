@@ -60,7 +60,7 @@ export const blogPosts: BlogPost[] = [
 <p>This systematic approach prevents you from overlooking subtle deductions on larger grids (12×12 and above).</p>
 
 <h2>Practice These Strategies</h2>
-<p>Theory is nothing without practice. Start with MeowTrail's Easy 7×7 puzzles to build muscle memory, then graduate to Medium and Hard. Use the Hint button when stuck — it shows you which cell to focus on, helping you learn which strategy applies.</p>
+<p>Theory is nothing without practice. Start with GridPaw's Easy 7×7 puzzles to build muscle memory, then graduate to Medium and Hard. Use the Hint button when stuck — it shows you which cell to focus on, helping you learn which strategy applies.</p>
     `,
   },
   {
@@ -77,7 +77,7 @@ export const blogPosts: BlogPost[] = [
 <p>Akari is a spatial logic puzzle where you place light bulbs on a grid to illuminate every cell. Numbered clues tell you how many bulbs surround each wall. The rules are intuitive, the visual feedback is satisfying, and Easy puzzles can be solved in 5 minutes.</p>
 <p><strong>Brain skills:</strong> Spatial reasoning, constraint satisfaction, visual processing.</p>
 <p><strong>Why it is great for brain training:</strong> The illumination mechanic provides instant feedback, making it easy to learn from mistakes. No math required.</p>
-<p><a href="/">Play Akari free on MeowTrail →</a></p>
+<p><a href="/">Play Akari free on GridPaw →</a></p>
 
 <h2>2. Sudoku — Difficulty: ★★★☆☆</h2>
 <p>The classic number-placement puzzle. Fill a 9×9 grid so every row, column, and 3×3 box contains the digits 1–9. Easy Sudoku is accessible to everyone; expert variants (X-Sudoku, Killer) add serious challenge.</p>
@@ -148,7 +148,7 @@ export const blogPosts: BlogPost[] = [
 
 <h2>The Digital Era</h2>
 <p>As puzzle sites and apps proliferated in the 2010s, Akari found a new audience online. The visual nature of the puzzle — watching light spread across a grid — translates beautifully to screens. Real-time feedback that was impossible on paper becomes a core feature of digital Akari.</p>
-<p>MeowTrail continues this evolution by adding a cat theme to the classic puzzle. The warm, cozy aesthetic lowers the intimidation barrier and makes Akari accessible to players who might never have tried a "logic puzzle."</p>
+<p>GridPaw continues this evolution by adding a cat theme to the classic puzzle. The warm, cozy aesthetic lowers the intimidation barrier and makes Akari accessible to players who might never have tried a "logic puzzle."</p>
 
 <h2>Nikoli's Legacy</h2>
 <p>Beyond Akari and Sudoku, Nikoli's catalog includes:</p>
@@ -162,7 +162,7 @@ export const blogPosts: BlogPost[] = [
 <p>Each puzzle type exercises different cognitive skills, but all share Nikoli's core promise: unique solution, pure logic, no guessing.</p>
 
 <h2>Try Akari Today</h2>
-<p>The best way to appreciate Akari's elegant design is to play it. Start with MeowTrail's Easy 7×7 puzzles — they take about 5 minutes and teach you the rules through play, not instruction manuals.</p>
+<p>The best way to appreciate Akari's elegant design is to play it. Start with GridPaw's Easy 7×7 puzzles — they take about 5 minutes and teach you the rules through play, not instruction manuals.</p>
     `,
   },
 ];
