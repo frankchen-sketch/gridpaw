@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pictomino – Free Spatial Reasoning Game for Kids | Play Online</title>
+<meta name="description" content="Pictomino is a free spatial reasoning puzzle game for kids. Drag and drop cat picture pieces with pure logic — 5 lives only, no guessing. Play free online — no download needed.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://gridpaw.com/pictomino/">
+<!-- Open Graph -->
+<meta property="og:title" content="Pictomino – Free Spatial Reasoning Game for Kids">
+<meta property="og:description" content="Drag and drop cat picture pieces with pure logic. 5 lives, no guessing. Free to play online.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gridpaw.com/pictomino/">
+<meta property="og:image" content="https://gridpaw.com/pictomino/assets/cats/british-shorthair.jpg">
+<!-- JSON-LD Schemas -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Pictomino",
+  "description": "Free spatial reasoning puzzle game for kids. Drag and drop cat picture pieces with pure logic — 5 lives only, no guessing.",
+  "url": "https://gridpaw.com/pictomino/",
+  "applicationCategory": "GameApplication",
+  "operatingSystem": "Any",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "audience": {"@type": "EducationalAudience", "educationalRole": "student", "audienceType": "children"},
+  "image": "https://gridpaw.com/pictomino/assets/cats/british-shorthair.jpg",
+  "inLanguage": "en"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://gridpaw.com/pictomino/"}
+  ]
+}
+</script>
+<!-- GA4 已启用（Measurement ID 见下） -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-94SYHXWGZM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-94SYHXWGZM');
+</script>
+<script src="/ph.js" defer></script>
+<!-- Microsoft Clarity -->
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "yaj0b0i0y2");
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#FFF6EC; --card:#FFFFFF; --ink:#4A3B32;
+  --pink:#FF8FAB; --orange:#FFB26B; --teal:#5ECFB9; --yellow:#FFD66B;
+}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--bg);
+  background-image:radial-gradient(#FFE3C2 1.5px,transparent 1.5px);
+  background-size:26px 26px;
+  color:var(--ink);
+  line-height:1.6;
+}
+.container{max-width:880px;margin:0 auto;padding:0 16px}
+/* ===== Header ===== */
+header{
+  background:var(--card);box-shadow:0 2px 12px rgba(74,59,50,.08);
+  padding:14px 0;position:sticky;top:0;z-index:10;
+}
+.header-inner{
+  max-width:880px;margin:0 auto;padding:0 16px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo{
+  font-size:22px;font-weight:900;letter-spacing:.5px;color:var(--ink);
+}
+.logo .cat{font-size:20px}
+.nav a{
+  color:var(--ink);text-decoration:none;font-weight:700;font-size:15px;
+  margin-left:18px;transition:color .15s;
+}
+.nav a:hover{color:var(--pink)}
+/* ===== Hero ===== */
+.hero-cta{display:flex;gap:12px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+.cta-daily,.cta-play{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:16px;text-decoration:none;padding:12px 28px;border-radius:999px;transition:transform .12s, box-shadow .12s}
+.cta-daily{background:linear-gradient(135deg,var(--pink),var(--orange));color:#fff;box-shadow:0 4px 14px rgba(255,143,171,.4)}
+.cta-play{background:#fff;color:var(--ink);border:2px solid #FFE3C2;box-shadow:0 2px 8px rgba(74,59,50,.06)}
+.cta-daily:hover,.cta-play:hover{transform:translateY(-2px)}
+.hero{
+  text-align:center;padding:36px 16px 20px;
+}
+.hero h1{
+  font-size:38px;font-weight:900;line-height:1.2;margin-bottom:12px;
+}
+.hero h1 .grad{
+  background:linear-gradient(135deg,var(--pink),var(--orange));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p{
+  font-size:18px;color:#8a7466;max-width:640px;margin:0 auto;
+}
+/* ===== Game frame ===== */
+.game-wrap{
+  background:var(--card);border-radius:24px;
+  box-shadow:0 12px 40px rgba(74,59,50,.14);
+  padding:14px;margin:24px auto;max-width:720px;
+}
+.game-frame{
+  width:100%;height:640px;border:none;border-radius:16px;
+  background:#FFF6EC;display:block;
+}
+/* ===== Sections ===== */
+section{padding:36px 16px}
+section h2{
+  font-size:28px;font-weight:900;margin-bottom:16px;
+  text-align:center;
+}
+section h2 .em{font-size:26px}
+.lead{
+  text-align:center;font-size:17px;color:#8a7466;
+  max-width:680px;margin:0 auto 24px;
+}
+/* How to play steps */
+.steps{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  margin-top:8px;
+}
+.step{
+  background:var(--card);border-radius:18px;padding:22px 18px;
+  text-align:center;box-shadow:0 6px 20px rgba(74,59,50,.08);
+}
+.step .num{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--pink),var(--orange));
+  color:#fff;font-weight:900;font-size:20px;
+  display:inline-flex;align-items:center;justify-content:center;
+  margin-bottom:12px;
+}
+.step h3{font-size:17px;font-weight:800;margin-bottom:8px}
+.step p{font-size:14px;color:#8a7466}
+/* Why section */
+.why{
+  background:var(--card);border-radius:18px;padding:26px 24px;
+  box-shadow:0 6px 20px rgba(74,59,50,.08);max-width:680px;margin:0 auto;
+}
+.why p{margin-bottom:14px;font-size:16px}
+.why ul{margin:0 0 14px 22px;font-size:16px}
+.why li{margin-bottom:8px}
+.why strong{color:var(--pink)}
+/* FAQ */
+.faq{max-width:680px;margin:0 auto}
+.faq details{
+  background:var(--card);border-radius:14px;margin-bottom:10px;
+  box-shadow:0 3px 12px rgba(74,59,50,.06);overflow:hidden;
+}
+.faq summary{
+  padding:16px 20px;font-weight:800;font-size:16px;cursor:pointer;
+  list-style:none;position:relative;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:'+';position:absolute;right:20px;top:50%;transform:translateY(-50%);
+  font-size:22px;color:var(--pink);font-weight:400;
+}
+.faq details[open] summary::after{content:'−'}
+.faq details p{padding:0 20px 16px;font-size:15px;color:#8a7466}
+/* ===== Footer / cross-link ===== */
+.crosslink{
+  background:linear-gradient(135deg,#FFF0E4,var(--card));
+  border:2px dashed var(--orange);border-radius:18px;
+  padding:26px;text-align:center;margin:20px auto;max-width:680px;
+}
+.crosslink h3{font-size:20px;font-weight:900;margin-bottom:8px}
+.crosslink p{font-size:15px;color:#8a7466;margin-bottom:14px}
+.crosslink a{
+  display:inline-block;background:var(--teal);color:#fff;
+  font-weight:900;font-size:16px;text-decoration:none;
+  padding:12px 28px;border-radius:999px;
+  box-shadow:0 5px 0 rgba(0,0,0,.12);transition:transform .12s;
+}
+.crosslink a:active{transform:translateY(3px)}
+/* Internal page links (SEO: give Google paths to crawl from homepage) */
+.explore{
+  max-width:680px;margin:0 auto;text-align:center;padding:0 0 8px;
+}
+.explore p{font-size:16px;color:#8a7466;margin-bottom:12px;line-height:1.8}
+.explore a{
+  color:var(--pink);font-weight:800;text-decoration:none;
+  white-space:nowrap;
+}
+.explore .sep{color:#d8c7b8;margin:0 4px}
+footer{
+  text-align:center;padding:28px 16px;font-size:13px;color:#b5a396;
+}
+footer a{color:#b5a396}
+/* ===== Responsive ===== */
+@media (max-width:640px){
+  .hero h1{font-size:28px}
+  .steps{grid-template-columns:1fr}
+  .game-frame{height:560px}
+  .nav a{margin-left:12px;font-size:13px}
+}
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a spatial reasoning game?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A spatial reasoning game trains your child's ability to visualize, rotate, and compare shapes in their mind. Pictomino does this by showing a cat picture cut into pieces — kids must figure out where each fragment belongs using logic, not guessing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Pictomino help kids learn?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pictomino combines visual memory, deduction, and decision-making under pressure. Every move requires comparing the piece against the partial picture and reasoning about the best match — skills that directly support math and science learning."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Pictomino free to play?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes! Pictomino is completely free to play online, with no downloads and no account required. Just open the page and start puzzling."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I play on mobile?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Absolutely. Pictomino works on phones, tablets, and computers — tap a piece to select it, then tap its spot to place it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many lives do I get?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You get 5 lives per level. Every wrong placement costs one life — lose all 5 and the level is over. Think carefully before you tap!"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What ages is Pictomino for?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pictomino is designed for kids aged 6 and up. Younger children can start with the beginner levels, while older kids and adults will enjoy the hard and super-hard challenges."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a deduction puzzle game?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A deduction puzzle game gives you a few clues and asks you to find the one correct answer by ruling out the wrong ones. In Pictomino, the piece, the empty spot, and the picture are your clues — every placement is a small act of logical deduction."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to download Pictomino?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No download needed. Pictomino runs entirely in the browser on phones, tablets, and computers. Open the page and start playing — no app store, no account, no install."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a spatial reasoning puzzle?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A spatial reasoning puzzle asks you to mentally rotate, flip, or fit shapes into the right spot. Pictomino is one — you drag cat picture pieces into a grid using only logic and spatial awareness."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the difference between spatial reasoning and logic puzzles?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Logic puzzles use clues and deduction to find answers. Spatial reasoning puzzles use visual thinking — rotating, fitting, and mentally manipulating shapes. Pictomino combines both: you deduce which piece goes where, then use spatial skills to place it."
+      }
+    }
+  ]
+}
+  </script>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo"><span class="cat">🐾</span> Picto<span style="color:var(--pink)">mino</span></div>
+    <nav class="nav">
+      <a href="#game">Play</a>
+      <a href="#how-to-play">How to Play</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== Hero ===== -->
+<div class="hero">
+  <h1>Pictomino: <span class="grad">Spatial Reasoning Game</span> for Kids</h1>
+  <p>Drag and drop cat picture pieces with pure logic — 5 lives only, no guessing. Free to play, works on any device.</p>
+  <div class="hero-cta">
+    <a class="cta-daily" href="https://gridpaw.com/pictomino/daily-puzzle">📅 Daily Challenge</a>
+    <a class="cta-play" href="#game">▶ Play Now</a>
+  </div>
+</div>
+
+<!-- ===== Game ===== -->
+<div class="container">
+  <div class="game-toolbar" id="game-toolbar">
+    <div class="gt-hud" id="gt-hud">
+      <span class="gt-pill" id="gt-level">Level 1/10</span>
+      <span class="gt-pill" id="gt-diff">Classic</span>
+      <span class="gt-pill" id="gt-hearts">❤️❤️❤️❤️❤️</span>
+      <span class="gt-pill" id="gt-score">⭐ 0</span>
+      <span class="gt-pill" id="gt-timer" style="display:none;color:#E85D75;font-weight:800">⏱ 0s</span>
+    </div>
+    <div class="gt-actions">
+      <button class="gt-pill" id="gt-help-btn" title="How to play">❓</button>
+      <button class="gt-pill" id="gt-sound-btn" title="Sound on/off">🔊</button>
+    </div>
+    <div class="gt-account" id="gt-account"><!-- JS 填充登录态 --></div>
+  </div>
+  <div class="game-wrap" id="game">
+    <iframe class="game-frame" src="game.html" title="Play Pictomino spatial reasoning puzzle game" loading="eager" allow="autoplay"></iframe>
+  </div>
+  <section class="lb-section" id="daily-leaderboard">
+    <h3>🏆 Today's Leaderboard</h3>
+    <p class="lb-hint" id="lb-hint">📅 Daily Challenge · sign in to compete!</p>
+    <div id="lb-list"></div>
+  </section>
+</div>
+
+<!-- ===== How to Play ===== -->
+<section id="how-to-play">
+  <div class="container">
+    <h2>How to Play Pictomino</h2>
+    <p class="lead">A puzzle that trains spatial reasoning and deduction — one piece at a time.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>Look at the piece</h3>
+        <p>One cat picture piece appears below the board. Study its edges and colors.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>Find where it fits</h3>
+        <p>Only one of the + spots on the board is the piece's true home. Use logic to find it.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>Tap to place</h3>
+        <p>Correct placements unlock the next piece. Wrong ones cost a life — 5 lives, no guessing!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Why Spatial Reasoning ===== -->
+<section id="why">
+  <div class="container">
+    <h2>Why Spatial Reasoning Matters for Kids</h2>
+    <p class="lead">Spatial reasoning is one of the strongest predictors of success in STEM subjects.</p>
+    <div class="why">
+      <p><strong>Spatial reasoning</strong> is the ability to visualize and manipulate objects in your mind — rotating, comparing, and predicting how shapes fit together. Research shows it predicts achievement in <strong>mathematics, engineering, and science</strong>.</p>
+      <ul>
+        <li>🔍 <strong>Visualization</strong> — picturing how a fragment connects to the whole picture</li>
+        <li>🧩 <strong>Deduction</strong> — ruling out wrong positions using edge colors and patterns</li>
+        <li>🧠 <strong>Working memory</strong> — holding the target image in mind while reasoning</li>
+        <li>😌 <strong>Pressure management</strong> — 5 lives mean every choice matters, teaching careful thinking over random guessing</li>
+      </ul>
+      <p>Just 10 minutes of spatial puzzle play a day builds the same cognitive muscles used in geometry, coding, and architecture.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section id="faq">
+  <div class="container">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq">
+      <details>
+        <summary>What is a spatial reasoning game?</summary>
+        <p>A spatial reasoning game trains your child's ability to visualize, rotate, and compare shapes in their mind. Pictomino does this by showing a cat picture cut into pieces — kids must figure out where each fragment belongs using logic, not guessing.</p>
+      </details>
+      <details>
+        <summary>How does Pictomino help kids learn?</summary>
+        <p>Pictomino combines visual memory, deduction, and decision-making under pressure. Every move requires comparing the piece against the partial picture and reasoning about the best match — skills that directly support math and science learning.</p>
+      </details>
+      <details>
+        <summary>Is Pictomino free to play?</summary>
+        <p>Yes! Pictomino is completely free to play online, with no downloads and no account required. Just open the page and start puzzling.</p>
+      </details>
+      <details>
+        <summary>Can I play on mobile?</summary>
+        <p>Absolutely. Pictomino works on phones, tablets, and computers — tap a piece to select it, then tap its spot to place it.</p>
+      </details>
+      <details>
+        <summary>How many lives do I get?</summary>
+        <p>You get 5 lives per level. Every wrong placement costs one life — lose all 5 and the level is over. Think carefully before you tap!</p>
+      </details>
+      <details>
+        <summary>What ages is Pictomino for?</summary>
+        <p>Pictomino is designed for kids aged 6 and up. Younger children can start with the beginner levels, while older kids and adults will enjoy the hard and super-hard challenges.</p>
+      </details>
+      <details>
+        <summary>What is a deduction puzzle game?</summary>
+        <p>A deduction puzzle game gives you a few clues and asks you to find the one correct answer by ruling out the wrong ones. In Pictomino, the piece, the empty spot, and the picture are your clues — every placement is a small act of logical deduction.</p>
+      </details>
+      <details>
+        <summary>Do I need to download Pictomino?</summary>
+        <p>No download needed. Pictomino runs entirely in the browser on phones, tablets, and computers. Open the page and start playing — no app store, no account, no install.</p>
+      </details>
+    <details>
+      <summary>What is a spatial reasoning puzzle?</summary>
+      <p>A spatial reasoning puzzle asks you to mentally rotate, flip, or fit shapes into the right spot. Pictomino is one — you drag cat picture pieces into a grid using only logic and spatial awareness.</p>
+    </details>
+    <details>
+      <summary>What's the difference between spatial reasoning and logic puzzles?</summary>
+      <p>Logic puzzles use clues and deduction to find answers. Spatial reasoning puzzles use visual thinking — rotating, fitting, and mentally manipulating shapes. Pictomino combines both: you deduce which piece goes where, then use spatial skills to place it.</p>
+    </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Explore internal pages (SEO) ===== -->
+<section id="explore" class="explore">
+  <div class="container">
+    <p>🧩 New to spatial puzzles? Start with <a href="https://gridpaw.com/pictomino/easy">Easy Mode (ages 4-7)</a><span class="sep">·</span>Ready for a challenge? Try <a href="https://gridpaw.com/pictomino/hard">Hard Mode (5×5 grid)</a></p>
+    <p>📚 Learn more: <a href="https://gridpaw.com/pictomino/blog/what-is-spatial-reasoning">What is Spatial Reasoning?</a><span class="sep">·</span><a href="https://gridpaw.com/pictomino/cat-breeds">15 Cat Breeds</a><span class="sep">·</span><a href="https://gridpaw.com/pictomino/animal-puzzles">Animal Puzzles</a><span class="sep">·</span><a href="https://gridpaw.com/pictomino/daily-puzzle">Daily Puzzle</a><span class="sep">·</span><a href="https://gridpaw.com/pictomino/blog/spatial-reasoning-activities-for-kids">Activities for Kids</a><span class="sep">·</span><a href="https://gridpaw.com/pictomino/blog/deduction-vs-spatial-reasoning">Deduction vs Spatial Reasoning</a></p>
+  </div>
+</section>
+
+<!-- ===== Cross-link to Furriq + MeowTrail ===== -->
+<div class="container">
+  <div class="crosslink">
+    <h3>🔍 Want to identify your cat's breed?</h3>
+    <p>Use Furriq — a free AI-powered cat breed identifier. Snap a photo and find out your cat's breed in seconds.</p>
+    <a href="https://furriq.com" rel="noopener">Try Furriq — Free Cat Breed Identifier</a>
+  </div>
+  <div class="crosslink" style="margin-top:16px;">
+    <h3>🐱 Love cat puzzles? Try MeowTrail</h3>
+    <p>MeowTrail is a cat-themed logic puzzle (Akari/Light Up) — place light bulbs, follow numbered clues, illuminate every cell. Play free online.</p>
+    <a href="https://meowtrail.org" rel="noopener">Play MeowTrail — Free Cat Logic Puzzle</a>
+  </div>
+  <div class="crosslink" style="margin-top:16px;">
+    <h3>🧩 Like spatial puzzles? Try MeowBlock</h3>
+    <p>MeowBlock is a cat-themed rectangle partition puzzle — drag to draw rectangles, match numbers, fill the grid. Free online.</p>
+    <a href="https://meow-block.com" rel="noopener">Play MeowBlock — Free Cat Rectangle Puzzle</a>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Pictomino · <a href="https://gridpaw.com/pictomino">gridpaw.com/pictomino</a> · <a href="https://furriq.com" rel="dofollow noopener">Furriq Cat Breed ID</a> · <a href="https://meowtrail.org" rel="dofollow noopener">MeowTrail Cat Puzzle</a> · <a href="https://meow-block.com" rel="dofollow noopener">MeowBlock Rectangle Puzzle</a> · <a href="https://dang.ai" rel="dofollow noopener">Dang AI Directory</a> · <a href="https://gridpaw.com/pictomino/community" onclick="gtag('event','community_click',{source:'footer_index'});if(window.clarity&&typeof window.clarity==='function'){window.clarity('event','community_click');window.clarity('set','source','footer_index')}">Community</a> · <a href="https://gridpaw.com/pictomino/privacy">Privacy Policy</a> · Made with 🧠 for curious kids</p>
+</footer>
+
+<style>
+.game-toolbar{display:flex;justify-content:space-between;align-items:center;gap:6px;max-width:720px;margin:0 auto 10px;padding:8px 12px;background:#fff;border:1.5px solid #FFE3C2;border-radius:14px;box-shadow:0 2px 10px rgba(74,59,50,.06);position:sticky;top:8px;z-index:50;flex-wrap:nowrap}
+.gt-hud{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;flex:1 1 auto}
+.gt-pill{background:#FFF6EC;border:1.5px solid #FFE3C2;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;flex-shrink:0}
+#gt-hearts{font-size:11px;letter-spacing:-1.5px}
+.gt-account{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--ink);flex-shrink:0;white-space:nowrap}
+.gt-account img{width:26px;height:26px;border-radius:50%}
+.gt-account a.signin{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1.5px solid #dadce0;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:800;color:#3c4043;text-decoration:none;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.gt-account a.signout{font-size:12px;color:#b5a396;text-decoration:underline}
+.lb-section{max-width:620px;margin:14px auto 0;padding:16px;background:#fff;border:1.5px solid #FFE3C2;border-radius:14px;box-shadow:0 2px 10px rgba(74,59,50,.06)}
+.lb-section h3{margin:0 0 4px;text-align:center;font-size:1.1rem;color:var(--ink)}
+.lb-hint{margin:0 0 10px;text-align:center;font-size:.85rem;color:#b5a396}
+@media(max-width:560px){.game-toolbar{gap:4px;padding:6px 8px}.gt-hud{flex-wrap:wrap;justify-content:flex-start}.gt-pill{padding:3px 6px;font-size:11px}}
+</style>
+<script>
+// 外层登录态（同域 cookie 共享）：登录后 iframe 里的游戏也处于登录态
+fetch('/api/auth/me').then(r=>r.json()).then(me=>{
+  const area=document.getElementById('gt-account');
+  if(!area)return;
+  const u=me&&me.user?me.user:null;
+  if(u){
+    if(u.picture&&/^https:\/\/(lh3|lh4|lh5|lh6)\.googleusercontent\.com\//.test(u.picture)){
+      const img=document.createElement('img');img.src=u.picture;img.alt='';img.referrerPolicy='no-referrer';area.appendChild(img);
+    }
+    const n=document.createElement('span');n.textContent=u.name||'Cat Fan';area.appendChild(n);
+    const o=document.createElement('a');o.href='/api/auth/logout';o.className='signout';o.textContent='Sign out';area.appendChild(o);
+  }else{
+    const a=document.createElement('a');a.className='signin';a.href='/api/auth/login?next=/';
+    a.target='_blank';a.rel='noopener';
+    a.innerHTML='<svg width="16" height="16" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 18.9 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.6 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>Sign in';
+    area.appendChild(a);
+  }
+}).catch(function(){});
+// 接收 iframe 内游戏的 HUD 实时推送
+window.addEventListener('message', function(ev){
+  if(!ev.data) return;
+  if (ev.data.type === 'pictomino_hud') {
+    const hud = ev.data.hud || {};
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+    set('gt-level', hud.level); set('gt-diff', hud.diff); set('gt-hearts', hud.hearts); set('gt-score', hud.score);
+    const timerEl = document.getElementById('gt-timer');
+    if (timerEl) {
+      if (hud.timer != null && hud.timer > 0) { timerEl.style.display = ''; timerEl.textContent = '⏱ ' + hud.timer + 's'; timerEl.style.color = hud.timer <= 5 ? '#E85D75' : ''; }
+      else { timerEl.style.display = 'none'; }
+    }
+  }
+  if (ev.data.type === 'pictomino_mute') {
+    // 同步 iframe 内静音状态到外层按钮
+    const sb = document.getElementById('gt-sound-btn');
+    if (sb) sb.textContent = ev.data.muted ? '🔇' : '🔊';
+  }
+  // 倒计时同步（每秒推送）
+  if (ev.data.type === 'pictomino_timer') {
+    const timerEl = document.getElementById('gt-timer');
+    if (timerEl) {
+      if (ev.data.timeLeft > 0) { timerEl.style.display = ''; timerEl.textContent = '⏱ ' + ev.data.timeLeft + 's'; timerEl.style.color = ev.data.timeLeft <= 5 ? '#E85D75' : ''; }
+      else { timerEl.style.display = 'none'; }
+    }
+  }
+});
+// 外层按钮 → postMessage 控制 iframe 内游戏
+const frameWin = () => { const f = document.querySelector('.game-frame'); return f ? f.contentWindow : null; };
+document.getElementById('gt-help-btn').addEventListener('click', function(){
+  const w = frameWin(); if (w) w.postMessage({ type: 'pictomino_help' }, '*');
+});
+document.getElementById('gt-sound-btn').addEventListener('click', function(){
+  const w = frameWin(); if (w) w.postMessage({ type: 'pictomino_mute_toggle' }, '*');
+});
+</script>
+<script>
+// 排行榜（pictomino daily 按套计成绩，今日 top 20）
+fetch('/api/leaderboard?date=' + new Date().toISOString().split('T')[0]).then(r=>r.ok?r.json():null).then(data=>{
+  const list=document.getElementById('lb-list');
+  if(!list||!data)return;
+  const entries=data.entries||[];
+  const hint=document.getElementById('lb-hint');
+  if(hint)hint.style.display=entries.length?'none':'block';
+  if(!entries.length){list.innerHTML='<p style="text-align:center;font-size:.85rem;color:#b5a396">🐾 Be the first cat today!</p>';return;}
+  const medal=r=>r===1?'🥇':r===2?'🥈':r===3?'🥉':'#'+r;
+  list.innerHTML=entries.map(e=>{
+    const name=String(e.name||'Anonymous Cat').replace(/[<>&]/g,'');
+    const t=Math.round(e.timeMs/1000),clock=Math.floor(t/60)+':'+String(t%60).padStart(2,'0');
+    return '<div style="display:flex;justify-content:space-between;padding:.45rem .6rem;border-bottom:1px solid #FFE3C2;font-size:.9rem"><span style="font-weight:800;color:var(--ink)">'+medal(e.rank)+' '+name+'</span><span style="color:var(--pink);font-weight:800">'+clock+'</span></div>';
+  }).join('');
+}).catch(function(){});
+</script>
+</body>
+</html>
