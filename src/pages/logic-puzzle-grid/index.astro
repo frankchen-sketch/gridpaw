@@ -118,36 +118,42 @@ const faqJsonLd = [
 
     <p>The family is bigger than most people think. Sudoku is the famous one, but Shikaku, Akari, Nonograms, Kakuro, and Slitherlink are all grid logic puzzles too, each with its own personality. Some feel like tidy bookkeeping, others like exploring a dark room with a flashlight. What they share is the core loop: read a small rule set, scan for forced moves, place with confidence, repeat until the grid resolves into exactly one finished picture.</p>
 
+    <p>Why grids, specifically? Because a grid turns thinking into something you can see. Vague problems resist progress, but a grid gives every piece of reasoning a physical address: this cell, this row, this number. Each small certainty is written down, which means you never have to hold the whole puzzle in your head at once. That is also why they translate so well to screens and paper alike, and why they suit every age from curious kids to puzzle veterans with fifty years of pencil marks behind them.</p>
+
     <h2>How to Solve Logic Grid Puzzles Step by Step</h2>
 
-    <p>Every grid puzzle family has its own tricks, but the solving mindset is universal. Here is the whole method, demonstrated on a tiny classic: a 3 by 3 grid where three friends, a cat owner, a dog owner, and a bird owner, sit in three chairs in a row. Clue 1: the cat owner sits in the middle chair. Clue 2: the bird owner sits directly left of the dog owner. Clue 3: the dog owner does not sit in the leftmost chair.</p>
+    <p>Every grid puzzle family has its own tricks, but the solving mindset is universal: place what is certain, eliminate what is impossible, and repeat until the grid has nowhere left to hide. Here is the whole method on a tiny classic 3 by 3 logic grid. Three friends, Ana, Ben, and Cara, each adopted one pet from the shelter: a cat, a dog, and a bird. Clue 1: Cara adopted the bird. Clue 2: Ana did not adopt the cat. Clue 3: Ben did not adopt the dog.</p>
 
-    <p>Here is the empty grid, chairs numbered 1 to 3 from left to right:</p>
-
-    <pre>
-Chair   |   1   |   2   |   3   |
---------+-------+-------+-------+
-Person  |   ?   |   ?   |   ?   |</pre>
-
-    <p><strong>Step 1: place the most direct clue first.</strong> Clue 1 hands you a fact outright, so use it immediately. The cat owner takes chair 2.</p>
+    <p>Here is the empty grid, one row per person, one column per pet:</p>
 
     <pre>
-Chair   |   1   |   2   |   3   |
+        |  cat  |  dog  | bird  |
 --------+-------+-------+-------+
-Person  |   ?   |  cat  |   ?   |</pre>
+Ana     |   .   |   .   |   .   |
+Ben     |   .   |   .   |   .   |
+Cara    |   .   |   .   |   .   |</pre>
 
-    <p><strong>Step 2: combine clues that mention the same thing.</strong> Clue 2 says the bird owner sits directly left of the dog owner, which makes them neighbors. The only adjacent open pairs left are chairs 1 and 2 or chairs 2 and 3. Chair 2 already holds the cat, so the pair must be chairs 1 and 3. But chairs 1 and 3 are not adjacent, so test the other reading: the clue actually forces the pair into any two side-by-side chairs, and the only side-by-side open slot pair that remains is chair 1 plus chair 2... which is blocked too. Work the clue from the other end: the dog owner cannot sit in chair 1 or chair 2, per clue 3 and clue 1, so the dog owner sits in chair 3. That means the bird owner, directly left of the dog, sits in chair 2. But chair 2 is the cat owner, a contradiction.</p>
-
-    <p><strong>Step 3: when two readings collide, one of your assumptions is the lever.</strong> The contradiction is the tell. Re-read clue 2: "directly left of" in a row of chairs means the chair to the immediate left. The bird and dog owners must be neighbors, and with the cat fixed in chair 2, the only possible neighbor pair is chairs 2 and 3, meaning the bird owner is in chair 2 and the dog in chair 3. But that contradicts the cat. So clue 1 and clue 2 cannot both describe the same row of three, which is exactly the kind of squeeze that tells you one of these clues is about a different dimension, for example the same people ordered by age rather than by chair. In real logic grid puzzles, the 3 by 3 setup you sketch on paper usually crosses two dimensions like this: rows are one category, columns another, and each intersection is a possible fact.</p>
-
-    <p><strong>Step 4: fill in what the eliminations prove.</strong> Say the grid is actually about seating, and clue 3 was the red herring to catch guessers. With the cat in chair 2 and the bird-dog pair forced to sit in chairs 2 and 3, which is impossible, the only consistent reading left is: bird in chair 1 is impossible, so let the cross-dimension reading go, treat clue 2's "left of" as "somewhere left of." The dog owner sits in chair 3, the bird owner sits somewhere left of the dog, and the only open chair left of chair 3 besides the cat's is chair 1. Bird in chair 1, cat in chair 2, dog in chair 3. Done.</p>
+    <p><strong>Step 1: place the most direct clue first.</strong> Clue 1 hands you a fact outright, so use it immediately: Cara adopted the bird. Mark it, and while you are there, mark the rest of Cara's row and the rest of the bird column with X, because nobody else can have the bird and Cara cannot have two pets.</p>
 
     <pre>
-Chair   |   1   |   2   |   3   |
+        |  cat  |  dog  | bird  |
 --------+-------+-------+-------+
-Person  | bird  |  cat  |  dog  |</pre>
+Ana     |   .   |   .   |   X   |
+Ben     |   .   |   .   |   X   |
+Cara    |   X   |   X   |  YES  |</pre>
 
-    <p>The takeaway is the sequence, not this particular puzzle: direct clues first, eliminations second, contradictions third, and a cross-check at the end to make sure every clue is satisfied. That loop scales from a 3 by 3 warmup to a 25 by 25 Shikaku without changing shape. When a grid stumps you, the culprit is almost always a clue you read once and never revisited. Go back and re-read it with everything you now know.</p>
+    <p><strong>Step 2: apply elimination clues to the remaining open cells.</strong> Clue 2 says Ana did not adopt the cat, so put an X where Ana meets cat. Clue 3 says Ben did not adopt the dog, so X there too. Now read what the grid is telling you: Ana's row has cat and bird crossed out, so Ana adopted the dog. Ben's row has dog and bird crossed out, so Ben adopted the cat.</p>
+
+    <pre>
+        |  cat  |  dog  | bird  |
+--------+-------+-------+-------+
+Ana     |   X   |  YES  |   X   |
+Ben     |  YES  |   X   |   X   |
+Cara    |   X   |   X   |  YES  |</pre>
+
+    <p><strong>Step 3: cross-check every clue against the finished grid.</strong> Clue 1: Cara has the bird, true. Clue 2: Ana has the dog, not the cat, true. Clue 3: Ben has the cat, not the dog, true. Every clue is satisfied, every row and column holds exactly one pet, and because we only placed cells that were forced, the solution is provably unique. No guessing happened at any point, which is the defining property of a fair logic grid puzzle.</p>
+
+    <p>The takeaway is the sequence, not this particular puzzle: direct clues first, eliminations second, a final cross-check third. That loop scales from a 3 by 3 warmup to a 25 by 25 Shikaku without changing shape. When a bigger grid stumps you, the culprit is almost always a clue you read once and never revisited. Go back and re-read it with everything you now know.</p>
 
     <h2>6 Types of Logic Puzzle Grids You Should Know</h2>
 
@@ -190,3 +196,67 @@ Person  | bird  |  cat  |  dog  |</pre>
       <iframe src="/?embed=1" title="Play Shikaku puzzle" loading="lazy" width="100%" height="420" style="border:0;border-radius:12px;max-width:520px;margin:0 auto;display:block"></iframe>
       <p style="font-size:0.85rem;margin-top:0.4rem"><a href="/">Play full version →</a></p>
     </div>
+
+    <h2>Best Free Logic Grid Puzzle Websites</h2>
+
+    <p>There are more puzzle sites than anyone can play in a lifetime, and they are not all equal. Here are five worth your time, with an honest word about each, including our own.</p>
+
+    <h3>1. GridPaw</h3>
+    <p>That is us, and since honesty was promised: GridPaw focuses on two Japanese grid puzzles, Shikaku and Akari, rather than trying to host everything. Both are fully free, playable in the browser with no download and no sign-up, and they come with levels that ease you in from beginner sizes up. The cat theme is either a dealbreaker or the whole point, depending on your tastes, and we accept that. The puzzles are generated with a guarantee of a unique, logic-only solution, so you never have to guess, and the interface is built to feel calm rather than competitive. If you fall in love with rectangle partitioning or light-up logic, this is a home for it.</p>
+
+    <h3>2. Simon Tatham's Portable Puzzle Collection</h3>
+    <p>A legendary free collection of more than 30 puzzle types, including Sudoku-lookalikes, Slitherlink, and dozens more, all playable in the browser or as desktop apps. It is open source, runs offline, and has zero ads or accounts. The interface is spartan, closer to a university tool than a game, and there are no tutorials to speak of, so you learn each puzzle by reading a short description and experimenting. For sheer puzzle variety per click, nothing free beats it.</p>
+
+    <h3>3. Conceptis Puzzles</h3>
+    <p>A professional puzzle studio whose site offers a rotating set of free puzzles every week across many types, including Pic-a-Pix (their nonogram), Link-a-Pix, and Sudoku variants. The quality and fairness of the puzzles is excellent, the pieces are clearly made by people who care, and the free weekly quota is real though limited. To play more you eventually hit the paid tier, which is reasonable but worth knowing upfront. A great place to sample puzzle types before committing anywhere.</p>
+
+    <h3>4. Puzzle Baron's Logic Puzzles</h3>
+    <p>The home of the classic American-style logic grid puzzle, the kind with a grid of categories and people, where you cross-reference clues to work out who owns which pet. The site has an enormous archive, printable puzzles, and a timer with leaderboards if you like being humbled. The presentation is functional rather than pretty, and the puzzles skew toward wordier clue sets than Japanese-style grids. If what you actually want is deduction in its purest narrative form, this is the archive.</p>
+
+    <h3>5. Puzzle Nonograms (and similar nonogram sites)</h3>
+    <p>For nonogram lovers there are several free archives online, and puzzle-nonograms.com from the Conceptis family offers a steady supply of free weekly nonograms in many sizes. These sites tend to be ad-supported, so expect some visual noise, but the puzzles themselves are well-formed with unique solutions. Between these and the Picross games on consoles, a nonogram fan is unlikely to ever run out.</p>
+
+    <h2>Why Grid Puzzles Boost Brain Power</h2>
+
+    <p>The claim that puzzles make you smarter needs to survive contact with actual research, so here is what the science honestly says. The strongest well-known finding comes from a 2019 study by the University of Exeter and King's College London, which tracked more than 19,000 adults aged 50 and over and found that people who regularly engaged with word and number puzzles performed better on tests of memory, attention, and reasoning, with puzzle solvers showing brain function typical of people up to ten years younger on some measures. The landmark ACTIVE trial, a large randomized study of cognitive training in older adults, found that training in reasoning produced improvements that persisted for years afterward, with some benefits visible a decade later in daily functioning. Meanwhile, a 2019 review in the journal Gerontology argued that cognitively stimulating leisure activities are associated with a reduced risk of cognitive decline.</p>
+
+    <p>It is worth being precise about what this means. Puzzles are not a magic shield, and the research does not say that solving Shikaku prevents dementia. What the evidence supports is narrower and still encouraging: regular engagement with novel, effortful thinking is linked to better maintained cognitive skills, and logic grid puzzles are a cheap, pleasant, sustainable way to get that engagement. They also train something the studies barely capture: the habit of sitting with a problem, reading carefully, and trusting that patience beats guessing. That habit transfers. Anyone who has debugged code, planned a trip, or settled an argument with a spreadsheet knows the feeling of a Shikaku rectangle locking into place somewhere else in life.</p>
+
+    <p>There is one more benefit worth naming, and puzzle people will recognize it instantly: flow. Psychologists describe flow as the absorbed state you enter when a task sits right at the edge of your ability, hard enough to engage you, gentle enough that you keep making progress. Grid puzzles are close to a perfect flow delivery system, with clear goals, instant feedback on every placement, and difficulty you can dial up as you improve. Ten minutes of that state leaves you calmer than you found it, which is a rare thing to say about anything on the internet.</p>
+
+    <h2>Tips for Beginners: Start Solving Today</h2>
+
+    <p>If you are new to grid puzzles, here are five tips that will save you the wasted hours the rest of us spent learning them the hard way.</p>
+
+    <p>None of these require talent. They are mostly about avoiding the two classic traps: guessing when you should reason, and starting too big. Follow them and your first week of solving will feel noticeably smoother than mine did.</p>
+
+    <ul>
+      <li><strong>Start small, and finish easy grids completely.</strong> The temptation is to jump to a big impressive grid, but skill comes from fully resolving small ones. Finishing a 5 by 5 Shikaku teaches you more than abandoning a 15 by 15. Difficulty should rise with your confidence, not your ambition.</li>
+      <li><strong>Place only what you can prove.</strong> The single biggest beginner habit to break is guessing. In a well-made puzzle, every move is forced by logic, and if you find yourself wanting to gamble, it means you have missed a clue somewhere. Put the pencil down, re-read the rules, and scan the grid edges.</li>
+      <li><strong>Hunt for the most constrained numbers first.</strong> Every puzzle type has its power clues: high numbers in Shikaku, 0 cells in Slitherlink and Akari, extreme sums in Kakuro. These constrain the most cells and create the cascades that unlock the rest of the grid. Start where the pressure is highest.</li>
+      <li><strong>Use pencil marks and keep them honest.</strong> Note possibilities lightly and erase them the moment they are ruled out. Stale pencil marks, possibilities you have disproven but not cleaned up, are the number one cause of self-inflicted confusion in every grid puzzle ever invented.</li>
+      <li><strong>Make it a small daily ritual.</strong> Ten minutes a day beats an hour on Sunday. Attach a puzzle to your morning coffee or commute and let difficulty find you naturally. Within a couple of weeks, you will notice the shift: clues that needed careful thought start resolving on sight, and that is the moment the hobby really begins.</li>
+    </ul>
+
+    <div class="cta-box">
+      <p>🐱 Ready to play? Try both Japanese grid puzzles free:</p>
+      <p><a href="/">Play Shikaku →</a> &nbsp;&middot;&nbsp; <a href="/akari/">Play Akari →</a></p>
+    </div>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <details><summary>What is a logic puzzle grid?</summary><p>A logic puzzle grid is any puzzle played on a grid of cells that can be solved entirely through reasoning. The rules are few, every clue matters, and the solution can be reached by deduction rather than guesswork. Well-known examples include Shikaku, Akari, Sudoku, Nonograms, Kakuro, and Slitherlink.</p></details>
+
+    <details><summary>What is the most popular logic grid puzzle?</summary><p>Sudoku is by far the most popular logic grid puzzle in the world. It appears in hundreds of newspapers, has sold millions of books, and is played online by tens of millions of people. Other fast-growing grid puzzles include Shikaku, Nonograms (also called Picross), and Kakuro.</p></details>
+
+    <details><summary>Are logic grid puzzles good for your brain?</summary><p>Research suggests they help. A large 2019 study from the University of Exeter and King's College London tracked more than 19,000 adults and found that people who regularly worked on puzzles performed better on tests of memory, attention, and reasoning. The long-running ACTIVE trial also found that reasoning training produced measurable cognitive benefits that lasted for years. Like exercise, the benefits come from consistency rather than a single heroic session.</p></details>
+
+    <details><summary>Where can I play logic grid puzzles for free?</summary><p>Several sites offer free logic grid puzzles. GridPaw has free browser-based Shikaku and Akari with no download or sign-up, Puzzle Baron's Logic Puzzles has a huge archive of classic deduction grids, Conceptis Puzzles offers free weekly puzzles, and Simon Tatham's Portable Puzzle Collection is a free open-source set of more than 30 puzzle types.</p></details>
+  </main>
+
+  <footer class="seo-footer">
+    <p>GridPaw: Free online Japanese logic puzzles with cats.</p>
+    <p style="margin-top:0.3rem;"><a href="/">GridPaw Shikaku</a> · <a href="/akari/">GridPaw Akari</a> · <a href="/pictomino/">GridPaw Pictomino</a></p>
+  </footer>
+</body>
+</html>

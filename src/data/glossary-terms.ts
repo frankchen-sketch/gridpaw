@@ -18,7 +18,7 @@ export const glossaryTerms: GlossaryTerm[] = [
   {
     slug: 'number-cell',
     term: 'Number Cell',
-    definition: 'A number cell is a black cell in an Akari puzzle that displays a digit from 0 to 4. This number tells you exactly how many light bulbs (or cats, on MeowTrail) are placed in the four orthogonally adjacent cells — up, down, left, and right.',
+    definition: 'A number cell is a black cell in an Akari puzzle that displays a digit from 0 to 4. This number tells you exactly how many light bulbs (or cats, on GridPaw) are placed in the four orthogonally adjacent cells — up, down, left, and right.',
     howItWorks: 'Number cells are the primary source of logical constraints in every Akari puzzle. A "0" means none of its neighbors can hold a bulb. A "4" means all four neighbors must contain one. A "2" means exactly two of the four adjacent cells have bulbs. The number never counts diagonal neighbors — only the four orthogonal directions.',
     pros: [
       'Provide clear, unambiguous constraints that drive solving forward',
@@ -50,8 +50,8 @@ export const glossaryTerms: GlossaryTerm[] = [
   {
     slug: 'bulb-cat',
     term: 'Bulb / Cat',
-    definition: 'A bulb (also called a cat on MeowTrail) is the object you place on white cells to illuminate the grid. Each bulb sends light in four directions — up, down, left, and right — until the light hits a black wall or the grid edge.',
-    howItWorks: 'When you place a bulb on a white cell, it illuminates every white cell in its row and column until blocked by a wall. The goal of every Light Up puzzle is to place bulbs so that every white cell is illuminated. On MeowTrail, bulbs are replaced with adorable glowing cats, but the mechanics are identical.',
+    definition: 'A bulb (also called a cat on GridPaw) is the object you place on white cells to illuminate the grid. Each bulb sends light in four directions — up, down, left, and right — until the light hits a black wall or the grid edge.',
+    howItWorks: 'When you place a bulb on a white cell, it illuminates every white cell in its row and column until blocked by a wall. The goal of every Light Up puzzle is to place bulbs so that every white cell is illuminated. On GridPaw, bulbs are replaced with adorable glowing cats, but the mechanics are identical.',
     pros: [
       'Simple placement mechanic — click to place, click again to remove',
       'Immediate visual feedback as light spreads across the grid',
@@ -69,13 +69,13 @@ export const glossaryTerms: GlossaryTerm[] = [
       { step: 4, title: 'Use X marks', content: 'Right-click or long-press to place an X mark on cells where no bulb can go. This helps track elimination logic.' },
     ],
     faq: [
-      { question: 'What is the difference between a bulb and a cat in Akari?', answer: 'There is no mechanical difference. "Bulb" is the traditional Akari term. "Cat" is MeowTrail\'s themed version. Both illuminate their row and column identically.' },
+      { question: 'What is the difference between a bulb and a cat in Akari?', answer: 'There is no mechanical difference. "Bulb" is the traditional Akari term. "Cat" is GridPaw\'s themed version. Both illuminate their row and column identically.' },
       { question: 'Can two cats see each other?', answer: 'No. Two cats cannot be in the same unobstructed row or column. If they can see each other, that is a rule violation that must be fixed.' },
       { question: 'How far does a cat\'s light travel?', answer: 'A cat\'s light travels in all four directions (up, down, left, right) until it hits a black wall or the edge of the grid. There is no distance limit.' },
     ],
     relatedTerms: ['light-up-illuminate', 'x-mark', 'black-wall'],
     relatedPages: [
-      { label: 'Play MeowTrail', href: '/' },
+      { label: 'Play GridPaw', href: '/' },
       { label: 'Cat Logic Puzzle Guide', href: '/cat-logic-puzzle/' },
     ],
   },
@@ -101,7 +101,7 @@ export const glossaryTerms: GlossaryTerm[] = [
     ],
     faq: [
       { question: 'What happens if a cell is lit by two bulbs?', answer: 'Nothing bad — it is perfectly valid for a cell to be illuminated by multiple bulbs. It is just inefficient. The puzzle only requires that every white cell is lit at least once.' },
-      { question: 'How do I know when the puzzle is solved?', answer: 'When every white cell is illuminated, all numbered cell constraints are satisfied, and no two bulbs can see each other. MeowTrail shows a celebration screen when you win.' },
+      { question: 'How do I know when the puzzle is solved?', answer: 'When every white cell is illuminated, all numbered cell constraints are satisfied, and no two bulbs can see each other. GridPaw shows a celebration screen when you win.' },
     ],
     relatedTerms: ['bulb-cat', 'number-cell', 'constraint-propagation'],
     relatedPages: [
@@ -113,7 +113,7 @@ export const glossaryTerms: GlossaryTerm[] = [
     slug: 'x-mark',
     term: 'X Mark',
     definition: 'An X mark is a player-placed annotation on a white cell to indicate that no bulb should go there. X marks are not part of the official Akari rules — they are a solving aid.',
-    howItWorks: 'Most online Akari implementations, including MeowTrail, let you place X marks by right-clicking or long-pressing a cell. X marks help you track elimination logic and avoid accidentally placing bulbs in impossible positions.',
+    howItWorks: 'Most online Akari implementations, including GridPaw, let you place X marks by right-clicking or long-pressing a cell. X marks help you track elimination logic and avoid accidentally placing bulbs in impossible positions.',
     pros: [
       'Helps visualize which cells are ruled out',
       'Prevents accidental bulb placement in eliminated positions',
@@ -131,7 +131,7 @@ export const glossaryTerms: GlossaryTerm[] = [
     ],
     faq: [
       { question: 'Are X marks required to solve Akari?', answer: 'No. X marks are a convenience tool, not a rule. Experienced solvers often skip them on easy puzzles. But on hard puzzles, they are invaluable for tracking complex deductions.' },
-      { question: 'How do I place X marks on MeowTrail?', answer: 'Right-click on desktop or long-press on mobile to toggle X marks on any white cell. Click again to remove the mark.' },
+      { question: 'How do I place X marks on GridPaw?', answer: 'Right-click on desktop or long-press on mobile to toggle X marks on any white cell. Click again to remove the mark.' },
     ],
     relatedTerms: ['elimination', 'number-cell', 'bulb-cat'],
     relatedPages: [
@@ -237,7 +237,7 @@ export const glossaryTerms: GlossaryTerm[] = [
     pros: [
       'Can solve any logically solvable puzzle, including the hardest ones',
       'Systematic approach that guarantees a solution',
-      'Essential for computer solvers like MeowTrail\'s built-in solver',
+      'Essential for computer solvers like GridPaw\'s built-in solver',
     ],
     cons: [
       'Mentally taxing for human solvers — requires tracking hypothetical state',
@@ -254,7 +254,7 @@ export const glossaryTerms: GlossaryTerm[] = [
     faq: [
       { question: 'Is backtracking the same as guessing?', answer: 'No. Guessing means placing a bulb without logical justification. Backtracking is a systematic proof technique: you assume a position, derive all consequences, and check for contradictions. It is logically rigorous.' },
       { question: 'When should I use backtracking?', answer: 'Only when constraint propagation and elimination are exhausted. On Easy and Medium puzzles, you should never need backtracking. On Hard 12×12+ grids, it may be necessary.' },
-      { question: 'Does MeowTrail\'s solver use backtracking?', answer: 'Yes. MeowTrail\'s built-in solver uses constraint propagation as its first pass, then falls back to backtracking when simple deduction is insufficient.' },
+      { question: 'Does GridPaw\'s solver use backtracking?', answer: 'Yes. GridPaw\'s built-in solver uses constraint propagation as its first pass, then falls back to backtracking when simple deduction is insufficient.' },
     ],
     relatedTerms: ['constraint-propagation', 'elimination'],
     relatedPages: [
@@ -279,13 +279,13 @@ export const glossaryTerms: GlossaryTerm[] = [
     ],
     whoShouldUse: 'Anyone who enjoys logic puzzles, spatial reasoning, or relaxing brain teasers. Especially good for players who find Sudoku too number-heavy.',
     tutorial: [
-      { step: 1, title: 'Start with Easy puzzles', content: 'Try MeowTrail\'s 7×7 Easy puzzles to learn the rules. The smaller grid has more numbered clues relative to its size.' },
+      { step: 1, title: 'Start with Easy puzzles', content: 'Try GridPaw\'s 7×7 Easy puzzles to learn the rules. The smaller grid has more numbered clues relative to its size.' },
       { step: 2, title: 'Learn the rules', content: 'Place cats on white cells. Each cat lights its row and column. Numbered walls show how many adjacent cats they need. No two cats can see each other.' },
-      { step: 3, title: 'Use hints', content: 'MeowTrail has a Hint button that highlights a cell needing attention. Use it when stuck to learn new deduction patterns.' },
+      { step: 3, title: 'Use hints', content: 'GridPaw has a Hint button that highlights a cell needing attention. Use it when stuck to learn new deduction patterns.' },
       { step: 4, title: 'Progress to harder levels', content: 'Once Easy puzzles feel comfortable, try Medium (10×10) and Hard (12×12). Each level introduces new solving challenges.' },
     ],
     faq: [
-      { question: 'What is Akari?', answer: 'Akari (あかり, "light" in Japanese) is a logic puzzle by Nikoli where you place light bulbs on a grid to illuminate every white cell while following numbered clues. MeowTrail is the cat-themed version.' },
+      { question: 'What is Akari?', answer: 'Akari (あかり, "light" in Japanese) is a logic puzzle by Nikoli where you place light bulbs on a grid to illuminate every white cell while following numbered clues. GridPaw is the cat-themed version.' },
       { question: 'Is Akari the same as Light Up?', answer: 'Yes. "Akari" is the original Japanese name by Nikoli. "Light Up" is the English localization. Same puzzle, same rules.' },
       { question: 'Who created Akari?', answer: 'Nikoli, the Japanese puzzle publisher behind Sudoku, Kakuro, and dozens of other logic puzzles. Akari was first published in 2001.' },
     ],
@@ -310,7 +310,7 @@ export const glossaryTerms: GlossaryTerm[] = [
     ],
     whoShouldUse: 'Anyone searching for this puzzle in English. Whether you search "Light Up puzzle" or "Akari puzzle," you will find the same game.',
     tutorial: [
-      { step: 1, title: 'Search for either name', content: '"Light Up puzzle online" and "Akari puzzle online" both lead to the same games. MeowTrail uses both names.' },
+      { step: 1, title: 'Search for either name', content: '"Light Up puzzle online" and "Akari puzzle online" both lead to the same games. GridPaw uses both names.' },
       { step: 2, title: 'Learn the rules', content: 'The rules are identical regardless of the name: place bulbs, follow numbered clues, illuminate all white cells.' },
     ],
     faq: [
@@ -340,7 +340,7 @@ export const glossaryTerms: GlossaryTerm[] = [
     whoShouldUse: 'Anyone interested in the history and standards of logic puzzles. Understanding Nikoli\'s philosophy helps you appreciate why well-designed puzzles always have unique solutions.',
     tutorial: [
       { step: 1, title: 'Explore Nikoli\'s catalog', content: 'Visit nikoli.co.jp to see their full puzzle catalog. Sudoku, Kakuro, Akari, Slitherlink, and many more.' },
-      { step: 2, title: 'Try Nikoli-standard puzzles', content: 'MeowTrail follows Nikoli\'s standard: every puzzle has a unique solution through pure logic. No guessing required.' },
+      { step: 2, title: 'Try Nikoli-standard puzzles', content: 'GridPaw follows Nikoli\'s standard: every puzzle has a unique solution through pure logic. No guessing required.' },
     ],
     faq: [
       { question: 'What is Nikoli?', answer: 'Nikoli is a Japanese puzzle publisher founded in 1980. They created Akari, Sudoku, Kakuro, Slitherlink, and dozens of other logic puzzles. Their editorial standard requires every puzzle to have a unique solution.' },
@@ -356,7 +356,7 @@ export const glossaryTerms: GlossaryTerm[] = [
     slug: 'daily-challenge',
     term: 'Daily Challenge',
     definition: 'A daily challenge is a new Akari puzzle released every day for players to solve. Daily challenges create a solving habit and give players a shared experience.',
-    howItWorks: 'On MeowTrail, the daily challenge offers a fresh 14×14 puzzle each day with a balanced difficulty level. The same puzzle is shown to all players worldwide, creating a shared daily ritual. Streak tracking rewards consecutive days of solving.',
+    howItWorks: 'On GridPaw, the daily challenge offers a fresh 14×14 puzzle each day with a balanced difficulty level. The same puzzle is shown to all players worldwide, creating a shared daily ritual. Streak tracking rewards consecutive days of solving.',
     pros: [
       'Builds a daily solving habit',
       'Shared experience — everyone solves the same puzzle',
@@ -369,18 +369,18 @@ export const glossaryTerms: GlossaryTerm[] = [
     ],
     whoShouldUse: 'Regular players who want a daily brain workout. The streak system is especially motivating for competitive players.',
     tutorial: [
-      { step: 1, title: 'Visit the daily page', content: 'Go to meowtrail.org/daily/ to see today\'s puzzle. A new puzzle appears every day at midnight UTC.' },
+      { step: 1, title: 'Visit the daily page', content: 'Go to gridpaw.com/daily/ to see today\'s puzzle. A new puzzle appears every day at midnight UTC.' },
       { step: 2, title: 'Solve it', content: 'Use the same skills as regular Akari puzzles. The daily challenge is a 14×14 grid — larger than Easy but with plenty of clues.' },
       { step: 3, title: 'Build your streak', content: 'Come back every day to maintain your streak. Earn badges at 3, 7, 14, and 30 consecutive days.' },
     ],
     faq: [
-      { question: 'What is the MeowTrail daily challenge?', answer: 'A new 14×14 Akari puzzle released every day. Everyone worldwide gets the same puzzle. Solve it to build your streak and earn badges.' },
+      { question: 'What is the GridPaw daily challenge?', answer: 'A new 14×14 Akari puzzle released every day. Everyone worldwide gets the same puzzle. Solve it to build your streak and earn badges.' },
       { question: 'When does the daily puzzle reset?', answer: 'A new puzzle appears at midnight UTC every day. Your streak continues as long as you solve each day\'s puzzle before the next one arrives.' },
     ],
     relatedTerms: ['akari', 'number-cell'],
     relatedPages: [
       { label: 'Daily Challenge', href: '/daily/' },
-      { label: 'Play MeowTrail', href: '/' },
+      { label: 'Play GridPaw', href: '/' },
     ],
   },
 ];
