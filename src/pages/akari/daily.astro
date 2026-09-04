@@ -1,0 +1,873 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+const title = "Daily Akari Puzzle — New Cat-Themed Challenge Every Day | GridPaw";
+const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puzzle every day (14×14 Weekend Super on Sat & Sun). Track your time, build your streak, and compare with other players.";
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/daily" type="website" />
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:linear-gradient(180deg,#f8f6ef,#f8f6ef);color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.8rem;color:#342421;text-align:center;margin:.5rem 0;text-shadow:0 2px 4px rgba(123,107,138,.1)}
+    .subtitle{text-align:center;color:#6f5651;margin-bottom:1rem;font-size:.95rem;font-weight:500}
+    .daily-badge{display:inline-block;background:linear-gradient(135deg,#E8956A,#D47A50);color:#fff;padding:.3rem .8rem;border-radius:20px;font-size:.85rem;font-weight:700;margin-bottom:1rem}
+    .timer{text-align:center;font-size:2rem;font-weight:800;color:#342421;margin:1rem 0;font-variant-numeric:tabular-nums}
+    .controls{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;align-items:center;margin:.8rem 0}
+    .btn{padding:.6rem 1.2rem;border:none;border-radius:14px;cursor:pointer;font-size:.9rem;font-weight:600;transition:all .2s cubic-bezier(.4,0,.2,1);font-family:inherit;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.15)}
+    .btn:active{transform:scale(.95) translateY(0);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+    .btn-primary{background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;box-shadow:0 4px 12px rgba(232,168,136,.3)}
+    .btn-primary:hover{background:linear-gradient(145deg,#E0A888,#D08868);box-shadow:0 6px 16px rgba(232,168,136,.4)}
+    .btn-secondary{background:linear-gradient(145deg,#F8F0FF,#fff4f0);color:#342421;box-shadow:0 4px 12px rgba(123,107,138,.1)}
+    .btn-secondary:hover{background:linear-gradient(145deg,#fff4f0,#E8E0F8);box-shadow:0 6px 16px rgba(123,107,138,.15)}
+    .game-status{display:flex;flex-direction:column;align-items:center;gap:.5rem;margin:.8rem 0}
+    .health-display{display:flex;gap:.3rem;font-size:1.5rem}
+    .heart{transition:all .3s ease;filter:drop-shadow(0 2px 4px rgba(232,168,136,.3))}
+    .heart svg{width:24px;height:24px}
+    .heart.lost{filter:grayscale(1) opacity(.4);transform:scale(.8)}
+    .progress{text-align:center;font-size:.85rem;color:#6f5651;margin:.3rem 0;min-height:1.4rem}
+    .grid-wrapper{display:flex;justify-content:center;margin:.5rem 0}
+    .puzzle-grid{display:inline-grid;gap:3px;background:linear-gradient(145deg,#E8DDD8,#D8C8C0);padding:6px;border-radius:16px;box-shadow:0 8px 32px rgba(123,107,138,.15),0 2px 8px rgba(123,107,138,.1)}
+    .cell{display:flex;align-items:center;justify-content:center;border-radius:10px;user-select:none;cursor:pointer;transition:all .2s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
+    .cell:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(123,107,138,.2)}
+    .cell-black{background:linear-gradient(145deg,#8B7B9A,#6B5B7A);cursor:default;box-shadow:inset 0 3px 6px rgba(0,0,0,.3),0 2px 4px rgba(123,107,138,.2)}
+    .cell-number{font-weight:800;color:#fff4f0;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+    .cell-lit{background:linear-gradient(145deg,#FFF8F0,#FFF0E0);box-shadow:inset 0 0 8px rgba(255,248,240,.5)}
+    .cell-cat{background:linear-gradient(145deg,#fff4f0,#e7dacf);box-shadow:inset 0 0 16px rgba(200,168,232,.4),0 4px 12px rgba(232,168,136,.3)}
+    .cell-x{background:#FAFAFA;box-shadow:inset 0 0 4px rgba(0,0,0,.05)}
+    @keyframes hint-pulse { 0%,100% { box-shadow: inset 0 0 0 3px #E8A888; } 50% { box-shadow: inset 0 0 0 3px #E8A888, 0 0 16px rgba(232,168,136,0.5); } }
+    .cell-hint { animation: hint-pulse 0.8s ease-in-out infinite; }
+    .cell-dark{background:linear-gradient(145deg,#F0EBE5,#E8E0D8);box-shadow:inset 0 2px 4px rgba(0,0,0,.08)}
+    @keyframes cat-place{0%{transform:scale(0) rotate(-10deg);opacity:0}50%{transform:scale(1.2) rotate(5deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+    .cell-cat-new{animation:cat-place .4s cubic-bezier(.34,1.56,.64,1) forwards}
+    .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#E74C3C;color:#fff;padding:.6rem 1.2rem;border-radius:12px;font-size:.9rem;font-weight:600;z-index:1000;opacity:0;transition:opacity .3s;pointer-events:none}
+    .toast.show{opacity:1}.toast.success{background:#559c68}
+    .win-overlay{position:fixed;inset:0;background:rgba(251,248,255,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;opacity:0;transition:opacity .4s;pointer-events:none;overflow:hidden}
+    .win-overlay.show{opacity:1;pointer-events:auto}
+    .win-cat{animation:cat-pop .8s cubic-bezier(.34,1.56,.64,1) forwards}
+    @keyframes cat-pop{0%{transform:scale(0) rotate(-10deg)}50%{transform:scale(1.3) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
+    .win-glow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(232,168,136,.3) 0%,transparent 70%);animation:glow-pulse 2s ease-in-out infinite}
+    @keyframes glow-pulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.3);opacity:1}}
+    .win-text{font-size:2rem;font-weight:800;color:#342421;margin-top:1.5rem;animation:text-pop .6s .3s cubic-bezier(.34,1.56,.64,1) both}
+    @keyframes text-pop{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
+    .win-sub{font-size:1.1rem;color:#6f5651;margin-top:.5rem;animation:fade-up .5s .5s ease both}
+    @keyframes fade-up{0%{transform:translateY(20px);opacity:0}100%{transform:translateY(0);opacity:1}}
+    .win-stats{display:flex;gap:2rem;margin:1.5rem 0;animation:fade-up .5s .7s ease both}
+    .stat{text-align:center}
+    .stat-value{font-size:2rem;font-weight:800;color:#342421}
+    .stat-label{font-size:.85rem;color:#6f5651}
+    .win-btn{margin-top:1.5rem;padding:.7rem 2rem;background:#E8A888;color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;font-family:inherit}
+    .win-btn:hover{background:#D09070}
+    .win-share-row{display:flex;gap:.5rem;margin-top:.8rem;flex-wrap:wrap;justify-content:center}
+    .share-btn{padding:.5rem 1rem;border:none;border-radius:10px;cursor:pointer;font-size:.85rem;font-weight:600;font-family:inherit;transition:transform .1s}
+    .share-btn:active{transform:scale(.95)}
+    .share-copy{background:#fff4f0;color:#342421}.share-copy:hover{background:#e7dacf}
+    .share-twitter{background:#1DA1F2;color:#fff}.share-twitter:hover{background:#0d8ddb}
+    .confetti{position:absolute;width:12px;height:12px;border-radius:3px;animation:confetti-fall linear forwards}
+    @keyframes confetti-fall{0%{transform:translateY(-100vh) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+    .paw-confetti{position:absolute;font-size:24px;animation:paw-fall linear forwards}
+    @keyframes paw-fall{0%{transform:translateY(-100vh) rotate(0) scale(1);opacity:.8}100%{transform:translateY(100vh) rotate(360deg) scale(.5);opacity:0}}
+    .leaderboard{margin-top:2rem;padding:1.5rem;background:#fff;border-radius:16px;box-shadow:0 4px 16px rgba(123,107,138,.1)}
+    .leaderboard h3{color:#342421;margin-bottom:1rem;font-size:1.2rem}
+    .leaderboard-item{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid #fff4f0}
+    .leaderboard-item:last-child{border-bottom:none}
+    .rank{font-weight:700;color:#E8A888;min-width:2rem}
+    .player-name{flex:1;margin:0 1rem}
+    .time{font-weight:700;color:#342421;font-variant-numeric:tabular-nums}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    footer a{color:#6f5651}
+    @media(max-width:480px){h1{font-size:1.3rem}.controls{gap:.3rem}.btn{padding:.4rem .7rem;font-size:.8rem}.win-stats{gap:1rem}}
+  
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo-clay-cat.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Akari Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/">Play</a>
+        <a href="/how-to-play/">How to Play</a>
+        <a href="/tips/">Tips</a>
+        <a href="/daily/">Daily</a>
+        <a href="/solver/">Solver</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>🐱 GridPaw Daily Challenge</h1>
+    <p class="subtitle" id="daily-subtitle">A fresh puzzle every day — can you solve it?</p>
+    <div id="account-area" style="display:flex;justify-content:center;align-items:center;gap:.6rem;margin:.6rem 0;min-height:2.2rem;flex-wrap:wrap"></div>
+    <div style="text-align:center"><span class="daily-badge" id="daily-badge">🔥 HARD 10×10</span></div>
+    <div class="timer" id="timer">00:00</div>
+    <div style="display:flex;gap:1.5rem;justify-content:center;margin:.5rem 0;flex-wrap:wrap">
+      <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:#E8A888" id="streak-count">0</div><div style="font-size:.75rem;color:#6f5651">Streak 🔥</div></div>
+      <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:#342421" id="best-streak">0</div><div style="font-size:.75rem;color:#6f5651">Best Streak</div></div>
+      <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:#559c68" id="best-time">--:--</div><div style="font-size:.75rem;color:#6f5651">Best Time</div></div>
+    </div>
+    <div style="text-align:center;margin:.3rem 0"><span id="streak-badge" style="display:none;padding:.3rem .8rem;border-radius:20px;font-size:.85rem;font-weight:700;border:2px solid #E8A888;background:#FFF8F0"></span></div>
+    <div class="controls">
+      <button class="btn btn-primary" id="start-btn">▶ Start Challenge</button>
+      <button class="btn btn-secondary" id="hint-btn">💡 Hint</button>
+      <button class="btn btn-secondary" id="reset-btn">↺ Reset</button>
+      <button class="btn btn-secondary" id="sound-btn">🔊 Sound</button>
+    </div>
+    <div class="game-status">
+      <div class="health-display" id="health-display">
+        <span class="heart" id="heart1"><svg width="24" height="24" viewBox="0 0 24 24" fill="#E8A888"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span>
+        <span class="heart" id="heart2"><svg width="24" height="24" viewBox="0 0 24 24" fill="#E8A888"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span>
+        <span class="heart" id="heart3"><svg width="24" height="24" viewBox="0 0 24 24" fill="#E8A888"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span>
+      </div>
+      <div class="progress" id="progress"></div>
+    </div>
+    <div class="grid-wrapper"><div class="puzzle-grid" id="puzzle-grid"></div></div>
+    <div class="toast" id="toast"></div>
+    <div class="win-overlay" id="win-overlay">
+      <div class="win-glow"></div>
+      <div id="confetti-container"></div>
+      <div class="win-cat"><svg width="160" height="160" viewBox="0 0 120 120"><defs><radialGradient id="wg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#E8A888" stop-opacity="0.6"/><stop offset="100%" stop-color="#E8A888" stop-opacity="0"/></radialGradient></defs><circle cx="60" cy="60" r="58" fill="url(#wg)"/><circle cx="60" cy="65" r="30" fill="#E8A888"/><polygon points="35,42 42,18 52,42" fill="#E8A888"/><polygon points="68,42 78,18 85,42" fill="#E8A888"/><circle cx="48" cy="58" r="4" fill="#342421"/><circle cx="72" cy="58" r="4" fill="#342421"/><ellipse cx="60" cy="68" rx="4" ry="3" fill="#E8A888"/><path d="M56,70 Q60,76 64,70" fill="none" stroke="#342421" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="win-text">🎉 Daily Challenge Complete!</div>
+      <div class="win-sub">You solved today's puzzle!</div>
+      <div class="win-stats">
+        <div class="stat">
+          <div class="stat-value" id="final-time">00:00</div>
+          <div class="stat-label">Your Time</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="win-streak-info">🔥 0 day streak</div>
+          <div class="stat-label">Current Streak</div>
+        </div>
+      </div>
+      <div id="win-badge" style="display:none;font-size:1.2rem;font-weight:700;margin:.5rem 0;padding:.4rem 1rem;border-radius:20px;background:#FFF8F0;border:2px solid #E8A888"></div>
+      <div class="win-share-row">
+        <button class="share-btn share-reddit" id="share-reddit" style="background:#FF4500;color:#fff">👽 Reddit</button>
+        <button class="share-btn share-copy" id="share-copy">📋 Copy Result</button>
+        <button class="share-btn share-twitter" id="share-twitter">𝕏 Share</button>
+      </div>
+      <button class="win-btn" id="win-close" style="margin-top:.8rem;background:none;border:1.5px solid #E8A888;color:#E8A888;font-weight:700;padding:.5rem 1.6rem;border-radius:999px;cursor:pointer">Continue ✓</button>
+    </div>
+    <div class="leaderboard">
+      <h3>📊 Your Daily Stats</h3>
+      <div style="display:flex;gap:2rem;justify-content:center;padding:1rem 0">
+        <div style="text-align:center"><div style="font-size:2rem;font-weight:800;color:#E8A888" id="stat-streak">0</div><div style="font-size:.85rem;color:#6f5651">Current Streak</div></div>
+        <div style="text-align:center"><div style="font-size:2rem;font-weight:800;color:#342421" id="stat-best-streak">0</div><div style="font-size:.85rem;color:#6f5651">Best Streak</div></div>
+        <div style="text-align:center"><div style="font-size:2rem;font-weight:800;color:#559c68" id="stat-best-time">--:--</div><div style="font-size:.85rem;color:#6f5651">Best Time</div></div>
+      </div>
+      <div id="stat-badge" style="text-align:center;margin:.5rem 0"></div>
+    </div>
+    <div class="leaderboard" id="daily-leaderboard">
+      <h3>🏆 Today's Leaderboard</h3>
+      <p style="font-size:.8rem;color:#6f5651;margin:.2rem 0 1rem">Sign in and solve today's challenge to appear here!</p>
+      <div id="leaderboard-list" style="text-align:left;max-width:420px;margin:0 auto"></div>
+    </div>
+
+    <section class="seo-content" style="margin-top:2rem;padding-top:1.5rem;border-top:2px solid #e7dacf;max-width:720px;margin-left:auto;margin-right:auto">
+      <style>.seo-content{max-width:720px}.seo-content p,.seo-content li{line-height:1.75}</style>
+      <h2>Why Play Daily?</h2>
+      <p>Every day, GridPaw generates a brand new <strong>Akari puzzle</strong> that is the same for all players worldwide. Here is why the daily challenge is worth coming back for:</p>
+      <ul>
+        <li><strong>Build a streak.</strong> Solve the puzzle every day to build your streak. Hit 3 days for the "On Fire" badge, 7 for "Star Cat," 14 for "Diamond Paw," and 30 for "Cat Royalty." Streaks make each solve feel meaningful.</li>
+        <li><strong>Compare your time.</strong> See how your solve time compares to other players on the leaderboard. The daily puzzle is the same for everyone, so it is a fair comparison.</li>
+        <li><strong>Weekend Super Challenge.</strong> On Saturdays and Sundays, the grid expands to 14×14 — a true test of skill for experienced players. Only the bravest attempt the Weekend Super.</li>
+        <li><strong>Track your progress.</strong> Your best time and longest streak are saved locally. Watch yourself improve over days and weeks as you internalize the strategies.</li>
+      </ul>
+      <p>There is no account required — your streak is saved in your browser. Ready to start? <a href="/">Play now</a> or jump straight to today's <a href="/daily/">daily challenge</a>.</p>
+
+      <h2>How the Daily Challenge Works</h2>
+      <p>Each day's puzzle is generated from a deterministic seed based on the date. This means:</p>
+      <ul>
+        <li>Every player gets the same puzzle on the same day.</li>
+        <li>You can share your time and compare fairly.</li>
+        <li>The puzzle is solvable with pure logic — no guessing required.</li>
+        <li>Weekdays are 10×10 grids (hard difficulty). Weekends are 14×14 grids (expert difficulty).</li>
+      </ul>
+      <p>If you miss a day, your streak resets — but your best streak is always saved. Come back tomorrow for a fresh challenge!</p>
+    </section>
+  </div>
+  <script is:inline src="/akari-engine.js"></script>
+  <script is:inline src="/sfx.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+  <script type="module">
+    const CAT_IMG = '<img src="/assets/cats/cat-clay-purple.png" style="width:95%;height:95%;object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 2px 6px rgba(123,107,138,.4))" />';
+    const X_MARK = '<svg viewBox="0 0 24 24" width="50%" height="50%" style="opacity:0.4"><line x1="6" y1="6" x2="18" y2="18" stroke="#B8A8C8" stroke-width="2.5" stroke-linecap="round"/><line x1="18" y1="6" x2="6" y2="18" stroke="#B8A8C8" stroke-width="2.5" stroke-linecap="round"/></svg>';
+    const DIRS = [[-1,0],[1,0],[0,-1],[0,1]];
+    let currentPuzzle = null, playerSolution = null, markX = null, won = false;
+    let health = 3, timerInterval = null, startTime = null, elapsedTime = 0;
+    let lastPlacedCell = null;
+    const STORAGE_KEY = 'gridpaw-daily';
+    const gridEl = document.getElementById('puzzle-grid');
+    const progressEl = document.getElementById('progress');
+    const toastEl = document.getElementById('toast');
+    const timerEl = document.getElementById('timer');
+    const winOverlay = document.getElementById('win-overlay');
+    const healthDisplay = document.getElementById('health-display');
+    let toastTimer = null;
+    function track(event, params) {
+      if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture(event, Object.assign({ site: 'gridpaw' }, params || {}));
+      }
+      if (typeof window.clarity === 'function') {
+        window.clarity('event', event);
+        if (params) Object.keys(params).forEach(k => window.clarity('set', k, String(params[k])));
+      }
+    }
+
+    // Streak system
+    function getToday() { return new Date().toISOString().split('T')[0]; }
+    function getYesterday() { const d = new Date(); d.setDate(d.getDate() - 1); return d.toISOString().split('T')[0]; }
+    function loadState() {
+      const s = localStorage.getItem(STORAGE_KEY);
+      if (!s) return null;
+      const d = JSON.parse(s);
+      // 单位污染自愈：bestTime 合法范围 10s~2h（秒）。历史 bug 曾把毫秒当秒写入，且在本地/云端间循环放大。
+      if (d.bestTime != null && (d.bestTime > 7200 || d.bestTime < 10)) d.bestTime = null;
+      const today = getToday();
+      if (d.date === today) return d;
+      const yesterday = getYesterday();
+      const lastDate = d.lastPlayedDate || d.date;
+      if (lastDate === yesterday) {
+        return { date: today, streak: d.streak, bestStreak: d.bestStreak, solved: false, bestTime: d.bestTime };
+      }
+      return { date: today, streak: 0, bestStreak: d.bestStreak, solved: false, bestTime: d.bestTime };
+    }
+    function saveState(solved, time) {
+      const today = getToday();
+      let st = loadState() || { date: today, streak: 0, bestStreak: 0, bestTime: null };
+      if (solved && !st.solved) {
+        st.streak += 1;
+        st.bestStreak = Math.max(st.bestStreak, st.streak);
+        st.solved = true;
+        if (time && time <= 7200 && (!st.bestTime || time < st.bestTime)) st.bestTime = time;
+      }
+      st.lastPlayedDate = today;
+      st.date = today;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(st));
+      return st;
+    }
+    function getBadge(streak) {
+      if (streak >= 30) return { emoji: '👑', label: 'Cat Royalty', color: '#FFD700' };
+      if (streak >= 14) return { emoji: '💎', label: 'Diamond Paw', color: '#00BCD4' };
+      if (streak >= 7) return { emoji: '🌟', label: 'Star Cat', color: '#FF9800' };
+      if (streak >= 3) return { emoji: '🔥', label: 'On Fire', color: '#E8956A' };
+      return null;
+    }
+    function updateStreakDisplay() {
+      const state = loadState();
+      const streak = state ? state.streak : 0;
+      const bestStreak = state ? state.bestStreak : 0;
+      document.getElementById('streak-count').textContent = streak;
+      document.getElementById('best-streak').textContent = bestStreak;
+      const badge = getBadge(streak);
+      const badgeEl = document.getElementById('streak-badge');
+      if (badge) {
+        badgeEl.textContent = badge.emoji + ' ' + badge.label;
+        badgeEl.style.display = 'inline-block';
+        badgeEl.style.borderColor = badge.color;
+      } else {
+        badgeEl.style.display = 'none';
+      }
+      // Update personal best time
+      const bestTimeEl = document.getElementById('best-time');
+      if (state && state.bestTime) {
+        const m = Math.floor(state.bestTime / 60);
+        const s = state.bestTime % 60;
+        bestTimeEl.textContent = m.toString().padStart(2, '0') + ':' + s.toString().padStart(2, '0');
+      } else {
+        bestTimeEl.textContent = '--:--';
+      }
+      // Update bottom stats panel
+      document.getElementById('stat-streak').textContent = streak;
+      document.getElementById('stat-best-streak').textContent = bestStreak;
+      document.getElementById('stat-best-time').textContent = bestTimeEl.textContent;
+      const statBadge = document.getElementById('stat-badge');
+      if (badge) {
+        const next = streak >= 30 ? null : streak >= 14 ? { d: 30, e: '👑', l: 'Cat Royalty' } : streak >= 7 ? { d: 14, e: '💎', l: 'Diamond Paw' } : streak >= 3 ? { d: 7, e: '🌟', l: 'Star Cat' } : { d: 3, e: '🔥', l: 'On Fire' };
+        statBadge.innerHTML = '<span style="padding:.3rem .8rem;border-radius:20px;font-size:.85rem;font-weight:700;border:2px solid ' + badge.color + ';background:#FFF8F0">' + badge.emoji + ' ' + badge.label + '</span>'
+          + (next ? '<span style="font-size:.8rem;color:#9b726c;margin-left:.6rem">' + (next.d - streak) + ' more day' + (next.d - streak > 1 ? 's' : '') + ' → ' + next.e + ' ' + next.l + '</span>' : streak >= 30 ? '<span style="font-size:.8rem;color:#9b726c;margin-left:.6rem">Max badge!</span>' : '');
+      } else {
+        const to3 = 3 - streak;
+        statBadge.innerHTML = '<span style="font-size:.85rem;color:#6f5651">' + (streak > 0
+          ? '🔥 ' + streak + ' day' + (streak > 1 ? 's' : '') + ' in a row — ' + to3 + ' more to earn your first badge!'
+          : 'Come back tomorrow and keep your streak going — 3 days earns your first badge!') + '</span>';
+      }
+    }
+
+    // Generate daily seed based on date
+    function getDailySeed() {
+      const today = new Date();
+      return today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+    }
+
+    // Simple seeded random
+    function seededRandom(seed) {
+      let s = seed;
+      return function() {
+        s = (s * 16807) % 2147483647;
+        return (s - 1) / 2147483646;
+      };
+    }
+
+    function showToast(m, t) {
+      toastEl.textContent = m; toastEl.className = 'toast show' + (t === 'success' ? ' success' : '');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toastEl.className = 'toast'; }, 2500);
+    }
+
+    function updateTimer() {
+      if (!startTime) return;
+      elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+      const minutes = Math.floor(elapsedTime / 60);
+      const seconds = elapsedTime % 60;
+      timerEl.textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+    }
+
+    function startTimer() {
+      startTime = Date.now();
+      elapsedTime = 0;
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(updateTimer, 1000);
+      updateTimer();
+    }
+
+    function stopTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    function spawnConfetti() {
+      const c = document.getElementById('confetti-container');
+      if (!c) return; c.innerHTML = '';
+      const colors = ['#E8A888','#E8A888','#559c68','#fff4f0','#FFB347','#E8A888'];
+      for (let i = 0; i < 40; i++) {
+        const el = document.createElement('div'); el.className = 'confetti';
+        el.style.left = Math.random()*100+'%'; el.style.background = colors[Math.floor(Math.random()*colors.length)];
+        el.style.animationDuration = (2+Math.random()*3)+'s'; el.style.animationDelay = Math.random()*1.5+'s';
+        el.style.width = (8+Math.random()*8)+'px'; el.style.height = (8+Math.random()*8)+'px'; c.appendChild(el);
+      }
+      for (let i = 0; i < 12; i++) {
+        const el = document.createElement('div'); el.className = 'paw-confetti'; el.textContent = '🐾';
+        el.style.left = Math.random()*100+'%'; el.style.animationDuration = (3+Math.random()*3)+'s';
+        el.style.animationDelay = Math.random()*2+'s'; c.appendChild(el);
+      }
+    }
+
+    function startDailyChallenge() {
+      won = false; winOverlay.classList.remove('show');
+      health = 3;
+      updateHealth();
+      const seed = getDailySeed();
+      const rng = seededRandom(seed);
+      // 平日 10×10；周末（周六/周日 UTC）14×14 Weekend Super Challenge
+      const dow = new Date().getUTCDay();
+      const dailySize = (dow === 0 || dow === 6) ? 14 : 10;
+      gridEl.innerHTML = '<div style="padding:2rem;color:#6f5651;font-size:0.9rem;">Generating...</div>';
+      progressEl.textContent = '';
+      const isWeekend = (dow === 0 || dow === 6);
+      // 徽章 + 副标题随难度切换
+      document.getElementById('daily-badge').textContent = isWeekend ? '🔥 WEEKEND SUPER 14×14' : '🔥 HARD 10×10';
+      document.getElementById('daily-subtitle').textContent = isWeekend
+        ? 'Weekend Super Challenge — 14×14, only for the brave!'
+        : 'A fresh puzzle every day — can you solve it?';
+      setTimeout(() => {
+        try {
+          currentPuzzle = generatePuzzle(dailySize);
+          playerSolution = Array.from({length:dailySize}, () => Array(dailySize).fill(false));
+          markX = Array.from({length:dailySize}, () => Array(dailySize).fill(false));
+          renderBoard(); updateProgress();
+          startTimer();
+          document.getElementById('start-btn').textContent = '🔄 Restart';
+        } catch(e) { showToast('Failed to generate.', 'error'); }
+      }, 10);
+    }
+
+    function resetPuzzle() {
+      if (!currentPuzzle) return; won = false; winOverlay.classList.remove('show');
+      const s = currentPuzzle.size;
+      playerSolution = Array.from({length:s}, () => Array(s).fill(false));
+      markX = Array.from({length:s}, () => Array(s).fill(false));
+      health = 3;
+      updateHealth();
+      startTimer();
+      renderBoard(); updateProgress(); showToast('Board reset!', 'success');
+    }
+
+    function renderBoard() {
+      if (!currentPuzzle) return;
+      const g = currentPuzzle.grid, s = currentPuzzle.size;
+      const lit = illuminate(g, playerSolution, s);
+      const v = checkViolations(g, playerSolution, s);
+      const vc = {}, cp = {};
+      v.forEach(x => {
+        if (x.type === 'number_excess') {
+          vc[x.row+','+x.col] = true;
+          DIRS.forEach(d => { const nr=x.row+d[0],nc=x.col+d[1]; if(nr>=0&&nr<s&&nc>=0&&nc<s&&playerSolution[nr][nc]) vc[nr+','+nc]=true; });
+        } else if (x.type === 'cat_conflict') { cp[x.row+','+x.col]=true; cp[x.row2+','+x.col2]=true; }
+      });
+      const mw = Math.min(window.innerWidth-40,600);
+      const cs = Math.max(24,Math.min(36,Math.floor((mw-(s+1)*2-8)/s)));
+      gridEl.style.gridTemplateColumns = `repeat(${s},${cs}px)`;
+      gridEl.style.gridTemplateRows = `repeat(${s},${cs}px)`;
+      gridEl.innerHTML = '';
+      for (let r=0;r<s;r++) for (let c=0;c<s;c++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell'; cell.style.width = cs+'px'; cell.style.height = cs+'px';
+        cell.dataset.row = r; cell.dataset.col = c;
+        const val = g[r][c], key = r+','+c;
+        if (val !== 9) {
+          cell.classList.add('cell-black');
+          if (val >= 0) { cell.classList.add('cell-number'); cell.textContent = val; cell.style.fontSize = Math.max(10,cs*.4)+'px'; if(vc[key]) cell.classList.add('cell-violation'); }
+        } else {
+          if (playerSolution[r][c]) { 
+            cell.classList.add('cell-cat');
+            if (lastPlacedCell && lastPlacedCell.r === r && lastPlacedCell.c === c) {
+              cell.classList.add('cell-cat-new');
+            }
+            cell.innerHTML = CAT_IMG; 
+            if(cp[key]) cell.classList.add('cell-shake'); 
+          }
+          else if (markX[r][c]) { cell.classList.add('cell-x'); cell.innerHTML = X_MARK; }
+          else if (lit[r][c]) { cell.classList.add('cell-lit'); }
+          else { cell.classList.add('cell-dark'); }
+          cell.addEventListener('click', e => { e.preventDefault(); if(!won) handleClick(r,c); });
+          cell.addEventListener('dblclick', e => { e.preventDefault(); if(!won){markX[r][c]=!markX[r][c];renderBoard();} });
+          cell.addEventListener('contextmenu', e => { e.preventDefault(); if(!won){markX[r][c]=!markX[r][c];renderBoard();} });
+          let lpt=null,dlp=false;
+          cell.addEventListener('touchstart',()=>{dlp=false;lpt=setTimeout(()=>{dlp=true;if(!won){markX[r][c]=!markX[r][c];renderBoard();}},500);},{passive:true});
+          cell.addEventListener('touchend',e=>{if(lpt)clearTimeout(lpt);if(dlp)e.preventDefault();});
+          cell.addEventListener('touchmove',()=>{if(lpt)clearTimeout(lpt);},{passive:true});
+        }
+        gridEl.appendChild(cell);
+      }
+    }
+
+    function handleClick(r, c) {
+      if (!currentPuzzle) return;
+      const g = currentPuzzle.grid, s = currentPuzzle.size;
+      if (playerSolution[r][c]) {
+        playerSolution[r][c] = false;
+        lastPlacedCell = null;
+        if (typeof SFX !== 'undefined') SFX.remove();
+      }
+      else {
+        markX[r][c] = false; playerSolution[r][c] = true;
+        lastPlacedCell = {r, c};
+        if (typeof SFX !== 'undefined') SFX.place();
+        if (!window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { board: 'daily' }); }
+        const v = checkViolations(g, playerSolution, s);
+        let hasViolation = false;
+        for (const x of v) { 
+          if(x.type==='number_excess'){
+            showToast('Too many cats around number '+x.number+'!','error');
+            hasViolation=true;
+            break;
+          }
+        }
+        for (const x of v) { 
+          if(x.type==='cat_conflict'){
+            showToast('Two cats are facing each other!','error');
+            hasViolation=true;
+            break;
+          }
+        }
+        if (hasViolation) {
+          if (typeof SFX !== 'undefined') SFX.error();
+          loseHealth();
+        }
+      }
+      renderBoard(); updateProgress();
+      setTimeout(() => { lastPlacedCell = null; }, 500);
+      if (checkWin(g, playerSolution, s)) {
+        won=true;
+        if (typeof SFX !== 'undefined') SFX.win();
+        stopTimer();
+        const state = saveState(true, elapsedTime);
+        track('daily_solved', { streak: state.streak, seconds: elapsedTime });
+        updateStreakDisplay();
+        syncToExtension();
+        syncWinToCloud(state, elapsedTime);
+        spawnConfetti(); 
+        setTimeout(()=>{
+          winOverlay.classList.add('show');
+          document.getElementById('final-time').textContent = timerEl.textContent;
+          const badge = getBadge(state.streak);
+          const streakInfo = document.getElementById('win-streak-info');
+          streakInfo.textContent = '🔥 ' + state.streak + ' day streak!';
+          if (badge) {
+            document.getElementById('win-badge').textContent = badge.emoji + ' ' + badge.label;
+            document.getElementById('win-badge').style.display = 'block';
+          } else {
+            document.getElementById('win-badge').style.display = 'none';
+          }
+        },300); 
+      }
+    }
+
+    function updateProgress() {
+      if (!currentPuzzle) return;
+      const catsPlaced = playerSolution.flat().filter(Boolean).length;
+      const totalCats = currentPuzzle.solution.flat().filter(Boolean).length;
+      progressEl.textContent = catsPlaced + ' / ' + totalCats + ' cats placed';
+    }
+
+    function updateHealth() {
+      const hearts = healthDisplay.querySelectorAll('.heart');
+      hearts.forEach((heart, i) => {
+        if (i < health) {
+          heart.classList.remove('lost');
+        } else {
+          heart.classList.add('lost');
+        }
+      });
+    }
+
+    function loseHealth() {
+      if (health > 0) {
+        health--;
+        updateHealth();
+        if (health === 0) {
+          showToast('Game Over! Try again.', 'error');
+          stopTimer();
+          setTimeout(resetPuzzle, 1500);
+        }
+      }
+    }
+
+    // Generate share card
+    function generateShareCard() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 600;
+      canvas.height = 400;
+      const ctx = canvas.getContext('2d');
+      
+      const gradient = ctx.createLinearGradient(0, 0, 600, 400);
+      gradient.addColorStop(0, '#f8f6ef');
+      gradient.addColorStop(1, '#f8f6ef');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, 600, 400);
+      
+      ctx.fillStyle = '#342421';
+      ctx.font = 'bold 32px SF Pro Rounded, system-ui';
+      ctx.textAlign = 'center';
+      ctx.fillText('🐱 GridPaw Daily Challenge', 300, 50);
+      
+      ctx.font = 'bold 24px SF Pro Rounded, system-ui';
+      const dow = new Date().getUTCDay();
+      const isWeekend = (dow === 0 || dow === 6);
+      ctx.fillText(isWeekend ? '🔥 14×14 WEEKEND SUPER' : '🔥 10×10 HARD', 300, 90);
+      
+      ctx.font = 'bold 48px SF Pro Rounded, system-ui';
+      ctx.fillText(timerEl.textContent, 300, 160);
+      
+      ctx.font = '18px SF Pro Rounded, system-ui';
+      ctx.fillText('Your Time', 300, 190);
+      
+      const state = loadState();
+      const streak = state ? state.streak : 1;
+      ctx.font = 'bold 24px SF Pro Rounded, system-ui';
+      ctx.fillText('🔥 ' + streak + ' day streak', 300, 240);
+      
+      const badge = getBadge(streak);
+      if (badge) {
+        ctx.font = '20px SF Pro Rounded, system-ui';
+        ctx.fillText(badge.emoji + ' ' + badge.label, 300, 275);
+      }
+      
+      ctx.font = '16px SF Pro Rounded, system-ui';
+      ctx.fillStyle = '#6f5651';
+      ctx.fillText('Play free at gridpaw.com', 300, 320);
+      
+      ctx.font = '40px serif';
+      ctx.fillText('🐾', 50, 370);
+      ctx.fillText('🐾', 550, 370);
+      
+      return canvas.toDataURL('image/png');
+    }
+
+    document.getElementById('start-btn').addEventListener('click', () => { track('daily_start'); startDailyChallenge(); });
+    document.getElementById('hint-btn').addEventListener('click', () => {
+      if (!currentPuzzle || won) return;
+      track('hint_click');
+      const h = getHint(currentPuzzle.grid, currentPuzzle.solution, playerSolution, currentPuzzle.size);
+      if (h) {
+        const cell = gridEl.querySelector('[data-row="'+h[0]+'"][data-col="'+h[1]+'"]');
+        if (cell) { cell.classList.add('cell-hint'); setTimeout(()=>cell.classList.remove('cell-hint'),2000); }
+        showToast('Hint: try row '+(h[0]+1)+', col '+(h[1]+1),'success');
+      } else showToast('No hints!','error');
+    });
+    document.getElementById('reset-btn').addEventListener('click', resetPuzzle);
+    document.getElementById('sound-btn').addEventListener('click', () => {
+      const muted = SFX.toggle();
+      document.getElementById('sound-btn').textContent = muted ? '🔇 Sound' : '🔊 Sound';
+    });
+    // Download Share Card（弹窗外的隐藏功能，保留给需要图片的用户）
+    const scb = document.getElementById('share-card-btn');
+    if (scb) scb.addEventListener('click', () => {
+      const cardData = generateShareCard();
+      const link = document.createElement('a');
+      link.download = 'gridpaw-daily-' + new Date().toISOString().split('T')[0] + '.png';
+      link.href = cardData;
+      link.click();
+      showToast('📸 Share card downloaded!', 'success');
+    });
+    document.getElementById('share-reddit').addEventListener('click', async () => {
+      track('share_reddit', { board: 'daily' });
+      // 棋盘截图到剪贴板（Reddit 发帖时可直接粘贴）
+      try {
+        if (typeof html2canvas !== 'undefined') {
+          const canvas = await html2canvas(document.getElementById('puzzle-grid'), { backgroundColor: '#f8f6ef', scale: 2 });
+          canvas.toBlob(async (blob) => {
+            if (blob) { try { await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]); } catch(e) {} }
+          }, 'image/png');
+        }
+      } catch(e) {}
+      const state = loadState();
+      const streak = state ? state.streak : 1;
+      const badge = getBadge(streak);
+      const badgeText = badge ? ' ' + badge.emoji + badge.label : '';
+      const text = encodeURIComponent('🐱 Cleared the GridPaw Daily Challenge (10×10 Akari)! ⏱ ' + timerEl.textContent + ' 🔥 ' + streak + ' day streak' + badgeText + ' — your turn → gridpaw.com');
+      window.open('https://www.reddit.com/r/gridpaw/submit?url=' + encodeURIComponent('https://gridpaw.com/daily/') + '&title=' + text, '_blank');
+    });
+    document.getElementById('win-close').addEventListener('click', () => {
+      winOverlay.classList.remove('show');
+    });
+    document.getElementById('share-copy').addEventListener('click', () => {
+      track('share_copy');
+      const state = loadState();
+      const streak = state ? state.streak : 1;
+      const badge = getBadge(streak);
+      const badgeText = badge ? ' ' + badge.emoji + ' ' + badge.label : '';
+      const text = '🐱 GridPaw Daily Challenge\n⏱️ ' + timerEl.textContent + '\n🔥 ' + streak + ' day streak' + badgeText + '\n\nPlay free at gridpaw.com';
+      navigator.clipboard.writeText(text).then(() => showToast('📋 Copied to clipboard!', 'success'));
+    });
+    document.getElementById('share-twitter').addEventListener('click', () => {
+      track('share_twitter');
+      const state = loadState();
+      const streak = state ? state.streak : 1;
+      const badge = getBadge(streak);
+      const badgeText = badge ? ' ' + badge.emoji + ' ' + badge.label : '';
+      const text = encodeURIComponent('🐱 Just completed the GridPaw Daily Challenge!\n⏱️ ' + timerEl.textContent + '\n🔥 ' + streak + ' day streak' + badgeText + '\n\nPlay free at gridpaw.com');
+      window.open('https://twitter.com/intent/tweet?text=' + text, '_blank');
+    });
+
+    updateHealth();
+    updateStreakDisplay();
+    syncCloudOnLoad();
+    renderLeaderboard();
+    // Check if already solved today
+    const state = loadState();
+    if (state && state.solved) {
+      document.getElementById('start-btn').textContent = '✅ Solved Today — Nice!';
+      document.getElementById('start-btn').disabled = true;
+      // UTC 午夜解锁下一关的倒计时
+      const tick = () => {
+        const now = new Date();
+        const next = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
+        const left = Math.floor((next - now) / 1000);
+        const h = Math.floor(left / 3600), m = Math.floor((left % 3600) / 60);
+        document.getElementById('daily-badge').textContent = '✅ Solved · New puzzle in ' + h + 'h ' + m + 'm';
+      };
+      tick();
+      setInterval(tick, 30000);
+    }
+
+    // ─── Account & cloud sync ─────────────────────────────────────────
+    let currentUser = null;
+    function fetchWithTimeout(url, opts = {}, ms = 8000) {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), ms);
+      return fetch(url, { ...opts, signal: ctrl.signal }).finally(() => clearTimeout(t));
+    }
+    function msToClock(ms) {
+      if (ms == null) return '--:--';
+      const total = Math.round(ms / 1000);
+      return Math.floor(total / 60).toString().padStart(2, '0') + ':' + (total % 60).toString().padStart(2, '0');
+    }
+    function renderAccountArea() {
+      const area = document.getElementById('account-area');
+      if (!area) return;
+      area.innerHTML = '';
+      if (currentUser) {
+        // DOM API 构建，避免 innerHTML 注入
+        if (currentUser.picture && /^https:\/\/(lh3|lh4|lh5|lh6)\.googleusercontent\.com\//.test(currentUser.picture)) {
+          const img = document.createElement('img');
+          img.src = currentUser.picture;
+          img.alt = '';
+          img.referrerPolicy = 'no-referrer';
+          img.style.cssText = 'width:28px;height:28px;border-radius:50%;vertical-align:middle';
+          area.appendChild(img);
+        }
+        const name = document.createElement('span');
+        name.textContent = currentUser.name || 'Cat Fan';
+        name.style.cssText = 'font-size:.85rem;font-weight:700;color:#342421';
+        area.appendChild(name);
+        const out = document.createElement('a');
+        out.href = '/api/auth/logout';
+        out.textContent = 'Sign out';
+        out.style.cssText = 'font-size:.75rem;color:#9b726c;text-decoration:underline';
+        area.appendChild(out);
+      } else {
+        const btn = document.createElement('a');
+        btn.href = '/api/auth/login?next=/daily';
+        btn.style.cssText = 'display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1.5px solid #dadce0;border-radius:24px;padding:.45rem 1.1rem;font-size:.85rem;font-weight:700;color:#3c4043;text-decoration:none;box-shadow:0 1px 3px rgba(0,0,0,.08)';
+        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 18.9 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.6 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>Sign in with Google';
+        area.appendChild(btn);
+      }
+    }
+    function applyCloudProgress(cloud) {
+      // 用云端数据覆盖 UI 与 localStorage（服务端已合并，云端即真源）
+      // 注意：云端 bestTime 单位是毫秒，localStorage bestTime 单位是秒
+      if (!cloud) return;
+      const local = loadState();
+      const st = {
+        date: getToday(),
+        streak: cloud.streak || 0,
+        bestStreak: cloud.bestStreak || 0,
+        bestTime: (cloud.bestTime != null && cloud.bestTime <= 7200000) ? Math.round(cloud.bestTime / 1000) : null,
+        solved: !!(local && local.solved),
+        lastPlayedDate: cloud.lastSolvedDate || (local && local.lastPlayedDate) || null
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(st));
+      updateStreakDisplay();
+    }
+    async function syncCloudOnLoad() {
+      try {
+        const meRes = await fetchWithTimeout('/api/auth/me');
+        const me = await meRes.json();
+        currentUser = me && me.user ? me.user : null;
+        renderAccountArea();
+        if (!currentUser) return;
+        const cloudRes = await fetchWithTimeout('/api/progress');
+        if (!cloudRes.ok) return;
+        const cloudData = await cloudRes.json();
+        const cloud = cloudData.progress;
+        const local = loadState();
+        const localBestSec = local && local.bestTime != null ? local.bestTime : null;
+        const cloudBestMs = cloud && cloud.bestTime != null ? cloud.bestTime : null;
+        const localHasMore = local && (!cloud ||
+          (local.streak || 0) > (cloud.streak || 0) ||
+          (local.bestStreak || 0) > (cloud.bestStreak || 0) ||
+          (localBestSec != null && localBestSec * 1000 < (cloudBestMs ?? Infinity)));
+        if (localHasMore) {
+          // 本地领先 → 上传，服务端合并后以响应为准
+          const post = await fetchWithTimeout('/api/progress', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+              date: (local && (local.lastPlayedDate || local.date)) || null,
+              streak: local.streak || 0,
+              bestStreak: local.bestStreak || 0,
+              bestTime: (local && local.bestTime != null) ? local.bestTime * 1000 : null
+            })
+          });
+          if (post.ok) {
+            const merged = (await post.json()).progress;
+            applyCloudProgress(merged);
+          }
+        } else if (cloud) {
+          applyCloudProgress(cloud);
+        }
+      } catch (e) { /* 静默降级：纯本地模式 */ }
+    }
+    async function syncWinToCloud(state, elapsedSeconds) {
+      if (!currentUser) return;
+      try {
+        await fetchWithTimeout('/api/progress', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            date: getToday(),
+            streak: state.streak || 0,
+            bestStreak: state.bestStreak || 0,
+            bestTime: (state.bestTime != null) ? state.bestTime * 1000 : null
+          })
+        });
+        await fetchWithTimeout('/api/leaderboard', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ date: getToday(), timeMs: Math.round(elapsedSeconds * 1000) })
+        });
+        renderLeaderboard();
+      } catch (e) { /* 静默 */ }
+    }
+    async function renderLeaderboard() {
+      const list = document.getElementById('leaderboard-list');
+      if (!list) return;
+      try {
+        const res = await fetchWithTimeout('/api/leaderboard?date=' + getToday());
+        if (!res.ok) return;
+        const data = await res.json();
+        const entries = data.entries || [];
+        if (!entries.length) {
+          list.innerHTML = '<p style="text-align:center;font-size:.85rem;color:#9b726c;padding:.5rem 0">🐾 Be the first cat on the leaderboard today!</p>';
+          return;
+        }
+        const medal = r => r === 1 ? '🥇' : r === 2 ? '🥈' : r === 3 ? '🥉' : '#' + r;
+        list.innerHTML = entries.map(e =>
+          '<div style="display:flex;justify-content:space-between;padding:.4rem .6rem;border-bottom:1px solid #f4dfdc;font-size:.85rem">'
+          + '<span style="font-weight:700;color:#342421">' + medal(e.rank) + ' ' + String(e.name || 'Anonymous Cat').replace(/[<>&]/g, '') + '</span>'
+          + '<span style="color:#559c68;font-weight:700">' + msToClock(e.timeMs) + '</span></div>'
+        ).join('');
+      } catch (e) { /* 静默 */ }
+    }
+    setInterval(renderLeaderboard, 60000);
+
+    // 登录回跳错误提示
+    try {
+      const authErr = new URLSearchParams(window.location.search).get('auth_error');
+      if (authErr) {
+        const msg = authErr === 'access_denied' ? 'Sign-in was cancelled.' : 'Sign-in failed (' + authErr + '). Please try again.';
+        showToast('⚠️ ' + msg, 'error');
+        history.replaceState(null, '', window.location.pathname);
+      }
+    } catch (e) {}
+
+    // Chrome Extension sync — post streak data to extension
+    function syncToExtension() {
+      try {
+        var raw = localStorage.getItem('gridpaw-daily');
+        if (!raw) return;
+        var st = JSON.parse(raw);
+        var today = new Date().toISOString().split('T')[0];
+        window.postMessage({
+          type: 'gridpaw_extension_sync',
+          payload: {
+            streak: st.streak || 0,
+            bestStreak: st.bestStreak || 0,
+            lastDate: st.lastPlayedDate || st.date || null,
+            bestTime: st.bestTime || 0,
+            puzzlesSolved: st.streak || 0,
+            dailySolved: st.solved ? today : null,
+            dailyTime: st.solved ? (st.bestTime || 0) : 0
+          }
+        }, '*');
+      } catch(e) {}
+    }
+    syncToExtension();
+  </script>
+</body>
+</html>

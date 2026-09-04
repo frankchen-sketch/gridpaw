@@ -1,0 +1,114 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import { blogPosts } from '../../../data/blog-posts';
+
+export function getStaticPaths() {
+  return blogPosts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const title = `${post.title} | GridPaw`;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={post.description} canonical={`/blog/${post.slug}`} type="article" />
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:#f8f6ef;color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.8rem;color:#342421;text-align:center;margin:.5rem 0;line-height:1.3}
+    .post-meta{text-align:center;color:#6f5651;font-size:.9rem;margin-bottom:1.5rem}
+    .post-meta span{margin:0 .5rem}
+    .tag{display:inline-block;font-size:.75rem;padding:2px 8px;border-radius:4px;margin-right:.3rem;font-weight:600;background:#fff4f0;color:#E8A888}
+    .prose{margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .prose h2{font-size:1.3rem;color:#342421;margin:1.8rem 0 .6rem}
+    .prose h3{font-size:1.1rem;color:#342421;margin:1.2rem 0 .4rem}
+    .prose p{margin:.6rem 0;line-height:1.8;font-size:1rem}
+    .prose ul,.prose ol{padding-left:1.5rem;margin:.6rem 0}
+    .prose li{margin-bottom:.4rem;line-height:1.7}
+    .prose a{color:#E8A888;text-decoration:underline}
+    .prose strong{color:#342421}
+    .prose em{font-style:italic}
+    .prose blockquote{margin:1rem 0;padding:.8rem 1rem;background:#fff4f0;border-left:4px solid #E8A888;border-radius:0 8px 8px 0;font-style:italic}
+    .cta-section{text-align:center;margin:2rem 0;padding:1.5rem;background:linear-gradient(145deg,#fff4f0,#f0e8ff);border-radius:12px}
+    .cta-btn{display:inline-block;padding:.7rem 2rem;background:#E8A888;color:#fff;border-radius:12px;text-decoration:none;font-weight:600;font-size:1rem;transition:background .2s}
+    .cta-btn:hover{background:#D09070}
+    .related-posts{margin-top:2rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .related-posts h3{font-size:1.1rem;color:#342421;margin-bottom:.8rem}
+    .related-link{display:block;padding:.6rem .8rem;margin:.4rem 0;background:#fff;border-radius:8px;text-decoration:none;color:#342421;border:1px solid #e7dacf;transition:all .2s}
+    .related-link:hover{border-color:#E8A888;box-shadow:0 2px 8px rgba(232,168,136,.15)}
+    .related-link .rl-title{font-weight:600;font-size:.95rem}
+    .related-link .rl-desc{font-size:.85rem;color:#6f5651;margin-top:.2rem}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    footer a{color:#6f5651}
+
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo-clay-cat.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Akari Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/">Play</a>
+        <a href="/how-to-play/">How to Play</a>
+        <a href="/tips/">Tips</a>
+        <a href="/daily/">Daily</a>
+        <a href="/solver/">Solver</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>{post.title}</h1>
+    <div class="post-meta">
+      <span>📅 {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+      <span>⏱️ {post.readTime}</span>
+      <span>{post.tags.map(tag => <span class="tag">{tag}</span>)}</span>
+    </div>
+
+    <article class="prose" set:html={post.content} />
+
+    <!-- CTA -->
+    <div class="cta-section">
+      <p style="margin-bottom:.8rem;font-weight:600;color:#342421">Ready to practice what you learned?</p>
+      <a href="/" class="cta-btn">🐱 Play GridPaw Free</a>
+    </div>
+
+    <!-- Related Posts -->
+    <div class="related-posts">
+      <h3>📚 More from the Blog</h3>
+      {blogPosts.filter(p => p.slug !== post.slug).slice(0, 3).map(p => (
+        <a href={`/blog/${p.slug}/`} class="related-link">
+          <div class="rl-title">{p.title}</div>
+          <div class="rl-desc">{p.readTime} · {p.tags.join(', ')}</div>
+        </a>
+      ))}
+    </div>
+
+    <footer>
+      <p><a href="/blog/">← All Blog Posts</a> · <a href="/">Play GridPaw</a></p>
+    </footer>
+  </div>
+</body>
+</html>

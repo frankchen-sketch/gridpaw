@@ -448,16 +448,3 @@ function getHint(grid, solution, playerSolution, size) {
   }
   return null;
 }
-{
-  checkViolations,
-  checkWin,
-  cloneGrid,
-  cloneSolution,
-  countCatsAround,
-  countLit,
-  createEmptyGrid,
-  generatePuzzle,
-  getHint,
-  illuminate,
-  solve
-};

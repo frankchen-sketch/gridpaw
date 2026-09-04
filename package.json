@@ -4,11 +4,13 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/bundle-engine.mjs && astro build",
     "preview": "astro preview",
-    "deploy": "wrangler pages deploy dist --project-name gridpaw --commit-dirty=true"
+    "deploy": "wrangler pages deploy dist --project-name gridpaw --commit-dirty=true",
+    "bundle-engine": "node scripts/bundle-engine.mjs"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
     "astro": "^5.0.0"
   }
 }

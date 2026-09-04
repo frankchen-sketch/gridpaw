@@ -1,0 +1,140 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+const title = "Akari Elimination Technique — Solve Hard Puzzles | GridPaw";
+const description = "Master the elimination technique for Akari puzzles. Learn how to use contradiction detection to solve hard Light Up puzzles. Play free at GridPaw.";
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/tips/elimination" type="article" />
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:linear-gradient(180deg,#f8f6ef,#f8f6ef);color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.8rem;color:#342421;text-align:center;margin:.5rem 0}
+    .seo-content{margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .seo-content p{margin:.5rem 0;line-height:1.7}
+    .seo-content ol,.seo-content ul{padding-left:1.5rem;margin:.5rem 0}
+    .seo-content li{margin-bottom:.4rem}
+    .seo-content a{color:#E8A888;text-decoration:underline}
+    .seo-content h2{font-size:1.3rem;color:#342421;margin:1.5rem 0 .5rem}
+    .seo-content h3{font-size:1.1rem;color:#342421;margin:1rem 0 .3rem}
+    details{margin:.5rem 0;padding:.5rem .8rem;background:#f8f6ef;border-radius:8px}
+    summary{cursor:pointer;font-weight:600;color:#E8A888}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    footer a{color:#6f5651}
+    .play-cta{display:block;text-align:center;margin:2rem 0;padding:1rem;background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;border-radius:12px;text-decoration:none;font-weight:600;font-size:1.1rem}
+    .play-cta:hover{background:linear-gradient(145deg,#E0A888,#D08868)}
+  
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo-clay-cat.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Akari Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/">Play</a>
+        <a href="/how-to-play/">How to Play</a>
+        <a href="/tips/">Tips</a>
+        <a href="/daily/">Daily</a>
+        <a href="/solver/">Solver</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>🐱 Akari Elimination Technique</h1>
+    <p style="text-align:center;color:#6f5651;margin-bottom:1rem;">Master the advanced technique for solving hard puzzles.</p>
+    <section class="seo-content">
+
+      <h2>What Is Elimination?</h2>
+      <p>Elimination is a logical deduction technique used in Akari (also known as Light Up) puzzles when basic rules alone cannot make progress. Instead of proving where a light bulb <em>must</em> go, you prove where it <em>cannot</em> go by assuming the opposite and watching for a contradiction.</p>
+      <p>In a typical Akari puzzle, you start by applying straightforward rules: a numbered wall cell with all its neighbors accounted for, or a cell that can only be reached by one remaining position. These basic deductions carry you through easy and medium puzzles. But when you face a hard puzzle — especially the 12×12 grids on GridPaw — you will hit a wall where no obvious move presents itself. That is exactly where the elimination technique earns its place in your toolkit.</p>
+      <p>The core idea is simple: <strong>assume a cell is a light bulb, then check whether that assumption leads to an impossible state.</strong> If it does, the cell must be empty. If assuming a cell is empty leads to a contradiction, then it must be a light bulb. Either way, you gain information without guessing.</p>
+
+      <h2>How to Spot a Contradiction</h2>
+      <p>Before you can use elimination effectively, you need to know what a contradiction looks like in an Akari puzzle. There are four common contradiction types:</p>
+      <ol>
+        <li><strong>Double illumination:</strong> Two light bulbs end up shining on each other with no wall between them. This violates the fundamental rule that light beams travel in straight lines until they hit a wall or the grid edge. If your assumption creates this situation, the assumption is wrong.</li>
+        <li><strong>Unreachable dark cell:</strong> After placing a hypothetical light bulb, you mark all the cells it illuminates. If any remaining empty cell can no longer be reached by any possible light bulb placement, you have a contradiction — that cell would stay dark forever.</li>
+        <li><strong>Overcrowded wall number:</strong> A numbered wall cell (0, 1, 2, 3, or 4) has a strict count of adjacent light bulbs. If your assumption forces a wall cell to have more adjacent bulbs than its number allows, the assumption fails.</li>
+        <li><strong>Isolated region:</strong> Your assumption splits the remaining empty cells into disconnected regions, and one region has too few valid light-bulb positions to illuminate all its cells. This is the hardest contradiction type to spot, but it appears frequently in hard puzzle scenarios.</li>
+      </ol>
+      <p>Training your eye to recognize these four patterns is the key to making elimination fast and reliable. With practice, you will start seeing contradictions within seconds of placing a hypothetical bulb.</p>
+
+      <h2>Elimination Walkthrough: Step by Step</h2>
+      <p>Let us walk through a concrete example to see elimination in action. Imagine you have a section of an Akari grid where two empty cells — call them A and B — sit in a corridor between several numbered walls. Basic rules have stalled, and you need to decide: is cell A a light bulb, or is it empty?</p>
+      <h3>Step 1: Choose a candidate cell</h3>
+      <p>Pick a cell that, once resolved, would unlock several other deductions. Good candidates are cells that sit at intersections of multiple constraints — near numbered walls, in narrow corridors, or at the only position that can illuminate a specific dark cell.</p>
+      <h3>Step 2: Assume it is a light bulb</h3>
+      <p>Place a hypothetical light bulb in cell A. Now propagate all consequences: mark every cell this bulb illuminates along its row and column until walls block the beams. Check adjacent numbered wall cells — do any exceed their allowed bulb count?</p>
+      <h3>Step 3: Look for a contradiction</h3>
+      <p>Scan for the four contradiction types. Does any wall number get violated? Does any remaining empty cell become permanently unreachable? Do two hypothetical bulbs shine directly on each other? If you find a contradiction, you have proven that cell A <em>cannot</em> be a light bulb — mark it as empty.</p>
+      <h3>Step 4: If no contradiction, try the opposite</h3>
+      <p>If assuming A is a bulb produces no contradiction, try assuming A is empty instead. Sometimes the contradiction appears on the other side. If assuming A is empty also produces no contradiction, this particular elimination test is inconclusive — pick a different candidate cell and come back later.</p>
+      <h3>Step 5: Apply the result and repeat</h3>
+      <p>Once elimination gives you a definite answer (bulb or empty), mark it and immediately re-check all nearby constraints. A single resolved cell often triggers a chain of basic deductions that were previously blocked. Then pick your next candidate and repeat the process.</p>
+
+      <h2>When Basic Rules Are Not Enough</h2>
+      <p>You might wonder: how do I know when to switch from basic rules to elimination? Here are the signals:</p>
+      <ul>
+        <li><strong>No forced moves:</strong> You have scanned every wall number and every dark cell, and none of them demand a specific action. The puzzle is "stuck."</li>
+        <li><strong>Multiple possibilities per cell:</strong> A dark cell can be reached by two or more positions, and no rule disambiguates them. Elimination can break the tie.</li>
+        <li><strong>Symmetrical ambiguity:</strong> Two sections of the grid mirror each other, and you cannot tell which side gets the bulb. This is common in hard puzzle designs that deliberately create fork points.</li>
+        <li><strong>Late-game deadlocks:</strong> Near the end of a hard puzzle, you may have only a handful of unresolved cells, but every one of them has two possible states. Elimination resolves these efficiently.</li>
+      </ul>
+      <p>The transition from basic solving to elimination is not a failure — it is a sign that you are tackling genuinely challenging Akari puzzles. The best solvers use elimination as a natural extension of their basic toolkit, not as a last resort.</p>
+
+      <h2>Tips for Faster Elimination</h2>
+      <p>Elimination can be slow if you test every cell blindly. Use these strategies to speed up:</p>
+      <ul>
+        <li><strong>Target high-impact cells first.</strong> A cell adjacent to two or three numbered walls is more likely to produce a quick contradiction than an isolated cell in open space.</li>
+        <li><strong>Use pencil marks.</strong> Mentally (or on paper) track which cells are "possible bulbs" for each dark cell. When a dark cell has only two candidate positions, testing one of them is a 50/50 shot at a useful result.</li>
+        <li><strong>Look for domino effects.</strong> Sometimes placing one hypothetical bulb forces three or four other cells to resolve. If you spot this cascade, the contradiction (or confirmation) comes faster.</li>
+        <li><strong>Combine with wall-number math.</strong> If a "2" wall has one bulb already placed and three empty neighbors, you know exactly one more bulb goes in those three cells. Testing each of those three cells with elimination is efficient because the constraint is tight.</li>
+        <li><strong>Do not re-test proven cells.</strong> Once elimination proves a cell is empty or a bulb, mark it permanently. Re-testing wastes time and can introduce errors.</li>
+      </ul>
+
+      <h2>Practice the Elimination Technique</h2>
+      <p>The best way to internalize elimination is to practice on real Akari puzzles. Start with medium-difficulty puzzles where basic rules get you 70–80% of the way, then use elimination to finish. As your recognition of contradiction patterns improves, move up to the hard 12×12 puzzles that require elimination from the start.</p>
+      <p>GridPaw offers puzzles at every difficulty level, all playable directly in your browser. The hard puzzles are specifically designed to require elimination — they are excellent training grounds for this technique.</p>
+
+      <h2>Frequently Asked Questions</h2>
+      <details>
+        <summary>Is elimination the same as guessing?</summary>
+        <p>No. Guessing means placing a light bulb and hoping it works. Elimination means placing a hypothetical bulb, checking for a logical contradiction, and drawing a definite conclusion. The difference is that elimination always produces a provable result — either the assumption leads to a contradiction (proving the cell is empty) or it does not (which you then test from the other direction). You never have to backtrack from a guess because you never commit to an unproven placement.</p>
+      </details>
+      <details>
+        <summary>How many times will I need elimination in a single hard puzzle?</summary>
+        <p>It varies. In a well-designed hard Akari puzzle, you typically need elimination two to five times. Each elimination resolves one or two cells, which then unlocks a cascade of basic deductions. The hardest puzzles may require elimination at nearly every step, but those are rare even among 12×12 grids.</p>
+      </details>
+      <details>
+        <summary>Can I solve every Akari puzzle using only elimination?</summary>
+        <p>Technically yes — elimination subsumes basic rules since a "forced move" is just an elimination where the contradiction appears immediately. However, solving exclusively through elimination is much slower. The most efficient approach is to apply basic rules first for speed, then switch to elimination only when you get stuck. This hybrid strategy is what experienced Akari players use in competitive or timed solving.</p>
+      </details>
+
+    </section>
+    <a href="/" class="play-cta">🎮 Practice Elimination Technique</a>
+    <footer><p>© 2026 GridPaw. All rights reserved.</p></footer>
+  </div>
+</body>
+</html>

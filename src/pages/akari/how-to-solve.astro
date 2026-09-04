@@ -1,0 +1,162 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+const title = "How to Solve Akari Puzzles — Beginner to Expert Guide | GridPaw";
+const description = "Master Akari (Light Up) puzzles with this complete strategy guide. Learn step-by-step techniques from beginner to advanced. Practice free at GridPaw.";
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/how-to-solve" type="article" />
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:linear-gradient(180deg,#f8f6ef,#f8f6ef);color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.8rem;color:#342421;text-align:center;margin:.5rem 0}
+    .seo-content{margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .seo-content p{margin:.5rem 0;line-height:1.7}
+    .seo-content ol,.seo-content ul{padding-left:1.5rem;margin:.5rem 0}
+    .seo-content li{margin-bottom:.4rem}
+    .seo-content a{color:#E8A888;text-decoration:underline}
+    .seo-content h2{font-size:1.3rem;color:#342421;margin:1.5rem 0 .5rem}
+    .seo-content h3{font-size:1.1rem;color:#342421;margin:1rem 0 .3rem}
+    details{margin:.5rem 0;padding:.5rem .8rem;background:#f8f6ef;border-radius:8px}
+    summary{cursor:pointer;font-weight:600;color:#E8A888}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    footer a{color:#6f5651}
+    .play-cta{display:block;text-align:center;margin:2rem 0;padding:1rem;background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;border-radius:12px;text-decoration:none;font-weight:600;font-size:1.1rem}
+    .play-cta:hover{background:linear-gradient(145deg,#E0A888,#D08868)}
+  
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo-clay-cat.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Akari Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/">Play</a>
+        <a href="/how-to-play/">How to Play</a>
+        <a href="/tips/">Tips</a>
+        <a href="/daily/">Daily</a>
+        <a href="/solver/">Solver</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>🐱 How to Solve Light Up Puzzles — Complete Strategy Guide</h1>
+    <p style="text-align:center;color:#6f5651;margin-bottom:1rem;">Master Light Up (Akari) puzzles with step-by-step techniques.</p>
+    
+    <section class="seo-content">
+      <p>Whether you are brand new to the <strong>light up puzzle</strong> (also known as <strong>Akari</strong>) or you have been solving them for years, this guide walks you through every technique you need. By the end, you will know how to solve even the trickiest grids with confidence — and you can <a href="/">practice free on GridPaw</a> to sharpen your skills.</p>
+
+      <h2>Understanding the Basics</h2>
+      <p>A <strong>light up puzzle</strong> is played on a rectangular grid of white and black cells. Your goal is to place light bulbs (we call them cats 🐱 on GridPaw) on white cells so that:</p>
+      <ol>
+        <li><strong>Every white cell is illuminated.</strong> A cat lights up all white cells in its row and column until a black cell or the grid edge blocks the beam.</li>
+        <li><strong>No two cats see each other.</strong> Two cats cannot be placed in the same row or column with only white cells between them — their beams would clash.</li>
+        <li><strong>Numbered black cells are satisfied.</strong> A black cell showing a number (0–4) must have exactly that many cats in its orthogonally adjacent white neighbors.</li>
+        <li><strong>Unnumbered black cells have no constraint.</strong> You can place any number of cats next to them.</li>
+      </ol>
+      <p>That is the entire ruleset. The beauty of this <strong>logic puzzle</strong> is that those four rules create surprisingly deep deduction chains. Let us learn the <strong>strategy</strong> to crack them.</p>
+
+      <h2>Step 1: Start with Number 4 Cells</h2>
+      <p>When you first look at a <strong>light up puzzle</strong>, scan for any black cell marked <strong>4</strong>. This is the most powerful starting point because the deduction is immediate and absolute.</p>
+      <p>A cell with the number 4 has exactly four orthogonal neighbors (up, down, left, right). Since it requires exactly 4 adjacent cats, <strong>every single white neighbor must contain a cat</strong>. Place them all right away — no thinking required.</p>
+      <p>After placing those cats, mark the cells they illuminate. Each cat lights its entire row and column until blocked by a black cell. This single step often illuminates a large portion of the grid and gives you a strong foothold for the rest of the solve.</p>
+      <p><strong>Pro tip:</strong> Even if you do not see a 4, look for cells close to corners or edges. A corner cell only has 2 neighbors, so a "2" in a corner is just as decisive — both neighbors must be cats.</p>
+
+      <h2>Step 2: Handle Number 0 Cells</h2>
+      <p>The opposite extreme is equally useful. A black cell marked <strong>0</strong> means none of its adjacent white cells can hold a cat. Mark all of those neighbors with an X (or a dot on GridPaw) to indicate "no cat here."</p>
+      <p>Why does this matter? Because every X you place reduces the number of candidate positions for cats. In a tight <strong>light up puzzle</strong>, eliminating even one cell can cascade into forced placements elsewhere. The grid shrinks mentally, and the solution path becomes clearer.</p>
+      <p>After handling 0-cells, check whether any remaining numbered cells now have most of their neighbors eliminated. If a "3" cell has three X-marked neighbors and only three open spots left, all three open spots must be cats — the same logic as the number-4 trick, just triggered by elimination rather than the grid edge.</p>
+
+      <h2>Step 3: Use Line-of-Sight</h2>
+      <p>Line-of-sight is the core mechanic that makes <strong>Akari</strong> unique among logic puzzles. Once you place a cat, it illuminates every white cell in its row and column until a black wall blocks the beam. This has two critical consequences:</p>
+      <ul>
+        <li><strong>Illuminated cells cannot hold another cat.</strong> If a cell is already lit by an existing cat, placing a second cat there would violate the "no two cats see each other" rule. You can safely mark it as "no cat."</li>
+        <li><strong>Dark cells must be lit somehow.</strong> If a white cell is not yet illuminated, at least one cat must eventually be placed in its row or column (within line-of-sight). Track these "must-light" obligations.</li>
+      </ul>
+      <p>The <strong>strategy</strong> here is iterative: place a cat → mark its illumination → check which cells are still dark → find cells that can only be lit from one direction → place more cats. Each pass through this loop resolves more of the grid.</p>
+      <p>Pay special attention to cells near black walls. A dark cell sandwiched between two black cells in its row can only be lit vertically — that is a forced placement waiting to be discovered.</p>
+
+      <h2>Step 4: Find Forced Placements</h2>
+      <p>A forced placement happens when a white cell can only be illuminated from exactly one direction. This is the bread-and-butter <strong>strategy</strong> for solving a <strong>light up puzzle</strong> after the obvious number-cell deductions are done.</p>
+      <p>Here is how to spot them:</p>
+      <ol>
+        <li><strong>Find a dark (unlit) white cell.</strong></li>
+        <li><strong>Check each of its four directions.</strong> For each direction, ask: "Is there a valid cat position that could light this cell from that side?" A position is invalid if it is already illuminated (would create a clash), marked X, occupied by a black cell, or off the grid.</li>
+        <li><strong>If only one valid direction remains,</strong> the cat must go in that spot. Place it.</li>
+      </ol>
+      <p>Sometimes you will find a cell that can be lit from two directions, but one of those directions would leave another cell permanently dark. That is a deeper form of forced placement — it requires looking one step ahead. As you practice on GridPaw, you will develop an intuition for these patterns.</p>
+      <p>Another powerful variant: if two dark cells share the same single remaining light source, that source is doubly forced. Look for clusters of dark cells that funnel down to one cat position.</p>
+
+      <h2>Step 5: Elimination Technique</h2>
+      <p>Sometimes the direct techniques above are not enough, especially on harder <strong>Akari</strong> puzzles. That is when you use elimination — a form of proof by contradiction.</p>
+      <p>The idea is simple:</p>
+      <ol>
+        <li><strong>Pick a cell with exactly two possibilities.</strong> It could be a cat or not a cat.</li>
+        <li><strong>Assume it IS a cat.</strong> Follow the chain of consequences: mark illumination, check numbered cells, look for forced placements. If you reach a contradiction (a numbered cell gets too many cats, or a cell becomes impossible to illuminate), then the assumption was wrong — mark it X.</li>
+        <li><strong>If no contradiction appears,</strong> try the other assumption (it is NOT a cat). If that leads to a contradiction, then it must be a cat.</li>
+      </ol>
+      <p>This technique is also called " bifurcation" or "guess-and-check" by puzzle enthusiasts. While purists prefer to avoid it, it is a legitimate and sometimes necessary <strong>strategy</strong> for the hardest grids. The key is to choose cells where the consequences propagate quickly — a cell adjacent to a numbered wall is ideal because the number constraint immediately tells you if something is wrong.</p>
+      <p><strong>Tip:</strong> Always check the easier techniques first. In well-designed puzzles (like those on GridPaw), elimination is rarely needed until the final stages.</p>
+
+      <h2>Common Mistakes to Avoid</h2>
+      <p>Even experienced solvers fall into these traps. Watch out for them as you work through any <strong>light up puzzle</strong>:</p>
+      <ul>
+        <li><strong>Forgetting corner illumination.</strong> A cat in a corner lights fewer cells, so it is easy to overlook. Always trace the full beam in both directions.</li>
+        <li><strong>Ignoring numbered cell constraints early.</strong> Do not just focus on illumination — the number on each black cell is a hard constraint. A "1" with three X-marked neighbors means the last neighbor is forced, even if it does not seem obvious.</li>
+        <li><strong>Placing cats without checking line-of-sight.</strong> Before you commit to a cat placement, verify that no existing cat in the same row or column can see it. Clashes are the most common error.</li>
+        <li><strong>Assuming symmetry.</strong> Some grids look symmetrical, but the solution may not be. Always solve based on logic, not visual pattern-matching.</li>
+        <li><strong>Not re-evaluating after each placement.</strong> Every cat you place changes the landscape. After each placement, re-scan numbered cells and dark cells for new forced moves.</li>
+        <li><strong>Giving up too early.</strong> If you feel stuck, go back to the numbered cells and re-check. Often a small deduction you missed unlocks the entire puzzle.</li>
+      </ul>
+
+      <h2>Frequently Asked Questions</h2>
+
+      <details>
+        <summary>What is the difference between Light Up and Akari?</summary>
+        <p>They are the same puzzle. "Light Up" is the English name used by most puzzle publishers, while "Akari" (明かり, meaning "light" in Japanese) is the original Japanese name coined by Nikoli, the publisher that popularized it. On GridPaw, we use "Light Up" but the rules and <strong>strategy</strong> are identical.</p>
+      </details>
+
+      <details>
+        <summary>How do I know if a Light Up puzzle has a unique solution?</summary>
+        <p>Well-constructed <strong>light up puzzle</strong> grids always have exactly one valid solution. If you find yourself making a guess with no logical basis, step back — there is almost certainly a deduction you missed. Every cell should be determinable through pure logic. If you reach a point where two configurations both seem valid, re-examine the numbered cells and line-of-sight constraints more carefully.</p>
+      </details>
+
+      <details>
+        <summary>Can I solve Light Up puzzles without guessing?</summary>
+        <p>Yes! Every properly designed <strong>Akari</strong> puzzle is solvable through pure deduction. The five steps in this guide — number-4 cells, number-0 cells, line-of-sight, forced placements, and elimination — cover all the logical techniques you need. The elimination technique (Step 5) might feel like guessing, but it is actually a formal proof method: you are not randomly trying options, you are testing a hypothesis and looking for contradictions.</p>
+      </details>
+
+      <details>
+        <summary>What grid sizes are best for beginners?</summary>
+        <p>Start with 7×7 or smaller grids. These typically use only the basic techniques (Steps 1–3) and can be solved in a few minutes. Once you are comfortable, move to 10×10 grids which introduce forced placements (Step 4). The largest grids (15×15 and above) may require the full elimination technique. GridPaw offers puzzles across all difficulty levels, so you can progress at your own pace.</p>
+      </details>
+    </section>
+    
+    <a href="/" class="play-cta">🎮 Practice What You've Learned</a>
+    
+    <footer><p>© 2026 GridPaw. All rights reserved.</p></footer>
+  </div>
+</body>
+</html>

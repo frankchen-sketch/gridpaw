@@ -1,0 +1,296 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+const title = "Cat Logic Puzzle — Play Free Online";
+const description = "Play cat logic puzzles online free. Place glowing cats on a grid to illuminate every cell. A cozy Akari variant with adorable cat theme.";
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/cat-logic-puzzle" type="article" />
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:#f8f6ef;color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.8rem;color:#342421;text-align:center;margin:.5rem 0}
+    .subtitle{text-align:center;color:#6f5651;margin-bottom:1rem;font-size:.95rem}
+    .controls{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;align-items:center;margin:.8rem 0}
+    .controls select{padding:.4rem .6rem;border:2px solid #E8A888;border-radius:8px;background:#fff;font-size:.9rem;color:#342421;cursor:pointer;font-family:inherit}
+    .btn{padding:.5rem 1rem;border:none;border-radius:12px;cursor:pointer;font-size:.9rem;font-weight:600;transition:transform .1s,background .2s;font-family:inherit}
+    .btn:active{transform:scale(.95)}
+    .btn-primary{background:#E8A888;color:#fff}.btn-primary:hover{background:#D09070}
+    .btn-secondary{background:#fff4f0;color:#342421}.btn-secondary:hover{background:#e7dacf}
+    .progress{text-align:center;font-size:.85rem;color:#6f5651;margin:.3rem 0;min-height:1.4rem}
+    .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#E74C3C;color:#fff;padding:.6rem 1.2rem;border-radius:12px;font-size:.9rem;font-weight:600;z-index:1000;opacity:0;transition:opacity .3s;pointer-events:none}
+    .toast.show{opacity:1}.toast.success{background:#559c68}
+    .grid-wrapper{display:flex;justify-content:center;margin:.5rem 0}
+    .puzzle-grid{display:inline-grid;gap:2px;background:#E8DDD8;padding:4px;border-radius:12px;box-shadow:0 4px 16px rgba(123,107,138,.1)}
+    .cell{display:flex;align-items:center;justify-content:center;border-radius:8px;user-select:none;cursor:pointer;transition:background .15s,box-shadow .15s;position:relative;overflow:hidden}
+    .cell-black{background:#342421;cursor:default;box-shadow:inset 0 2px 4px rgba(0,0,0,.25)}
+    .cell-number{font-weight:800;color:#fff4f0}
+    .cell-lit{background:#FFF8F0}
+    .cell-cat{background:#fff4f0;background-image:url('/assets/cats/cat-clay-purple.png');background-size:60%;background-repeat:no-repeat;background-position:center;box-shadow:inset 0 0 12px rgba(232,168,136,.2)}
+    .cell-x{background:#FAFAFA}
+    .cell-dark{background:#F0EBE5}
+    @keyframes hint-pulse{0%,100%{box-shadow:inset 0 0 0 3px #E8A888}50%{box-shadow:inset 0 0 0 3px #E8A888,0 0 16px rgba(200,168,232,.5)}}
+    .cell-hint{animation:hint-pulse 0.8s ease-in-out infinite}
+    @keyframes flash-red{0%,100%{box-shadow:none}50%{box-shadow:inset 0 0 0 3px #E74C3C,0 0 8px rgba(231,76,60,.4)}}
+    .cell-violation{animation:flash-red .5s ease}
+    @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-3px)}40%,80%{transform:translateX(3px)}}
+    .cell-shake{animation:shake .4s ease}
+    @keyframes cat-pop{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+    .win-overlay{position:fixed;inset:0;background:rgba(251,248,255,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;opacity:0;transition:opacity .4s;pointer-events:none}
+    .win-overlay.show{opacity:1;pointer-events:auto}
+    .win-cat{animation:cat-pop .6s ease forwards}
+    .win-text{font-size:1.6rem;font-weight:800;color:#342421;margin-top:1rem}
+    .win-sub{font-size:1rem;color:#6f5651;margin-top:.3rem}
+    .win-btn{margin-top:1.5rem;padding:.7rem 2rem;background:#E8A888;color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;font-family:inherit}
+    .win-btn:hover{background:#D09070}
+    .seo-content{margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .seo-content p{margin:.5rem 0;line-height:1.7}
+    .seo-content ol,.seo-content ul{padding-left:1.5rem;margin:.5rem 0}
+    .seo-content li{margin-bottom:.4rem}
+    .seo-content a{color:#E8A888;text-decoration:underline}
+    .seo-content h2{font-size:1.3rem;color:#342421;margin:1.5rem 0 .5rem}
+    .seo-content h3{font-size:1.1rem;color:#342421;margin:1rem 0 .3rem}
+    details{margin:.5rem 0;padding:.5rem .8rem;background:#f8f6ef;border-radius:8px}
+    summary{cursor:pointer;font-weight:600;color:#E8A888}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    footer a{color:#6f5651}
+    @media(max-width:480px){h1{font-size:1.3rem}.controls{gap:.3rem}.btn{padding:.4rem .7rem;font-size:.8rem}}
+  
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo-clay-cat.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Akari Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/">Play</a>
+        <a href="/how-to-play/">How to Play</a>
+        <a href="/tips/">Tips</a>
+        <a href="/daily/">Daily</a>
+        <a href="/solver/">Solver</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>🐱 Cat Logic Puzzle: Place Cats, Light Up the Grid</h1>
+    <p class="subtitle">A cozy logic puzzle where you place glowing cats to illuminate every cell.</p>
+    <div class="controls">
+      <select id="difficulty-select"><option value="easy" selected>Easy (7×7)</option><option value="medium">Medium (10×10)</option><option value="hard">Hard (12×12)</option></select>
+      <button class="btn btn-primary" id="new-btn">🔄 New Puzzle</button>
+      <button class="btn btn-secondary" id="hint-btn">💡 Hint</button>
+      <button class="btn btn-secondary" id="reset-btn">↺ Reset</button>
+    </div>
+    <div class="progress" id="progress"></div>
+    <div class="grid-wrapper"><div class="puzzle-grid" id="puzzle-grid"></div></div>
+    <div class="toast" id="toast"></div>
+    <div class="win-overlay" id="win-overlay">
+      <div class="win-cat"><svg width="120" height="120" viewBox="0 0 120 120"><defs><radialGradient id="wg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#E8A888" stop-opacity="0.6"/><stop offset="100%" stop-color="#E8A888" stop-opacity="0"/></radialGradient></defs><circle cx="60" cy="60" r="58" fill="url(#wg)"/><circle cx="60" cy="65" r="30" fill="#E8A888"/><polygon points="35,42 42,18 52,42" fill="#E8A888"/><polygon points="68,42 78,18 85,42" fill="#E8A888"/><circle cx="48" cy="58" r="4" fill="#342421"/><circle cx="72" cy="58" r="4" fill="#342421"/><ellipse cx="60" cy="68" rx="4" ry="3" fill="#E8A888"/><path d="M56,70 Q60,76 64,70" fill="none" stroke="#342421" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="win-text">🎉 Meow-velous! 🐱✨</div>
+      <button class="win-btn" id="win-next">Next Puzzle →</button>
+    </div>
+    <section class="seo-content">
+      <h2>What Is a Cat Logic Puzzle?</h2>
+      <p>A <strong>cat logic puzzle</strong> is a grid-based deduction game inspired by the classic Japanese puzzle Akari (Light Up), created by <a href="https://www.nikoli.co.jp/en/">Nikoli</a>. In GridPaw's cat-themed version, you place adorable glowing cats on a grid instead of light bulbs. Each cat illuminates its entire row and column until blocked by a wall. Your goal: light up every white cell while following numbered clues on black walls.</p>
+      <p>Unlike Sudoku, which relies on number placement, a <strong>cat logic puzzle</strong> uses <strong>spatial reasoning</strong>. You think in terms of lines of sight, adjacency constraints, and elimination — all without any arithmetic. The cat theme makes it approachable and cozy, perfect for a relaxing <strong>brain training</strong> session. Whether you are a seasoned puzzle veteran or a complete beginner, the <strong>cat puzzle game</strong> format on GridPaw offers a warm, inviting entry point into the world of logic puzzles.</p>
+      <p>The concept is simple: numbered black cells tell you how many of their four adjacent cells must contain cats. No two cats can see each other along the same row or column. Every white cell must be illuminated. That is the entire ruleset — but the deductions it enables can be surprisingly deep and satisfying.</p>
+
+      <h2>How to Play Cat Logic Puzzles</h2>
+      <p>Playing a <strong>cat logic puzzle</strong> on GridPaw is intuitive, even if you have never tried an Akari-style puzzle before:</p>
+      <ol>
+        <li><strong>Click a white cell</strong> to place a glowing cat. Click the same cell again to remove it.</li>
+        <li>Each cat <strong>illuminates its entire row and column</strong> — light travels outward until it hits a black wall or the grid edge. Illuminated cells glow with a warm golden color.</li>
+        <li><strong>Numbered black cells</strong> are your clues. A "2" means exactly 2 of its 4 adjacent cells must contain cats. A "0" means none of its neighbors can have a cat.</li>
+        <li><strong>No two cats can see each other</strong> — if two cats are in the same row or column with no wall between them, that placement is illegal and the grid will warn you.</li>
+        <li><strong>All white cells must be illuminated</strong> to win the puzzle.</li>
+      </ol>
+      <p>On mobile, <strong>long-press</strong> a cell to mark it with a paw print — useful for noting cells you know cannot have cats. On desktop, right-click or double-click to toggle the paw mark. This annotation system is essential for harder puzzles where tracking impossibilities becomes critical.</p>
+
+      <h2>Why Cats Make Puzzles Better</h2>
+      <p>You might wonder: why add cats to a logic puzzle? The answer goes beyond aesthetics. The cat theme in this <strong>cat puzzle game</strong> serves several practical purposes that genuinely improve the solving experience:</p>
+      <ul>
+        <li><strong>Lower intimidation barrier</strong> — A grid full of cute cats looks like play, not homework. Players who might shy away from a "logic puzzle" happily engage with a "cat puzzle." This makes the <strong>cat logic puzzle</strong> format ideal for introducing friends and family to deduction games.</li>
+        <li><strong>Emotional warmth</strong> — The warm golden glow of illuminated cells and the round, friendly cat icons create a cozy atmosphere. This transforms solving from a stressful test into a meditative, calming activity. Many players describe the experience as "digital hygge."</li>
+        <li><strong>Better visual feedback</strong> — Cat icons are larger and more distinct than plain light bulb symbols, making it easier to scan the grid at a glance. The visual hierarchy (cats vs illuminated vs dark cells) is clearer with the cat theme than with traditional Akari graphics.</li>
+        <li><strong>Memorable identity</strong> — There are hundreds of generic Akari clones online. The cat theme gives GridPaw a distinct personality that players remember and return to. A <strong>cat logic puzzle</strong> is not just another grid — it is a cozy world you step into.</li>
+      </ul>
+      <p>The cat theme also makes this <strong>logic puzzle</strong> more shareable. "I just solved a cat logic puzzle" is a more engaging social media post than "I completed a constraint satisfaction problem." The whimsical framing invites curiosity and lowers the social barrier to sharing puzzle achievements.</p>
+
+      <h2>Difficulty Levels</h2>
+      <p>GridPaw offers three difficulty tiers for the <strong>cat logic puzzle</strong>, each designed for a different skill level:</p>
+      <table style="width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.95rem;">
+        <thead><tr style="border-bottom:2px solid #E8A888;text-align:left;"><th style="padding:.4rem;">Level</th><th style="padding:.4rem;">Grid</th><th style="padding:.4rem;">Techniques Needed</th><th style="padding:.4rem;">Best For</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #e7dacf;"><td style="padding:.4rem;"><strong>Easy</strong></td><td style="padding:.4rem;">7×7</td><td style="padding:.4rem;">Basic constraint checking only</td><td style="padding:.4rem;">Beginners, quick sessions, kids</td></tr>
+          <tr style="border-bottom:1px solid #e7dacf;"><td style="padding:.4rem;"><strong>Medium</strong></td><td style="padding:.4rem;">10×10</td><td style="padding:.4rem;">Propagation + 1–4 elimination steps</td><td style="padding:.4rem;">Intermediate solvers</td></tr>
+          <tr><td style="padding:.4rem;"><strong>Hard</strong></td><td style="padding:.4rem;">12×12</td><td style="padding:.4rem;">Propagation + multiple elimination chains</td><td style="padding:.4rem;">Experienced puzzlers seeking a challenge</td></tr>
+        </tbody>
+      </table>
+      <p>If you are new to the <strong>cat puzzle game</strong> format, start with Easy. The 7×7 grid has more numbered clues relative to its size, which means more forced placements and fewer dead ends. You will build intuition quickly. Once you can solve Easy puzzles without hints, move to Medium. Hard puzzles are for players who have mastered all the techniques in the strategy guide below.</p>
+
+      <h2>Strategy Guide for Cat Logic Puzzles</h2>
+      <h3>Beginner: Start with Extremes</h3>
+      <p>The fastest way to begin any <strong>cat logic puzzle</strong> is to scan for extreme clues:</p>
+      <ul>
+        <li><strong>"4" cells</strong> — all four neighbors must be cats. Place them immediately. This is the single most powerful starting move in any <strong>logic puzzle</strong> of this type.</li>
+        <li><strong>"0" cells</strong> — none of its neighbors can have cats. Mark all four adjacent cells with paw prints right away to eliminate them from consideration.</li>
+        <li><strong>Work from corners and edges</strong> — a corner cell can only be lit from two directions, and an edge cell from three. These constrained positions often lead to forced placements early in the solve.</li>
+      </ul>
+      <h3>Intermediate: Constraint Propagation</h3>
+      <p>Once you have placed all obvious cats from extreme clues, move to constraint propagation:</p>
+      <ul>
+        <li><strong>Count remaining neighbors</strong> — if a "3" cell has two neighbors already blocked (by walls, paw marks, or conflicting cats), the remaining two must both be cats.</li>
+        <li><strong>Line-of-sight elimination</strong> — once you place a cat, every cell in its row and column cannot hold another cat. This often forces placements in distant parts of the grid.</li>
+        <li><strong>Shadow mapping</strong> — track which cells are illuminated. A dark cell that can only be lit from one remaining direction is a forced placement. This technique is the bread and butter of Medium puzzles.</li>
+      </ul>
+      <h3>Advanced: Elimination Reasoning</h3>
+      <p>On Hard <strong>cat logic puzzles</strong>, simple propagation may not be enough. Use these advanced techniques:</p>
+      <ul>
+        <li><strong>Hypothetical deduction</strong> — pick an undecided cell and mentally assume "a cat goes here." Propagate all consequences. If you reach a contradiction (a numbered cell gets too many cats, or a white cell becomes impossible to light), then your assumption was wrong and that cell cannot hold a cat.</li>
+        <li><strong>Chain reasoning</strong> — placing one cat forces or eliminates others in a cascade. Follow the consequences as far as they go before making your next move.</li>
+        <li><strong>Shadow map narrowing</strong> — for each undecided cell, track which directions could still illuminate it. As the grid fills in, the shadow map narrows until only one option remains.</li>
+      </ul>
+      <h3>Expert: Pattern Recognition</h3>
+      <p>After solving dozens of <strong>cat logic puzzles</strong>, you will start recognizing common patterns. A "2" cell in a corner with one wall neighbor almost always forces a specific configuration. A row of three consecutive white cells between two walls has limited valid arrangements. These pattern libraries build naturally through practice and dramatically speed up your solving.</p>
+
+      <h2>Why Cat Logic Puzzles Are Good for Brain Training</h2>
+      <p>A <strong>cat logic puzzle</strong> exercises multiple cognitive skills simultaneously, making it one of the most efficient forms of <strong>brain training</strong> available in a casual game format:</p>
+      <ul>
+        <li><strong>Spatial reasoning</strong> — you must visualize lines of sight across the entire grid, tracking which cells are illuminated and which remain dark.</li>
+        <li><strong>Logical deduction</strong> — every placement must be justified by a chain of reasoning. Guessing leads to contradictions; only logic leads to solutions.</li>
+        <li><strong>Pattern recognition</strong> — experienced solvers recognize common configurations instantly, building a mental library of puzzle patterns.</li>
+        <li><strong>Working memory</strong> — you must hold multiple constraints in mind simultaneously: which numbered cells are not yet satisfied, which cells are still dark, which positions are impossible.</li>
+        <li><strong>Patience and focus</strong> — unlike timed games, the <strong>cat puzzle game</strong> rewards careful, unhurried thinking. There is no clock, no penalty for taking your time.</li>
+      </ul>
+      <p>Research suggests that regularly engaging with <strong>logic puzzles</strong> like Akari-style games can help maintain cognitive flexibility and processing speed. The cozy cat theme adds an emotional comfort layer that makes the <strong>brain training</strong> feel like self-care rather than work. Many players describe their daily <strong>cat logic puzzle</strong> session as a form of meditation — focused, calming, and deeply satisfying when the final cat lights up the last dark cell.</p>
+
+      <h2>Cat Logic Puzzle vs Other Puzzles</h2>
+      <p>How does the <strong>cat logic puzzle</strong> compare to other popular puzzle types?</p>
+      <table style="width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.95rem;">
+        <thead><tr style="border-bottom:2px solid #E8A888;text-align:left;"><th style="padding:.4rem;">Feature</th><th style="padding:.4rem;">Cat Logic Puzzle</th><th style="padding:.4rem;">Sudoku</th><th style="padding:.4rem;">Nonograms</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #e7dacf;"><td style="padding:.4rem;">Core mechanic</td><td style="padding:.4rem;">Place cats, light cells</td><td style="padding:.4rem;">Fill numbers 1–9</td><td style="padding:.4rem;">Color cells by clues</td></tr>
+          <tr style="border-bottom:1px solid #e7dacf;"><td style="padding:.4rem;">Reasoning type</td><td style="padding:.4rem;">Spatial + logical</td><td style="padding:.4rem;">Number logic</td><td style="padding:.4rem;">Counting + pattern</td></tr>
+          <tr style="border-bottom:1px solid #e7dacf;"><td style="padding:.4rem;">Math needed?</td><td style="padding:.4rem;">No</td><td style="padding:.4rem;">Basic</td><td style="padding:.4rem;">Counting only</td></tr>
+          <tr style="border-bottom:1px solid #e7dacf;"><td style="padding:.4rem;">Visual feedback</td><td style="padding:.4rem;">Real-time illumination</td><td style="padding:.4rem;">None until complete</td><td style="padding:.4rem;">Picture emerges</td></tr>
+          <tr style="border-bottom:1px solid #e7dacf;"><td style="padding:.4rem;">Stress level</td><td style="padding:.4rem;">Low (no timer)</td><td style="padding:.4rem;">Medium</td><td style="padding:.4rem;">Low</td></tr>
+          <tr><td style="padding:.4rem;">Theme</td><td style="padding:.4rem;">🐱 Cats</td><td style="padding:.4rem;">Numbers</td><td style="padding:.4rem;">Pictures</td></tr>
+        </tbody>
+      </table>
+      <p>The <strong>cat logic puzzle</strong> stands out for its combination of zero math, real-time visual feedback, and low stress. There is no timer, no score, no competition — just you and the grid. The cat theme makes it uniquely inviting among <strong>logic puzzle</strong> options.</p>
+
+      <h2>FAQ</h2>
+      <details><summary>What is the difference between a cat logic puzzle and Akari?</summary><p>Akari is the original Japanese puzzle by Nikoli. A <strong>cat logic puzzle</strong> is the same game with a cat theme — instead of light bulbs, you place glowing cats. The rules, logic, and deduction techniques are identical. GridPaw simply wraps the classic experience in a warmer, more inviting visual package.</p></details>
+      <details><summary>Are cat logic puzzles free to play?</summary><p>Yes! GridPaw is completely free to play online. No download, no registration, no ads, no hidden paywalls. Just open the page and start solving your <strong>cat puzzle game</strong>.</p></details>
+      <details><summary>Can I play on my phone or tablet?</summary><p>Absolutely. GridPaw is fully responsive and works on any screen size. On mobile, long-press a cell to mark it with a paw print instead of placing a cat. The touch controls are optimized for both phones and tablets.</p></details>
+      <details><summary>What if I get stuck on a hard puzzle?</summary><p>Use the Hint button to highlight a cell that needs attention. You can also check <a href="/puzzle/puzzle-001/">step-by-step solutions</a> to learn new techniques. Every <strong>cat logic puzzle</strong> on GridPaw has a unique solution reachable through pure logic — no guessing required.</p></details>
+      <details><summary>Are cat logic puzzles good for brain training?</summary><p>Yes. A <strong>cat logic puzzle</strong> exercises spatial reasoning, logical deduction, pattern recognition, and working memory. The cozy cat theme makes the <strong>brain training</strong> feel like relaxation rather than work. Many players incorporate a daily puzzle into their mindfulness routine.</p></details>
+
+      <h2>More from GridPaw</h2>
+      <ul>
+        <li><a href="/">Play GridPaw</a> — the main game with all difficulty levels</li>
+        <li><a href="/akari-puzzle/">Akari Puzzle Guide</a> — history and advanced techniques</li>
+        <li><a href="/light-up-puzzle/">Light Up Puzzle Guide</a> — rules, strategy, and tips</li>
+        <li><a href="/puzzle/puzzle-001/">Puzzle #001 with Solution</a> — step-by-step walkthrough</li>
+      </ul>
+      <h2>Related Puzzles</h2>
+      <ul>
+        <li><a href="/light-up-puzzle/">Light Up Puzzle — Play Free Online</a></li>
+        <li><a href="/akari-puzzle/">Akari Puzzle — The Original Japanese Light Up Game</a></li>
+        <li><a href="/how-to-play/">How to Play Akari — Beginner's Guide</a></li>
+        <li><a href="/solver/">Akari Solver — Solve Any Puzzle Online</a></li>
+      </ul>
+    </section>
+    <footer><p>GridPaw — Cat Logic Puzzle · <a href="/" style="color:#6f5651">Play More</a></p></footer>
+  </div>
+  <script is:inline src="/akari-engine.js"></script>
+  <script>
+
+    var CAT_IMG = '<img src="/assets/cats/cat-clay-purple.png" style="width:85%;height:85%;object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 2px 4px rgba(123,107,138,.3))" />';
+    var X_MARK = '<svg viewBox="0 0 24 24" width="50%" height="50%" style="opacity:0.4"><line x1="6" y1="6" x2="18" y2="18" stroke="#B8A8C8" stroke-width="2.5" stroke-linecap="round"/><line x1="18" y1="6" x2="6" y2="18" stroke="#B8A8C8" stroke-width="2.5" stroke-linecap="round"/></svg>';
+
+    var SIZE_MAP = { easy: 7, medium: 10, hard: 12 }, DIRS = [[-1,0],[1,0],[0,-1],[0,1]];
+    var currentPuzzle = null, playerSolution = null, markX = null, won = false;
+    var gridEl = document.getElementById('puzzle-grid'), progressEl = document.getElementById('progress'), toastEl = document.getElementById('toast'), diffSelect = document.getElementById('difficulty-select'), winOverlay = document.getElementById('win-overlay'), toastTimer = null;
+
+    function showToast(m, t) { toastEl.textContent = m; toastEl.className = 'toast show' + (t === 'success' ? ' success' : ''); if (toastTimer) clearTimeout(toastTimer); toastTimer = setTimeout(function() { toastEl.className = 'toast'; }, 2500); }
+
+    function newPuzzle() {
+      var d = diffSelect.value, s = SIZE_MAP[d]; won = false; winOverlay.classList.remove('show');
+      gridEl.innerHTML = '<div style="padding:2rem;color:#6f5651;font-size:0.9rem;">Generating...</div>'; progressEl.textContent = '';
+      setTimeout(function() {
+        try { currentPuzzle = generatePuzzle(s); playerSolution = []; markX = []; for (var i = 0; i < s; i++) { playerSolution.push(new Array(s).fill(false)); markX.push(new Array(s).fill(false)); } renderBoard(); updateProgress(); } catch (e) { showToast('Failed to generate.', 'error'); }
+      }, 10);
+    }
+
+    function resetPuzzle() { if (!currentPuzzle) return; won = false; winOverlay.classList.remove('show'); var s = currentPuzzle.size; playerSolution = []; markX = []; for (var i = 0; i < s; i++) { playerSolution.push(new Array(s).fill(false)); markX.push(new Array(s).fill(false)); } renderBoard(); updateProgress(); showToast('Board reset!', 'success'); }
+
+    function renderBoard() {
+      if (!currentPuzzle) return;
+      var g = currentPuzzle.grid, s = currentPuzzle.size, lit = illuminate(g, playerSolution, s), v = checkViolations(g, playerSolution, s), vc = {}, cp = {};
+      v.forEach(function(x) { if (x.type === 'number_excess') { vc[x.row + ',' + x.col] = true; DIRS.forEach(function(d) { var nr = x.row + d[0], nc = x.col + d[1]; if (nr >= 0 && nr < s && nc >= 0 && nc < s && playerSolution[nr][nc]) vc[nr + ',' + nc] = true; }); } else if (x.type === 'cat_conflict') { cp[x.row + ',' + x.col] = true; cp[x.row2 + ',' + x.col2] = true; } });
+      var mw = Math.min(window.innerWidth - 40, 600), cs = Math.max(30, Math.min(44, Math.floor((mw - (s + 1) * 2 - 8) / s)));
+      gridEl.style.gridTemplateColumns = 'repeat(' + s + ',' + cs + 'px)'; gridEl.style.gridTemplateRows = 'repeat(' + s + ',' + cs + 'px)'; gridEl.innerHTML = '';
+      for (var r = 0; r < s; r++) for (var c = 0; c < s; c++) {
+        var cell = document.createElement('div'); cell.className = 'cell'; cell.style.width = cs + 'px'; cell.style.height = cs + 'px'; cell.dataset.row = r; cell.dataset.col = c;
+        var val = g[r][c], key = r + ',' + c;
+        if (val !== 9) { cell.classList.add('cell-black'); if (val >= 0) { cell.classList.add('cell-number'); cell.textContent = val; cell.style.fontSize = Math.max(12, cs * .5) + 'px'; if (vc[key]) cell.classList.add('cell-violation'); } }
+        else {
+          if (playerSolution[r][c]) { cell.classList.add('cell-cat'); cell.innerHTML = CAT_IMG; if (cp[key]) cell.classList.add('cell-shake'); }
+          else if (markX[r][c]) { cell.classList.add('cell-x'); cell.innerHTML = X_MARK; }
+          else if (lit[r][c]) { cell.classList.add('cell-lit'); }
+          else { cell.classList.add('cell-dark'); }
+          (function(r2, c2) {
+            cell.addEventListener('click', function(e) { e.preventDefault(); if (!won) handleClick(r2, c2); });
+            cell.addEventListener('dblclick', function(e) { e.preventDefault(); if (!won) { markX[r2][c2] = !markX[r2][c2]; renderBoard(); } });
+            cell.addEventListener('contextmenu', function(e) { e.preventDefault(); if (!won) { markX[r2][c2] = !markX[r2][c2]; renderBoard(); } });
+            var lpt = null, dlp = false;
+            cell.addEventListener('touchstart', function() { dlp = false; lpt = setTimeout(function() { dlp = true; if (!won) { markX[r2][c2] = !markX[r2][c2]; renderBoard(); } }, 500); }, { passive: true });
+            cell.addEventListener('touchend', function(e) { if (lpt) clearTimeout(lpt); if (dlp) e.preventDefault(); });
+            cell.addEventListener('touchmove', function() { if (lpt) clearTimeout(lpt); }, { passive: true });
+          })(r, c);
+        }
+        gridEl.appendChild(cell);
+      }
+    }
+
+    function handleClick(r, c) {
+      if (!currentPuzzle) return; var g = currentPuzzle.grid, s = currentPuzzle.size;
+      if (playerSolution[r][c]) playerSolution[r][c] = false;
+      else { markX[r][c] = false; playerSolution[r][c] = true; var v = checkViolations(g, playerSolution, s); for (var i = 0; i < v.length; i++) { if (v[i].type === 'number_excess') { showToast('Too many cats around number ' + v[i].number + '!', 'error'); break; } } for (var i = 0; i < v.length; i++) { if (v[i].type === 'cat_conflict') { showToast('Two cats are facing each other!', 'error'); break; } } }
+      renderBoard(); updateProgress();
+      if (checkWin(g, playerSolution, s)) { won = true; setTimeout(function() { winOverlay.classList.add('show'); }, 300); }
+    }
+
+    function updateProgress() { if (!currentPuzzle) return; var info = countLit(currentPuzzle.grid, playerSolution, currentPuzzle.size); progressEl.textContent = info.lit + ' / ' + info.total + ' cells lit'; }
+
+    document.getElementById('hint-btn').addEventListener('click', function() { if (!currentPuzzle || won) return; var h = getHint(currentPuzzle.grid, currentPuzzle.solution, playerSolution, currentPuzzle.size); if (h) { var cell = gridEl.querySelector('[data-row="' + h[0] + '"][data-col="' + h[1] + '"]'); if (cell) { cell.classList.add('cell-hint'); setTimeout(function() { cell.classList.remove('cell-hint'); }, 2000); } showToast('Hint: try row ' + (h[0] + 1) + ', col ' + (h[1] + 1), 'success'); } else showToast('No hints!', 'error'); });
+    document.getElementById('reset-btn').addEventListener('click', resetPuzzle);
+    document.getElementById('new-btn').addEventListener('click', newPuzzle);
+    document.getElementById('win-next').addEventListener('click', function() { winOverlay.classList.remove('show'); newPuzzle(); });
+    diffSelect.addEventListener('change', newPuzzle);
+    newPuzzle();
+  </script>
+</body>
+</html>
