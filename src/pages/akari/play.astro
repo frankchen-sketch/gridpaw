@@ -1,0 +1,893 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+
+const title = "Play GridPaw Online — Free Cat Puzzle Game";
+const description = "Play GridPaw (Akari) puzzles online for free. Choose difficulty and grid size, solve cat-themed logic puzzles in your browser. No download needed.";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/play" type="website" />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "GridPaw Online",
+    "url": "https://gridpaw.com/play",
+    "description": description,
+    "applicationCategory": "Game",
+    "operatingSystem": "Web Browser",
+    "gamePlatform": "Web Browser",
+    "genre": "Puzzle"
+  })} />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo-clay-cat.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Akari Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/">Play</a>
+        <a href="/how-to-play/">How to Play</a>
+        <a href="/tips/">Tips</a>
+        <a href="/daily/">Daily</a>
+        <a href="/solver/">Solver</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="game-header">
+      <h1>🐱 Play GridPaw</h1>
+      <p class="subtitle">Light up all the white cells without letting bulbs see each other in this cat-themed Akari puzzle!</p>
+    </div>
+
+    <div class="game-controls">
+      <div class="control-group">
+        <label>
+          Size
+          <select id="size-select">
+            <option value="5">5×5</option>
+            <option value="7" selected>7×7</option>
+            <option value="9">9×9</option>
+            <option value="12">12×12</option>
+          </select>
+        </label>
+        <label>
+          Difficulty
+          <select id="difficulty-select">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+            <option value="ultra">Ultra</option>
+          </select>
+        </label>
+      </div>
+      <div class="control-group">
+        <button id="new-game-btn" class="btn btn-primary">✨ New Game</button>
+        <button id="check-btn" class="btn btn-secondary">✓ Check</button>
+        <button id="hint-btn" class="btn btn-secondary">💡 Hint</button>
+        <button id="reset-btn" class="btn btn-secondary">↺ Reset</button>
+      </div>
+    </div>
+
+    <div id="message-area" class="message-area" role="status" aria-live="polite"></div>
+
+    <div id="puzzle-board" class="puzzle-board" role="grid" aria-label="GridPaw puzzle board"></div>
+
+    <div class="game-footer">
+      <p>💡 <strong>How to play:</strong> Click a white cell to place a light bulb. All white cells must be lit by at least one bulb. No two bulbs may shine on each other. Numbered black cells tell you how many bulbs must be placed next to them.</p>
+    </div>
+  </main>
+
+  <script type="module">
+    import {
+      generatePuzzle,
+      generateDailyPuzzle,
+      validateMove,
+      validatePuzzle,
+      computeIllumination,
+      cloneGrid,
+      solvePuzzle,
+      CellType,
+      bulbsSeeEachOther,
+      countAdjacentBulbs,
+      isBlack,
+      isNumberedBlack,
+      getBlackNumber
+    } from '/src/lib/akari-puzzle-engine';
+
+    // ─── State ───────────────────────────────────────────────────────
+    let puzzle = null;
+    let playerGrid = null; // clone of puzzle.grid that we mutate
+    let size = 7;
+    let difficulty = 'medium';
+    let isDaily = false;
+    let streak = 0;
+    let solved = false;
+    let hintIndex = 0; // tracks which hint cell we revealed
+
+    // ─── DOM refs ────────────────────────────────────────────────────
+    const board = document.getElementById('puzzle-board');
+    const messageArea = document.getElementById('message-area');
+    const sizeSelect = document.getElementById('size-select');
+    const difficultySelect = document.getElementById('difficulty-select');
+    const newGameBtn = document.getElementById('new-game-btn');
+    const checkBtn = document.getElementById('check-btn');
+    const hintBtn = document.getElementById('hint-btn');
+    const resetBtn = document.getElementById('reset-btn');
+
+    // ─── Daily puzzle detection ──────────────────────────────────────
+    function checkDaily() {
+      if (window.location.pathname === '/daily' || window.location.pathname.endsWith('/daily')) {
+        isDaily = true;
+        sizeSelect.disabled = true;
+        difficultySelect.disabled = true;
+        loadDailyPuzzle();
+        return true;
+      }
+      return false;
+    }
+
+    function loadDailyPuzzle() {
+      const today = new Date();
+      const dateStr = today.toISOString().slice(0, 10);
+      try {
+        puzzle = generateDailyPuzzle(dateStr, 7);
+        size = puzzle.size;
+        difficulty = puzzle.difficulty;
+        playerGrid = cloneGrid(puzzle.grid);
+        solved = false;
+        hintIndex = 0;
+        computeIllumination(playerGrid);
+        renderBoard();
+        setMessage('Daily puzzle loaded! 🐱', 'info');
+        loadStreak();
+      } catch (e) {
+        setMessage('Failed to generate daily puzzle. Try refreshing.', 'error');
+      }
+    }
+
+    // ─── Streak (localStorage) ───────────────────────────────────────
+    function loadStreak() {
+      try {
+        const saved = JSON.parse(localStorage.getItem('gridpaw-streak') || '{}');
+        const today = new Date().toISOString().slice(0, 10);
+        if (saved.date === today) {
+          streak = saved.streak || 0;
+        } else {
+          streak = 0;
+        }
+        updateStreakDisplay();
+      } catch { streak = 0; }
+    }
+
+    function saveStreak() {
+      try {
+        localStorage.setItem('gridpaw-streak', JSON.stringify({
+          date: new Date().toISOString().slice(0, 10),
+          streak: streak
+        }));
+      } catch { /* ignore */ }
+    }
+
+    function updateStreakDisplay() {
+      let el = document.getElementById('streak-display');
+      if (!el && isDaily) {
+        el = document.createElement('div');
+        el.id = 'streak-display';
+        el.className = 'streak-display';
+        board.parentNode.insertBefore(el, board);
+      }
+      if (el) {
+        el.textContent = isDaily ? `🔥 Daily streak: ${streak} day${streak !== 1 ? 's' : ''}` : '';
+      }
+    }
+
+    // ─── New game ────────────────────────────────────────────────────
+    function newGame() {
+      if (isDaily) {
+        loadDailyPuzzle();
+        return;
+      }
+      size = parseInt(sizeSelect.value, 10);
+      difficulty = difficultySelect.value;
+      try {
+        puzzle = generatePuzzle(size, difficulty);
+        playerGrid = cloneGrid(puzzle.grid);
+        solved = false;
+        hintIndex = 0;
+        computeIllumination(playerGrid);
+        renderBoard();
+        setMessage(`New ${difficulty} ${size}×${size} puzzle generated! 🐱`, 'info');
+      } catch (e) {
+        setMessage('Failed to generate puzzle. Try a different size or difficulty.', 'error');
+      }
+    }
+
+    // ─── Board rendering ─────────────────────────────────────────────
+    function renderBoard() {
+      if (!playerGrid || !puzzle) return;
+
+      const grid = playerGrid;
+      const origGrid = puzzle.grid;
+      const s = grid.length;
+
+      // Compute illumination
+      computeIllumination(grid);
+
+      // Find conflicts
+      const seeConflicts = bulbsSeeEachOther(grid);
+      const conflictSet = new Set(seeConflicts.map(c => `${c.row},${c.col}`));
+
+      // Find number violations
+      const numberViolations = new Set();
+      for (let r = 0; r < s; r++) {
+        for (let c = 0; c < s; c++) {
+          if (isNumberedBlack(origGrid[r][c].type)) {
+            const expected = getBlackNumber(origGrid[r][c].type);
+            const actual = countAdjacentBulbs(grid, r, c);
+            if (actual !== expected) {
+              numberViolations.add(`${r},${c}`);
+            }
+          }
+        }
+      }
+
+      // Check if all white cells are illuminated
+      computeIllumination(grid);
+      let allLit = true;
+      const darkCells = [];
+      for (let r = 0; r < s; r++) {
+        for (let c = 0; c < s; c++) {
+          if (grid[r][c].type === CellType.White && !grid[r][c].illuminated) {
+            allLit = false;
+            darkCells.push(`${r},${c}`);
+          }
+        }
+      }
+      const darkSet = new Set(darkCells);
+
+      board.style.setProperty('--grid-size', s);
+      board.innerHTML = '';
+
+      for (let r = 0; r < s; r++) {
+        for (let c = 0; c < s; c++) {
+          const cell = document.createElement('div');
+          cell.className = 'cell';
+          cell.dataset.row = r;
+          cell.dataset.col = c;
+
+          const origCell = origGrid[r][c];
+          const playerCell = grid[r][c];
+          const key = `${r},${c}`;
+
+          if (isBlack(origCell.type)) {
+            // Black cell
+            cell.classList.add('cell-black');
+            const num = getBlackNumber(origCell.type);
+            if (num >= 0) {
+              cell.classList.add('cell-numbered');
+              cell.textContent = num;
+              if (numberViolations.has(key)) {
+                cell.classList.add('cell-violation');
+              }
+            }
+            cell.setAttribute('aria-label', `Black cell${num >= 0 ? ` with number ${num}` : ''}`);
+          } else {
+            // White cell
+            cell.classList.add('cell-white');
+            cell.tabIndex = 0;
+            cell.setAttribute('role', 'gridcell');
+            cell.setAttribute('aria-label', `Cell row ${r + 1}, column ${c + 1}`);
+
+            if (playerCell.bulb) {
+              cell.classList.add('cell-bulb');
+              if (conflictSet.has(key)) {
+                cell.classList.add('cell-conflict');
+              }
+            } else if (playerCell.illuminated) {
+              cell.classList.add('cell-lit');
+              // Small glow indicator
+              cell.textContent = '';
+            } else {
+              cell.classList.add('cell-dark');
+            }
+
+            cell.addEventListener('click', () => handleCellClick(r, c));
+            cell.addEventListener('keydown', (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleCellClick(r, c);
+              }
+            });
+          }
+
+          board.appendChild(cell);
+        }
+      }
+
+      // Check if all constraints are satisfied (every constraint met, but not necessarily solved)
+      if (conflictSet.size > 0) {
+        document.getElementById('check-btn')?.classList.remove('solved');
+      }
+    }
+
+    // ─── Cell click handler ──────────────────────────────────────────
+    function handleCellClick(row, col) {
+      if (solved) return;
+      if (!playerGrid || !puzzle) return;
+      if (isBlack(puzzle.grid[row][col].type)) return;
+
+      const cell = playerGrid[row][col];
+      // Toggle: place → remove → place
+      cell.bulb = !cell.bulb;
+
+      renderBoard();
+      setMessage('', '');
+    }
+
+    // ─── Check solution ──────────────────────────────────────────────
+    function checkSolution() {
+      if (!playerGrid || !puzzle) return;
+
+      const checkPuzzle = {
+        size: puzzle.size,
+        difficulty: puzzle.difficulty,
+        grid: cloneGrid(playerGrid)
+      };
+
+      const result = validatePuzzle(checkPuzzle);
+
+      if (result.valid) {
+        solved = true;
+        setMessage('🎉 Meow-velous! Puzzle solved correctly! 🐱✨', 'success');
+        if (isDaily) {
+          streak++;
+          saveStreak();
+          updateStreakDisplay();
+        }
+        document.getElementById('check-btn')?.classList.add('solved');
+      } else {
+        setMessage(result.message, 'error');
+      }
+    }
+
+    // ─── Hint ────────────────────────────────────────────────────────
+    function getHint() {
+      if (solved) return;
+      if (!playerGrid || !puzzle) return;
+
+      // Solve the puzzle to get a solution
+      const solvePuzzleState = {
+        size: puzzle.size,
+        difficulty: puzzle.difficulty,
+        grid: cloneGrid(puzzle.grid)
+      };
+
+      // First, copy player's bulbs into the solve state
+      for (let r = 0; r < puzzle.size; r++) {
+        for (let c = 0; c < puzzle.size; c++) {
+          if (playerGrid[r][c].bulb) {
+            solvePuzzleState.grid[r][c].bulb = true;
+          }
+        }
+      }
+
+      const solution = solvePuzzle(solvePuzzleState, 2);
+
+      if (solution.count === 0) {
+        setMessage('No solution found for current state. Try resetting.', 'error');
+        return;
+      }
+
+      const solBulbs = solution.solutions[0];
+      if (!solBulbs || solBulbs.length === 0) {
+        setMessage('No hint available.', 'error');
+        return;
+      }
+
+      // Find bulbs that are not yet placed by the player
+      const unplaced = solBulbs.filter(b => !playerGrid[b.row][b.col].bulb);
+      if (unplaced.length === 0) {
+        setMessage('All bulbs from the solution are already placed! Try checking.', 'info');
+        return;
+      }
+
+      // Place one hint
+      const hint = unplaced[0];
+      playerGrid[hint.row][hint.col].bulb = true;
+      renderBoard();
+      setMessage(`💡 Hint: placed a bulb at row ${hint.row + 1}, column ${hint.col + 1}`, 'info');
+    }
+
+    // ─── Reset ───────────────────────────────────────────────────────
+    function resetBoard() {
+      if (!puzzle) return;
+      playerGrid = cloneGrid(puzzle.grid);
+      solved = false;
+      hintIndex = 0;
+      computeIllumination(playerGrid);
+      renderBoard();
+      setMessage('Board reset. Try again! 🐱', 'info');
+      document.getElementById('check-btn')?.classList.remove('solved');
+    }
+
+    // ─── Message display ─────────────────────────────────────────────
+    function setMessage(text, type) {
+      messageArea.textContent = text;
+      messageArea.className = 'message-area';
+      if (type) messageArea.classList.add(`message-${type}`);
+    }
+
+    // ─── Event listeners ─────────────────────────────────────────────
+    newGameBtn.addEventListener('click', newGame);
+    checkBtn.addEventListener('click', checkSolution);
+    hintBtn.addEventListener('click', getHint);
+    resetBtn.addEventListener('click', resetBoard);
+
+    // ─── Init ────────────────────────────────────────────────────────
+    if (!checkDaily()) {
+      newGame();
+    }
+  </script>
+
+  <style>
+    /* ─── Reset & Base ──────────────────────────────────────────────── */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #fef9f0;
+      color: #3d2b1f;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #1a1410;
+        color: #f0e6d8;
+      }
+    }
+
+    main {
+      max-width: 700px;
+      width: 100%;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ─── Header ────────────────────────────────────────────────────── */
+    .game-header {
+      text-align: center;
+      margin-bottom: 1rem;
+      width: 100%;
+    }
+
+    .game-header h1 {
+      font-size: 1.8rem;
+      color: #d4783c;
+      margin-bottom: 0.3rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .game-header h1 {
+        color: #e8925a;
+      }
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #8a7355;
+      line-height: 1.4;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .subtitle {
+        color: #b8a088;
+      }
+    }
+
+    /* ─── Controls ──────────────────────────────────────────────────── */
+    .game-controls {
+      background: #fff6ea;
+      border: 1px solid #e8d5b8;
+      border-radius: 12px;
+      padding: 0.8rem 1rem;
+      margin-bottom: 0.8rem;
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .game-controls {
+        background: #2a221c;
+        border-color: #4a3a2e;
+      }
+    }
+
+    .control-group {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .game-controls label {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #8a7355;
+      gap: 0.2rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .game-controls label {
+        color: #b8a088;
+      }
+    }
+
+    .game-controls select {
+      padding: 0.35rem 0.5rem;
+      border: 1px solid #d4b896;
+      border-radius: 6px;
+      background: #fffcf5;
+      color: #3d2b1f;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .game-controls select:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .game-controls select {
+        background: #3a3028;
+        border-color: #5a4a3a;
+        color: #f0e6d8;
+      }
+    }
+
+    .btn {
+      padding: 0.45rem 0.85rem;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .btn-primary {
+      background: #d4783c;
+      color: #fff;
+      border-color: #c0682c;
+    }
+
+    .btn-primary:hover {
+      background: #c0682c;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .btn-primary {
+        background: #e8925a;
+        border-color: #d4783c;
+        color: #1a1410;
+      }
+      .btn-primary:hover {
+        background: #d4783c;
+      }
+    }
+
+    .btn-secondary {
+      background: #f0e4d4;
+      color: #5a4030;
+      border-color: #d4b896;
+    }
+
+    .btn-secondary:hover {
+      background: #e4d4c0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .btn-secondary {
+        background: #3a3028;
+        color: #e8dcc8;
+        border-color: #5a4a3a;
+      }
+      .btn-secondary:hover {
+        background: #4a3a2e;
+      }
+    }
+
+    .btn.solved {
+      background: #4caf50;
+      color: #fff;
+      border-color: #388e3c;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .btn.solved {
+        background: #66bb6a;
+        color: #1a1410;
+      }
+    }
+
+    /* ─── Message ───────────────────────────────────────────────────── */
+    .message-area {
+      min-height: 2rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-align: center;
+      width: 100%;
+      margin-bottom: 0.6rem;
+      transition: all 0.2s ease;
+    }
+
+    .message-success {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .message-error {
+      background: #fce4ec;
+      color: #c62828;
+    }
+
+    .message-info {
+      background: #e3f2fd;
+      color: #1565c0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .message-success {
+        background: #1b3a1b;
+        color: #81c784;
+      }
+      .message-error {
+        background: #3a1b1b;
+        color: #ef9a9a;
+      }
+      .message-info {
+        background: #1b2a3a;
+        color: #90caf9;
+      }
+    }
+
+    /* ─── Streak ────────────────────────────────────────────────────── */
+    .streak-display {
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #e8925a;
+      padding: 0.3rem 0;
+      margin-bottom: 0.3rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .streak-display {
+        color: #ffab70;
+      }
+    }
+
+    /* ─── Puzzle Board ──────────────────────────────────────────────── */
+    .puzzle-board {
+      display: inline-grid;
+      grid-template-columns: repeat(var(--grid-size), 1fr);
+      gap: 2px;
+      background: #d4b896;
+      padding: 2px;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      max-width: 100%;
+      width: min(90vw, 480px);
+      aspect-ratio: 1 / 1;
+      margin-bottom: 1rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .puzzle-board {
+        background: #4a3a2e;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    /* ─── Cells ─────────────────────────────────────────────────────── */
+    .cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(0.7rem, 2.5vw, 1.2rem);
+      font-weight: 700;
+      user-select: none;
+      aspect-ratio: 1 / 1;
+      transition: background 0.15s ease, box-shadow 0.15s ease;
+      border-radius: 2px;
+    }
+
+    /* Black cells */
+    .cell-black {
+      background: #5c3a1e;
+      color: #f5d6a8;
+      font-size: clamp(0.8rem, 2.8vw, 1.2rem);
+    }
+
+    .cell-numbered {
+      font-weight: 800;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .cell-black {
+        background: #1a1410;
+        color: #b8a088;
+      }
+    }
+
+    .cell-violation {
+      box-shadow: inset 0 0 0 3px #f44336;
+    }
+
+    /* White cells */
+    .cell-white {
+      background: #f5e6cc;
+      cursor: pointer;
+    }
+
+    .cell-white:hover {
+      background: #ecd9b9;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .cell-white {
+        background: #3a3028;
+      }
+      .cell-white:hover {
+        background: #4a3a2e;
+      }
+    }
+
+    /* Lit cell */
+    .cell-lit {
+      background: #ffedd5;
+      box-shadow: inset 0 0 12px rgba(212, 120, 60, 0.3);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .cell-lit {
+        background: #4a4230;
+        box-shadow: inset 0 0 8px rgba(212, 120, 60, 0.2);
+      }
+    }
+
+    /* Dark (unlit) white cell */
+    .cell-dark {
+      background: #d4c4a8;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .cell-dark {
+        background: #2a221c;
+      }
+    }
+
+    /* Bulb cell */
+    .cell-bulb {
+      background: #ffd4a8;
+      box-shadow: inset 0 0 12px rgba(212, 120, 60, 0.5), 0 0 6px rgba(212, 120, 60, 0.3);
+    }
+    .cell-bulb::after {
+      content: '🐱';
+      font-size: clamp(0.9rem, 3vw, 1.4rem);
+      line-height: 1;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .cell-bulb {
+        background: #4a3520;
+        box-shadow: inset 0 0 12px rgba(212, 120, 60, 0.3), 0 0 6px rgba(212, 120, 60, 0.15);
+      }
+    }
+
+    /* Conflict (bulbs see each other) */
+    .cell-conflict {
+      background: #ffcdd2;
+      box-shadow: inset 0 0 8px rgba(244, 67, 54, 0.5), 0 0 6px rgba(244, 67, 54, 0.3);
+    }
+    .cell-conflict::after {
+      content: '❌';
+      font-size: clamp(0.9rem, 3vw, 1.4rem);
+      line-height: 1;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .cell-conflict {
+        background: #4a2222;
+        box-shadow: inset 0 0 8px rgba(244, 67, 54, 0.3);
+      }
+    }
+
+    /* ─── Footer ────────────────────────────────────────────────────── */
+    .game-footer {
+      font-size: 0.8rem;
+      color: #8a7355;
+      text-align: center;
+      max-width: 500px;
+      line-height: 1.5;
+      padding: 0.5rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .game-footer {
+        color: #b8a088;
+      }
+    }
+
+    /* ─── Responsive ────────────────────────────────────────────────── */
+    @media (max-width: 480px) {
+      main {
+        padding: 0.5rem;
+      }
+      .game-header h1 {
+        font-size: 1.3rem;
+      }
+      .game-controls {
+        padding: 0.6rem;
+        gap: 0.4rem;
+      }
+      .btn {
+        padding: 0.35rem 0.6rem;
+        font-size: 0.78rem;
+      }
+      .game-controls select {
+        font-size: 0.78rem;
+        padding: 0.25rem 0.4rem;
+      }
+      .puzzle-board {
+        width: min(95vw, 400px);
+      }
+    }
+  
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+
+  </style>
+</body>
+</html>

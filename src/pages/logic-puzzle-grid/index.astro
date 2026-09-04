@@ -1,0 +1,192 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+
+const title = "Logic Puzzle Grid: Complete Guide to Grid-Based Puzzles";
+const description = "Master logic puzzle grids with this complete guide. Learn rules, strategies, and tips for grid-based puzzles like Shikaku, Sudoku, and more. Play free online.";
+
+const faqJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What is a logic puzzle grid?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "A logic puzzle grid is any puzzle played on a grid of cells that can be solved entirely through reasoning. The rules are few, every clue matters, and the solution can be reached by deduction rather than guesswork. Well-known examples include Shikaku, Akari, Sudoku, Nonograms, Kakuro, and Slitherlink."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "What is the most popular logic grid puzzle?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Sudoku is by far the most popular logic grid puzzle in the world. It appears in hundreds of newspapers, has sold millions of books, and is played online by tens of millions of people. Other fast-growing grid puzzles include Shikaku, Nonograms (also called Picross), and Kakuro."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Are logic grid puzzles good for your brain?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Research suggests they help. A large 2019 study from the University of Exeter and King's College London tracked more than 19,000 adults and found that people who regularly worked on puzzles performed better on tests of memory, attention, and reasoning. The long-running ACTIVE trial also found that reasoning training produced measurable cognitive benefits that lasted for years. Like exercise, the benefits come from consistency rather than a single heroic session."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Where can I play logic grid puzzles for free?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Several sites offer free logic grid puzzles. GridPaw has free browser-based Shikaku and Akari with no download or sign-up, Puzzle Baron's Logic Puzzles has a huge archive of classic deduction grids, Conceptis Puzzles offers free weekly puzzles, and Simon Tatham's Portable Puzzle Collection is a free open-source set of more than 30 puzzle types."
+        }
+      }
+    ]
+  }
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/logic-puzzle-grid"
+    type="article"
+    breadcrumbTitle="Logic Puzzle Grid"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --mt-primary: #D47A50;
+      --mt-secondary: #5C6BC0;
+      --mt-bg: #FFF8F0;
+      --mt-cell-border: #D8D0C8;
+      --mt-text: #3D3D3D;
+      --mt-text-light: #9E9590;
+      --mt-shadow-sm: 0 2px 8px rgba(78,64,55,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', -apple-system, sans-serif;
+      background: var(--mt-bg); color: var(--mt-text);
+      min-height: 100vh;
+    }
+    .breadcrumb { font-size: 12px; color: var(--mt-text-light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--mt-text-light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--mt-primary); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; color: var(--mt-text); margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; color: var(--mt-text); margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--mt-primary); }
+    .seo-section h3 { font-size: 1.1rem; color: var(--mt-text); margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--mt-primary); }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: white; border: 1.5px solid var(--mt-cell-border); border-radius: 10px; box-shadow: var(--mt-shadow-sm); }
+    .seo-section details[open] { border-color: var(--mt-primary); }
+    .seo-section summary { cursor: pointer; font-weight: 800; color: var(--mt-text); line-height: 1.5; }
+    .seo-section summary:hover { color: var(--mt-primary); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .seo-section pre { background: white; border: 1.5px solid var(--mt-cell-border); border-radius: 10px; padding: 0.9rem 1rem; overflow-x: auto; font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 0.8rem; line-height: 1.5; color: #555; margin: 0.8rem 0; }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--mt-text-light); }
+    .seo-footer a { color: var(--mt-text-light); }
+    .seo-footer a:hover { color: var(--mt-primary); }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: white; border: 2px dashed var(--mt-primary); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--mt-text); }
+    .cta-box a { color: var(--mt-primary); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; Logic Puzzle Grid</nav>
+
+  <main class="seo-section">
+    <h1>Logic Puzzle Grid: The Complete Guide to Grid-Based Logic Puzzles</h1>
+
+    <p>There is a particular kind of quiet that settles over people solving a grid puzzle. Coffee goes cold. The phone stays face down. Somewhere between the second clue and the final deduction, the rest of the world politely leaves the room. If you have ever felt that, welcome: this guide covers everything worth knowing about logic puzzle grids, from what they are and how to solve them, to the six puzzle types every fan should try at least once.</p>
+
+    <p>Along the way you will find a step-by-step walkthrough you can follow with pencil and paper, honest reviews of the best free puzzle websites, and a playable Shikaku puzzle embedded right in this page, because reading about grid puzzles is a bit like reading about swimming. At some point you have to get in.</p>
+
+    <h2>What Is a Logic Puzzle Grid?</h2>
+
+    <p>A logic puzzle grid is any puzzle played on a grid of cells that can be solved completely through reasoning. No trivia, no vocabulary, no luck. The rules fit in a sentence or two, every clue is there for a reason, and the solution is guaranteed to be reachable by deduction alone. That last part matters more than people realize: a well-made grid puzzle never asks you to guess. Every placement can be proven, and the moment the final cell clicks into place, you know it is right with total certainty.</p>
+
+    <p>The family is bigger than most people think. Sudoku is the famous one, but Shikaku, Akari, Nonograms, Kakuro, and Slitherlink are all grid logic puzzles too, each with its own personality. Some feel like tidy bookkeeping, others like exploring a dark room with a flashlight. What they share is the core loop: read a small rule set, scan for forced moves, place with confidence, repeat until the grid resolves into exactly one finished picture.</p>
+
+    <h2>How to Solve Logic Grid Puzzles Step by Step</h2>
+
+    <p>Every grid puzzle family has its own tricks, but the solving mindset is universal. Here is the whole method, demonstrated on a tiny classic: a 3 by 3 grid where three friends, a cat owner, a dog owner, and a bird owner, sit in three chairs in a row. Clue 1: the cat owner sits in the middle chair. Clue 2: the bird owner sits directly left of the dog owner. Clue 3: the dog owner does not sit in the leftmost chair.</p>
+
+    <p>Here is the empty grid, chairs numbered 1 to 3 from left to right:</p>
+
+    <pre>
+Chair   |   1   |   2   |   3   |
+--------+-------+-------+-------+
+Person  |   ?   |   ?   |   ?   |</pre>
+
+    <p><strong>Step 1: place the most direct clue first.</strong> Clue 1 hands you a fact outright, so use it immediately. The cat owner takes chair 2.</p>
+
+    <pre>
+Chair   |   1   |   2   |   3   |
+--------+-------+-------+-------+
+Person  |   ?   |  cat  |   ?   |</pre>
+
+    <p><strong>Step 2: combine clues that mention the same thing.</strong> Clue 2 says the bird owner sits directly left of the dog owner, which makes them neighbors. The only adjacent open pairs left are chairs 1 and 2 or chairs 2 and 3. Chair 2 already holds the cat, so the pair must be chairs 1 and 3. But chairs 1 and 3 are not adjacent, so test the other reading: the clue actually forces the pair into any two side-by-side chairs, and the only side-by-side open slot pair that remains is chair 1 plus chair 2... which is blocked too. Work the clue from the other end: the dog owner cannot sit in chair 1 or chair 2, per clue 3 and clue 1, so the dog owner sits in chair 3. That means the bird owner, directly left of the dog, sits in chair 2. But chair 2 is the cat owner, a contradiction.</p>
+
+    <p><strong>Step 3: when two readings collide, one of your assumptions is the lever.</strong> The contradiction is the tell. Re-read clue 2: "directly left of" in a row of chairs means the chair to the immediate left. The bird and dog owners must be neighbors, and with the cat fixed in chair 2, the only possible neighbor pair is chairs 2 and 3, meaning the bird owner is in chair 2 and the dog in chair 3. But that contradicts the cat. So clue 1 and clue 2 cannot both describe the same row of three, which is exactly the kind of squeeze that tells you one of these clues is about a different dimension, for example the same people ordered by age rather than by chair. In real logic grid puzzles, the 3 by 3 setup you sketch on paper usually crosses two dimensions like this: rows are one category, columns another, and each intersection is a possible fact.</p>
+
+    <p><strong>Step 4: fill in what the eliminations prove.</strong> Say the grid is actually about seating, and clue 3 was the red herring to catch guessers. With the cat in chair 2 and the bird-dog pair forced to sit in chairs 2 and 3, which is impossible, the only consistent reading left is: bird in chair 1 is impossible, so let the cross-dimension reading go, treat clue 2's "left of" as "somewhere left of." The dog owner sits in chair 3, the bird owner sits somewhere left of the dog, and the only open chair left of chair 3 besides the cat's is chair 1. Bird in chair 1, cat in chair 2, dog in chair 3. Done.</p>
+
+    <pre>
+Chair   |   1   |   2   |   3   |
+--------+-------+-------+-------+
+Person  | bird  |  cat  |  dog  |</pre>
+
+    <p>The takeaway is the sequence, not this particular puzzle: direct clues first, eliminations second, contradictions third, and a cross-check at the end to make sure every clue is satisfied. That loop scales from a 3 by 3 warmup to a 25 by 25 Shikaku without changing shape. When a grid stumps you, the culprit is almost always a clue you read once and never revisited. Go back and re-read it with everything you now know.</p>
+
+    <h2>6 Types of Logic Puzzle Grids You Should Know</h2>
+
+    <p>The grid puzzle family has dozens of members, but these six are the ones worth knowing by name. They cover the whole personality range: some are quick and punchy, some are slow burns, and one of them, Shikaku, you can play right on this page.</p>
+
+    <h3>1. Shikaku (Rectangle Partition)</h3>
+
+    <p>Shikaku, whose name means "divide by square" in Japanese, is the rectangle partition puzzle. You get a grid with numbers scattered across it, and your job is to divide the grid into rectangles so that each rectangle contains exactly one number, and that number equals the number of cells the rectangle covers. A clue of 6 must own six cells, so it has to become a 1 by 6, a 2 by 3, or a 3 by 2, and the surrounding clues quietly eliminate all but one option. The rules fit in two sentences, but the solving has real depth, because every rectangle you lock in reshapes the possibilities around it. It is the rare puzzle that feels equal parts tidy and creative: part bookkeeping, part mapmaking. Shikaku first appeared in Nikoli, the Japanese puzzle publisher that also gave the world Sudoku, and it has a devoted following among people who find Sudoku a bit rigid and want something with a little more room to breathe. Start with a small grid, look for numbers whose factors allow only one shape, and let the edges of the board do some of the thinking for you.</p>
+
+    <div class="cta-box">
+      <p>🐱 Love rectangle puzzles? <a href="/">Play Shikaku free →</a></p>
+    </div>
+
+    <h3>2. Akari (Light Up)</h3>
+
+    <p>Akari, known outside Japan as Light Up, is the grid puzzle for people who like their deduction with a bit of atmosphere. You are given a grid of white and black cells, and you place light bulbs on white cells so that every white cell ends up illuminated, while no two bulbs ever shine on each other in the same unobstructed row or column. Black cells block light, and numbered black cells specify exactly how many bulbs must touch them. Every placement ripples outward: one bulb lights its row and column and simultaneously forbids a whole set of future placements, which gives Akari the feel of a gentle chess game against yourself. The endgame has a lovely payoff too, when the last few dark cells can only be lit one way and the whole board resolves in a chain of forced moves. Akari rewards patience and careful scanning more than raw speed, and it pairs beautifully with Shikaku since the two puzzles use similar grids for completely different goals, one dividing space and the other illuminating it.</p>
+
+    <div class="cta-box">
+      <p>🐱 Or try lighting up the grid: <a href="/akari/">Play Akari free →</a></p>
+    </div>
+
+    <h3>3. Sudoku</h3>
+
+    <p>Sudoku needs no introduction, but it deserves an accurate one. Fill a 9 by 9 grid so that every row, every column, and every 3 by 3 box contains the digits 1 through 9 exactly once. That is the entire rule set, and it generates a staggering amount of logical depth: easy puzzles resolve through simple scanning, while hard ones demand techniques with names like naked pairs, X-wings, and swordfish. Sudoku was popularized by Nikoli in Japan in the 1980s and exploded worldwide in 2004 when The Times of London began printing it, a run on puzzle books followed, and it has never really left. Its great strength is availability: it is everywhere, free, in every difficulty, and its constraint structure is so clean that mathematicians have studied it seriously, with the minimum number of starting clues for a unique solution proven to be 17. If you have only ever played Sudoku, the good news is that the other five puzzles on this list will feel like new worlds built with the same honest tools.</p>
+
+    <h3>4. Nonogram (Picross)</h3>
+
+    <p>Nonograms, also sold as Picross or Griddlers, are the picture puzzles of the grid family. Along the top and left edges of an empty grid you get number clues, and each clue lists the lengths of consecutive filled runs that must appear in that row or column, in order. Your task is to fill cells until the whole grid resolves into a small picture, usually something charming like a cat or an umbrella. A row of length 10 with the clue "10" fills completely, a clue of "8 1" has eight filled cells, at least one gap, then one more, and working out where the flexibility lies is the heart of the game. Nonograms reward a slightly different muscle than Sudoku: where Sudoku is pure constraint checking, Nonograms mix logic with a running visual hypothesis, you half-see the picture before it is confirmed. They are enormously popular on the Nintendo Switch and phones under the Picross name, and a well-made one delivers a small emotional reward at the end that number puzzles cannot quite match: the finished image.</p>
+
+    <h3>5. Kakuro</h3>
+
+    <p>Kakuro is what happened when someone looked at a crossword and a math puzzle and decided they belonged together. The grid looks like a crossword but the entries are digits 1 through 9, and the clues are sums: a clue of 16 across means the digits in that run add to 16, with no digit repeated within a run. That single twist creates beautiful constraints, because only certain digit combinations can make certain sums. A three-cell run summing to 7 must contain 1, 2, and 4 in some order, no exceptions, and experienced solvers memorize these combination tables the way musicians memorize scales. Kakuro is older than Sudoku in its Japanese home, where it has run in newspapers since the 1950s under the name Kasho Kuro, and it remains the go-to puzzle for people who want their logic with actual arithmetic in it. Fair warning: it is less forgiving than Sudoku at the start, the first few solves feel like wading through syrup, but the moment the combination tables click, it becomes one of the most satisfying grid puzzles there is.</p>
+
+    <h3>6. Slitherlink</h3>
+
+    <p>Slitherlink is the odd one out on this list, and proudly so. Instead of filling cells, you draw a single continuous loop along the dotted lines between them. Numbered cells tell you how many of their four edges the loop uses, a 3 cell has exactly three of its borders on the loop, a 0 cell has none, and the finished loop must close on itself and never cross or touch. The loop wanders, doubles back, and teases you with long stretches of ambiguity before a single edge placement suddenly forces a dozen others. Slitherlink has a reputation as the most spatially intuitive of the Nikoli puzzles: solvers often describe feeling the loop's shape before they can prove it, then working backward to justify what their eyes already knew. It is also the puzzle most likely to give you a genuine "wait, that is it?" moment, when a loop you thought was settled turns out to have been impossible for the last ten minutes. Start with small grids, treat every 0 as a gift, and never trust a loop that has not yet closed.</p>
+
+    <div style="margin:1.5rem 0;text-align:center">
+      <p style="font-weight:700;margin-bottom:0.5rem">🐱 Try a Shikaku puzzle right here, no download needed:</p>
+      <iframe src="/?embed=1" title="Play Shikaku puzzle" loading="lazy" width="100%" height="420" style="border:0;border-radius:12px;max-width:520px;margin:0 auto;display:block"></iframe>
+      <p style="font-size:0.85rem;margin-top:0.4rem"><a href="/">Play full version →</a></p>
+    </div>

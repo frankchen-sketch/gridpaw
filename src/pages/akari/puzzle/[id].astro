@@ -1,0 +1,197 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import puzzles from '../../../data/puzzles.json';
+
+export function getStaticPaths() {
+  return puzzles.map(p => ({ params: { id: p.id }, props: { puzzle: p } }));
+}
+
+const { puzzle } = Astro.props;
+const { id, size, difficulty, grid, solution, cats, steps } = puzzle;
+const num = id.split('-')[1];
+const title = `Akari Puzzle #${num} — ${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} ${size}×${size} | GridPaw`;
+const description = `Play GridPaw Akari puzzle #${num} online. ${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} ${size}×${size} Light Up puzzle with ${cats} cats to place. Solve step by step.`;
+
+// Prev/Next navigation
+const puzzleIndex = puzzles.findIndex(p => p.id === id);
+const prevPuzzle = puzzleIndex > 0 ? puzzles[puzzleIndex - 1] : null;
+const nextPuzzle = puzzleIndex < puzzles.length - 1 ? puzzles[puzzleIndex + 1] : null;
+const totalPuzzles = puzzles.length;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical={`/puzzle/${id}`} type="article" />
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:#f8f6ef;color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.6rem;color:#342421;margin:.5rem 0}
+    .meta{color:#6f5651;font-size:.9rem;margin-bottom:1rem}.meta span{margin-right:1rem}
+    .controls{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin:.8rem 0}
+    .btn{padding:.5rem 1rem;border:none;border-radius:12px;cursor:pointer;font-size:.9rem;font-weight:600;transition:transform .1s;font-family:inherit}
+    .btn:active{transform:scale(.95)}
+    .btn-primary{background:#E8A888;color:#fff}.btn-primary:hover{background:#D09070}
+    .btn-secondary{background:#fff4f0;color:#342421}.btn-secondary:hover{background:#e7dacf}
+    .progress{text-align:center;font-size:.85rem;color:#6f5651;margin:.3rem 0;min-height:1.4rem}
+    .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#E74C3C;color:#fff;padding:.6rem 1.2rem;border-radius:12px;font-size:.9rem;font-weight:600;z-index:1000;opacity:0;transition:opacity .3s;pointer-events:none}
+    .toast.show{opacity:1}.toast.success{background:#559c68}
+    .grid-wrapper{display:flex;justify-content:center;margin:1rem 0}
+    .puzzle-grid{display:inline-grid;gap:2px;background:#E8DDD8;padding:4px;border-radius:12px;box-shadow:0 4px 16px rgba(123,107,138,.1)}
+    .cell{display:flex;align-items:center;justify-content:center;border-radius:8px;user-select:none;cursor:pointer;transition:background .15s;position:relative;overflow:hidden}
+    .cell-black{background:#342421;cursor:default;box-shadow:inset 0 2px 4px rgba(0,0,0,.25)}
+    .cell-number{font-weight:800;color:#fff4f0}
+    .cell-lit{background:#FFF8F0}
+    .cell-cat{background:#fff4f0;background-image:url('/assets/cats/cat-clay-purple.png');background-size:60%;background-repeat:no-repeat;background-position:center;box-shadow:inset 0 0 12px rgba(232,168,136,.2)}
+    .cell-x{background:#FAFAFA}
+    .cell-dark{background:#F0EBE5}
+    @keyframes hint-pulse{0%,100%{box-shadow:inset 0 0 0 3px #E8A888}50%{box-shadow:inset 0 0 0 3px #E8A888,0 0 16px rgba(200,168,232,.5)}}
+    .cell-hint{animation:hint-pulse .8s ease-in-out infinite}
+    .win-overlay{position:fixed;inset:0;background:rgba(251,248,255,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;opacity:0;transition:opacity .4s;pointer-events:none}
+    .win-overlay.show{opacity:1;pointer-events:auto}
+    @keyframes cat-pop{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+    .win-cat{animation:cat-pop .6s ease forwards}
+    .win-text{font-size:1.6rem;font-weight:800;color:#342421;margin-top:1rem}
+    .win-btn{margin-top:1.5rem;padding:.7rem 2rem;background:#E8A888;color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;font-family:inherit}
+    .steps-section{margin-top:2rem;border-top:2px solid #e7dacf;padding-top:1.5rem}
+    .steps-section summary{font-size:1.3rem;font-weight:700;color:#342421;cursor:pointer;margin-bottom:1rem;list-style:none}
+    .steps-section summary::-webkit-details-marker{display:none}
+    .steps-section summary::before{content:'▶ ';font-size:.9rem;color:#E8A888}
+    .steps-section[open] summary::before{content:'▼ '}
+    .steps-section h2{font-size:1.3rem;color:#342421;margin-bottom:1rem}
+    .step{padding:.6rem .8rem;margin:.4rem 0;border-radius:8px;font-size:.9rem;line-height:1.5;cursor:pointer;transition:background .15s}
+    .step:hover{background:#FFF8F0}.step.active{background:#fff4f0;box-shadow:inset 0 0 0 2px #E8A888}
+    .step .no{font-weight:700;color:#E8A888;margin-right:.5rem}
+    .tag{font-size:.75rem;padding:2px 6px;border-radius:4px;margin-left:.5rem;font-weight:600}
+    .tag-basic{background:#E8F5E9;color:#2E7D32}.tag-advanced{background:#FFF3E0;color:#E65100}
+    .seo-content{margin-top:2rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .seo-content h2{font-size:1.2rem;color:#342421;margin:1.5rem 0 .5rem}
+    .seo-content p{margin:.5rem 0;line-height:1.7}
+    .seo-content a{color:#E8A888;text-decoration:underline}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    /* ── Puzzle Nav ── */
+    .puzzle-nav{display:flex;justify-content:space-between;align-items:center;margin:.5rem 0;gap:.5rem}
+    .puzzle-nav a,.puzzle-nav span{font-size:.85rem;font-weight:600;text-decoration:none;border-radius:8px;padding:.4rem .8rem;transition:all .15s}
+    .puzzle-nav .nav-prev{background:#fff4f0;color:#342421}.puzzle-nav .nav-prev:hover{background:#e7dacf}
+    .puzzle-nav .nav-next{background:#E8A888;color:#fff;margin-left:auto}.puzzle-nav .nav-next:hover{background:#D09070}
+    .puzzle-nav .nav-disabled{opacity:.4;cursor:default;pointer-events:none}
+    .puzzle-nav .nav-counter{color:#6f5651;font-size:.8rem}
+    .solved-badge{display:inline-block;background:#88C8A8;color:#fff;font-size:.75rem;font-weight:700;padding:.15rem .5rem;border-radius:10px;margin-left:.5rem;vertical-align:middle}
+    @media(max-width:480px){h1{font-size:1.3rem}.controls{gap:.3rem}.btn{padding:.4rem .7rem;font-size:.8rem}}
+  
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo-clay-cat.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Akari Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/">Play</a>
+        <a href="/how-to-play/">How to Play</a>
+        <a href="/tips/">Tips</a>
+        <a href="/daily/">Daily</a>
+        <a href="/solver/">Solver</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <nav class="puzzle-nav">
+      {prevPuzzle ? <a href={`/puzzle/${prevPuzzle.id}/`} class="nav-prev">← Prev</a> : <span class="nav-prev nav-disabled">← Prev</span>}
+      <span class="nav-counter">Puzzle {num} / {totalPuzzles}</span>
+      {nextPuzzle ? <a href={`/puzzle/${nextPuzzle.id}/`} class="nav-next">Next →</a> : <span class="nav-next nav-disabled">Next →</span>}
+    </nav>
+    <h1>🐱 Akari Puzzle #{num}<span class="solved-badge" id="solved-badge" style="display:none">✓ Solved</span></h1>
+    <div class="meta"><span>Difficulty: <strong>{difficulty}</strong></span><span>Size: <strong>{size}×{size}</strong></span><span>Cats: <strong>{cats}</strong></span></div>
+    <div class="controls">
+      <button class="btn btn-primary" id="new-btn">🔄 New Puzzle</button>
+      <button class="btn btn-secondary" id="hint-btn">💡 Hint</button>
+      <button class="btn btn-secondary" id="reset-btn">↺ Reset</button>
+      <button class="btn btn-secondary" id="show-steps-btn">📖 Show Solution</button>
+    </div>
+    <div class="progress" id="progress"></div>
+    <div class="grid-wrapper"><div class="puzzle-grid" id="puzzle-grid"></div></div>
+    <div class="toast" id="toast"></div>
+    <div class="win-overlay" id="win-overlay">
+      <div class="win-cat"><svg width="120" height="120" viewBox="0 0 120 120"><defs><radialGradient id="wg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#E8A888" stop-opacity="0.6"/><stop offset="100%" stop-color="#E8A888" stop-opacity="0"/></radialGradient></defs><circle cx="60" cy="60" r="58" fill="url(#wg)"/><circle cx="60" cy="65" r="30" fill="#E8A888"/><polygon points="35,42 42,18 52,42" fill="#E8A888"/><polygon points="68,42 78,18 85,42" fill="#E8A888"/><circle cx="48" cy="58" r="4" fill="#342421"/><circle cx="72" cy="58" r="4" fill="#342421"/><ellipse cx="60" cy="68" rx="4" ry="3" fill="#E8A888"/><path d="M56,70 Q60,76 64,70" fill="none" stroke="#342421" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="win-text">🎉 Puzzle Solved!</div>
+      <button class="win-btn" id="win-next">Next Puzzle →</button>
+    </div>
+    <details class="steps-section" id="steps-section">
+      <summary>📖 Step-by-Step Solution ({steps.length} steps)</summary>
+      <div id="steps-list">
+        {steps.map((step: any) => (
+          <div class="step" data-step={step.no} data-row={step.cell[0]} data-col={step.cell[1]} data-type={step.type}>
+            <span class="no">#{step.no}</span>{step.text}<span class={`tag tag-${step.skill}`}>{step.skill}</span>
+          </div>
+        ))}
+      </div>
+    </details>
+    <section class="seo-content">
+      <h2>About This Puzzle</h2>
+      <p>GridPaw puzzle #{num} is a {difficulty}-level {size}×{size} Akari puzzle with {cats} cats to place. It has a <strong>unique solution</strong> — every step can be deduced through pure logic.</p>
+      <h2>How to Solve</h2>
+      <p>Click white cells to place cats. Each cat illuminates its row and column until blocked by a wall. Numbered black cells show how many adjacent cats they need. No two cats can see each other. All white cells must be lit to win.</p>
+      <h2>More Puzzles</h2>
+      <p><a href="/">← Play GridPaw</a> · <a href="/cat-logic-puzzle/">Cat Logic Puzzle Guide</a> · <a href="/akari-puzzle/">Akari Puzzle Guide</a></p>
+    </section>
+    <footer><p>GridPaw — Cat Logic Puzzle · <a href="/" style="color:#6f5651">Play More</a></p></footer>
+  </div>
+  <script is:inline src="/akari-engine.js"></script>
+  <script define:vars={{ puzzleData: puzzle, nextPuzzleId: nextPuzzle ? nextPuzzle.id : null }}>
+    var CAT_IMG='<img src="/assets/cats/cat-clay-purple.png" style="width:85%;height:85%;object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 2px 4px rgba(123,107,138,.3))" />';
+    var X_MARK='<svg viewBox="0 0 24 24" width="50%" height="50%" style="opacity:0.4"><line x1="6" y1="6" x2="18" y2="18" stroke="#B8A8C8" stroke-width="2.5" stroke-linecap="round"/><line x1="18" y1="6" x2="6" y2="18" stroke="#B8A8C8" stroke-width="2.5" stroke-linecap="round"/></svg>';
+    var grid=puzzleData.grid,solution=puzzleData.solution,size=puzzleData.size,DIRS=[[-1,0],[1,0],[0,-1],[0,1]];
+    var playerSolution=[],markX=[];for(var i=0;i<size;i++){playerSolution.push(new Array(size).fill(false));markX.push(new Array(size).fill(false));}
+    var won=false,gridEl=document.getElementById('puzzle-grid'),progressEl=document.getElementById('progress'),toastEl=document.getElementById('toast'),winOverlay=document.getElementById('win-overlay'),toastTimer=null;
+    var PUZZLE_ID=puzzleData.id,STORAGE_KEY='gridpaw-progress';
+    function getSolved(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]')}catch(e){return[]}}
+    function markSolved(id){var s=getSolved();if(s.indexOf(id)===-1){s.push(id);localStorage.setItem(STORAGE_KEY,JSON.stringify(s));}}
+    function isSolved(id){return getSolved().indexOf(id)!==-1}
+    // Show solved badge on load
+    if(isSolved(PUZZLE_ID)){document.getElementById('solved-badge').style.display='inline-block';}
+    function showToast(m,t){toastEl.textContent=m;toastEl.className='toast show'+(t==='success'?' success':'');if(toastTimer)clearTimeout(toastTimer);toastTimer=setTimeout(function(){toastEl.className='toast';},2500);}
+    function renderBoard(){
+      var lit=illuminate(grid,playerSolution,size),v=checkViolations(grid,playerSolution,size),vc={},cp={};
+      v.forEach(function(x){if(x.type==='number_excess'){vc[x.row+','+x.col]=true;}else if(x.type==='cat_conflict'){cp[x.row+','+x.col]=true;cp[x.row2+','+x.col2]=true;}});
+      var mw=Math.min(window.innerWidth-40,600),cs=Math.max(30,Math.min(44,Math.floor((mw-(size+1)*2-8)/size)));
+      gridEl.style.gridTemplateColumns='repeat('+size+','+cs+'px)';gridEl.style.gridTemplateRows='repeat('+size+','+cs+'px)';gridEl.innerHTML='';
+      for(var r=0;r<size;r++)for(var c=0;c<size;c++){
+        var cell=document.createElement('div');cell.className='cell';cell.style.width=cs+'px';cell.style.height=cs+'px';cell.dataset.row=r;cell.dataset.col=c;
+        var val=grid[r][c],key=r+','+c;
+        if(val!==9){cell.classList.add('cell-black');if(val>=0){cell.classList.add('cell-number');cell.textContent=val;cell.style.fontSize=Math.max(12,cs*.5)+'px';if(vc[key])cell.classList.add('cell-violation');}}
+        else{if(playerSolution[r][c]){cell.classList.add('cell-cat');cell.innerHTML=CAT_IMG;if(cp[key])cell.classList.add('cell-shake');}else if(markX[r][c]){cell.classList.add('cell-x');cell.innerHTML=X_MARK;}else if(lit[r][c]){cell.classList.add('cell-lit');}else{cell.classList.add('cell-dark');}
+          (function(r2,c2){cell.addEventListener('click',function(e){e.preventDefault();if(!won)handleClick(r2,c2);});cell.addEventListener('dblclick',function(e){e.preventDefault();if(!won){markX[r2][c2]=!markX[r2][c2];renderBoard();}});cell.addEventListener('contextmenu',function(e){e.preventDefault();if(!won){markX[r2][c2]=!markX[r2][c2];renderBoard();}});})(r,c);}
+        gridEl.appendChild(cell);}
+    }
+    function handleClick(r,c){if(playerSolution[r][c])playerSolution[r][c]=false;else{markX[r][c]=false;playerSolution[r][c]=true;var v=checkViolations(grid,playerSolution,size);for(var i=0;i<v.length;i++){if(v[i].type==='number_excess'){showToast('Too many cats around number '+v[i].number+'!','error');break;}}for(var i=0;i<v.length;i++){if(v[i].type==='cat_conflict'){showToast('Two cats are facing each other!','error');break;}}}renderBoard();updateProgress();if(checkWin(grid,playerSolution,size)){won=true;markSolved(PUZZLE_ID);document.getElementById('solved-badge').style.display='inline-block';setTimeout(function(){winOverlay.classList.add('show');},300);}}
+    function updateProgress(){var info=countLit(grid,playerSolution,size);progressEl.textContent=info.lit+' / '+info.total+' cells lit';}
+    document.getElementById('hint-btn').addEventListener('click',function(){if(won)return;var h=getHint(grid,solution,playerSolution,size);if(h){var cell=gridEl.querySelector('[data-row="'+h[0]+'"][data-col="'+h[1]+'"]');if(cell){cell.classList.add('cell-hint');setTimeout(function(){cell.classList.remove('cell-hint');},2000);}showToast('Hint: try row '+(h[0]+1)+', col '+(h[1]+1),'success');}else showToast('No hints!','error');});
+    document.getElementById('reset-btn').addEventListener('click',function(){won=false;winOverlay.classList.remove('show');for(var i=0;i<size;i++){playerSolution[i]=new Array(size).fill(false);markX[i]=new Array(size).fill(false);}renderBoard();updateProgress();showToast('Board reset!','success');});
+    document.getElementById('show-steps-btn').addEventListener('click',function(){var sec=document.getElementById('steps-section');sec.open=!sec.open;this.textContent=sec.open?'📖 Hide Solution':'📖 Show Solution';});
+    document.querySelectorAll('.step').forEach(function(el){el.addEventListener('click',function(){var r=parseInt(this.dataset.row),c=parseInt(this.dataset.col);var cell=gridEl.querySelector('[data-row="'+r+'"][data-col="'+c+'"]');if(cell){cell.classList.add('cell-hint');setTimeout(function(){cell.classList.remove('cell-hint');},2000);}document.querySelectorAll('.step').forEach(function(s){s.classList.remove('active');});this.classList.add('active');});});
+    document.getElementById('new-btn').addEventListener('click',function(){window.location.href='/';});
+    document.getElementById('win-next').addEventListener('click',function(){window.location.href=nextPuzzleId?'/puzzle/'+nextPuzzleId+'/':'/';});
+    renderBoard();updateProgress();
+  </script>
+</body>
+</html>

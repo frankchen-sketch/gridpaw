@@ -1,0 +1,216 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+const title = "Akari Puzzle Online — Play Free Light Up Game | GridPaw";
+const description = "Play Akari puzzle online free. The classic Japanese Light Up logic puzzle with a cozy cat theme. Place glowing cats, follow clues, illuminate every cell.";
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/akari-puzzle-online" type="article" />
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:#f8f6ef;color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.8rem;color:#342421;text-align:center;margin:.5rem 0}
+    .subtitle{text-align:center;color:#6f5651;margin-bottom:1rem;font-size:.95rem}
+    .controls{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;align-items:center;margin:.8rem 0}
+    .controls select{padding:.4rem .6rem;border:2px solid #E8A888;border-radius:8px;background:#fff;font-size:.9rem;color:#342421;cursor:pointer;font-family:inherit}
+    .btn{padding:.5rem 1rem;border:none;border-radius:12px;cursor:pointer;font-size:.9rem;font-weight:600;transition:transform .1s,background .2s;font-family:inherit}
+    .btn:active{transform:scale(.95)}
+    .btn-primary{background:#E8A888;color:#fff}.btn-primary:hover{background:#D09070}
+    .btn-secondary{background:#fff4f0;color:#342421}.btn-secondary:hover{background:#e7dacf}
+    .progress{text-align:center;font-size:.85rem;color:#6f5651;margin:.3rem 0;min-height:1.4rem}
+    .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#E74C3C;color:#fff;padding:.6rem 1.2rem;border-radius:12px;font-size:.9rem;font-weight:600;z-index:1000;opacity:0;transition:opacity .3s;pointer-events:none}
+    .toast.show{opacity:1}.toast.success{background:#559c68}
+    .grid-wrapper{display:flex;justify-content:center;margin:.5rem 0}
+    .puzzle-grid{display:inline-grid;gap:2px;background:#E8DDD8;padding:4px;border-radius:12px;box-shadow:0 4px 16px rgba(123,107,138,.1)}
+    .cell{display:flex;align-items:center;justify-content:center;border-radius:8px;user-select:none;cursor:pointer;transition:background .15s,box-shadow .15s;position:relative;overflow:hidden}
+    .cell-black{background:#342421;cursor:default;box-shadow:inset 0 2px 4px rgba(0,0,0,.25)}
+    .cell-number{font-weight:800;color:#fff4f0}
+    .cell-lit{background:#FFF8F0}
+    .cell-cat{background:#fff4f0;background-image:url('/assets/cats/cat-clay-purple.png');background-size:60%;background-repeat:no-repeat;background-position:center;box-shadow:inset 0 0 12px rgba(232,168,136,.2)}
+    .cell-x{background:#FAFAFA}
+    .cell-dark{background:#F0EBE5}
+    @keyframes hint-pulse{0%,100%{box-shadow:inset 0 0 0 3px #E8A888}50%{box-shadow:inset 0 0 0 3px #E8A888,0 0 16px rgba(200,168,232,.5)}}
+    .cell-hint{animation:hint-pulse 0.8s ease-in-out infinite}
+    @keyframes flash-red{0%,100%{box-shadow:none}50%{box-shadow:inset 0 0 0 3px #E74C3C,0 0 8px rgba(231,76,60,.4)}}
+    .cell-violation{animation:flash-red .5s ease}
+    @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-3px)}40%,80%{transform:translateX(3px)}}
+    .cell-shake{animation:shake .4s ease}
+    @keyframes cat-pop{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+    .win-overlay{position:fixed;inset:0;background:rgba(251,248,255,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;opacity:0;transition:opacity .4s;pointer-events:none}
+    .win-overlay.show{opacity:1;pointer-events:auto}
+    .win-cat{animation:cat-pop .6s ease forwards}
+    .win-text{font-size:1.6rem;font-weight:800;color:#342421;margin-top:1rem}
+    .win-sub{font-size:1rem;color:#6f5651;margin-top:.3rem}
+    .win-btn{margin-top:1.5rem;padding:.7rem 2rem;background:#E8A888;color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;font-family:inherit}
+    .win-btn:hover{background:#D09070}
+    .seo-content{margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .seo-content p{margin:.5rem 0;line-height:1.7}
+    .seo-content ol,.seo-content ul{padding-left:1.5rem;margin:.5rem 0}
+    .seo-content li{margin-bottom:.4rem}
+    .seo-content a{color:#E8A888;text-decoration:underline}
+    .seo-content h2{font-size:1.3rem;color:#342421;margin:1.5rem 0 .5rem}
+    details{margin:.5rem 0;padding:.5rem .8rem;background:#f8f6ef;border-radius:8px}
+    summary{cursor:pointer;font-weight:600;color:#E8A888}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    footer a{color:#6f5651}
+    @media(max-width:480px){h1{font-size:1.3rem}.controls{gap:.3rem}.btn{padding:.4rem .7rem;font-size:.8rem}}
+  
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo-clay-cat.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Akari Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/">Play</a>
+        <a href="/how-to-play/">How to Play</a>
+        <a href="/tips/">Tips</a>
+        <a href="/daily/">Daily</a>
+        <a href="/solver/">Solver</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>🏮 Akari Puzzle Online: The Classic Light Up Game</h1>
+    <p class="subtitle">Play Akari — the original Japanese Light Up puzzle — free online with a cozy cat theme.</p>
+    <div class="controls">
+      <select id="difficulty-select"><option value="easy" selected>Easy (7×7)</option><option value="medium">Medium (10×10)</option><option value="hard">Hard (12×12)</option></select>
+      <button class="btn btn-primary" id="new-btn">🔄 New Puzzle</button>
+      <button class="btn btn-secondary" id="hint-btn">💡 Hint</button>
+      <button class="btn btn-secondary" id="reset-btn">↺ Reset</button>
+    </div>
+    <div class="progress" id="progress"></div>
+    <div class="grid-wrapper"><div class="puzzle-grid" id="puzzle-grid"></div></div>
+    <div class="toast" id="toast"></div>
+    <div class="win-overlay" id="win-overlay">
+      <div class="win-cat"><svg width="120" height="120" viewBox="0 0 120 120"><defs><radialGradient id="wg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#E8A888" stop-opacity="0.6"/><stop offset="100%" stop-color="#E8A888" stop-opacity="0"/></radialGradient></defs><circle cx="60" cy="60" r="58" fill="url(#wg)"/><circle cx="60" cy="65" r="30" fill="#E8A888"/><polygon points="35,42 42,18 52,42" fill="#E8A888"/><polygon points="68,42 78,18 85,42" fill="#E8A888"/><circle cx="48" cy="58" r="4" fill="#342421"/><circle cx="72" cy="58" r="4" fill="#342421"/><ellipse cx="60" cy="68" rx="4" ry="3" fill="#E8A888"/><path d="M56,70 Q60,76 64,70" fill="none" stroke="#342421" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="win-text">🎉 Meow-velous! 🐱✨</div>
+      <div class="win-sub">All cells lit, all constraints satisfied!</div>
+      <button class="win-btn" id="win-next">Next Puzzle →</button>
+    </div>
+    <section class="seo-content">
+      <h2>What Is Akari?</h2>
+      <p><strong>Akari</strong> (あかり, "light" in Japanese) is a logic puzzle created by <a href="https://www.nikoli.co.jp/en/">Nikoli</a> — the same Japanese publisher behind Sudoku. Also known as <strong>Light Up</strong>, Akari challenges you to place light bulbs on a grid so that every white cell is illuminated. The catch: numbered black cells tell you exactly how many bulbs must surround them, and no two bulbs can see each other in the same row or column.</p>
+      <p>GridPaw lets you <strong>play Akari online for free</strong> — with glowing cats instead of light bulbs. No download, no signup, no ads.</p>
+      <h2>How to Play Akari Online</h2>
+      <ol>
+        <li><strong>Click a white cell</strong> to place a glowing cat (your light source). Click again to remove it.</li>
+        <li>Each cat <strong>illuminates its entire row and column</strong> until blocked by a black wall.</li>
+        <li><strong>Numbered black cells</strong> are your clues. A "3" means exactly 3 of its 4 adjacent cells must contain cats.</li>
+        <li><strong>No two cats can see each other</strong> — if two cats share a row or column with no wall between them, that's a violation.</li>
+        <li><strong>Light up every white cell</strong> to solve the puzzle.</li>
+      </ol>
+      <h2>Akari Solving Tips</h2>
+      <ul>
+        <li><strong>Start with "4" cells</strong> — all four neighbors must be cats. Place them immediately.</li>
+        <li><strong>Start with "0" cells</strong> — none of its neighbors can have cats. Mark them all.</li>
+        <li><strong>Use line-of-sight</strong> — once you place a cat, mark every cell in its row and column as "no cat allowed."</li>
+        <li><strong>Work from corners</strong> — corner cells can only be lit from two directions, making them easier to solve.</li>
+        <li><strong>Never guess</strong> — if you're stuck, there's a deduction you haven't spotted. Use the Hint button.</li>
+      </ul>
+      <h2>FAQ</h2>
+      <details><summary>Is this the same as the Nikoli Akari puzzle?</summary><p>Yes. Same rules, same logic. The only difference is the cat theme — GridPaw uses glowing cats instead of light bulbs.</p></details>
+      <details><summary>Is it really free?</summary><p>Completely free. No ads, no registration, no download.</p></details>
+      <details><summary>Can I play on mobile?</summary><p>Yes. The grid is responsive. Long-press to mark cells with paw prints.</p></details>
+      <details><summary>How many puzzles are there?</summary><p>GridPaw generates unlimited random puzzles in three difficulty levels: Easy (7×7), Medium (10×10), and Hard (12×12). There are also 30 hand-curated puzzles with step-by-step solutions.</p></details>
+      <h2>More from GridPaw</h2>
+      <ul>
+        <li><a href="/">Play GridPaw</a> — the main game</li>
+        <li><a href="/light-up-puzzle/">Light Up Puzzle Guide</a> — rules and strategies</li>
+        <li><a href="/puzzle/puzzle-001/">Puzzle #001 with Solution</a> — step-by-step walkthrough</li>
+        <li><a href="/games-like-sudoku/">Games Like Sudoku</a> — 10 alternatives</li>
+      </ul>
+    </section>
+    <footer><p>GridPaw — Akari Puzzle Online · <a href="/" style="color:#6f5651">Play More</a></p></footer>
+  </div>
+  <script is:inline src="/akari-engine.js"></script>
+  <script>
+    var CAT_IMG = '<img src="/assets/cats/cat-clay-purple.png" style="width:85%;height:85%;object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 2px 4px rgba(123,107,138,.3))" />';
+    var X_MARK = '<svg viewBox="0 0 24 24" width="50%" height="50%" style="opacity:0.4"><line x1="6" y1="6" x2="18" y2="18" stroke="#B8A8C8" stroke-width="2.5" stroke-linecap="round"/><line x1="18" y1="6" x2="6" y2="18" stroke="#B8A8C8" stroke-width="2.5" stroke-linecap="round"/></svg>';
+
+    var SIZE_MAP = { easy: 7, medium: 10, hard: 12 }, DIRS = [[-1,0],[1,0],[0,-1],[0,1]];
+    var currentPuzzle = null, playerSolution = null, markX = null, won = false;
+    var gridEl = document.getElementById('puzzle-grid'), progressEl = document.getElementById('progress'), toastEl = document.getElementById('toast'), diffSelect = document.getElementById('difficulty-select'), winOverlay = document.getElementById('win-overlay'), toastTimer = null;
+
+    function showToast(m, t) { toastEl.textContent = m; toastEl.className = 'toast show' + (t === 'success' ? ' success' : ''); if (toastTimer) clearTimeout(toastTimer); toastTimer = setTimeout(function() { toastEl.className = 'toast'; }, 2500); }
+
+    function newPuzzle() {
+      var d = diffSelect.value, s = SIZE_MAP[d]; won = false; winOverlay.classList.remove('show');
+      gridEl.innerHTML = '<div style="padding:2rem;color:#6f5651;font-size:0.9rem;">Generating...</div>'; progressEl.textContent = '';
+      setTimeout(function() {
+        try { currentPuzzle = generatePuzzle(s); playerSolution = []; markX = []; for (var i = 0; i < s; i++) { playerSolution.push(new Array(s).fill(false)); markX.push(new Array(s).fill(false)); } renderBoard(); updateProgress(); } catch (e) { showToast('Failed to generate.', 'error'); }
+      }, 10);
+    }
+
+    function resetPuzzle() { if (!currentPuzzle) return; won = false; winOverlay.classList.remove('show'); var s = currentPuzzle.size; playerSolution = []; markX = []; for (var i = 0; i < s; i++) { playerSolution.push(new Array(s).fill(false)); markX.push(new Array(s).fill(false)); } renderBoard(); updateProgress(); showToast('Board reset!', 'success'); }
+
+    function renderBoard() {
+      if (!currentPuzzle) return;
+      var g = currentPuzzle.grid, s = currentPuzzle.size, lit = illuminate(g, playerSolution, s), v = checkViolations(g, playerSolution, s), vc = {}, cp = {};
+      v.forEach(function(x) { if (x.type === 'number_excess') { vc[x.row + ',' + x.col] = true; DIRS.forEach(function(d) { var nr = x.row + d[0], nc = x.col + d[1]; if (nr >= 0 && nr < s && nc >= 0 && nc < s && playerSolution[nr][nc]) vc[nr + ',' + nc] = true; }); } else if (x.type === 'cat_conflict') { cp[x.row + ',' + x.col] = true; cp[x.row2 + ',' + x.col2] = true; } });
+      var mw = Math.min(window.innerWidth - 40, 600), cs = Math.max(30, Math.min(44, Math.floor((mw - (s + 1) * 2 - 8) / s)));
+      gridEl.style.gridTemplateColumns = 'repeat(' + s + ',' + cs + 'px)'; gridEl.style.gridTemplateRows = 'repeat(' + s + ',' + cs + 'px)'; gridEl.innerHTML = '';
+      for (var r = 0; r < s; r++) for (var c = 0; c < s; c++) {
+        var cell = document.createElement('div'); cell.className = 'cell'; cell.style.width = cs + 'px'; cell.style.height = cs + 'px'; cell.dataset.row = r; cell.dataset.col = c;
+        var val = g[r][c], key = r + ',' + c;
+        if (val !== 9) { cell.classList.add('cell-black'); if (val >= 0) { cell.classList.add('cell-number'); cell.textContent = val; cell.style.fontSize = Math.max(12, cs * .5) + 'px'; if (vc[key]) cell.classList.add('cell-violation'); } }
+        else {
+          if (playerSolution[r][c]) { cell.classList.add('cell-cat'); cell.innerHTML = CAT_IMG; if (cp[key]) cell.classList.add('cell-shake'); }
+          else if (markX[r][c]) { cell.classList.add('cell-x'); cell.innerHTML = X_MARK; }
+          else if (lit[r][c]) { cell.classList.add('cell-lit'); }
+          else { cell.classList.add('cell-dark'); }
+          (function(r2, c2) {
+            cell.addEventListener('click', function(e) { e.preventDefault(); if (!won) handleClick(r2, c2); });
+            cell.addEventListener('dblclick', function(e) { e.preventDefault(); if (!won) { markX[r2][c2] = !markX[r2][c2]; renderBoard(); } });
+            cell.addEventListener('contextmenu', function(e) { e.preventDefault(); if (!won) { markX[r2][c2] = !markX[r2][c2]; renderBoard(); } });
+            var lpt = null, dlp = false;
+            cell.addEventListener('touchstart', function() { dlp = false; lpt = setTimeout(function() { dlp = true; if (!won) { markX[r2][c2] = !markX[r2][c2]; renderBoard(); } }, 500); }, { passive: true });
+            cell.addEventListener('touchend', function(e) { if (lpt) clearTimeout(lpt); if (dlp) e.preventDefault(); });
+            cell.addEventListener('touchmove', function() { if (lpt) clearTimeout(lpt); }, { passive: true });
+          })(r, c);
+        }
+        gridEl.appendChild(cell);
+      }
+    }
+
+    function handleClick(r, c) {
+      if (!currentPuzzle) return; var g = currentPuzzle.grid, s = currentPuzzle.size;
+      if (playerSolution[r][c]) playerSolution[r][c] = false;
+      else { markX[r][c] = false; playerSolution[r][c] = true; var v = checkViolations(g, playerSolution, s); for (var i = 0; i < v.length; i++) { if (v[i].type === 'number_excess') { showToast('Too many cats around number ' + v[i].number + '!', 'error'); break; } } for (var i = 0; i < v.length; i++) { if (v[i].type === 'cat_conflict') { showToast('Two cats are facing each other!', 'error'); break; } } }
+      renderBoard(); updateProgress();
+      if (checkWin(g, playerSolution, s)) { won = true; setTimeout(function() { winOverlay.classList.add('show'); }, 300); }
+    }
+
+    function updateProgress() { if (!currentPuzzle) return; var info = countLit(currentPuzzle.grid, playerSolution, currentPuzzle.size); progressEl.textContent = info.lit + ' / ' + info.total + ' cells lit'; }
+
+    document.getElementById('hint-btn').addEventListener('click', function() { if (!currentPuzzle || won) return; var h = getHint(currentPuzzle.grid, currentPuzzle.solution, playerSolution, currentPuzzle.size); if (h) { var cell = gridEl.querySelector('[data-row="' + h[0] + '"][data-col="' + h[1] + '"]'); if (cell) { cell.classList.add('cell-hint'); setTimeout(function() { cell.classList.remove('cell-hint'); }, 2000); } showToast('Hint: try row ' + (h[0] + 1) + ', col ' + (h[1] + 1), 'success'); } else showToast('No hints!', 'error'); });
+    document.getElementById('reset-btn').addEventListener('click', resetPuzzle);
+    document.getElementById('new-btn').addEventListener('click', newPuzzle);
+    document.getElementById('win-next').addEventListener('click', function() { winOverlay.classList.remove('show'); newPuzzle(); });
+    diffSelect.addEventListener('change', newPuzzle);
+    newPuzzle();
+  </script>
+</body>
+</html>

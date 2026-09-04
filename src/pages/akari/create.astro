@@ -1,0 +1,345 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+const title = "Create Your Own GridPaw Puzzle — Custom Akari Puzzle Maker";
+const description = "Design your own Akari (Light Up) puzzle! Set grid size, place walls and numbers, validate uniqueness, and share with friends. Free online puzzle maker.";
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/create" type="website" />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "GridPaw Puzzle Creator",
+    "url": "https://gridpaw.com/create",
+    "description": description,
+    "applicationCategory": "Game",
+    "operatingSystem": "Web Browser"
+  })} />
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:linear-gradient(180deg,#f8f6ef,#f8f6ef);color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.8rem;color:#342421;text-align:center;margin:.5rem 0}
+    .subtitle{text-align:center;color:#6f5651;margin-bottom:1rem;font-size:.95rem}
+    .controls{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;align-items:center;margin:.8rem 0}
+    .btn{padding:.6rem 1.2rem;border:none;border-radius:14px;cursor:pointer;font-size:.9rem;font-weight:600;transition:all .2s;font-family:inherit;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.15)}
+    .btn:active{transform:scale(.95)}
+    .btn-primary{background:linear-gradient(145deg,#F0B898,#E09878);color:#fff}
+    .btn-secondary{background:linear-gradient(145deg,#F8F0FF,#fff4f0);color:#342421}
+    .btn-success{background:linear-gradient(145deg,#559c68,#68B888);color:#fff}
+    .grid-wrapper{display:flex;justify-content:center;margin:1rem 0}
+    .puzzle-grid{display:inline-grid;gap:2px;background:linear-gradient(145deg,#E8DDD8,#D8C8C0);padding:6px;border-radius:16px;box-shadow:0 8px 32px rgba(123,107,138,.15)}
+    .cell{display:flex;align-items:center;justify-content:center;border-radius:8px;cursor:pointer;transition:all .15s;font-weight:800;user-select:none}
+    .cell-white{background:linear-gradient(145deg,#FFF8F0,#FFF0E0)}
+    .cell-white:hover{background:#FFE8D0}
+    .cell-black{background:linear-gradient(145deg,#8B7B9A,#6B5B7A);color:#fff4f0}
+    .cell-black:hover{background:linear-gradient(145deg,#9B8BAA,#342421)}
+    .cell-invalid{box-shadow:inset 0 0 0 3px #E74C3C}
+    .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#E74C3C;color:#fff;padding:.6rem 1.2rem;border-radius:12px;font-size:.9rem;font-weight:600;z-index:1000;opacity:0;transition:opacity .3s;pointer-events:none}
+    .toast.show{opacity:1}.toast.success{background:#559c68}
+    .link-box{margin:1rem 0;padding:1rem;background:#fff;border-radius:12px;box-shadow:0 4px 16px rgba(123,107,138,.1);display:none}
+    .link-box.show{display:block}
+    .link-box input{width:100%;padding:.5rem;border:2px solid #e7dacf;border-radius:8px;font-size:.9rem;font-family:monospace}
+    .link-box .btn{margin-top:.5rem}
+    .instructions{margin:1.5rem 0;padding:1rem;background:#f8f6ef;border-radius:12px;font-size:.9rem;line-height:1.6}
+    .instructions h3{color:#342421;margin-bottom:.5rem}
+    .instructions ul{padding-left:1.5rem}
+    .instructions li{margin-bottom:.3rem}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    footer a{color:#6f5651}
+    @media(max-width:480px){h1{font-size:1.3rem}.controls{gap:.3rem}.btn{padding:.4rem .7rem;font-size:.8rem}}
+  
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo-clay-cat.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Akari Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/">Play</a>
+        <a href="/how-to-play/">How to Play</a>
+        <a href="/tips/">Tips</a>
+        <a href="/daily/">Daily</a>
+        <a href="/solver/">Solver</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>🎨 Create Your Own Puzzle</h1>
+    <p class="subtitle">Design an Akari puzzle and share it with friends!</p>
+    
+    <div class="controls">
+      <select id="size-select">
+        <option value="5">5×5</option>
+        <option value="6">6×6</option>
+        <option value="7" selected>7×7</option>
+        <option value="8">8×8</option>
+        <option value="9">9×9</option>
+        <option value="10">10×10</option>
+      </select>
+      <button class="btn btn-secondary" id="clear-btn">🗑 Clear</button>
+      <button class="btn btn-success" id="validate-btn">✓ Validate</button>
+      <button class="btn btn-primary" id="share-btn" style="display:none">📤 Get Link</button>
+    </div>
+    
+    <div class="grid-wrapper"><div class="puzzle-grid" id="puzzle-grid"></div></div>
+    
+    <div class="toast" id="toast"></div>
+    
+    <div class="link-box" id="link-box">
+      <h3 style="color:#342421;margin-bottom:.5rem">🔗 Share Your Puzzle</h3>
+      <input type="text" id="share-link" readonly />
+      <button class="btn btn-primary" id="copy-link-btn" style="width:100%">📋 Copy Link</button>
+    </div>
+    
+    <div class="instructions">
+      <h3>How to Create</h3>
+      <ul>
+        <li><strong>Click</strong> a cell to toggle: white → black wall</li>
+        <li><strong>Click</strong> a black wall to add a number (cycles 0→1→2→3→4→remove number)</li>
+        <li><strong>Right-click</strong> a black wall to remove it</li>
+        <li>Numbers show how many adjacent cells must have cats</li>
+        <li>Click <strong>Validate</strong> to check if your puzzle has a unique solution</li>
+        <li>Click <strong>Get Link</strong> to get a shareable URL</li>
+      </ul>
+    </div>
+    
+    <footer>
+      <p><a href="/">← Back to GridPaw</a></p>
+    </footer>
+  </div>
+  
+  <script is:inline src="/akari-engine.js"></script>
+  <script type="module">
+    const gridEl = document.getElementById('puzzle-grid');
+    const sizeSelect = document.getElementById('size-select');
+    const toastEl = document.getElementById('toast');
+    let size = 7;
+    let grid = []; // 9=white, -1=black(no number), 0-4=black(with number)
+    let toastTimer = null;
+    
+    function showToast(msg, type) {
+      toastEl.textContent = msg;
+      toastEl.className = 'toast show' + (type === 'success' ? ' success' : '');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toastEl.className = 'toast'; }, 2500);
+    }
+    
+    function initGrid() {
+      grid = Array.from({length: size}, () => Array(size).fill(9));
+      render();
+    }
+    
+    function render() {
+      const mw = Math.min(window.innerWidth - 40, 500);
+      const cs = Math.max(30, Math.min(50, Math.floor((mw - (size + 1) * 2 - 12) / size)));
+      gridEl.style.gridTemplateColumns = `repeat(${size}, ${cs}px)`;
+      gridEl.style.gridTemplateRows = `repeat(${size}, ${cs}px)`;
+      gridEl.innerHTML = '';
+      
+      for (let r = 0; r < size; r++) {
+        for (let c = 0; c < size; c++) {
+          const cell = document.createElement('div');
+          cell.className = 'cell';
+          cell.style.width = cs + 'px';
+          cell.style.height = cs + 'px';
+          cell.style.fontSize = Math.max(12, cs * 0.4) + 'px';
+          cell.dataset.row = r;
+          cell.dataset.col = c;
+          
+          const val = grid[r][c];
+          if (val === 9) {
+            cell.classList.add('cell-white');
+          } else {
+            cell.classList.add('cell-black');
+            if (val >= 0) {
+              cell.textContent = val;
+            }
+          }
+          
+          cell.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleClick(r, c);
+          });
+          
+          cell.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            handleRightClick(r, c);
+          });
+          
+          gridEl.appendChild(cell);
+        }
+      }
+    }
+    
+    function handleClick(r, c) {
+      const val = grid[r][c];
+      if (val === 9) {
+        // White → Black (no number)
+        grid[r][c] = -1;
+      } else if (val === -1) {
+        // Black (no number) → Black with number 0
+        grid[r][c] = 0;
+      } else if (val < 4) {
+        // Black with number → increment number
+        grid[r][c] = val + 1;
+      } else {
+        // Black with number 4 → back to white
+        grid[r][c] = 9;
+      }
+      render();
+    }
+    
+    function handleRightClick(r, c) {
+      const val = grid[r][c];
+      if (val !== 9) {
+        // Remove black wall
+        grid[r][c] = 9;
+        render();
+      }
+    }
+    
+    function validatePuzzle() {
+      // Check if there are any black cells
+      let hasBlack = false;
+      for (let r = 0; r < size; r++) {
+        for (let c = 0; c < size; c++) {
+          if (grid[r][c] !== 9) { hasBlack = true; break; }
+        }
+        if (hasBlack) break;
+      }
+      if (!hasBlack) {
+        showToast('Add some black walls first!', 'error');
+        return false;
+      }
+      
+      // Use the engine to solve
+      try {
+        const result = solve(grid, size, 2);
+        if (result.count === 0) {
+          showToast('No solution exists! Check your walls and numbers.', 'error');
+          return false;
+        } else if (result.count > 1) {
+          showToast('Multiple solutions exist! Add more number constraints.', 'error');
+          return false;
+        } else {
+          showToast('✓ Unique solution found! Your puzzle is valid.', 'success');
+          document.getElementById('share-btn').style.display = 'inline-block';
+          return true;
+        }
+      } catch (e) {
+        showToast('Validation error: ' + e.message, 'error');
+        return false;
+      }
+    }
+    
+    function encodeGrid() {
+      // Encode grid as compact string
+      // 9='w', -1='b', 0-4='0'-'4'
+      let data = '';
+      for (let r = 0; r < size; r++) {
+        for (let c = 0; c < size; c++) {
+          const val = grid[r][c];
+          if (val === 9) data += 'w';
+          else if (val === -1) data += 'b';
+          else data += String(val);
+        }
+      }
+      return size + ':' + data;
+    }
+    
+    function decodeGrid(encoded) {
+      const parts = encoded.split(':');
+      if (parts.length !== 2) return null;
+      const s = parseInt(parts[0]);
+      const data = parts[1];
+      if (data.length !== s * s) return null;
+      
+      const g = Array.from({length: s}, () => Array(s).fill(9));
+      for (let i = 0; i < data.length; i++) {
+        const r = Math.floor(i / s);
+        const c = i % s;
+        const ch = data[i];
+        if (ch === 'w') g[r][c] = 9;
+        else if (ch === 'b') g[r][c] = -1;
+        else if (ch >= '0' && ch <= '4') g[r][c] = parseInt(ch);
+        else return null;
+      }
+      return {size: s, grid: g};
+    }
+    
+    function generateShareLink() {
+      const encoded = encodeGrid();
+      const url = window.location.origin + '/#' + encoded;
+      document.getElementById('share-link').value = url;
+      document.getElementById('link-box').classList.add('show');
+      showToast('Link generated!', 'success');
+    }
+    
+    // Event listeners
+    sizeSelect.addEventListener('change', () => {
+      size = parseInt(sizeSelect.value);
+      initGrid();
+      document.getElementById('share-btn').style.display = 'none';
+      document.getElementById('link-box').classList.remove('show');
+    });
+    
+    document.getElementById('clear-btn').addEventListener('click', () => {
+      initGrid();
+      document.getElementById('share-btn').style.display = 'none';
+      document.getElementById('link-box').classList.remove('show');
+      showToast('Grid cleared', 'success');
+    });
+    
+    document.getElementById('validate-btn').addEventListener('click', validatePuzzle);
+    document.getElementById('share-btn').addEventListener('click', generateShareLink);
+    
+    document.getElementById('copy-link-btn').addEventListener('click', () => {
+      const input = document.getElementById('share-link');
+      input.select();
+      navigator.clipboard.writeText(input.value).then(() => {
+        showToast('Link copied to clipboard!', 'success');
+      });
+    });
+    
+    window.addEventListener('resize', render);
+    
+    // Check if there's a puzzle in URL hash to load
+    if (window.location.hash) {
+      const encoded = window.location.hash.substring(1);
+      const decoded = decodeGrid(encoded);
+      if (decoded) {
+        size = decoded.size;
+        grid = decoded.grid;
+        sizeSelect.value = size;
+        render();
+        showToast('Custom puzzle loaded!', 'success');
+      }
+    } else {
+      initGrid();
+    }
+  </script>
+</body>
+</html>
