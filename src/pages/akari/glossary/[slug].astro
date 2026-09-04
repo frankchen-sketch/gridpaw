@@ -25,7 +25,7 @@ const faqJsonLd = {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <SEOHead title={title} description={description} canonical={`/glossary/${term.slug}`} type="article" breadcrumbTitle={term.term} />
+  <SEOHead title={title} description={description} canonical={`/akari/glossary/${term.slug}`} type="article" breadcrumbTitle={term.term} />
   <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
   <style is:global>
     *{box-sizing:border-box;margin:0;padding:0}
@@ -85,7 +85,7 @@ const faqJsonLd = {
 <body>
   <header class="site-header">
     <div class="header-inner">
-      <a href="/" class="brand" aria-label="GridPaw home">
+      <a href="/akari/" class="brand" aria-label="GridPaw home">
         <span class="brand-logo"><img src="/assets/logo-clay-cat.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
         <span class="brand-name">
           <span class="big">GridPaw</span>
@@ -93,18 +93,18 @@ const faqJsonLd = {
         </span>
       </a>
       <nav class="nav" aria-label="Main navigation">
-        <a href="/">Play</a>
-        <a href="/how-to-play/">How to Play</a>
-        <a href="/tips/">Tips</a>
-        <a href="/daily/">Daily</a>
-        <a href="/solver/">Solver</a>
+        <a href="/akari/">Play</a>
+        <a href="/akari/how-to-play/">How to Play</a>
+        <a href="/akari/tips/">Tips</a>
+        <a href="/akari/daily/">Daily</a>
+        <a href="/akari/solver/">Solver</a>
       </nav>
     </div>
   </header>
 
   <div class="container">
     <h1>📖 {term.term}</h1>
-    <p class="subtitle">Akari Puzzle Glossary — <a href="/glossary/">All Terms</a></p>
+    <p class="subtitle">Akari Puzzle Glossary — <a href="/akari/glossary/">All Terms</a></p>
 
     <!-- Definition -->
     <div class="definition-box">
@@ -168,7 +168,7 @@ const faqJsonLd = {
       <h3>📚 Related Terms</h3>
       {term.relatedTerms.map(slug => {
         const related = glossaryTerms.find(t => t.slug === slug);
-        return related ? <a href={`/glossary/${slug}/`}>{related.term}</a> : null;
+        return related ? <a href={`/akari/glossary/${slug}/`}>{related.term}</a> : null;
       })}
       {term.relatedPages.map(p => (
         <a href={p.href}>{p.label}</a>
@@ -178,11 +178,11 @@ const faqJsonLd = {
     <!-- CTA -->
     <div class="cta-section">
       <p style="margin-bottom:.8rem;font-weight:600;color:#342421">Ready to put this knowledge to use?</p>
-      <a href="/" class="cta-btn">🐱 Play GridPaw Free</a>
+      <a href="/akari/" class="cta-btn">🐱 Play GridPaw Free</a>
     </div>
 
     <footer>
-      <p>GridPaw — <a href="/glossary/">Akari Puzzle Glossary</a> · <a href="/">Play More</a></p>
+      <p>GridPaw — <a href="/akari/glossary/">Akari Puzzle Glossary</a> · <a href="/akari/">Play More</a></p>
     </footer>
   </div>
 </body>
