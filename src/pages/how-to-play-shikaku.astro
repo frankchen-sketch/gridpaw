@@ -1,0 +1,157 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+const title = "How to Play Shikaku — Beginner's Guide | GridPaw";
+const description = "Learn Shikaku rules step by step with this beginner's guide. Understand the goal, master rectangle placement, and play free online at GridPaw.";
+
+const faqs = [
+  { q: "Is Shikaku the same as Rectangle Partition?", a: "Yes. Shikaku is the original Japanese name used by Nikoli. English-language puzzle sites often call it Rectangle Partition, Rectangles, or Divide by Box. The rules are identical: split the grid into rectangles so each one contains exactly one number and covers exactly that many cells." },
+  { q: "How is Shikaku different from Sudoku?", a: "Sudoku asks you to fill digits into cells; Shikaku asks you to draw shapes around cells. In Sudoku every cell gets a number, while in Shikaku most cells are empty and the few given numbers define the area of the rectangle that must contain them. Both are pure logic puzzles with a single solution, but Shikaku is spatial rather than numeric." },
+  { q: "Do I need to guess in Shikaku?", a: "No. Every well-constructed Shikaku puzzle has exactly one solution that can be reached by deduction alone. If you feel stuck, look for a number with only one legal rectangle shape, or find an empty cell that only one rectangle can reach. There is always a next logical step." },
+  { q: "Can I play Shikaku on my phone?", a: "Yes. GridPaw runs in any modern mobile browser with no download required. Drag your finger across the grid to draw a rectangle, tap a rectangle to remove it, and use the Undo button to step back. Your level progress is saved automatically on your device." },
+  { q: "How many levels does GridPaw have?", a: "GridPaw generates a fresh puzzle for every level, so there is no fixed cap. Levels 1 to 5 are 4×4 tutorials, and the grid grows through Easy, Medium, Hard, Expert, and Master tiers until you reach Legend at level 51 and beyond, where every board is a full 8×8 grid." },
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/how-to-play-shikaku" type="article" breadcrumbTitle="How to Play Shikaku" />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } }))
+  })} />
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:linear-gradient(180deg,#f8f6ef,#f8f6ef);color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.8rem;color:#342421;text-align:center;margin:.5rem 0}
+    .seo-content{margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .seo-content p{margin:.5rem 0;line-height:1.7}
+    .seo-content ol,.seo-content ul{padding-left:1.5rem;margin:.5rem 0}
+    .seo-content li{margin-bottom:.4rem}
+    .seo-content a{color:#E8A888;text-decoration:underline}
+    .seo-content h2{font-size:1.3rem;color:#342421;margin:1.5rem 0 .5rem}
+    .seo-content h3{font-size:1.1rem;color:#342421;margin:1rem 0 .3rem}
+    .seo-content table{width:100%;border-collapse:collapse;margin:1rem 0}
+    .seo-content th,.seo-content td{padding:.5rem;border:1px solid #e7dacf;text-align:left}
+    .seo-content th{background:#fff4f0;color:#342421}
+    details{margin:.5rem 0;padding:.5rem .8rem;background:#f8f6ef;border-radius:8px}
+    summary{cursor:pointer;font-weight:600;color:#E8A888}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    footer a{color:#6f5651}
+    .play-cta{display:block;text-align:center;margin:2rem 0;padding:1rem;background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;border-radius:12px;text-decoration:none;font-weight:600;font-size:1.1rem}
+    .play-cta:hover{background:linear-gradient(145deg,#E0A888,#D08868)}
+  
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Shikaku Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/">Play</a>
+        <a href="/how-to-play-shikaku/">How to Play</a>
+        <a href="/tips/">Tips</a>
+        <a href="/#play">Daily</a>
+        <a href="/solver/">Solver</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>🐱 How to Play Shikaku — A Beginner's Guide</h1>
+    <p style="text-align:center;color:#6f5651;margin-bottom:1rem;">Learn Shikaku rules step by step and solve your first rectangle puzzle today.</p>
+
+    <section class="seo-content">
+
+      <h2>What Is Shikaku?</h2>
+      <p>Shikaku (四角, meaning "square" or "rectangle" in Japanese) is a logic puzzle published by <a href="https://www.nikoli.co.jp/en/puzzles/shikaku/" target="_blank" rel="noopener">Nikoli</a>, the Japanese company that popularized Sudoku. In English it is often called <strong>Rectangle Partition</strong>, <strong>Rectangles</strong>, or <strong>Divide by Box</strong>. Whatever the name, the idea is the same: you carve a numbered grid into rectangles so that every number sits inside a rectangle of exactly its size.</p>
+      <p>Unlike Sudoku, you never write digits. Shikaku is a spatial puzzle — you think about shapes, areas, and how blocks of cells fit together like a tiling. That makes it a refreshing change for anyone who enjoys Nonograms, Akari, or Kakuro but wants something that feels more like a jigsaw than an arithmetic drill.</p>
+      <p>You can <a href="/">play Shikaku online</a> for free at GridPaw. Our version wraps the classic Nikoli rules in a cat-themed board: drag to draw a rectangle, and a paw-print fill confirms the placement. There is nothing to install and no account is needed to start.</p>
+
+      <h2>The Goal of the Game</h2>
+      <p>Every Shikaku puzzle starts as a rectangular grid where a handful of cells contain numbers and the rest are blank. Your job is to divide the <em>entire</em> grid into rectangles (squares count as rectangles) following three constraints:</p>
+      <ul>
+        <li><strong>Each rectangle contains exactly one number.</strong> No rectangle may be empty, and no rectangle may hold two numbers.</li>
+        <li><strong>Each rectangle's area equals its number.</strong> A cell marked 6 belongs to a rectangle covering exactly 6 cells — for example 2×3, 3×2, 1×6, or 6×1.</li>
+        <li><strong>Rectangles tile the grid completely.</strong> Every cell is covered by exactly one rectangle. No overlaps, no gaps.</li>
+      </ul>
+      <p>When all three conditions hold at once, the puzzle is solved. Because the numbers on the board always add up to the total number of cells, a correct set of rectangles leaves nothing uncovered. Well-made puzzles have exactly one solution, so you never need to guess — every placement can be proven.</p>
+
+      <h2>How to Play Shikaku: Step-by-Step Walkthrough</h2>
+      <p>If you are learning how to play Shikaku for the first time, follow this sequence. It works on a 4×4 tutorial board and scales all the way up to 8×8 Legend puzzles.</p>
+      <ol>
+        <li><strong>Read the numbers and list their shapes.</strong> Before drawing anything, ask what rectangles each number can form. A 1 is always a single cell. A 2 is a 1×2 domino. A 4 could be 1×4 or 2×2. A 6 could be 1×6 or 2×3. Prime numbers (2, 3, 5, 7) can only be a straight strip, which is why they are the easiest to place.</li>
+        <li><strong>Start with primes and ones.</strong> Every 1 is solved instantly — draw a 1×1 box around it. Then look at each 2, 3, 5, and 7. A strip of length 5 on a 5-wide grid has very few legal positions, and once you rule out the ones that would swallow another number, often just one remains.</li>
+        <li><strong>Work from corners and edges.</strong> A number sitting in a corner has only two directions to grow into instead of four. Edge cells have three. The fewer directions available, the fewer candidate rectangles exist, so corners and edges produce quick, certain deductions.</li>
+        <li><strong>Place the largest numbers next.</strong> Big numbers such as 8, 9, 10, or 12 take up a lot of room and collide with many neighbors. Try each shape (e.g. 2×4, 4×2, 1×8, 8×1 for an 8) and eliminate every one that overlaps another number or runs off the grid. Large numbers frequently have only one legal fit.</li>
+        <li><strong>Use elimination on blank cells.</strong> Pick an empty cell and ask: which numbers could possibly reach it? If only one number can extend a legal rectangle over that cell, that number <em>must</em> cover it. This "orphan cell" logic is the single most powerful technique in Shikaku.</li>
+        <li><strong>Draw, check, and repeat.</strong> Each rectangle you draw removes cells from play and shrinks the options for every remaining number. On GridPaw, drag from one corner of the rectangle to the opposite corner and release. If you make a mistake, tap the rectangle to remove it or press Undo. Keep cycling through steps 2 to 5 until the board is fully tiled.</li>
+      </ol>
+      <p>The rhythm of Shikaku is "constraint, then commit." Never draw a rectangle because it looks plausible — draw it because every other shape for that number has been ruled out. That discipline is what lets you solve large grids without backtracking.</p>
+
+      <h2>A Worked Example</h2>
+      <p>Take a 4×4 board. Label the columns A–D from left to right and the rows 1–4 from top to bottom. Four numbers are given: a <strong>2</strong> at A1 (top-left corner), a <strong>4</strong> at D1 (top-right corner), a <strong>6</strong> at A4 (bottom-left corner), and a <strong>4</strong> at D4 (bottom-right corner). The clues sum to 16, matching the 16 cells — a quick sanity check worth doing on every puzzle. Here is the beginner's reasoning:</p>
+      <ol>
+        <li><strong>Enumerate the 6.</strong> A 1×6 strip cannot fit on a 4-wide board, so the 6 at A4 must be 2×3 (two rows tall, three wide: A3–C4) or 3×2 (three rows tall, two wide: A2–B4). Both are legal for now — neither shape swallows another number. Park it.</li>
+        <li><strong>Force the bottom-right 4.</strong> The 4 at D4 sits in a corner, so it can only grow up or left. A vertical 1×4 (D1–D4) would contain the 4 at D1 — illegal. A horizontal 1×4 (A4–D4) would contain the 6 at A4 — illegal. The only shape left is a 2×2 square covering C3, D3, C4, D4. Draw it.</li>
+        <li><strong>Cascade to the 6.</strong> Cells C3 and C4 are now taken, so the 6 can no longer be a 2×3 across columns A–C. It must be the 3×2 block A2, B2, A3, B3, A4, B4. Draw it.</li>
+        <li><strong>Force the top-right 4.</strong> The 4 at D1 is also cornered. A vertical 1×4 down column D hits the rectangle you just drew at D3. A horizontal 1×4 across row 1 would contain the 2 at A1. So it is a 2×2: C1, D1, C2, D2. Draw it.</li>
+        <li><strong>Finish with the 2.</strong> Only A1 and B1 remain. The 2 at A1 covers exactly those two cells. Every cell is now inside exactly one rectangle — solved.</li>
+      </ol>
+      <p>Nothing was guessed. Each rectangle followed from ruling out every alternative, and each placement shrank the options for the next number. That "constraint, then commit" rhythm is the mindset to carry into every Shikaku puzzle you play.</p>
+
+      <h2>Difficulty Levels on GridPaw</h2>
+      <p>GridPaw scales difficulty by grid size and the mix of numbers. Progress is saved automatically, so you can stop and resume anytime.</p>
+      <table>
+        <thead>
+          <tr><th>Tier</th><th>Levels</th><th>Grid</th><th>What changes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Tutorial</td><td>1 – 5</td><td>4×4</td><td>Mostly 1s, 2s, and 4s. Learn the drag gesture and the three rules.</td></tr>
+          <tr><td>Easy</td><td>6 – 10</td><td>5×5</td><td>Primes and small composites. Corners still solve most of the board.</td></tr>
+          <tr><td>Medium</td><td>11 – 16</td><td>5×6</td><td>Non-square boards; you must think about both orientations of each shape.</td></tr>
+          <tr><td>Medium-Hard</td><td>17 – 22</td><td>6×6</td><td>More composite numbers (6, 8, 9) with two or three possible shapes each.</td></tr>
+          <tr><td>Hard</td><td>23 – 30</td><td>7×8</td><td>Orphan-cell elimination becomes essential; fewer instant placements.</td></tr>
+          <tr><td>Expert</td><td>31 – 40</td><td>7×7</td><td>Chained deductions — placing one rectangle forces a cascade of others.</td></tr>
+          <tr><td>Master</td><td>41 – 50</td><td>8×8</td><td>Large numbers with many shapes; careful area accounting required.</td></tr>
+          <tr><td>Legend</td><td>51+</td><td>8×8</td><td>Dense boards with minimal easy starts. Every technique in play.</td></tr>
+        </tbody>
+      </table>
+      <p>If you want structured advice for the harder tiers, read our <a href="/tips/">Shikaku tips and strategies</a>, or review the full <a href="/rules/">Shikaku rules with examples</a>. When a board truly has you stuck, the built-in <a href="/solver/">Shikaku solver</a> can reveal one correct rectangle so you can study the pattern and keep going.</p>
+
+      <h2>Frequently Asked Questions</h2>
+      {faqs.map(f => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+
+    </section>
+
+    <a href="/" class="play-cta">🎮 Play Shikaku Online Free</a>
+
+    <footer><p>© 2026 GridPaw. <a href="/">Shikaku</a> · <a href="/akari/">Akari</a> · <a href="/pictomino/">Pictomino</a> · <a href="https://furriq.com">Furriq</a></p></footer>
+  </div>
+</body>
+</html>

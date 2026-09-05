@@ -1,0 +1,173 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+const title = "Shikaku Rules — Complete Guide with Examples | GridPaw";
+const description = "The complete Shikaku rules explained with worked 5×5 examples. Learn the four core rules, common misconceptions, and how every puzzle is solved by logic alone.";
+
+const faqs = [
+  { q: "What are the rules of Shikaku?", a: "Divide the whole grid into rectangles so that each rectangle contains exactly one number, the number of cells in each rectangle equals that number, no two rectangles overlap, and no cell is left uncovered. Squares count as rectangles." },
+  { q: "Can a rectangle contain two numbers?", a: "No. Every rectangle must contain exactly one numbered cell. If two numbers end up inside the same rectangle, the placement is illegal even if the area happens to match one of them." },
+  { q: "Does the number have to be in a specific position inside the rectangle?", a: "No. The numbered cell can sit anywhere inside its rectangle — a corner, an edge, or the middle. Only the rectangle's total area and its single-number requirement matter." },
+  { q: "Are the numbers in Shikaku always a perfect fit for the grid?", a: "Yes. In a valid puzzle the sum of all numbers equals the total number of cells. If a 5×5 board shows numbers adding up to 25, you know the rectangles will tile the grid exactly with no leftovers." },
+  { q: "Is guessing ever required in Shikaku?", a: "No. A well-constructed Shikaku puzzle has exactly one solution and every step can be proven by elimination. If you cannot see a move, look for a number with only one legal shape or an empty cell that only one number can reach." },
+  { q: "What happens if I draw a wrong rectangle on GridPaw?", a: "GridPaw checks the area against the number as you release the drag. A rectangle that does not match, contains no number, or contains two numbers is rejected. If a correctly sized rectangle turns out to be in the wrong place, tap it to remove it or press Undo." },
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/rules" type="article" breadcrumbTitle="Rules" />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } }))
+  })} />
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:linear-gradient(180deg,#f8f6ef,#f8f6ef);color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.8rem;color:#342421;text-align:center;margin:.5rem 0}
+    .seo-content{margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .seo-content p{margin:.5rem 0;line-height:1.7}
+    .seo-content ol,.seo-content ul{padding-left:1.5rem;margin:.5rem 0}
+    .seo-content li{margin-bottom:.4rem}
+    .seo-content a{color:#E8A888;text-decoration:underline}
+    .seo-content h2{font-size:1.3rem;color:#342421;margin:1.5rem 0 .5rem}
+    .seo-content h3{font-size:1.1rem;color:#342421;margin:1rem 0 .3rem}
+    .seo-content table{width:100%;border-collapse:collapse;margin:1rem 0}
+    .seo-content th,.seo-content td{padding:.5rem;border:1px solid #e7dacf;text-align:left}
+    .seo-content th{background:#fff4f0;color:#342421}
+    details{margin:.5rem 0;padding:.5rem .8rem;background:#f8f6ef;border-radius:8px}
+    summary{cursor:pointer;font-weight:600;color:#E8A888}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    footer a{color:#6f5651}
+    .play-cta{display:block;text-align:center;margin:2rem 0;padding:1rem;background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;border-radius:12px;text-decoration:none;font-weight:600;font-size:1.1rem}
+    .play-cta:hover{background:linear-gradient(145deg,#E0A888,#D08868)}
+  
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Shikaku Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/">Play</a>
+        <a href="/how-to-play-shikaku/">How to Play</a>
+        <a href="/tips/">Tips</a>
+        <a href="/#play">Daily</a>
+        <a href="/solver/">Solver</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>🐱 Shikaku Rules — The Complete Guide</h1>
+    <p style="text-align:center;color:#6f5651;margin-bottom:1rem;">Four rules, one unique solution. Everything you need to know before you draw your first rectangle.</p>
+
+    <section class="seo-content">
+
+      <p>Shikaku is a rectangle-partition puzzle created by Nikoli, the Japanese publisher behind Sudoku and Akari. The rules fit on an index card, yet they produce puzzles that range from thirty-second warm-ups to dense 8×8 boards that reward careful deduction. This page lays out every rule precisely, walks through concrete 5×5 examples, and clears up the misconceptions that trip up new players. If you would rather learn by doing, our <a href="/how-to-play-shikaku/">beginner's guide</a> takes a hands-on approach, and you can <a href="/">play Shikaku online</a> free at any time.</p>
+
+      <h2>The Grid</h2>
+      <p>A Shikaku puzzle is a rectangular grid — GridPaw boards range from 4×4 to 8×8. Some cells contain a <strong>number</strong>; the rest are <strong>empty</strong>. There are no walls, shaded cells, or pre-drawn lines. The numbers are the only information you get, and they are all you need.</p>
+      <p>Two things are true of every valid Shikaku grid:</p>
+      <ul>
+        <li><strong>The numbers sum to the cell count.</strong> On a 5×5 board the numbers add up to 25; on a 6×6 board, 36. This is a consequence of the rules, not a separate rule, but it is a useful check.</li>
+        <li><strong>Each number is the seed of exactly one rectangle.</strong> The count of rectangles in the finished solution equals the count of numbers on the board. If there are six numbers, you will draw six rectangles — never more, never fewer.</li>
+      </ul>
+
+      <h2>The Four Core Rules</h2>
+
+      <h3>Rule 1: Every rectangle contains exactly one number</h3>
+      <p>Each rectangle you draw must enclose one — and only one — numbered cell. A rectangle with no number is invalid because nothing defines its size. A rectangle with two numbers is invalid because it can only satisfy one of them. The number may sit anywhere inside the rectangle: corner, edge, or center. Its position does not matter; its presence does.</p>
+
+      <h3>Rule 2: The rectangle's area equals its number</h3>
+      <p>The number tells you how many cells the rectangle covers. A cell marked 6 must be enclosed by a rectangle of exactly 6 cells: 1×6, 6×1, 2×3, or 3×2. A cell marked 5 must be a 1×5 or 5×1 strip, because 5 is prime. A cell marked 1 is always a single-cell square. The shape is up to you as long as the area is right and the rectangle fits inside the grid.</p>
+
+      <h3>Rule 3: Rectangles cannot overlap</h3>
+      <p>No cell may belong to two rectangles. Once a cell is enclosed, it is spoken for. This is the rule that turns Shikaku into a tiling problem — every rectangle you place removes cells from the pool available to its neighbors, which is exactly what makes deduction possible.</p>
+
+      <h3>Rule 4: Every cell must be covered</h3>
+      <p>When you finish, there can be no empty cells left over. The rectangles tile the entire grid edge to edge. If you have placed a rectangle for every number and one cell remains uncovered, at least one rectangle is in the wrong place.</p>
+
+      <h2>Rule Examples on a 5×5 Grid</h2>
+      <p>Consider a 5×5 board with columns labeled A–E (left to right) and rows 1–5 (top to bottom). Six numbers are given: <strong>3</strong> at D1, <strong>1</strong> at E1, <strong>9</strong> at A2, <strong>2</strong> at E3, <strong>6</strong> at B4, and <strong>4</strong> at D4. The numbers sum to 25, so the grid check passes. Here is how each rule shapes the solution.</p>
+
+      <h3>Example: the 1 at E1 has one shape</h3>
+      <p>By Rule 2, a 1 covers exactly one cell. Draw a 1×1 box around E1. There is nothing to decide — ones are free moves, and you should always take them first.</p>
+
+      <h3>Example: the 9 at A2 has one legal fit</h3>
+      <p>Nine cells can be arranged as 1×9, 9×1, or 3×3. The strips are too long for a 5-wide board, so the 9 must be a 3×3 square containing A2. That square could theoretically sit in several positions, but only A1–C3 (columns A–C, rows 1–3) avoids running off the left edge or swallowing another number. Rule 1 and the grid boundary together force it.</p>
+
+      <h3>Example: the 3 at D1 — two shapes, one survivor</h3>
+      <p>A 3 is prime, so it is a 1×3 strip. Horizontally it could be B1–D1 or C1–E1; vertically it could be D1–D3. Rule 3 eliminates the horizontal options: B1 and C1 belong to the 9's square, and E1 belongs to the 1. Only the vertical strip D1–D3 remains. Notice that the 3 was solved not by looking at the 3 itself, but by looking at what its neighbors had already claimed.</p>
+
+      <h3>Example: the 6 at B4 — eight shapes to check</h3>
+      <p>A 6 can be 2×3 or 3×2 on this board (1×6 does not fit). Counting every position that contains B4 gives eight geometric candidates. Six of them reach up into row 3 or higher, where they would overlap the 9's square (A1–C3) — Rule 3 rules them out. That leaves two 2×3 options along the bottom: A4–C5 or B4–D5. The second one would take D4, which holds the 4 — a Rule 1 violation. So the 6 is A4, B4, C4, A5, B5, C5.</p>
+
+      <h3>Example: the 4 and the 2 fall into place</h3>
+      <p>With columns A–C fully claimed in rows 4–5, the 4 at D4 can only be the 2×2 square D4, E4, D5, E5. The 2 at E3 then has exactly two free cells to work with: E2 and E3, a vertical domino. Rule 4 is satisfied — all 25 cells are covered, six rectangles for six numbers, and the puzzle is complete.</p>
+
+      <h3>Quick reference: shapes by number</h3>
+      <table>
+        <thead>
+          <tr><th>Number</th><th>Possible rectangles</th><th>Note</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>1×1</td><td>Always a single cell — free move</td></tr>
+          <tr><td>2, 3, 5, 7</td><td>1×n strip only</td><td>Primes have one shape in two orientations</td></tr>
+          <tr><td>4</td><td>1×4, 2×2</td><td>Two shapes; the square is common on small boards</td></tr>
+          <tr><td>6</td><td>1×6, 2×3</td><td>Strip rarely fits on grids under 6 wide</td></tr>
+          <tr><td>8</td><td>1×8, 2×4</td><td>On boards under 8 wide, always 2×4</td></tr>
+          <tr><td>9</td><td>1×9, 3×3</td><td>On boards under 9 wide, always 3×3</td></tr>
+          <tr><td>12</td><td>1×12, 2×6, 3×4</td><td>Most flexible common number — check all three</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Common Misconceptions</h2>
+      <ul>
+        <li><strong>Myth: You sometimes have to guess.</strong> False. Every properly constructed Shikaku has one solution reachable by pure elimination. If you are guessing, you have missed a forced placement — usually a number with one legal shape or an empty cell only one number can reach.</li>
+        <li><strong>Myth: Bigger rectangles are better.</strong> False. There is no scoring for shape, and the area is dictated entirely by the number. A 6 is six cells whether it is a long strip or a compact block; the puzzle decides which, not your preference.</li>
+        <li><strong>Myth: The number must be in the corner of its rectangle.</strong> False. The numbered cell can be anywhere inside the rectangle. Assuming it must be a corner will make many puzzles look unsolvable.</li>
+        <li><strong>Myth: Rectangles can share a cell along their border.</strong> False. Rectangles are made of whole cells, and each cell belongs to exactly one rectangle. Two rectangles can sit side by side, but they never share a cell.</li>
+        <li><strong>Myth: Squares don't count as rectangles.</strong> False. A square is a rectangle with equal sides. 2×2, 3×3, and 1×1 are all legitimate Shikaku shapes.</li>
+        <li><strong>Myth: Empty cells at the end mean the puzzle is broken.</strong> Almost always false. Leftover cells mean a rectangle is misplaced. Remove the rectangle nearest the gap and re-examine its alternatives.</li>
+      </ul>
+
+      <h2>Why the Rules Guarantee a Unique Solution</h2>
+      <p>Puzzle designers verify each Shikaku with a solver before publishing it, and GridPaw does the same automatically — every board is generated from a known tiling and checked for uniqueness. That guarantee is what lets you commit to a rectangle with confidence: if you have eliminated every other shape for a number, the one that remains is not a good guess, it is the answer. Practising this habit is the fastest path from Tutorial boards to Legend difficulty. For technique-by-technique advice, see our <a href="/tips/">Shikaku tips and strategies</a>; for a hint on a specific board, the <a href="/solver/">solver</a> can reveal a single correct rectangle without spoiling the rest.</p>
+
+      <h2>Frequently Asked Questions</h2>
+      {faqs.map(f => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+
+    </section>
+
+    <a href="/" class="play-cta">🎮 Play Shikaku Online Free</a>
+
+    <footer><p>© 2026 GridPaw. <a href="/">Shikaku</a> · <a href="/akari/">Akari</a> · <a href="/pictomino/">Pictomino</a> · <a href="https://furriq.com">Furriq</a></p></footer>
+  </div>
+</body>
+</html>
