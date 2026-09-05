@@ -39,6 +39,8 @@
 }
 </script>
 <!-- GA4 已启用（Measurement ID 见下） -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<link rel="preconnect" href="https://www.clarity.ms">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FWP61DJCC"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -88,6 +90,25 @@ header{
   margin-left:18px;transition:color .15s;
 }
 .nav a:hover{color:var(--pink)}
+/* Site header (unified nav matching Shikaku/Akari) */
+.site-header{background:var(--card);box-shadow:0 2px 12px rgba(74,59,50,.08);padding:0;position:sticky;top:0;z-index:100}
+.site-header .header-inner{max-width:880px;margin:0 auto;padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:52px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.brand-logo{font-size:22px}
+.brand-name{display:flex;flex-direction:column;line-height:1.2}
+.brand-name .big{font-size:17px;font-weight:900;color:var(--ink)}
+.brand-name .small{font-size:11px;color:#9E9590;font-weight:600}
+.game-switcher{position:relative}
+.game-switcher-btn{font-size:13px;font-weight:700;color:#5C6BC0;background:none;border:none;cursor:pointer;padding:8px 14px;display:flex;align-items:center;gap:4px;font-family:inherit}
+.game-switcher-btn::after{content:'▾';font-size:10px}
+.game-switcher-btn:hover{color:var(--pink)}
+.game-switcher-menu{display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);background:white;border:1.5px solid #E8DDD0;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.12);min-width:200px;padding:6px 0;z-index:300}
+.game-switcher:hover .game-switcher-menu{display:block}
+.game-switcher-menu a{display:flex;flex-direction:column;padding:10px 16px;font-size:13px;gap:2px;text-decoration:none;color:#3D3D3D}
+.game-switcher-menu a .game-desc{font-size:11px;font-weight:500;color:#9E9590}
+.game-switcher-menu a:hover{background:#FFF8F0;color:var(--pink)}
+.game-switcher-menu a.active{color:var(--pink);background:#FFF5F0;font-weight:800}
+@media(max-width:480px){.game-switcher:hover .game-switcher-menu{display:none}.game-switcher.open .game-switcher-menu{display:block}}
 /* ===== Hero ===== */
 .hero-cta{display:flex;gap:12px;justify-content:center;margin-top:18px;flex-wrap:wrap}
 .cta-daily,.cta-play{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:16px;text-decoration:none;padding:12px 28px;border-radius:999px;transition:transform .12s, box-shadow .12s}
@@ -302,28 +323,25 @@ footer a{color:#b5a396}
 </head>
 <body>
 
-<!-- GridPaw unified navigation -->
-<header style="position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border-bottom:1.5px solid #E8DDD0;padding:0 16px">
-  <div style="max-width:720px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:48px">
-    <a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:#3D3D3D">
-      <span style="font-size:20px">🐱</span>
-      <span style="font-size:16px;font-weight:900;color:#D47070">GridPaw</span>
-      <span style="font-size:10px;color:#9E9590;font-weight:600">Pictomino</span>
-    </a>
-    <nav style="display:flex;gap:4px;align-items:center">
-      <a href="/" style="font-size:12px;font-weight:700;color:#5C6BC0;text-decoration:none;padding:6px 10px;border-radius:16px;border:1.5px solid #E8E0EB">Shikaku</a>
-      <a href="/akari/" style="font-size:12px;font-weight:700;color:#5C6BC0;text-decoration:none;padding:6px 10px;border-radius:16px;border:1.5px solid #E8E0EB">Akari</a>
-      <a href="/pictomino/" style="font-size:12px;font-weight:700;color:#D47070;text-decoration:none;padding:6px 10px;border-radius:16px;border:1.5px solid #D47070;background:#FFF5F0">Pictomino</a>
-    </nav>
-  </div>
-</header>
-
-
-<header>
+<header class="site-header">
   <div class="header-inner">
-    <div class="logo"><span class="cat">🐾</span> Picto<span style="color:var(--pink)">mino</span></div>
-    <nav class="nav">
+    <a href="/pictomino/" class="brand" aria-label="GridPaw home">
+      <span class="brand-logo">🐱</span>
+      <span class="brand-name">
+        <span class="big">GridPaw</span>
+        <span class="small">Pictomino</span>
+      </span>
+    </a>
+    <nav class="nav" aria-label="Main navigation">
       <a href="#game">Play</a>
+      <div class="game-switcher">
+        <button class="game-switcher-btn" onclick="this.nextElementSibling.classList.toggle('open')">Games</button>
+        <div class="game-switcher-menu">
+          <a href="/"><strong>🟧 Shikaku</strong><span class="game-desc">Rectangle partition puzzle</span></a>
+          <a href="/akari/"><strong>💡 Akari</strong><span class="game-desc">Light Up puzzle</span></a>
+          <a href="/pictomino/" class="active"><strong>🧩 Pictomino</strong><span class="game-desc">Spatial reasoning puzzle</span></a>
+        </div>
+      </div>
       <a href="#how-to-play">How to Play</a>
       <a href="#faq">FAQ</a>
     </nav>
@@ -357,7 +375,7 @@ footer a{color:#b5a396}
     <div class="gt-account" id="gt-account"><!-- JS 填充登录态 --></div>
   </div>
   <div class="game-wrap" id="game">
-    <iframe class="game-frame" src="game.html" title="Play Pictomino spatial reasoning puzzle game" loading="eager" allow="autoplay"></iframe>
+    <iframe class="game-frame" src="game.html" title="Play Pictomino spatial reasoning puzzle game" loading="lazy" allow="autoplay"></iframe>
   </div>
   <section class="lb-section" id="daily-leaderboard">
     <h3>🏆 Today's Leaderboard</h3>
