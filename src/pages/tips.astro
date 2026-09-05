@@ -1,0 +1,179 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+const title = "Shikaku Tips & Strategies — Beginner to Advanced | GridPaw";
+const description = "Shikaku tips and strategies for every level: start with primes, master orphan-cell elimination, chain forced placements, and avoid the mistakes that stall you.";
+
+const faqs = [
+  { q: "What is the best first move in Shikaku?", a: "Place every 1 as a single cell, then look at prime numbers (2, 3, 5, 7) sitting in corners or on edges. Primes can only form straight strips, and edges cut their options in half, so these are the most reliable opening deductions." },
+  { q: "How do I get better at Shikaku fast?", a: "Practise one technique at a time. Spend a few boards only looking for orphan cells (empty cells that just one number can reach). Then spend a few boards only counting area. Isolating techniques builds recognition faster than solving casually." },
+  { q: "Is there a trick for big numbers like 12 or 16?", a: "List every shape (for 12: 1×12, 2×6, 3×4 and their rotations), then eliminate each one that runs off the grid or contains a second number. Large numbers usually have only one or two survivors because they collide with so many neighbours." },
+  { q: "What should I do when I am completely stuck?", a: "Stop looking at the numbers and look at the empty cells instead. Find the empty cell farthest from any unplaced number, or in the tightest corner, and ask which numbers could reach it. Usually only one can, and that gives you a forced placement." },
+  { q: "Do I ever need to try a rectangle and see what happens?", a: "Advanced solvers sometimes test a placement mentally to find a contradiction, but this is still logic, not guessing: you follow the consequences until something breaks, then rule that shape out. On GridPaw you can use Undo to test safely, but aim to do it in your head." },
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/tips" type="article" breadcrumbTitle="Tips" />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } }))
+  })} />
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:linear-gradient(180deg,#f8f6ef,#f8f6ef);color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.8rem;color:#342421;text-align:center;margin:.5rem 0}
+    .seo-content{margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .seo-content p{margin:.5rem 0;line-height:1.7}
+    .seo-content ol,.seo-content ul{padding-left:1.5rem;margin:.5rem 0}
+    .seo-content li{margin-bottom:.4rem}
+    .seo-content a{color:#E8A888;text-decoration:underline}
+    .seo-content h2{font-size:1.3rem;color:#342421;margin:1.5rem 0 .5rem}
+    .seo-content h3{font-size:1.1rem;color:#342421;margin:1rem 0 .3rem}
+    .seo-content table{width:100%;border-collapse:collapse;margin:1rem 0}
+    .seo-content th,.seo-content td{padding:.5rem;border:1px solid #e7dacf;text-align:left}
+    .seo-content th{background:#fff4f0;color:#342421}
+    details{margin:.5rem 0;padding:.5rem .8rem;background:#f8f6ef;border-radius:8px}
+    summary{cursor:pointer;font-weight:600;color:#E8A888}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    footer a{color:#6f5651}
+    .play-cta{display:block;text-align:center;margin:2rem 0;padding:1rem;background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;border-radius:12px;text-decoration:none;font-weight:600;font-size:1.1rem}
+    .play-cta:hover{background:linear-gradient(145deg,#E0A888,#D08868)}
+  
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Shikaku Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/">Play</a>
+        <a href="/how-to-play-shikaku/">How to Play</a>
+        <a href="/tips/">Tips</a>
+        <a href="/#play">Daily</a>
+        <a href="/solver/">Solver</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>🐱 Shikaku Tips &amp; Strategies</h1>
+    <p style="text-align:center;color:#6f5651;margin-bottom:1rem;">From your first 4×4 to Legend-tier 8×8 boards — the techniques that turn staring into solving.</p>
+
+    <section class="seo-content">
+
+      <p>Shikaku has only four rules, so getting better is not about learning more rules — it is about learning to <em>see</em> constraints faster. The tips below are ordered from the moves you should make on every board to the deeper deductions that separate Master-level solvers from everyone else. If you need a refresher on the basics first, read the <a href="/rules/">complete Shikaku rules</a> or the <a href="/how-to-play-shikaku/">beginner's guide</a>, then come back here and <a href="/">play</a> with these in mind.</p>
+
+      <h2>Beginner Tips: Build the Habit of Proof</h2>
+
+      <h3>1. Start with 1s and primes</h3>
+      <p>A <strong>1</strong> is always a single cell — draw it immediately. A <strong>2, 3, 5, or 7</strong> can only be a straight strip, because primes have no other rectangular factorisation. That means a prime has at most two orientations, and if it sits near an edge, often only one fits. On most beginner boards, placing the 1s and primes alone reveals half the solution.</p>
+
+      <h3>2. Work from corners and edges inward</h3>
+      <p>A number in the middle of the grid can extend in four directions. On an edge it has three. In a corner, two. Fewer directions means fewer candidate rectangles, which means faster certainty. Scan the perimeter first, resolve what you can, then let those placements push constraints toward the centre.</p>
+
+      <h3>3. Tackle the largest numbers early</h3>
+      <p>Counter-intuitively, big numbers are often easier than mid-sized ones. An <strong>8</strong> on a 6-wide board cannot be 1×8, so it is 2×4 or 4×2 — and a block that size collides with almost everything around it. List the possible positions, strike out each one that overlaps another number or runs off the grid, and you will usually find one survivor. The same is true of 9 (always 3×3 on boards under 9 wide) and 12 (2×6 or 3×4).</p>
+
+      <h3>4. Count area before you draw</h3>
+      <p>Before committing a rectangle, count its cells. On GridPaw the game rejects a wrong-sized rectangle, but on paper — and in your head while planning — miscounting a 2×3 as 5 cells is the most common beginner error. Say the dimensions out loud: "two by three, six." It sounds trivial. It prevents the majority of early mistakes.</p>
+
+      <h3>5. Use the sum check</h3>
+      <p>All the numbers on a valid board add up to the total cell count. When you are unsure whether a region of the grid can be tiled by the numbers inside it, add them up. If the numbers in the bottom two rows sum to more than 2 × width, at least one of them must extend upward. Simple arithmetic, powerful constraint.</p>
+
+      <h2>Intermediate Tips: Think in Eliminations</h2>
+
+      <h3>6. Find orphan cells</h3>
+      <p>This is the single most important Shikaku technique. Pick an empty cell and ask: <em>which unplaced numbers could possibly include this cell in a legal rectangle?</em> Check each candidate — can a rectangle of that number's area reach from the number to this cell without crossing another number or a placed rectangle? If exactly one number can, that number <strong>must</strong> cover the cell. You now know one cell of its rectangle for certain, which usually pins the shape. Cells in tight corners and cells far from any number are the best places to look.</p>
+
+      <h3>7. Eliminate by overlap</h3>
+      <p>When two numbers both have several candidate shapes, look for cells that <em>every</em> candidate of one number must include. Those cells are certain for that number, so no other number's rectangle may use them. Strike them out of the neighbours' candidate lists. Frequently this collapses a neighbour to a single option, which then collapses the next one — you have started a chain.</p>
+
+      <h3>8. Spot forced placements after every move</h3>
+      <p>Each rectangle you draw changes the board. Make a habit of re-scanning the numbers adjacent to your last rectangle before looking anywhere else. The new wall you just created is the most likely place for a number to have lost all but one of its options.</p>
+
+      <h3>9. Follow chain deductions to the end</h3>
+      <p>When one placement forces another, do not stop after two steps. Keep asking "what does this force?" until nothing new is forced. On Medium and Hard boards, a single well-chosen prime can trigger a chain that resolves six or seven rectangles in a row. Solvers who stop chains early end up re-deriving the same facts later.</p>
+
+      <h3>10. Treat non-square boards differently</h3>
+      <p>On a 5×6 or 7×8 board, the two orientations of a shape are not symmetric. A 1×5 strip fits horizontally on a 5-wide board but leaves no slack, while vertically on a 6-tall board it has two positions. Always note the grid dimensions before you begin and remember which axis is the tight one.</p>
+
+      <h2>Advanced Tips: Prove the Negative</h2>
+
+      <h3>11. Test for contradictions</h3>
+      <p>When a number has exactly two candidate shapes and nothing directly eliminates either, place one mentally and follow the consequences for three or four moves. If you reach an impossible situation — a cell nothing can reach, a number with no legal shape — the candidate you tested is wrong, and the other one is proven. This is not guessing: you are constructing a proof by contradiction. With practice you can run these tests entirely in your head; on GridPaw you can also draw the test rectangle and Undo if it fails.</p>
+
+      <h3>12. Map the shadows</h3>
+      <p>For each unplaced number, imagine the union of every legal rectangle it could still form — its "shadow." Cells outside every number's shadow are impossible and signal a mistake elsewhere. Cells inside exactly one shadow are orphan cells (Tip 6) in disguise. Cells where two shadows overlap are the contested territory where the real decisions live. Seeing the board as overlapping shadows rather than as isolated numbers is what lets strong players read a Legend board in under a minute.</p>
+
+      <h3>13. Look ahead across multiple steps</h3>
+      <p>Sometimes a placement is legal now but leaves a region whose remaining numbers cannot tile it. Before committing a rectangle that closes off part of the grid, count the cells in the closed region and the numbers trapped inside it. If they do not match, the placement is wrong even though nothing overlaps yet. This partition check catches errors two or three moves before they would surface.</p>
+
+      <h3>14. Solve the tightest region first</h3>
+      <p>On dense boards, find the area with the highest ratio of numbers to empty cells. Constraints there are strongest, and resolving it releases information outward. Working from the loosest region inward is the classic way to end up with an unsolvable-looking corner that was in fact determined from the start.</p>
+
+      <h3>15. Recognise repeating patterns</h3>
+      <p>Certain configurations recur constantly: a 4 in a corner next to a 2 on the edge (the 4 is almost always the square); two primes on the same edge pointing at each other; a large number in the centre whose only fit is symmetric. Each time you resolve a pattern, name it. Named patterns become instant recognitions, and instant recognitions are what speed is made of.</p>
+
+      <h2>Common Mistakes to Avoid</h2>
+      <ul>
+        <li><strong>Guessing instead of proving.</strong> Drawing a rectangle because it "looks right" is the number-one cause of stalls. Every Shikaku has one solution reachable by elimination; if you cannot articulate why the alternatives fail, you are not ready to draw.</li>
+        <li><strong>Ignoring forced placements.</strong> Skipping past a number with a single legal shape because a more interesting number caught your eye. Forced moves are free information — take them immediately.</li>
+        <li><strong>Forgetting the area constraint mid-plan.</strong> Planning a 2×3 for a 6 and then, three moves later, thinking of it as "that block on the left" without re-checking that it is still six cells. Re-count whenever the plan changes.</li>
+        <li><strong>Assuming the number is a corner of its rectangle.</strong> The numbered cell can be anywhere inside the shape. Solvers who only consider rectangles with the number in a corner miss more than half the legal candidates.</li>
+        <li><strong>Working the loose region first.</strong> Placing easy-looking rectangles in the open centre and painting yourself into a corner where the remaining numbers cannot tile what is left. Start tight, finish loose.</li>
+        <li><strong>Never using Undo.</strong> On GridPaw, Undo is free. Testing a hypothesis and reverting it is a legitimate technique (Tip 11). Refusing to revert and instead stacking more rectangles onto a wrong one turns one error into five.</li>
+        <li><strong>Using the solver before trying.</strong> The <a href="/solver/">hint feature</a> is a superb teacher <em>after</em> a genuine attempt. Used first, it teaches nothing and burns your three hints for the level.</li>
+      </ul>
+
+      <h2>A Practice Plan</h2>
+      <table>
+        <thead>
+          <tr><th>Stage</th><th>Play these levels</th><th>Focus on</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Week 1</td><td>Tutorial &amp; Easy (1–10)</td><td>Tips 1–5. Never draw without counting.</td></tr>
+          <tr><td>Week 2</td><td>Medium (11–16)</td><td>Tip 6 only. Find one orphan cell per board before anything else.</td></tr>
+          <tr><td>Week 3</td><td>Medium-Hard &amp; Hard (17–30)</td><td>Tips 7–10. Follow every chain to the end.</td></tr>
+          <tr><td>Week 4+</td><td>Expert, Master, Legend (31+)</td><td>Tips 11–15. Zero hints as the goal.</td></tr>
+        </tbody>
+      </table>
+      <p>Progress on GridPaw is saved automatically, so you can follow this plan in short sessions. The Daily Challenge is a good benchmark: when you can finish it without hints on most days, you are solving at an advanced level.</p>
+
+      <h2>Frequently Asked Questions</h2>
+      {faqs.map(f => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+
+    </section>
+
+    <a href="/" class="play-cta">🎮 Play Shikaku Online Free</a>
+
+    <footer><p>© 2026 GridPaw. <a href="/">Shikaku</a> · <a href="/akari/">Akari</a> · <a href="/pictomino/">Pictomino</a> · <a href="https://furriq.com">Furriq</a></p></footer>
+  </div>
+</body>
+</html>
