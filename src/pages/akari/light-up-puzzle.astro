@@ -219,6 +219,13 @@ const description = "Play Light Up puzzle online free. Place glowing cats on a g
   </div>
   <script is:inline src="/akari-engine.js"></script>
   <script>
+    function track(event, params) {
+      if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
+      if (typeof window.clarity === 'function') {
+        window.clarity('event', event);
+        if (params) Object.keys(params).forEach(function(k) { window.clarity('set', k, String(params[k])); });
+      }
+    }
     var CAT_IMG = '<img src="/assets/cats/cat-clay-purple.png" style="width:85%;height:85%;object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 2px 4px rgba(123,107,138,.3))" />';
     var X_MARK = '<svg viewBox="0 0 24 24" width="50%" height="50%" style="opacity:0.4"><line x1="6" y1="6" x2="18" y2="18" stroke="#B8A8C8" stroke-width="2.5" stroke-linecap="round"/><line x1="18" y1="6" x2="6" y2="18" stroke="#B8A8C8" stroke-width="2.5" stroke-linecap="round"/></svg>';
 
@@ -232,11 +239,11 @@ const description = "Play Light Up puzzle online free. Place glowing cats on a g
       var d = diffSelect.value, s = SIZE_MAP[d]; won = false; winOverlay.classList.remove('show');
       gridEl.innerHTML = '<div style="padding:2rem;color:#6f5651;font-size:0.9rem;">Generating...</div>'; progressEl.textContent = '';
       setTimeout(function() {
-        try { currentPuzzle = generatePuzzle(s); playerSolution = []; markX = []; for (var i = 0; i < s; i++) { playerSolution.push(new Array(s).fill(false)); markX.push(new Array(s).fill(false)); } renderBoard(); updateProgress(); } catch (e) { showToast('Failed to generate.', 'error'); }
+        try { currentPuzzle = generatePuzzle(s); playerSolution = []; markX = []; for (var i = 0; i < s; i++) { playerSolution.push(new Array(s).fill(false)); markX.push(new Array(s).fill(false)); } renderBoard(); updateProgress(); track('game_start', { difficulty: diffSelect ? diffSelect.value : 'default', size: currentPuzzle ? currentPuzzle.size : 0 }); } catch (e) { showToast('Failed to generate.', 'error'); }
       }, 10);
     }
 
-    function resetPuzzle() { if (!currentPuzzle) return; won = false; winOverlay.classList.remove('show'); var s = currentPuzzle.size; playerSolution = []; markX = []; for (var i = 0; i < s; i++) { playerSolution.push(new Array(s).fill(false)); markX.push(new Array(s).fill(false)); } renderBoard(); updateProgress(); showToast('Board reset!', 'success'); }
+    function resetPuzzle() { if (!currentPuzzle) return; track('puzzle_reset', { difficulty: diffSelect ? diffSelect.value : 'default', size: currentPuzzle ? currentPuzzle.size : 0 }); won = false; winOverlay.classList.remove('show'); var s = currentPuzzle.size; playerSolution = []; markX = []; for (var i = 0; i < s; i++) { playerSolution.push(new Array(s).fill(false)); markX.push(new Array(s).fill(false)); } renderBoard(); updateProgress(); showToast('Board reset!', 'success'); }
 
     function renderBoard() {
       if (!currentPuzzle) return;
@@ -270,17 +277,17 @@ const description = "Play Light Up puzzle online free. Place glowing cats on a g
     function handleClick(r, c) {
       if (!currentPuzzle) return; var g = currentPuzzle.grid, s = currentPuzzle.size;
       if (playerSolution[r][c]) playerSolution[r][c] = false;
-      else { markX[r][c] = false; playerSolution[r][c] = true; var v = checkViolations(g, playerSolution, s); for (var i = 0; i < v.length; i++) { if (v[i].type === 'number_excess') { showToast('Too many cats around number ' + v[i].number + '!', 'error'); break; } } for (var i = 0; i < v.length; i++) { if (v[i].type === 'cat_conflict') { showToast('Two cats are facing each other!', 'error'); break; } } }
+      else { if (!window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { size: currentPuzzle.size }); } markX[r][c] = false; playerSolution[r][c] = true; var v = checkViolations(g, playerSolution, s); for (var i = 0; i < v.length; i++) { if (v[i].type === 'number_excess') { showToast('Too many cats around number ' + v[i].number + '!', 'error'); break; } } for (var i = 0; i < v.length; i++) { if (v[i].type === 'cat_conflict') { showToast('Two cats are facing each other!', 'error'); break; } } }
       renderBoard(); updateProgress();
       if (checkWin(g, playerSolution, s)) { won = true; setTimeout(function() { winOverlay.classList.add('show'); }, 300); }
     }
 
     function updateProgress() { if (!currentPuzzle) return; var info = countLit(currentPuzzle.grid, playerSolution, currentPuzzle.size); progressEl.textContent = info.lit + ' / ' + info.total + ' cells lit'; }
 
-    document.getElementById('hint-btn').addEventListener('click', function() { if (!currentPuzzle || won) return; var h = getHint(currentPuzzle.grid, currentPuzzle.solution, playerSolution, currentPuzzle.size); if (h) { var cell = gridEl.querySelector('[data-row="' + h[0] + '"][data-col="' + h[1] + '"]'); if (cell) { cell.classList.add('cell-hint'); setTimeout(function() { cell.classList.remove('cell-hint'); }, 2000); } showToast('Hint: try row ' + (h[0] + 1) + ', col ' + (h[1] + 1), 'success'); } else showToast('No hints!', 'error'); });
+    document.getElementById('hint-btn').addEventListener('click', function() { if (!currentPuzzle || won) return; track('hint_click', { size: currentPuzzle ? currentPuzzle.size : 0 }); var h = getHint(currentPuzzle.grid, currentPuzzle.solution, playerSolution, currentPuzzle.size); if (h) { var cell = gridEl.querySelector('[data-row="' + h[0] + '"][data-col="' + h[1] + '"]'); if (cell) { cell.classList.add('cell-hint'); setTimeout(function() { cell.classList.remove('cell-hint'); }, 2000); } showToast('Hint: try row ' + (h[0] + 1) + ', col ' + (h[1] + 1), 'success'); } else showToast('No hints!', 'error'); });
     document.getElementById('reset-btn').addEventListener('click', resetPuzzle);
     document.getElementById('new-btn').addEventListener('click', newPuzzle);
-    document.getElementById('win-next').addEventListener('click', function() { winOverlay.classList.remove('show'); newPuzzle(); });
+    document.getElementById('win-next').addEventListener('click', function() { track('level_up', { difficulty: diffSelect ? diffSelect.value : 'default', size: currentPuzzle ? currentPuzzle.size : 0 }); winOverlay.classList.remove('show'); newPuzzle(); });
     diffSelect.addEventListener('change', newPuzzle);
     newPuzzle();
   </script>
