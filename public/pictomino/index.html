@@ -569,7 +569,7 @@ window.addEventListener('message', function(ev){
     const sb = document.getElementById('gt-sound-btn');
     if (sb) sb.textContent = ev.data.muted ? '🔇' : '🔊';
   }
-  if (ev.data.type === 'pictomino_daily_solved') { track('puzzle_complete', {mode:'daily',source:'index'}); }
+  if (ev.data.type === 'pictomino_daily_solved') { track('puzzle_complete', {mode:'daily',source:'index'}); track('level_up', {mode:'daily',source:'index'}); }
   // 倒计时同步（每秒推送）
   if (ev.data.type === 'pictomino_timer') {
     const timerEl = document.getElementById('gt-timer');

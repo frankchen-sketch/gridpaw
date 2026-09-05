@@ -989,6 +989,9 @@ const description = "Play GridPaw, a free Light Up puzzle game with cute cats. S
     function syncLevelOnLoad() {
       mtFetch('/api/auth/me').then(r => r.json()).then(me => {
         currentUser = me && me.user ? me.user : null;
+        if (currentUser && currentUser.googleSub && typeof window.gtag === 'function') {
+          window.gtag('set', 'user_id', currentUser.googleSub);
+        }
         if (!currentUser) return;
         mtFetch('/api/level').then(r => r.ok ? r.json() : null).then(data => {
           if (!data) return;
@@ -1172,7 +1175,7 @@ const description = "Play GridPaw, a free Light Up puzzle game with cute cats. S
       if ((e.ctrlKey||e.metaKey) && e.key==='z') { e.preventDefault(); e.shiftKey ? redo() : undo(); }
       if ((e.ctrlKey||e.metaKey) && e.key==='y') { e.preventDefault(); redo(); }
     });
-    document.getElementById('win-next').addEventListener('click', () => { track('level_up', { level: level, difficulty: getDifficulty(level).label }); winOverlay.classList.remove('show'); newPuzzle(); });
+    document.getElementById('win-next').addEventListener('click', () => { track('level_up', { level: level, difficulty: getDifficulty(level).label }); if ([1,3,5,7,9,10,15,20].indexOf(level) !== -1) { track('level_complete_' + level, { difficulty: getDifficulty(level).label }); } winOverlay.classList.remove('show'); newPuzzle(); });
     async function captureBoardToClipboard() {
       try {
         const boardEl = document.getElementById('puzzle-grid');

@@ -419,8 +419,8 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
           currentPuzzle = generatePuzzle(dailySize);
           playerSolution = Array.from({length:dailySize}, () => Array(dailySize).fill(false));
           markX = Array.from({length:dailySize}, () => Array(dailySize).fill(false));
-          renderBoard(); updateProgress();
-          startTimer();
+          renderBoard(); updateProgress(); startTimer();
+          track('game_start', { mode: 'daily', size: dailySize });
           document.getElementById('start-btn').textContent = '🔄 Restart';
         } catch(e) { showToast('Failed to generate.', 'error'); }
       }, 10);
@@ -428,6 +428,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
 
     function resetPuzzle() {
       if (!currentPuzzle) return; won = false; winOverlay.classList.remove('show');
+      track('puzzle_reset', { mode: 'daily', size: currentPuzzle.size });
       const s = currentPuzzle.size;
       playerSolution = Array.from({length:s}, () => Array(s).fill(false));
       markX = Array.from({length:s}, () => Array(s).fill(false));
@@ -780,6 +781,9 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
         const meRes = await fetchWithTimeout('/api/auth/me');
         const me = await meRes.json();
         currentUser = me && me.user ? me.user : null;
+        if (currentUser && currentUser.googleSub && typeof window.gtag === 'function') {
+          window.gtag('set', 'user_id', currentUser.googleSub);
+        }
         renderAccountArea();
         if (!currentUser) return;
         const cloudRes = await fetchWithTimeout('/api/progress');

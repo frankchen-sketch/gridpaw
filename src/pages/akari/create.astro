@@ -154,6 +154,18 @@ const description = "Design your own Akari (Light Up) puzzle! Set grid size, pla
   
   <script is:inline src="/akari-engine.js"></script>
   <script type="module">
+    function track(event, params) {
+      if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture(event, Object.assign({ site: 'gridpaw' }, params || {}));
+      }
+      if (typeof window.clarity === 'function') {
+        window.clarity('event', event);
+        if (params) Object.keys(params).forEach(k => window.clarity('set', k, String(params[k])));
+      }
+    }
+    track('tool_start', { tool: 'create' });
+
     const gridEl = document.getElementById('puzzle-grid');
     const sizeSelect = document.getElementById('size-select');
     const toastEl = document.getElementById('toast');
@@ -334,8 +346,8 @@ const description = "Design your own Akari (Light Up) puzzle! Set grid size, pla
       showToast('Grid cleared', 'success');
     });
     
-    document.getElementById('validate-btn').addEventListener('click', validatePuzzle);
-    document.getElementById('share-btn').addEventListener('click', generateShareLink);
+    document.getElementById('validate-btn').addEventListener('click', () => { track('tool_action', { tool: 'create', action: 'validate' }); validatePuzzle(); });
+    document.getElementById('share-btn').addEventListener('click', () => { track('tool_action', { tool: 'create', action: 'share' }); generateShareLink(); });
     
     document.getElementById('copy-link-btn').addEventListener('click', () => {
       const input = document.getElementById('share-link');

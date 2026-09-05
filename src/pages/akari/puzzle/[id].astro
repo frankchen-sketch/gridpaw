@@ -163,7 +163,7 @@ const totalPuzzles = puzzles.length;
     var grid=puzzleData.grid,solution=puzzleData.solution,size=puzzleData.size,DIRS=[[-1,0],[1,0],[0,-1],[0,1]];
     var playerSolution=[],markX=[];for(var i=0;i<size;i++){playerSolution.push(new Array(size).fill(false));markX.push(new Array(size).fill(false));}
     var won=false,gridEl=document.getElementById('puzzle-grid'),progressEl=document.getElementById('progress'),toastEl=document.getElementById('toast'),winOverlay=document.getElementById('win-overlay'),toastTimer=null;
-    var PUZZLE_ID=puzzleData.id,STORAGE_KEY='gridpaw-progress';
+    var PUZZLE_ID=puzzleData.id,STORAGE_KEY='gridpaw-progress';var sessionSolveCount=0;
     function track(event,params){if(typeof window.gtag==='function')window.gtag('event',event,params||{});if(window.posthog&&typeof window.posthog.capture==='function')window.posthog.capture(event,Object.assign({site:'gridpaw'},params||{}));if(typeof window.clarity==='function'){window.clarity('event',event);if(params)Object.keys(params).forEach(function(k){window.clarity('set',k,String(params[k]));});}}
     track('game_start',{puzzle_id:PUZZLE_ID,size:size});
     function getSolved(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]')}catch(e){return[]}}
@@ -192,7 +192,7 @@ const totalPuzzles = puzzles.length;
     document.getElementById('show-steps-btn').addEventListener('click',function(){var sec=document.getElementById('steps-section');sec.open=!sec.open;this.textContent=sec.open?'📖 Hide Solution':'📖 Show Solution';});
     document.querySelectorAll('.step').forEach(function(el){el.addEventListener('click',function(){var r=parseInt(this.dataset.row),c=parseInt(this.dataset.col);var cell=gridEl.querySelector('[data-row="'+r+'"][data-col="'+c+'"]');if(cell){cell.classList.add('cell-hint');setTimeout(function(){cell.classList.remove('cell-hint');},2000);}document.querySelectorAll('.step').forEach(function(s){s.classList.remove('active');});this.classList.add('active');});});
     document.getElementById('new-btn').addEventListener('click',function(){window.location.href='/';});
-    document.getElementById('win-next').addEventListener('click',function(){track('level_up',{puzzle_id:PUZZLE_ID,size:size});window.location.href=nextPuzzleId?'/akari/puzzle/'+nextPuzzleId+'/':'/akari/';});
+    document.getElementById('win-next').addEventListener('click',function(){sessionSolveCount++;track('level_up',{puzzle_id:PUZZLE_ID,size:size});if([1,3,5,7,9].indexOf(sessionSolveCount)!==-1){track('level_complete_'+sessionSolveCount,{puzzle_id:PUZZLE_ID,size:size});}window.location.href=nextPuzzleId?'/akari/puzzle/'+nextPuzzleId+'/':'/akari/';});
     renderBoard();updateProgress();
   </script>
 </body>

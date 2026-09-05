@@ -258,8 +258,8 @@ footer a{color:#b5a396}
 document.getElementById('game-frame').addEventListener('load', function(){ track('game_start', {difficulty:'hard'}); });
 window.addEventListener('message', function(ev){
   if(!ev.data) return;
-  if(ev.data.type==='pictomino_daily_solved') track('puzzle_complete', {difficulty:'hard',source:'hard'});
-  if(ev.data.type==='pictomino_level_up') track('puzzle_complete', {difficulty:'hard',level:ev.data.level||0,source:'hard'});
+  if(ev.data.type==='pictomino_daily_solved') { track('puzzle_complete', {difficulty:'hard',source:'hard'}); track('level_up', {difficulty:'hard',source:'hard'}); }
+  if(ev.data.type==='pictomino_level_up') { track('puzzle_complete', {difficulty:'hard',level:ev.data.level||0,source:'hard'}); track('level_up', {difficulty:'hard',level:ev.data.level||0,source:'hard'}); }
 });
 </script>
 
