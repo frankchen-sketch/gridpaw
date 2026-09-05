@@ -677,18 +677,18 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       winOverlay.classList.remove('show');
     });
     document.getElementById('share-copy').addEventListener('click', () => {
-      track('share_copy');
       const state = loadState();
       const streak = state ? state.streak : 1;
+      track('share_copy', { mode: 'daily', streak: streak, board: currentPuzzle ? currentPuzzle.size : 0 });
       const badge = getBadge(streak);
       const badgeText = badge ? ' ' + badge.emoji + ' ' + badge.label : '';
       const text = '🐱 GridPaw Daily Challenge\n⏱️ ' + timerEl.textContent + '\n🔥 ' + streak + ' day streak' + badgeText + '\n\nPlay free at gridpaw.com';
       navigator.clipboard.writeText(text).then(() => showToast('📋 Copied to clipboard!', 'success'));
     });
     document.getElementById('share-twitter').addEventListener('click', () => {
-      track('share_twitter');
       const state = loadState();
       const streak = state ? state.streak : 1;
+      track('share_twitter', { mode: 'daily', streak: streak, board: currentPuzzle ? currentPuzzle.size : 0 });
       const badge = getBadge(streak);
       const badgeText = badge ? ' ' + badge.emoji + ' ' + badge.label : '';
       const text = encodeURIComponent('🐱 Just completed the GridPaw Daily Challenge!\n⏱️ ' + timerEl.textContent + '\n🔥 ' + streak + ' day streak' + badgeText + '\n\nPlay free at gridpaw.com');

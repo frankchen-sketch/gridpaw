@@ -637,6 +637,7 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
 
   function newPuzzle() {
     var diff = getDifficulty(levelNum);
+    if (rects && rects.length > 0) { track('puzzle_reset', { level: levelNum, difficulty: diff.label, rectangles_placed: rects.length }); }
     puzzle = null;
     for (var i = 0; i < 200; i++) { puzzle = generatePuzzleWithRetry(diff.w, diff.h, 50); if (puzzle) break; }
     if (!puzzle) { statusEl.textContent = 'Failed to generate puzzle.'; return; }
@@ -842,7 +843,7 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
     victory.classList.add('hidden');
   });
 
-  document.getElementById('resetBtn').addEventListener('click', function() { levelNum++; isDailyMode = false; newPuzzle(); victory.classList.add('hidden'); });
+  document.getElementById('resetBtn').addEventListener('click', function() { track('puzzle_skip', { level: levelNum, difficulty: getDifficulty(levelNum).label, reason: 'new_puzzle' }); levelNum++; isDailyMode = false; newPuzzle(); victory.classList.add('hidden'); });
   document.getElementById('undoBtn').addEventListener('click', function() {
     if (rects.length === 0) return; var last = rects.pop(); exprIdx--;
     var rect = last.rect;
@@ -958,8 +959,8 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
   // Share button handler
   document.getElementById('shareBtn').addEventListener('click', function() {
     var text = buildShareText();
-    track('share_copy', { level: levelNum, difficulty: getDifficulty(levelNum).label });
-    track('share', { channel: 'copy', level: levelNum, difficulty: getDifficulty(levelNum).label });
+    track('share_copy', { level: levelNum, difficulty: getDifficulty(levelNum).label, time: gameElapsed });
+    track('share', { channel: 'copy', level: levelNum, difficulty: getDifficulty(levelNum).label, time: gameElapsed });
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(function() {
         document.getElementById('shareBtn').textContent = '✅ Copied!';
@@ -992,8 +993,8 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
   // Reddit share button handler
   document.getElementById('redditBtn').addEventListener('click', async function() {
     var text = buildShareText();
-    track('share_reddit', { level: levelNum, difficulty: getDifficulty(levelNum).label });
-    track('share', { channel: 'reddit', level: levelNum, difficulty: getDifficulty(levelNum).label });
+    track('share_reddit', { level: levelNum, difficulty: getDifficulty(levelNum).label, time: gameElapsed });
+    track('share', { channel: 'reddit', level: levelNum, difficulty: getDifficulty(levelNum).label, time: gameElapsed });
     await captureBoardToClipboard();
     var redditUrl = 'https://www.reddit.com/r/gridpaw/submit?url=' + encodeURIComponent('https://gridpaw.com') + '&title=' + encodeURIComponent(text);
     window.open(redditUrl, '_blank', 'noopener');
@@ -1220,7 +1221,12 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
   } catch (e) {}
 
   newPuzzle();
-  track('game_start', { level: levelNum, difficulty: getDifficulty(levelNum).label });
+  // Detect traffic source
+  var _urlP = new URLSearchParams(window.location.search);
+  var _embed = _urlP.get('embed') === '1';
+  var _ref = document.referrer || '';
+  var _source = _embed ? 'embed' : (_ref === '' ? 'direct' : (_ref.indexOf('google') !== -1 ? 'google' : (_ref.indexOf('bing') !== -1 ? 'bing' : 'referral')));
+  track('game_start', { level: levelNum, difficulty: getDifficulty(levelNum).label, source: _source });
   window.addEventListener('resize', function() { if (puzzle) render(); });
 
   // Testimonial carousel
