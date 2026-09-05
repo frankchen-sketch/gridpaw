@@ -981,14 +981,14 @@ function winLevel() {
   // 每日挑战 streak：daily-puzzle.html 的 iframe 以 ?mode=daily 打开时，通关记 1 次/天并上报云端
   if (new URLSearchParams(window.location.search).get('mode') === 'daily') {
     const dailyState = ptSaveDailyWin(elapsed);
-    gtag('event', 'daily_solved', { streak: dailyState.streak });
+    if (typeof gtag === 'function') gtag('event', 'daily_solved', { streak: dailyState.streak });
     ptSyncWin(dailyState, elapsed);
   }
   updateHUD();
   sfxWin();
   $('win-stars').innerHTML =
     '★'.repeat(stars) + '<span class="off">' + '★'.repeat(3 - stars) + '</span>';
-  gtag('event', 'level_completed', { difficulty: getDifficulty(), level: state.level, stars: stars });
+  if (typeof gtag === 'function') gtag('event', 'level_up', { difficulty: getDifficulty(), level: state.level, stars: stars });
   if (typeof window.clarity === 'function') {
     window.clarity('event', 'level_completed');
     window.clarity('set', 'difficulty', String(getDifficulty()));
@@ -1272,7 +1272,7 @@ async function startLevel(n) {
   await showPreview(); // 完整图预览 2 秒（重开本关也会预览，方便记图）
   state.levelStart = Date.now(); // 预览播完才计时，速度奖励不吃亏
   startRound();
-  gtag('event', 'game_started', { difficulty: getDifficulty(), level: n });
+  if (typeof gtag === 'function') gtag('event', 'game_start', { difficulty: getDifficulty(), level: n });
   if (typeof window.clarity === 'function') {
     window.clarity('event', 'game_started');
     window.clarity('set', 'difficulty', String(getDifficulty()));
@@ -1311,7 +1311,7 @@ $('restart-btn').addEventListener('click', () => {
 // 帮助按钮已移至外层工具栏（通过 postMessage 触发）
 window.addEventListener('message', function(ev){
   if (!ev.data || ev.data.type !== 'pictomino_help') return;
-  gtag('event', 'help_click', { difficulty: getDifficulty(), level: state.level });
+  if (typeof gtag === 'function') gtag('event', 'help_click', { difficulty: getDifficulty(), level: state.level });
   if (typeof window.clarity === 'function') {
     window.clarity('event', 'help_click');
     window.clarity('set', 'difficulty', String(getDifficulty()));
@@ -1340,7 +1340,7 @@ async function captureBoardToClipboard() {
 }
 
 $('share-reddit-btn').addEventListener('click', async () => {
-  gtag('event', 'share_reddit', { difficulty: getDifficulty(), level: state.level, stars: state.lastStars || 3 });
+  if (typeof gtag === 'function') gtag('event', 'share_reddit', { difficulty: getDifficulty(), level: state.level, stars: state.lastStars || 3 });
   if (typeof window.clarity === 'function') {
     window.clarity('event', 'share_reddit');
     window.clarity('set', 'difficulty', String(getDifficulty()));
@@ -1353,7 +1353,7 @@ $('share-reddit-btn').addEventListener('click', async () => {
   window.open(url, '_blank', 'noopener');
 });
 $('copy-share-btn').addEventListener('click', async () => {
-  gtag('event', 'share_copy', { difficulty: getDifficulty(), level: state.level, stars: state.lastStars || 3 });
+  if (typeof gtag === 'function') gtag('event', 'share_copy', { difficulty: getDifficulty(), level: state.level, stars: state.lastStars || 3 });
   if (typeof window.clarity === 'function') {
     window.clarity('event', 'share_copy');
     window.clarity('set', 'difficulty', String(getDifficulty()));
@@ -1381,7 +1381,7 @@ $('copy-share-btn').addEventListener('click', async () => {
 /* ---------- 顶栏 Community 入口 ---------- */
 const cbtn = $('community-btn');
 if (cbtn) cbtn.addEventListener('click', () => {
-  gtag('event', 'community_click', { difficulty: getDifficulty(), level: state.level, source: 'game_topbar' });
+  if (typeof gtag === 'function') gtag('event', 'community_click', { difficulty: getDifficulty(), level: state.level, source: 'game_topbar' });
   if (typeof window.clarity === 'function') {
     window.clarity('event', 'community_click');
     window.clarity('set', 'difficulty', String(getDifficulty()));
