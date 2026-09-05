@@ -831,7 +831,7 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
     colorPool.push(last.color); // return color to pool
     render(); updateStatus();
   });
-  document.getElementById('nextBtn').addEventListener('click', function() { levelNum++; isDailyMode = false; hintUsesLeft = 3; updateHintBadge(); track('level_up', { level: levelNum, difficulty: getDifficulty(levelNum).label }); if ([1,3,5,10,20].indexOf(levelNum) !== -1) { track('level_complete_' + levelNum, { difficulty: getDifficulty(levelNum).label }); } newPuzzle(); victory.classList.add('hidden'); });
+  document.getElementById('nextBtn').addEventListener('click', function() { var completedLevel = levelNum; var completedDiff = getDifficulty(completedLevel).label; levelNum++; isDailyMode = false; hintUsesLeft = 3; updateHintBadge(); track('level_up', { level: completedLevel, difficulty: completedDiff }); if ([1,3,5,10,20].indexOf(completedLevel) !== -1) { track('level_complete_' + completedLevel, { difficulty: completedDiff }); } newPuzzle(); victory.classList.add('hidden'); });
   document.getElementById('hintBtn').addEventListener('click', function() {
     // 门控：游客弹登录引导；登录用户每关 3 次；admin 无限
     if (!currentUser) {
