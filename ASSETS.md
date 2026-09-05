@@ -14,7 +14,7 @@
 | Furriq | furriq.com | （不变） | 545120903 | yaiux9j8kd | ✅ 独立站 |
 
 - GA4 口径：`G-` 开头 = 前端数据流衡量 ID（site-config.ts 用）；数字 = Data API Property ID（cron-dashboard build_metrics 用），两者不是同一个东西
-- 旧站 GA4 Property 未填 = 新站口径（数据冻结不迁移），如需查历史去各旧 Property 面板看
+- 旧站 GA4 Property 已补全（2026-09-05），服务账号已加 Viewer
 
 ## 凭据存放位置（值不落库）
 
