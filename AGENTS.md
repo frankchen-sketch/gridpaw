@@ -35,6 +35,7 @@ src/pages/
   brain-teasers-for-adults/      ← 内容页（KD 22.9）
   logic-puzzle-grid/             ← 内容页（KD 29.6）
   japanese-logic-puzzles/        ← 内容页（KD 36.6）
+  number-grid-puzzle/            ← 内容页（KD 新增）
   sitemap 由 @astrojs/sitemap 插件自动生成（sitemap-index.xml + sitemap-0.xml）
 public/
   pictomino/                     ← Pictomino 纯静态 HTML 游戏
