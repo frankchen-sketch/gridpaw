@@ -71,6 +71,19 @@ const description = "Play Light Up puzzle online free. Place glowing cats on a g
     .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
     .nav a:hover{background:#fff4f0;color:#342421}
 
+  
+    /* ── Games Dropdown ── */
+    .game-switcher { position: relative; }
+    .game-switcher-btn { font-size: 0.875rem; font-weight: 700; color: var(--text, #3D3D3D); background: none; border: none; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 0.375rem; display: flex; align-items: center; gap: 4px; font-family: inherit; }
+    .game-switcher-btn::after { content: '▾'; font-size: 10px; }
+    .game-switcher-btn:hover { background: var(--hover-bg, #F0EDF5); color: var(--ink, #3D3D3D); }
+    .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid #E8DDD0; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
+    .game-switcher:hover .game-switcher-menu { display: block; }
+    .game-switcher-menu a { display: flex; flex-direction: column; padding: 10px 16px !important; font-size: 13px !important; gap: 2px; border-radius: 0 !important; }
+    .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: #9E9590; }
+    .game-switcher-menu a:hover { background: #FFF8F0 !important; color: var(--ink, #3D3D3D) !important; }
+    .game-switcher-menu a.active { color: var(--ink, #3D3D3D) !important; background: #FFF5F0 !important; font-weight: 800 !important; }
+    @media (max-width: 480px) { .game-switcher:hover .game-switcher-menu { display: none; } .game-switcher.open .game-switcher-menu { display: block; } }
   </style>
 </head>
 <body>
@@ -84,6 +97,14 @@ const description = "Play Light Up puzzle online free. Place glowing cats on a g
         </span>
       </a>
       <nav class="nav" aria-label="Main navigation">
+        <div class="game-switcher">
+          <button class="game-switcher-btn" onclick="this.parentElement.classList.toggle('open')">Games</button>
+          <div class="game-switcher-menu">
+            <a href="/"><strong>🟧 Shikaku</strong><span class="game-desc">Rectangle partition puzzle</span></a>
+            <a href="/akari/" class="active"><strong>💡 Akari</strong><span class="game-desc">Light Up puzzle</span></a>
+            <a href="/pictomino/"><strong>🧩 Pictomino</strong><span class="game-desc">Spatial reasoning puzzle</span></a>
+          </div>
+        </div>
         <a href="/akari/">Play</a>
         <a href="/akari/how-to-play/">How to Play</a>
         <a href="/akari/tips/">Tips</a>
