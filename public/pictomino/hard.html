@@ -74,6 +74,26 @@ header{
   padding:6px 10px;border-radius:8px;transition:background .15s,color .15s;
 }
 .nav a:hover{background:#FFF8F0;color:var(--pink)}
+/* Site header (unified nav matching Shikaku/Akari) */
+.site-header{background:var(--card);box-shadow:0 2px 12px rgba(74,59,50,.08);padding:0;position:sticky;top:0;z-index:100}
+.site-header .header-inner{max-width:880px;margin:0 auto;padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:52px}
+.site-header .nav{display:flex;align-items:center;gap:2px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.brand-logo{font-size:22px}
+.brand-name{display:flex;flex-direction:column;line-height:1.2}
+.brand-name .big{font-size:17px;font-weight:900;color:var(--ink)}
+.brand-name .small{font-size:11px;color:#9E9590;font-weight:600}
+.game-switcher{position:relative}
+.game-switcher-btn{font-size:13px;font-weight:700;color:#5C6BC0;background:none;border:none;cursor:pointer;padding:8px 14px;display:flex;align-items:center;gap:4px;font-family:inherit}
+.game-switcher-btn::after{content:'▾';font-size:10px}
+.game-switcher-btn:hover{color:var(--pink)}
+.game-switcher-menu{display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);background:white;border:1.5px solid #E8DDD0;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.12);min-width:200px;padding:6px 0;z-index:300}
+.game-switcher:hover .game-switcher-menu{display:block}
+.game-switcher-menu a{display:flex;flex-direction:column;padding:10px 16px;font-size:13px;gap:2px;text-decoration:none;color:#3D3D3D}
+.game-switcher-menu a .game-desc{font-size:11px;font-weight:500;color:#9E9590}
+.game-switcher-menu a:hover{background:#FFF8F0;color:var(--pink)}
+.game-switcher-menu a.active{color:var(--pink);background:#FFF5F0;font-weight:800}
+@media(max-width:480px){.game-switcher:hover .game-switcher-menu{display:none}.game-switcher.open .game-switcher-menu{display:block}}
 /* ===== Hero ===== */
 .hero{
   text-align:center;padding:36px 16px 20px;
