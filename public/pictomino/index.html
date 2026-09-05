@@ -57,6 +57,15 @@
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "yd0fauosa4");
 </script>
+<script>
+function track(event, params) {
+  if (typeof gtag === 'function') gtag('event', event, params || {});
+  if (typeof clarity === 'function') {
+    clarity('event', event);
+    if (params) Object.keys(params).forEach(function(k) { clarity('set', String(params[k])); });
+  }
+}
+</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -86,13 +95,14 @@ header{
 }
 .logo .cat{font-size:20px}
 .nav a{
-  color:var(--ink);text-decoration:none;font-weight:700;font-size:15px;
-  margin-left:18px;transition:color .15s;
+  color:var(--ink);text-decoration:none;font-weight:700;font-size:13px;
+  padding:6px 10px;border-radius:8px;transition:background .15s,color .15s;
 }
-.nav a:hover{color:var(--pink)}
+.nav a:hover{background:#FFF8F0;color:var(--pink)}
 /* Site header (unified nav matching Shikaku/Akari) */
 .site-header{background:var(--card);box-shadow:0 2px 12px rgba(74,59,50,.08);padding:0;position:sticky;top:0;z-index:100}
 .site-header .header-inner{max-width:880px;margin:0 auto;padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:52px}
+.site-header .nav{display:flex;align-items:center;gap:2px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
 .brand-logo{font-size:22px}
 .brand-name{display:flex;flex-direction:column;line-height:1.2}
@@ -227,7 +237,7 @@ footer a{color:#b5a396}
   .hero h1{font-size:28px}
   .steps{grid-template-columns:1fr}
   .game-frame{height:560px}
-  .nav a{margin-left:12px;font-size:13px}
+  .nav a{font-size:12px;padding:4px 8px}
 }
 </style>
 
@@ -504,7 +514,7 @@ footer a{color:#b5a396}
 </div>
 
 <footer>
-  <p>© 2026 Pictomino · <a href="https://gridpaw.com/pictomino">gridpaw.com/pictomino</a> · <a href="https://furriq.com" rel="dofollow noopener">Furriq Cat Breed ID</a> · <a href="https://gridpaw.com/akari/" rel="dofollow noopener">GridPaw Akari</a> · <a href="https://gridpaw.com/" rel="dofollow noopener">GridPaw Shikaku Puzzle</a> · <a href="https://dang.ai" rel="dofollow noopener">Dang AI Directory</a> · <a href="https://gridpaw.com/pictomino/community" onclick="gtag('event','community_click',{source:'footer_index'});if(window.clarity&&typeof window.clarity==='function'){window.clarity('event','community_click');window.clarity('set','source','footer_index')}">Community</a> · <a href="https://gridpaw.com/pictomino/privacy">Privacy Policy</a> · Made with 🧠 for curious kids</p>
+  <p>© 2026 Pictomino · <a href="https://gridpaw.com/pictomino">gridpaw.com/pictomino</a> · <a href="https://furriq.com" rel="dofollow noopener">Furriq Cat Breed ID</a> · <a href="https://gridpaw.com/akari/" rel="dofollow noopener">GridPaw Akari</a> · <a href="https://gridpaw.com/" rel="dofollow noopener">GridPaw Shikaku Puzzle</a> · <a href="https://dang.ai" rel="dofollow noopener">Dang AI Directory</a> · <a href="https://gridpaw.com/pictomino/community" onclick="track('community_click',{source:'footer_index'})">Community</a> · <a href="https://gridpaw.com/pictomino/privacy">Privacy Policy</a> · Made with 🧠 for curious kids</p>
 </footer>
 
 <style>
@@ -545,6 +555,7 @@ window.addEventListener('message', function(ev){
   if(!ev.data) return;
   if (ev.data.type === 'pictomino_hud') {
     const hud = ev.data.hud || {};
+    if (!window._pictominoStarted && hud.level) { window._pictominoStarted = true; track('game_start', {source:'index'}); }
     const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
     set('gt-level', hud.level); set('gt-diff', hud.diff); set('gt-hearts', hud.hearts); set('gt-score', hud.score);
     const timerEl = document.getElementById('gt-timer');
@@ -558,6 +569,7 @@ window.addEventListener('message', function(ev){
     const sb = document.getElementById('gt-sound-btn');
     if (sb) sb.textContent = ev.data.muted ? '🔇' : '🔊';
   }
+  if (ev.data.type === 'pictomino_daily_solved') { track('puzzle_complete', {mode:'daily',source:'index'}); }
   // 倒计时同步（每秒推送）
   if (ev.data.type === 'pictomino_timer') {
     const timerEl = document.getElementById('gt-timer');

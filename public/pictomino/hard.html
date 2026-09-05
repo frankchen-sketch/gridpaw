@@ -32,6 +32,15 @@
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "yd0fauosa4");
 </script>
+<script>
+function track(event, params) {
+  if (typeof gtag === 'function') gtag('event', event, params || {});
+  if (typeof clarity === 'function') {
+    clarity('event', event);
+    if (params) Object.keys(params).forEach(function(k) { clarity('set', String(params[k])); });
+  }
+}
+</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -61,10 +70,10 @@ header{
 }
 .logo .cat{font-size:20px}
 .nav a{
-  color:var(--ink);text-decoration:none;font-weight:700;font-size:15px;
-  margin-left:18px;transition:color .15s;
+  color:var(--ink);text-decoration:none;font-weight:700;font-size:13px;
+  padding:6px 10px;border-radius:8px;transition:background .15s,color .15s;
 }
-.nav a:hover{color:var(--pink)}
+.nav a:hover{background:#FFF8F0;color:var(--pink)}
 /* ===== Hero ===== */
 .hero{
   text-align:center;padding:36px 16px 20px;
@@ -148,7 +157,7 @@ footer a{color:#b5a396}
 @media (max-width:640px){
   .hero h1{font-size:28px}
   .game-frame{height:560px}
-  .nav a{margin-left:12px;font-size:13px}
+  .nav a{font-size:12px;padding:4px 8px}
 }
 </style>
 <script type="application/ld+json">
@@ -222,9 +231,17 @@ footer a{color:#b5a396}
 <!-- ===== Game ===== -->
 <div class="container">
   <div class="game-wrap" id="game">
-    <iframe class="game-frame" src="game.html?difficulty=hard" title="Play Pictomino hard mode — hard puzzle for kids online" loading="lazy" allow="autoplay"></iframe>
+    <iframe class="game-frame" id="game-frame" src="game.html?difficulty=hard" title="Play Pictomino hard mode — hard puzzle for kids online" loading="lazy" allow="autoplay"></iframe>
   </div>
 </div>
+<script>
+document.getElementById('game-frame').addEventListener('load', function(){ track('game_start', {difficulty:'hard'}); });
+window.addEventListener('message', function(ev){
+  if(!ev.data) return;
+  if(ev.data.type==='pictomino_daily_solved') track('puzzle_complete', {difficulty:'hard',source:'hard'});
+  if(ev.data.type==='pictomino_level_up') track('puzzle_complete', {difficulty:'hard',level:ev.data.level||0,source:'hard'});
+});
+</script>
 
 <!-- ===== How to Play ===== -->
 <section id="how-to-play">
@@ -296,7 +313,7 @@ footer a{color:#b5a396}
 </div>
 
 <footer>
-  <p>© 2026 Pictomino · <a href="https://gridpaw.com/pictomino">gridpaw.com/pictomino</a> · <a href="https://gridpaw.com/akari/" rel="dofollow noopener">GridPaw Akari</a> · <a href="https://gridpaw.com/" rel="dofollow noopener">GridPaw Shikaku Puzzle</a> · <a href="https://dang.ai" rel="dofollow noopener">Dang AI Directory</a> · <a href="https://gridpaw.com/pictomino/community" onclick="gtag('event','community_click',{source:'footer_hard'});if(window.clarity&&typeof window.clarity==='function'){window.clarity('event','community_click');window.clarity('set','source','footer_hard')}">Community</a> · <a href="https://gridpaw.com/pictomino/privacy">Privacy Policy</a> · Made with 🧠 for curious kids</p>
+  <p>© 2026 Pictomino · <a href="https://gridpaw.com/pictomino">gridpaw.com/pictomino</a> · <a href="https://gridpaw.com/akari/" rel="dofollow noopener">GridPaw Akari</a> · <a href="https://gridpaw.com/" rel="dofollow noopener">GridPaw Shikaku Puzzle</a> · <a href="https://dang.ai" rel="dofollow noopener">Dang AI Directory</a> · <a href="https://gridpaw.com/pictomino/community" onclick="track('community_click',{source:'footer_hard'})">Community</a> · <a href="https://gridpaw.com/pictomino/privacy">Privacy Policy</a> · Made with 🧠 for curious kids</p>
 </footer>
 
 </body>

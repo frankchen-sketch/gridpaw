@@ -1037,12 +1037,18 @@ const description = "Play GridPaw, a free Light Up puzzle game with cute cats. S
           playerSolution = Array.from({length:s}, () => Array(s).fill(false));
           markX = Array.from({length:s}, () => Array(s).fill(false));
           renderBoard(); updateProgress();
-          if (!gaStarted) { gaStarted = true; track('game_start', { level: level, difficulty: diff.label }); }
+          if (!gaStarted) {
+            gaStarted = true;
+            const p = new URLSearchParams(location.search);
+            const src = p.get('embed') ? 'embed' : p.get('daily') ? 'daily' : document.referrer ? 'referral' : 'direct';
+            track('game_start', { level: level, difficulty: diff.label, source: src });
+          }
         } catch(e) { showToast('Failed to generate.', 'error'); }
       }, 10);
     }
     function resetPuzzle() {
       if (!currentPuzzle) return; won = false; winOverlay.classList.remove('show');
+      track('puzzle_reset', { level: level, difficulty: getDifficulty(level).label });
       const s = currentPuzzle.size;
       playerSolution = Array.from({length:s}, () => Array(s).fill(false));
       markX = Array.from({length:s}, () => Array(s).fill(false));
@@ -1179,13 +1185,13 @@ const description = "Play GridPaw, a free Light Up puzzle game with cute cats. S
       } catch(e) {}
     }
     document.getElementById('share-copy').addEventListener('click', () => {
-      track('share_copy');
+      track('share_copy', { level: level, difficulty: getDifficulty(level).label });
       const diff = getDifficulty(level);
       const text = '🐱 Cleared GridPaw Level ' + level + ' (' + diff.label + ' ' + diff.size + '×' + diff.size + ') — can you beat my time?\ngridpaw.com';
       navigator.clipboard.writeText(text).then(() => showToast('📋 Copied to clipboard!', 'success'));
     });
     document.getElementById('share-twitter').addEventListener('click', () => {
-      track('share_twitter');
+      track('share_twitter', { level: level, difficulty: getDifficulty(level).label });
       const diff = getDifficulty(level);
       const timeStr = timerSeconds > 0 ? '⏱ ' + formatTime(timerSeconds) + ' — ' : '';
       const text = encodeURIComponent('🐱 Cleared GridPaw Level ' + level + ' (' + diff.label + ' ' + diff.size + '×' + diff.size + ') ' + timeStr + 'your turn → gridpaw.com');
