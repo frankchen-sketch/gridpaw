@@ -485,6 +485,7 @@ window.addEventListener('message', function(ev){
   // daily 通关后显示排行榜
   if (ev.data.type === 'pictomino_daily_solved') {
     track('puzzle_complete', {mode:'daily',source:'daily-puzzle'});
+    track('level_up', {mode:'daily',source:'daily-puzzle'});
     const lb = document.getElementById('daily-leaderboard');
     if (lb) { lb.style.display = ''; lb.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
   }

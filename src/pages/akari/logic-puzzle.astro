@@ -206,6 +206,7 @@ const description = "Play logic puzzles online free. Place glowing cats on a gri
 
     var SIZE_MAP = { easy: 7, medium: 10, hard: 12 }, DIRS = [[-1,0],[1,0],[0,-1],[0,1]];
     var currentPuzzle = null, playerSolution = null, markX = null, won = false;
+    var sessionSolveCount = 0;
     var gridEl = document.getElementById('puzzle-grid'), progressEl = document.getElementById('progress'), toastEl = document.getElementById('toast'), diffSelect = document.getElementById('difficulty-select'), winOverlay = document.getElementById('win-overlay'), toastTimer = null;
 
     function showToast(m, t) { toastEl.textContent = m; toastEl.className = 'toast show' + (t === 'success' ? ' success' : ''); if (toastTimer) clearTimeout(toastTimer); toastTimer = setTimeout(function() { toastEl.className = 'toast'; }, 2500); }
@@ -262,7 +263,7 @@ const description = "Play logic puzzles online free. Place glowing cats on a gri
     document.getElementById('hint-btn').addEventListener('click', function() { if (!currentPuzzle || won) return; track('hint_click', { size: currentPuzzle ? currentPuzzle.size : 0 }); var h = getHint(currentPuzzle.grid, currentPuzzle.solution, playerSolution, currentPuzzle.size); if (h) { var cell = gridEl.querySelector('[data-row="' + h[0] + '"][data-col="' + h[1] + '"]'); if (cell) { cell.classList.add('cell-hint'); setTimeout(function() { cell.classList.remove('cell-hint'); }, 2000); } showToast('Hint: try row ' + (h[0] + 1) + ', col ' + (h[1] + 1), 'success'); } else showToast('No hints!', 'error'); });
     document.getElementById('reset-btn').addEventListener('click', resetPuzzle);
     document.getElementById('new-btn').addEventListener('click', newPuzzle);
-    document.getElementById('win-next').addEventListener('click', function() { track('level_up', { difficulty: diffSelect ? diffSelect.value : 'default', size: currentPuzzle ? currentPuzzle.size : 0 }); winOverlay.classList.remove('show'); newPuzzle(); });
+    document.getElementById('win-next').addEventListener('click', function() { sessionSolveCount++; track('level_up', { difficulty: diffSelect ? diffSelect.value : 'default', size: currentPuzzle ? currentPuzzle.size : 0 }); if ([1,3,5,7,9].indexOf(sessionSolveCount) !== -1) { track('level_complete_' + sessionSolveCount, { difficulty: diffSelect ? diffSelect.value : 'default', size: currentPuzzle ? currentPuzzle.size : 0 }); } winOverlay.classList.remove('show'); newPuzzle(); });
     diffSelect.addEventListener('change', newPuzzle);
     newPuzzle();
   </script>

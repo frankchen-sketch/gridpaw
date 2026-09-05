@@ -118,7 +118,19 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
     let isDaily = false;
     let streak = 0;
     let solved = false;
+    let sessionSolveCount = 0;
     let hintIndex = 0; // tracks which hint cell we revealed
+
+    function track(event, params) {
+      if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture(event, Object.assign({ site: 'gridpaw' }, params || {}));
+      }
+      if (typeof window.clarity === 'function') {
+        window.clarity('event', event);
+        if (params) Object.keys(params).forEach(k => window.clarity('set', k, String(params[k])));
+      }
+    }
 
     // ─── DOM refs ────────────────────────────────────────────────────
     const board = document.getElementById('puzzle-board');
@@ -213,6 +225,7 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
         computeIllumination(playerGrid);
         renderBoard();
         setMessage(`New ${difficulty} ${size}×${size} puzzle generated! 🐱`, 'info');
+        track('game_start', { size: size, difficulty: difficulty });
       } catch (e) {
         setMessage('Failed to generate puzzle. Try a different size or difficulty.', 'error');
       }
@@ -332,6 +345,8 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
       if (!playerGrid || !puzzle) return;
       if (isBlack(puzzle.grid[row][col].type)) return;
 
+      if (!window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { size: size, difficulty: difficulty }); }
+
       const cell = playerGrid[row][col];
       // Toggle: place → remove → place
       cell.bulb = !cell.bulb;
@@ -354,6 +369,9 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
 
       if (result.valid) {
         solved = true;
+        sessionSolveCount++;
+        track('level_up', { size: puzzle.size, difficulty: puzzle.difficulty });
+        if ([1,3,5,7,9].indexOf(sessionSolveCount) !== -1) { track('level_complete_' + sessionSolveCount, { size: puzzle.size, difficulty: puzzle.difficulty }); }
         setMessage('🎉 Meow-velous! Puzzle solved correctly! 🐱✨', 'success');
         if (isDaily) {
           streak++;
@@ -370,6 +388,7 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
     function getHint() {
       if (solved) return;
       if (!playerGrid || !puzzle) return;
+      track('hint_click', { size: puzzle.size, difficulty: puzzle.difficulty });
 
       // Solve the puzzle to get a solution
       const solvePuzzleState = {

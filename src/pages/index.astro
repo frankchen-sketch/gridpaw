@@ -1092,6 +1092,9 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
     fetchWithTimeout('/api/auth/me').then(function(r) { return r.json(); }).then(function(me) {
       currentUser = me && me.user ? me.user : null;
       isAdmin = !!(currentUser && currentUser.googleSub && ADMIN_GOOGLE_SUBS.indexOf(currentUser.googleSub) !== -1);
+      if (currentUser && currentUser.googleSub && typeof window.gtag === 'function') {
+        window.gtag('set', 'user_id', currentUser.googleSub);
+      }
       updateHintBadge();
       renderAccountArea();
       if (!currentUser) return;
