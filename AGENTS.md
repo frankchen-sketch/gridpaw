@@ -63,3 +63,4 @@ skill `seo-content-writing`：TDK 字符限制、CTA 全英文、禁止伪造 Sc
 - `seo-content-writing` — 内容页写作规范
 - `webcafe-kd` — 哥飞 KD 查询
 - `seo-keyword-roi-calculator` — 关键词 ROI 计算
+- `game-event-tracking` — GA4 游戏事件打点（track() 模式、gtag IIFE 坑）
