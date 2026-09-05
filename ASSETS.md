@@ -8,9 +8,9 @@
 | 站 | 域名 | GA4 衡量 ID | GA4 Property ID (数字) | Clarity Project ID | 状态 |
 |---|---|---|---|---|---|
 | **GridPaw** | gridpaw.com | G-4FWP61DJCC | **552793510** | yd0fauosa4 | ✅ 当前使用 |
-| MeowBlock (旧) | meow-block.com | G-DK7Y9VJM4G | — | yaix16p1ol | 301 → gridpaw |
-| MeowTrail (旧) | meowtrail.org | G-F94CS6FNFX | — | yaiysek0y6 | 301 → gridpaw |
-| Pictomino (旧) | spatialreasoninggame.com | — | — | yaj0b0i0y2 | 301 → gridpaw |
+| MeowBlock (旧) | meow-block.com | G-DK7Y9VJM4G | **551961083** | yaix16p1ol | 301 → gridpaw |
+| MeowTrail (旧) | meowtrail.org | G-F94CS6FNFX | **551005059** | yaiysek0y6 | 301 → gridpaw |
+| Pictomino (旧) | spatialreasoninggame.com | — | **548824795** | yaj0b0i0y2 | 301 → gridpaw |
 | Furriq | furriq.com | （不变） | 545120903 | yaiux9j8kd | ✅ 独立站 |
 
 - GA4 口径：`G-` 开头 = 前端数据流衡量 ID（site-config.ts 用）；数字 = Data API Property ID（cron-dashboard build_metrics 用），两者不是同一个东西
