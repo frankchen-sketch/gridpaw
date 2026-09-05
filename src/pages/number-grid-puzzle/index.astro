@@ -1,0 +1,319 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+
+const title = "Number Grid Puzzle: 8 Types Explained + Free Games";
+const description = "Master number grid puzzles with this visual guide. 8 types from Sudoku to Shikaku, with free playable examples. Start solving in 5 minutes.";
+
+const faqJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What is a number grid puzzle?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "A number grid puzzle is any logic puzzle played on a grid of cells that uses numbers as clues or fill values. The grid gives every piece of reasoning a physical address: this cell, this row, this number. Popular examples include Sudoku, Shikaku, Kakuro, Nonograms, KenKen, Slitherlink, Akari, and Hitori. All can be solved through pure deduction, no guessing required."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Are number grid puzzles good for your brain?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Research suggests they help. A large 2019 study from the University of Exeter and King's College London tracked more than 19,000 adults and found that people who regularly worked on puzzles performed better on tests of memory, attention, and reasoning. The long-running ACTIVE trial also found that reasoning training produced measurable cognitive benefits that lasted for years. Like exercise, the benefits come from consistency rather than a single heroic session."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "What's the easiest number grid puzzle to start with?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Sudoku is the most common starting point because the rules are simple and easy puzzles resolve through basic scanning. If you prefer something more spatial, Shikaku is a great alternative: the rules fit in two sentences and the rectangle-shaping feels creative rather than mechanical. Either way, start with small grids and finish them completely before moving up in size."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Can I play number grid puzzles on my phone?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. Most number grid puzzles work beautifully on phones because the grids are tap-friendly and the sessions fit into short breaks. Sudoku and Nonograms have thousands of dedicated apps. Shikaku and Akari can be played free in any mobile browser on sites like GridPaw, with no download or sign-up needed."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "How are Shikaku and Sudoku different?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Sudoku asks you to fill every cell in a 9x9 grid with digits 1 through 9, following strict row, column, and box rules. Shikaku gives you a grid with scattered numbers and asks you to draw rectangles around them: each rectangle must contain exactly one number, and that number equals the rectangle's area. Sudoku is about constraint checking; Shikaku is about spatial reasoning and shape fitting. Both are pure logic, no guessing."
+        }
+      }
+    ]
+  }
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/number-grid-puzzle"
+    type="article"
+    breadcrumbTitle="Number Grid Puzzle"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --mt-primary: #D47A50;
+      --mt-secondary: #5C6BC0;
+      --mt-bg: #FFF8F0;
+      --mt-cell-border: #D8D0C8;
+      --mt-text: #3D3D3D;
+      --mt-text-light: #9E9590;
+      --mt-shadow-sm: 0 2px 8px rgba(78,64,55,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', -apple-system, sans-serif;
+      background: var(--mt-bg); color: var(--mt-text);
+      min-height: 100vh;
+    }
+    .breadcrumb { font-size: 12px; color: var(--mt-text-light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--mt-text-light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--mt-primary); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; color: var(--mt-text); margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; color: var(--mt-text); margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--mt-primary); }
+    .seo-section h3 { font-size: 1.1rem; color: var(--mt-text); margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--mt-primary); }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: white; border: 1.5px solid var(--mt-cell-border); border-radius: 10px; box-shadow: var(--mt-shadow-sm); }
+    .seo-section details[open] { border-color: var(--mt-primary); }
+    .seo-section summary { cursor: pointer; font-weight: 800; color: var(--mt-text); line-height: 1.5; }
+    .seo-section summary:hover { color: var(--mt-primary); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .seo-section pre { background: white; border: 1.5px solid var(--mt-cell-border); border-radius: 10px; padding: 0.9rem 1rem; overflow-x: auto; font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 0.8rem; line-height: 1.5; color: #555; margin: 0.8rem 0; }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--mt-text-light); }
+    .seo-footer a { color: var(--mt-text-light); }
+    .seo-footer a:hover { color: var(--mt-primary); }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: white; border: 2px dashed var(--mt-primary); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--mt-text); }
+    .cta-box a { color: var(--mt-primary); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .comparison-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+    .comparison-table th, .comparison-table td { padding: 0.5rem 0.6rem; border: 1.5px solid var(--mt-cell-border); text-align: left; }
+    .comparison-table th { background: white; font-weight: 800; color: var(--mt-text); }
+    .comparison-table td { background: #FFFCF8; color: #555; }
+    .comparison-table tr:hover td { background: #FFF5EE; }
+  </style>
+</head>
+<body>
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; Number Grid Puzzle</nav>
+
+  <main class="seo-section">
+    <h1>Number Grid Puzzle: A Complete Guide to 8 Types You Can Play Free</h1>
+
+    <p>A number grid puzzle is any logic puzzle played on a grid where numbers serve as clues or fill values. The grid turns abstract reasoning into something you can see and touch: every deduction has a cell, every certainty has a coordinate. That is why they are so addictive. Your brain loves writing progress down.</p>
+
+    <p>This guide covers eight distinct types of number grid puzzles, from the world-famous Sudoku to the lesser-known Hitori. Each one has a clear explanation, and several come with free playable examples you can try right in your browser. No download, no sign-up. If you have ten minutes and a curious mind, you can start solving right now.</p>
+
+    <p>Whether you are a complete beginner looking for your first puzzle or a seasoned solver hunting for something new, these eight types represent the full spectrum of what number grids can do: arithmetic, spatial reasoning, picture logic, and pure deduction. Let's go through them one by one.</p>
+
+    <h2>1. Sudoku: The King of Number Grid Puzzles</h2>
+
+    <p>Sudoku is the most recognized number grid puzzle on earth. You get a 9 by 9 grid divided into nine 3 by 3 boxes, and your job is to fill every empty cell with a digit from 1 to 9 so that no digit repeats in any row, column, or box. That is the entire rule set. No math, no addition, just placement logic.</p>
+
+    <p>What makes Sudoku endure is its difficulty scaling. Easy puzzles resolve through simple scanning: look at a row, see what is missing, check the column and box, place the digit. Hard puzzles demand advanced techniques with names like naked pairs, hidden singles, X-wings, and swordfish. The jump from beginner to expert feels like learning a new language using the same alphabet.</p>
+
+    <p>Sudoku was popularized by the Japanese publisher Nikoli in the 1980s and exploded worldwide in 2004 when The Times of London began printing it. Today it appears in hundreds of newspapers, has sold millions of books, and mathematicians have proven that the minimum number of starting clues for a unique solution is exactly 17. If you have only ever played one number grid puzzle, it was almost certainly Sudoku, and the good news is that the other seven on this list will feel like fresh territory built on familiar foundations.</p>
+
+    <h2>2. Shikaku: Rectangle Partition Puzzle</h2>
+
+    <p>Shikaku, whose name means "divide by square" in Japanese, is the rectangle partition puzzle. You get a grid with numbers scattered across it, and your job is to divide the entire grid into rectangles so that each rectangle contains exactly one number, and that number equals the number of cells the rectangle covers. A clue of 6 must own six cells: it could be a 1 by 6, a 2 by 3, or a 3 by 2, and the surrounding clues quietly eliminate all but one option.</p>
+
+    <p>The rules fit in two sentences, but the solving has real depth. Every rectangle you lock in reshapes the possibilities around it, creating cascades of forced moves. Shikaku is part bookkeeping, part mapmaking, and it rewards both careful scanning and a bit of spatial intuition. It first appeared in Nikoli, the same Japanese puzzle publisher that gave the world Sudoku.</p>
+
+    <div style="margin:1.5rem 0;text-align:center">
+      <p style="font-weight:700;margin-bottom:0.5rem">Try a Shikaku puzzle right here, no download needed:</p>
+      <iframe src="/?embed=1" title="Play Shikaku puzzle" loading="lazy" width="100%" height="420" style="border:0;border-radius:12px;max-width:520px;margin:0 auto;display:block"></iframe>
+      <p style="font-size:0.85rem;margin-top:0.4rem"><a href="/">Play full version &rarr;</a></p>
+    </div>
+
+    <p>If you enjoy puzzles that feel equal parts logical and creative, Shikaku is your grid. Start with a small grid, look for numbers whose factors allow only one rectangle shape, and let the edges of the board do some of the thinking for you.</p>
+
+    <div class="cta-box">
+      <p>Love rectangle puzzles? <a href="/">Play Shikaku free &rarr;</a></p>
+    </div>
+
+    <h2>3. Akari (Light Up): Place Bulbs, Light the Grid</h2>
+
+    <p>Akari, known outside Japan as Light Up, is the grid puzzle for people who like their deduction with a bit of atmosphere. You get a grid of white and black cells, and you place light bulbs on white cells so that every white cell ends up illuminated. The catch: no two bulbs can shine on each other in the same unobstructed row or column. Black cells block light, and numbered black cells tell you exactly how many bulbs must sit adjacent to them.</p>
+
+    <p>Every placement ripples outward. One bulb lights its row and column and simultaneously forbids a whole set of future placements. The endgame has a lovely payoff: when the last few dark cells can only be lit one way, the whole board resolves in a chain of forced moves. Akari rewards patience and careful scanning, and it pairs beautifully with Shikaku since the two puzzles use similar grids for completely different goals, one dividing space and the other illuminating it.</p>
+
+    <div class="cta-box">
+      <p>Or try lighting up the grid: <a href="/akari/">Play Akari free &rarr;</a></p>
+    </div>
+
+    <h2>4. Kakuro: Crossword Meets Math</h2>
+
+    <p>Kakuro is what happened when someone looked at a crossword and a math puzzle and decided they belonged together. The grid looks like a crossword, but the entries are digits 1 through 9, and the clues are sums. A clue of 16 across means the digits in that run add up to 16, with no digit repeated within a run.</p>
+
+    <p>That single twist creates beautiful constraints. Only certain digit combinations can make certain sums: a three-cell run summing to 7 must contain 1, 2, and 4 in some order, no exceptions. Experienced solvers memorize these combination tables the way musicians memorize scales. Kakuro is older than Sudoku in its Japanese home, where it has run in newspapers since the 1950s under the name Kasho Kuro.</p>
+
+    <p>Fair warning: Kakuro is less forgiving at the start than Sudoku. The first few solves feel like wading through syrup. But the moment the combination tables click, it becomes one of the most satisfying number grid puzzles there is. If you like your logic with actual arithmetic in it, Kakuro is waiting.</p>
+
+    <h2>5. Nonograms (Picross): Picture Logic Puzzles</h2>
+
+    <p>Nonograms, also sold as Picross or Griddlers, are the picture puzzles of the number grid family. Along the top and left edges of an empty grid you get number clues, and each clue lists the lengths of consecutive filled runs in that row or column, in order. Your task is to fill cells until the whole grid resolves into a small picture, usually something charming like a cat or an umbrella.</p>
+
+    <p>A row of length 10 with the clue "10" fills completely. A clue of "8 1" has eight filled cells, at least one gap, then one more, and working out where the flexibility lies is the heart of the game. Nonograms reward a slightly different muscle than Sudoku: where Sudoku is pure constraint checking, Nonograms mix logic with a running visual hypothesis. You half-see the picture before it is confirmed.</p>
+
+    <p>They are enormously popular on the Nintendo Switch and phones under the Picross name, and a well-made one delivers a small emotional reward at the end that pure number puzzles cannot match: the finished image. If you want your number grid puzzle to surprise you with a picture, Nonograms are the answer.</p>
+
+    <h2>6. KenKen: Arithmetic Cage Puzzles</h2>
+
+    <p>KenKen looks like Sudoku at first glance: fill an N by N grid with digits 1 through N so that no digit repeats in any row or column. The twist is that the grid is divided into irregular cages, each with a target number and an arithmetic operation. The digits in a cage must combine using that operation to hit the target. A two-cell cage labeled "6+" means the two digits add to 6. A cage labeled "3&divide;" means one digit divided by the other equals 3.</p>
+
+    <p>The result is Sudoku's logic plus real arithmetic, and the combination is surprisingly satisfying. Easy KenKen puzzles use small grids with simple addition cages. Hard ones throw division and multiplication into 9 by 9 grids where every cage is an extra constraint on top of the row and column rules. KenKen was invented by Japanese math teacher Tetsuya Miyamoto in 2004 as a teaching tool, and it has since become a staple in classrooms and newspapers worldwide.</p>
+
+    <h2>7. Slitherlink: Draw the Loop</h2>
+
+    <p>Slitherlink is the odd one out on this list, and proudly so. Instead of filling cells, you draw a single continuous loop along the dotted lines between them. Numbered cells tell you how many of their four edges the loop uses: a 3 cell has exactly three of its borders on the loop, a 0 cell has none, and the finished loop must close on itself without ever crossing or touching.</p>
+
+    <p>The loop wanders, doubles back, and teases you with long stretches of ambiguity before a single edge placement suddenly forces a dozen others. Slitherlink has a reputation as the most spatially intuitive of the Nikoli puzzles: solvers often describe feeling the loop's shape before they can prove it, then working backward to justify what their eyes already knew. Start with small grids, treat every 0 as a gift, and never trust a loop that has not yet closed.</p>
+
+    <h2>8. Hitori: Eliminate the Duplicates</h2>
+
+    <p>Hitori, meaning "alone" in Japanese, flips the usual number grid formula on its head. Instead of filling cells, you shade them out. You start with a grid full of numbers, and your job is to shade cells so that no number appears more than once in any row or column, while keeping all unshaded cells connected and never shading two cells that touch orthogonally.</p>
+
+    <p>The paradox of Hitori is that it starts with a complete grid and asks you to make it sparser. Every number you remove ripples through its row and column, potentially forcing other removals or protecting other duplicates from being touched. The connectivity rule adds a spatial dimension that pure elimination puzzles usually lack: you cannot just shade every duplicate, because the survivors have to form one connected group. Hitori is quick to learn, satisfying to solve, and a refreshing change of pace when other number grid puzzles start to feel samey.</p>
+
+    <h2>Which Number Grid Puzzle Should You Try First?</h2>
+
+    <p>With eight options, choice paralysis is real. Here is a quick comparison to help you pick:</p>
+
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Puzzle</th>
+          <th>Grid Size</th>
+          <th>Math Needed?</th>
+          <th>Difficulty</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Sudoku</td>
+          <td>9&times;9</td>
+          <td>No</td>
+          <td>Easy to Hard</td>
+          <td>Beginners, daily habit</td>
+        </tr>
+        <tr>
+          <td>Shikaku</td>
+          <td>5&times;5 to 25&times;25</td>
+          <td>Multiplication</td>
+          <td>Easy to Medium</td>
+          <td>Spatial thinkers</td>
+        </tr>
+        <tr>
+          <td>Akari</td>
+          <td>7&times;7 to 20&times;20</td>
+          <td>No</td>
+          <td>Easy to Hard</td>
+          <td>Visual, atmospheric</td>
+        </tr>
+        <tr>
+          <td>Kakuro</td>
+          <td>Varies</td>
+          <td>Addition</td>
+          <td>Medium to Hard</td>
+          <td>Math lovers</td>
+        </tr>
+        <tr>
+          <td>Nonograms</td>
+          <td>5&times;5 to 30&times;30</td>
+          <td>No</td>
+          <td>Easy to Hard</td>
+          <td>Picture lovers</td>
+        </tr>
+        <tr>
+          <td>KenKen</td>
+          <td>3&times;3 to 9&times;9</td>
+          <td>All operations</td>
+          <td>Easy to Hard</td>
+          <td>Math + logic combo</td>
+        </tr>
+        <tr>
+          <td>Slitherlink</td>
+          <td>5&times;5 to 25&times;25</td>
+          <td>No</td>
+          <td>Medium to Hard</td>
+          <td>Spatial, loop lovers</td>
+        </tr>
+        <tr>
+          <td>Hitori</td>
+          <td>5&times;5 to 15&times;15</td>
+          <td>No</td>
+          <td>Easy to Medium</td>
+          <td>Quick sessions</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Not sure where to begin?</strong> Start with Sudoku if you want the smoothest on-ramp. Pick Shikaku if you prefer spatial reasoning over digit placement. Choose Nonograms if you want a picture as your reward. All three have free beginner-friendly puzzles online, and all three teach the core grid puzzle skill that transfers to every other type: prove every placement, never guess.</p>
+
+    <h2>Benefits of Number Grid Puzzles</h2>
+
+    <p>The claim that puzzles help your brain deserves honest evidence, not marketing slogans. The strongest well-known finding comes from a 2019 study by the University of Exeter and King's College London, which tracked more than 19,000 adults aged 50 and over and found that people who regularly engaged with word and number puzzles performed better on tests of memory, attention, and reasoning, with puzzle solvers showing brain function typical of people up to ten years younger on some measures. The landmark ACTIVE trial, a large randomized study of cognitive training in older adults, found that training in reasoning produced improvements that persisted for years, with some benefits visible a decade later.</p>
+
+    <p>It is worth being precise about what this means. Number grid puzzles are not a magic shield against cognitive decline. What the evidence supports is narrower and still encouraging: regular engagement with novel, effortful thinking is linked to better maintained cognitive skills. Grid puzzles are a cheap, pleasant, sustainable way to get that engagement. If you want to dig deeper into the research, our guide to <a href="/brain-teasers-for-adults/">brain teasers for adults</a> covers the science in more detail.</p>
+
+    <p>There is one more benefit that puzzle people recognize instantly: flow. Psychologists describe flow as the absorbed state you enter when a task sits right at the edge of your ability, hard enough to engage you, gentle enough that you keep making progress. Number grid puzzles are close to a perfect flow delivery system. Clear goals, instant feedback on every placement, difficulty you can dial up as you improve. Ten minutes of that state leaves you calmer than you found it.</p>
+
+    <h2>Tips for Solving Number Grid Puzzles</h2>
+
+    <p>Every grid puzzle family has its own tricks, but the solving mindset is universal. These three principles apply to every number grid puzzle on this list, from a 5 by 5 Shikaku warmup to a brutal 25 by 25 Slitherlink.</p>
+
+    <ul>
+      <li><strong>Start with forced placements.</strong> Scan the grid for cells or clues that have only one possible answer. In Sudoku, look for digits that can only go in one cell within a row, column, or box. In Shikaku, find numbers whose factors allow only one rectangle shape. In Kakuro, identify sums with only one valid combination. Forced placements are the engine that drives every grid puzzle forward.</li>
+      <li><strong>Work from constraints, edges, and corners.</strong> The cells near the border of the grid have fewer neighbors, which means fewer possibilities and more certainty. Corners are the most constrained positions in most grid puzzles, and experienced solvers start there instinctively. The middle of the grid resolves last, and that is by design.</li>
+      <li><strong>Never guess. Prove every placement.</strong> This is the single most important habit in number grid puzzles. A well-made puzzle guarantees a unique solution reachable by pure logic. If you find yourself wanting to guess, you have missed a clue. Put the pencil down, re-read the rules, and scan again. Guessing introduces errors that cascade, and undoing a bad guess wastes far more time than the careful scan you skipped.</li>
+    </ul>
+
+    <p>For more solving strategies and a step-by-step walkthrough, see our <a href="/logic-puzzle-grid/">logic puzzle grid guide</a>. If you are curious about the Japanese origins of many of these puzzles, our <a href="/japanese-logic-puzzles/">Japanese logic puzzles guide</a> covers Nikoli's history and influence.</p>
+
+    <div class="cta-box">
+      <p>Ready to play? Try these number grid puzzles free:</p>
+      <p><a href="/">Play Shikaku &rarr;</a> &nbsp;&middot;&nbsp; <a href="/akari/">Play Akari &rarr;</a> &nbsp;&middot;&nbsp; <a href="/pictomino/">Play Pictomino &rarr;</a></p>
+    </div>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <details><summary>What is a number grid puzzle?</summary><p>A number grid puzzle is any logic puzzle played on a grid of cells that uses numbers as clues or fill values. The grid gives every piece of reasoning a physical address: this cell, this row, this number. Popular examples include Sudoku, Shikaku, Kakuro, Nonograms, KenKen, Slitherlink, Akari, and Hitori. All can be solved through pure deduction, no guessing required.</p></details>
+
+    <details><summary>Are number grid puzzles good for your brain?</summary><p>Research suggests they help. A large 2019 study from the University of Exeter and King's College London tracked more than 19,000 adults and found that people who regularly worked on puzzles performed better on tests of memory, attention, and reasoning. The long-running ACTIVE trial also found that reasoning training produced measurable cognitive benefits that lasted for years. Like exercise, the benefits come from consistency rather than a single heroic session.</p></details>
+
+    <details><summary>What's the easiest number grid puzzle to start with?</summary><p>Sudoku is the most common starting point because the rules are simple and easy puzzles resolve through basic scanning. If you prefer something more spatial, Shikaku is a great alternative: the rules fit in two sentences and the rectangle-shaping feels creative rather than mechanical. Either way, start with small grids and finish them completely before moving up in size.</p></details>
+
+    <details><summary>Can I play number grid puzzles on my phone?</summary><p>Yes. Most number grid puzzles work beautifully on phones because the grids are tap-friendly and the sessions fit into short breaks. Sudoku and Nonograms have thousands of dedicated apps. Shikaku and Akari can be played free in any mobile browser on sites like GridPaw, with no download or sign-up needed.</p></details>
+
+    <details><summary>How are Shikaku and Sudoku different?</summary><p>Sudoku asks you to fill every cell in a 9x9 grid with digits 1 through 9, following strict row, column, and box rules. Shikaku gives you a grid with scattered numbers and asks you to draw rectangles around them: each rectangle must contain exactly one number, and that number equals the rectangle's area. Sudoku is about constraint checking; Shikaku is about spatial reasoning and shape fitting. Both are pure logic, no guessing.</p></details>
+  </main>
+
+  <footer class="seo-footer">
+    <p>GridPaw: Free online Japanese logic puzzles with cats.</p>
+    <p style="margin-top:0.3rem;"><a href="/">GridPaw Shikaku</a> · <a href="/akari/">GridPaw Akari</a> · <a href="/pictomino/">GridPaw Pictomino</a></p>
+  </footer>
+</body>
+</html>
