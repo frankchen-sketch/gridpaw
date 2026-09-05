@@ -8,7 +8,7 @@ const faqs = [
   { q: "How is Shikaku different from Sudoku?", a: "Sudoku asks you to fill digits into cells; Shikaku asks you to draw shapes around cells. In Sudoku every cell gets a number, while in Shikaku most cells are empty and the few given numbers define the area of the rectangle that must contain them. Both are pure logic puzzles with a single solution, but Shikaku is spatial rather than numeric." },
   { q: "Do I need to guess in Shikaku?", a: "No. Every well-constructed Shikaku puzzle has exactly one solution that can be reached by deduction alone. If you feel stuck, look for a number with only one legal rectangle shape, or find an empty cell that only one rectangle can reach. There is always a next logical step." },
   { q: "Can I play Shikaku on my phone?", a: "Yes. GridPaw runs in any modern mobile browser with no download required. Drag your finger across the grid to draw a rectangle, tap a rectangle to remove it, and use the Undo button to step back. Your level progress is saved automatically on your device." },
-  { q: "How many levels does GridPaw have?", a: "GridPaw generates a fresh puzzle for every level, so there is no fixed cap. Levels 1 to 5 are 4×4 tutorials, and the grid grows through Easy, Medium, Hard, Expert, and Master tiers until you reach Legend at level 51 and beyond, where every board is a full 8×8 grid." },
+  { q: "How many levels does GridPaw have?", a: "GridPaw generates a fresh puzzle for every level, so there is no fixed cap. Levels 1 to 3 are 3×3 tutorials, and the grid grows through Easy, Medium, Hard, Expert, and Master tiers until you reach Legend at level 51 and beyond, where every board is a full 8×8 grid." },
 ];
 ---
 <!DOCTYPE html>
@@ -98,7 +98,7 @@ const faqs = [
       <p>When all three conditions hold at once, the puzzle is solved. Because the numbers on the board always add up to the total number of cells, a correct set of rectangles leaves nothing uncovered. Well-made puzzles have exactly one solution, so you never need to guess — every placement can be proven.</p>
 
       <h2>How to Play Shikaku: Step-by-Step Walkthrough</h2>
-      <p>If you are learning how to play Shikaku for the first time, follow this sequence. It works on a 4×4 tutorial board and scales all the way up to 8×8 Legend puzzles.</p>
+      <p>If you are learning how to play Shikaku for the first time, follow this sequence. It works on a 3×3 tutorial board and scales all the way up to 8×8 Legend puzzles.</p>
       <ol>
         <li><strong>Read the numbers and list their shapes.</strong> Before drawing anything, ask what rectangles each number can form. A 1 is always a single cell. A 2 is a 1×2 domino. A 4 could be 1×4 or 2×2. A 6 could be 1×6 or 2×3. Prime numbers (2, 3, 5, 7) can only be a straight strip, which is why they are the easiest to place.</li>
         <li><strong>Start with primes and ones.</strong> Every 1 is solved instantly — draw a 1×1 box around it. Then look at each 2, 3, 5, and 7. A strip of length 5 on a 5-wide grid has very few legal positions, and once you rule out the ones that would swallow another number, often just one remains.</li>
@@ -110,7 +110,7 @@ const faqs = [
       <p>The rhythm of Shikaku is "constraint, then commit." Never draw a rectangle because it looks plausible — draw it because every other shape for that number has been ruled out. That discipline is what lets you solve large grids without backtracking.</p>
 
       <h2>A Worked Example</h2>
-      <p>Take a 4×4 board. Label the columns A–D from left to right and the rows 1–4 from top to bottom. Four numbers are given: a <strong>2</strong> at A1 (top-left corner), a <strong>4</strong> at D1 (top-right corner), a <strong>6</strong> at A4 (bottom-left corner), and a <strong>4</strong> at D4 (bottom-right corner). The clues sum to 16, matching the 16 cells — a quick sanity check worth doing on every puzzle. Here is the beginner's reasoning:</p>
+      <p>Take a 4×4 board as a teaching example (the same logic applies on every size). Label the columns A–D from left to right and the rows 1–4 from top to bottom. Four numbers are given: a <strong>2</strong> at A1 (top-left corner), a <strong>4</strong> at D1 (top-right corner), a <strong>6</strong> at A4 (bottom-left corner), and a <strong>4</strong> at D4 (bottom-right corner). The clues sum to 16, matching the 16 cells — a quick sanity check worth doing on every puzzle. Here is the beginner's reasoning:</p>
       <ol>
         <li><strong>Enumerate the 6.</strong> A 1×6 strip cannot fit on a 4-wide board, so the 6 at A4 must be 2×3 (two rows tall, three wide: A3–C4) or 3×2 (three rows tall, two wide: A2–B4). Both are legal for now — neither shape swallows another number. Park it.</li>
         <li><strong>Force the bottom-right 4.</strong> The 4 at D4 sits in a corner, so it can only grow up or left. A vertical 1×4 (D1–D4) would contain the 4 at D1 — illegal. A horizontal 1×4 (A4–D4) would contain the 6 at A4 — illegal. The only shape left is a 2×2 square covering C3, D3, C4, D4. Draw it.</li>
@@ -127,8 +127,8 @@ const faqs = [
           <tr><th>Tier</th><th>Levels</th><th>Grid</th><th>What changes</th></tr>
         </thead>
         <tbody>
-          <tr><td>Tutorial</td><td>1 – 5</td><td>4×4</td><td>Mostly 1s, 2s, and 4s. Learn the drag gesture and the three rules.</td></tr>
-          <tr><td>Easy</td><td>6 – 10</td><td>5×5</td><td>Primes and small composites. Corners still solve most of the board.</td></tr>
+          <tr><td>Tutorial</td><td>1 – 3</td><td>3×3</td><td>Mostly 1s, 2s, and 3s. Learn the drag gesture and the three rules.</td></tr>
+          <tr><td>Easy</td><td>4 – 10</td><td>5×5</td><td>Primes and small composites. Corners still solve most of the board.</td></tr>
           <tr><td>Medium</td><td>11 – 16</td><td>5×6</td><td>Non-square boards; you must think about both orientations of each shape.</td></tr>
           <tr><td>Medium-Hard</td><td>17 – 22</td><td>6×6</td><td>More composite numbers (6, 8, 9) with two or three possible shapes each.</td></tr>
           <tr><td>Hard</td><td>23 – 30</td><td>7×8</td><td>Orphan-cell elimination becomes essential; fewer instant placements.</td></tr>
