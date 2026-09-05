@@ -347,6 +347,17 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
     .header-nav { display: flex; gap: 0; align-items: center; }
     .header-nav a { font-size: 13px; font-weight: 700; color: #5C6BC0; text-decoration: none; padding: 8px 14px; transition: color 0.15s; }
     .header-nav a:hover { color: #D47A50; }
+    .game-switcher { position: relative; }
+    .game-switcher-btn { font-size: 13px; font-weight: 700; color: #5C6BC0; background: none; border: none; cursor: pointer; padding: 8px 14px; display: flex; align-items: center; gap: 4px; }
+    .game-switcher-btn::after { content: '▾'; font-size: 10px; }
+    .game-switcher-btn:hover { color: #D47A50; }
+    .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid #E8DDD0; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
+    .game-switcher:hover .game-switcher-menu { display: block; }
+    .game-switcher-menu a { display: flex; flex-direction: column; padding: 10px 16px !important; font-size: 13px !important; gap: 2px; border-radius: 0 !important; }
+    .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: #9E9590; }
+    .game-switcher-menu a:hover { background: #FFF8F0; color: #D47A50 !important; }
+    .game-switcher-menu a.active { color: #D47A50 !important; background: #FFF5F0; font-weight: 800 !important; }
+    @media (max-width: 480px) { .game-switcher:hover .game-switcher-menu { display: none; } .game-switcher-menu.open { display: block; } }
     .hamburger { display: none; background: none; border: 1.5px solid #D8D0C8; border-radius: 8px; padding: 6px 10px; font-size: 18px; cursor: pointer; color: #3D3D3D; }
     .mobile-nav { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.4); }
     .mobile-nav-inner { position: absolute; top: 0; right: 0; width: 280px; height: 100%; background: white; padding: 1.5rem; box-shadow: -4px 0 20px rgba(0,0,0,0.1); }
@@ -423,8 +434,14 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
     </a>
     <nav class="header-nav" aria-label="Main navigation">
       <a href="#play">Play</a>
-      <a href="/akari/">Akari</a>
-      <a href="/pictomino/">Pictomino</a>
+      <div class="game-switcher">
+        <button class="game-switcher-btn" onclick="this.nextElementSibling.classList.toggle('open')">Games</button>
+        <div class="game-switcher-menu">
+          <a href="/" class="active"><strong>🟧 Shikaku</strong><span class="game-desc">Rectangle partition puzzle</span></a>
+          <a href="/akari/"><strong>💡 Akari</strong><span class="game-desc">Light Up puzzle</span></a>
+          <a href="/pictomino/"><strong>🧩 Pictomino</strong><span class="game-desc">Spatial reasoning puzzle</span></a>
+        </div>
+      </div>
       <a href="#walkthroughs">Walkthroughs</a>
       <a href="/how-to-play-shikaku">How to Play</a>
       <a href="/tips">Tips</a>
@@ -439,8 +456,10 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
   <div class="mobile-nav-inner">
     <button class="mobile-nav-close" id="mobile-nav-close">×</button>
     <a href="/">🏠 Home</a>
-    <a href="/akari/">💡 Akari</a>
-    <a href="/pictomino/">🧩 Pictomino</a>
+    <div style="padding:0.5rem 0;font-size:11px;font-weight:800;color:#9E9590;text-transform:uppercase;letter-spacing:0.08em">Games</div>
+    <a href="/" style="padding-left:1.5rem">🟧 Shikaku</a>
+    <a href="/akari/" style="padding-left:1.5rem">💡 Akari</a>
+    <a href="/pictomino/" style="padding-left:1.5rem">🧩 Pictomino</a>
     <a href="/rules">📖 Rules</a>
     <a href="/tips">💡 Tips</a>
     <a href="/#play">📅 Daily Challenge</a>
