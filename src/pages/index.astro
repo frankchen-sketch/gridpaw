@@ -81,7 +81,7 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
     .badge-easy { background: #B8E8C0; color: #2D6A3F; }
     .badge-medium { background: #FDD09F; color: #8B6914; }
     .badge-medium-hard { background: #FFB3C6; color: #8B2252; }
-    .badge-hard { background: #FF9A9E; color: #8B1A1A; }
+    .badge-hard { background: #FF6B6B; color: white; }
     .badge-expert { background: #CFC2E8; color: #4B2D7A; }
     .share-btn { padding: 12px 32px; border-radius: 24px; border: none; background: var(--mt-primary); color: white; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(212,122,80,0.3); transition: all 0.15s; }
     .share-btn:hover { transform: scale(1.04); box-shadow: 0 6px 20px rgba(212,122,80,0.4); }
@@ -373,6 +373,7 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
     .game-actions .icon-btn:hover { border-color: #D47A50; color: #D47A50; }
     .game-actions .icon-btn .tip { display: none; position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: 600; color: #9E9590; white-space: nowrap; }
     .game-actions .icon-btn:hover .tip { display: block; }
+    .hint-badge { position: absolute; top: -4px; right: -4px; min-width: 16px; height: 16px; border-radius: 8px; background: var(--mt-primary); color: white; font-size: 10px; font-weight: 900; display: flex; align-items: center; justify-content: center; padding: 0 3px; pointer-events: none; line-height: 1; }
     /* Walkthrough Grid (Level Guides) */
     .walkthrough-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 1rem 0; }
     .walkthrough-card { display: flex; flex-direction: column; background: white; border: 1.5px solid #E8E0EB; border-radius: 12px; overflow: hidden; text-decoration: none; color: #3D3D3D; transition: all 0.15s; }
@@ -417,6 +418,46 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
     /* Section generic */
     .section { max-width: 720px; margin: 0 auto; padding: 0.5rem 1rem; }
     @media (max-width: 420px) { .walkthrough-grid { grid-template-columns: 1fr; } .download-box { flex-direction: column; text-align: center; } .download-phone { width: 120px; } }
+
+    /* === New mechanics: lives, irregular grid, X-reveal, shape hints === */
+    .cell-invalid { visibility: hidden; pointer-events: none; }
+    .cell-xreveal { background: #F3E7DA; position: relative; cursor: default; }
+    .x-ring {
+      display: flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 3px solid var(--mt-primary); font-weight: 900; font-size: 14px;
+      color: var(--mt-primary); animation: pulse-ring 2s ease-in-out infinite;
+    }
+    @keyframes pulse-ring { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } }
+    .shape-hint { position: absolute; pointer-events: none; z-index: 0; background: rgba(212,122,80,0.22); border: 2.5px solid rgba(212,122,80,0.5); }
+    .shape-hint-square { inset: 10px; border-radius: 4px; }
+    .shape-hint-wide { top: 12px; bottom: 12px; left: 8px; right: 8px; border-radius: 3px; }
+    .shape-hint-tall { left: 12px; right: 12px; top: 8px; bottom: 8px; border-radius: 3px; }
+    .cell-number { position: relative; z-index: 1; }
+
+    .game-over-overlay {
+      position: absolute; inset: 0; background: rgba(0,0,0,0.7); z-index: 700;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 16px; border-radius: 12px;
+    }
+    .game-over-overlay.hidden { display: none; }
+    .game-over-overlay h2 { color: white; font-size: 28px; }
+    .game-over-overlay p { color: rgba(255,255,255,0.8); font-size: 14px; }
+    .signin-prompt-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 800; display: flex; align-items: center; justify-content: center; animation: pop-in 0.3s ease-out; }
+    .signin-prompt-card { background: white; border-radius: 20px; padding: 28px 24px; max-width: 320px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+    .signin-prompt-btn { display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1.5px solid #dadce0; border-radius: 24px; padding: 10px 20px; font-size: 14px; font-weight: 700; color: #3c4043; text-decoration: none; box-shadow: 0 1px 3px rgba(0,0,0,0.08); cursor: pointer; transition: box-shadow 0.15s; }
+    .signin-prompt-btn:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .signin-prompt-later { display: block; margin: 12px auto 0; background: none; border: none; color: #9E9590; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: underline; }
+    .hearts { display: flex; gap: 2px; font-size: 18px; align-items: center; }
+    .hearts .heart { transition: transform 0.15s, opacity 0.15s; }
+    .hearts .heart.lost { opacity: 0.2; transform: scale(0.8); }
+    .tutorial-hint {
+      text-align: center; padding: 6px 12px; margin: 0 0 6px;
+      font-size: 13px; font-weight: 700; color: var(--mt-secondary);
+      background: #EDE7F6; border-radius: 8px;
+      word-wrap: break-word; overflow-wrap: break-word;
+    }
+    .tutorial-hint.hidden { display: none; }
   </style>
   <script is:inline src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
 </head>
@@ -473,9 +514,13 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
   <section class="game-card" id="play" aria-label="GridPaw game">
     <div class="game-topbar">
       <div class="level-info" style="margin:0;padding:0">
-        <div class="level-num" id="levelTitle"></div>
+        <div style="display:flex;align-items:center;gap:8px;justify-content:center">
+          <div class="level-num" id="levelTitle"></div>
+          <div class="hearts" id="heartsDisplay"><span class="heart">❤️</span><span class="heart">❤️</span><span class="heart">❤️</span></div>
+        </div>
         <span class="difficulty-badge badge-easy" id="diffBadge"></span>
         <div class="level-sub" id="levelSub"></div>
+        <div class="tutorial-hint hidden" id="tutorialHint"></div>
       </div>
       <div style="display:flex;align-items:center;gap:8px">
         <div id="gameTimer" style="font-size:14px;font-weight:800;color:var(--mt-text-light);font-variant-numeric:tabular-nums;min-width:42px;text-align:center">0:00</div>
@@ -503,6 +548,12 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
     <button class="share-btn" id="shareBtn">📋 Share Result</button>
     <button class="reddit-btn" id="redditBtn">🔥 Share on Reddit</button>
     <button id="victory-close" style="background:none;border:1.5px solid #E8E0EB;color:#9E9590;font-family:inherit;font-weight:700;font-size:.85rem;padding:.5rem 1.6rem;border-radius:999px;cursor:pointer">Continue ✓</button>
+  </div>
+
+  <div class="game-over-overlay hidden" id="gameOver">
+    <h2>😿 Game Over</h2>
+    <p>You ran out of lives!</p>
+    <button class="next-btn" id="retryBtn">Try Again 🔄</button>
   </div>
 
   <section class="seo-content" id="daily-leaderboard" style="max-width:520px;margin:1.5rem auto;padding:0 1rem">
@@ -536,7 +587,7 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
     { e: ['e-closed','e-closed'], m: 'm-w' },          // 5 uwu
     { e: ['e-dot','e-dot'], m: 'm-flat' },             // 6 grumpy
     { e: ['e-open','e-closed'], m: 'm-tongue' },       // 7 playful
-    { e: ['e-closed','e-closed'], m: 'm-none' },       // 8 content
+    { e: ['e-closed','e-closed'], m: 'm-smile' },       // 8 content
     { e: ['e-big','e-big'], m: 'm-small' },            // 9 curious
     { e: ['e-down','e-down'], m: 'm-frown' },          // 10 sad
     { e: ['e-closed','e-closed'], m: 'm-tongue' },     // 11 silly
@@ -570,6 +621,13 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
   // Load saved level from localStorage
   var savedLevel = localStorage.getItem('gridpaw-level');
   var puzzle = null, occupied = [], cellColors = [], rects = [];
+  var lives = 3, enhancedNumbers = [], validCells = null;
+  var TUTORIAL_MESSAGES = {
+    1: '😺 Drag horizontally to cover 3 cells →',
+    2: '😺 Drag vertically to cover 3 cells ↓',
+    3: '😺 Two numbers — draw one rectangle for each!',
+    4: '😺 Last tutorial! Fill the entire grid.'
+  };
   var dragging = false, dragStart = null, levelNum = savedLevel ? parseInt(savedLevel) : 1, _cellSize = 56;
   // Timer
   var gameStartTime = null, gameElapsed = 0, gameTimerInterval = null;
@@ -631,23 +689,60 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
 
   var board = document.getElementById('board');
   var victory = document.getElementById('victory');
+  var gameOver = document.getElementById('gameOver');
   var statusEl = document.getElementById('status');
   var levelTitle = document.getElementById('levelTitle');
   gameTimerEl = document.getElementById('gameTimer');
 
+  function updateHearts() {
+    var heartsEl = document.getElementById('heartsDisplay');
+    if (!heartsEl) return;
+    var spans = heartsEl.querySelectorAll('.heart');
+    for (var i = 0; i < spans.length; i++) {
+      spans[i].classList.toggle('lost', i >= lives);
+    }
+  }
   function newPuzzle() {
-    var diff = getDifficulty(levelNum);
-    if (rects && rects.length > 0) { track('puzzle_reset', { level: levelNum, difficulty: diff.label, rectangles_placed: rects.length }); }
-    puzzle = null;
-    for (var i = 0; i < 200; i++) { puzzle = generatePuzzleWithRetry(diff.w, diff.h, 50); if (puzzle) break; }
-    if (!puzzle) { statusEl.textContent = 'Failed to generate puzzle.'; return; }
-    occupied = Array.from({ length: diff.h }, function() { return Array(diff.w).fill(false); });
-    cellColors = Array.from({ length: diff.h }, function() { return Array(diff.w).fill(null); });
-    colorPool = shuffleArray(CAT_PALETTE.slice());
-    exprIdx = 0; rects = [];
-    // Update level display with difficulty
-    levelTitle.innerHTML = 'Level ' + levelNum + ' <span class="difficulty-badge ' + diff.badge + '" id="diffBadge">' + diff.label + '</span>';
-    // Save level to localStorage
+    lives = 3; updateHearts();
+    gameOver.classList.add('hidden');
+    var levelIdx = levelNum - 1;
+    var levelDef = typeof LEVEL_DEFS !== 'undefined' ? LEVEL_DEFS[levelIdx] : null;
+    if (levelDef) {
+      var result = generateFromLevel(levelDef);
+      puzzle = result.puzzle;
+      enhancedNumbers = result.enhancedNumbers;
+      validCells = puzzle.validCells || null;
+      var W = puzzle.width, H = puzzle.height;
+      occupied = Array.from({ length: H }, function() { return Array(W).fill(false); });
+      cellColors = Array.from({ length: H }, function() { return Array(W).fill(null); });
+      colorPool = shuffleArray(CAT_PALETTE.slice());
+      exprIdx = 0; rects = [];
+      var badge = levelDef.isHard ? ' <span class="difficulty-badge badge-hard">🔥 Hard</span>' : (levelDef.isTutorial ? ' <span class="difficulty-badge badge-easy">📖 Tutorial</span>' : '');
+      levelTitle.innerHTML = levelDef.label + badge;
+      var hintEl = document.getElementById('tutorialHint');
+      if (hintEl) {
+        if (levelDef.isTutorial && TUTORIAL_MESSAGES[levelDef.tutorialStep]) {
+          hintEl.textContent = TUTORIAL_MESSAGES[levelDef.tutorialStep];
+          hintEl.classList.remove('hidden');
+        } else {
+          hintEl.classList.add('hidden');
+        }
+      }
+    } else {
+      var diff = getDifficulty(levelNum);
+      validCells = null; enhancedNumbers = [];
+      puzzle = null;
+      for (var i = 0; i < 200; i++) { puzzle = generatePuzzleWithRetry(diff.w, diff.h, 50); if (puzzle) break; }
+      if (!puzzle) { statusEl.textContent = 'Failed to generate puzzle.'; return; }
+      occupied = Array.from({ length: diff.h }, function() { return Array(diff.w).fill(false); });
+      cellColors = Array.from({ length: diff.h }, function() { return Array(diff.w).fill(null); });
+      colorPool = shuffleArray(CAT_PALETTE.slice());
+      exprIdx = 0; rects = [];
+      levelTitle.innerHTML = 'Level ' + levelNum + ' <span class="difficulty-badge ' + diff.badge + '" id="diffBadge">' + diff.label + '</span>';
+      var hintEl2 = document.getElementById('tutorialHint');
+      if (hintEl2) hintEl2.classList.add('hidden');
+    }
+    if (rects && rects.length > 0) { track('puzzle_reset', { level: levelNum }); }
     localStorage.setItem('gridpaw-level', String(levelNum));
     if (currentUser && !isDailyMode) postLevel(levelNum);
     board.classList.remove('board-victory');
@@ -669,15 +764,39 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
     board.innerHTML = '';
     for (var r = 0; r < H; r++) {
       for (var c = 0; c < W; c++) {
+        var cellKey = r + ',' + c;
+        var isValid = !validCells || validCells.has(cellKey);
         var cell = document.createElement('div');
         cell.className = 'cell';
         cell.dataset.row = String(r); cell.dataset.col = String(c);
         cell.style.width = cellSize + 'px'; cell.style.height = cellSize + 'px';
         cell.style.fontSize = fontSize + 'px';
-        var num = puzzle.numbers.find(function(n) { return n.row === r && n.col === c; });
-        if (cellColors[r][c]) { cell.classList.add('cell-filled'); cell.style.background = cellColors[r][c]; }
-        else if (num) { cell.classList.add('cell-number'); cell.textContent = String(num.value); }
-        else { cell.classList.add('cell-empty'); }
+        if (!isValid) {
+          cell.classList.add('cell-invalid');
+          cell.style.visibility = 'hidden';
+        } else {
+          var num = puzzle.numbers.find(function(n) { return n.row === r && n.col === c; });
+          var enhanced = enhancedNumbers ? enhancedNumbers.find(function(n) { return n.row === r && n.col === c; }) : null;
+          if (cellColors[r][c]) {
+            cell.classList.add('cell-filled'); cell.style.background = cellColors[r][c];
+          } else if (num) {
+            cell.classList.add('cell-number');
+            if (enhanced && enhanced.xReveal && enhanced.xReveal.remaining > 0) {
+              cell.classList.add('cell-xreveal');
+              cell.innerHTML = '<span class="x-ring">' + enhanced.xReveal.remaining + '</span>';
+            } else {
+              cell.textContent = String(num.value);
+              if (enhanced && enhanced.shapeHint) {
+                var shapeDiv = document.createElement('div');
+                shapeDiv.className = 'shape-hint shape-hint-' + enhanced.shapeHint.type;
+                cell.style.position = 'relative';
+                cell.insertBefore(shapeDiv, cell.firstChild);
+              }
+            }
+          } else {
+            cell.classList.add('cell-empty');
+          }
+        }
         board.appendChild(cell);
       }
     }
@@ -726,7 +845,20 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
 
   function getCell(e) { var t = 'touches' in e ? e.touches[0] || e.changedTouches[0] : e; var el = document.elementFromPoint(t.clientX, t.clientY); if (!el || !el.classList.contains('cell')) return null; return { row: +el.dataset.row, col: +el.dataset.col }; }
   function getSelRect(s, e) { return { top: Math.min(s.row, e.row), left: Math.min(s.col, e.col), height: Math.abs(s.row - e.row) + 1, width: Math.abs(s.col - e.col) + 1, value: 0 }; }
-  function highlightCells(rect) { document.querySelectorAll('.cell-selecting').forEach(function(el) { el.classList.remove('cell-selecting'); }); if (!puzzle) return; for (var r = rect.top; r < rect.top + rect.height; r++) for (var c = rect.left; c < rect.left + rect.width; c++) if (r < puzzle.height && c < puzzle.width) board.children[r * puzzle.width + c] && board.children[r * puzzle.width + c].classList.add('cell-selecting'); }
+  function highlightCells(rect) {
+    document.querySelectorAll('.cell-selecting').forEach(function(el) { el.classList.remove('cell-selecting'); });
+    if (!puzzle) return;
+    for (var r = rect.top; r < rect.top + rect.height; r++) {
+      for (var c = rect.left; c < rect.left + rect.width; c++) {
+        if (r < puzzle.height && c < puzzle.width) {
+          var key = r + ',' + c;
+          if (validCells && !validCells.has(key)) continue;
+          var cellEl = board.children[r * puzzle.width + c];
+          if (cellEl) cellEl.classList.add('cell-selecting');
+        }
+      }
+    }
+  }
   function clearHighlight() { document.querySelectorAll('.cell-selecting').forEach(function(el) { el.classList.remove('cell-selecting'); }); }
 
   function onStart(e) {
@@ -753,20 +885,67 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
     if (!window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { level: levelNum }); }
   }
   function onMove(e) { if (!dragging || !dragStart) return; e.preventDefault(); var cell = getCell(e); if (!cell) return; highlightCells(getSelRect(dragStart, cell)); }
+  function updateXReveals() {
+    if (!enhancedNumbers) return;
+    var W = puzzle.width;
+    enhancedNumbers.forEach(function(enhanced) {
+      if (enhanced.xReveal && enhanced.xReveal.remaining > 0) {
+        enhanced.xReveal.remaining--;
+        var cellIdx = enhanced.row * W + enhanced.col;
+        var cellEl = board.children[cellIdx];
+        if (enhanced.xReveal.remaining === 0) {
+          if (cellEl) {
+            cellEl.classList.remove('cell-xreveal');
+            cellEl.classList.add('cell-number');
+            cellEl.textContent = String(enhanced.value);
+            if (enhanced.shapeHint) {
+              var shapeDiv2 = document.createElement('div');
+              shapeDiv2.className = 'shape-hint shape-hint-' + enhanced.shapeHint.type;
+              cellEl.style.position = 'relative';
+              cellEl.insertBefore(shapeDiv2, cellEl.firstChild);
+            }
+          }
+        } else {
+          if (cellEl) {
+            var ring = cellEl.querySelector('.x-ring');
+            if (ring) ring.textContent = enhanced.xReveal.remaining;
+          }
+        }
+      }
+    });
+  }
+  function showGameOver() {
+    stopGameTimer();
+    if (typeof SFX !== 'undefined') SFX.error();
+    gameOver.classList.remove('hidden');
+    track('game_over', { level: levelNum, time: gameElapsed });
+  }
   function onEnd(e) {
     try {
     if (!dragging || !dragStart) return; dragging = false;
     var cell = getCell(e); clearHighlight();
     if (!cell) { dragStart = null; return; }
     var sel = getSelRect(dragStart, cell);
-    var startCol = dragStart.col; // save for face direction
+    var startCol = dragStart.col;
     dragStart = null;
     if (!puzzle) return;
     var result = validatePlacement(sel, puzzle, occupied);
     if (!result.valid) {
       for (var r = sel.top; r < sel.top + sel.height; r++) for (var c = sel.left; c < sel.left + sel.width; c++) if (r < puzzle.height && c < puzzle.width) { var el = board.children[r * puzzle.width + c]; if (el) { el.classList.add('cell-error'); setTimeout(function(e) { return function() { e.classList.remove('cell-error'); }; }(el), 300); } }
       if (typeof SFX !== 'undefined') SFX.error();
-      statusEl.textContent = result.reason || 'Invalid'; statusEl.style.color = 'var(--mt-error)'; setTimeout(updateStatus, 1500);
+      lives--;
+      updateHearts();
+      if (lives <= 0) {
+        statusEl.textContent = 'No lives left!'; statusEl.style.color = 'var(--mt-error)';
+        showGameOver();
+        return;
+      }
+      if (lives === 1) {
+        statusEl.textContent = '⚠️ Last chance!'; statusEl.style.color = 'var(--mt-error)';
+      } else {
+        statusEl.textContent = result.reason || 'Invalid'; statusEl.style.color = 'var(--mt-error)';
+      }
+      setTimeout(updateStatus, 1500);
     } else {
       if (typeof SFX !== 'undefined') SFX.place();
       if (colorPool.length === 0) colorPool = shuffleArray(CAT_PALETTE.slice());
@@ -784,12 +963,30 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
           cellColors[r][c] = color.bg;
         }
       rects.push({ rect: sel, color: color, expr: expr, faceLeft: faceLeft });
+      updateXReveals();
       render(); checkWin();
     }
     } catch(err) { console.error('[ONEND ERROR]', err.message, err.stack); }
   }
 
-  function updateStatus() { if (!puzzle) return; var filled = 0, total = puzzle.height * puzzle.width; for (var r = 0; r < puzzle.height; r++) for (var c = 0; c < puzzle.width; c++) if (occupied[r][c]) filled++; statusEl.textContent = filled + ' / ' + total + ' cells · ' + (puzzle.numbers.length - rects.length) + ' cats left'; statusEl.style.color = ''; }
+  function updateStatus() {
+    if (!puzzle) return;
+    var filled = 0, total;
+    if (validCells) {
+      total = validCells.size;
+      validCells.forEach(function(key) {
+        var parts = key.split(',');
+        if (occupied[+parts[0]][+parts[1]]) filled++;
+      });
+    } else {
+      total = puzzle.height * puzzle.width;
+      for (var r = 0; r < puzzle.height; r++)
+        for (var c = 0; c < puzzle.width; c++)
+          if (occupied[r][c]) filled++;
+    }
+    statusEl.textContent = filled + ' / ' + total + ' cells · ' + (puzzle.numbers.length - rects.length) + ' cats left · ❤️ ' + lives;
+    statusEl.style.color = '';
+  }
 
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && dragging) { dragging = false; dragStart = null; clearHighlight(); } });
   board.addEventListener('mousedown', onStart); board.addEventListener('mousemove', onMove); board.addEventListener('mouseup', onEnd);
@@ -797,8 +994,20 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
   board.addEventListener('touchstart', onStart, { passive: true }); board.addEventListener('touchmove', onMove, { passive: false }); board.addEventListener('touchend', onEnd);
 
   function checkWin() {
-    if (!puzzle) return; var filled = 0, total = puzzle.height * puzzle.width;
-    for (var r = 0; r < puzzle.height; r++) for (var c = 0; c < puzzle.width; c++) if (occupied[r][c]) filled++;
+    if (!puzzle) return;
+    var filled = 0, total;
+    if (validCells) {
+      total = validCells.size;
+      validCells.forEach(function(key) {
+        var parts = key.split(',');
+        if (occupied[+parts[0]][+parts[1]]) filled++;
+      });
+    } else {
+      total = puzzle.height * puzzle.width;
+      for (var r = 0; r < puzzle.height; r++)
+        for (var c = 0; c < puzzle.width; c++)
+          if (occupied[r][c]) filled++;
+    }
     console.log('[CHECKWIN] filled=' + filled + ' total=' + total + ' rects=' + rects.length);
     if (filled === total) {
       stopGameTimer();
@@ -811,9 +1020,20 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
         dailyWinState = saveDailyWin(gameElapsed);
         track('daily_solved', { streak: dailyWinState.streak });
       }
-      setTimeout(function() { console.log('[TIMEOUT] Calling showVictory now'); showVictory(); if (dailyWinState) syncWinToCloud(dailyWinState, gameElapsed); }, 500);
+      setTimeout(function() {
+        // Tutorial levels: auto-advance without showing victory overlay
+        var currentLevelDef = typeof LEVEL_DEFS !== 'undefined' ? LEVEL_DEFS[levelNum - 1] : null;
+        if (currentLevelDef && currentLevelDef.isTutorial) {
+          levelNum++;
+          hintUsesLeft = 3; updateHintBadge();
+          track('level_up', { level: levelNum - 1, tutorial: true });
+          newPuzzle();
+        } else {
+          console.log('[TIMEOUT] Calling showVictory now'); showVictory(); if (dailyWinState) syncWinToCloud(dailyWinState, gameElapsed);
+        }
+      }, 500);
     } else {
-      statusEl.textContent = filled + ' / ' + total + ' cells · ' + (puzzle.numbers.length - rects.length) + ' cats left';
+      updateStatus();
     }
   }
 
@@ -838,12 +1058,33 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
     for (var i = 0; i < 12; i++) { var paw = document.createElement('div'); paw.className = 'paw-confetti'; paw.textContent = '🐾'; paw.style.left = (5 + Math.random() * 90) + '%'; paw.style.top = '-40px'; paw.style.animationDelay = (Math.random() * 1.2) + 's'; app.appendChild(paw); (function(p) { setTimeout(function() { p.remove(); }, 4000); })(paw); }
   }
 
+  // Sign-in prompt: shown once after level 5 completion for non-logged-in users
+  function showSignInPrompt() {
+    localStorage.setItem('gridpaw-signin-prompted', '1');
+    track('sign_in_prompt_shown', { level: 5, source: 'level5_complete' });
+    var overlay = document.createElement('div');
+    overlay.className = 'signin-prompt-overlay';
+    overlay.innerHTML = '<div class="signin-prompt-card">' +
+      '<div style="font-size:40px;margin-bottom:8px">🐱</div>' +
+      '<h3 style="margin:0 0 6px;font-size:18px;font-weight:900;color:#3D3D3D">Save your progress?</h3>' +
+      '<p style="margin:0 0 16px;font-size:13px;color:#777;line-height:1.5">Sign in to save progress, appear on the daily leaderboard, and track your streak.</p>' +
+      '<a href="/api/auth/login?next=/" class="signin-prompt-btn" onclick="track(\'sign_in_click\',{source:\'level5_prompt\',level:5})">' +
+        '<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 18.9 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.6 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>' +
+        'Sign in with Google</a>' +
+      '<button class="signin-prompt-later" onclick="this.closest(\'.signin-prompt-overlay\').remove()">Maybe later</button>' +
+    '</div>';
+    document.body.appendChild(overlay);
+  }
+
 
   document.getElementById('victory-close').addEventListener('click', function() {
     victory.classList.add('hidden');
   });
+  document.getElementById('retryBtn').addEventListener('click', function() {
+    newPuzzle();
+  });
 
-  document.getElementById('resetBtn').addEventListener('click', function() { track('puzzle_skip', { level: levelNum, difficulty: getDifficulty(levelNum).label, reason: 'new_puzzle' }); levelNum++; isDailyMode = false; newPuzzle(); victory.classList.add('hidden'); });
+  document.getElementById('resetBtn').addEventListener('click', function() { track('puzzle_skip', { level: levelNum, reason: 'new_puzzle' }); levelNum++; isDailyMode = false; newPuzzle(); victory.classList.add('hidden'); });
   document.getElementById('undoBtn').addEventListener('click', function() {
     if (rects.length === 0) return; var last = rects.pop(); exprIdx--;
     var rect = last.rect;
@@ -851,23 +1092,17 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
     colorPool.push(last.color); // return color to pool
     render(); updateStatus();
   });
-  document.getElementById('nextBtn').addEventListener('click', function() { var completedLevel = levelNum; var completedDiff = getDifficulty(completedLevel).label; levelNum++; isDailyMode = false; hintUsesLeft = 3; updateHintBadge(); track('level_up', { level: completedLevel, difficulty: completedDiff }); if ([1,3,5,10,20].indexOf(completedLevel) !== -1) { track('level_complete_' + completedLevel, { difficulty: completedDiff }); } newPuzzle(); victory.classList.add('hidden'); });
+  document.getElementById('nextBtn').addEventListener('click', function() { var completedLevel = levelNum; levelNum++; isDailyMode = false; hintUsesLeft = 3; updateHintBadge(); track('level_up', { level: completedLevel }); if ([1,3,5,10,20].indexOf(completedLevel) !== -1) { track('level_complete_' + completedLevel); } newPuzzle(); victory.classList.add('hidden'); var isDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1'; if (!isDev && completedLevel === 5 && !currentUser && !localStorage.getItem('gridpaw-signin-prompted')) { showSignInPrompt(); } });
   document.getElementById('hintBtn').addEventListener('click', function() {
-    // 门控：游客弹登录引导；登录用户每关 3 次；admin 无限
-    if (!currentUser) {
-      track('hint_blocked', { reason: 'guest', level: levelNum });
-      statusEl.textContent = '🔒 Sign in to use hints'; statusEl.style.color = 'var(--mt-primary)';
-      setTimeout(updateStatus, 2500);
-      document.getElementById('account-area').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      return;
-    }
-    if (!isAdmin && hintUsesLeft <= 0) {
+    // 门控：dev 环境无限；每关 3 次；admin 无限
+    var isDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    if (!isDev && !isAdmin && hintUsesLeft <= 0) {
       track('hint_blocked', { reason: 'limit', level: levelNum });
       statusEl.textContent = '💡 Hint used up for this level — solve it like a cat! 🐱'; statusEl.style.color = 'var(--mt-error)';
       setTimeout(updateStatus, 2500);
       return;
     }
-    if (!isAdmin) hintUsesLeft--;
+    if (!isDev && !isAdmin) hintUsesLeft--;
     updateHintBadge();
     track('hint_click', { level: levelNum, remaining: isAdmin ? 'admin' : hintUsesLeft });
     if (!puzzle) return;
@@ -947,20 +1182,21 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
   });
 
   function buildShareText() {
-    var diff = getDifficulty(levelNum);
+    var levelDef = typeof LEVEL_DEFS !== 'undefined' ? LEVEL_DEFS[levelNum - 1] : null;
+    var diffLabel = levelDef ? levelDef.label : getDifficulty(levelNum).label;
     var usedColors = [];
     rects.forEach(function(entry) { if (entry && entry.color && usedColors.indexOf(entry.color.bg) === -1) usedColors.push(entry.color.bg); });
     // Map colors to emoji squares
     var colorEmoji = { '#FFB3C6': '🩷', '#CFC2E8': '🟪', '#FDD09F': '🟧', '#B3D9FF': '🟦', '#B8E8C0': '🟩', '#FCE883': '🟨', '#FF9A9E': '🟥', '#A0E8E0': '🟦' };
     var emojiLine = usedColors.map(function(bg) { return colorEmoji[bg] || '🟩'; }).join('');
-    return '🐱 Just cracked GridPaw Level ' + levelNum + ' (' + diff.label + ') in ' + formatGameTime(gameElapsed) + '!\n' + emojiLine + '\nThink you can beat my time? → gridpaw.com';
+    return '🐱 Just cracked GridPaw ' + diffLabel + ' in ' + formatGameTime(gameElapsed) + '!\n' + emojiLine + '\nThink you can beat my time? → gridpaw.com';
   }
 
   // Share button handler
   document.getElementById('shareBtn').addEventListener('click', function() {
     var text = buildShareText();
-    track('share_copy', { level: levelNum, difficulty: getDifficulty(levelNum).label, time: gameElapsed });
-    track('share', { channel: 'copy', level: levelNum, difficulty: getDifficulty(levelNum).label, time: gameElapsed });
+    track('share_copy', { level: levelNum, time: gameElapsed });
+    track('share', { channel: 'copy', level: levelNum, time: gameElapsed });
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(function() {
         document.getElementById('shareBtn').textContent = '✅ Copied!';
@@ -993,8 +1229,8 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
   // Reddit share button handler
   document.getElementById('redditBtn').addEventListener('click', async function() {
     var text = buildShareText();
-    track('share_reddit', { level: levelNum, difficulty: getDifficulty(levelNum).label, time: gameElapsed });
-    track('share', { channel: 'reddit', level: levelNum, difficulty: getDifficulty(levelNum).label, time: gameElapsed });
+    track('share_reddit', { level: levelNum, time: gameElapsed });
+    track('share', { channel: 'reddit', level: levelNum, time: gameElapsed });
     await captureBoardToClipboard();
     var redditUrl = 'https://www.reddit.com/r/gridpaw/submit?url=' + encodeURIComponent('https://gridpaw.com') + '&title=' + encodeURIComponent(text);
     window.open(redditUrl, '_blank', 'noopener');
@@ -1022,6 +1258,11 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
     if (hintBtn) {
       var tip = hintBtn.querySelector('.tip');
       if (tip) tip.textContent = isAdmin ? 'Hint ∞' : 'Hint (' + hintUsesLeft + ')';
+      // Always-visible badge on the button
+      var badge = hintBtn.querySelector('.hint-badge');
+      if (!badge) { badge = document.createElement('span'); badge.className = 'hint-badge'; hintBtn.style.position = 'relative'; hintBtn.appendChild(badge); }
+      badge.textContent = isAdmin ? '∞' : hintUsesLeft;
+      badge.style.display = 'flex';
     }
   }
   function fetchWithTimeout(url, opts, ms) {
@@ -1070,6 +1311,7 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
       btn.href = '/api/auth/login?next=/';
       btn.style.cssText = 'display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1.5px solid #dadce0;border-radius:24px;padding:.4rem 1rem;font-size:.85rem;font-weight:700;color:#3c4043;text-decoration:none;box-shadow:0 1px 3px rgba(0,0,0,.08)';
       btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 18.9 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.6 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>Sign in with Google';
+      btn.addEventListener('click', function() { track('sign_in_click', { source: 'account_area', level: levelNum }); });
       area.appendChild(btn);
     }
   }
@@ -1132,7 +1374,7 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
           applyCloudProgress(cloud);
         }
       }).catch(function() {});
-    }).catch(function() { /* 静默降级 */ });
+    }).catch(function() { /* 静默降级：API 不可用时仍渲染登录按钮 */ renderAccountArea(); });
   }
   // ─── Level progress cloud sync (max merge) ────────────────────────
   function syncLevelOnLoad() {
@@ -1216,6 +1458,7 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
   try {
     const authErr = new URLSearchParams(window.location.search).get('auth_error');
     if (authErr) {
+      track('auth_error', { error: authErr, level: levelNum });
       const msg = authErr === 'access_denied' ? 'Sign-in was cancelled.' : 'Sign-in failed (' + authErr + '). Please try again.';
       const statusEl3 = document.getElementById('dailyStatus');
       if (statusEl3) { statusEl3.innerHTML = '⚠️ ' + msg; statusEl3.style.color = '#FF42A5'; }
@@ -1229,7 +1472,7 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
   var _embed = _urlP.get('embed') === '1';
   var _ref = document.referrer || '';
   var _source = _embed ? 'embed' : (_ref === '' ? 'direct' : (_ref.indexOf('google') !== -1 ? 'google' : (_ref.indexOf('bing') !== -1 ? 'bing' : 'referral')));
-  track('game_start', { level: levelNum, difficulty: getDifficulty(levelNum).label, source: _source });
+  track('game_start', { level: levelNum, source: _source });
   window.addEventListener('resize', function() { if (puzzle) render(); });
 
   // Testimonial carousel

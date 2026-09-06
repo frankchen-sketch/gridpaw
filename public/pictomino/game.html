@@ -464,8 +464,8 @@ const DIFF_TABLE = [
 ];
 
 function getDiffForLevel(lv) {
-  // Daily 模式：固定 Super Hard（最高难度档）
-  if (typeof IS_DAILY_MODE !== 'undefined' && IS_DAILY_MODE) return DIFF_TABLE[DIFF_TABLE.length - 1];
+  // Daily 模式：6×6 棋盘，18 holes，4 candidates，33% degrade，50s
+  if (typeof IS_DAILY_MODE !== 'undefined' && IS_DAILY_MODE) return { until:99, label:'Daily', grid:6, holes:18, candidates:4, degrade:33, time:50 };
   // Classic 模式：lv 是 0-indexed；diff 表 until 是 1-indexed（level 1 → until=3 行）
   const n = lv + 1;
   for (const row of DIFF_TABLE) { if (n <= row.until) return row; }
