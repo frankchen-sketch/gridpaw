@@ -124,21 +124,24 @@ meowtrail.org/compare/logic-puzzle-vs-sudoku -> gridpaw.com/akari/compare/logic-
 meowtrail.org/compare/light-up-vs-slitherlink -> gridpaw.com/akari/compare/light-up-vs-slitherlink/
 
 # meow-block.com -> gridpaw.com
+# 实现：CF zone meow-block.com → Rules → Redirect Rules（非 _worker.js，仓库无此文件）
+# 2026-09-07 重建并实测 17/17 通过。带尾斜杠变体（/solver/）由 catchall 兜底落首页。
 
 meow-block.com/ -> gridpaw.com/
 meow-block.com/daily -> gridpaw.com/
 meow-block.com/rules -> gridpaw.com/rules/
 meow-block.com/tips -> gridpaw.com/tips/
-meow-block.com/cheats -> gridpaw.com/cheats/
+meow-block.com/cheats -> gridpaw.com/akari/cheats/
 meow-block.com/solver -> gridpaw.com/solver/
-meow-block.com/community -> gridpaw.com/community/
+meow-block.com/community -> gridpaw.com/akari/community/
 meow-block.com/how-to-play-shikaku -> gridpaw.com/how-to-play-shikaku/
-meow-block.com/shikaku-tips -> gridpaw.com/shikaku-tips/
-meow-block.com/shikaku-5x5 -> gridpaw.com/shikaku-5x5/
-meow-block.com/shikaku-6x6 -> gridpaw.com/shikaku-6x6/
-meow-block.com/shikaku-7x7 -> gridpaw.com/shikaku-7x7/
-meow-block.com/shikaku-8x8 -> gridpaw.com/shikaku-8x8/
-meow-block.com/shikaku-10x10 -> gridpaw.com/shikaku-10x10/
-meow-block.com/vs-shikaku -> gridpaw.com/vs-shikaku/
-meow-block.com/rectangle-partition-guide -> gridpaw.com/rectangle-partition-guide/
-meow-block.com/privacy -> gridpaw.com/privacy/
+# ↓ 以下 8 条目标页在 gridpaw 从未建过，由 mb-catchall 兜底 301 到首页
+meow-block.com/shikaku-tips -> gridpaw.com/
+meow-block.com/shikaku-5x5 -> gridpaw.com/
+meow-block.com/shikaku-6x6 -> gridpaw.com/
+meow-block.com/shikaku-7x7 -> gridpaw.com/
+meow-block.com/shikaku-8x8 -> gridpaw.com/
+meow-block.com/shikaku-10x10 -> gridpaw.com/
+meow-block.com/vs-shikaku -> gridpaw.com/
+meow-block.com/rectangle-partition-guide -> gridpaw.com/
+meow-block.com/privacy -> gridpaw.com/akari/privacy/

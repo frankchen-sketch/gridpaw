@@ -43,11 +43,12 @@ public/
   puzzle-engine.js / akari-engine.js  ← 编译后的引擎
 ```
 
-## 301 旧域名（_worker.js on CF Pages，逐路径精确映射）
+## 301 旧域名（CF zone Redirect Rules，在 CF Dashboard 各旧域名 zone 下维护，仓库无 _worker.js）
 - meowtrail.org → gridpaw.com/akari/（239条规则，含70个puzzle页+tips+glossary+blog+levels）
-- meow-block.com → gridpaw.com/（33条规则）
+- meow-block.com → gridpaw.com/（2026-09-07 重建为 mb-* 规则组，17/17 实测通过；mb-catchall 兜底，必须排在精确规则之后）
 - spatialreasoninggame.com → gridpaw.com/pictomino/（26条规则）
 - 详细映射表见 REDIRECTS.md
+- www.gridpaw.com 已作为 Pages 自定义域加入（自动 301 到 apex）
 - zone 级 catch-all 规则已删除，Always Use HTTPS 已开启
 
 ## 分析工具
