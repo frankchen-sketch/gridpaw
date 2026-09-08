@@ -1,0 +1,85 @@
+---
+// Pinned Chrome Extension promo card (above footer), modeled on furriq.com's
+// footer extension card: icon + name + one-line description + Install button.
+const extUrl =
+  'https://chromewebstore.google.com/detail/meowtrail-%E2%80%94-daily-akari-p/mjdplaoanamjdbbpkgccjnhmlgnpcamj';
+---
+
+<a href={extUrl} target="_blank" rel="noopener" class="ext-promo">
+  <span class="ext-icon" aria-hidden="true">🧩</span>
+  <span class="ext-body">
+    <span class="ext-title">GridPaw — Daily Akari Puzzle</span>
+    <span class="ext-desc">Daily challenge reminders, streak tracking, and quick play from your browser.</span>
+  </span>
+  <span class="ext-btn">Install Free</span>
+</a>
+
+<style>
+  .ext-promo {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    max-width: 620px;
+    margin: 0 auto 1.4rem;
+    padding: 0.85rem 1rem;
+    border: 1.5px solid #ecdcc8;
+    border-radius: 14px;
+    background: #fffaf2;
+    text-decoration: none;
+    transition: border-color 0.15s ease;
+  }
+  .ext-promo:hover {
+    border-color: #d47a50;
+  }
+  .ext-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.5rem;
+    background: #fdeedd;
+    border-radius: 10px;
+  }
+  .ext-body {
+    min-width: 0;
+    flex: 1;
+  }
+  .ext-title {
+    display: block;
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: #3d3d3d;
+    line-height: 1.3;
+  }
+  .ext-desc {
+    display: block;
+    font-size: 0.78rem;
+    color: #8a7663;
+    line-height: 1.4;
+    margin-top: 0.15rem;
+  }
+  .ext-btn {
+    flex-shrink: 0;
+    background: #d47a50;
+    color: #fff;
+    padding: 0.45rem 0.9rem;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: background 0.15s ease;
+  }
+  .ext-promo:hover .ext-btn {
+    background: #c06a42;
+  }
+  @media (max-width: 540px) {
+    .ext-desc {
+      display: none;
+    }
+    .ext-btn {
+      padding: 0.4rem 0.7rem;
+    }
+  }
+</style>
