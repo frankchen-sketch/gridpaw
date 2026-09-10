@@ -555,6 +555,28 @@ function ptFetch(url, opts, ms = 8000) {
   const t = setTimeout(() => ctrl.abort(), ms);
   return fetch(url, Object.assign({}, opts, { signal: ctrl.signal })).finally(() => clearTimeout(t));
 }
+
+/* ─── User Attribution (归因) ─── */
+(function() {
+  const ATTR_KEY = 'gp_attr';
+  if (localStorage.getItem(ATTR_KEY)) return;
+  const p = new URLSearchParams(location.search);
+  const attr = {
+    utm_source: p.get('utm_source') || null, utm_medium: p.get('utm_medium') || null,
+    utm_campaign: p.get('utm_campaign') || null, utm_content: p.get('utm_content') || null,
+    channel: p.get('channel') || null, referrer: document.referrer || null,
+    landing: location.pathname + location.search, first_seen_at: Date.now()
+  };
+  if (attr.utm_source || attr.utm_medium || attr.utm_campaign || attr.utm_content || attr.channel || attr.referrer)
+    localStorage.setItem(ATTR_KEY, JSON.stringify(attr));
+})();
+function ptSendAttribution() {
+  const raw = localStorage.getItem('gp_attr'); if (!raw) return;
+  try { const a = JSON.parse(raw);
+    ptFetch('/api/auth/save-attr', { method: 'POST', headers: {'content-type':'application/json'}, body: JSON.stringify(a) }, 5000)
+      .then(r => { if (r.ok) localStorage.removeItem('gp_attr'); }).catch(() => {});
+  } catch(e) {}
+}
 function ptToday() { return new Date().toISOString().split('T')[0]; }
 const DAILY_KEY = 'pictomino_daily';
 function ptLoadDaily() {
@@ -591,6 +613,7 @@ function ptSyncOnLoad() {
     currentUser = me && me.user ? me.user : null;
     ptRenderAccount();
     if (!currentUser) return;
+    ptSendAttribution();
     ptFetch('/api/progress').then(r => r.ok ? r.json() : null).then(data => {
       if (!data) return;
       const cloud = data.progress, local = ptLoadDaily();

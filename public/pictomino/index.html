@@ -532,6 +532,8 @@ footer a{color:#b5a396}
 @media(max-width:560px){.game-toolbar{gap:4px;padding:6px 8px}.gt-hud{flex-wrap:wrap;justify-content:flex-start}.gt-pill{padding:3px 6px;font-size:11px}}
 </style>
 <script>
+/* ─── User Attribution (归因) ─── */
+(function(){var k='gp_attr';if(localStorage.getItem(k))return;var p=new URLSearchParams(location.search);var a={utm_source:p.get('utm_source')||null,utm_medium:p.get('utm_medium')||null,utm_campaign:p.get('utm_campaign')||null,utm_content:p.get('utm_content')||null,channel:p.get('channel')||null,referrer:document.referrer||null,landing:location.pathname+location.search,first_seen_at:Date.now()};if(a.utm_source||a.utm_medium||a.utm_campaign||a.utm_content||a.channel||a.referrer)localStorage.setItem(k,JSON.stringify(a))})();
 // 外层登录态（同域 cookie 共享）：登录后 iframe 里的游戏也处于登录态
 fetch('/api/auth/me').then(r=>r.json()).then(me=>{
   const area=document.getElementById('gt-account');

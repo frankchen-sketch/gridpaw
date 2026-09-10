@@ -599,6 +599,47 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
   var colorPool = [];
   var exprIdx = 0;
 
+  // ─── User Attribution (归因) ───────────────────────────────────
+  // 首次访问抓 UTM 参数 + referrer + landing page，存 localStorage
+  // 登录成功后 POST 到 /api/auth/save-attr 写入 DB
+  (function() {
+    var ATTR_KEY = 'gp_attr';
+    var existing = localStorage.getItem(ATTR_KEY);
+    if (existing) return; // 已有数据不覆盖（保存首次访问）
+
+    var p = new URLSearchParams(location.search);
+    var attr = {
+      utm_source:   p.get('utm_source')   || null,
+      utm_medium:   p.get('utm_medium')   || null,
+      utm_campaign: p.get('utm_campaign') || null,
+      utm_content:  p.get('utm_content')  || null,
+      channel:      p.get('channel')      || null,
+      referrer:     document.referrer      || null,
+      landing:      location.pathname + location.search,
+      first_seen_at: Date.now()
+    };
+    // 只在有至少一个归因信号时保存（纯直接访问不存）
+    if (attr.utm_source || attr.utm_medium || attr.utm_campaign ||
+        attr.utm_content || attr.channel || attr.referrer) {
+      localStorage.setItem(ATTR_KEY, JSON.stringify(attr));
+    }
+  })();
+
+  function sendAttribution() {
+    var raw = localStorage.getItem('gp_attr');
+    if (!raw) return;
+    try {
+      var attr = JSON.parse(raw);
+      fetchWithTimeout('/api/auth/save-attr', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(attr)
+      }, 5000).then(function(r) {
+        if (r.ok) localStorage.removeItem('gp_attr'); // 成功后清除
+      }).catch(function() {});
+    } catch(e) {}
+  }
+
   function shuffleArray(arr) {
     for (var i = arr.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
@@ -1341,6 +1382,7 @@ const description = "Play Shikaku online for free at GridPaw. A cat-themed recta
       updateHintBadge();
       renderAccountArea();
       if (!currentUser) return;
+      sendAttribution(); // 登录成功，发送归因数据
       syncLevelOnLoad();
       fetchWithTimeout('/api/progress').then(function(r) {
         if (!r.ok) return null;
