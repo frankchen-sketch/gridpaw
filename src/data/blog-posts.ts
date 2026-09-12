@@ -13,7 +13,7 @@ export interface BlogPost {
 export const blogPosts: BlogPost[] = [
   {
     slug: 'akari-puzzle-strategies-beginners',
-    title: '5 Akari Puzzle Strategies Every Beginner Should Know',
+    title: 'Akari Puzzle Strategies for Beginners — 8 Tips to Solve Faster',
     description: 'Master these 5 essential Akari (Light Up) puzzle strategies to solve puzzles faster. From constraint propagation to shadow mapping — beginner-friendly guide with examples.',
     date: '2026-08-28',
     readTime: '6 min read',
@@ -116,7 +116,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'history-of-akari-puzzle',
-    title: 'The History of Akari: How Nikoli Created the Light Up Puzzle',
+    title: 'The History of Akari — How Nikoli\'s Light Up Puzzle Was Born',
     description: 'From Nikoli\'s Tokyo office to puzzle apps worldwide — the complete history of Akari (Light Up). How a 2001 Japanese puzzle became a global brain teaser.',
     date: '2026-08-28',
     readTime: '5 min read',
