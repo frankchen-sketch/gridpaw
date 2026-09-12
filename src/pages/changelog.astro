@@ -1,0 +1,140 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+import ExtensionPromo from '../components/ExtensionPromo.astro';
+const title = "GridPaw Changelog — Developer Updates | GridPaw";
+const description = "Every GridPaw update: new puzzle games, solver improvements, daily challenges, and UI fixes. We ship weekly.";
+
+const entries = [
+  { date: "2026-09-10", type: "Feature", game: "Pictomino", title: "New spatial reasoning puzzle game launched", desc: "Third game type joins GridPaw. Rotate and fit tetromino-style shapes onto silhouettes." },
+  { date: "2026-09-03", type: "Improvement", game: "Akari", title: "Light count validation is instant", desc: "Removed 200ms delay when placing lights near walls. Feels snappier on mobile." },
+  { date: "2026-08-28", type: "Feature", game: "Akari", title: "Glossary expanded to 40+ terms", desc: "New entries cover advanced solving techniques like corner squeeze and wall hugging." },
+  { date: "2026-08-20", type: "Fix", game: "Shikaku", title: "Undo button occasionally placed ghost rectangles", desc: "Fixed event handler leaking across puzzle resets." },
+  { date: "2026-08-15", type: "Feature", game: null, title: "Chrome extension for daily Akari puzzles", desc: "Install from Chrome Web Store. New puzzle every morning, streak tracking included." },
+  { date: "2026-08-08", type: "Improvement", game: "Shikaku", title: "Puzzle generation 3x faster", desc: "Rewrote backtracking solver in TypeScript. Generation for 8x8 grids dropped from 1.2s to 0.4s." },
+  { date: "2026-08-01", type: "Improvement", game: null, title: "Multi-language puzzle labels", desc: "Grid numbers and UI hints now display in English, Chinese, and Japanese." },
+  { date: "2026-07-22", type: "Fix", game: "Akari", title: "Light bulbs sometimes overlapped on 10x10 grids", desc: "Boundary check was off-by-one for edge cells." },
+  { date: "2026-07-15", type: "Feature", game: null, title: "Community page with Reddit integration", desc: "Share solved puzzles and compare times with other players." },
+  { date: "2026-06-28", type: "Feature", game: "Akari", title: "Step-by-step solver walkthrough", desc: "Enter any Akari puzzle and watch the solution unfold move by move." },
+  { date: "2026-06-10", type: "Improvement", game: "Shikaku", title: "Cat block expressions expanded to 15 types", desc: "Added 5 new cat faces: sleepy, surprised, winking, grumpy, and blep." },
+  { date: "2026-05-20", type: "Feature", game: "Akari", title: "Akari (Light Up) puzzle game launched", desc: "Second game type on GridPaw. Place light bulbs to illuminate the entire grid." },
+  { date: "2026-04-15", type: "Improvement", game: "Shikaku", title: "Daily challenge now uses seeded generation", desc: "Same puzzle worldwide every day. Streak tracking and Week Warrior badge added." },
+  { date: "2026-03-15", type: "Feature", game: null, title: "Online Shikaku solver", desc: "Enter any puzzle and get the unique solution using backtracking algorithm." },
+  { date: "2026-01-20", type: "Feature", game: null, title: "Daily challenge launched", desc: "New 6x6 puzzle every midnight UTC. Track your solve streak." },
+  { date: "2025-11-15", type: "Feature", game: null, title: "GridPaw launched", desc: "Cat-themed Shikaku puzzle game. Draw rectangles, match areas, collect cat blocks." },
+];
+
+const typeColors: Record<string, string> = {
+  "Feature": "#D47A50",
+  "Improvement": "#526544",
+  "Fix": "#9E9590",
+};
+
+const gameColors: Record<string, string> = {
+  "Shikaku": "#B08968",
+  "Akari": "#C9973B",
+  "Pictomino": "#7A8CA3",
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/changelog" type="article" breadcrumbTitle="Changelog" />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "GridPaw Changelog",
+    "dateModified": "2026-09-12",
+    "about": {
+      "@type": "SoftwareApplication",
+      "name": "GridPaw",
+      "applicationCategory": "Game",
+      "operatingSystem": "Web"
+    }
+  })} />
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:linear-gradient(180deg,#f8f6ef,#f8f6ef);color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.8rem;color:#342421;text-align:center;margin:.5rem 0}
+    .seo-content{margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .seo-content p{margin:.5rem 0;line-height:1.7}
+    .seo-content a{color:#E8A888;text-decoration:underline}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    footer a{color:#6f5651}
+    .play-cta{display:block;text-align:center;margin:2rem 0;padding:1rem;background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;border-radius:12px;text-decoration:none;font-weight:600;font-size:1.1rem}
+    .play-cta:hover{background:linear-gradient(145deg,#E0A888,#D08868)}
+
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+
+    /* ── Changelog ── */
+    .updated-line{text-align:center;color:#9E9590;font-size:0.85rem;margin-bottom:1rem}
+    .timeline{list-style:none}
+    .timeline li{padding:1rem 0;border-bottom:1px solid #e7dacf}
+    .timeline li:last-child{border-bottom:none}
+    .entry-meta{display:flex;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.3rem}
+    .entry-date{font-size:0.85rem;color:#9E9590;font-weight:600}
+    .badge{display:inline-block;padding:0.1rem 0.55rem;border-radius:999px;font-size:0.72rem;font-weight:800;color:#fff;letter-spacing:0.02em}
+    .game-tag{display:inline-block;padding:0.1rem 0.55rem;border-radius:999px;font-size:0.72rem;font-weight:700;color:#fff;opacity:0.85}
+    .entry-title{font-weight:800;color:#342421;font-size:1.02rem}
+    .entry-desc{color:#6f5651;font-size:0.92rem;line-height:1.6}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Shikaku Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/">Play</a>
+        <a href="/how-to-play-shikaku/">How to Play</a>
+        <a href="/tips/">Tips</a>
+        <a href="/#play">Daily</a>
+        <a href="/solver/">Solver</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1><img src="/assets/logo.png" alt="GridPaw" width="36" height="36" style="vertical-align:middle;margin-right:0.5rem;border-radius:0.375rem" />GridPaw Changelog</h1>
+    <p class="updated-line">Active development · Last updated 2026-09-12</p>
+
+    <section class="seo-content">
+      <ul class="timeline">
+        {entries.map(e => (
+          <li>
+            <div class="entry-meta">
+              <span class="entry-date">{e.date}</span>
+              <span class="badge" style={`background:${typeColors[e.type]}`}>{e.type}</span>
+              {e.game && <span class="game-tag" style={`background:${gameColors[e.game]}`}>{e.game}</span>}
+            </div>
+            <div class="entry-title">{e.title}</div>
+            <p class="entry-desc">{e.desc}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <a href="/" class="play-cta">🎮 Play Shikaku Online Free</a>
+
+    <ExtensionPromo />
+    <footer><p>© 2026 GridPaw. <a href="/">Shikaku</a> · <a href="/akari/">Akari</a> · <a href="/pictomino/">Pictomino</a> · <a href="/changelog/">Changelog</a> · <a href="https://furriq.com">Furriq</a></p>    <p style="margin-top:0.3rem"><a href="https://www.pinterest.com/gridpaw/" rel="noopener">GridPaw on Pinterest</a></p>
+</footer>
+  </div>
+</body>
+</html>
