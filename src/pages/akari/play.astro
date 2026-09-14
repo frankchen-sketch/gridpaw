@@ -465,6 +465,21 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
   </script>
 
   <style>
+    /* ── GridPaw 视觉合同 token（STYLE.md；暗色组见合同「暗色调色板」节）── */
+    :root {
+      --gp-dark-bg: #1A1410;
+      --gp-dark-surface: #2A221C;
+      --gp-dark-surface-2: #3A3028;
+      --gp-dark-border: #4A3A2E;
+      --gp-dark-border-2: #5A4A3A;
+      --gp-dark-text: #F0E6D8;
+      --gp-dark-text-dim: #B8A088;
+      --gp-dark-primary: #E8925A;
+      --gp-dark-success: #81C784;
+      --gp-dark-error: #4A2222;
+      --gp-dark-info: #90CAF9;
+    }
+
     /* ─── Reset & Base ──────────────────────────────────────────────── */
     * {
       box-sizing: border-box;
@@ -474,8 +489,8 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: #fef9f0;
-      color: #3d2b1f;
+      background: var(--gp-cream);
+      color: var(--gp-brown-900);
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -484,8 +499,8 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
 
     @media (prefers-color-scheme: dark) {
       body {
-        background: #1a1410;
-        color: #f0e6d8;
+        background: var(--gp-dark-bg);
+        color: var(--gp-dark-text);
       }
     }
 
@@ -507,32 +522,32 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
 
     .game-header h1 {
       font-size: 1.8rem;
-      color: #d4783c;
+      color: var(--gp-primary-strong);
       margin-bottom: 0.3rem;
     }
 
     @media (prefers-color-scheme: dark) {
       .game-header h1 {
-        color: #e8925a;
+        color: var(--gp-dark-primary);
       }
     }
 
     .subtitle {
       font-size: 0.9rem;
-      color: #8a7355;
+      color: var(--gp-brown-600);
       line-height: 1.4;
     }
 
     @media (prefers-color-scheme: dark) {
       .subtitle {
-        color: #b8a088;
+        color: var(--gp-dark-text-dim);
       }
     }
 
     /* ─── Controls ──────────────────────────────────────────────────── */
     .game-controls {
-      background: #fff6ea;
-      border: 1px solid #e8d5b8;
+      background: var(--gp-cream);
+      border: 1px solid var(--gp-linen);
       border-radius: 12px;
       padding: 0.8rem 1rem;
       margin-bottom: 0.8rem;
@@ -546,8 +561,8 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
 
     @media (prefers-color-scheme: dark) {
       .game-controls {
-        background: #2a221c;
-        border-color: #4a3a2e;
+        background: var(--gp-dark-surface);
+        border-color: var(--gp-dark-border);
       }
     }
 
@@ -563,22 +578,22 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
       flex-direction: column;
       font-size: 0.75rem;
       font-weight: 600;
-      color: #8a7355;
+      color: var(--gp-brown-600);
       gap: 0.2rem;
     }
 
     @media (prefers-color-scheme: dark) {
       .game-controls label {
-        color: #b8a088;
+        color: var(--gp-dark-text-dim);
       }
     }
 
     .game-controls select {
       padding: 0.35rem 0.5rem;
-      border: 1px solid #d4b896;
+      border: 1px solid var(--gp-primary-soft);
       border-radius: 6px;
-      background: #fffcf5;
-      color: #3d2b1f;
+      background: var(--gp-cream);
+      color: var(--gp-brown-900);
       font-size: 0.85rem;
       cursor: pointer;
     }
@@ -590,9 +605,9 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
 
     @media (prefers-color-scheme: dark) {
       .game-controls select {
-        background: #3a3028;
-        border-color: #5a4a3a;
-        color: #f0e6d8;
+        background: var(--gp-dark-surface-2);
+        border-color: var(--gp-dark-border-2);
+        color: var(--gp-dark-text);
       }
     }
 
@@ -612,57 +627,57 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
     }
 
     .btn-primary {
-      background: #d4783c;
+      background: var(--gp-primary-strong);
       color: #fff;
-      border-color: #c0682c;
+      border-color: var(--gp-primary-dark);
     }
 
     .btn-primary:hover {
-      background: #c0682c;
+      background: var(--gp-primary-dark);
     }
 
     @media (prefers-color-scheme: dark) {
       .btn-primary {
-        background: #e8925a;
-        border-color: #d4783c;
-        color: #1a1410;
+        background: var(--gp-dark-primary);
+        border-color: var(--gp-primary-strong);
+        color: var(--gp-dark-bg);
       }
       .btn-primary:hover {
-        background: #d4783c;
+        background: var(--gp-primary-strong);
       }
     }
 
     .btn-secondary {
-      background: #f0e4d4;
-      color: #5a4030;
-      border-color: #d4b896;
+      background: var(--gp-linen);
+      color: var(--gp-brown-600);
+      border-color: var(--gp-primary-soft);
     }
 
     .btn-secondary:hover {
-      background: #e4d4c0;
+      background: var(--gp-linen);
     }
 
     @media (prefers-color-scheme: dark) {
       .btn-secondary {
-        background: #3a3028;
-        color: #e8dcc8;
-        border-color: #5a4a3a;
+        background: var(--gp-dark-surface-2);
+        color: var(--gp-linen);
+        border-color: var(--gp-dark-border-2);
       }
       .btn-secondary:hover {
-        background: #4a3a2e;
+        background: var(--gp-dark-border);
       }
     }
 
     .btn.solved {
-      background: #4caf50;
+      background: var(--gp-success);
       color: #fff;
-      border-color: #388e3c;
+      border-color: var(--gp-success);
     }
 
     @media (prefers-color-scheme: dark) {
       .btn.solved {
-        background: #66bb6a;
-        color: #1a1410;
+        background: var(--gp-success);
+        color: var(--gp-dark-bg);
       }
     }
 
@@ -680,32 +695,32 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
     }
 
     .message-success {
-      background: #e8f5e9;
-      color: #2e7d32;
+      background: var(--gp-badge-easy-bg);
+      color: var(--gp-badge-easy-text);
     }
 
     .message-error {
-      background: #fce4ec;
-      color: #c62828;
+      background: var(--gp-badge-hard-bg);
+      color: var(--gp-error);
     }
 
     .message-info {
-      background: #e3f2fd;
-      color: #1565c0;
+      background: var(--gp-badge-daily-bg);
+      color: var(--gp-info);
     }
 
     @media (prefers-color-scheme: dark) {
       .message-success {
-        background: #1b3a1b;
-        color: #81c784;
+        background: var(--gp-dark-success);
+        color: var(--gp-dark-success);
       }
       .message-error {
-        background: #3a1b1b;
-        color: #ef9a9a;
+        background: var(--gp-dark-error);
+        color: var(--gp-badge-hard-bg);
       }
       .message-info {
-        background: #1b2a3a;
-        color: #90caf9;
+        background: var(--gp-dark-info);
+        color: var(--gp-dark-info);
       }
     }
 
@@ -714,14 +729,14 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
       text-align: center;
       font-size: 0.9rem;
       font-weight: 600;
-      color: #e8925a;
+      color: var(--gp-dark-primary);
       padding: 0.3rem 0;
       margin-bottom: 0.3rem;
     }
 
     @media (prefers-color-scheme: dark) {
       .streak-display {
-        color: #ffab70;
+        color: var(--gp-primary-soft);
       }
     }
 
@@ -730,7 +745,7 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
       display: inline-grid;
       grid-template-columns: repeat(var(--grid-size), 1fr);
       gap: 2px;
-      background: #d4b896;
+      background: var(--gp-primary-soft);
       padding: 2px;
       border-radius: 8px;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
@@ -742,7 +757,7 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
 
     @media (prefers-color-scheme: dark) {
       .puzzle-board {
-        background: #4a3a2e;
+        background: var(--gp-dark-border);
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
       }
     }
@@ -762,8 +777,8 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
 
     /* Black cells */
     .cell-black {
-      background: #5c3a1e;
-      color: #f5d6a8;
+      background: var(--gp-brown-900);
+      color: var(--gp-primary-soft);
       font-size: clamp(0.8rem, 2.8vw, 1.2rem);
     }
 
@@ -773,61 +788,61 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
 
     @media (prefers-color-scheme: dark) {
       .cell-black {
-        background: #1a1410;
-        color: #b8a088;
+        background: var(--gp-dark-bg);
+        color: var(--gp-dark-text-dim);
       }
     }
 
     .cell-violation {
-      box-shadow: inset 0 0 0 3px #f44336;
+      box-shadow: inset 0 0 0 3px var(--gp-error);
     }
 
     /* White cells */
     .cell-white {
-      background: #f5e6cc;
+      background: var(--gp-blush);
       cursor: pointer;
     }
 
     .cell-white:hover {
-      background: #ecd9b9;
+      background: var(--gp-linen);
     }
 
     @media (prefers-color-scheme: dark) {
       .cell-white {
-        background: #3a3028;
+        background: var(--gp-dark-surface-2);
       }
       .cell-white:hover {
-        background: #4a3a2e;
+        background: var(--gp-dark-border);
       }
     }
 
     /* Lit cell */
     .cell-lit {
-      background: #ffedd5;
+      background: var(--gp-cream-warm);
       box-shadow: inset 0 0 12px rgba(212, 120, 60, 0.3);
     }
 
     @media (prefers-color-scheme: dark) {
       .cell-lit {
-        background: #4a4230;
+        background: var(--gp-brown-600);
         box-shadow: inset 0 0 8px rgba(212, 120, 60, 0.2);
       }
     }
 
     /* Dark (unlit) white cell */
     .cell-dark {
-      background: #d4c4a8;
+      background: var(--gp-linen);
     }
 
     @media (prefers-color-scheme: dark) {
       .cell-dark {
-        background: #2a221c;
+        background: var(--gp-dark-surface);
       }
     }
 
     /* Bulb cell */
     .cell-bulb {
-      background: #ffd4a8;
+      background: var(--gp-primary-soft);
       box-shadow: inset 0 0 12px rgba(212, 120, 60, 0.5), 0 0 6px rgba(212, 120, 60, 0.3);
     }
     .cell-bulb::after {
@@ -838,14 +853,14 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
 
     @media (prefers-color-scheme: dark) {
       .cell-bulb {
-        background: #4a3520;
+        background: var(--gp-brown-900);
         box-shadow: inset 0 0 12px rgba(212, 120, 60, 0.3), 0 0 6px rgba(212, 120, 60, 0.15);
       }
     }
 
     /* Conflict (bulbs see each other) */
     .cell-conflict {
-      background: #ffcdd2;
+      background: var(--gp-badge-hard-bg);
       box-shadow: inset 0 0 8px rgba(244, 67, 54, 0.5), 0 0 6px rgba(244, 67, 54, 0.3);
     }
     .cell-conflict::after {
@@ -856,7 +871,7 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
 
     @media (prefers-color-scheme: dark) {
       .cell-conflict {
-        background: #4a2222;
+        background: var(--gp-dark-error);
         box-shadow: inset 0 0 8px rgba(244, 67, 54, 0.3);
       }
     }
@@ -864,7 +879,7 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
     /* ─── Footer ────────────────────────────────────────────────────── */
     .game-footer {
       font-size: 0.8rem;
-      color: #8a7355;
+      color: var(--gp-brown-600);
       text-align: center;
       max-width: 500px;
       line-height: 1.5;
@@ -873,7 +888,7 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
 
     @media (prefers-color-scheme: dark) {
       .game-footer {
-        color: #b8a088;
+        color: var(--gp-dark-text-dim);
       }
     }
 
@@ -920,13 +935,13 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
     .game-switcher { position: relative; }
     .game-switcher-btn { font-size: 0.875rem; font-weight: 700; color: var(--text, #3D3D3D); background: none; border: none; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 0.375rem; display: flex; align-items: center; gap: 4px; font-family: inherit; }
     .game-switcher-btn::after { content: '▾'; font-size: 10px; }
-    .game-switcher-btn:hover { background: var(--hover-bg, #F0EDF5); color: var(--ink, #3D3D3D); }
+    .game-switcher-btn:hover { background: var(--hover-bg, var(--gp-lilac-bright)); color: var(--ink, #3D3D3D); }
     .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid #E8DDD0; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
     .game-switcher:hover .game-switcher-menu { display: block; }
     .game-switcher-menu a { display: flex; flex-direction: column; padding: 10px 16px !important; font-size: 13px !important; gap: 2px; border-radius: 0 !important; }
     .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: #9E9590; }
     .game-switcher-menu a:hover { background: #FFF8F0 !important; color: var(--ink, #3D3D3D) !important; }
-    .game-switcher-menu a.active { color: var(--ink, #3D3D3D) !important; background: #FFF5F0 !important; font-weight: 800 !important; }
+    .game-switcher-menu a.active { color: var(--ink, #3D3D3D) !important; background: var(--gp-cream-warm) !important; font-weight: 800 !important; }
     @media (max-width: 480px) { .game-switcher:hover .game-switcher-menu { display: none; } .game-switcher.open .game-switcher-menu { display: block; } }
   </style>
 </body>

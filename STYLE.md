@@ -93,6 +93,24 @@
 - **Google 品牌四色**：#FFC107 / #FF3D00 / #4CAF50 / #1976D2（登录按钮官方 SVG 规范）
 - **Reddit 品牌橙红**：#FF4500（reddit 分享按钮）
 
+### 暗色调色板（阶段 4：akari/play.astro 暗色主题收编）
+
+> play.astro 有完整暗色模式（19 处 prefers-color-scheme 块），是连贯设计系统。
+> 暗色 token 以 `--gp-dark-*` 前缀，只允许出现在 `@media (prefers-color-scheme: dark)` 块内。
+
+| Token | 值 | 用途 | 禁止 |
+|---|---|---|---|
+| --gp-dark-bg | #1A1410 | 暗色模式页面底 | 亮色块内使用 |
+| --gp-dark-surface | #2A221C | 暗色卡片/分区底 | — |
+| --gp-dark-surface-2 | #3A3028 | 暗色次级卡片/输入底 | — |
+| --gp-dark-border | #4A3A2E | 暗色边框 | — |
+| --gp-dark-border-2 | #5A4A3A | 暗色高亮边框 | — |
+| --gp-dark-text | #F0E6D8 | 暗色正文 | — |
+| --gp-dark-text-dim | #B8A088 | 暗色次要文字 | — |
+| --gp-dark-primary | #E8925A | 暗色下的主色/标题/hover | — |
+
+暗色语义变体（dark 块内使用）：success 文字用 #81C784、error 底用 #4A2222、info 文字用 #90CAF9——随暗色主题块收编为 --gp-dark-success / --gp-dark-error / --gp-dark-info。
+
 ## 3. 字体（2 个角色 + 字号阶）
 
 | 角色 | 字体栈 | 用途 |
