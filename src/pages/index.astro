@@ -38,17 +38,52 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style is:global>
     :root {
-      --mt-primary: #D47A50;
-      --mt-secondary: #5C6BC0;
+      /* ── GridPaw 视觉合同 token（STYLE.md v0.1，冻结）── */
+      --gp-primary: #E8A888;
+      --gp-primary-strong: #D47A50;
+      --gp-primary-dark: var(--gp-primary-dark);
+      --gp-primary-soft: #F0B898;
+      --gp-brown-900: #342421;
+      --gp-brown-600: #6F5651;
+      --gp-brown-400: #9B726C;
+      --gp-cream: #FFF8F0;
+      --gp-cream-warm: #FFF4F0;
+      --gp-sand: #F8F6EF;
+      --gp-blush: #F4DFDC;
+      --gp-linen: #E7DACF;
+      --gp-parchment: #E8DDD0;
+      --gp-ink: #3D3D3D;
+      --gp-stone: #9E9590;
+      --gp-white: #FFFFFF;
+      --gp-error: #E74C3C;
+      --gp-success: #559C68;
+      --gp-info: #5C6BC0;
+      --gp-lilac: #B8A8C8;
+      --gp-lilac-soft: var(--gp-lilac-soft);
+      --gp-lilac-bright: #CFC2E8;
+      --gp-mint: #88C8A8;
+      --gp-sun: #FFC107;
+      --gp-pink: var(--gp-pink);
+      --gp-badge-easy-bg: var(--gp-badge-easy-bg);
+      --gp-badge-easy-text: var(--gp-badge-easy-text);
+      --gp-badge-med-bg: var(--gp-badge-med-bg);
+      --gp-badge-med-text: var(--gp-badge-med-text);
+      --gp-badge-hard-bg: var(--gp-badge-hard-bg);
+      --gp-badge-hard-text: var(--gp-badge-hard-text);
+      --gp-badge-daily-bg: var(--gp-badge-daily-bg);
+      --gp-badge-daily-text: var(--gp-badge-daily-text);
+      /* ── legacy aliases（兼容旧引用，逐步替换为 --gp-*）── */
+      --mt-primary: var(--gp-primary-strong);
+      --mt-secondary: var(--gp-info);
       --mt-accent: #E87040;
-      --mt-bg: #FFF8F0;
-      --mt-board-bg: #E8DDD0;
-      --mt-cell-empty: #FFFFFF;
+      --mt-bg: var(--gp-cream);
+      --mt-board-bg: var(--gp-parchment);
+      --mt-cell-empty: var(--gp-white);
       --mt-cell-border: #D8D0C8;
-      --mt-text: #3D3D3D;
-      --mt-text-light: #9E9590;
-      --mt-success: #B8E8C0;
-      --mt-error: #D47A50;
+      --mt-text: var(--gp-ink);
+      --mt-text-light: var(--gp-stone);
+      --mt-success: var(--gp-badge-easy-bg);
+      --mt-error: var(--gp-primary-strong);
       --mt-hint: #E87040;
       --mt-shadow-sm: 0 2px 8px rgba(78,64,55,0.08);
       --mt-shadow-md: 0 4px 12px rgba(78,64,55,0.12);
@@ -70,7 +105,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     .nav-bar a { font-size: 12px; font-weight: 700; color: var(--mt-secondary); text-decoration: none; padding: 4px 10px; background: white; border-radius: 20px; border: 1.5px solid var(--mt-cell-border); transition: all 0.15s; }
     .nav-bar a:hover { border-color: var(--mt-primary); color: var(--mt-primary); }
     .nav-bar a.nav-daily { background: var(--mt-primary); color: white; border-color: var(--mt-primary); font-size: 13px; padding: 5px 14px; font-weight: 800; }
-    .nav-bar a.nav-daily:hover { background: #c06a40; border-color: #c06a40; color: white; }
+    .nav-bar a.nav-daily:hover { background: var(--gp-primary-dark); border-color: var(--gp-primary-dark); color: white; }
     .breadcrumb { font-size: 12px; color: #9E9590; padding: 0 0 8px; text-align: center; }
     .daily-status { text-align: center; padding: 0 0 8px; font-size: 12px; font-weight: 700; }
     .daily-status a { text-decoration: none; color: var(--mt-text-light); transition: color 0.15s; }
@@ -79,11 +114,11 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     .level-num { font-size: 22px; font-weight: 900; color: var(--mt-text); }
     .level-sub { font-size: 12px; font-weight: 700; color: var(--mt-text-light); text-transform: uppercase; letter-spacing: 0.1em; }
     .difficulty-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-left: 6px; vertical-align: middle; }
-    .badge-easy { background: #B8E8C0; color: #2D6A3F; }
-    .badge-medium { background: #FDD09F; color: #8B6914; }
-    .badge-medium-hard { background: #FFB3C6; color: #8B2252; }
-    .badge-hard { background: #FF6B6B; color: white; }
-    .badge-expert { background: #CFC2E8; color: #4B2D7A; }
+    .badge-easy { background: var(--gp-badge-easy-bg); color: var(--gp-badge-easy-text); }
+    .badge-medium { background: var(--gp-badge-med-bg); color: var(--gp-badge-med-text); }
+    .badge-medium-hard { background: var(--gp-badge-hard-bg); color: var(--gp-badge-hard-text); }
+    .badge-hard { background: var(--gp-error); color: white; }
+    .badge-expert { background: var(--gp-lilac-bright); color: var(--gp-brown-900); }
     .share-btn { padding: 12px 32px; border-radius: 24px; border: none; background: var(--mt-primary); color: white; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(212,122,80,0.3); transition: all 0.15s; }
     .share-btn:hover { transform: scale(1.04); box-shadow: 0 6px 20px rgba(212,122,80,0.4); }
     .share-btn:active { transform: scale(0.96); }
@@ -93,7 +128,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     .board-wrap { display: flex; align-items: center; justify-content: center; padding: 0; }
     .board { display: inline-grid; gap: 3px; padding: 8px; background: var(--mt-board-bg); border-radius: 12px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.06), var(--mt-shadow-md); position: relative; }
     .cell { border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; position: relative; cursor: pointer; transition: background 0.15s, border 0.15s, transform 0.15s; }
-    .cell-empty { background: #FFFFFF; border: 1.5px solid #D5CDDA; }
+    .cell-empty { background: #FFFFFF; border: 1.5px solid var(--gp-lilac); }
     .cell-number { background: #FFFFFF; border: 2px solid #D47A50; border-radius: 8px; color: #3D3D3D; box-shadow: 0 2px 6px rgba(212,122,80,0.12); }
     .cell-selecting { border: 2px dashed var(--mt-primary) !important; background: rgba(212,122,80,0.08) !important; }
     .cell-filled { border: none; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3); }
@@ -205,8 +240,8 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     .seo-section h1 { font-size: 1.6rem; color: var(--mt-text); margin: 1rem 0 0.5rem; }
     .seo-section h2 { font-size: 1.3rem; color: var(--mt-text); margin: 1.5rem 0 0.5rem; }
     .seo-section h3 { font-size: 1.1rem; color: var(--mt-text); margin: 1rem 0 0.3rem; }
-    .seo-section p { margin: 0.5rem 0; line-height: 1.7; color: #555; }
-    .seo-section ol, .seo-section ul { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.7; color: var(--gp-brown-600); }
+    .seo-section ol, .seo-section ul { padding-left: 1.5rem; margin: 0.5rem 0; color: var(--gp-brown-600); }
     .seo-section li { margin-bottom: 0.4rem; }
     .seo-section a { color: var(--mt-primary); text-decoration: underline; }
     .seo-section details { margin: 0.5rem 0; padding: 0.5rem 0.8rem; background: white; border: 1.5px solid var(--mt-cell-border); border-radius: 10px; }
@@ -223,27 +258,27 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     .seo-section h2 { font-size: 1.3rem; margin: 1.5rem 0 0.5rem; color: #3D3D3D; }
     .seo-section h2 .accent { color: #D47A50; }
     .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; color: #3D3D3D; }
-    .seo-section p { margin: 0.5rem 0; line-height: 1.7; color: #555; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.7; color: var(--gp-brown-600); }
     .seo-section a { color: #D47A50; }
-    .seo-section ul, .seo-section ol { padding-left: 1.5rem; color: #555; margin: 0.5rem 0; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; color: var(--gp-brown-600); margin: 0.5rem 0; }
     .seo-section li { margin-bottom: 0.3rem; line-height: 1.6; }
     /* Strategy Grid */
     .strategy-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 1rem 0; }
-    .strategy-grid-item { display: flex; flex-direction: column; padding: 12px; background: white; border: 1.5px solid #E8E0EB; border-radius: 12px; text-decoration: none; color: #3D3D3D; transition: all 0.15s; }
+    .strategy-grid-item { display: flex; flex-direction: column; padding: 12px; background: white; border: 1.5px solid var(--gp-lilac-soft); border-radius: 12px; text-decoration: none; color: #3D3D3D; transition: all 0.15s; }
     .strategy-grid-item:hover { border-color: #D47A50; box-shadow: 0 2px 8px rgba(212,122,80,0.1); }
     .strategy-grid-item strong { font-size: 13px; font-weight: 800; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
     .strategy-grid-item span { font-size: 11px; color: #9E9590; line-height: 1.4; }
     .guide-badge { display: inline-block; padding: 1px 6px; border-radius: 6px; font-size: 10px; font-weight: 800; letter-spacing: 0.02em; }
     /* Tips Grid */
     .tips-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 1rem 0; }
-    .tip-card { display: flex; flex-direction: column; align-items: center; padding: 14px 8px; background: white; border: 1.5px solid #E8E0EB; border-radius: 12px; text-decoration: none; color: #3D3D3D; transition: all 0.15s; }
+    .tip-card { display: flex; flex-direction: column; align-items: center; padding: 14px 8px; background: white; border: 1.5px solid var(--gp-lilac-soft); border-radius: 12px; text-decoration: none; color: #3D3D3D; transition: all 0.15s; }
     .tip-card:hover { border-color: #D47A50; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(212,122,80,0.1); }
     .tip-icon { font-size: 28px; margin-bottom: 6px; }
     .tip-label { font-size: 11px; font-weight: 700; text-align: center; }
     /* FAQ */
-    .faq-item { margin: 0.5rem 0; padding: 0.8rem 1rem; background: white; border: 1.5px solid #E8E0EB; border-radius: 12px; }
-    .faq-item summary { cursor: pointer; font-weight: 700; color: #e8947a; font-size: 14px; }
-    .faq-answer { margin-top: 0.5rem; font-size: 13px; line-height: 1.6; color: #555; }
+    .faq-item { margin: 0.5rem 0; padding: 0.8rem 1rem; background: white; border: 1.5px solid var(--gp-lilac-soft); border-radius: 12px; }
+    .faq-item summary { cursor: pointer; font-weight: 700; color: var(--gp-primary); font-size: 14px; }
+    .faq-answer { margin-top: 0.5rem; font-size: 13px; line-height: 1.6; color: var(--gp-brown-600); }
     /* Testimonials */
     .testimonial-track {
       display: flex;
@@ -260,7 +295,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
       flex: 0 0 280px;
       scroll-snap-align: start;
       background: white;
-      border: 1.5px solid #E8E0EB;
+      border: 1.5px solid var(--gp-lilac-soft);
       border-radius: 14px;
       padding: 18px 16px 14px;
       display: flex;
@@ -276,7 +311,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     .testimonial-text {
       font-size: 13px;
       line-height: 1.65;
-      color: #555;
+      color: var(--gp-brown-600);
       flex: 1;
     }
     .testimonial-user {
@@ -284,13 +319,13 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
       align-items: center;
       gap: 10px;
       padding-top: 8px;
-      border-top: 1px solid #F0EBE3;
+      border-top: 1px solid var(--gp-sand);
     }
     .testimonial-avatar {
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background: #FFF5F0;
+      background: var(--gp-cream-warm);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -302,7 +337,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
       font-size: 10px;
       font-weight: 700;
       color: #D47A50;
-      background: #FFF5F0;
+      background: var(--gp-cream-warm);
       padding: 1px 6px;
       border-radius: 6px;
       display: inline-block;
@@ -357,27 +392,27 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     .game-switcher-menu a { display: flex; flex-direction: column; padding: 10px 16px !important; font-size: 13px !important; gap: 2px; border-radius: 0 !important; }
     .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: #9E9590; }
     .game-switcher-menu a:hover { background: #FFF8F0; color: #D47A50 !important; }
-    .game-switcher-menu a.active { color: #D47A50 !important; background: #FFF5F0; font-weight: 800 !important; }
+    .game-switcher-menu a.active { color: #D47A50 !important; background: var(--gp-cream-warm); font-weight: 800 !important; }
     @media (max-width: 480px) { .game-switcher:hover .game-switcher-menu { display: none; } .game-switcher-menu.open { display: block; } }
     .hamburger { display: none; background: none; border: 1.5px solid #D8D0C8; border-radius: 8px; padding: 6px 10px; font-size: 18px; cursor: pointer; color: #3D3D3D; }
     .mobile-nav { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.4); }
     .mobile-nav-inner { position: absolute; top: 0; right: 0; width: 280px; height: 100%; background: white; padding: 1.5rem; box-shadow: -4px 0 20px rgba(0,0,0,0.1); }
     .mobile-nav-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; color: #3D3D3D; cursor: pointer; }
-    .mobile-nav-inner a { display: block; padding: 0.75rem 0; font-weight: 700; color: #3D3D3D; text-decoration: none; border-bottom: 1.5px solid #E8E0EB; font-size: 14px; }
+    .mobile-nav-inner a { display: block; padding: 0.75rem 0; font-weight: 700; color: #3D3D3D; text-decoration: none; border-bottom: 1.5px solid var(--gp-lilac-soft); font-size: 14px; }
     .mobile-nav-inner a:last-child { border-bottom: none; }
     @media (max-width: 480px) { .header-nav { display: none; } .hamburger { display: block; } }
     /* Game Card */
-    .game-card { background: white; border-radius: 16px; padding: 12px; box-shadow: 0 2px 12px rgba(78,64,55,0.08); border: 1.5px solid #E8E0EB; margin-bottom: 0; }
+    .game-card { background: white; border-radius: 16px; padding: 12px; box-shadow: 0 2px 12px rgba(78,64,55,0.08); border: 1.5px solid var(--gp-lilac-soft); margin-bottom: 0; }
     .game-topbar { display: flex; align-items: center; justify-content: space-between; padding: 0 0 8px; flex-wrap: wrap; gap: 6px; }
     .game-actions { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; max-width: 200px; margin-left: auto; }
-    .game-actions .icon-btn { width: 32px; height: 32px; border-radius: 50%; background: white; border: 1.5px solid #D5CDDA; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #3D3D3D; cursor: pointer; transition: all 0.15s; position: relative; }
+    .game-actions .icon-btn { width: 32px; height: 32px; border-radius: 50%; background: white; border: 1.5px solid var(--gp-lilac); display: flex; align-items: center; justify-content: center; font-size: 14px; color: #3D3D3D; cursor: pointer; transition: all 0.15s; position: relative; }
     .game-actions .icon-btn:hover { border-color: #D47A50; color: #D47A50; }
     .game-actions .icon-btn .tip { display: none; position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: 600; color: #9E9590; white-space: nowrap; }
     .game-actions .icon-btn:hover .tip { display: block; }
     .hint-badge { position: absolute; top: -4px; right: -4px; min-width: 16px; height: 16px; border-radius: 8px; background: var(--mt-primary); color: white; font-size: 10px; font-weight: 900; display: flex; align-items: center; justify-content: center; padding: 0 3px; pointer-events: none; line-height: 1; }
     /* Walkthrough Grid (Level Guides) */
     .walkthrough-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 1rem 0; }
-    .walkthrough-card { display: flex; flex-direction: column; background: white; border: 1.5px solid #E8E0EB; border-radius: 12px; overflow: hidden; text-decoration: none; color: #3D3D3D; transition: all 0.15s; }
+    .walkthrough-card { display: flex; flex-direction: column; background: white; border: 1.5px solid var(--gp-lilac-soft); border-radius: 12px; overflow: hidden; text-decoration: none; color: #3D3D3D; transition: all 0.15s; }
     .walkthrough-card:hover { border-color: #D47A50; box-shadow: 0 4px 12px rgba(212,122,80,0.1); transform: translateY(-2px); }
     .walkthrough-img { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #E8DDD0; display: flex; align-items: center; justify-content: center; }
     .walkthrough-img img { width: 100%; height: 100%; object-fit: contain; }
@@ -386,21 +421,21 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     .walkthrough-text p { font-size: 11px; color: #9E9590; line-height: 1.4; margin: 0; }
     /* Level Tags */
     .level-tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
-    .tag-tutorial { background: #B8E8C0; color: #2D6A3F; }
-    .tag-medium { background: #FCE883; color: #8B6914; }
-    .tag-hard { background: #FF9A9E; color: #8B1A1A; }
-    .tag-daily { background: #B3D9FF; color: #1A5A8B; }
+    .tag-tutorial { background: var(--gp-badge-easy-bg); color: var(--gp-badge-easy-text); }
+    .tag-medium { background: #FCE883; color: var(--gp-badge-med-text); }
+    .tag-hard { background: var(--gp-badge-hard-bg); color: var(--gp-error); }
+    .tag-daily { background: var(--gp-badge-daily-bg); color: var(--gp-badge-daily-text); }
     /* Featured Tip */
-    .featured-tip { background: white; border: 1.5px solid #E8E0EB; border-radius: 12px; padding: 1.2rem; margin: 1rem 0; }
+    .featured-tip { background: white; border: 1.5px solid var(--gp-lilac-soft); border-radius: 12px; padding: 1.2rem; margin: 1rem 0; }
     .featured-tip-label { font-size: 11px; font-weight: 800; color: #D47A50; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
     .featured-tip h3 { font-size: 15px; font-weight: 900; margin-bottom: 0.5rem; }
-    .featured-tip p { font-size: 13px; line-height: 1.7; color: #555; margin-bottom: 0.8rem; }
+    .featured-tip p { font-size: 13px; line-height: 1.7; color: var(--gp-brown-600); margin-bottom: 0.8rem; }
     .featured-tip-link { font-size: 13px; font-weight: 700; color: #D47A50; text-decoration: none; }
     .featured-tip-link:hover { text-decoration: underline; }
     /* Strategy List */
     .strategy-list { margin: 1rem 0; }
     .strategy-list-title { font-size: 14px; font-weight: 900; margin-bottom: 0.8rem; }
-    .strategy-item { display: flex; flex-direction: column; padding: 10px 12px; background: white; border: 1.5px solid #E8E0EB; border-radius: 10px; text-decoration: none; color: #3D3D3D; margin-bottom: 8px; transition: all 0.15s; }
+    .strategy-item { display: flex; flex-direction: column; padding: 10px 12px; background: white; border: 1.5px solid var(--gp-lilac-soft); border-radius: 10px; text-decoration: none; color: #3D3D3D; margin-bottom: 8px; transition: all 0.15s; }
     .strategy-item:hover { border-color: #D47A50; }
     .strategy-item strong { font-size: 13px; font-weight: 800; }
     .strategy-item span { font-size: 11px; color: #9E9590; margin-top: 2px; }
@@ -410,19 +445,19 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     .download-phone img { width: 100%; display: block; }
     .download-text { flex: 1; }
     .download-text h2 { font-size: 1.4rem; font-weight: 900; margin-bottom: 0.5rem; }
-    .download-text p { font-size: 14px; line-height: 1.7; color: #555; margin-bottom: 1rem; }
+    .download-text p { font-size: 14px; line-height: 1.7; color: var(--gp-brown-600); margin-bottom: 1rem; }
     .download-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
     .store-btn { display: inline-flex; align-items: center; gap: 6px; padding: 12px 24px; background: #D47A50; color: white; border-radius: 12px; font-weight: 800; font-size: 14px; text-decoration: none; transition: all 0.15s; }
-    .store-btn:hover { background: #c06a40; }
+    .store-btn:hover { background: var(--gp-primary-dark); }
     .store-btn-outline { background: white; color: #D47A50; border: 1.5px solid #D47A50; }
-    .store-btn-outline:hover { background: #FFF5F0; }
+    .store-btn-outline:hover { background: var(--gp-cream-warm); }
     /* Section generic */
     .section { max-width: 720px; margin: 0 auto; padding: 0.5rem 1rem; }
     @media (max-width: 420px) { .walkthrough-grid { grid-template-columns: 1fr; } .download-box { flex-direction: column; text-align: center; } .download-phone { width: 120px; } }
 
     /* === New mechanics: lives, irregular grid, X-reveal, shape hints === */
     .cell-invalid { visibility: hidden; pointer-events: none; }
-    .cell-xreveal { background: #F3E7DA; position: relative; cursor: default; }
+    .cell-xreveal { background: var(--gp-blush); position: relative; cursor: default; }
     .x-ring {
       display: flex; align-items: center; justify-content: center;
       width: 28px; height: 28px; border-radius: 50%;
@@ -446,7 +481,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     .game-over-overlay p { color: rgba(255,255,255,0.8); font-size: 14px; }
     .signin-prompt-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 800; display: flex; align-items: center; justify-content: center; animation: pop-in 0.3s ease-out; }
     .signin-prompt-card { background: white; border-radius: 20px; padding: 28px 24px; max-width: 320px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
-    .signin-prompt-btn { display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1.5px solid #dadce0; border-radius: 24px; padding: 10px 20px; font-size: 14px; font-weight: 700; color: #3c4043; text-decoration: none; box-shadow: 0 1px 3px rgba(0,0,0,0.08); cursor: pointer; transition: box-shadow 0.15s; }
+    .signin-prompt-btn { display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1.5px solid var(--gp-linen); border-radius: 24px; padding: 10px 20px; font-size: 14px; font-weight: 700; color: var(--gp-ink); text-decoration: none; box-shadow: 0 1px 3px rgba(0,0,0,0.08); cursor: pointer; transition: box-shadow 0.15s; }
     .signin-prompt-btn:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
     .signin-prompt-later { display: block; margin: 12px auto 0; background: none; border: none; color: #9E9590; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: underline; }
     .hearts { display: flex; gap: 2px; font-size: 18px; align-items: center; }
@@ -455,7 +490,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     .tutorial-hint {
       text-align: center; padding: 6px 12px; margin: 0 0 6px;
       font-size: 13px; font-weight: 700; color: var(--mt-secondary);
-      background: #EDE7F6; border-radius: 8px;
+      background: var(--gp-lilac-bright); border-radius: 8px;
       word-wrap: break-word; overflow-wrap: break-word;
     }
     .tutorial-hint.hidden { display: none; }
@@ -548,7 +583,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     <button class="next-btn" id="nextBtn">Next Level →</button>
     <button class="share-btn" id="shareBtn">📋 Share Result</button>
     <button class="reddit-btn" id="redditBtn">🔥 Share on Reddit</button>
-    <button id="victory-close" style="background:none;border:1.5px solid #E8E0EB;color:#9E9590;font-family:inherit;font-weight:700;font-size:.85rem;padding:.5rem 1.6rem;border-radius:999px;cursor:pointer">Continue ✓</button>
+    <button id="victory-close" style="background:none;border:1.5px solid var(--gp-lilac-soft);color:#9E9590;font-family:inherit;font-weight:700;font-size:.85rem;padding:.5rem 1.6rem;border-radius:999px;cursor:pointer">Continue ✓</button>
   </div>
 
   <div class="game-over-overlay hidden" id="gameOver">
@@ -559,7 +594,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
 
   <section class="seo-content" id="daily-leaderboard" style="max-width:520px;margin:1.5rem auto;padding:0 1rem">
     <h2 style="text-align:center;font-size:1.25rem;margin:.8rem 0 .3rem">🏆 Today's Leaderboard</h2>
-    <p id="leaderboard-hint" style="text-align:center;font-size:.85rem;margin:0 0 1rem;color:#555">Sign in and solve today's Daily Challenge to appear here!</p>
+    <p id="leaderboard-hint" style="text-align:center;font-size:.85rem;margin:0 0 1rem;color:var(--gp-brown-600)">Sign in and solve today's Daily Challenge to appear here!</p>
     <div id="leaderboard-list"></div>
   </section>
 </div>
@@ -569,11 +604,11 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
 <script is:inline>
   // Cat color palette (8 unique colors, no repeats per puzzle)
   var CAT_PALETTE = [
-    { bg: '#FFB3C6', ear: '#E8A0B5' },  // pink
+    { bg: 'var(--gp-badge-hard-bg)', ear: '#E8A0B5' },  // pink
     { bg: '#CFC2E8', ear: '#B8A8D0' },  // lavender
-    { bg: '#FDD09F', ear: '#E8C090' },  // orange
-    { bg: '#B3D9FF', ear: '#98C8E8' },  // blue
-    { bg: '#B8E8C0', ear: '#98D8A8' },  // mint
+    { bg: 'var(--gp-badge-med-bg)', ear: '#E8C090' },  // orange
+    { bg: 'var(--gp-badge-daily-bg)', ear: '#98C8E8' },  // blue
+    { bg: 'var(--gp-badge-easy-bg)', ear: '#98D8A8' },  // mint
     { bg: '#FCE883', ear: '#E8D870' },  // yellow
     { bg: '#FF9A9E', ear: '#E88888' },  // coral
     { bg: '#A0E8E0', ear: '#88D0C8' },  // teal
@@ -1095,7 +1130,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
   }
 
   function spawnConfetti() {
-    var colors = ['#D47A50','#F3A847','#CFC2E8','#B3D9FF','#B8E8C0','#FFB3C6']; var app = document.getElementById('app');
+    var colors = ['#D47A50','var(--gp-primary-soft)','#CFC2E8','var(--gp-badge-daily-bg)','var(--gp-badge-easy-bg)','var(--gp-badge-hard-bg)']; var app = document.getElementById('app');
     for (var i = 0; i < 30; i++) { var piece = document.createElement('div'); piece.className = 'confetti-piece'; piece.style.left = (5 + Math.random() * 90) + '%'; piece.style.top = '-10px'; piece.style.background = colors[i % colors.length]; piece.style.animationDelay = (Math.random() * 0.8) + 's'; piece.style.animationDuration = (1.5 + Math.random() * 1.5) + 's'; app.appendChild(piece); (function(p) { setTimeout(function() { p.remove(); }, 3500); })(piece); }
     for (var i = 0; i < 12; i++) { var paw = document.createElement('div'); paw.className = 'paw-confetti'; paw.textContent = '🐾'; paw.style.left = (5 + Math.random() * 90) + '%'; paw.style.top = '-40px'; paw.style.animationDelay = (Math.random() * 1.2) + 's'; app.appendChild(paw); (function(p) { setTimeout(function() { p.remove(); }, 4000); })(paw); }
   }
@@ -1109,7 +1144,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     overlay.innerHTML = '<div class="signin-prompt-card">' +
       '<div style="font-size:40px;margin-bottom:8px">🐱</div>' +
       '<h3 style="margin:0 0 6px;font-size:18px;font-weight:900;color:#3D3D3D">Save your progress?</h3>' +
-      '<p style="margin:0 0 16px;font-size:13px;color:#777;line-height:1.5">Sign in to save progress, appear on the daily leaderboard, and track your streak.</p>' +
+      '<p style="margin:0 0 16px;font-size:13px;color:var(--gp-stone);line-height:1.5">Sign in to save progress, appear on the daily leaderboard, and track your streak.</p>' +
       '<a href="/api/auth/login?next=/" class="signin-prompt-btn" onclick="track(\'sign_in_click\',{source:\'level5_prompt\',level:5})">' +
         '<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 18.9 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.6 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>' +
         'Sign in with Google</a>' +
@@ -1337,7 +1372,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
       const dailyBtn = document.createElement('a');
       dailyBtn.href = '#play';
       dailyBtn.textContent = '📅 Play Daily';
-      dailyBtn.style.cssText = 'font-size:.8rem;font-weight:800;color:#fff;background:#FF42A5;border-radius:16px;padding:.3rem .9rem;text-decoration:none;box-shadow:0 2px 8px rgba(255,66,165,.3)';
+      dailyBtn.style.cssText = 'font-size:.8rem;font-weight:800;color:#fff;background:var(--gp-pink);border-radius:16px;padding:.3rem .9rem;text-decoration:none;box-shadow:0 2px 8px rgba(255,66,165,.3)';
       dailyBtn.addEventListener('click', function(e) {
         e.preventDefault();
         if (typeof generateDaily === 'function') { generateDaily(); document.getElementById('play').scrollIntoView({ behavior: 'smooth' }); }
@@ -1351,7 +1386,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     } else {
       var btn = document.createElement('a');
       btn.href = '/api/auth/login?next=/';
-      btn.style.cssText = 'display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1.5px solid #dadce0;border-radius:24px;padding:.4rem 1rem;font-size:.85rem;font-weight:700;color:#3c4043;text-decoration:none;box-shadow:0 1px 3px rgba(0,0,0,.08)';
+      btn.style.cssText = 'display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1.5px solid var(--gp-linen);border-radius:24px;padding:.4rem 1rem;font-size:.85rem;font-weight:700;color:var(--gp-ink);text-decoration:none;box-shadow:0 1px 3px rgba(0,0,0,.08)';
       btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 18.9 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.6 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>Sign in with Google';
       btn.addEventListener('click', function() { track('sign_in_click', { source: 'account_area', level: levelNum }); });
       area.appendChild(btn);
@@ -1486,9 +1521,9 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
         var e = entries[i];
         var medal = e.rank === 1 ? '🥇' : e.rank === 2 ? '🥈' : e.rank === 3 ? '🥉' : '#' + e.rank;
         var safeName = String(e.name || 'Anonymous Cat').replace(/[<>&]/g, '');
-        html += '<div style="display:flex;justify-content:space-between;padding:.4rem .6rem;border-bottom:1px solid #E8E0EB;font-size:.85rem">'
+        html += '<div style="display:flex;justify-content:space-between;padding:.4rem .6rem;border-bottom:1px solid var(--gp-lilac-soft);font-size:.85rem">'
           + '<span style="font-weight:700;color:#3D3D3D">' + medal + ' ' + safeName + '</span>'
-          + '<span style="color:#FF42A5;font-weight:700">' + msToClock(e.timeMs) + '</span></div>';
+          + '<span style="color:var(--gp-pink);font-weight:700">' + msToClock(e.timeMs) + '</span></div>';
       }
       list.innerHTML = html;
     }).catch(function() {});
@@ -1504,7 +1539,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
       track('auth_error', { error: authErr, level: levelNum });
       const msg = authErr === 'access_denied' ? 'Sign-in was cancelled.' : 'Sign-in failed (' + authErr + '). Please try again.';
       const statusEl3 = document.getElementById('dailyStatus');
-      if (statusEl3) { statusEl3.innerHTML = '⚠️ ' + msg; statusEl3.style.color = '#FF42A5'; }
+      if (statusEl3) { statusEl3.innerHTML = '⚠️ ' + msg; statusEl3.style.color = 'var(--gp-pink)'; }
       history.replaceState(null, '', window.location.pathname);
     }
   } catch (e) {}
