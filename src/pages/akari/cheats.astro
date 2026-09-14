@@ -18,77 +18,104 @@ const description = "Master Akari with our complete cheats and strategies guide.
     "author": { "@type": "Organization", "name": "GridPaw" }
   })} />
   <style>
+    /* ── GridPaw 视觉合同 token（STYLE.md）── */
+    :root {
+      --gp-ink: #3D3D3D;
+      --gp-brown-900: #342421;
+      --gp-brown-600: #6F5651;
+      --gp-stone: #9E9590;
+      --gp-cream: #FFF8F0;
+      --gp-cream-warm: #FFF4F0;
+      --gp-linen: #E8DDD0;
+      --gp-blush: #F4DFDC;
+      --gp-lilac-bright: #F0EDF5;
+      --gp-primary-strong: #E67E22;
+      --gp-primary-dark: #D35400;
+      --gp-primary-soft: #F5D6A8;
+      --gp-success: #27AE60;
+      --gp-error: #E74C3C;
+      --gp-info: #3498DB;
+      --gp-badge-easy-bg: #D5F5E3;
+      --gp-badge-hard-bg: #FADBD8;
+      --gp-badge-daily-bg: #D6EAF8;
+      --gp-dark-bg: #1A1410;
+      --gp-dark-surface: #2A221C;
+      --gp-dark-border: #4A3A2E;
+      --gp-dark-border-2: #5A4A3A;
+      --gp-dark-text: #F0E6D8;
+      --gp-dark-ink: #0F0B08;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 1rem; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: var(--gp-ink); max-width: 800px; margin: 0 auto; padding: 1rem; }
     h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-    h2 { font-size: 1.4rem; margin: 1.5rem 0 0.5rem; color: #e67e22; }
-    nav.breadcrumb { margin-bottom: 1rem; font-size: 0.9rem; color: #666; }
-    nav.breadcrumb a { color: #e67e22; text-decoration: none; }
+    h2 { font-size: 1.4rem; margin: 1.5rem 0 0.5rem; color: var(--gp-primary-strong); }
+    nav.breadcrumb { margin-bottom: 1rem; font-size: 0.9rem; color: var(--gp-brown-600); }
+    nav.breadcrumb a { color: var(--gp-primary-strong); text-decoration: none; }
     ol { padding-left: 1.5rem; }
     li { margin-bottom: 0.5rem; }
-    #solver-section { background: #fef9e7; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; }
+    #solver-section { background: var(--gp-cream); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; }
     #grid-builder { display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-start; margin: 1rem 0; }
     #grid-builder label { display: flex; align-items: center; gap: 0.5rem; }
-    #grid-builder select, #grid-builder button { padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid #ddd; font-size: 1rem; }
-    #grid-builder button { background: #e67e22; color: white; border: none; cursor: pointer; }
-    #grid-builder button:hover { background: #d35400; }
-    #editor-board { display: inline-grid; gap: 2px; background: #5c3a1e; padding: 2px; border-radius: 4px; margin: 1rem 0; }
+    #grid-builder select, #grid-builder button { padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid var(--gp-linen); font-size: 1rem; }
+    #grid-builder button { background: var(--gp-primary-strong); color: white; border: none; cursor: pointer; }
+    #grid-builder button:hover { background: var(--gp-primary-dark); }
+    #editor-board { display: inline-grid; gap: 2px; background: var(--gp-brown-900); padding: 2px; border-radius: 4px; margin: 1rem 0; }
     #editor-board .cell { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; font-size: 1.1rem; user-select: none; transition: background 0.15s; }
-    #editor-board .cell.white { background: #f5e6cc; }
-    #editor-board .cell.white:hover { background: #ecd9b9; }
-    #editor-board .cell.black { background: #5c3a1e; color: white; }
-    #editor-board .cell.black-number { background: #5c3a1e; color: #f5d6a8; font-size: 1.2rem; }
-    #solve-btn { background: #27ae60; color: white; border: none; padding: 0.75rem 2rem; border-radius: 8px; font-size: 1.1rem; cursor: pointer; margin-top: 1rem; }
-    #solve-btn:hover { background: #219a52; }
-    #solve-btn:disabled { background: #bdc3c7; cursor: not-allowed; }
+    #editor-board .cell.white { background: var(--gp-primary-soft); }
+    #editor-board .cell.white:hover { background: var(--gp-linen); }
+    #editor-board .cell.black { background: var(--gp-brown-900); color: white; }
+    #editor-board .cell.black-number { background: var(--gp-brown-900); color: var(--gp-primary-soft); font-size: 1.2rem; }
+    #solve-btn { background: var(--gp-success); color: white; border: none; padding: 0.75rem 2rem; border-radius: 8px; font-size: 1.1rem; cursor: pointer; margin-top: 1rem; }
+    #solve-btn:hover { background: var(--gp-success); }
+    #solve-btn:disabled { background: var(--gp-stone); cursor: not-allowed; }
     #solution-output { margin-top: 1rem; padding: 1rem; border-radius: 8px; min-height: 2rem; }
-    #solution-output.success { background: #d5f5e3; border: 1px solid #27ae60; }
-    #solution-output.error { background: #fadbd8; border: 1px solid #e74c3c; }
-    #solution-output.info { background: #d6eaf8; border: 1px solid #3498db; }
-    .solution-board { display: inline-grid; gap: 2px; background: #333; padding: 2px; border-radius: 4px; margin-top: 0.5rem; }
+    #solution-output.success { background: var(--gp-badge-easy-bg); border: 1px solid var(--gp-success); }
+    #solution-output.error { background: var(--gp-badge-hard-bg); border: 1px solid var(--gp-error); }
+    #solution-output.info { background: var(--gp-badge-daily-bg); border: 1px solid var(--gp-info); }
+    .solution-board { display: inline-grid; gap: 2px; background: var(--gp-ink); padding: 2px; border-radius: 4px; margin-top: 0.5rem; }
     .solution-board .cell { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
-    .solution-board .cell.white { background: #ffeaa7; }
-    .solution-board .cell.illuminated { background: #fff9c4; }
-    .solution-board .cell.bulb { background: #ffd4a8; }
+    .solution-board .cell.white { background: var(--gp-primary-soft); }
+    .solution-board .cell.illuminated { background: var(--gp-cream-warm); }
+    .solution-board .cell.bulb { background: var(--gp-primary-soft); }
     .solution-board .cell.bulb::after { content: '🐱'; font-size: 1rem; line-height: 1; }
-    .solution-board .cell.black { background: #2d3436; color: white; }
+    .solution-board .cell.black { background: var(--gp-ink); color: white; }
     .mode-toggle { display: flex; gap: 0.5rem; margin: 1rem 0; }
-    .mode-toggle button { padding: 0.4rem 0.8rem; border: 2px solid #e67e22; background: white; color: #e67e22; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
-    .mode-toggle button.active { background: #e67e22; color: white; }
-    .instructions { font-size: 0.9rem; color: #666; margin: 0.5rem 0; }
+    .mode-toggle button { padding: 0.4rem 0.8rem; border: 2px solid var(--gp-primary-strong); background: white; color: var(--gp-primary-strong); border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+    .mode-toggle button.active { background: var(--gp-primary-strong); color: white; }
+    .instructions { font-size: 0.9rem; color: var(--gp-brown-600); margin: 0.5rem 0; }
     @media (prefers-color-scheme: dark) {
-      body { background: #1a1a2e; color: #eee; }
-      #solver-section { background: #16213e; }
-      #editor-board .cell.white { background: #4a3f2a; }
-      #editor-board .cell.white:hover { background: #5a4f3a; }
-      #editor-board .cell.black, #editor-board .cell.black-number { background: #0f0f23; }
+      body { background: var(--gp-dark-bg); color: var(--gp-dark-text); }
+      #solver-section { background: var(--gp-dark-surface); }
+      #editor-board .cell.white { background: var(--gp-dark-border); }
+      #editor-board .cell.white:hover { background: var(--gp-dark-border-2); }
+      #editor-board .cell.black, #editor-board .cell.black-number { background: var(--gp-dark-ink); }
     }
   
     /* ── Header ── */
-    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid var(--gp-blush);background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
     .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
     .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
     .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
     .brand-logo img{width:100%;height:100%;object-fit:cover}
     .brand-name{line-height:1.1}
-    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
-    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .brand-name .big{font-weight:900;color:var(--gp-brown-900);font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:var(--gp-brown-600);font-size:0.75rem}
     .nav{display:flex;align-items:center;gap:0.25rem}
-    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
-    .nav a:hover{background:#fff4f0;color:#342421}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:var(--gp-brown-600);text-decoration:none}
+    .nav a:hover{background:var(--gp-cream-warm);color:var(--gp-brown-900)}
 
   
     /* ── Games Dropdown ── */
     .game-switcher { position: relative; }
-    .game-switcher-btn { font-size: 0.875rem; font-weight: 700; color: var(--text, #3D3D3D); background: none; border: none; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 0.375rem; display: flex; align-items: center; gap: 4px; font-family: inherit; }
+    .game-switcher-btn { font-size: 0.875rem; font-weight: 700; color: var(--gp-ink); background: none; border: none; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 0.375rem; display: flex; align-items: center; gap: 4px; font-family: inherit; }
     .game-switcher-btn::after { content: '▾'; font-size: 10px; }
-    .game-switcher-btn:hover { background: var(--hover-bg, #F0EDF5); color: var(--ink, #3D3D3D); }
-    .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid #E8DDD0; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
+    .game-switcher-btn:hover { background: var(--gp-lilac-bright); color: var(--gp-ink); }
+    .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid var(--gp-linen); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
     .game-switcher:hover .game-switcher-menu { display: block; }
     .game-switcher-menu a { display: flex; flex-direction: column; padding: 10px 16px !important; font-size: 13px !important; gap: 2px; border-radius: 0 !important; }
-    .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: #9E9590; }
-    .game-switcher-menu a:hover { background: #FFF8F0 !important; color: var(--ink, #3D3D3D) !important; }
-    .game-switcher-menu a.active { color: var(--ink, #3D3D3D) !important; background: #FFF5F0 !important; font-weight: 800 !important; }
+    .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: var(--gp-stone); }
+    .game-switcher-menu a:hover { background: var(--gp-cream) !important; color: var(--gp-ink) !important; }
+    .game-switcher-menu a.active { color: var(--gp-ink) !important; background: var(--gp-cream-warm) !important; font-weight: 800 !important; }
     @media (max-width: 480px) { .game-switcher:hover .game-switcher-menu { display: none; } .game-switcher.open .game-switcher-menu { display: block; } }
   </style>
 </head>
