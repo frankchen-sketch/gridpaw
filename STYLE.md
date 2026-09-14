@@ -108,8 +108,11 @@
 | --gp-dark-text | #F0E6D8 | 暗色正文 | — |
 | --gp-dark-text-dim | #B8A088 | 暗色次要文字 | — |
 | --gp-dark-primary | #E8925A | 暗色下的主色/标题/hover | — |
+| --gp-dark-ink | #0F0B08 | 暗色近黑（棋盘黑格/最强对比） | — |
 
 暗色语义变体（dark 块内使用）：success 文字用 #81C784、error 底用 #4A2222、info 文字用 #90CAF9——随暗色主题块收编为 --gp-dark-success / --gp-dark-error / --gp-dark-info。
+
+> 收编原则（cheats.astro 教训）：冷色 navy 暗色底（#1a1a2e/#16213e/#0f0f23）是旧主题遗留，一律归入暖色 dark token，禁止新增冷色暗色值。
 
 ## 3. 字体（2 个角色 + 字号阶）
 
