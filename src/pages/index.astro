@@ -601,7 +601,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
 
 <script is:inline src="/puzzle-engine.js"></script>
 <script is:inline src="/sfx.js"></script>
-<script is:inline src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 <script is:inline>
   // Cat color palette (8 unique colors, no repeats per puzzle)
   var CAT_PALETTE = [
@@ -896,9 +896,9 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
       block.style.setProperty('--ear', color.ear);
       block.style.background = color.bg;
       block.style.setProperty('--ear', color.ear);
-      if (typeof window.gsap === 'function' && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
-        gsap.from(block, { scale: 0.55, opacity: 0, duration: 0.42, ease: 'back.out(2.2)', transformOrigin: '50% 100%' });
-        gsap.to(block, { scale: 1.03, duration: 0.12, ease: 'power1.out', delay: 0.42, yoyo: true, repeat: 1 });
+      if (typeof window.gsap !== 'undefined' && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+        gsap.from(block, { scale: 0.3, opacity: 0, duration: 0.5, ease: 'back.out(3)', transformOrigin: '50% 100%' });
+        gsap.to(block, { scaleY: 1.08, scaleX: 0.94, duration: 0.1, ease: 'power1.out', delay: 0.5, yoyo: true, repeat: 1 });
       }
 
       // Face
@@ -1135,7 +1135,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     });
     victory.classList.remove('hidden'); spawnConfetti();
     // GSAP entrance: title bounce-in, cats stagger-up (contract Signature), reduced-motion safe
-    if (typeof window.gsap !== 'function' || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+    if (typeof window.gsap === 'undefined' || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
     var title = victory.querySelector('.victory-title');
     var catEls = victory.querySelectorAll('.victory-cats > *');
     var btns = victory.querySelectorAll('.next-btn, .share-btn, .reddit-btn, #victory-close');
