@@ -459,14 +459,14 @@ const LEVEL_DEFS = [
       ])
     },
     solutionRects: [
-      { top: 0, left: 0, height: 1, width: 2, value: 2 },
-      { top: 1, left: 0, height: 3, width: 2, value: 6 },
-      { top: 4, left: 0, height: 1, width: 2, value: 2 },
-      { top: 0, left: 2, height: 5, width: 1, value: 5 },
-      { top: 0, left: 3, height: 1, width: 3, value: 3 },
-      { top: 1, left: 3, height: 4, width: 1, value: 4 },
-      { top: 1, left: 4, height: 4, width: 1, value: 4 },
-      { top: 1, left: 5, height: 4, width: 1, value: 4 }
+      { top: 0, left: 0, height: 2, width: 2, value: 4 },
+      { top: 0, left: 2, height: 1, width: 3, value: 3 },
+      { top: 0, left: 5, height: 2, width: 1, value: 2 },
+      { top: 1, left: 2, height: 1, width: 3, value: 3 },
+      { top: 2, left: 1, height: 1, width: 4, value: 4 },
+      { top: 3, left: 0, height: 1, width: 6, value: 6 },
+      { top: 4, left: 0, height: 1, width: 5, value: 5 },
+      { top: 4, left: 5, height: 1, width: 1, value: 1 }
     ]
   },
   // Level 4: 5×5
@@ -517,14 +517,14 @@ const LEVEL_DEFS = [
       ])
     },
     solutionRects: [
-      { top: 0, left: 0, height: 1, width: 6, value: 6 },
-      { top: 1, left: 0, height: 2, width: 4, value: 8 },
-      { top: 3, left: 0, height: 2, width: 3, value: 6 },
-      { top: 5, left: 0, height: 1, width: 3, value: 3 },
-      { top: 3, left: 3, height: 3, width: 1, value: 3 },
-      { top: 1, left: 4, height: 2, width: 2, value: 4 },
-      { top: 3, left: 4, height: 2, width: 2, value: 4 },
-      { top: 5, left: 4, height: 1, width: 2, value: 2 }
+      { top: 0, left: 0, height: 2, width: 1, value: 2 },
+      { top: 4, left: 0, height: 2, width: 1, value: 2 },
+      { top: 0, left: 5, height: 2, width: 1, value: 2 },
+      { top: 4, left: 5, height: 2, width: 1, value: 2 },
+      { top: 0, left: 1, height: 2, width: 4, value: 8 },
+      { top: 2, left: 1, height: 1, width: 3, value: 3 },
+      { top: 2, left: 4, height: 4, width: 1, value: 4 },
+      { top: 3, left: 1, height: 3, width: 3, value: 9 }
     ]
   },
   // Level 7: 6×6
