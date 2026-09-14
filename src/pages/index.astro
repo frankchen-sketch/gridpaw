@@ -601,14 +601,15 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
 
 <script is:inline src="/puzzle-engine.js"></script>
 <script is:inline src="/sfx.js"></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
 <script is:inline>
   // Cat color palette (8 unique colors, no repeats per puzzle)
   var CAT_PALETTE = [
-    { bg: 'var(--gp-badge-hard-bg)', ear: '#E8A0B5' },  // pink
+    { bg: '#FFB3C6', ear: '#E8A0B5' },  // pink
     { bg: '#CFC2E8', ear: '#B8A8D0' },  // lavender
-    { bg: 'var(--gp-badge-med-bg)', ear: '#E8C090' },  // orange
-    { bg: 'var(--gp-badge-daily-bg)', ear: '#98C8E8' },  // blue
-    { bg: 'var(--gp-badge-easy-bg)', ear: '#98D8A8' },  // mint
+    { bg: '#FDD09F', ear: '#E8C090' },  // orange
+    { bg: '#B3D9FF', ear: '#98C8E8' },  // blue
+    { bg: '#B8E8C0', ear: '#98D8A8' },  // mint
     { bg: '#FCE883', ear: '#E8D870' },  // yellow
     { bg: '#FF9A9E', ear: '#E88888' },  // coral
     { bg: '#A0E8E0', ear: '#88D0C8' },  // teal
@@ -893,6 +894,12 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
       block.style.height = (rect.height * cellSize + (rect.height - 1) * gap) + 'px';
       block.style.background = color.bg;
       block.style.setProperty('--ear', color.ear);
+      block.style.background = color.bg;
+      block.style.setProperty('--ear', color.ear);
+      if (typeof window.gsap === 'function' && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+        gsap.from(block, { scale: 0.55, opacity: 0, duration: 0.42, ease: 'back.out(2.2)', transformOrigin: '50% 100%' });
+        gsap.to(block, { scale: 1.03, duration: 0.12, ease: 'power1.out', delay: 0.42, yoyo: true, repeat: 1 });
+      }
 
       // Face
       var face = document.createElement('div');
@@ -1127,12 +1134,55 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
       catsDiv.appendChild(div);
     });
     victory.classList.remove('hidden'); spawnConfetti();
+    // GSAP entrance: title bounce-in, cats stagger-up (contract Signature), reduced-motion safe
+    if (typeof window.gsap !== 'function' || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+    var title = victory.querySelector('.victory-title');
+    var catEls = victory.querySelectorAll('.victory-cats > *');
+    var btns = victory.querySelectorAll('.next-btn, .share-btn, .reddit-btn, #victory-close');
+    var tl2 = gsap.timeline();
+    tl2.from(title, { scale: 0.3, opacity: 0, duration: 0.55, ease: 'back.out(2)' })
+       .from(catEls, { y: 26, opacity: 0, scale: 0.6, duration: 0.45, stagger: 0.09, ease: 'back.out(1.8)' }, '-=0.15')
+       .from(btns, { y: 18, opacity: 0, duration: 0.35, stagger: 0.07, ease: 'power2.out' }, '-=0.2');
   }
 
   function spawnConfetti() {
-    var colors = ['#D47A50','var(--gp-primary-soft)','#CFC2E8','var(--gp-badge-daily-bg)','var(--gp-badge-easy-bg)','var(--gp-badge-hard-bg)']; var app = document.getElementById('app');
-    for (var i = 0; i < 30; i++) { var piece = document.createElement('div'); piece.className = 'confetti-piece'; piece.style.left = (5 + Math.random() * 90) + '%'; piece.style.top = '-10px'; piece.style.background = colors[i % colors.length]; piece.style.animationDelay = (Math.random() * 0.8) + 's'; piece.style.animationDuration = (1.5 + Math.random() * 1.5) + 's'; app.appendChild(piece); (function(p) { setTimeout(function() { p.remove(); }, 3500); })(piece); }
-    for (var i = 0; i < 12; i++) { var paw = document.createElement('div'); paw.className = 'paw-confetti'; paw.textContent = '🐾'; paw.style.left = (5 + Math.random() * 90) + '%'; paw.style.top = '-40px'; paw.style.animationDelay = (Math.random() * 1.2) + 's'; app.appendChild(paw); (function(p) { setTimeout(function() { p.remove(); }, 4000); })(paw); }
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion || typeof window.gsap === 'undefined') {
+      // fallback: original CSS-keyframe confetti (also the reduced-motion path)
+      var colors = ['#D47A50','#F0B898','#CFC2E8','#B3D9FF','#B8E8C0','#FFB3C6']; var app0 = document.getElementById('app');
+      for (var i = 0; i < 30; i++) { var piece = document.createElement('div'); piece.className = 'confetti-piece'; piece.style.left = (5 + Math.random() * 90) + '%'; piece.style.top = '-10px'; piece.style.background = colors[i % colors.length]; piece.style.animationDelay = (Math.random() * 0.8) + 's'; piece.style.animationDuration = (1.5 + Math.random() * 1.5) + 's'; app0.appendChild(piece); (function(p) { setTimeout(function() { p.remove(); }, 3500); })(piece); }
+      for (var i2 = 0; i2 < 12; i2++) { var paw = document.createElement('div'); paw.className = 'paw-confetti'; paw.textContent = '🐾'; paw.style.left = (5 + Math.random() * 90) + '%'; paw.style.top = '-40px'; paw.style.animationDelay = (Math.random() * 1.2) + 's'; app0.appendChild(paw); (function(p) { setTimeout(function() { p.remove(); }, 4000); })(paw); }
+      return;
+    }
+    // GSAP timeline: confetti + paw-print rain (contract Signature)
+    var app = document.getElementById('app');
+    var tl = gsap.timeline();
+    var confColors = ['#D47A50','#F0B898','#CFC2E8','#B3D9FF','#B8E8C0','#FFB3C6'];
+    for (var i3 = 0; i3 < 34; i3++) {
+      var piece2 = document.createElement('div');
+      piece2.className = 'confetti-piece'; piece2.style.animation = 'none';
+      piece2.style.left = (5 + Math.random() * 90) + '%'; piece2.style.top = '-14px';
+      piece2.style.background = confColors[i3 % confColors.length];
+      app.appendChild(piece2);
+      tl.to(piece2, {
+        y: 520 + Math.random() * 160, rotation: 360 + Math.random() * 360, opacity: 0,
+        duration: 1.8 + Math.random() * 1.4, ease: 'power1.in',
+        delay: Math.random() * 0.7, onComplete: (function(p){ return function(){ p.remove(); }; })(piece2)
+      }, 0);
+    }
+    for (var j = 0; j < 16; j++) {
+      var paw2 = document.createElement('div');
+      paw2.className = 'paw-confetti'; paw2.style.animation = 'none';
+      paw2.textContent = '🐾';
+      paw2.style.left = (5 + Math.random() * 90) + '%'; paw2.style.top = '-48px';
+      paw2.style.fontSize = (16 + Math.random() * 14) + 'px';
+      app.appendChild(paw2);
+      tl.to(paw2, {
+        y: 540 + Math.random() * 140, rotation: 180 + Math.random() * 240, scale: 0.45, opacity: 0,
+        duration: 2.4 + Math.random() * 1.2, ease: 'power1.in',
+        delay: 0.25 + Math.random() * 1.1, onComplete: (function(p){ return function(){ p.remove(); }; })(paw2)
+      }, 0);
+    }
   }
 
   // Sign-in prompt: shown once after level 5 completion for non-logged-in users
