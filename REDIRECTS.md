@@ -52,7 +52,7 @@
 > 2. **看是否有别的规则先匹配**：同页检查是否有**更早的** catch-all / 动态重定向 / Page Rule
 >    抢先把请求留在本域。CF 的重定向按顺序执行，先匹配者胜。
 > 3. **对比能用的那个 zone**：`meow-block.com` 的 Redirect Rules 是**实测有效**的对照组
->    （16/16 通过）。逐项比对两者差异：规则数量、顺序、表达式、目标写法。
+>    （17/17 全绿）。逐项比对两者差异：规则数量、顺序、表达式、目标写法。
 > 4. **看 DNS 指向**：zone → DNS → 看 `meowtrail.org` 与 `www` 的记录。
 >    - 若指向某个**仍在服务的 CF Pages 项目**，则该站的 `_redirects` / `_worker.js` 会先于
 >      zone 级 Redirect Rules 处理请求——而本仓库与 meowtrail 仓库**都没有** `_worker.js`
