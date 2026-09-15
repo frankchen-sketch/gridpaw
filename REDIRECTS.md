@@ -7,7 +7,7 @@
 > | 域名 | 文档声称 | 2026-09-15 实测 |
 > |---|---|---|
 > | meow-block.com | 17 条规则，17/17 通过 | ✅ **2026-09-15 重测 17/17 全绿**（含 catchall 兜底的 8 条） |
-> | spatialreasoninggame.com | 26 条规则 → gridpaw.com/pictomino/ | ⚠️ 跳转生效，但目标是 **2 跳链**（见下） |
+> | spatialreasoninggame.com | 26 条规则 → gridpaw.com/pictomino/ | ✅ **2026-09-15 重构**：2 条动态规则取代 26 条静态，修掉 2 跳链 + 5 条错映射 |
 > | **meowtrail.org** | 「239 条规则 → gridpaw.com/akari/」 | ❌ 实测 0 条生效 → ✅ **2026-09-15 已修复：121/121 保路径生效** |
 >
 > ### meowtrail.org 详情（严重）
@@ -122,15 +122,27 @@
 > **改完后必须复验**：`curl -s -o /dev/null -w "%{http_code} %{redirect_url}\n" https://meowtrail.org/tips/`
 > 期望 `301 https://gridpaw.com/akari/tips/`。别只信 Dashboard 上的「已保存」。
 >
-> ### spatialreasoninggame.com 的 2 跳链
+> ### ✅ spatialreasoninggame.com 已重构（2026-09-15）
+>
+> 原状况：~26 条静态规则，目标带 `.html`，且部分映射错误：
 >
 > ```
-> spatialreasoninggame.com/easy  --301-->  gridpaw.com/pictomino/easy.html  --308-->  /pictomino/easy
+> 改前：/easy    --301--> gridpaw.com/pictomino/easy.html  --308--> /pictomino/easy   （2 跳）
+> 改前：/daily   --301--> gridpaw.com/pictomino/                                       （落错页！）
+> 改前：/blog/*  --301--> gridpaw.com/pictomino/                                       （落错页！）
 > ```
 >
-> 301 的目标带 `.html`，而 CF Pages 上 `.html` 形式本身会 308 跳到无扩展名形式，形成 2 跳链。
-> 修法：把该 zone 的规则目标改为无 `.html` 形式（`/pictomino/easy`）。
-> 影响有限（该域名 90 天 0 点击，已退役），但链条该修。
+> 改为 2 条动态规则（配置见本文件末段），实测：
+>
+> | | 改前 | 改后 |
+> |---|---|---|
+> | 8 条（game/easy/hard/daily-puzzle/cat-breeds/animal-puzzles/community/privacy） | 跳 **2** 次 | **跳 1 次**，落对应页 |
+> | `/daily` | 落 pictomino **首页** | 跳 1 次 → `/pictomino/**daily-puzzle**` |
+> | 4 篇 blog | 落 pictomino **首页** | 跳 1 次 → **各自文章页** |
+> | www 变体 | — | 同样 1 跳且正确 |
+>
+> ️ 关键坑：**gridpaw 上 `/pictomino/daily` 是 404**——`daily` 的对应页叫 `daily-puzzle`。
+> 这就是为什么必须有规则 A 这条例外，不能纯靠保路径通配。
 
 ---
 # meowtrail.org -> gridpaw.com/akari/
@@ -279,3 +291,40 @@ meow-block.com/shikaku-10x10 -> gridpaw.com/
 meow-block.com/vs-shikaku -> gridpaw.com/
 meow-block.com/rectangle-partition-guide -> gridpaw.com/
 meow-block.com/privacy -> gridpaw.com/akari/privacy/
+
+---
+
+# spatialreasoninggame.com -> gridpaw.com/pictomino/
+# 2026-09-15 重构：原先 ~26 条静态规则（目标带 .html）被下面 2 条动态规则取代。
+# 修掉的两个问题：
+#   ① 8 条目标带 `.html` → CF Pages 把 .html 308 到无扩展名 → 每请求多一跳
+#   ② 5 条映射错误（4 篇 blog + /daily 落到 pictomino 首页，丢掉对应页相关性）
+# 实测（改后）：14 条路径全部「跳 1 次」且落点正确；www 变体同样正确。
+
+# 规则 A（例外，必须排在 B 之前 —— CF 重定向规则是「先匹配赢」）
+#   匹配：ends_with(http.host, "spatialreasoninggame.com") and http.request.uri.path eq "/daily"
+#   静态 301 -> https://gridpaw.com/pictomino/daily-puzzle
+#   注：gridpaw 上 /pictomino/daily 是 404，daily 的对应页叫 daily-puzzle
+spatialreasoninggame.com/daily -> gridpaw.com/pictomino/daily-puzzle
+
+# 规则 B（通用，保路径 + 去 .html，排在 A 之后、旧静态规则之前）
+#   匹配：ends_with(http.host, "spatialreasoninggame.com")   ← ends_with 同时覆盖 www
+#   动态 301 -> concat("https://gridpaw.com/pictomino", http.request.uri.path)
+# 覆盖的路径（均 1 跳落到对应页）：
+spatialreasoninggame.com/ -> gridpaw.com/pictomino/
+spatialreasoninggame.com/game -> gridpaw.com/pictomino/game
+spatialreasoninggame.com/easy -> gridpaw.com/pictomino/easy
+spatialreasoninggame.com/hard -> gridpaw.com/pictomino/hard
+spatialreasoninggame.com/daily-puzzle -> gridpaw.com/pictomino/daily-puzzle
+spatialreasoninggame.com/cat-breeds -> gridpaw.com/pictomino/cat-breeds
+spatialreasoninggame.com/animal-puzzles -> gridpaw.com/pictomino/animal-puzzles
+spatialreasoninggame.com/community -> gridpaw.com/pictomino/community
+spatialreasoninggame.com/privacy -> gridpaw.com/pictomino/privacy
+spatialreasoninggame.com/blog/what-is-spatial-reasoning -> gridpaw.com/pictomino/blog/what-is-spatial-reasoning
+spatialreasoninggame.com/blog/deduction-vs-spatial-reasoning -> gridpaw.com/pictomino/blog/deduction-vs-spatial-reasoning
+spatialreasoninggame.com/blog/spatial-reasoning-activities-for-kids -> gridpaw.com/pictomino/blog/spatial-reasoning-activities-for-kids
+spatialreasoninggame.com/blog/benefits-of-puzzle-games-for-children -> gridpaw.com/pictomino/blog/benefits-of-puzzle-games-for-children
+
+# 已知可接受的小瑕疵：`.html` 遗留入口（/game.html 等）仍 2 跳——
+#   动态表达式原样透传路径，故目标保留 .html，再由 gridpaw 308 一次。
+#   旧站 canonical/sitemap 用无扩展名形式，实际流量不受影响。
