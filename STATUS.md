@@ -25,21 +25,40 @@
 
 ## 二、待决策 / 未决（有行动价值）
 
-### 1. ✅ meowtrail.org 重复站已归权（2026-09-15 修复）
+### 1. ✅ meowtrail.org 已归权（2026-09-15 完成，迁移进行中）
 
 **修复前**：称「239 条规则已归权」，实测**一条都没生效**——该域名自服务 200 + 自 canonical +
-Google 以独立站收录（9/1–9/15：6 点击/159 曝光，sitemap 仍提交 121 条 URL），内容与
-gridpaw.com/akari/ 近重复。**它不是在传权，是在抢词。**
+Google 以独立站收录，sitemap 仍提交 121 条 URL，内容与 gridpaw.com/akari/ 近重复。
+**它不是在传权，是在抢词。**
 
 **根因**：zone 里那条归权规则处于「已禁用」。「239 条规则」的说法本身也是错的——实际只有
 2 条规则，原那条第 1 条是主机名通配符（不做路径映射）。
 
-**修复**：新建**保路径动态规则**
-`concat("https://gridpaw.com/akari", http.request.uri.path)`。
-**实测 121/121 全部 301 且目标与文档完全一致。**
+**修复**（三条活动规则协同，顺序是硬要求）：
+1. 首页精确规则 → `https://gridpaw.com/`（GSC 要求 old homepage → **new homepage**）
+2. www → 裸域
+3. 保路径动态规则 `concat("https://gridpaw.com/akari", http.request.uri.path)`
 
-**还剩 GSC 侧两步**：① 撤掉 meowtrail.org 的 sitemap 提交；② 设置 → 更改地址 → `gridpaw.com`。
-详见 `REDIRECTS.md` 顶部核对表。
+**验证**：
+- 121/121 映射逐条 301 且目标与文档一致
+- 首页 5 种变体（http/https/无斜杠/www）全部正确
+- GSC「更改地址」**必需项全部通过，已确认迁移**（`meowtrail.org → gridpaw.com`），
+  GSC 显示「迁移进行中」，持续 180 天
+
+**迁移基线（2026-09-15，对比用）**：
+
+| 站 | 近 28 天点击 | 曝光 | sitemap 提交 |
+|---|---|---|---|
+| meowtrail.org | 9 | **450** | 121 |
+| gridpaw.com | 5 | 238 | 68 |
+
+> meowtrail 曝光反而高于 gridpaw——老站优势。归权后这批量应逐步转到 gridpaw。
+
+**纪律**：301 至少留 180 天（有流量继续延长）；旧域名续费满 1 年。
+
+**待清理（CF Dashboard，非阻塞）**：删掉顺序 1 那条**已禁用**的通配符主机名规则
+（排最前 + 通配符 —— 按实测的「先匹配赢」语义，一旦误启用会吃掉整个域名，
+让上述三条规则全部失效）；并给首页规则改个可读名字。
 
 ### 2. spatialreasoninggame.com 的 2 跳链
 
