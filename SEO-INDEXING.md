@@ -136,9 +136,43 @@ sitemaps.org 协议规定索引文件只能指向 sitemap，不能指向另一�
 
 ## 五、持续推进动作
 
-1. **Request Indexing**（GSC UI，配额 ~10/天）对 17 个非收录 URL，分批提交。
+1. **Request Indexing**（GSC UI，API 不支持）对未收录 URL 分批提交 —— 配额实况见 5.1，**勿按 10/天 估算**。
 2. 等 2–4 周，看 14 个「已发现 - 尚未编入索引」是否转正。
 3. **在这个节点不要再加内容页。** 先让已有的最好页面被看见，拿到数据再决定下一批写什么。
+
+### 5.1 Request Indexing 配额实况（2026-09-15 实测，勿按「10/天」估算）
+
+GSC 官方口径的「~10/天」是**上限而非可达速率**。实测：
+
+| 时刻 | 结果 |
+|---|---|
+| 17:5x | `/brain-teasers-for-adults/` ✅ → 下一个立刻「超出了配额」 |
+| 18:2x | 重试 → 配额 |
+| 18:52 | `pictomino/blog/spatial-reasoning-activities-for-kids` ✅ → 下一个「通用错误」，重试 → 配额 |
+
+**两小时内只有 2 发成功，且 1 小时后配额会部分恢复** → 更像**缓慢回填的滑动窗口**，不是午夜重置的日计数器。
+
+实操规则：
+- **按「每轮 1–2 发」排期**：清 N 条要 N/1.5+ 天，不是 N/10 天
+- 撞配额就干净收尾，别为了凑数重试；下一次 cron 接着跑
+- URL 报**通用错误**（「糟糕！出了点问题」）可重试一次；重试若返配额则立即停整批
+
+### 5.2 提交是否真生效：看 `lastCrawlTime`，不看成功文案
+
+实测两个成功提交的 URL，Google 在**几分钟内**就来爬了：
+
+| URL | 提交 | `lastCrawlTime` |
+|---|---|---|
+| `/brain-teasers-for-adults/` | ~17:55 | 2026-09-15T10:16:15Z（18:16） |
+| `/pictomino/blog/spatial-reasoning-activities-for-kids` | ~18:50 | 2026-09-15T10:48:18Z（18:48） |
+
+提交后几小时仍无 `lastCrawlTime` = 那次提交没生效。**用这个判定，不要信 UI 的成功面板。**
+
+### 5.3 当前 cron
+
+`gridpaw-request-indexing`（job `6d0557a0b149`），每天 09:30，已设 **15 次**，`continuity: true`。
+脚本 `~/.hermes/scripts/gridpaw_unindexed.py`（带状态缓存：未收录每轮复测，已收录 7 天复扫；
+68 条全测要 10 分钟+，缓存后约 2.5 分钟）。输出落在 `~/.hermes/cron/output/6d0557a0b149/`。
 
 ---
 
