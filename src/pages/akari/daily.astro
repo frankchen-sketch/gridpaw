@@ -8,104 +8,126 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
 <head>
   <SEOHead title={title} description={description} canonical="/akari/daily" type="website" />
   <style is:global>
+    /* ── GridPaw 视觉合同 token（STYLE.md）── */
+    :root {
+      --gp-primary: #E8A888;
+      --gp-primary-strong: #D47A50;
+      --gp-primary-soft: #F0B898;
+      --gp-brown-900: #342421;
+      --gp-brown-600: #6F5651;
+      --gp-brown-400: #9B726C;
+      --gp-ink: #3D3D3D;
+      --gp-stone: #9E9590;
+      --gp-cream: #FFF8F0;
+      --gp-cream-warm: #FFF4F0;
+      --gp-sand: #F8F6EF;
+      --gp-blush: #F4DFDC;
+      --gp-linen: #E7DACF;
+      --gp-parchment: #E8DDD0;
+      --gp-white: #FFFFFF;
+      --gp-error: #E74C3C;
+      --gp-success: #559C68;
+      --gp-info: #5C6BC0;
+      --gp-lilac-soft: #E8E0EB;
+    }
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:linear-gradient(180deg,#f8f6ef,#f8f6ef);color:#342421;min-height:100vh}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:var(--gp-sand);color:var(--gp-brown-900);min-height:100vh}
     .container{max-width:720px;margin:0 auto;padding:1rem}
-    h1{font-size:1.8rem;color:#342421;text-align:center;margin:.5rem 0;text-shadow:0 2px 4px rgba(123,107,138,.1)}
-    .subtitle{text-align:center;color:#6f5651;margin-bottom:1rem;font-size:.95rem;font-weight:500}
-    .daily-badge{display:inline-block;background:linear-gradient(135deg,#E8956A,#D47A50);color:#fff;padding:.3rem .8rem;border-radius:20px;font-size:.85rem;font-weight:700;margin-bottom:1rem}
-    .timer{text-align:center;font-size:2rem;font-weight:800;color:#342421;margin:1rem 0;font-variant-numeric:tabular-nums}
+    h1{font-size:1.8rem;color:var(--gp-brown-900);text-align:center;margin:.5rem 0;text-shadow:0 2px 4px rgba(123,107,138,.1)}
+    .subtitle{text-align:center;color:var(--gp-brown-600);margin-bottom:1rem;font-size:.95rem;font-weight:500}
+    .daily-badge{display:inline-block;background:linear-gradient(135deg,var(--gp-primary-soft),var(--gp-primary-strong));color:#fff;padding:.3rem .8rem;border-radius:20px;font-size:.85rem;font-weight:700;margin-bottom:1rem}
+    .timer{text-align:center;font-size:2rem;font-weight:800;color:var(--gp-brown-900);margin:1rem 0;font-variant-numeric:tabular-nums}
     .controls{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;align-items:center;margin:.8rem 0}
     .btn{padding:.6rem 1.2rem;border:none;border-radius:14px;cursor:pointer;font-size:.9rem;font-weight:600;transition:all .2s cubic-bezier(.4,0,.2,1);font-family:inherit;box-shadow:0 4px 12px rgba(0,0,0,.1)}
     .btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.15)}
     .btn:active{transform:scale(.95) translateY(0);box-shadow:0 2px 8px rgba(0,0,0,.1)}
-    .btn-primary{background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;box-shadow:0 4px 12px rgba(232,168,136,.3)}
-    .btn-primary:hover{background:linear-gradient(145deg,#E0A888,#D08868);box-shadow:0 6px 16px rgba(232,168,136,.4)}
-    .btn-secondary{background:linear-gradient(145deg,#F8F0FF,#fff4f0);color:#342421;box-shadow:0 4px 12px rgba(123,107,138,.1)}
-    .btn-secondary:hover{background:linear-gradient(145deg,#fff4f0,#E8E0F8);box-shadow:0 6px 16px rgba(123,107,138,.15)}
+    .btn-primary{background:linear-gradient(145deg,var(--gp-primary-soft),var(--gp-primary-strong));color:#fff;box-shadow:0 4px 12px rgba(232,168,136,.3)}
+    .btn-primary:hover{background:linear-gradient(145deg,var(--gp-primary-soft),var(--gp-primary-strong));box-shadow:0 6px 16px rgba(232,168,136,.4)}
+    .btn-secondary{background:linear-gradient(145deg,var(--gp-lilac-soft),var(--gp-cream-warm));color:var(--gp-brown-900);box-shadow:0 4px 12px rgba(123,107,138,.1)}
+    .btn-secondary:hover{background:linear-gradient(145deg,var(--gp-cream-warm),var(--gp-lilac-soft));box-shadow:0 6px 16px rgba(123,107,138,.15)}
     .game-status{display:flex;flex-direction:column;align-items:center;gap:.5rem;margin:.8rem 0}
     .health-display{display:flex;gap:.3rem;font-size:1.5rem}
     .heart{transition:all .3s ease;filter:drop-shadow(0 2px 4px rgba(232,168,136,.3))}
     .heart svg{width:24px;height:24px}
     .heart.lost{filter:grayscale(1) opacity(.4);transform:scale(.8)}
-    .progress{text-align:center;font-size:.85rem;color:#6f5651;margin:.3rem 0;min-height:1.4rem}
+    .progress{text-align:center;font-size:.85rem;color:var(--gp-brown-600);margin:.3rem 0;min-height:1.4rem}
     .grid-wrapper{display:flex;justify-content:center;margin:.5rem 0}
-    .puzzle-grid{display:inline-grid;gap:3px;background:linear-gradient(145deg,#E8DDD8,#D8C8C0);padding:6px;border-radius:16px;box-shadow:0 8px 32px rgba(123,107,138,.15),0 2px 8px rgba(123,107,138,.1)}
+    .puzzle-grid{display:inline-grid;gap:3px;background:linear-gradient(145deg,var(--gp-linen),var(--gp-linen));padding:6px;border-radius:16px;box-shadow:0 8px 32px rgba(123,107,138,.15),0 2px 8px rgba(123,107,138,.1)}
     .cell{display:flex;align-items:center;justify-content:center;border-radius:10px;user-select:none;cursor:pointer;transition:all .2s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
     .cell:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(123,107,138,.2)}
-    .cell-black{background:linear-gradient(145deg,#8B7B9A,#6B5B7A);cursor:default;box-shadow:inset 0 3px 6px rgba(0,0,0,.3),0 2px 4px rgba(123,107,138,.2)}
-    .cell-number{font-weight:800;color:#fff4f0;text-shadow:0 1px 2px rgba(0,0,0,.3)}
-    .cell-lit{background:linear-gradient(145deg,#FFF8F0,#FFF0E0);box-shadow:inset 0 0 8px rgba(255,248,240,.5)}
-    .cell-cat{background:linear-gradient(145deg,#fff4f0,#e7dacf);box-shadow:inset 0 0 16px rgba(200,168,232,.4),0 4px 12px rgba(232,168,136,.3)}
-    .cell-x{background:#FAFAFA;box-shadow:inset 0 0 4px rgba(0,0,0,.05)}
-    @keyframes hint-pulse { 0%,100% { box-shadow: inset 0 0 0 3px #E8A888; } 50% { box-shadow: inset 0 0 0 3px #E8A888, 0 0 16px rgba(232,168,136,0.5); } }
+    .cell-black{background:linear-gradient(145deg,var(--gp-brown-600),var(--gp-brown-900));cursor:default;box-shadow:inset 0 3px 6px rgba(0,0,0,.3),0 2px 4px rgba(123,107,138,.2)}
+    .cell-number{font-weight:800;color:var(--gp-cream-warm);text-shadow:0 1px 2px rgba(0,0,0,.3)}
+    .cell-lit{background:linear-gradient(145deg,var(--gp-cream),var(--gp-cream-warm));box-shadow:inset 0 0 8px rgba(255,248,240,.5)}
+    .cell-cat{background:linear-gradient(145deg,var(--gp-cream-warm),var(--gp-linen));box-shadow:inset 0 0 16px rgba(200,168,232,.4),0 4px 12px rgba(232,168,136,.3)}
+    .cell-x{background:var(--gp-white);box-shadow:inset 0 0 4px rgba(0,0,0,.05)}
+    @keyframes hint-pulse { 0%,100% { box-shadow: inset 0 0 0 3px var(--gp-primary); } 50% { box-shadow: inset 0 0 0 3px var(--gp-primary), 0 0 16px rgba(232,168,136,0.5); } }
     .cell-hint { animation: hint-pulse 0.8s ease-in-out infinite; }
-    .cell-dark{background:linear-gradient(145deg,#F0EBE5,#E8E0D8);box-shadow:inset 0 2px 4px rgba(0,0,0,.08)}
+    .cell-dark{background:linear-gradient(145deg,var(--gp-sand),var(--gp-parchment));box-shadow:inset 0 2px 4px rgba(0,0,0,.08)}
     @keyframes cat-place{0%{transform:scale(0) rotate(-10deg);opacity:0}50%{transform:scale(1.2) rotate(5deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
     .cell-cat-new{animation:cat-place .4s cubic-bezier(.34,1.56,.64,1) forwards}
-    .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#E74C3C;color:#fff;padding:.6rem 1.2rem;border-radius:12px;font-size:.9rem;font-weight:600;z-index:1000;opacity:0;transition:opacity .3s;pointer-events:none}
-    .toast.show{opacity:1}.toast.success{background:#559c68}
+    .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--gp-error);color:#fff;padding:.6rem 1.2rem;border-radius:12px;font-size:.9rem;font-weight:600;z-index:1000;opacity:0;transition:opacity .3s;pointer-events:none}
+    .toast.show{opacity:1}.toast.success{background:var(--gp-success)}
     .win-overlay{position:fixed;inset:0;background:rgba(251,248,255,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;opacity:0;transition:opacity .4s;pointer-events:none;overflow:hidden}
     .win-overlay.show{opacity:1;pointer-events:auto}
     .win-cat{animation:cat-pop .8s cubic-bezier(.34,1.56,.64,1) forwards}
     @keyframes cat-pop{0%{transform:scale(0) rotate(-10deg)}50%{transform:scale(1.3) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
     .win-glow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(232,168,136,.3) 0%,transparent 70%);animation:glow-pulse 2s ease-in-out infinite;pointer-events:none}
     @keyframes glow-pulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.3);opacity:1}}
-    .win-text{font-size:2rem;font-weight:800;color:#342421;margin-top:1.5rem;animation:text-pop .6s .3s cubic-bezier(.34,1.56,.64,1) both}
+    .win-text{font-size:2rem;font-weight:800;color:var(--gp-brown-900);margin-top:1.5rem;animation:text-pop .6s .3s cubic-bezier(.34,1.56,.64,1) both}
     @keyframes text-pop{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
-    .win-sub{font-size:1.1rem;color:#6f5651;margin-top:.5rem;animation:fade-up .5s .5s ease both}
+    .win-sub{font-size:1.1rem;color:var(--gp-brown-600);margin-top:.5rem;animation:fade-up .5s .5s ease both}
     @keyframes fade-up{0%{transform:translateY(20px);opacity:0}100%{transform:translateY(0);opacity:1}}
     .win-stats{display:flex;gap:2rem;margin:1.5rem 0;animation:fade-up .5s .7s ease both}
     .stat{text-align:center}
-    .stat-value{font-size:2rem;font-weight:800;color:#342421}
-    .stat-label{font-size:.85rem;color:#6f5651}
-    .win-btn{margin-top:1.5rem;padding:.7rem 2rem;background:#E8A888;color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;font-family:inherit}
-    .win-btn:hover{background:#D09070}
+    .stat-value{font-size:2rem;font-weight:800;color:var(--gp-brown-900)}
+    .stat-label{font-size:.85rem;color:var(--gp-brown-600)}
+    .win-btn{margin-top:1.5rem;padding:.7rem 2rem;background:var(--gp-primary);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;font-family:inherit}
+    .win-btn:hover{background:var(--gp-primary-strong)}
     .win-share-row{display:flex;gap:.5rem;margin-top:.8rem;flex-wrap:wrap;justify-content:center}
     .share-btn{padding:.5rem 1rem;border:none;border-radius:10px;cursor:pointer;font-size:.85rem;font-weight:600;font-family:inherit;transition:transform .1s}
     .share-btn:active{transform:scale(.95)}
-    .share-copy{background:#fff4f0;color:#342421}.share-copy:hover{background:#e7dacf}
-    .share-twitter{background:#1DA1F2;color:#fff}.share-twitter:hover{background:#0d8ddb}
+    .share-copy{background:var(--gp-cream-warm);color:var(--gp-brown-900)}.share-copy:hover{background:var(--gp-linen)}
+    .share-twitter{background:var(--gp-info);color:#fff}.share-twitter:hover{background:var(--gp-info)}
     .confetti{position:absolute;width:12px;height:12px;border-radius:3px;animation:confetti-fall linear forwards}
     @keyframes confetti-fall{0%{transform:translateY(-100vh) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
     .paw-confetti{position:absolute;font-size:24px;animation:paw-fall linear forwards}
     @keyframes paw-fall{0%{transform:translateY(-100vh) rotate(0) scale(1);opacity:.8}100%{transform:translateY(100vh) rotate(360deg) scale(.5);opacity:0}}
     .leaderboard{margin-top:2rem;padding:1.5rem;background:#fff;border-radius:16px;box-shadow:0 4px 16px rgba(123,107,138,.1)}
-    .leaderboard h3{color:#342421;margin-bottom:1rem;font-size:1.2rem}
-    .leaderboard-item{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid #fff4f0}
+    .leaderboard h3{color:var(--gp-brown-900);margin-bottom:1rem;font-size:1.2rem}
+    .leaderboard-item{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--gp-cream-warm)}
     .leaderboard-item:last-child{border-bottom:none}
-    .rank{font-weight:700;color:#E8A888;min-width:2rem}
+    .rank{font-weight:700;color:var(--gp-primary);min-width:2rem}
     .player-name{flex:1;margin:0 1rem}
-    .time{font-weight:700;color:#342421;font-variant-numeric:tabular-nums}
-    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
-    footer a{color:#6f5651}
+    .time{font-weight:700;color:var(--gp-brown-900);font-variant-numeric:tabular-nums}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:var(--gp-brown-600)}
+    footer a{color:var(--gp-brown-600)}
     @media(max-width:480px){h1{font-size:1.3rem}.controls{gap:.3rem}.btn{padding:.4rem .7rem;font-size:.8rem}.win-stats{gap:1rem}}
   
     /* ── Header ── */
-    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid var(--gp-blush);background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
     .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
     .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
     .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
     .brand-logo img{width:100%;height:100%;object-fit:cover}
     .brand-name{line-height:1.1}
-    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
-    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .brand-name .big{font-weight:900;color:var(--gp-brown-900);font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:var(--gp-brown-400);font-size:0.75rem}
     .nav{display:flex;align-items:center;gap:0.25rem}
-    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
-    .nav a:hover{background:#fff4f0;color:#342421}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:var(--gp-brown-600);text-decoration:none}
+    .nav a:hover{background:var(--gp-cream-warm);color:var(--gp-brown-900)}
 
   
     /* ── Games Dropdown ── */
     .game-switcher { position: relative; }
-    .game-switcher-btn { font-size: 0.875rem; font-weight: 700; color: var(--text, #3D3D3D); background: none; border: none; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 0.375rem; display: flex; align-items: center; gap: 4px; font-family: inherit; }
+    .game-switcher-btn { font-size: 0.875rem; font-weight: 700; color: var(--text, var(--gp-ink)); background: none; border: none; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 0.375rem; display: flex; align-items: center; gap: 4px; font-family: inherit; }
     .game-switcher-btn::after { content: '▾'; font-size: 10px; }
-    .game-switcher-btn:hover { background: var(--hover-bg, #F0EDF5); color: var(--ink, #3D3D3D); }
-    .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid #E8DDD0; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
+    .game-switcher-btn:hover { background: var(--hover-bg, var(--gp-lilac-soft)); color: var(--ink, var(--gp-ink)); }
+    .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid var(--gp-parchment); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
     .game-switcher:hover .game-switcher-menu { display: block; }
     .game-switcher-menu a { display: flex; flex-direction: column; padding: 10px 16px !important; font-size: 13px !important; gap: 2px; border-radius: 0 !important; }
-    .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: #9E9590; }
-    .game-switcher-menu a:hover { background: #FFF8F0 !important; color: var(--ink, #3D3D3D) !important; }
-    .game-switcher-menu a.active { color: var(--ink, #3D3D3D) !important; background: #FFF5F0 !important; font-weight: 800 !important; }
+    .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: var(--gp-stone); }
+    .game-switcher-menu a:hover { background: var(--gp-cream) !important; color: var(--ink, var(--gp-ink)) !important; }
+    .game-switcher-menu a.active { color: var(--ink, var(--gp-ink)) !important; background: var(--gp-cream-warm) !important; font-weight: 800 !important; }
     @media (max-width: 480px) { .game-switcher:hover .game-switcher-menu { display: none; } .game-switcher.open .game-switcher-menu { display: block; } }
   </style>
 </head>
@@ -144,11 +166,11 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
     <div style="text-align:center"><span class="daily-badge" id="daily-badge">🔥 HARD 10×10</span></div>
     <div class="timer" id="timer">00:00</div>
     <div style="display:flex;gap:1.5rem;justify-content:center;margin:.5rem 0;flex-wrap:wrap">
-      <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:#E8A888" id="streak-count">0</div><div style="font-size:.75rem;color:#6f5651">Streak 🔥</div></div>
-      <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:#342421" id="best-streak">0</div><div style="font-size:.75rem;color:#6f5651">Best Streak</div></div>
-      <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:#559c68" id="best-time">--:--</div><div style="font-size:.75rem;color:#6f5651">Best Time</div></div>
+      <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--gp-primary)" id="streak-count">0</div><div style="font-size:.75rem;color:var(--gp-brown-600)">Streak 🔥</div></div>
+      <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--gp-brown-900)" id="best-streak">0</div><div style="font-size:.75rem;color:var(--gp-brown-600)">Best Streak</div></div>
+      <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--gp-success)" id="best-time">--:--</div><div style="font-size:.75rem;color:var(--gp-brown-600)">Best Time</div></div>
     </div>
-    <div style="text-align:center;margin:.3rem 0"><span id="streak-badge" style="display:none;padding:.3rem .8rem;border-radius:20px;font-size:.85rem;font-weight:700;border:2px solid #E8A888;background:#FFF8F0"></span></div>
+    <div style="text-align:center;margin:.3rem 0"><span id="streak-badge" style="display:none;padding:.3rem .8rem;border-radius:20px;font-size:.85rem;font-weight:700;border:2px solid var(--gp-primary);background:var(--gp-cream)"></span></div>
     <div class="controls">
       <button class="btn btn-primary" id="start-btn">▶ Start Challenge</button>
       <button class="btn btn-secondary" id="hint-btn">💡 Hint</button>
@@ -181,30 +203,30 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
           <div class="stat-label">Current Streak</div>
         </div>
       </div>
-      <div id="win-badge" style="display:none;font-size:1.2rem;font-weight:700;margin:.5rem 0;padding:.4rem 1rem;border-radius:20px;background:#FFF8F0;border:2px solid #E8A888"></div>
+      <div id="win-badge" style="display:none;font-size:1.2rem;font-weight:700;margin:.5rem 0;padding:.4rem 1rem;border-radius:20px;background:var(--gp-cream);border:2px solid var(--gp-primary)"></div>
       <div class="win-share-row">
         <button class="share-btn share-reddit" id="share-reddit" style="background:#FF4500;color:#fff">👽 Reddit</button>
         <button class="share-btn share-copy" id="share-copy">📋 Copy Result</button>
         <button class="share-btn share-twitter" id="share-twitter">𝕏 Share</button>
       </div>
-      <button class="win-btn" id="win-close" style="margin-top:.8rem;background:none;border:1.5px solid #E8A888;color:#E8A888;font-weight:700;padding:.5rem 1.6rem;border-radius:999px;cursor:pointer">Continue ✓</button>
+      <button class="win-btn" id="win-close" style="margin-top:.8rem;background:none;border:1.5px solid var(--gp-primary);color:var(--gp-primary);font-weight:700;padding:.5rem 1.6rem;border-radius:999px;cursor:pointer">Continue ✓</button>
     </div>
     <div class="leaderboard">
       <h3>📊 Your Daily Stats</h3>
       <div style="display:flex;gap:2rem;justify-content:center;padding:1rem 0">
-        <div style="text-align:center"><div style="font-size:2rem;font-weight:800;color:#E8A888" id="stat-streak">0</div><div style="font-size:.85rem;color:#6f5651">Current Streak</div></div>
-        <div style="text-align:center"><div style="font-size:2rem;font-weight:800;color:#342421" id="stat-best-streak">0</div><div style="font-size:.85rem;color:#6f5651">Best Streak</div></div>
-        <div style="text-align:center"><div style="font-size:2rem;font-weight:800;color:#559c68" id="stat-best-time">--:--</div><div style="font-size:.85rem;color:#6f5651">Best Time</div></div>
+        <div style="text-align:center"><div style="font-size:2rem;font-weight:800;color:var(--gp-primary)" id="stat-streak">0</div><div style="font-size:.85rem;color:var(--gp-brown-600)">Current Streak</div></div>
+        <div style="text-align:center"><div style="font-size:2rem;font-weight:800;color:var(--gp-brown-900)" id="stat-best-streak">0</div><div style="font-size:.85rem;color:var(--gp-brown-600)">Best Streak</div></div>
+        <div style="text-align:center"><div style="font-size:2rem;font-weight:800;color:var(--gp-success)" id="stat-best-time">--:--</div><div style="font-size:.85rem;color:var(--gp-brown-600)">Best Time</div></div>
       </div>
       <div id="stat-badge" style="text-align:center;margin:.5rem 0"></div>
     </div>
     <div class="leaderboard" id="daily-leaderboard">
       <h3>🏆 Today's Leaderboard</h3>
-      <p style="font-size:.8rem;color:#6f5651;margin:.2rem 0 1rem">Sign in and solve today's challenge to appear here!</p>
+      <p style="font-size:.8rem;color:var(--gp-brown-600);margin:.2rem 0 1rem">Sign in and solve today's challenge to appear here!</p>
       <div id="leaderboard-list" style="text-align:left;max-width:420px;margin:0 auto"></div>
     </div>
 
-    <section class="seo-content" style="margin-top:2rem;padding-top:1.5rem;border-top:2px solid #e7dacf;max-width:720px;margin-left:auto;margin-right:auto">
+    <section class="seo-content" style="margin-top:2rem;padding-top:1.5rem;border-top:2px solid var(--gp-linen);max-width:720px;margin-left:auto;margin-right:auto">
       <style>.seo-content{max-width:720px}.seo-content p,.seo-content li{line-height:1.75}</style>
       <h2>Why Play Daily?</h2>
       <p>Every day, GridPaw generates a brand new <strong>Akari puzzle</strong> that is the same for all players worldwide. Here is why the daily challenge is worth coming back for:</p>
@@ -326,11 +348,11 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       const statBadge = document.getElementById('stat-badge');
       if (badge) {
         const next = streak >= 30 ? null : streak >= 14 ? { d: 30, e: '👑', l: 'Cat Royalty' } : streak >= 7 ? { d: 14, e: '💎', l: 'Diamond Paw' } : streak >= 3 ? { d: 7, e: '🌟', l: 'Star Cat' } : { d: 3, e: '🔥', l: 'On Fire' };
-        statBadge.innerHTML = '<span style="padding:.3rem .8rem;border-radius:20px;font-size:.85rem;font-weight:700;border:2px solid ' + badge.color + ';background:#FFF8F0">' + badge.emoji + ' ' + badge.label + '</span>'
-          + (next ? '<span style="font-size:.8rem;color:#9b726c;margin-left:.6rem">' + (next.d - streak) + ' more day' + (next.d - streak > 1 ? 's' : '') + ' → ' + next.e + ' ' + next.l + '</span>' : streak >= 30 ? '<span style="font-size:.8rem;color:#9b726c;margin-left:.6rem">Max badge!</span>' : '');
+        statBadge.innerHTML = '<span style="padding:.3rem .8rem;border-radius:20px;font-size:.85rem;font-weight:700;border:2px solid ' + badge.color + ';background:var(--gp-cream)">' + badge.emoji + ' ' + badge.label + '</span>'
+          + (next ? '<span style="font-size:.8rem;color:var(--gp-brown-400);margin-left:.6rem">' + (next.d - streak) + ' more day' + (next.d - streak > 1 ? 's' : '') + ' → ' + next.e + ' ' + next.l + '</span>' : streak >= 30 ? '<span style="font-size:.8rem;color:var(--gp-brown-400);margin-left:.6rem">Max badge!</span>' : '');
       } else {
         const to3 = 3 - streak;
-        statBadge.innerHTML = '<span style="font-size:.85rem;color:#6f5651">' + (streak > 0
+        statBadge.innerHTML = '<span style="font-size:.85rem;color:var(--gp-brown-600)">' + (streak > 0
           ? '🔥 ' + streak + ' day' + (streak > 1 ? 's' : '') + ' in a row — ' + to3 + ' more to earn your first badge!'
           : 'Come back tomorrow and keep your streak going — 3 days earns your first badge!') + '</span>';
       }
@@ -406,7 +428,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       // 平日 10×10；周末（周六/周日 UTC）14×14 Weekend Super Challenge
       const dow = new Date().getUTCDay();
       const dailySize = (dow === 0 || dow === 6) ? 14 : 10;
-      gridEl.innerHTML = '<div style="padding:2rem;color:#6f5651;font-size:0.9rem;">Generating...</div>';
+      gridEl.innerHTML = '<div style="padding:2rem;color:var(--gp-brown-600);font-size:0.9rem;">Generating...</div>';
       progressEl.textContent = '';
       const isWeekend = (dow === 0 || dow === 6);
       // 徽章 + 副标题随难度切换
@@ -848,14 +870,14 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
         const data = await res.json();
         const entries = data.entries || [];
         if (!entries.length) {
-          list.innerHTML = '<p style="text-align:center;font-size:.85rem;color:#9b726c;padding:.5rem 0">🐾 Be the first cat on the leaderboard today!</p>';
+          list.innerHTML = '<p style="text-align:center;font-size:.85rem;color:var(--gp-brown-400);padding:.5rem 0">🐾 Be the first cat on the leaderboard today!</p>';
           return;
         }
         const medal = r => r === 1 ? '🥇' : r === 2 ? '🥈' : r === 3 ? '🥉' : '#' + r;
         list.innerHTML = entries.map(e =>
-          '<div style="display:flex;justify-content:space-between;padding:.4rem .6rem;border-bottom:1px solid #f4dfdc;font-size:.85rem">'
-          + '<span style="font-weight:700;color:#342421">' + medal(e.rank) + ' ' + String(e.name || 'Anonymous Cat').replace(/[<>&]/g, '') + '</span>'
-          + '<span style="color:#559c68;font-weight:700">' + msToClock(e.timeMs) + '</span></div>'
+          '<div style="display:flex;justify-content:space-between;padding:.4rem .6rem;border-bottom:1px solid var(--gp-blush);font-size:.85rem">'
+          + '<span style="font-weight:700;color:var(--gp-brown-900)">' + medal(e.rank) + ' ' + String(e.name || 'Anonymous Cat').replace(/[<>&]/g, '') + '</span>'
+          + '<span style="color:var(--gp-success);font-weight:700">' + msToClock(e.timeMs) + '</span></div>'
         ).join('');
       } catch (e) { /* 静默 */ }
     }
