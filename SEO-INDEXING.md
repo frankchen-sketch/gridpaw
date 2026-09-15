@@ -11,7 +11,7 @@
 | 项 | 值 |
 |---|---|
 | GSC 属性 | `sc-domain:gridpaw.com`（Domain 属性，2026-09-04 创建） |
-| GSC 服务账号 | `furriq-frank-admin@furriq-daily-brief.iam.gserviceaccount.com`（完整权限，2026-09-15 加入） |
+| GSC 服务账号 | 见 key 文件的 `client_email` 字段（2026-09-15 加入，完整权限）——邮箱不写在此文档，仓库是 public |
 | Key 文件 | `~/.hermes/scripts/furriq-daily-brief-e15ace04af1c.json`（同一把 key 同时覆盖 GA4 + GSC） |
 | GA4 | Property ID `552793510` |
 | 首次可用 API | 2026-09-15 起，效果/站点地图/URL 检查全可 API 化 |
@@ -122,15 +122,32 @@ sitemaps.org 协议规定索引文件只能指向 sitemap，不能指向另一�
 
 ---
 
-## 四、修复前后对比（68 条 sitemap URL 全量 URL 检查）
+## 四、索引状态读数（68 条 sitemap URL 全量 URL Inspection）
 
-| 状态 | 修复前 | 修复后 |
-|---|---|---|
-| Submitted and indexed | — | **51** |
-| Discovered - currently not indexed | — | 14 |
-| URL is unknown to Google | **16** | **3** |
+> ⚠️ **下面这张表是 2026-09-15 的单次读数，不是结论。** 当天多轮复测发现
+> `coverageState` 与 `indexStatusResult.sitemap` 字段**总是同时翻转**（二者是同一个底层变量：
+> GSC 有没有把这条 sitemap 条目对账到该 URL 上）。修正 sitemap 后 GSC 是**逐条增量对账**的，
+> 对账期间读数不稳。**不要把单次翻转当涨跌。**
 
-**「Google 完全不知道」从 16 降到 3。** 光是正确提交 sitemap 就让 13 个页面从「未知」翻成「已发现」。
+单次读数（2026-09-15，修正 sitemap 数小时后）：
+
+| 状态 | 当时读数 |
+|---|---|
+| Submitted and indexed | 51 |
+| Discovered - currently not indexed | 14 |
+| URL is unknown to Google | 3 |
+
+**可确定的只有一件事**：修复前该属性「已发现的网页 = 0」（GSC 从 sitemap 里解析出 0 条 URL），
+修复后 GSC API 报 `submitted = 68, errors = 0`。至于「多少个页面因此从未知变成已发现」——
+**归因不了**，因为对账还在进行，中途读数会来回跳（实测同一批 URL 在 1 小时后有 4 条从
+Discovered 退回 unknown，2 条反向）。
+
+**判断进展只用这三个稳定信号**：
+1. `Submitted and indexed` 的**计数**（跨天对比）
+2. **间隔 ≥1 天、连续两次不变**的状态转移
+3. `sitemap` 字段的**总量**（修复前 0 条 URL 有认领；修复后多数有）
+
+首个可靠的跨天对比应在 2026-09-16 cron 跑完后产生。
 
 ---
 

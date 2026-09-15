@@ -2,3 +2,10 @@ node_modules/
 dist/
 .wrangler/
 .dev.vars
+
+# IndexNow key file: name == key, so committing it would defeat the protocol's
+# unguessability (repo is public). Must exist locally to build/deploy.
+# scripts/check-indexnow-key.mjs fails the build loudly if it is missing.
+public/*.txt
+!public/llms.txt
+!public/robots.txt
