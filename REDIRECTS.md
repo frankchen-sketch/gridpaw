@@ -1,4 +1,45 @@
 # 301 Redirect Mapping Table
+
+> ## ⚠️ 运行态核对（2026-09-15 实测，务必先读）
+>
+> **本表记录的是「设计意图」，不是「运行现状」。两者目前不一致。**
+>
+> | 域名 | 文档声称 | 2026-09-15 实测 |
+> |---|---|---|
+> | meow-block.com | 17 条规则，17/17 通过 | ✅ **实测通过**（16/16 抽测全绿，含 catchall 兜底的 8 条） |
+> | spatialreasoninggame.com | 26 条规则 → gridpaw.com/pictomino/ | ⚠️ 跳转生效，但目标是 **2 跳链**（见下） |
+> | **meowtrail.org** | **239 条规则 → gridpaw.com/akari/** | ❌ **一条都没生效** |
+>
+> ### meowtrail.org 详情（严重）
+>
+> 穷举 28 个路径（含本文件全部映射类型的代表）实测：
+>
+> - **0 个路径 301 到 gridpaw.com**
+> - `/`、`/tips/`、`/glossary/`、`/how-to-play/`、`/light-up-puzzle/` 等**全部自服务 200**
+> - 页面 canonical **指向 meowtrail.org 自己**，不是 gridpaw.com
+> - Google 仍以独立站收录：URL Inspection 报 `/` 和 `/tips/` 为 `Submitted and indexed`
+> - GSC 9/1–9/15：**6 次点击 / 159 次曝光**（与 gridpaw.com 同期 5 点击 / 212 曝光量级相当）
+> - 该属性 sitemap 仍提交 **121 条 URL**
+> - **内容与 gridpaw.com/akari/ 近重复**，实测标题仅差品牌后缀
+>   （`... | MeowTrail` vs `... | GridPaw`；如 glossary 两站标题逐字相同）
+>
+> **后果**：meowtrail.org 不是「已归权的旧域名」，而是 gridpaw.com/akari/ 的**在线重复竞品**，
+> 两个域名的信号互相对冲。本次 gridpaw 索引修复（见 SEO-INDEXING.md）解决的正是被这个问题拖累的发现层。
+>
+> **未查明**：为什么这 239 条规则不在生效（规则被删？zone 迁移？DNS 指向变更？）。
+> 根因需在 CF Dashboard 的 meowtrail.org zone 里核对，文档层无法回答。
+>
+> ### spatialreasoninggame.com 的 2 跳链
+>
+> ```
+> spatialreasoninggame.com/easy  --301-->  gridpaw.com/pictomino/easy.html  --308-->  /pictomino/easy
+> ```
+>
+> 301 的目标带 `.html`，而 CF Pages 上 `.html` 形式本身会 308 跳到无扩展名形式，形成 2 跳链。
+> 修法：把该 zone 的规则目标改为无 `.html` 形式（`/pictomino/easy`）。
+> 影响有限（该域名 90 天 0 点击，已退役），但链条该修。
+
+---
 # meowtrail.org -> gridpaw.com/akari/
 
 meowtrail.org/ -> gridpaw.com/akari/

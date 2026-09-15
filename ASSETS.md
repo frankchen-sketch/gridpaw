@@ -23,7 +23,12 @@
 | Clarity Data Export Token (gridpaw) | `~/.hermes/.env` | `CLARITY_TOKEN_GRIDPAW` |
 | Clarity Data Export Token (furriq) | `~/.hermes/.env` | `CLARITY_DATA_EXPORT_TOKEN` |
 | PostHog Personal API Key | `~/.hermes/.env` | `POSTHOG_PERSONAL_API_KEY`（Project ID 587128 四站共用） |
-| GA4 服务账号 | `~/.config/furriq/ga4-service-account.json` | `ga4-reader@furriq-daily-brief`（需在各 GA4 Property Access Management 加 Viewer） |
+| **Google 服务账号 A**（GA4 + GSC） | `~/.hermes/scripts/furriq-daily-brief-e15ace04af1c.json` | `furriq-frank-admin@furriq-daily-brief.iam.gserviceaccount.com` — 同时覆盖 furriq.com + gridpaw.com 的 GA4 与 GSC |
+| **Google 服务账号 B**（GA4 专用，旧） | `~/.config/furriq/ga4-service-account.json` | `ga4-reader@furriq-daily-brief.iam.gserviceaccount.com` |
+| **IndexNow key** | `public/<key>.txt`（**已 gitignore，值不入库**） | 文件名即 key；`scripts/indexnow-ping.mjs` 自动探测。管理规则见 SEO-INDEXING.md §5.4 |
+
+> 两个 SA 同属 GCP project `furriq-daily-brief`，权限有重叠。**新增集成一律用 A**（furriq-frank-admin），
+> B 是早期 GA4 专用账号。2026-09-15 gridpaw 的 GSC 授权只加在 A 上。
 
 ## 消费端（改 ID 后要同步的地方）
 
@@ -34,5 +39,9 @@
 
 - [x] GA4 Property 552793510：服务账号已加 Viewer（2026-09-04 验证 Data API 通）
 - [x] Clarity gridpaw 项目：IP 屏蔽已加（2026-09-04 用户完成）
-- [ ] GSC 验证码（site-config TODO）+ Bing 验证码
-- [ ] 旧站 301 配置确认（meow-block.com / meowtrail.org / spatialreasoninggame.com → gridpaw）
+- [x] GSC：属性 `sc-domain:gridpaw.com` 已建（2026-09-04 创建）+ 服务账号 A 授权完整权限（2026-09-15）→ 效果/站点地图/URL 检查全可 API。细节见 SEO-INDEXING.md
+- [x] Bing / IndexNow：已注册；2026-09-15 key 轮换后实测提交 HTTP 200。key 文件已移出版本控制
+- [ ] **旧站 301 未全部生效**（2026-09-15 实测，详见 REDIRECTS.md 顶部核对表）
+  - meow-block.com ✅ 16/16 抽测通过
+  - spatialreasoninggame.com ⚠️ 跳转生效但是 2 跳链（`.html` 目标又 308 一次）
+  - **meowtrail.org ❌ 239 条规则一条都没生效** —— 该域名仍在自服务 + 自 canonical + 被 Google 当独立站收录（9/1–9/15：6 点击/159 曝光，sitemap 仍提交 121 条 URL），内容与 gridpaw.com/akari/ 近重复。**这是当前最高优先级的未决 SEO 问题**，需在 CF Dashboard 的 meowtrail.org zone 里查根因
