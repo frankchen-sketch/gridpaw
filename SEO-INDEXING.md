@@ -11,8 +11,8 @@
 | 项 | 值 |
 |---|---|
 | GSC 属性 | `sc-domain:gridpaw.com`（Domain 属性，2026-09-04 创建） |
-| GSC 服务账号 | 见 key 文件的 `client_email` 字段（2026-09-15 加入，完整权限）——邮箱不写在此文档，仓库是 public |
-| Key 文件 | `~/.hermes/scripts/furriq-daily-brief-e15ace04af1c.json`（同一把 key 同时覆盖 GA4 + GSC） |
+| GSC 服务账号 | 服务账号 A（`furriq-frank-admin@…`，2026-09-15 授权完整权限）——**台账唯一权威在 `ASSETS.md`**，含 key 路径与两把 SA 的分工 |
+| Key 文件 | 服务账号 A 的 key（路径见 `ASSETS.md` 凭据表）；同一把 key 同时覆盖 GA4 + GSC |
 | GA4 | Property ID `552793510` |
 | 首次可用 API | 2026-09-15 起，效果/站点地图/URL 检查全可 API 化 |
 
