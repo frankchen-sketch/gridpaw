@@ -6,7 +6,7 @@
 >
 > | 域名 | 文档声称 | 2026-09-15 实测 |
 > |---|---|---|
-> | meow-block.com | 17 条规则，17/17 通过 | ✅ **实测通过**（16/16 抽测全绿，含 catchall 兜底的 8 条） |
+> | meow-block.com | 17 条规则，17/17 通过 | ✅ **2026-09-15 重测 17/17 全绿**（含 catchall 兜底的 8 条） |
 > | spatialreasoninggame.com | 26 条规则 → gridpaw.com/pictomino/ | ⚠️ 跳转生效，但目标是 **2 跳链**（见下） |
 > | **meowtrail.org** | **239 条规则 → gridpaw.com/akari/** | ❌ **一条都没生效** |
 >
@@ -28,6 +28,46 @@
 >
 > **未查明**：为什么这 239 条规则不在生效（规则被删？zone 迁移？DNS 指向变更？）。
 > 根因需在 CF Dashboard 的 meowtrail.org zone 里核对，文档层无法回答。
+>
+> ### 佐证：meowtrail 项目自己的文档也没提迁移
+>
+> `~/workspace/meowtrail/AGENTS.md` 至今仍把该站描述为**独立在营**站：
+> 「部署：Cloudflare Pages（域名 meowtrail.org）」「19 个页面」「GSC 已提交 sitemap」，
+> **通篇没有一句提到 301 到 gridpaw**。
+>
+> 即：gridpaw 侧文档声称的「已归权」，在 meowtrail 侧从未落地——**迁移只写在了一边的计划里**。
+> 这解释了为什么规则不在生效：很可能根本没建过。
+>
+> （附带：meowtrail 的 AGENTS.md 第 11 行也是裸 `wrangler pages deploy`，与本项目修掉的
+> 同一个问题，漏 IndexNow 提交——属该项目范围，未动。）
+
+> ### 排查指引（2026-09-15 交用户执行，需 CF Dashboard 权限）
+>
+> **目的**：确认那 239 条规则是「从未创建」还是「创建了但被覆盖/停用」。两种根因修法完全不同。
+>
+> 1. **看规则是否存在**：CF Dashboard → 账号 → `meowtrail.org` zone → **Rules → Redirect Rules**
+>    - 列表为空或不存在 → **从未创建**（与「meowtrail 侧文档无迁移痕迹」一致）。修法：重建整套规则
+>    - 有规则但状态为 Disabled → 启用即可
+>    - 有且已启用却仍不生效 → 进第 2 步
+> 2. **看是否有别的规则先匹配**：同页检查是否有**更早的** catch-all / 动态重定向 / Page Rule
+>    抢先把请求留在本域。CF 的重定向按顺序执行，先匹配者胜。
+> 3. **对比能用的那个 zone**：`meow-block.com` 的 Redirect Rules 是**实测有效**的对照组
+>    （16/16 通过）。逐项比对两者差异：规则数量、顺序、表达式、目标写法。
+> 4. **看 DNS 指向**：zone → DNS → 看 `meowtrail.org` 与 `www` 的记录。
+>    - 若指向某个**仍在服务的 CF Pages 项目**，则该站的 `_redirects` / `_worker.js` 会先于
+>      zone 级 Redirect Rules 处理请求——而本仓库与 meowtrail 仓库**都没有** `_worker.js`
+>      （见 AGENTS.md），所以内容会照常返回 200。
+>    - 到 **Workers & Pages** 里看是否还有 `meowtrail` 项目存在且在生产部署。
+> 5. **看 zone 归属**：确认 meowtrail.org 与 meow-block.com 在**同一个账号/zone 体系**下。
+>    若 meowtrail.org 在别的账号，那处规则库才是要改的地方。
+>
+> **查清后的两种修法**
+> - 从未创建 → 按本文件顶部的映射表重建规则（注意：精确规则须排在 catch-all 之前）
+> - 已被 Pages 项目接管 → 二选一：① 在 zone 级 Redirect Rules 前置一条全量 301；
+>   ② 停掉那个 Pages 项目的生产部署，让 zone 规则生效
+>
+> **改完后必须复验**：`curl -s -o /dev/null -w "%{http_code} %{redirect_url}\n" https://meowtrail.org/tips/`
+> 期望 `301 https://gridpaw.com/akari/tips/`。别只信 Dashboard 上的「已保存」。
 >
 > ### spatialreasoninggame.com 的 2 跳链
 >
