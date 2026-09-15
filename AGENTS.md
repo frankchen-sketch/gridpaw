@@ -32,10 +32,10 @@ pnpm run deploy       # 部署 = wrangler pages deploy + IndexNow 提交（勿�
 src/pages/
   index.astro                    ← Shikaku 游戏（首页，主排名页）
   akari/index.astro              ← Akari 游戏
-  brain-teasers-for-adults/      ← 内容页（KD 22.9）
-  logic-puzzle-grid/             ← 内容页（KD 29.6）
-  japanese-logic-puzzles/        ← 内容页（KD 36.6）
-  number-grid-puzzle/            ← 内容页（KD 新增）
+  brain-teasers-for-adults/      ← 内容页
+  logic-puzzle-grid/             ← 内容页
+  japanese-logic-puzzles/        ← 内容页
+  number-grid-puzzle/            ← 内容页
   sitemap（三层，别搞混）：
     @astrojs/sitemap 自动生成 sitemap-index.xml → sitemap-0.xml（主站 URL）
     public/sitemap.xml 手维护，直接列 sitemap-0.xml + pictomino-sitemap.xml ← GSC 提交的就是它

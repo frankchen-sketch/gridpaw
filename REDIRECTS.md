@@ -8,7 +8,7 @@
 > |---|---|---|
 > | meow-block.com | 17 条规则，17/17 通过 | ✅ **2026-09-15 重测 17/17 全绿**（含 catchall 兜底的 8 条） |
 > | spatialreasoninggame.com | 26 条规则 → gridpaw.com/pictomino/ | ⚠️ 跳转生效，但目标是 **2 跳链**（见下） |
-> | **meowtrail.org** | **239 条规则 → gridpaw.com/akari/** | ❌ **一条都没生效** |
+> | **meowtrail.org** | 「239 条规则 → gridpaw.com/akari/」 | ❌ 实测 0 条生效 → ✅ **2026-09-15 已修复：121/121 保路径生效** |
 >
 > ### meowtrail.org 详情（严重）
 >
@@ -26,8 +26,44 @@
 > **后果**：meowtrail.org 不是「已归权的旧域名」，而是 gridpaw.com/akari/ 的**在线重复竞品**，
 > 两个域名的信号互相对冲。本次 gridpaw 索引修复（见 SEO-INDEXING.md）解决的正是被这个问题拖累的发现层。
 >
-> **未查明**：为什么这 239 条规则不在生效（规则被删？zone 迁移？DNS 指向变更？）。
-> 根因需在 CF Dashboard 的 meowtrail.org zone 里核对，文档层无法回答。
+> ### ✅ 根因与修复（2026-09-15 全流程闭环）
+>
+> **根因**：meowtrail.org zone 的 Redirect Rules 里，那条归权规则处于「**已禁用**」状态。
+>
+> **文档里「239 条规则」的说法是错的**——Redirect Rules 里只有 2 条（现行 3 条），
+> 且原有那条是**主机名通配符**（把所有路径一律送 `/akari/`，不做路径映射）。
+> 下方 121 行映射表**从来不是以「N 条独立规则」的形式存在的**，它是被一条动态规则
+> 的表达式一次覆盖的。
+>
+> **修复方式**（比启用旧规则更好）：新建一条**保路径的动态规则**，而非启用那条粗放的通配符。
+>
+> | 顺序 | 名称 | 匹配 | 操作 | 状态 |
+> |---|---|---|---|---|
+> | 1 | meowtrail → gridpaw akari | 主机名 通配符 `meowtrail.org` | 301 → `https://gridpaw.com/akari/` | 🔴 已禁用（**已冗余，建议删除**） |
+> | 2 | www to bare domain | 主机名 = `www.meowtrail.org` | 301 → `https://meowtrail.org` | 🟢 活动 |
+> | 3 | meowtrail → gridpaw akari (path-preserving) | 主机名 = `meowtrail.org` | **动态**：`concat("https://gridpaw.com/akari", http.request.uri.path)` | 🟢 活动 |
+>
+> **实测（2026-09-15）**：下方 121 条映射逐条复验，**121/121 全部 301 且目标与文档完全一致**。
+> 例：`/tips/` → `/akari/tips/`、`/puzzle/puzzle-070/` → `/akari/puzzle/puzzle-070/`。
+>
+> **已知小瑕疵（可接受，未处理）**
+> - 源路径**不带尾斜杠**时 2 跳（`/tips` → `/akari/tips` → `/akari/tips/`）。
+>   带斜杠（站内 canonical 与 sitemap 的形式）为 1 跳，故真实流量基本不受影响。
+> - `www.meowtrail.org/*` 为 2 跳（先到裸域再到 gridpaw）。修法：把第 2 条规则的目标也
+>   改成同一动态表达式。低优先。
+>
+> **仍需在 GSC 侧完成的两步**（301 已生效，可做）
+> 1. 撤掉 meowtrail.org 的 sitemap 提交（121 条 URL 已 301，继续提交白费抓取配额）
+> 2. 设置 → 更改地址 → 目标选 `gridpaw.com`
+>
+> **复验命令**
+> ```bash
+> for p in / /tips/ /glossary/ /puzzle/puzzle-001/; do
+>   printf "%-24s " "$p"
+>   curl -s -o /dev/null -w "%{http_code} -> %{redirect_url}\n" "https://meowtrail.org$p"
+> done
+> # 期望：301 -> https://gridpaw.com/akari<对应路径>/
+> ```
 >
 > ### 佐证：meowtrail 项目自己的文档也没提迁移
 >
@@ -36,7 +72,7 @@
 > **通篇没有一句提到 301 到 gridpaw**。
 >
 > 即：gridpaw 侧文档声称的「已归权」，在 meowtrail 侧从未落地——**迁移只写在了一边的计划里**。
-> 这解释了为什么规则不在生效：很可能根本没建过。
+> （后续查证：规则其实建过一条，只是被禁用了——见上方「根因已查明」。）
 >
 > （附带：meowtrail 的 AGENTS.md 第 11 行也是裸 `wrangler pages deploy`，与本项目修掉的
 > 同一个问题，漏 IndexNow 提交——属该项目范围，未动。）
