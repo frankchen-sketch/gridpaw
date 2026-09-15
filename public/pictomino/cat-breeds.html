@@ -36,12 +36,12 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --bg:#FFF6EC; --card:#FFFFFF; --ink:#4A3B32;
-  --pink:#FF8FAB; --orange:#FFB26B; --teal:#5ECFB9; --yellow:#FFD66B;
+  --pink:#FF8FAB; --orange:#FFB26B; --teal:#5ECFB9; --yellow:#FFD66B; --ink-soft:#8A7466; --muted:#B5A396; --peach:#FFE3C2; --cream:#FFF8F0; --stone:#9E9590; --ink-strong:#3D3D3D; --teal-deep:#3FBF9F; --indigo:#5C6BC0; --parchment:#E8DDD0; --blush:#FFF5F0; --peach-light:#FFF0E4; --gold-ink:#7A5B00; --linen:#F3E7DA;
 }
 body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   background:var(--bg);
-  background-image:radial-gradient(#FFE3C2 1.5px,transparent 1.5px);
+  background-image:radial-gradient(var(--peach) 1.5px,transparent 1.5px);
   background-size:26px 26px;
   color:var(--ink);
   line-height:1.6;
@@ -63,7 +63,7 @@ header{
   color:var(--ink);text-decoration:none;font-weight:700;font-size:13px;
   padding:6px 10px;border-radius:8px;transition:background .15s,color .15s;
 }
-.nav a:hover{background:#FFF8F0;color:var(--pink)}
+.nav a:hover{background:var(--cream);color:var(--pink)}
 /* Site header (unified nav matching Shikaku/Akari) */
 .site-header{background:var(--card);box-shadow:0 2px 12px rgba(74,59,50,.08);padding:0;position:sticky;top:0;z-index:100}
 .site-header .header-inner{max-width:880px;margin:0 auto;padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:52px}
@@ -72,35 +72,35 @@ header{
 .brand-logo{font-size:22px}
 .brand-name{display:flex;flex-direction:column;line-height:1.2}
 .brand-name .big{font-size:17px;font-weight:900;color:var(--ink)}
-.brand-name .small{font-size:11px;color:#9E9590;font-weight:600}
+.brand-name .small{font-size:11px;color:var(--stone);font-weight:600}
 .game-switcher{position:relative}
-.game-switcher-btn{font-size:13px;font-weight:700;color:#5C6BC0;background:none;border:none;cursor:pointer;padding:8px 14px;display:flex;align-items:center;gap:4px;font-family:inherit}
+.game-switcher-btn{font-size:13px;font-weight:700;color:var(--indigo);background:none;border:none;cursor:pointer;padding:8px 14px;display:flex;align-items:center;gap:4px;font-family:inherit}
 .game-switcher-btn::after{content:'▾';font-size:10px}
 .game-switcher-btn:hover{color:var(--pink)}
-.game-switcher-menu{display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);background:white;border:1.5px solid #E8DDD0;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.12);min-width:200px;padding:6px 0;z-index:300}
+.game-switcher-menu{display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);background:white;border:1.5px solid var(--parchment);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.12);min-width:200px;padding:6px 0;z-index:300}
 .game-switcher:hover .game-switcher-menu{display:block}
-.game-switcher-menu a{display:flex;flex-direction:column;padding:10px 16px;font-size:13px;gap:2px;text-decoration:none;color:#3D3D3D}
-.game-switcher-menu a .game-desc{font-size:11px;font-weight:500;color:#9E9590}
-.game-switcher-menu a:hover{background:#FFF8F0;color:var(--pink)}
-.game-switcher-menu a.active{color:var(--pink);background:#FFF5F0;font-weight:800}
+.game-switcher-menu a{display:flex;flex-direction:column;padding:10px 16px;font-size:13px;gap:2px;text-decoration:none;color:var(--ink-strong)}
+.game-switcher-menu a .game-desc{font-size:11px;font-weight:500;color:var(--stone)}
+.game-switcher-menu a:hover{background:var(--cream);color:var(--pink)}
+.game-switcher-menu a.active{color:var(--pink);background:var(--blush);font-weight:800}
 @media(max-width:480px){.game-switcher:hover .game-switcher-menu{display:none}.game-switcher.open .game-switcher-menu{display:block}}
 /* ===== Hero ===== */
 .hero{text-align:center;padding:40px 16px 12px}
 .hero .badge{
-  display:inline-block;background:var(--yellow);color:#7a5b00;
+  display:inline-block;background:var(--yellow);color:var(--gold-ink);
   font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
   padding:6px 16px;border-radius:999px;margin-bottom:14px;
 }
 .hero h1{font-size:38px;font-weight:900;line-height:1.2;margin-bottom:12px}
 .hero h1 .grad{
-  background:linear-gradient(135deg,var(--teal),#3FBF9F);
+  background:linear-gradient(135deg,var(--teal),var(--teal-deep));
   -webkit-background-clip:text;background-clip:text;color:transparent;
 }
-.hero p{font-size:18px;color:#8a7466;max-width:640px;margin:0 auto}
+.hero p{font-size:18px;color:var(--ink-soft);max-width:640px;margin:0 auto}
 /* ===== Sections ===== */
 section{padding:36px 16px}
 section h2{font-size:28px;font-weight:900;margin-bottom:16px;text-align:center}
-.lead{text-align:center;font-size:17px;color:#8a7466;max-width:720px;margin:0 auto 24px}
+.lead{text-align:center;font-size:17px;color:var(--ink-soft);max-width:720px;margin:0 auto 24px}
 .lead a{color:var(--pink);font-weight:700;text-decoration:none}
 .lead a:hover{text-decoration:underline}
 /* Intro box */
@@ -120,11 +120,11 @@ section h2{font-size:28px;font-weight:900;margin-bottom:16px;text-align:center}
   box-shadow:0 6px 20px rgba(74,59,50,.08);
   display:flex;flex-direction:column;
 }
-.breed-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#F3E7DA}
+.breed-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:var(--linen)}
 .breed-body{padding:18px;display:flex;flex-direction:column;flex:1}
 .breed-body h3{font-size:19px;font-weight:900;margin-bottom:8px}
 .breed-body ul.facts{
-  list-style:none;font-size:14px;color:#8a7466;margin-bottom:14px;flex:1;
+  list-style:none;font-size:14px;color:var(--ink-soft);margin-bottom:14px;flex:1;
 }
 .breed-body ul.facts li{padding-left:18px;position:relative;margin-bottom:4px}
 .breed-body ul.facts li::before{content:'🐾';position:absolute;left:0;font-size:11px;top:2px}
@@ -155,17 +155,17 @@ section h2{font-size:28px;font-weight:900;margin-bottom:16px;text-align:center}
   font-size:22px;color:var(--pink);font-weight:400;
 }
 .faq details[open] summary::after{content:'−'}
-.faq details p{padding:0 20px 16px;font-size:15px;color:#8a7466}
+.faq details p{padding:0 20px 16px;font-size:15px;color:var(--ink-soft)}
 .faq details a{color:var(--teal);font-weight:700;text-decoration:none}
 .faq details a:hover{text-decoration:underline}
 /* ===== Crosslink ===== */
 .crosslink{
-  background:linear-gradient(135deg,#FFF0E4,var(--card));
+  background:linear-gradient(135deg,var(--peach-light),var(--card));
   border:2px dashed var(--orange);border-radius:18px;
   padding:26px;text-align:center;margin:20px auto;max-width:680px;
 }
 .crosslink h3{font-size:20px;font-weight:900;margin-bottom:8px}
-.crosslink p{font-size:15px;color:#8a7466;margin-bottom:14px}
+.crosslink p{font-size:15px;color:var(--ink-soft);margin-bottom:14px}
 .crosslink a{
   display:inline-block;background:var(--teal);color:#fff;
   font-weight:900;font-size:16px;text-decoration:none;
@@ -174,8 +174,8 @@ section h2{font-size:28px;font-weight:900;margin-bottom:16px;text-align:center}
 }
 .crosslink a:active{transform:translateY(3px)}
 .crosslink a.game{background:var(--pink)}
-footer{text-align:center;padding:28px 16px;font-size:13px;color:#b5a396}
-footer a{color:#b5a396}
+footer{text-align:center;padding:28px 16px;font-size:13px;color:var(--muted)}
+footer a{color:var(--muted)}
 /* ===== Responsive ===== */
 @media (max-width:960px){
   .breeds{grid-template-columns:repeat(2,1fr)}

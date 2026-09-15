@@ -188,3 +188,75 @@
 3. **功能色归一**：红/绿/蓝各只留一个值（现状每个有 2-4 个变体）——OK？
 4. **Nunito 处置**：删除引用并入系统栈——OK？
 5. **收编策略**：改造时逐页清零长尾色值，不做一次性全站替换——OK？
+
+---
+
+## 8. pictomino 附属色板（public/pictomino/ 子站独立色系）
+
+> **定位**：`public/pictomino/` 是纯静态子站（14 个 HTML，不经 Astro 构建），拥有**自己的一套 CSS 变量体系**，与 GridPaw 主站色系（--gp-*）**刻意不同**——主站是琥珀暖色，pictomino 是奶油粉暖（--bg #FFF6EC / --ink #4A3B32 / --pink #FF8FAB / --orange #FFB26B / --teal #5ECFB9 / --yellow #FFD66B，全部子站各页 :root 已有，勿混用 --gp-* token）。
+>
+> 2026-09-15 完成色值 token 化整理：344 处散落 raw hex 归入 var()，零视觉变化（映射表驱动，逐文件机器校验「除 ：root 定义行外每行与原文 token 替换结果一致」）。
+>
+> **pictomino 页面改色规则**：改 pictomino 页面时用下表 token，不要再写 raw hex；新增色值须先在这里备案再使用。`--bg/--orange/--pink` 引用已有变量，其余 token 按页在 :root 里**按需定义**（每页只加该页用到的，未列出的 token 在该页 :root 手动补定义）。
+
+### 基础色（各页 :root 原有）
+
+| Token | 值 | 说明 |
+|---|---|---|
+| --bg | #FFF6EC | 页面背景（奶油底） |
+| --card | #FFFFFF | 卡片背景（纯白） |
+| --ink | #4A3B32 | 主文字（深咖） |
+| --pink | #FF8FAB | 品牌粉 |
+| --orange | #FFB26B | 品牌橙 |
+| --teal | #5ECFB9 | 品牌青 |
+| --yellow | #FFD66B | 品牌黄 |
+
+### 储备色板（本次新增 token，按需定义于各页 :root）
+
+| Token | 值 | 语义 | 使用页数 |
+|---|---|---|---|
+| --ink-soft | #8A7466 | 次级正文（浅咖） | 13/14 |
+| --peach | #FFE3C2 | 描边/波点/分隔线 | 13/14 |
+| --cream | #FFF8F0 | hover 浅底 | 12/14 |
+| --stone | #9E9590 | 弱化说明文字 | 12/14 |
+| --muted | #B5A396 | 页脚/弱链接 | 12/14 |
+| --indigo | #5C6BC0 | 游戏切换器 | 12/14 |
+| --parchment | #E8DDD0 | 菜单描边 | 12/14 |
+| --ink-strong | #3D3D3D | 深灰文字（game-switcher） | 12/14 |
+| --blush | #FFF5F0 | active 浅底 | 12/14 |
+| --peach-light | #FFF0E4 | crosslink 渐变 | 10/14 |
+| --teal-deep | #3FBF9F | CTA 渐变深端 | 11/14 |
+| --gold-ink | #7A5B00 | 黄底徽章文字 | 7/14 |
+| --coral | #E85D75 | 倒计时警示 | 3/14 |
+| --linen | #F3E7DA | 棋盘托底 | 3/14 |
+| --pink-deep | #F76D8F | 粉色渐变深端 | 2/14 |
+| --gray-200 | #DADCE0 | Google 登录钮描边 | 2/14 |
+| --gray-800 | #3C4043 | Google 登录钮文字 | 2/14 |
+| --sand | #D8C7B8 | 面包屑分隔 | 1/14 |
+| --sand-2 | #C9B8A8 | drop zone 虚线 | 1/14 |
+| --sand-3 | #E3D5C8 | 星星未点亮 | 1/14 |
+| --sand-4 | #D8CCC0 | 拼图托盘 | 1/14 |
+| --sand-5 | #E4D3C3 | 卡片虚线描边 | 1/14 |
+| --peach-lightest | #FFF0E3 | privacy 提示框 | 1/14 |
+| --red | #FF5050 | 拼错闪烁描边 | 1/14 |
+| --red-soft | #D47070 | community active 色 | 1/14 |
+| --navy-900 | #1A2332 | community 页背景 | 1/14 |
+| --navy-800 | #2A3040 | community 分隔线 | 1/14 |
+| --navy-700 | #1E2D3D | community 卡片底 | 1/14 |
+| --navy-600 | #253545 | community 卡片 hover | 1/14 |
+| --lilac | #E8E0F0 | community 正文 | 1/14 |
+| --lilac-soft | #F0E8FF | community 标题 | 1/14 |
+| --sky | #7BB8E0 | community 徽章/链接 | 1/14 |
+| --sky-light | #A8D0E8 | community h2 | 1/14 |
+| --slate | #8898A8 | community 弱文字 | 1/14 |
+| --slate-light | #B8C8D8 | community 副标题 | 1/14 |
+
+### pictomino 白名单（保持 raw hex，不 token 化）
+
+- Google 品牌色 `#FFC107 / #FF3D00 / #4CAF50 / #1976D2`（SVG logo 内联，需真实色值）
+- 纯白 `#fff / #FFFFFF`（与 --card 同值，但散用不强制收敛）
+- game.html `const colors = [...]` JS 数据数组（拼块调色板，html2canvas 截图需真实色值）
+- html2canvas `backgroundColor: '#FFF6EC'` 传参（API 需真实色值，var() 传不进去）
+- 各页 ：root 里的 token 定义行本身
+
+---

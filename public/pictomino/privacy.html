@@ -35,12 +35,12 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --bg:#FFF6EC; --card:#FFFFFF; --ink:#4A3B32;
-  --pink:#FF8FAB; --orange:#FFB26B; --teal:#5ECFB9; --yellow:#FFD66B;
+  --pink:#FF8FAB; --orange:#FFB26B; --teal:#5ECFB9; --yellow:#FFD66B; --ink-soft:#8A7466; --peach:#FFE3C2; --cream:#FFF8F0; --stone:#9E9590; --ink-strong:#3D3D3D; --teal-deep:#3FBF9F; --indigo:#5C6BC0; --parchment:#E8DDD0; --blush:#FFF5F0; --peach-lightest:#FFF0E3;
 }
 body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   background:var(--bg);
-  background-image:radial-gradient(#FFE3C2 1.5px,transparent 1.5px);
+  background-image:radial-gradient(var(--peach) 1.5px,transparent 1.5px);
   background-size:26px 26px;
   color:var(--ink);
   line-height:1.6;
@@ -64,7 +64,7 @@ header{
   color:var(--ink);text-decoration:none;font-weight:700;font-size:13px;
   padding:6px 10px;border-radius:8px;transition:background .15s,color .15s;
 }
-.nav a:hover{background:#FFF8F0;color:var(--pink)}
+.nav a:hover{background:var(--cream);color:var(--pink)}
 /* Site header (unified nav matching Shikaku/Akari) */
 .site-header{background:var(--card);box-shadow:0 2px 12px rgba(74,59,50,.08);padding:0;position:sticky;top:0;z-index:100}
 .site-header .header-inner{max-width:880px;margin:0 auto;padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:52px}
@@ -73,17 +73,17 @@ header{
 .brand-logo{font-size:22px}
 .brand-name{display:flex;flex-direction:column;line-height:1.2}
 .brand-name .big{font-size:17px;font-weight:900;color:var(--ink)}
-.brand-name .small{font-size:11px;color:#9E9590;font-weight:600}
+.brand-name .small{font-size:11px;color:var(--stone);font-weight:600}
 .game-switcher{position:relative}
-.game-switcher-btn{font-size:13px;font-weight:700;color:#5C6BC0;background:none;border:none;cursor:pointer;padding:8px 14px;display:flex;align-items:center;gap:4px;font-family:inherit}
+.game-switcher-btn{font-size:13px;font-weight:700;color:var(--indigo);background:none;border:none;cursor:pointer;padding:8px 14px;display:flex;align-items:center;gap:4px;font-family:inherit}
 .game-switcher-btn::after{content:'▾';font-size:10px}
 .game-switcher-btn:hover{color:var(--pink)}
-.game-switcher-menu{display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);background:white;border:1.5px solid #E8DDD0;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.12);min-width:200px;padding:6px 0;z-index:300}
+.game-switcher-menu{display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);background:white;border:1.5px solid var(--parchment);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.12);min-width:200px;padding:6px 0;z-index:300}
 .game-switcher:hover .game-switcher-menu{display:block}
-.game-switcher-menu a{display:flex;flex-direction:column;padding:10px 16px;font-size:13px;gap:2px;text-decoration:none;color:#3D3D3D}
-.game-switcher-menu a .game-desc{font-size:11px;font-weight:500;color:#9E9590}
-.game-switcher-menu a:hover{background:#FFF8F0;color:var(--pink)}
-.game-switcher-menu a.active{color:var(--pink);background:#FFF5F0;font-weight:800}
+.game-switcher-menu a{display:flex;flex-direction:column;padding:10px 16px;font-size:13px;gap:2px;text-decoration:none;color:var(--ink-strong)}
+.game-switcher-menu a .game-desc{font-size:11px;font-weight:500;color:var(--stone)}
+.game-switcher-menu a:hover{background:var(--cream);color:var(--pink)}
+.game-switcher-menu a.active{color:var(--pink);background:var(--blush);font-weight:800}
 @media(max-width:480px){.game-switcher:hover .game-switcher-menu{display:none}.game-switcher.open .game-switcher-menu{display:block}}
 /* ===== Hero ===== */
 .hero{
@@ -93,11 +93,11 @@ header{
   font-size:38px;font-weight:900;line-height:1.2;margin-bottom:12px;
 }
 .hero h1 .grad{
-  background:linear-gradient(135deg,var(--teal),#3FBF9F);
+  background:linear-gradient(135deg,var(--teal),var(--teal-deep));
   -webkit-background-clip:text;background-clip:text;color:transparent;
 }
 .hero p{
-  font-size:18px;color:#8a7466;max-width:640px;margin:0 auto;
+  font-size:18px;color:var(--ink-soft);max-width:640px;margin:0 auto;
 }
 /* ===== Sections ===== */
 section{padding:36px 16px}
@@ -106,7 +106,7 @@ section h2{
   text-align:center;
 }
 .lead{
-  text-align:center;font-size:17px;color:#8a7466;
+  text-align:center;font-size:17px;color:var(--ink-soft);
   max-width:680px;margin:0 auto 24px;
 }
 .policy{
@@ -121,14 +121,14 @@ section h2{
 .policy a{color:var(--pink);font-weight:700}
 .contact-box{
   margin-top:26px;padding:18px;border-radius:14px;
-  background:#FFF0E3;border:2px dashed var(--orange);
+  background:var(--peach-lightest);border:2px dashed var(--orange);
   text-align:center;font-size:16px;
 }
 .contact-box strong{font-size:17px}
 /* ===== Footer ===== */
 footer{
   background:var(--card);padding:18px 16px;text-align:center;
-  font-size:14px;color:#8a7466;
+  font-size:14px;color:var(--ink-soft);
 }
 footer a{color:var(--ink);font-weight:700;text-decoration:none}
 footer a:hover{color:var(--pink)}
@@ -206,8 +206,8 @@ footer a:hover{color:var(--pink)}
       <a href="mailto:privacy@pictomino.com">privacy@pictomino.com</a>
     </div>
 
-    <p style="margin-top:20px;font-size:14px;color:#8a7466"><em>All cat images on this site are AI-generated original artwork, created specifically for Pictomino.</em></p>
-    <p style="font-size:14px;color:#8a7466"><em>Last updated: September 1, 2026.</em></p>
+    <p style="margin-top:20px;font-size:14px;color:var(--ink-soft)"><em>All cat images on this site are AI-generated original artwork, created specifically for Pictomino.</em></p>
+    <p style="font-size:14px;color:var(--ink-soft)"><em>Last updated: September 1, 2026.</em></p>
   </div>
 </section>
 

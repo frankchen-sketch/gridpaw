@@ -54,13 +54,13 @@
 :root{
   --bg:#FFF6EC; --card:#FFFFFF; --ink:#4A3B32;
   --pink:#FF8FAB; --orange:#FFB26B; --teal:#5ECFB9; --yellow:#FFD66B;
-  --shadow:0 6px 0 rgba(74,59,50,.08);
+  --shadow:0 6px 0 rgba(74,59,50,.08); --ink-soft:#8A7466; --muted:#B5A396; --peach:#FFE3C2; --teal-deep:#3FBF9F; --coral:#E85D75; --linen:#F3E7DA; --pink-deep:#F76D8F; --red:#FF5050; --sand-2:#C9B8A8; --sand-3:#E3D5C8; --sand-4:#D8CCC0;
 }
 html,body{height:100%}
 body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   background:var(--bg);
-  background-image:radial-gradient(#FFE3C2 1.5px,transparent 1.5px);
+  background-image:radial-gradient(var(--peach) 1.5px,transparent 1.5px);
   background-size:26px 26px;
   color:var(--ink);
   display:flex;flex-direction:column;align-items:center;
@@ -93,7 +93,7 @@ body{
   display:flex;flex-direction:column;align-items:center;gap:10px;
   padding:4px 14px 20px;
 }
-#round-info{font-size:14px;font-weight:700;color:#8a7466;display:flex;align-items:center;justify-content:center;gap:4px;flex-wrap:wrap}
+#round-info{font-size:14px;font-weight:700;color:var(--ink-soft);display:flex;align-items:center;justify-content:center;gap:4px;flex-wrap:wrap}
 /* 主画布卡片 */
 #board-wrap{position:relative}
 #board{
@@ -102,7 +102,7 @@ body{
   width:min(88vw,440px);aspect-ratio:1;
 }
 .cell{
-  border-radius:8px;overflow:hidden;position:relative;background:#F3E7DA;
+  border-radius:8px;overflow:hidden;position:relative;background:var(--linen);
 }
 .cell canvas{width:100%;height:100%;display:block}
 .cell.hole{
@@ -120,17 +120,17 @@ body{
 /* 待填但未点亮 + 号的空白格：虚线框，不可点击 */
 .cell.pending{
   background:rgba(94,207,185,.08);
-  outline:3px dashed #C9B8A8;outline-offset:-3px;
+  outline:3px dashed var(--sand-2);outline-offset:-3px;
 }
 .cell.hole.wrong-flash{animation:flash .45s ease}
 @keyframes flash{
   0%,100%{background:rgba(255,178,107,.16);outline-color:var(--orange)}
-  50%{background:rgba(255,80,80,.55);outline-color:#FF5050}
+  50%{background:rgba(255,80,80,.55);outline-color:var(--red)}
 }
 .cell.just-placed{animation:pop .35s ease}
 @keyframes pop{0%{transform:scale(.7)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
 /* 候选碎片区 */
-#tray-label{font-size:14px;font-weight:800;color:#8a7466;margin-top:2px}
+#tray-label{font-size:14px;font-weight:800;color:var(--ink-soft);margin-top:2px}
 #tray{
   display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;
   width:100%;padding:8px 4px;min-height:96px;
@@ -178,18 +178,18 @@ body{
   animation:pop .35s ease;
 }
 .dialog h2{font-size:26px;margin-bottom:8px}
-.dialog p{font-size:15px;color:#8a7466;margin-bottom:6px;line-height:1.6}
+.dialog p{font-size:15px;color:var(--ink-soft);margin-bottom:6px;line-height:1.6}
 .dialog .big{font-size:34px;font-weight:900;color:var(--pink);margin:8px 0}
 .btn{
   display:inline-block;border:none;cursor:pointer;font-family:inherit;
   font-size:18px;font-weight:900;color:#fff;
-  background:linear-gradient(135deg,var(--teal),#3FBF9F);
+  background:linear-gradient(135deg,var(--teal),var(--teal-deep));
   padding:12px 30px;border-radius:999px;margin-top:14px;
   box-shadow:0 5px 0 rgba(0,0,0,.12);
   transition:transform .12s ease;
 }
 .btn:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.12)}
-.btn.pink{background:linear-gradient(135deg,var(--pink),#F76D8F)}
+.btn.pink{background:linear-gradient(135deg,var(--pink),var(--pink-deep))}
 .btn.share{font-size:14px;padding:8px 14px}
 .share-row{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
 .hud a.pill{text-decoration:none;color:inherit}
@@ -216,18 +216,18 @@ body{
 #preview-count{font-size:24px;font-weight:900;color:var(--orange)}
 /* 通关星级 */
 #win-stars{font-size:36px;letter-spacing:6px;margin:2px 0 6px;color:var(--yellow);text-shadow:0 2px 0 rgba(0,0,0,.10)}
-#win-stars .off{color:#E3D5C8;text-shadow:none}
+#win-stars .off{color:var(--sand-3);text-shadow:none}
 /* 通关科普卡 */
 #cat-fact-card{
   margin:14px auto 2px;max-width:300px;text-align:left;
-  background:#FFF6EC;border:2px dashed #FFB26B;border-radius:14px;
+  background:var(--bg);border:2px dashed var(--orange);border-radius:14px;
   padding:10px 14px;
 }
 #fact-cat-name{
   font-size:15px;font-weight:900;color:var(--orange);
   margin-bottom:6px;text-align:center;
 }
-#fact-list{margin:0;padding-left:20px;font-size:13px;line-height:1.7;color:#8a7466}
+#fact-list{margin:0;padding-left:20px;font-size:13px;line-height:1.7;color:var(--ink-soft)}
 #fact-list li{margin-bottom:2px}
 /* How to Play 规则卡示意图 */
 #help-visual{
@@ -236,7 +236,7 @@ body{
 }
 #help-board{
   display:grid;grid-template-columns:repeat(3,44px);gap:3px;
-  background:#F3E7DA;padding:5px;border-radius:10px;
+  background:var(--linen);padding:5px;border-radius:10px;
 }
 .help-cell{
   width:44px;height:44px;border-radius:6px;display:flex;
@@ -256,7 +256,7 @@ body{
 .help-arrow{font-size:22px;line-height:1}
 .help-piece{
   width:40px;height:40px;border-radius:8px;
-  background:linear-gradient(135deg,var(--pink),#F76D8F);
+  background:linear-gradient(135deg,var(--pink),var(--pink-deep));
   box-shadow:var(--shadow);
 }
 #help-text{
@@ -271,7 +271,7 @@ body{
 .help-toggle input{display:none}
 .help-toggle-track{
   width:40px;height:24px;border-radius:999px;
-  background:#D8CCC0;position:relative;
+  background:var(--sand-4);position:relative;
   transition:background .2s ease;flex-shrink:0;
 }
 .help-toggle-track::after{
@@ -282,16 +282,16 @@ body{
 }
 .help-toggle input:checked + .help-toggle-track{background:var(--teal)}
 .help-toggle input:checked + .help-toggle-track::after{transform:translateX(16px)}
-.help-toggle-label{font-size:13px;font-weight:700;color:#8a7466}
+.help-toggle-label{font-size:13px;font-weight:700;color:var(--ink-soft)}
 /* 加载提示 */
 #loading{
   position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-  background:var(--bg);z-index:100;font-size:18px;font-weight:800;color:#8a7466;
+  background:var(--bg);z-index:100;font-size:18px;font-weight:800;color:var(--ink-soft);
 }
 /* 新手引导 Coach：首次访问的 1 步交互课 */
 #coach{
   width:100%;max-width:440px;border-radius:16px;padding:12px 42px 10px 14px;
-  background:linear-gradient(135deg,var(--teal),#3FBF9F);color:#fff;
+  background:linear-gradient(135deg,var(--teal),var(--teal-deep));color:#fff;
   font-size:16px;font-weight:900;text-align:center;line-height:1.4;
   box-shadow:var(--shadow);position:relative;
   animation:coach-in .3s ease;
@@ -308,12 +308,12 @@ body.tut-mode #round-info,body.tut-mode #tray-label{display:none}
 .piece.tut-step1{animation:tut-ring 1.1s ease-in-out infinite}
 @keyframes tut-ring{
   0%,100%{transform:scale(1);outline:3px dashed var(--orange);outline-offset:3px}
-  50%{transform:scale(1.08);outline-color:#FF5050;outline-offset:8px}
+  50%{transform:scale(1.08);outline-color:var(--red);outline-offset:8px}
 }
 .cell.hole.tut-step2{animation:hole-pulse .9s ease-in-out infinite}
 @keyframes hole-pulse{
   0%,100%{outline-color:var(--orange);background:rgba(255,178,107,.18)}
-  50%{outline-color:#FF5050;background:rgba(255,80,80,.25)}
+  50%{outline-color:var(--red);background:rgba(255,80,80,.25)}
 }
 /* 移动端微调 */
 @media (max-width:400px){
@@ -331,7 +331,7 @@ body.tut-mode #round-info,body.tut-mode #tray-label{display:none}
 
 <!-- 顶栏已上移至外层页面统一工具栏（iframe 外）；game.html 直接打开时无 HUD，数据仍正常 -->
 <main id="stage">
-  <div id="round-info">Fill 0/4 · Tap a piece, then tap its spot! <span id="timer" style="display:none;font-weight:800;color:#E85D75;margin-left:8px"></span></div>
+  <div id="round-info">Fill 0/4 · Tap a piece, then tap its spot! <span id="timer" style="display:none;font-weight:800;color:var(--coral);margin-left:8px"></span></div>
   <div id="board-wrap">
     <div id="board"></div>
   </div>
@@ -402,9 +402,9 @@ body.tut-mode #round-info,body.tut-mode #tray-label{display:none}
     <p>Level score</p>
     <div class="big" id="win-score">+0</div>
     <p id="win-detail"></p>
-    <div id="daily-streak-card" style="display:none;background:#FFF6EC;border:1.5px solid #FFE3C2;border-radius:12px;padding:12px 16px;margin:8px 0;text-align:center">
+    <div id="daily-streak-card" style="display:none;background:var(--bg);border:1.5px solid var(--peach);border-radius:12px;padding:12px 16px;margin:8px 0;text-align:center">
       <div style="font-size:1.3rem;font-weight:800;color:var(--ink)">🔥 Streak: <span id="daily-streak-count">0</span> days</div>
-      <div id="daily-streak-badge" style="font-size:.85rem;color:#b5a396;margin-top:4px"></div>
+      <div id="daily-streak-badge" style="font-size:.85rem;color:var(--muted);margin-top:4px"></div>
     </div>
     <div id="cat-fact-card">
       <div id="fact-cat-name"></div>
@@ -415,7 +415,7 @@ body.tut-mode #round-info,body.tut-mode #tray-label{display:none}
       <button class="btn share" id="share-reddit-btn">📣 Share on Reddit</button>
       <button class="btn share" id="copy-share-btn">🔗 Copy link</button>
     </div>
-    <button id="win-close-btn" style="background:none;border:2px solid #FFE3C2;color:#b5a396;font-family:inherit;font-weight:800;font-size:15px;padding:10px 28px;border-radius:999px;cursor:pointer;margin-top:6px">Continue ✓</button>
+    <button id="win-close-btn" style="background:none;border:2px solid var(--peach);color:var(--muted);font-family:inherit;font-weight:800;font-size:15px;padding:10px 28px;border-radius:999px;cursor:pointer;margin-top:6px">Continue ✓</button>
   </div>
 </div>
 
@@ -646,7 +646,7 @@ try {
   if (authErr) {
     const msg = authErr === 'access_denied' ? 'Sign-in was cancelled.' : 'Sign-in failed. Please try again.';
     const ri = document.getElementById('round-info');
-    if (ri) { ri.textContent = '⚠️ ' + msg; ri.style.color = '#FF8FAB'; }
+    if (ri) { ri.textContent = '⚠️ ' + msg; ri.style.color = 'var(--pink)'; }
     history.replaceState(null, '', window.location.pathname);
   }
 } catch (e) {}
@@ -937,7 +937,7 @@ function startTimer() {
   state.timerInterval = setInterval(() => {
     state.timeLeft--;
     if (el) { el.textContent = '⏱ ' + state.timeLeft + 's'; el.style.display = ''; }
-    if (state.timeLeft <= 5 && el) el.style.color = '#E85D75';
+    if (state.timeLeft <= 5 && el) el.style.color = 'var(--coral)';
     // 同步外层工具栏
     try { if (window.parent !== window) window.parent.postMessage({ type: 'pictomino_timer', timeLeft: state.timeLeft }, '*'); } catch(e) {}
     if (state.timeLeft <= 0) {
@@ -957,7 +957,7 @@ function startTimer() {
 function stopTimer() {
   if (state.timerInterval) { clearInterval(state.timerInterval); state.timerInterval = null; }
   const el = document.getElementById('timer');
-  if (el) { el.style.color = '#E85D75'; }
+  if (el) { el.style.color = 'var(--coral)'; }
 }
 
 /* 点亮/补充 + 号并选出新目标碎片：始终保持 N 个选择（N 按难度），填满全部待填格通关 */
