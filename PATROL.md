@@ -69,6 +69,29 @@
 
 ---
 
+## 页面：akari 系 6 页样式收编（阶段 4）✅ 2026-09-15
+
+| 页面 | 样式区 raw hex 前 | 后 | 白名单保留 | 页内桥 token 数 |
+|---|---|---|---|---|
+| akari/daily.astro | 103 | 0 | #fff×7 + #FF4500×1 | 19 |
+| akari/index.astro | 71 | 0 | #fff×10 + #FF4500×1 | 27 |
+| akari/cat-logic-puzzle.astro | 66 | 0 | #fff×4 | 17 |
+| akari/akari-puzzle.astro | 66 | 0 | #fff×4 | 17 |
+| akari/logic-puzzle.astro | 62 | 0 | #fff×4 | 17 |
+| akari/light-up-puzzle.astro | 62 | 0 | #fff×4 | 17 |
+
+### 改动摘要
+- 6 页样式区（`<style>` 块 + style 属性）raw hex 清零：430 → 0（合同外），白名单保留 42 处（纯白 #fff 按钮文字/棋盘亮格 + reddit 品牌橙 #FF4500）
+- token 桥放各页第一个 style 块 `:root`（cheats.astro 同款结构），只含该页用到的 token
+- 长尾收编：`#fafafa→--gp-white`、紫灰系（#F0E8FF/#E8E0F8/#F8F0FF/#E0D0F0/#F0EDF5）→ `--gp-lilac-soft`、冷紫 cell-black（#8B7B9A→#6B5B7A）→ 暖棕 brown-600/900、分享按钮蓝（#1DA1F2/#0D8DDB）→ `--gp-info`、reddit hover #E03E00 → `--gp-primary-dark`
+- index.astro 徽章 5 组收编沿用主页先例：easy/med/hard 用 badge token 对，expert→lilac-bright+brown-900，hard→error+white
+- daily.astro 顺手清掉同色渐变 `linear-gradient(180deg,#f8f6ef,#f8f6ef)` → `var(--gp-sand)`（PATROL easy 页先例判违规）
+- **JS 区零改动**：各页脚本区 hex 前后数量一致（数据色/emoji key 未触碰）；6 页均无 `colorEmoji`/`CAT_PALETTE` 对象
+- 6 页均无 `prefers-color-scheme` 块，全亮色 token，未涉及 `--gp-dark-*`
+- ✅ 构建通过（131 页，astro build exit 0）；未 commit、未部署（留给主会话）
+
+---
+
 ## 巡查提示词（每次 UI 改动后跑）
 
 ```

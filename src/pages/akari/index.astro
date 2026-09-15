@@ -68,20 +68,50 @@ const description = "Play GridPaw, a free Light Up puzzle game with cute cats. S
   })} />
 
   <style is:global>
+    /* ── GridPaw 视觉合同 token（STYLE.md）── */
+    :root {
+      --gp-primary: #E8A888;
+      --gp-primary-strong: #D47A50;
+      --gp-primary-dark: #C06A40;
+      --gp-primary-soft: #F0B898;
+      --gp-brown-900: #342421;
+      --gp-brown-600: #6F5651;
+      --gp-brown-400: #9B726C;
+      --gp-stone: #9E9590;
+      --gp-cream: #FFF8F0;
+      --gp-cream-warm: #FFF4F0;
+      --gp-sand: #F8F6EF;
+      --gp-blush: #F4DFDC;
+      --gp-linen: #E7DACF;
+      --gp-parchment: #E8DDD0;
+      --gp-white: #FFFFFF;
+      --gp-error: #E74C3C;
+      --gp-success: #559C68;
+      --gp-info: #5C6BC0;
+      --gp-mint: #88C8A8;
+      --gp-lilac-soft: #E8E0EB;
+      --gp-lilac-bright: #CFC2E8;
+      --gp-badge-easy-bg: #B8E8C0;
+      --gp-badge-easy-text: #2D6A3F;
+      --gp-badge-med-bg: #FDD09F;
+      --gp-badge-med-text: #8B6914;
+      --gp-badge-hard-bg: #FFB3C6;
+      --gp-badge-hard-text: #8B2252;
+    }
     /* ═══════════ meowdoku 风格配色 ════════════ */
     :root {
-      --bg:            #f8f6ef;
+      --bg:            var(--gp-sand);
       --card:          #ffffff;
-      --ink:           #342421;
-      --text:          #6f5651;
-      --text-muted:    #9b726c;
-      --border:        #e7dacf;
-      --border-soft:   #f4dfdc;
-      --hover-bg:      #fff4f0;
-      --btn-dark:      #3d302c;
-      --green:         #559c68;
-      --focus:         #67c5bf;
-      --accent:        #E8A888;
+      --ink:           var(--gp-brown-900);
+      --text:          var(--gp-brown-600);
+      --text-muted:    var(--gp-brown-400);
+      --border:        var(--gp-linen);
+      --border-soft:   var(--gp-blush);
+      --hover-bg:      var(--gp-cream-warm);
+      --btn-dark:      var(--gp-brown-900);
+      --green:         var(--gp-success);
+      --focus:         var(--gp-mint);
+      --accent:        var(--gp-primary);
       --shadow:        0 12px 28px rgba(78,64,55,0.10);
       --shadow-sm:     0 4px 10px rgba(78,64,55,0.12);
       --radius-lg:     1.7rem;
@@ -145,12 +175,12 @@ const description = "Play GridPaw, a free Light Up puzzle game with cute cats. S
     .game-switcher-btn { font-size: 0.875rem; font-weight: 700; color: var(--text); background: none; border: none; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 0.375rem; display: flex; align-items: center; gap: 4px; }
     .game-switcher-btn::after { content: '▾'; font-size: 10px; }
     .game-switcher-btn:hover { background: var(--hover-bg); color: var(--ink); }
-    .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid #E8DDD0; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
+    .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid var(--gp-parchment); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
     .game-switcher:hover .game-switcher-menu { display: block; }
     .game-switcher-menu a { display: flex; flex-direction: column; padding: 10px 16px !important; font-size: 13px !important; gap: 2px; border-radius: 0 !important; }
-    .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: #9E9590; }
-    .game-switcher-menu a:hover { background: #FFF8F0 !important; color: var(--ink) !important; }
-    .game-switcher-menu a.active { color: var(--ink) !important; background: #FFF5F0 !important; font-weight: 800 !important; }
+    .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: var(--gp-stone); }
+    .game-switcher-menu a:hover { background: var(--gp-cream) !important; color: var(--ink) !important; }
+    .game-switcher-menu a.active { color: var(--ink) !important; background: var(--gp-cream-warm) !important; font-weight: 800 !important; }
     @media (max-width: 480px) { .game-switcher:hover .game-switcher-menu { display: none; } .game-switcher-menu.open { display: block; } }
     .nav .hamburger { display: none; font-size: 1.4rem; padding: 0.5rem; cursor: pointer; background: none; border: none; color: var(--text); }
     @media (max-width: 768px) {
@@ -221,12 +251,12 @@ const description = "Play GridPaw, a free Light Up puzzle game with cute cats. S
     /* ── 游戏区 ── */
     .game-stage {
       display: flex; justify-content: center; padding: 1rem;
-      background: linear-gradient(135deg, #fdfbf7 0%, #f6f1e9 100%);
+      background: linear-gradient(135deg, var(--gp-sand) 0%, var(--gp-sand) 100%);
     }
     .grid-wrapper { display: flex; justify-content: center; }
     .puzzle-grid {
       display: inline-grid; gap: 3px;
-      background: linear-gradient(145deg, #E8DDD8, #D8C8C0);
+      background: linear-gradient(145deg, var(--gp-linen), var(--gp-linen));
       padding: 6px; border-radius: 16px;
       box-shadow: 0 8px 32px rgba(123,107,138,0.15), 0 2px 8px rgba(123,107,138,0.1);
     }
@@ -237,32 +267,32 @@ const description = "Play GridPaw, a free Light Up puzzle game with cute cats. S
       position: relative; overflow: hidden;
     }
     .cell:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(123,107,138,0.2); }
-    .cell-black { background: linear-gradient(145deg, #8B7B9A, #6B5B7A); cursor: default; box-shadow: inset 0 3px 6px rgba(0,0,0,0.3), 0 2px 4px rgba(123,107,138,0.2); }
-    .cell-number { font-weight: 800; color: #F0E8FF; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
-    .cell-lit { background: linear-gradient(145deg, #FFF8F0, #FFF0E0); box-shadow: inset 0 0 8px rgba(255,248,240,0.5); }
-    .cell-cat { background: linear-gradient(145deg, #FFF8F0, #FFF0E0); box-shadow: inset 0 0 8px rgba(255,248,240,0.5); }
-    .cell-x { background: #FAFAFA; box-shadow: inset 0 0 4px rgba(0,0,0,0.05); }
-    .cell-dark { background: linear-gradient(145deg, #F0EBE5, #E8E0D8); box-shadow: inset 0 2px 4px rgba(0,0,0,0.08); }
-    @keyframes hint-pulse { 0%,100% { box-shadow: inset 0 0 0 3px #E8A888; } 50% { box-shadow: inset 0 0 0 3px #E8A888, 0 0 16px rgba(232,168,136,0.5); } }
+    .cell-black { background: linear-gradient(145deg, var(--gp-brown-600), var(--gp-brown-900)); cursor: default; box-shadow: inset 0 3px 6px rgba(0,0,0,0.3), 0 2px 4px rgba(123,107,138,0.2); }
+    .cell-number { font-weight: 800; color: var(--gp-cream-warm); text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+    .cell-lit { background: linear-gradient(145deg, var(--gp-cream), var(--gp-cream-warm)); box-shadow: inset 0 0 8px rgba(255,248,240,0.5); }
+    .cell-cat { background: linear-gradient(145deg, var(--gp-cream), var(--gp-cream-warm)); box-shadow: inset 0 0 8px rgba(255,248,240,0.5); }
+    .cell-x { background: var(--gp-white); box-shadow: inset 0 0 4px rgba(0,0,0,0.05); }
+    .cell-dark { background: linear-gradient(145deg, var(--gp-sand), var(--gp-parchment)); box-shadow: inset 0 2px 4px rgba(0,0,0,0.08); }
+    @keyframes hint-pulse { 0%,100% { box-shadow: inset 0 0 0 3px var(--gp-primary); } 50% { box-shadow: inset 0 0 0 3px var(--gp-primary), 0 0 16px rgba(232,168,136,0.5); } }
     .cell-hint { animation: hint-pulse 0.8s ease-in-out infinite; }
     @keyframes cat-place { 0% { transform: scale(0) rotate(-10deg); opacity: 0; } 50% { transform: scale(1.2) rotate(5deg); opacity: 1; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
     .cell-cat-new { animation: cat-place 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; }
-    @keyframes flash-red { 0%,100% { box-shadow: none; } 50% { box-shadow: inset 0 0 0 3px #E74C3C, 0 0 8px rgba(231,76,60,0.4); } }
+    @keyframes flash-red { 0%,100% { box-shadow: none; } 50% { box-shadow: inset 0 0 0 3px var(--gp-error), 0 0 8px rgba(231,76,60,0.4); } }
     .cell-violation { animation: flash-red 0.5s ease; }
     @keyframes shake { 0%,100% { transform: translateX(0); } 20%,60% { transform: translateX(-3px); } 40%,80% { transform: translateX(3px); } }
     .cell-shake { animation: shake 0.4s ease; }
 
     /* ── 难度 badge ── */
     .difficulty-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-left: 6px; vertical-align: middle; }
-    .badge-tutorial { background: #E8F5E9; color: #2E7D32; }
-    .badge-easy { background: #E8F5E9; color: #2E7D32; }
-    .badge-medium { background: #FFF3E0; color: #E65100; }
-    .badge-medium-hard { background: #FFE0B2; color: #BF360C; }
-    .badge-hard { background: #FFCDD2; color: #C62828; }
-    .badge-expert { background: #F3E5F5; color: #6A1B9A; }
+    .badge-tutorial { background: var(--gp-badge-easy-bg); color: var(--gp-badge-easy-text); }
+    .badge-easy { background: var(--gp-badge-easy-bg); color: var(--gp-badge-easy-text); }
+    .badge-medium { background: var(--gp-badge-med-bg); color: var(--gp-badge-med-text); }
+    .badge-medium-hard { background: var(--gp-badge-hard-bg); color: var(--gp-badge-hard-text); }
+    .badge-hard { background: var(--gp-badge-hard-bg); color: var(--gp-badge-hard-text); }
+    .badge-expert { background: var(--gp-lilac-bright); color: var(--gp-brown-900); }
 
     /* ── Toast ── */
-    .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #E74C3C; color: #fff; padding: 0.6rem 1.2rem; border-radius: 12px; font-size: 0.9rem; font-weight: 600; z-index: 1000; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--gp-error); color: #fff; padding: 0.6rem 1.2rem; border-radius: 12px; font-size: 0.9rem; font-weight: 600; z-index: 1000; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
     .toast.show { opacity: 1; }
     .toast.success { background: var(--green); }
 
@@ -278,16 +308,16 @@ const description = "Play GridPaw, a free Light Up puzzle game with cute cats. S
     .win-sub { font-size: 1.1rem; color: var(--text); margin-top: 0.5rem; animation: fade-up 0.5s 0.5s ease both; }
     @keyframes fade-up { 0% { transform: translateY(20px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
     .win-btn { margin-top: 1.5rem; padding: 0.7rem 2rem; background: var(--accent); color: #fff; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; font-family: inherit; }
-    .win-btn:hover { background: #D09070; }
+    .win-btn:hover { background: var(--gp-primary-strong); }
     .win-share-row { display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; justify-content: center; }
     .share-btn { padding: 0.5rem 1rem; border: none; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: 600; font-family: inherit; transition: transform 0.1s; }
     .share-btn:active { transform: scale(0.95); }
-    .share-copy { background: #F0E8FF; color: #7B6B8A; }
-    .share-copy:hover { background: #E0D0F0; }
-    .share-twitter { background: #1DA1F2; color: #fff; }
-    .share-twitter:hover { background: #0d8ddb; }
+    .share-copy { background: var(--gp-cream-warm); color: var(--gp-brown-600); }
+    .share-copy:hover { background: var(--gp-lilac-soft); }
+    .share-twitter { background: var(--gp-info); color: #fff; }
+    .share-twitter:hover { background: var(--gp-info); }
     .share-reddit { background: #FF4500; color: #fff; }
-    .share-reddit:hover { background: #e03e00; }
+    .share-reddit:hover { background: var(--gp-primary-dark); }
     .confetti { position: absolute; width: 12px; height: 12px; border-radius: 3px; animation: confetti-fall linear forwards; }
     @keyframes confetti-fall { 0% { transform: translateY(-100vh) rotate(0); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
     .paw-confetti { position: absolute; font-size: 24px; animation: paw-fall linear forwards; }
@@ -323,7 +353,7 @@ const description = "Play GridPaw, a free Light Up puzzle game with cute cats. S
     /* ── Featured Tip ── */
     .featured-tip {
       margin-top: 2rem; padding: 1.5rem; border-radius: 1rem;
-      background: linear-gradient(135deg, #fffaf8, #fff4f0);
+      background: linear-gradient(135deg, var(--gp-cream-warm), var(--gp-cream-warm));
       border: 1px solid var(--border);
     }
     .featured-tip-label { font-size: 0.8rem; font-weight: 900; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
@@ -384,7 +414,7 @@ const description = "Play GridPaw, a free Light Up puzzle game with cute cats. S
     .prose li { margin-bottom: 0.5rem; }
     .prose strong { color: var(--ink); }
     .prose a { color: var(--accent); text-decoration: underline; font-weight: 600; }
-    .prose a:hover { color: #D09070; }
+    .prose a:hover { color: var(--gp-primary-strong); }
 
     /* ── FAQ Accordion ── */
     details.faq-item {
@@ -464,7 +494,7 @@ const description = "Play GridPaw, a free Light Up puzzle game with cute cats. S
     <div style="position:absolute;top:0;right:0;width:280px;height:100%;background:#fff;padding:1.5rem;box-shadow:-4px 0 20px rgba(0,0,0,0.1)">
       <button id="mobile-nav-close" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;color:var(--text);cursor:pointer">&times;</button>
       <a href="/akari/" style="display:block;padding:0.75rem 0;font-weight:700;color:var(--text);border-bottom:1px solid var(--border-soft)">Home</a>
-      <div style="padding:0.5rem 0;font-size:11px;font-weight:800;color:#9E9590;text-transform:uppercase;letter-spacing:0.08em">Games</div>
+      <div style="padding:0.5rem 0;font-size:11px;font-weight:800;color:var(--gp-stone);text-transform:uppercase;letter-spacing:0.08em">Games</div>
       <a href="/" style="display:block;padding:0.5rem 0 0.5rem 1.5rem;font-weight:700;color:var(--text);border-bottom:1px solid var(--border-soft)">🟧 Shikaku</a>
       <a href="/akari/" style="display:block;padding:0.5rem 0 0.5rem 1.5rem;font-weight:700;color:var(--ink);border-bottom:1px solid var(--border-soft)">💡 Akari</a>
       <a href="/pictomino/" style="display:block;padding:0.5rem 0 0.5rem 1.5rem;font-weight:700;color:var(--text);border-bottom:1px solid var(--border-soft)">🧩 Pictomino</a>
@@ -511,7 +541,7 @@ const description = "Play GridPaw, a free Light Up puzzle game with cute cats. S
             <button class="icon-btn" id="redo-btn" aria-label="Redo"><span>↪️</span><span class="tip">Redo (Ctrl+Y)</span></button>
             <button class="icon-btn" id="reset-btn" aria-label="Restart"><span>🗑️</span><span class="tip">Restart</span></button>
             <button class="icon-btn" id="sound-btn" aria-label="Sound"><span>🔇</span><span class="tip">Sound</span></button>
-            <a href="/akari/daily/" id="daily-btn" class="icon-btn" aria-label="Daily Challenge" style="text-decoration:none;background:linear-gradient(145deg,#E8956A,#D47A50);color:#fff;border-color:#D47A50"><span>🔥</span><span class="tip">Daily</span></a>
+            <a href="/akari/daily/" id="daily-btn" class="icon-btn" aria-label="Daily Challenge" style="text-decoration:none;background:linear-gradient(145deg,var(--gp-primary-soft),var(--gp-primary-strong));color:#fff;border-color:var(--gp-primary-strong)"><span>🔥</span><span class="tip">Daily</span></a>
           </div>
         </div>
 
