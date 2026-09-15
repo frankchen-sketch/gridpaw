@@ -195,7 +195,7 @@
 
 > **定位**：`public/pictomino/` 是纯静态子站（14 个 HTML，不经 Astro 构建），拥有**自己的一套 CSS 变量体系**，与 GridPaw 主站色系（--gp-*）**刻意不同**——主站是琥珀暖色，pictomino 是奶油粉暖（--bg #FFF6EC / --ink #4A3B32 / --pink #FF8FAB / --orange #FFB26B / --teal #5ECFB9 / --yellow #FFD66B，全部子站各页 :root 已有，勿混用 --gp-* token）。
 >
-> 2026-09-15 完成色值 token 化整理：344 处散落 raw hex 归入 var()，零视觉变化（映射表驱动，逐文件机器校验「除 ：root 定义行外每行与原文 token 替换结果一致」）。
+> 2026-09-15 完成色值 token 化整理：302 处散落 raw hex 归入 var()（另有 142 处为变量定义值/纯白/品牌色/JS 数据色，属白名单保留），零视觉变化（映射表驱动，逐文件机器校验「除 ：root 定义行外每行与原文 token 替换结果一致」）。
 >
 > **pictomino 页面改色规则**：改 pictomino 页面时用下表 token，不要再写 raw hex；新增色值须先在这里备案再使用。`--bg/--orange/--pink` 引用已有变量，其余 token 按页在 :root 里**按需定义**（每页只加该页用到的，未列出的 token 在该页 :root 手动补定义）。
 
