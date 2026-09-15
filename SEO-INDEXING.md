@@ -191,6 +191,37 @@ GSC 官方口径的「~10/天」是**上限而非可达速率**。实测：
 脚本 `~/.hermes/scripts/gridpaw_unindexed.py`（带状态缓存：未收录每轮复测，已收录 7 天复扫；
 68 条全测要 10 分钟+，缓存后约 2.5 分钟）。输出落在 `~/.hermes/cron/output/6d0557a0b149/`。
 
+### 5.4 IndexNow key 管理（⚠️ 部署前置条件）
+
+**key 文件不入库，但必须在本机存在才能部署。**
+
+- 位置：`public/<key>.txt` —— **文件名 = key，内容 = key**（IndexNow 协议 Option 1，必须放根目录）
+- `.gitignore` 里 `public/*.txt` + 白名单 `llms.txt` / `robots.txt` 放行
+- **为什么**：本仓库是 public。IndexNow 的安全模型完全依赖「key 不可猜」（key 文件名就是 key，
+  而 key 文件又必须公开可访问）——把它提交进公开仓库正好破坏了这个前提。key 是**真能用的写入凭据**，
+  拿到就能以 gridpaw.com 名义往 Bing/Naver/Yandex 提交任意 URL。
+
+**新机器部署前的必做步骤**：
+
+```bash
+# key 文件缺失时，pnpm run build 会大声失败（exit 1 + 提示），不会静默发布一个 IndexNow 失效的站
+node scripts/check-indexnow-key.mjs          # 检查
+SKIP_INDEXNOW_CHECK=1 pnpm run build         # 确实要绕过时
+
+# 恢复方式二选一：
+#   a) 从已有该文件的机器拷 public/<key>.txt
+#   b) 生成新 key（需在 Bing Webmaster 重新验证）：
+node -e "console.log(require('crypto').randomBytes(16).toString('hex'))"
+```
+
+**已废弃**：`public/.well-known/indexnow.txt`（2026-09-15 删除）。经查 IndexNow 官方文档它**不合协议**——
+Option 1 要求 key 文件在根目录且文件名必须是 `{key}.txt`；Option 2 即使指定 `keyLocation`，
+**文件所在路径也限定了可提交的 URL 范围**（`/.well-known/` 只能覆盖 `/.well-known/*`）。
+属遗留死文件，且 tracked 着 key。
+
+**历史遗留**：旧 key `390e708d7bc94f369a866111e32df9c3` 仍留在 git 历史里（已从工作树删除并轮换），
+但**已在线上吊销**（该路径返回 404），不可再用。
+
 ---
 
 ## 六、复查清单（改动后必跑）
@@ -204,6 +235,13 @@ curl -s https://gridpaw.com/sitemap.xml | grep -o '<loc>[^<]*</loc>'
 # 3. pictomino canonical 必须无尾斜杠；主站 canonical 必须有尾斜杠
 curl -s https://gridpaw.com/pictomino/easy | grep -o 'rel="canonical"[^>]*'
 curl -s https://gridpaw.com/brain-teasers-for-adults/ | grep -o 'rel="canonical"[^>]*'
+
+# 4. IndexNow：新 key 必须 200，旧 key 必须 404，.well-known 路径必须 404
+node scripts/check-indexnow-key.mjs
+curl -s -o /dev/null -w "%{http_code}\n" "https://gridpaw.com/$(ls public/ | grep -E '^[0-9a-f]{32}\.txt$' | sed 's/\.txt//').txt"
+curl -s -o /dev/null -w "%{http_code}\n" https://gridpaw.com/390e708d7bc94f369a866111e32df9c3.txt   # 期望 404
+# IndexNow 提交通道自检（应返回 200/202）
+node scripts/indexnow-ping.mjs
 ```
 
 **GSC API 复查**（SA 已授权）：
