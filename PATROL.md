@@ -92,6 +92,37 @@
 
 ---
 
+## 页面：/（index.astro，主页二轮）+ 猫块渲染 bug 修复（阶段 5）✅ 2026-09-15
+
+### ① 11 个 token 自引用死循环（token 化替换事故）
+`:root` 里 11 个 token 的定义行被替换脚本误伤成自引用（`--gp-pink: var(--gp-pink)`），CSS 判 invalid → 变量整体失效：
+`--gp-pink`（Play Daily 按钮白字掉在奶油底上=隐形）、`--gp-lilac-soft`（策略卡/FAQ 边框）、`--gp-primary-dark`（导航 hover）、badge 4 组 ×2（难度徽章全无色）。
+**修复**：从 token 化之前 commit `736ac59` 逐一找回原值填回。
+**教训**：token 化脚本必须排除自身定义行（`^\s*--[a-z-]+:` 开头的行）。
+
+### ② 猫块消失（GSAP from 补间冻结）
+`.cat-block` 同时有 CSS `pop-in` 动画和 GSAP `from` 补间，同属性竞争致补间被 kill，内联样式冻结在起始帧 `opacity:0; scale(0.8)` → 猫块永久透明（玩家只看到格子底色）。
+**修复**：GSAP 接管前 `block.style.animation='none'`；`from` 加 `clearProps:'opacity,transform'`；squash 补间加 `overwrite:'auto'+clearProps`。
+**验证**：Playwright 拖拽实测 opacity:1 + 耳/脸/数字齐全（本地 + 生产双端截图）。
+**教训**：同一元素同一属性，CSS 动画和 GSAP 只能有一个老板（已存 skill `gsap-css-animation-conflict`）。
+
+### ③ 80 处 raw hex 二次收编（零视觉变化）
+| 原值 | → token | 处数 |
+|---|---|---|
+| #3D3D3D | --gp-ink | 36 |
+| #D47A50 | --gp-primary-strong | 23 |
+| #9E9590 | --gp-stone | 12 |
+| #E8DDD0 | --gp-parchment | 4 |
+| #D8D0C8 | --mt-cell-border | 2 |
+| #5C6BC0 | --gp-info | 2 |
+| #FFF8F0 | --gp-cream | 1 |
+
+白名单保留：CAT_PALETTE/confColors 数据色、`html2canvas` JS API 色值（需真实色，var() 传不进去）、Google SVG 品牌色。
+**验证**：build 131p 全绿 + Playwright 计算样式比对（body/导航/品牌/标题/棋盘格逐一命中 token 值），零 JS 错误。
+**注**：交接文档估的「首页真违规约 7 处」严重低估，实测 80 处。
+
+---
+
 ## 巡查提示词（每次 UI 改动后跑）
 
 ```
