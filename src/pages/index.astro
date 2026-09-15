@@ -106,7 +106,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     .nav-bar a:hover { border-color: var(--mt-primary); color: var(--mt-primary); }
     .nav-bar a.nav-daily { background: var(--mt-primary); color: white; border-color: var(--mt-primary); font-size: 13px; padding: 5px 14px; font-weight: 800; }
     .nav-bar a.nav-daily:hover { background: var(--gp-primary-dark); border-color: var(--gp-primary-dark); color: white; }
-    .breadcrumb { font-size: 12px; color: #9E9590; padding: 0 0 8px; text-align: center; }
+    .breadcrumb { font-size: 12px; color: var(--gp-stone); padding: 0 0 8px; text-align: center; }
     .daily-status { text-align: center; padding: 0 0 8px; font-size: 12px; font-weight: 700; }
     .daily-status a { text-decoration: none; color: var(--mt-text-light); transition: color 0.15s; }
     .daily-status a:hover { color: var(--mt-primary); }
@@ -129,7 +129,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     .board { display: inline-grid; gap: 3px; padding: 8px; background: var(--mt-board-bg); border-radius: 12px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.06), var(--mt-shadow-md); position: relative; }
     .cell { border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; position: relative; cursor: pointer; transition: background 0.15s, border 0.15s, transform 0.15s; }
     .cell-empty { background: #FFFFFF; border: 1.5px solid var(--gp-lilac); }
-    .cell-number { background: #FFFFFF; border: 2px solid #D47A50; border-radius: 8px; color: #3D3D3D; box-shadow: 0 2px 6px rgba(212,122,80,0.12); }
+    .cell-number { background: #FFFFFF; border: 2px solid var(--gp-primary-strong); border-radius: 8px; color: var(--gp-ink); box-shadow: 0 2px 6px rgba(212,122,80,0.12); }
     .cell-selecting { border: 2px dashed var(--mt-primary) !important; background: rgba(212,122,80,0.08) !important; }
     .cell-filled { border: none; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3); }
     .cell-error { animation: shake 0.3s ease; }
@@ -171,28 +171,28 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     .cat-eyes { display: flex; gap: 7px; align-items: center; }
     .cat-mouth { margin-top: 1px; }
     /* Eye types */
-    .e-open { width: 7px; height: 7px; background: #3D3D3D; border-radius: 50%; }
-    .e-closed { width: 9px; height: 0; border-bottom: 2.5px solid #3D3D3D; border-radius: 0 0 50% 50%; }
-    .e-dot { width: 5px; height: 5px; background: #3D3D3D; border-radius: 50%; }
-    .e-angry { width: 7px; height: 7px; background: #3D3D3D; border-radius: 50%; position: relative; }
-    .e-angry::before { content: ''; position: absolute; top: -4px; left: -1px; width: 9px; height: 3px; border-top: 2.5px solid #3D3D3D; border-radius: 50% 50% 0 0; }
+    .e-open { width: 7px; height: 7px; background: var(--gp-ink); border-radius: 50%; }
+    .e-closed { width: 9px; height: 0; border-bottom: 2.5px solid var(--gp-ink); border-radius: 0 0 50% 50%; }
+    .e-dot { width: 5px; height: 5px; background: var(--gp-ink); border-radius: 50%; }
+    .e-angry { width: 7px; height: 7px; background: var(--gp-ink); border-radius: 50%; position: relative; }
+    .e-angry::before { content: ''; position: absolute; top: -4px; left: -1px; width: 9px; height: 3px; border-top: 2.5px solid var(--gp-ink); border-radius: 50% 50% 0 0; }
     .cat-eyes .e-angry:first-child::before { transform: rotate(-15deg); }
     .cat-eyes .e-angry:last-child::before { transform: rotate(15deg); }
-    .e-big { width: 9px; height: 9px; background: #3D3D3D; border-radius: 50%; }
-    .e-half { width: 7px; height: 4px; background: #3D3D3D; border-radius: 50% 50% 0 0; }
-    .e-down { width: 7px; height: 7px; background: #3D3D3D; border-radius: 50%; transform: translateY(1px); }
+    .e-big { width: 9px; height: 9px; background: var(--gp-ink); border-radius: 50%; }
+    .e-half { width: 7px; height: 4px; background: var(--gp-ink); border-radius: 50% 50% 0 0; }
+    .e-down { width: 7px; height: 7px; background: var(--gp-ink); border-radius: 50%; transform: translateY(1px); }
     /* Mouth types */
-    .m-smile { width: 12px; height: 5px; border-bottom: 2.5px solid #3D3D3D; border-radius: 0 0 50% 50%; }
-    .m-frown { width: 10px; height: 4px; border-top: 2.5px solid #3D3D3D; border-radius: 50% 50% 0 0; }
-    .m-open { width: 8px; height: 8px; background: #3D3D3D; border-radius: 50%; }
-    .m-big-open { width: 10px; height: 10px; background: #3D3D3D; border-radius: 50%; }
-    .m-w { width: 14px; height: 6px; border-bottom: 2.5px solid #3D3D3D; border-radius: 0 0 40% 40%; position: relative; }
-    .m-w::before { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 2px; height: 3px; background: #3D3D3D; }
-    .m-flat { width: 12px; height: 0; border-bottom: 2.5px solid #3D3D3D; }
-    .m-tongue { width: 12px; height: 5px; border-bottom: 2.5px solid #3D3D3D; border-radius: 0 0 50% 50%; position: relative; }
+    .m-smile { width: 12px; height: 5px; border-bottom: 2.5px solid var(--gp-ink); border-radius: 0 0 50% 50%; }
+    .m-frown { width: 10px; height: 4px; border-top: 2.5px solid var(--gp-ink); border-radius: 50% 50% 0 0; }
+    .m-open { width: 8px; height: 8px; background: var(--gp-ink); border-radius: 50%; }
+    .m-big-open { width: 10px; height: 10px; background: var(--gp-ink); border-radius: 50%; }
+    .m-w { width: 14px; height: 6px; border-bottom: 2.5px solid var(--gp-ink); border-radius: 0 0 40% 40%; position: relative; }
+    .m-w::before { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 2px; height: 3px; background: var(--gp-ink); }
+    .m-flat { width: 12px; height: 0; border-bottom: 2.5px solid var(--gp-ink); }
+    .m-tongue { width: 12px; height: 5px; border-bottom: 2.5px solid var(--gp-ink); border-radius: 0 0 50% 50%; position: relative; }
     .m-tongue::after { content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 6px; height: 5px; background: #FF9A9E; border-radius: 0 0 50% 50%; }
-    .m-small { width: 8px; height: 3px; border-bottom: 2px solid #3D3D3D; border-radius: 0 0 50% 50%; }
-    .m-pout { width: 10px; height: 6px; background: #3D3D3D; border-radius: 50%; }
+    .m-small { width: 8px; height: 3px; border-bottom: 2px solid var(--gp-ink); border-radius: 0 0 50% 50%; }
+    .m-pout { width: 10px; height: 6px; background: var(--gp-ink); border-radius: 50%; }
     .m-none { display: none; }
     /* Cat number */
     .cat-num {
@@ -254,25 +254,25 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     .seo-footer a:hover { color: var(--mt-primary); }
     /* SEO Content Sections */
     .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem; }
-    .seo-section h1 { font-size: 1.6rem; margin: 1rem 0 0.5rem; color: #3D3D3D; }
-    .seo-section h2 { font-size: 1.3rem; margin: 1.5rem 0 0.5rem; color: #3D3D3D; }
-    .seo-section h2 .accent { color: #D47A50; }
-    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; color: #3D3D3D; }
+    .seo-section h1 { font-size: 1.6rem; margin: 1rem 0 0.5rem; color: var(--gp-ink); }
+    .seo-section h2 { font-size: 1.3rem; margin: 1.5rem 0 0.5rem; color: var(--gp-ink); }
+    .seo-section h2 .accent { color: var(--gp-primary-strong); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; color: var(--gp-ink); }
     .seo-section p { margin: 0.5rem 0; line-height: 1.7; color: var(--gp-brown-600); }
-    .seo-section a { color: #D47A50; }
+    .seo-section a { color: var(--gp-primary-strong); }
     .seo-section ul, .seo-section ol { padding-left: 1.5rem; color: var(--gp-brown-600); margin: 0.5rem 0; }
     .seo-section li { margin-bottom: 0.3rem; line-height: 1.6; }
     /* Strategy Grid */
     .strategy-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 1rem 0; }
-    .strategy-grid-item { display: flex; flex-direction: column; padding: 12px; background: white; border: 1.5px solid var(--gp-lilac-soft); border-radius: 12px; text-decoration: none; color: #3D3D3D; transition: all 0.15s; }
-    .strategy-grid-item:hover { border-color: #D47A50; box-shadow: 0 2px 8px rgba(212,122,80,0.1); }
+    .strategy-grid-item { display: flex; flex-direction: column; padding: 12px; background: white; border: 1.5px solid var(--gp-lilac-soft); border-radius: 12px; text-decoration: none; color: var(--gp-ink); transition: all 0.15s; }
+    .strategy-grid-item:hover { border-color: var(--gp-primary-strong); box-shadow: 0 2px 8px rgba(212,122,80,0.1); }
     .strategy-grid-item strong { font-size: 13px; font-weight: 800; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
-    .strategy-grid-item span { font-size: 11px; color: #9E9590; line-height: 1.4; }
+    .strategy-grid-item span { font-size: 11px; color: var(--gp-stone); line-height: 1.4; }
     .guide-badge { display: inline-block; padding: 1px 6px; border-radius: 6px; font-size: 10px; font-weight: 800; letter-spacing: 0.02em; }
     /* Tips Grid */
     .tips-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 1rem 0; }
-    .tip-card { display: flex; flex-direction: column; align-items: center; padding: 14px 8px; background: white; border: 1.5px solid var(--gp-lilac-soft); border-radius: 12px; text-decoration: none; color: #3D3D3D; transition: all 0.15s; }
-    .tip-card:hover { border-color: #D47A50; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(212,122,80,0.1); }
+    .tip-card { display: flex; flex-direction: column; align-items: center; padding: 14px 8px; background: white; border: 1.5px solid var(--gp-lilac-soft); border-radius: 12px; text-decoration: none; color: var(--gp-ink); transition: all 0.15s; }
+    .tip-card:hover { border-color: var(--gp-primary-strong); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(212,122,80,0.1); }
     .tip-icon { font-size: 28px; margin-bottom: 6px; }
     .tip-label { font-size: 11px; font-weight: 700; text-align: center; }
     /* FAQ */
@@ -304,7 +304,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
       transition: border-color 0.15s, box-shadow 0.15s;
     }
     .testimonial-card:hover {
-      border-color: #D47A50;
+      border-color: var(--gp-primary-strong);
       box-shadow: 0 4px 16px rgba(212,122,80,0.12);
     }
     .testimonial-stars { font-size: 13px; letter-spacing: 1px; }
@@ -332,11 +332,11 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
       font-size: 18px;
       flex-shrink: 0;
     }
-    .testimonial-name { font-size: 13px; font-weight: 800; color: #3D3D3D; }
+    .testimonial-name { font-size: 13px; font-weight: 800; color: var(--gp-ink); }
     .testimonial-badge {
       font-size: 10px;
       font-weight: 700;
-      color: #D47A50;
+      color: var(--gp-primary-strong);
       background: var(--gp-cream-warm);
       padding: 1px 6px;
       border-radius: 6px;
@@ -353,14 +353,14 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: #D8D0C8;
+      background: var(--mt-cell-border);
       border: none;
       cursor: pointer;
       padding: 0;
       transition: background 0.2s, transform 0.2s;
     }
     .testimonial-dot.active {
-      background: #D47A50;
+      background: var(--gp-primary-strong);
       transform: scale(1.3);
     }
     @media (max-width: 420px) {
@@ -369,56 +369,56 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
 
     /* Section titles */
     .section-title { font-size: 1.2rem; font-weight: 900; text-align: center; margin: 1.5rem 0 0.8rem; }
-    .section-title .accent { color: #D47A50; }
+    .section-title .accent { color: var(--gp-primary-strong); }
     @media (max-width: 420px) { .strategy-grid { grid-template-columns: 1fr; } .tips-grid { grid-template-columns: repeat(2, 1fr); } }
 
     /* Sticky Header */
-    .site-header { position: sticky; top: 0; z-index: 100; background: rgba(255,248,240,0.95); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1.5px solid #E8DDD0; padding: 0 16px; }
+    .site-header { position: sticky; top: 0; z-index: 100; background: rgba(255,248,240,0.95); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1.5px solid var(--gp-parchment); padding: 0 16px; }
     .header-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; }
-    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #3D3D3D; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--gp-ink); }
     .brand-logo { width: 36px; height: 36px; border-radius: 8px; }
     .brand-name { display: flex; flex-direction: column; line-height: 1.1; }
-    .brand-name .big { font-size: 17px; font-weight: 900; color: #D47A50; }
-    .brand-name .small { font-size: 10px; font-weight: 600; color: #9E9590; letter-spacing: 0.02em; }
+    .brand-name .big { font-size: 17px; font-weight: 900; color: var(--gp-primary-strong); }
+    .brand-name .small { font-size: 10px; font-weight: 600; color: var(--gp-stone); letter-spacing: 0.02em; }
     .header-nav { display: flex; gap: 0; align-items: center; }
-    .header-nav a { font-size: 13px; font-weight: 700; color: #5C6BC0; text-decoration: none; padding: 8px 14px; transition: color 0.15s; }
-    .header-nav a:hover { color: #D47A50; }
+    .header-nav a { font-size: 13px; font-weight: 700; color: var(--gp-info); text-decoration: none; padding: 8px 14px; transition: color 0.15s; }
+    .header-nav a:hover { color: var(--gp-primary-strong); }
     .game-switcher { position: relative; }
-    .game-switcher-btn { font-size: 13px; font-weight: 700; color: #5C6BC0; background: none; border: none; cursor: pointer; padding: 8px 14px; display: flex; align-items: center; gap: 4px; }
+    .game-switcher-btn { font-size: 13px; font-weight: 700; color: var(--gp-info); background: none; border: none; cursor: pointer; padding: 8px 14px; display: flex; align-items: center; gap: 4px; }
     .game-switcher-btn::after { content: '▾'; font-size: 10px; }
-    .game-switcher-btn:hover { color: #D47A50; }
-    .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid #E8DDD0; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
+    .game-switcher-btn:hover { color: var(--gp-primary-strong); }
+    .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid var(--gp-parchment); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
     .game-switcher:hover .game-switcher-menu { display: block; }
     .game-switcher-menu a { display: flex; flex-direction: column; padding: 10px 16px !important; font-size: 13px !important; gap: 2px; border-radius: 0 !important; }
-    .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: #9E9590; }
-    .game-switcher-menu a:hover { background: #FFF8F0; color: #D47A50 !important; }
-    .game-switcher-menu a.active { color: #D47A50 !important; background: var(--gp-cream-warm); font-weight: 800 !important; }
+    .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: var(--gp-stone); }
+    .game-switcher-menu a:hover { background: var(--gp-cream); color: var(--gp-primary-strong) !important; }
+    .game-switcher-menu a.active { color: var(--gp-primary-strong) !important; background: var(--gp-cream-warm); font-weight: 800 !important; }
     @media (max-width: 480px) { .game-switcher:hover .game-switcher-menu { display: none; } .game-switcher-menu.open { display: block; } }
-    .hamburger { display: none; background: none; border: 1.5px solid #D8D0C8; border-radius: 8px; padding: 6px 10px; font-size: 18px; cursor: pointer; color: #3D3D3D; }
+    .hamburger { display: none; background: none; border: 1.5px solid var(--mt-cell-border); border-radius: 8px; padding: 6px 10px; font-size: 18px; cursor: pointer; color: var(--gp-ink); }
     .mobile-nav { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.4); }
     .mobile-nav-inner { position: absolute; top: 0; right: 0; width: 280px; height: 100%; background: white; padding: 1.5rem; box-shadow: -4px 0 20px rgba(0,0,0,0.1); }
-    .mobile-nav-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; color: #3D3D3D; cursor: pointer; }
-    .mobile-nav-inner a { display: block; padding: 0.75rem 0; font-weight: 700; color: #3D3D3D; text-decoration: none; border-bottom: 1.5px solid var(--gp-lilac-soft); font-size: 14px; }
+    .mobile-nav-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; color: var(--gp-ink); cursor: pointer; }
+    .mobile-nav-inner a { display: block; padding: 0.75rem 0; font-weight: 700; color: var(--gp-ink); text-decoration: none; border-bottom: 1.5px solid var(--gp-lilac-soft); font-size: 14px; }
     .mobile-nav-inner a:last-child { border-bottom: none; }
     @media (max-width: 480px) { .header-nav { display: none; } .hamburger { display: block; } }
     /* Game Card */
     .game-card { background: white; border-radius: 16px; padding: 12px; box-shadow: 0 2px 12px rgba(78,64,55,0.08); border: 1.5px solid var(--gp-lilac-soft); margin-bottom: 0; }
     .game-topbar { display: flex; align-items: center; justify-content: space-between; padding: 0 0 8px; flex-wrap: wrap; gap: 6px; position: relative; z-index: 20; }
     .game-actions { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; max-width: 200px; margin-left: auto; }
-    .game-actions .icon-btn { width: 32px; height: 32px; border-radius: 50%; background: white; border: 1.5px solid var(--gp-lilac); display: flex; align-items: center; justify-content: center; font-size: 14px; color: #3D3D3D; cursor: pointer; transition: all 0.15s; position: relative; }
-    .game-actions .icon-btn:hover { border-color: #D47A50; color: #D47A50; }
-    .game-actions .icon-btn .tip { display: none; position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: 600; color: #9E9590; white-space: nowrap; }
+    .game-actions .icon-btn { width: 32px; height: 32px; border-radius: 50%; background: white; border: 1.5px solid var(--gp-lilac); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--gp-ink); cursor: pointer; transition: all 0.15s; position: relative; }
+    .game-actions .icon-btn:hover { border-color: var(--gp-primary-strong); color: var(--gp-primary-strong); }
+    .game-actions .icon-btn .tip { display: none; position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: 600; color: var(--gp-stone); white-space: nowrap; }
     .game-actions .icon-btn:hover .tip { display: block; }
     .hint-badge { position: absolute; top: -4px; right: -4px; min-width: 16px; height: 16px; border-radius: 8px; background: var(--mt-primary); color: white; font-size: 10px; font-weight: 900; display: flex; align-items: center; justify-content: center; padding: 0 3px; pointer-events: none; line-height: 1; }
     /* Walkthrough Grid (Level Guides) */
     .walkthrough-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 1rem 0; }
-    .walkthrough-card { display: flex; flex-direction: column; background: white; border: 1.5px solid var(--gp-lilac-soft); border-radius: 12px; overflow: hidden; text-decoration: none; color: #3D3D3D; transition: all 0.15s; }
-    .walkthrough-card:hover { border-color: #D47A50; box-shadow: 0 4px 12px rgba(212,122,80,0.1); transform: translateY(-2px); }
-    .walkthrough-img { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #E8DDD0; display: flex; align-items: center; justify-content: center; }
+    .walkthrough-card { display: flex; flex-direction: column; background: white; border: 1.5px solid var(--gp-lilac-soft); border-radius: 12px; overflow: hidden; text-decoration: none; color: var(--gp-ink); transition: all 0.15s; }
+    .walkthrough-card:hover { border-color: var(--gp-primary-strong); box-shadow: 0 4px 12px rgba(212,122,80,0.1); transform: translateY(-2px); }
+    .walkthrough-img { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: var(--gp-parchment); display: flex; align-items: center; justify-content: center; }
     .walkthrough-img img { width: 100%; height: 100%; object-fit: contain; }
     .walkthrough-text { padding: 10px 12px; }
     .walkthrough-text h3 { font-size: 13px; font-weight: 800; margin: 4px 0 2px; }
-    .walkthrough-text p { font-size: 11px; color: #9E9590; line-height: 1.4; margin: 0; }
+    .walkthrough-text p { font-size: 11px; color: var(--gp-stone); line-height: 1.4; margin: 0; }
     /* Level Tags */
     .level-tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
     .tag-tutorial { background: var(--gp-badge-easy-bg); color: var(--gp-badge-easy-text); }
@@ -427,29 +427,29 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     .tag-daily { background: var(--gp-badge-daily-bg); color: var(--gp-badge-daily-text); }
     /* Featured Tip */
     .featured-tip { background: white; border: 1.5px solid var(--gp-lilac-soft); border-radius: 12px; padding: 1.2rem; margin: 1rem 0; }
-    .featured-tip-label { font-size: 11px; font-weight: 800; color: #D47A50; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .featured-tip-label { font-size: 11px; font-weight: 800; color: var(--gp-primary-strong); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
     .featured-tip h3 { font-size: 15px; font-weight: 900; margin-bottom: 0.5rem; }
     .featured-tip p { font-size: 13px; line-height: 1.7; color: var(--gp-brown-600); margin-bottom: 0.8rem; }
-    .featured-tip-link { font-size: 13px; font-weight: 700; color: #D47A50; text-decoration: none; }
+    .featured-tip-link { font-size: 13px; font-weight: 700; color: var(--gp-primary-strong); text-decoration: none; }
     .featured-tip-link:hover { text-decoration: underline; }
     /* Strategy List */
     .strategy-list { margin: 1rem 0; }
     .strategy-list-title { font-size: 14px; font-weight: 900; margin-bottom: 0.8rem; }
-    .strategy-item { display: flex; flex-direction: column; padding: 10px 12px; background: white; border: 1.5px solid var(--gp-lilac-soft); border-radius: 10px; text-decoration: none; color: #3D3D3D; margin-bottom: 8px; transition: all 0.15s; }
-    .strategy-item:hover { border-color: #D47A50; }
+    .strategy-item { display: flex; flex-direction: column; padding: 10px 12px; background: white; border: 1.5px solid var(--gp-lilac-soft); border-radius: 10px; text-decoration: none; color: var(--gp-ink); margin-bottom: 8px; transition: all 0.15s; }
+    .strategy-item:hover { border-color: var(--gp-primary-strong); }
     .strategy-item strong { font-size: 13px; font-weight: 800; }
-    .strategy-item span { font-size: 11px; color: #9E9590; margin-top: 2px; }
+    .strategy-item span { font-size: 11px; color: var(--gp-stone); margin-top: 2px; }
     /* Download Box */
-    .download-box { display: flex; gap: 2rem; align-items: center; background: white; border: 1.5px solid #E8DDD0; border-radius: 16px; padding: 2rem; margin: 1rem 0; }
+    .download-box { display: flex; gap: 2rem; align-items: center; background: white; border: 1.5px solid var(--gp-parchment); border-radius: 16px; padding: 2rem; margin: 1rem 0; }
     .download-phone { flex-shrink: 0; width: 200px; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
     .download-phone img { width: 100%; display: block; }
     .download-text { flex: 1; }
     .download-text h2 { font-size: 1.4rem; font-weight: 900; margin-bottom: 0.5rem; }
     .download-text p { font-size: 14px; line-height: 1.7; color: var(--gp-brown-600); margin-bottom: 1rem; }
     .download-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
-    .store-btn { display: inline-flex; align-items: center; gap: 6px; padding: 12px 24px; background: #D47A50; color: white; border-radius: 12px; font-weight: 800; font-size: 14px; text-decoration: none; transition: all 0.15s; }
+    .store-btn { display: inline-flex; align-items: center; gap: 6px; padding: 12px 24px; background: var(--gp-primary-strong); color: white; border-radius: 12px; font-weight: 800; font-size: 14px; text-decoration: none; transition: all 0.15s; }
     .store-btn:hover { background: var(--gp-primary-dark); }
-    .store-btn-outline { background: white; color: #D47A50; border: 1.5px solid #D47A50; }
+    .store-btn-outline { background: white; color: var(--gp-primary-strong); border: 1.5px solid var(--gp-primary-strong); }
     .store-btn-outline:hover { background: var(--gp-cream-warm); }
     /* Section generic */
     .section { max-width: 720px; margin: 0 auto; padding: 0.5rem 1rem; }
@@ -483,7 +483,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     .signin-prompt-card { background: white; border-radius: 20px; padding: 28px 24px; max-width: 320px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
     .signin-prompt-btn { display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1.5px solid var(--gp-linen); border-radius: 24px; padding: 10px 20px; font-size: 14px; font-weight: 700; color: var(--gp-ink); text-decoration: none; box-shadow: 0 1px 3px rgba(0,0,0,0.08); cursor: pointer; transition: box-shadow 0.15s; }
     .signin-prompt-btn:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-    .signin-prompt-later { display: block; margin: 12px auto 0; background: none; border: none; color: #9E9590; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: underline; }
+    .signin-prompt-later { display: block; margin: 12px auto 0; background: none; border: none; color: var(--gp-stone); font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: underline; }
     .hearts { display: flex; gap: 2px; font-size: 18px; align-items: center; }
     .hearts .heart { transition: transform 0.15s, opacity 0.15s; }
     .hearts .heart.lost { opacity: 0.2; transform: scale(0.8); }
@@ -533,7 +533,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
   <div class="mobile-nav-inner">
     <button class="mobile-nav-close" id="mobile-nav-close">×</button>
     <a href="/">🏠 Home</a>
-    <div style="padding:0.5rem 0;font-size:11px;font-weight:800;color:#9E9590;text-transform:uppercase;letter-spacing:0.08em">Games</div>
+    <div style="padding:0.5rem 0;font-size:11px;font-weight:800;color:var(--gp-stone);text-transform:uppercase;letter-spacing:0.08em">Games</div>
     <a href="/" style="padding-left:1.5rem">🟧 Shikaku</a>
     <a href="/akari/" style="padding-left:1.5rem">💡 Akari</a>
     <a href="/pictomino/" style="padding-left:1.5rem">🧩 Pictomino</a>
@@ -583,7 +583,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     <button class="next-btn" id="nextBtn">Next Level →</button>
     <button class="share-btn" id="shareBtn">📋 Share Result</button>
     <button class="reddit-btn" id="redditBtn">🔥 Share on Reddit</button>
-    <button id="victory-close" style="background:none;border:1.5px solid var(--gp-lilac-soft);color:#9E9590;font-family:inherit;font-weight:700;font-size:.85rem;padding:.5rem 1.6rem;border-radius:999px;cursor:pointer">Continue ✓</button>
+    <button id="victory-close" style="background:none;border:1.5px solid var(--gp-lilac-soft);color:var(--gp-stone);font-family:inherit;font-weight:700;font-size:.85rem;padding:.5rem 1.6rem;border-radius:999px;cursor:pointer">Continue ✓</button>
   </div>
 
   <div class="game-over-overlay hidden" id="gameOver">
@@ -1197,7 +1197,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     overlay.className = 'signin-prompt-overlay';
     overlay.innerHTML = '<div class="signin-prompt-card">' +
       '<div style="font-size:40px;margin-bottom:8px">🐱</div>' +
-      '<h3 style="margin:0 0 6px;font-size:18px;font-weight:900;color:#3D3D3D">Save your progress?</h3>' +
+      '<h3 style="margin:0 0 6px;font-size:18px;font-weight:900;color:var(--gp-ink)">Save your progress?</h3>' +
       '<p style="margin:0 0 16px;font-size:13px;color:var(--gp-stone);line-height:1.5">Sign in to save progress, appear on the daily leaderboard, and track your streak.</p>' +
       '<a href="/api/auth/login?next=/" class="signin-prompt-btn" onclick="track(\'sign_in_click\',{source:\'level5_prompt\',level:5})">' +
         '<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 18.9 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.6 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>' +
@@ -1421,7 +1421,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
       }
       const name = document.createElement('span');
       name.textContent = currentUser.name || 'Cat Fan';
-      name.style.cssText = 'font-size:.85rem;font-weight:700;color:#3D3D3D';
+      name.style.cssText = 'font-size:.85rem;font-weight:700;color:var(--gp-ink)';
       area.appendChild(name);
       const dailyBtn = document.createElement('a');
       dailyBtn.href = '#play';
@@ -1435,7 +1435,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
       const out = document.createElement('a');
       out.href = '/api/auth/logout';
       out.textContent = 'Sign out';
-      out.style.cssText = 'font-size:.75rem;color:#9E9590;text-decoration:underline';
+      out.style.cssText = 'font-size:.75rem;color:var(--gp-stone);text-decoration:underline';
       area.appendChild(out);
     } else {
       var btn = document.createElement('a');
@@ -1567,7 +1567,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
       var hintEl = document.getElementById('leaderboard-hint');
       if (hintEl) hintEl.style.display = entries.length ? 'none' : 'block';
       if (!entries.length) {
-        list.innerHTML = '<p style="text-align:center;font-size:.85rem;color:#9E9590">🐾 Be the first cat on the leaderboard today!</p>';
+        list.innerHTML = '<p style="text-align:center;font-size:.85rem;color:var(--gp-stone)">🐾 Be the first cat on the leaderboard today!</p>';
         return;
       }
       var html = '';
@@ -1576,7 +1576,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
         var medal = e.rank === 1 ? '🥇' : e.rank === 2 ? '🥈' : e.rank === 3 ? '🥉' : '#' + e.rank;
         var safeName = String(e.name || 'Anonymous Cat').replace(/[<>&]/g, '');
         html += '<div style="display:flex;justify-content:space-between;padding:.4rem .6rem;border-bottom:1px solid var(--gp-lilac-soft);font-size:.85rem">'
-          + '<span style="font-weight:700;color:#3D3D3D">' + medal + ' ' + safeName + '</span>'
+          + '<span style="font-weight:700;color:var(--gp-ink)">' + medal + ' ' + safeName + '</span>'
           + '<span style="color:var(--gp-pink);font-weight:700">' + msToClock(e.timeMs) + '</span></div>';
       }
       list.innerHTML = html;
@@ -1859,7 +1859,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
     </div>
     <div class="download-text">
       <h2 class="section-title" style="margin:0 0 0.5rem">Get the <span class="accent">App</span></h2>
-      <p style="color:var(--mt-text,#3D3D3D);margin-bottom:1rem;line-height:1.6">Play GridPaw anywhere, anytime. Add to your home screen for offline support, no browser bars, and instant launch.</p>
+      <p style="color:var(--mt-text,var(--gp-ink));margin-bottom:1rem;line-height:1.6">Play GridPaw anywhere, anytime. Add to your home screen for offline support, no browser bars, and instant launch.</p>
       <div class="download-buttons">
         <a class="store-btn" href="/#play">
           <span aria-hidden="true">📅</span> Try Daily Challenge
