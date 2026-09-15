@@ -8,7 +8,7 @@
 pnpm install
 pnpm run dev          # 本地开发 localhost:4321
 pnpm run build        # 构建（含引擎编译 + pagefind 索引）
-wrangler pages deploy dist --project-name=gridpaw --commit-dirty=true  # 部署
+pnpm run deploy       # 部署 = wrangler pages deploy + IndexNow 提交（勿只跑裸 wrangler，会漏 IndexNow）
 ```
 
 ## 技术栈
@@ -36,21 +36,21 @@ src/pages/
   logic-puzzle-grid/             ← 内容页（KD 29.6）
   japanese-logic-puzzles/        ← 内容页（KD 36.6）
   number-grid-puzzle/            ← 内容页（KD 新增）
-  sitemap 由 @astrojs/sitemap 插件自动生成（sitemap-index.xml + sitemap-0.xml）
+  sitemap（三层，别搞混）：
+    @astrojs/sitemap 自动生成 sitemap-index.xml → sitemap-0.xml（主站 URL）
+    public/sitemap.xml 手维护，直接列 sitemap-0.xml + pictomino-sitemap.xml ← GSC 提交的就是它
+    public/pictomino-sitemap.xml 覆盖 pictomino 子站
+    ⚠️ 索引不得嵌套索引；sitemap 与 canonical 的尾斜杠极性见 SEO-INDEXING.md
 public/
   pictomino/                     ← Pictomino 纯静态 HTML 游戏
-  .well-known/                   ← （已废弃删除：IndexNow key 文件必须在根目录且文件名=key，
-                                      .well-known/indexnow.txt 不合协议，2026-09-15 移除）
   puzzle-engine.js / akari-engine.js  ← 编译后的引擎
 ```
 
-## 301 旧域名（CF zone Redirect Rules，在 CF Dashboard 各旧域名 zone 下维护，仓库无 _worker.js）
-- meowtrail.org → gridpaw.com/akari/（239条规则，含70个puzzle页+tips+glossary+blog+levels）
-- meow-block.com → gridpaw.com/（2026-09-07 重建为 mb-* 规则组，17/17 实测通过；mb-catchall 兜底，必须排在精确规则之后）
-- spatialreasoninggame.com → gridpaw.com/pictomino/（26条规则）
-- 详细映射表见 REDIRECTS.md
-- www.gridpaw.com 已作为 Pages 自定义域加入（自动 301 到 apex）
-- zone 级 catch-all 规则已删除，Always Use HTTPS 已开启
+## 301 旧域名
+规则在 CF Dashboard 各旧域名 zone 下维护（Redirect Rules），**仓库内无 `_worker.js`**。
+- 新增规则时：精确规则必须排在 catch-all 之前
+- 映射表 + 运行态实测核对表 → `REDIRECTS.md`
+- 旧域名未决问题与当前状态 → `STATUS.md`
 
 ## 分析工具
 - GA4: G-4FWP61DJCC（Property ID: 552793510）
