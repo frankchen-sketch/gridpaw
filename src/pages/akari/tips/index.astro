@@ -1,0 +1,142 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import ExtensionPromo from '../../../components/ExtensionPromo.astro';
+const title = "Akari Tips & Strategies — Solve Light Up Puzzles | GridPaw";
+const description = "Akari tips and strategies for every level: how to read number cells, use elimination, spot forced bulbs, and avoid the mistakes that stall a Light Up solve.";
+const tips = [
+  { href: "/akari/tips/number-0/", icon: "0️⃣", name: "Number 0 Cells", note: "No adjacent bulbs. Mark all four neighbours as blocked the moment you see a 0." },
+  { href: "/akari/tips/number-1/", icon: "1️⃣", name: "Number 1 Cells", note: "Exactly one neighbour gets a bulb. Line-of-sight usually tells you which one." },
+  { href: "/akari/tips/number-2/", icon: "2️⃣", name: "Number 2 Cells", note: "Two neighbours light up. Corners and edges narrow the candidates fast." },
+  { href: "/akari/tips/number-3/", icon: "3️⃣", name: "Number 3 Cells", note: "Three of four neighbours need bulbs — only one is blocked. Find the odd one out." },
+  { href: "/akari/tips/number-4/", icon: "4️⃣", name: "Number 4 Cells", note: "All four neighbours get bulbs. Place them immediately, no thinking required." },
+  { href: "/akari/tips/elimination/", icon: "🔍", name: "Elimination Technique", note: "Cross out impossible cells first; what survives is the answer." },
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/akari/tips" type="article" />
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:linear-gradient(180deg,#f8f6ef,#f8f6ef);color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.8rem;color:#342421;text-align:center;margin:.5rem 0}
+    .seo-content{margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .seo-content p{margin:.5rem 0;line-height:1.7}
+    .seo-content ol,.seo-content ul{padding-left:1.5rem;margin:.5rem 0}
+    .seo-content li{margin-bottom:.4rem}
+    .seo-content a{color:#E8A888;text-decoration:underline}
+    .seo-content h2{font-size:1.3rem;color:#342421;margin:1.5rem 0 .5rem}
+    .seo-content h3{font-size:1.1rem;color:#342421;margin:1rem 0 .3rem}
+    details{margin:.5rem 0;padding:.5rem .8rem;background:#f8f6ef;border-radius:8px}
+    summary{cursor:pointer;font-weight:600;color:#E8A888}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    footer a{color:#6f5651}
+    .play-cta{display:block;text-align:center;margin:2rem 0;padding:1rem;background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;border-radius:12px;text-decoration:none;font-weight:600;font-size:1.1rem}
+    .play-cta:hover{background:linear-gradient(145deg,#E0A888,#D08868)}
+    .nav-links{display:flex;justify-content:space-between;margin:1.5rem 0}
+    .nav-links a{color:#E8A888;text-decoration:none;font-weight:600}
+    .tip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem;margin:1rem 0;list-style:none;padding:0}
+    .tip-grid li{margin:0}
+    .tip-grid a{display:block;padding:.9rem;background:#fff;border:1px solid #eddfd4;border-radius:12px;text-decoration:none;color:#342421;height:100%}
+    .tip-grid a:hover{border-color:#E8A888;background:#fffaf7}
+    .tip-grid .icon{font-size:1.4rem;display:block;margin-bottom:.3rem}
+    .tip-grid .name{display:block;font-weight:800;font-size:.98rem;margin-bottom:.25rem}
+    .tip-grid .note{display:block;font-size:.85rem;color:#6f5651;line-height:1.5}
+
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+    .nav a.active{background:#fff4f0;color:#342421}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/akari/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Akari Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/akari/">Play</a>
+        <a href="/akari/how-to-play/">How to Play</a>
+        <a href="/akari/tips/" class="active">Tips</a>
+        <a href="/akari/daily/">Daily</a>
+        <a href="/akari/solver/">Solver</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>🐱 Akari Tips &amp; Strategies</h1>
+    <p style="text-align:center;color:#6f5651;margin-bottom:1rem;">Every technique you need to solve a Light Up grid by logic alone — no guessing.</p>
+
+    <section class="seo-content">
+      <p>Akari tips are really about one thing: learning where to look. A Light Up puzzle has exactly one solution, and there is always a next move that follows <em>purely</em> from the rules — you just have to notice it. The strategies below are ordered by when you'll actually need them, from the number-cell reads that crack a board open in the first ten seconds to the elimination chains that finish the hardest 14×14 Weekend Super grids.</p>
+
+      <h2>The Six Akari Techniques Worth Memorising</h2>
+      <p>Start with whichever one matches the number staring at you. Together they handle the overwhelming majority of positions you'll meet:</p>
+      <ul class="tip-grid">
+        {tips.map((t) => (
+          <li>
+            <a href={t.href}>
+              <span class="icon">{t.icon}</span>
+              <span class="name">{t.name}</span>
+              <span class="note">{t.note}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <h2>Read Every Number Cell Before You Place Anything</h2>
+      <p>The single biggest beginner mistake in Akari is placing bulbs reactively — spotting an obvious one and clicking, then hunting for the next. Instead, do a full sweep of the grid first and read <em>every</em> number. A <a href="/akari/tips/number-0/">number 0 cell</a> instantly tells you four cells are dead. A <a href="/akari/tips/number-4/">number 4 cell</a> hands you four bulbs. Those two reads alone often account for a third of a puzzle's bulbs, and they cost you nothing but a single pass with your eyes.</p>
+      <p>This is the same discipline a solver automates. When you ask an <a href="/akari/solver/">Akari solver</a> for a hint, what it returns first is almost always one of these forced placements — because forced placements are provable, and provable moves don't need search.</p>
+
+      <h2>Understand Line of Sight</h2>
+      <p>Every bulb illuminates its own cell and every cell along its row and column in both directions, stopping at the first black wall. Two consequences matter constantly:</p>
+      <ol>
+        <li><strong>A bulb can never see another bulb.</strong> If placing one would light a cell that already contains a bulb, that placement is illegal. This is the rule that makes elimination work.</li>
+        <li><strong>Walls cast shadows.</strong> A cell in the shadow of a wall on both axes must be lit by something local — usually a forced placement nearby.</li>
+      </ol>
+      <p>Once line of sight is automatic, the <a href="/akari/tips/elimination/">elimination technique</a> becomes natural: instead of asking "where can a bulb go?", ask "what breaks if I put one here?"</p>
+
+      <h2>Work From Constraints, Not From Empty Space</h2>
+      <p>New solvers tend to scan for empty cells and wonder what belongs there. Strong solvers scan the number cells and the walls. Numbers and walls are the only things on the board that carry information — empty cells don't. This habit is the difference between a two-minute solve and a stalled one, and it's the same reason advanced Akari boards feel like deduction rather than search.</p>
+
+      <h2>Mistakes That Stall a Solve</h2>
+      <ul>
+        <li><strong>Guessing.</strong> Every Akari puzzle on GridPaw is generated to have exactly one solution reachable by logic alone. If you're guessing, you've missed a read — go back to the numbers.</li>
+        <li><strong>Forgetting to X out cells.</strong> Cells you've proven cannot hold a bulb deserve a mark. Untracked information is lost information.</li>
+        <li><strong>Chasing the same dead end.</strong> If a region resists every technique, move elsewhere — the grid will have a forced move somewhere else, and that placement will come back and unlock the stubborn region.</li>
+        <li><strong>Skipping the walls.</strong> Corner numbers, numbers on edges, and numbers squeezed between walls are the richest reads on the board.</li>
+      </ul>
+
+      <h2>FAQ</h2>
+      <details><summary>How long should an Akari puzzle take?</summary><p>A 7×7 easy grid is usually 1–3 minutes. A 10×10 daily puzzle takes most solvers 5–10 minutes. The 14×14 Weekend Super Challenge can run 20 minutes or more if you're being careful.</p></details>
+      <details><summary>Do I need to guess on hard Akari puzzles?</summary><p>No. Every GridPaw puzzle is verified to have a unique solution reachable by pure deduction. Guessing means you missed a constraint read — usually a number cell you skimmed or a wall shadow you didn't account for.</p></details>
+      <details><summary>What's the single most useful Akari tip?</summary><p>Read all the 0s and 4s before you touch anything else. Those two numbers give you free, provable placements, and they're the fastest way to turn an intimidating grid into a mostly-solved one.</p></details>
+      <details><summary>Where can I practise these techniques?</summary><p>Start with <a href="/akari/levels/easy/">Easy Akari Puzzles</a> to build the number reads, then move to the <a href="/akari/daily/">Daily Challenge</a> where the grid is bigger and the elimination chains get longer.</p></details>
+
+      <p>If you'd rather see the rules from the top before drilling technique, the <a href="/akari/how-to-play/">How to Play guide</a> covers the basics, and the <a href="/akari/how-to-solve/">solving walkthrough</a> works through a full grid step by step.</p>
+    </section>
+
+    <div class="nav-links"><a href="/akari/how-to-play/">← How to Play</a><a href="/akari/tips/number-0/">Number 0 Cells →</a></div>
+    <a href="/akari/" class="play-cta">🎮 Practise These Tips on a Real Grid</a>
+    <ExtensionPromo />
+    <footer><p>© 2026 GridPaw. All rights reserved.</p>    <p style="margin-top:0.3rem"><a href="https://www.pinterest.com/gridpaw/" rel="noopener">GridPaw on Pinterest</a></p>
+</footer>
+  </div>
+</body>
+</html>

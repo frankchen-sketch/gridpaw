@@ -43,8 +43,8 @@ export const glossaryTerms: GlossaryTerm[] = [
     ],
     relatedTerms: ['black-wall', 'constraint-propagation', 'elimination'],
     relatedPages: [
-      { label: 'How to Play', href: '/how-to-play/' },
-      { label: 'Tips & Strategies', href: '/tips/' },
+      { label: 'How to Play', href: '/akari/how-to-play/' },
+      { label: 'Tips & Strategies', href: '/akari/tips/' },
     ],
   },
   {
@@ -76,7 +76,7 @@ export const glossaryTerms: GlossaryTerm[] = [
     relatedTerms: ['light-up-illuminate', 'x-mark', 'black-wall'],
     relatedPages: [
       { label: 'Play GridPaw', href: '/' },
-      { label: 'Cat Logic Puzzle Guide', href: '/cat-logic-puzzle/' },
+      { label: 'Cat Logic Puzzle Guide', href: '/akari/cat-logic-puzzle/' },
     ],
   },
   {
@@ -105,8 +105,8 @@ export const glossaryTerms: GlossaryTerm[] = [
     ],
     relatedTerms: ['bulb-cat', 'number-cell', 'constraint-propagation'],
     relatedPages: [
-      { label: 'Light Up Puzzle Guide', href: '/light-up-puzzle/' },
-      { label: 'How to Play', href: '/how-to-play/' },
+      { label: 'Light Up Puzzle Guide', href: '/akari/light-up-puzzle/' },
+      { label: 'How to Play', href: '/akari/how-to-play/' },
     ],
   },
   {
@@ -135,8 +135,8 @@ export const glossaryTerms: GlossaryTerm[] = [
     ],
     relatedTerms: ['elimination', 'number-cell', 'bulb-cat'],
     relatedPages: [
-      { label: 'How to Play', href: '/how-to-play/' },
-      { label: 'Tips & Strategies', href: '/tips/' },
+      { label: 'How to Play', href: '/akari/how-to-play/' },
+      { label: 'Tips & Strategies', href: '/akari/tips/' },
     ],
   },
   {
@@ -164,8 +164,8 @@ export const glossaryTerms: GlossaryTerm[] = [
     ],
     relatedTerms: ['number-cell', 'light-up-illuminate', 'constraint-propagation'],
     relatedPages: [
-      { label: 'Akari Rules', href: '/rules/' },
-      { label: 'What is Light Up?', href: '/what-is-light-up/' },
+      { label: 'Akari Rules', href: '/akari/rules/' },
+      { label: 'What is Light Up?', href: '/akari/what-is-light-up/' },
     ],
   },
   {
@@ -195,8 +195,8 @@ export const glossaryTerms: GlossaryTerm[] = [
     ],
     relatedTerms: ['constraint-propagation', 'backtracking', 'x-mark'],
     relatedPages: [
-      { label: 'Elimination Technique', href: '/tips/elimination/' },
-      { label: 'How to Solve', href: '/how-to-solve/' },
+      { label: 'Elimination Technique', href: '/akari/tips/elimination/' },
+      { label: 'How to Solve', href: '/akari/how-to-solve/' },
     ],
   },
   {
@@ -225,8 +225,8 @@ export const glossaryTerms: GlossaryTerm[] = [
     ],
     relatedTerms: ['elimination', 'backtracking', 'number-cell'],
     relatedPages: [
-      { label: 'How to Solve', href: '/how-to-solve/' },
-      { label: 'Akari Solver Tool', href: '/solver/' },
+      { label: 'How to Solve', href: '/akari/how-to-solve/' },
+      { label: 'Akari Solver Tool', href: '/akari/solver/' },
     ],
   },
   {
@@ -258,8 +258,8 @@ export const glossaryTerms: GlossaryTerm[] = [
     ],
     relatedTerms: ['constraint-propagation', 'elimination'],
     relatedPages: [
-      { label: 'Akari Solver', href: '/solver/' },
-      { label: 'How to Solve', href: '/how-to-solve/' },
+      { label: 'Akari Solver', href: '/akari/solver/' },
+      { label: 'How to Solve', href: '/akari/how-to-solve/' },
     ],
   },
   {
@@ -291,7 +291,7 @@ export const glossaryTerms: GlossaryTerm[] = [
     ],
     relatedTerms: ['light-up-puzzle', 'nikoli', 'number-cell'],
     relatedPages: [
-      { label: 'Akari Puzzle Guide', href: '/akari-puzzle/' },
+      { label: 'Akari Puzzle Guide', href: '/akari/akari-puzzle/' },
       { label: 'Play Akari Online', href: '/' },
     ],
   },
@@ -319,7 +319,7 @@ export const glossaryTerms: GlossaryTerm[] = [
     ],
     relatedTerms: ['akari', 'nikoli'],
     relatedPages: [
-      { label: 'Light Up Puzzle Guide', href: '/light-up-puzzle/' },
+      { label: 'Light Up Puzzle Guide', href: '/akari/light-up-puzzle/' },
       { label: 'Play Light Up Online', href: '/' },
     ],
   },
@@ -348,8 +348,8 @@ export const glossaryTerms: GlossaryTerm[] = [
     ],
     relatedTerms: ['akari', 'light-up-puzzle'],
     relatedPages: [
-      { label: 'What is Light Up?', href: '/what-is-light-up/' },
-      { label: 'Akari Puzzle Guide', href: '/akari-puzzle/' },
+      { label: 'What is Light Up?', href: '/akari/what-is-light-up/' },
+      { label: 'Akari Puzzle Guide', href: '/akari/akari-puzzle/' },
     ],
   },
   {
@@ -379,7 +379,7 @@ export const glossaryTerms: GlossaryTerm[] = [
     ],
     relatedTerms: ['akari', 'number-cell'],
     relatedPages: [
-      { label: 'Daily Challenge', href: '/daily/' },
+      { label: 'Daily Challenge', href: '/akari/daily/' },
       { label: 'Play GridPaw', href: '/' },
     ],
   },
