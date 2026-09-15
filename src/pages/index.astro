@@ -897,8 +897,12 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
       block.style.background = color.bg;
       block.style.setProperty('--ear', color.ear);
       if (typeof window.gsap !== 'undefined' && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
-        gsap.from(block, { scale: 0.3, opacity: 0, duration: 0.5, ease: 'back.out(3)', transformOrigin: '50% 100%' });
-        gsap.to(block, { scaleY: 1.08, scaleX: 0.94, duration: 0.1, ease: 'power1.out', delay: 0.5, yoyo: true, repeat: 1 });
+        // 坑：CSS pop-in 动画与 GSAP from 补间同元素竞争 opacity/transform，
+        // 补间被杀时内联样式冻结在起始帧 → 猫块永久透明（2026-09-15 实测修复）。
+        // GSAP 接管前禁掉 CSS 动画，结束时 clearProps 清内联样式兜底。
+        block.style.animation = 'none';
+        gsap.from(block, { scale: 0.3, opacity: 0, duration: 0.5, ease: 'back.out(3)', transformOrigin: '50% 100%', clearProps: 'opacity,transform' });
+        gsap.to(block, { scaleY: 1.08, scaleX: 0.94, duration: 0.1, ease: 'power1.out', delay: 0.5, yoyo: true, repeat: 1, overwrite: 'auto', clearProps: 'transform' });
       }
 
       // Face
