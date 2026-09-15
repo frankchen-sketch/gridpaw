@@ -41,7 +41,7 @@
 - [x] Clarity gridpaw 项目：IP 屏蔽已加（2026-09-04 用户完成）
 - [x] GSC：属性 `sc-domain:gridpaw.com` 已建（2026-09-04 创建）+ 服务账号 A 授权完整权限（2026-09-15）→ 效果/站点地图/URL 检查全可 API。细节见 SEO-INDEXING.md
 - [x] Bing / IndexNow：已注册；2026-09-15 key 轮换后实测提交 HTTP 200。key 文件已移出版本控制
-- [ ] **旧站 301 未全部生效**（2026-09-15 实测，详见 REDIRECTS.md 顶部核对表）
+- [x] 旧站 301 状态（2026-09-15 实测，详见 REDIRECTS.md 顶部核对表）
   - meow-block.com ✅ 17/17 重测通过
+  - **meowtrail.org ✅ 已修复**：根因是 zone 里那条归权规则「已禁用」；已改为保路径动态规则，**121/121 实测一致**。GSC 侧两步待做（撤 sitemap + 更改地址）
   - spatialreasoninggame.com ⚠️ 跳转生效但是 2 跳链（`.html` 目标又 308 一次）
-  - **meowtrail.org ❌ 239 条规则一条都没生效** —— 该域名仍在自服务 + 自 canonical + 被 Google 当独立站收录（9/1–9/15：6 点击/159 曝光，sitemap 仍提交 121 条 URL），内容与 gridpaw.com/akari/ 近重复。**这是当前最高优先级的未决 SEO 问题**，需在 CF Dashboard 的 meowtrail.org zone 里查根因

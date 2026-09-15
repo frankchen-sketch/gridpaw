@@ -25,12 +25,20 @@
 
 ## 二、待决策 / 未决（有行动价值）
 
-### 1. ★ meowtrail.org 仍是活着的重复站（最高优先级）
+### 1. ✅ meowtrail.org 重复站已归权（2026-09-15 修复）
 
-称「239 条规则已归权」，实测 **一条都没生效**：该域名自服务 200 + 自 canonical + Google 以独立站收录
-（9/1–9/15：6 点击/159 曝光，sitemap 仍提交 121 条 URL），内容与 gridpaw.com/akari/ 近重复。
+**修复前**：称「239 条规则已归权」，实测**一条都没生效**——该域名自服务 200 + 自 canonical +
+Google 以独立站收录（9/1–9/15：6 点击/159 曝光，sitemap 仍提交 121 条 URL），内容与
+gridpaw.com/akari/ 近重复。**它不是在传权，是在抢词。**
 
-**它不是在给 gridpaw 传权，是在和 gridpaw 抢词。** 根因未查明，需查 CF Dashboard 的 meowtrail.org zone。
+**根因**：zone 里那条归权规则处于「已禁用」。「239 条规则」的说法本身也是错的——实际只有
+2 条规则，原那条第 1 条是主机名通配符（不做路径映射）。
+
+**修复**：新建**保路径动态规则**
+`concat("https://gridpaw.com/akari", http.request.uri.path)`。
+**实测 121/121 全部 301 且目标与文档完全一致。**
+
+**还剩 GSC 侧两步**：① 撤掉 meowtrail.org 的 sitemap 提交；② 设置 → 更改地址 → `gridpaw.com`。
 详见 `REDIRECTS.md` 顶部核对表。
 
 ### 2. spatialreasoninggame.com 的 2 跳链
