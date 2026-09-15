@@ -39,12 +39,23 @@
 >
 > | 顺序 | 名称 | 匹配 | 操作 | 状态 |
 > |---|---|---|---|---|
-> | 1 | meowtrail → gridpaw akari | 主机名 通配符 `meowtrail.org` | 301 → `https://gridpaw.com/akari/` | 🔴 已禁用（**已冗余，建议删除**） |
-> | 2 | www to bare domain | 主机名 = `www.meowtrail.org` | 301 → `https://meowtrail.org` | 🟢 活动 |
-> | 3 | meowtrail → gridpaw akari (path-preserving) | 主机名 = `meowtrail.org` | **动态**：`concat("https://gridpaw.com/akari", http.request.uri.path)` | 🟢 活动 |
+> | 1 | meowtrail → gridpaw akari | 主机名 通配符 `meowtrail.org` | 301 → `https://gridpaw.com/akari/` | 🔴 已禁用（**冗余且危险：通配符 + 排最前，若被启用会吃掉整个域名，建议删除**） |
+> | 2 | meowtrail homepage → gridpaw homepage | 主机名 = `meowtrail.org` **且** URI 路径 = `/` | 301 → `https://gridpaw.com/` | 🟢 活动 |
+> | 3 | www to bare domain | 主机名 = `www.meowtrail.org` | 301 → `https://meowtrail.org` | 🟢 活动 |
+> | 4 | meowtrail → gridpaw akari (path-preserving) | 主机名 = `meowtrail.org` | **动态**：`concat("https://gridpaw.com/akari", http.request.uri.path)` | 🟢 活动 |
+>
+> ⚠️ **顺序是硬要求**：首页规则（2）必须在保路径规则（4）之前。
+> **2026-09-15 实测确认 CF 重定向规则是「先匹配赢」**（不是面板那句含混的「最后执行的规则有效」）。
+> 两条规则都匹配 `/`，实测首页规则赢 → `gridpaw.com/`。若顺序颠倒，首页会退回 `/akari/`。
+>
+> ⚠️ **首页指向为什么必须是 gridpaw 首页**：GSC「更改地址」官方要求
+> `301 redirect from your old homepage to your new homepage`。原先首页送 `/akari/`（子目录）导致
+> 必需项「来自首页的 301 重定向」失败（报 `无法获取该网页 http://meowtrail.org/`）。
 >
 > **实测（2026-09-15）**：下方 121 条映射逐条复验，**121/121 全部 301 且目标与文档完全一致**。
 > 例：`/tips/` → `/akari/tips/`、`/puzzle/puzzle-070/` → `/akari/puzzle/puzzle-070/`。
+> 加首页规则后**回归复验 13/13 通过**（保路径规则未被误伤），首页三条变体
+> （`http://` / `https://` / 无斜杠）均 301 → `https://gridpaw.com/`。
 >
 > **已知小瑕疵（可接受，未处理）**
 > - 源路径**不带尾斜杠**时 2 跳（`/tips` → `/akari/tips` → `/akari/tips/`）。
