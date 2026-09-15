@@ -21,7 +21,7 @@ export const comparePairs: ComparePair[] = [
     slug: 'akari-vs-sudoku',
     titleA: 'Akari',
     titleB: 'Sudoku',
-    slugA: '/akari-puzzle/',
+    slugA: '/akari/akari-puzzle/',
     slugB: '#',
     description: 'Akari vs Sudoku — two iconic Japanese logic puzzles compared. Rules, difficulty, skills needed, and which one is right for you.',
     specs: [
@@ -50,7 +50,7 @@ export const comparePairs: ComparePair[] = [
     slug: 'light-up-vs-kakuro',
     titleA: 'Light Up',
     titleB: 'Kakuro',
-    slugA: '/light-up-puzzle/',
+    slugA: '/akari/light-up-puzzle/',
     slugB: '#',
     description: 'Light Up vs Kakuro — two Nikoli puzzles compared. One uses light and space, the other uses numbers and sums. Which logic puzzle suits you?',
     specs: [
@@ -77,7 +77,7 @@ export const comparePairs: ComparePair[] = [
     slug: 'akari-vs-nonogram',
     titleA: 'Akari',
     titleB: 'Nonograms',
-    slugA: '/akari-puzzle/',
+    slugA: '/akari/akari-puzzle/',
     slugB: '#',
     description: 'Akari vs Nonograms — two visual logic puzzles compared. One lights up grids, the other reveals pixel art. Which is more fun?',
     specs: [
@@ -104,7 +104,7 @@ export const comparePairs: ComparePair[] = [
     slug: 'logic-puzzle-vs-sudoku',
     titleA: 'Logic Puzzles',
     titleB: 'Sudoku',
-    slugA: '/logic-puzzle/',
+    slugA: '/akari/logic-puzzle/',
     slugB: '#',
     description: 'Logic puzzles vs Sudoku — how does Akari-style deduction compare to number placement? A guide for puzzle lovers choosing their next game.',
     specs: [
@@ -131,7 +131,7 @@ export const comparePairs: ComparePair[] = [
     slug: 'light-up-vs-slitherlink',
     titleA: 'Light Up',
     titleB: 'Slitherlink',
-    slugA: '/light-up-puzzle/',
+    slugA: '/akari/light-up-puzzle/',
     slugB: '#',
     description: 'Light Up vs Slitherlink — two Nikoli spatial puzzles compared. One uses light, the other draws loops. Which is more satisfying?',
     specs: [
