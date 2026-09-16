@@ -17,7 +17,7 @@
 | 远端 | `origin/main` 已同步 | 工作区 0 未提交 |
 | GSC | 属性 `sc-domain:gridpaw.com` 接入完成 | sitemap 报 `submitted=68, errors=0`（2026-09-16 复核仍 68/0） |
 | GA4 | Property 552793510 可 API | 服务账号 A |
-| IndexNow | key 已轮换，新 key 200 | 2026-09-16 排查：新 key 200 ✅；旧 key 源站已 404，apex 上因 **CF 边缘缓存残留**呈间歇 200（10 次采样 4×200；带参数请求 0×200）→ 待 Purge 缓存。详见 `SEO-INDEXING.md` §5.4 |
+| IndexNow | key 已轮换，新 key 200 | 2026-09-16 排查：新 key 200 ✅；旧 key **源站已 404**（`1d554e81.pages.dev` 稳定 404），但 apex 上部分 **CF 欧洲节点**仍返回陈旧副本（间歇 200）。**Purge Everything 实测无效**（zone purge 不覆盖 Pages asset 层）→ 解法为 **Redirect Rule**。详见 `SEO-INDEXING.md` §5.4 |
 
 **流量基线（2026-09-16 复核）**：GA4 30 天 **257 session**（Direct 198 / Unassigned 34 / Organic Search 17 / **AI Assistant 5** / Referral 2 / Social 1）；GSC 近 28 天 **238 曝光 / 5 点击**，平均排名 14.0。（同窗口 9/3–9/12 为 212 曝光 / 5 点击，与旧记录一致。）
 
