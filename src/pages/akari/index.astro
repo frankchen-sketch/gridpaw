@@ -1,6 +1,7 @@
 ---
 import SEOHead from '../../components/SEOHead.astro';
 import ExtensionPromo from '../../components/ExtensionPromo.astro';
+import { comparePairs } from '../../data/compare-pairs';
 const title = "Play Akari Online — Free Light Up Puzzle Game | GridPaw";
 const description = "Play GridPaw, a free Light Up puzzle game with cute cats. Solve Akari puzzles online — no download needed. Learn rules, tips and tricks.";
 ---
@@ -812,6 +813,16 @@ const description = "Play GridPaw, a free Light Up puzzle game with cute cats. S
           <li><a href="/logic-puzzle-grid/">Logic Puzzle Grid — The Complete Guide to Grid-Based Puzzles</a></li>
           <li><a href="/number-grid-puzzle/">Number Grid Puzzle — 8 Types Explained with Examples</a></li>
           <li><a href="/brain-teasers-for-adults/">Brain Teasers for Adults — 25 Free Puzzles &amp; Riddles</a></li>
+        </ul>
+      </section>
+
+      <!-- ═══════════ Compare Puzzles ═══════════ -->
+      <section class="section" aria-label="Puzzle comparisons">
+        <h2 class="section-title">Compare <span class="accent">Puzzles</span></h2>
+        <ul class="prose" style="margin-left:1.5rem">
+          {comparePairs.map(p => (
+            <li><a href={`/akari/compare/${p.slug}/`}>{p.titleA} vs {p.titleB} — Key Differences</a></li>
+          ))}
         </ul>
       </section>
 

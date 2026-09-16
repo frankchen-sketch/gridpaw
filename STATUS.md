@@ -133,8 +133,12 @@ query 侧还有 10+ 变体词在 37–74 位。
 
 **与 §3.5 同类**：当时修了 4 个旗舰内容页的孤岛，compare 这批没被覆盖。
 
-**建议修法（未执行）**：在 `/akari/` 或 `/akari/glossary/` 加一个 Compare 区块列出这 5 条（参照 §3.5 的修法），
-或让 compare 页互链。
+**已修（2026-09-16，部署 `1d554e81`）**：
+
+- `/akari/` 新增 `Compare Puzzles` 区块，列出全部 5 条（`src/pages/akari/index.astro`）
+- 每条 compare 页底部新增 `Other Puzzle Comparisons` 互链 4 条（`src/pages/akari/compare/[slug].astro`）
+- 线上实测：`/akari/` 出现 5 条 compare 链接；每条 compare 页出现 5 条（4 条互链 + 自身 canonical）
+- **待验证**：`akari-vs-nonogram` / `light-up-vs-kakuro` 的收录状态 —— 等 cron（每天 09:30）复跑 GSC URL Inspection
 
 **额外收益**：`akari-vs-nonogram` / `light-up-vs-kakuro` 卡位的正是 nonogram / kakuro ——
 两个唯一有搜索体量的候选词（见 §二.5）。补内链的成本远低于新做一个游戏。
