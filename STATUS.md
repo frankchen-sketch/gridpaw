@@ -1,7 +1,7 @@
 # GridPaw 现役状态（STATUS.md）
 
 > 项目状态的**唯一入口**。主题细节在各主题文档（见下方索引），此处只放现役结论与待决策。
-> 最后核对：2026-09-15 ｜ 分支 `main` ｜ 工作区干净
+> 最后核对：2026-09-16 ｜ 分支 `main` ｜ 工作区干净（本次新增 §二.5）
 >
 > 治理依据：`~/workspace/AGENTS.md`「AGENTS.md 内容治理」——状态/进度进本文件，不进 AGENTS.md。
 
@@ -80,6 +80,33 @@ Google 以独立站收录，sitemap 仍提交 121 条 URL，内容与 gridpaw.co
 
 **当前不要再加内容页。** 已有 18 条 URL 未进索引，先让现役资产被看见。详见 `SEO-INDEXING.md`。
 
+### 5. 第 4 个游戏：数据不支持现在加（2026-09-16 实测）
+
+**结论**：候选词 KD 与现有词同档（44–56），进前十需 45–110 个引用域；而 gridpaw 实测
+**DR 0 / 18 引用域 / spam 46** → 现在开新战场打不动。若一定要规划：**只有 `nonogram` 有真体量**
+（月搜 43,280，KD 53.7），且必须排在外链/DR 改善之后。
+
+| 候选 | 月搜 | KD | 引用域中值 |
+|---|---|---|---|
+| nonogram | 43,280 | 53.7 | 100 |
+| kakuro | 28,170 | 52.7 | 95 |
+| nurikabe | 5,970 | 54.8 | 110 |
+| hitori | 5,280 | 50.1 | 85 |
+| slitherlink | 4,150 | 55.6 | 110 |
+| masyu | 1,280 | 44.8 | 70 |
+| yajilin | 520 | 33.9 | 45 |
+
+（对照：现有 `shikaku puzzle` KD 49.5 —— 新游戏并不比现有游戏容易。）
+
+**数据指出的替代路径**（不改游戏、改页面形态）：全站仅有的 2 次点击都来自 **solver 页**
+（`/solver/` pos6.0、`/akari/solver/` pos4.8；query 侧 `shikaku solver` pos1.0）；教程/规则页排名最好
+（how-to-solve 9.3 / rules 8.0 / how-to-play 7.8）；`/akari/games-like-sudoku/` 16 曝光但只排 30.6，
+query 侧还有 10+ 变体词在 37–74 位。
+
+**另注**：Akari 集群（138 入链）已压过 Shikaku 首页；Pictomino 几乎零曝光。
+
+完整数据与页面级曝光表 → `research/2026-09-16_第四个游戏候选与页面形态机会.md`
+
 ---
 
 ## 三、主题文档索引
@@ -93,6 +120,7 @@ Google 以独立站收录，sitemap 仍提交 121 条 URL，内容与 gridpaw.co
 | 视觉合同（token 体系） | `STYLE.md` + `STYLE-tail-inventory.md` |
 | 页面巡查底账 | `PATROL.md` |
 | 视觉合同落地交接（含未做完项） | `HANDOFF-VISUAL-CONTRACT.md` |
+| 第 4 个游戏候选词 + 页面形态机会 | `research/2026-09-16_第四个游戏候选与页面形态机会.md` |
 
 ---
 
