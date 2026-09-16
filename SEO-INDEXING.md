@@ -245,19 +245,28 @@ Option 1 要求 key 文件在根目录且文件名必须是 `{key}.txt`；Option
 
 **风险**：能读到 git 历史的人，可以用旧 key 以 gridpaw.com 名义向 Bing / Naver / Yandex 提交**任意 URL**。
 
-**2026-09-16 补充：asset 层假设已被排除**
+**2026-09-16 最终结论：CF 边缘缓存残留（既不是 zone 规则，也不是部署产物问题）**
 
-重新部署最新构建（`1d554e81`，不再是 22 小时前那次）后：
+排查时间线与实测证据：
 
-| 目标 | 旧 key |
+| 步骤 | 观察 |
 |---|---|
-| 新部署 `1d554e81.gridpaw.pages.dev` | **404** ✅ |
-| apex `gridpaw.com` | **200** ❌（不变） |
+| 重新部署 `1d554e81` | `1d554e81.gridpaw.pages.dev` 旧 key **404** ✅；apex 仍 200 |
+| 部署数分钟后 | apex 转为**间歇**：10 次采样 **4×200 / 6×404** |
+| 采样分布 | POP = FRA / DUB / VIE / LHR / AMS，**同一 POP 内也不一致**（AMS 3 次中 2 次 200） |
+| **带随机参数的 10 次请求** | **0×200（全部 404）** ✅ |
+| apex 首页 md5 | 与 `1d554e81` / `c1714195` 完全一致 → apex 确实跟随最新部署 |
 
-→ 在 `*.pages.dev` 上是 404、在 apex 上是 200，**同一份 asset 两种结果** —— 根因**锁定在 apex 域名的 CF zone 层配置**
-（Page Rule / Transform Rules / Workers Routes / Bulk Redirects / Cache Rules），不在部署产物里。
+→ 无参数请求命中原 URL 的**边缘缓存键**，部分节点仍持有 key 轮换前的 200 响应；
+带随机参数 = 新缓存键 → 直达源站 → 稳定 404（源站正确）。
 
-**待办**：在 CF Dashboard 查 `gridpaw.com` zone 的上述四处，清掉命中该路径的规则，然后把本节改写为实测结论。
+**结论**：仓库（`public/` 无旧 key）、构建产物、Pages 部署**全部正确**。残留仅为 CF 边缘缓存，
+不需要在 Rules 里做任何改动。
+
+**解法**：CF Dashboard → **Caching → Configuration → Purge Everything**
+（或按 URL 精确 purge `https://gridpaw.com/390e708d7bc94f369a866111e32df9c3.txt`）。
+
+**安全影响**：在缓存过期或 purge 完成前，部分边缘节点仍返回旧 key → 仍可能被使用，建议立即 purge。
 
 ---
 
