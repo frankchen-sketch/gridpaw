@@ -245,8 +245,19 @@ Option 1 要求 key 文件在根目录且文件名必须是 `{key}.txt`；Option
 
 **风险**：能读到 git 历史的人，可以用旧 key 以 gridpaw.com 名义向 Bing / Naver / Yandex 提交**任意 URL**。
 
-**待办**：在 CF Dashboard 查 `gridpaw.com` zone 的 Page Rules / Transform Rules / Workers Routes，
-清掉命中该路径的规则（或删除残留 asset），然后把本节改写为实测结论。
+**2026-09-16 补充：asset 层假设已被排除**
+
+重新部署最新构建（`1d554e81`，不再是 22 小时前那次）后：
+
+| 目标 | 旧 key |
+|---|---|
+| 新部署 `1d554e81.gridpaw.pages.dev` | **404** ✅ |
+| apex `gridpaw.com` | **200** ❌（不变） |
+
+→ 在 `*.pages.dev` 上是 404、在 apex 上是 200，**同一份 asset 两种结果** —— 根因**锁定在 apex 域名的 CF zone 层配置**
+（Page Rule / Transform Rules / Workers Routes / Bulk Redirects / Cache Rules），不在部署产物里。
+
+**待办**：在 CF Dashboard 查 `gridpaw.com` zone 的上述四处，清掉命中该路径的规则，然后把本节改写为实测结论。
 
 ---
 

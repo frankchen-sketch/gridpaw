@@ -163,6 +163,14 @@ const faqJsonLd = {
       <a href="/akari/games-like-sudoku/">More Games Like Sudoku</a>
     </div>
 
+    <!-- Other puzzle comparisons (internal linking) -->
+    <div class="related-links">
+      <h3>Other Puzzle Comparisons</h3>
+      {comparePairs.filter(p => p.slug !== pair.slug).map(p => (
+        <a href={`/akari/compare/${p.slug}/`}>{p.titleA} vs {p.titleB}</a>
+      ))}
+    </div>
+
     <ExtensionPromo />
     <footer><p>GridPaw — Free Akari Puzzle Game · <a href="/akari/">Play More</a></p>    <p style="margin-top:0.3rem"><a href="https://www.pinterest.com/gridpaw/" rel="noopener">GridPaw on Pinterest</a></p>
 </footer>
