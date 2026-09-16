@@ -260,13 +260,34 @@ Option 1 要求 key 文件在根目录且文件名必须是 `{key}.txt`；Option
 → 无参数请求命中原 URL 的**边缘缓存键**，部分节点仍持有 key 轮换前的 200 响应；
 带随机参数 = 新缓存键 → 直达源站 → 稳定 404（源站正确）。
 
-**结论**：仓库（`public/` 无旧 key）、构建产物、Pages 部署**全部正确**。残留仅为 CF 边缘缓存，
-不需要在 Rules 里做任何改动。
+**❌ Purge Everything 实测无效（2026-09-16 晚）**
 
-**解法**：CF Dashboard → **Caching → Configuration → Purge Everything**
-（或按 URL 精确 purge `https://gridpaw.com/390e708d7bc94f369a866111e32df9c3.txt`）。
+用户在 CF 执行 `Caching → Configuration → 清除所有内容` 后复测，**200 反而更多**（20 次 17×200、15 次 12×200）。
+进一步决定性测试：
 
-**安全影响**：在缓存过期或 purge 完成前，部分边缘节点仍返回旧 key → 仍可能被使用，建议立即 purge。
+| 测试 | 结果 | 含义 |
+|---|---|---|
+| 强制回源 `Cache-Control: no-cache` | **7/10 仍 200** | 不是常规 zone 缓存 |
+| POST 请求 | `405` | asset server 正常响应 |
+| 三种 UA（Mozilla / curl / Googlebot） | 均间歇 200 | 与 UA 无关 |
+| `cdn-cgi/trace` | `colo=LHR`（IPv4 与 IPv6 **都是欧洲**） | 广州电信 → CF anycast 走欧洲节点 |
+| IPv4 15 次 / IPv6 15 次 | 8×200 / 12×200 | 与协议栈无关 |
+| **版本指纹**：apex `/akari/` 的 compare 区块 | **20/20 全部 5 条** | 页面内容在所有节点一致且为最新 |
+
+→ **最终结论**：源站与部署产物均正确（`1d554e81.pages.dev` 稳定 404）；残留是
+**CF Pages 静态 asset 的边缘缓存** —— 部分节点（LHR / FRA / AMS）仍持有已删除文件的旧副本。
+**zone 级 Purge 不覆盖 Pages 的 asset 层**，所以清不掉。
+
+**✅ 唯一有效解法：Redirect Rules**（在缓存查询之前执行，能盖住顽固的 asset 缓存）
+
+| 字段 | 值 |
+|---|---|
+| 规则类型 | **Redirect Rules** |
+| 匹配 | `URI Path` **equals** `/390e708d7bc94f369a866111e32df9c3.txt` |
+| 动作 | **301 → `https://gridpaw.com/`** |
+
+CF 的请求流程是 **Rules → Cache → Origin**：Redirect Rule 先于缓存执行，因此不受陈旧缓存影响。
+（该 zone 现有 Redirect Rules 只有一条 `www.gridpaw.com` → apex 的 301，属正常配置。）
 
 ---
 
