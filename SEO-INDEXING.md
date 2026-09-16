@@ -289,6 +289,24 @@ Option 1 要求 key 文件在根目录且文件名必须是 `{key}.txt`；Option
 CF 的请求流程是 **Rules → Cache → Origin**：Redirect Rule 先于缓存执行，因此不受陈旧缓存影响。
 （该 zone 现有 Redirect Rules 只有一条 `www.gridpaw.com` → apex 的 301，属正常配置。）
 
+**✅ 已解决（2026-09-16 晚，Redirect Rule 上线后实测）**
+
+| 验证项 | 结果 |
+|---|---|
+| 旧 key 30 次采样 | **30×301**，覆盖 AMS / LHR / FRA（全部先前出问题的节点） |
+| `www` 变体 | 301（www → apex → `/`） |
+| 带参数 `?x=1` | 301 → `/`（规则按 path 匹配） |
+| 大写变体 `.TXT` | 404（规则为精确匹配；404 同样安全） |
+| 新 key / 随机路径 / 首页 | 200 / 404 / 200 ✅ 全部正常 |
+
+→ 问题闭环。
+
+**可复用经验**：**CF Pages 的静态 asset 边缘缓存陈留，zone 级 Purge Everything 清不掉**
+（Purge 只覆盖 zone 缓存层，不覆盖 Pages 的 asset 层）。已验证可靠的绕过手段是 **Redirect Rule**
+（`Rules → Cache → Origin` 执行顺序保证它在缓存之前拦截）。排查时先确认源站是否已 404
+（用 `<deployment-id>.<project>.pages.dev` 直连对比 apex），再用版本指纹（新加的页面元素）判断
+apes 服务的是否为最新部署。
+
 ---
 
 ## 六、复查清单（改动后必跑）
