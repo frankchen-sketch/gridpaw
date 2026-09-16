@@ -1,7 +1,7 @@
 # GridPaw 现役状态（STATUS.md）
 
 > 项目状态的**唯一入口**。主题细节在各主题文档（见下方索引），此处只放现役结论与待决策。
-> 最后核对：2026-09-16 ｜ 分支 `main` ｜ 工作区干净（本次新增 §二.5）
+> 最后核对：2026-09-16（全文件复核：sitemap / 构建 / 索引 / 流量 / IndexNow 均已复测）｜ 分支 `main`
 >
 > 治理依据：`~/workspace/AGENTS.md`「AGENTS.md 内容治理」——状态/进度进本文件，不进 AGENTS.md。
 
@@ -11,15 +11,17 @@
 
 | 项 | 状态 | 证据 |
 |---|---|---|
-| 站点 | gridpaw.com 正常 | 68/68 sitemap URL 返回 200 |
-| 构建 | 通过（132 页） | `pnpm run build` exit 0 |
+| 站点 | gridpaw.com 正常 | 68/68 sitemap URL 返回 200（2026-09-16 复测：sitemap-0 取 56 + pictomino 12） |
+| 构建 | 通过（132 页） | 2026-09-16 复跑 `pnpm run build` exit 0（8.80s） |
 | 部署 | CF Pages 生产已同步 | `c1714195.gridpaw.pages.dev` → apex |
 | 远端 | `origin/main` 已同步 | 工作区 0 未提交 |
-| GSC | 属性 `sc-domain:gridpaw.com` 接入完成 | sitemap 报 `submitted=68, errors=0`（修复前为 0） |
+| GSC | 属性 `sc-domain:gridpaw.com` 接入完成 | sitemap 报 `submitted=68, errors=0`（2026-09-16 复核仍 68/0） |
 | GA4 | Property 552793510 可 API | 服务账号 A |
-| IndexNow | 可用，key 已轮换并移出版本控制 | 提交实测 HTTP 200；旧 key 线上 404 |
+| IndexNow | key 已轮换，新 key 200 | ⚠️ 2026-09-16 实测：新 key `a7f0…668c` 返回 200 ✅；**旧 key 在 apex 上仍返回 200**（与旧记录「已 404」不符）——见 `SEO-INDEXING.md` §5.4 |
 
-**流量基线**：30 天 GA4 约 250 session，其中 Google 自然流量仅 **15 session**；GSC 9/3–9/12 共 **212 曝光 / 5 点击**，平均排名 14.2。
+**流量基线（2026-09-16 复核）**：GA4 30 天 **257 session**（Direct 198 / Unassigned 34 / Organic Search 17 / **AI Assistant 5** / Referral 2 / Social 1）；GSC 近 28 天 **238 曝光 / 5 点击**，平均排名 14.0。（同窗口 9/3–9/12 为 212 曝光 / 5 点击，与旧记录一致。）
+
+> ⚠️ **GSC 口径坑**：**query 维度**同窗口只返回 74 曝光 / 35 个词 —— 其余被 Google **匿名化过滤**（曝光仍计入总数，但不返回关键词）。**不能用 query 维度算总量，会低估 3 倍。**
 
 ---
 
@@ -73,12 +75,12 @@ Google 以独立站收录，sitemap 仍提交 121 条 URL，内容与 gridpaw.co
 
 ### 3. 索引发现层
 
-17 条 URL 仍未收录（10「已发现」+ 6「未知」+ 1「已抓取」）。cron 每天 09:30 提交 Request Indexing
+**8 条 URL 仍未收录**（6「已发现」+ 2「未知」；2026-09-16 全量 68 条 URL Inspection 实测 = 60 indexed / 6 discovered / 2 unknown，9/15 为 17 条 → **一天转正 9 条**）。cron 每天 09:30 提交 Request Indexing
 （配额实测约每轮 1–2 发）。**等 2–4 周跨天数据出来再决定下一批内容写什么。**
 
 ### 4. 内容生产纪律
 
-**当前不要再加内容页。** 已有 18 条 URL 未进索引，先让现役资产被看见。详见 `SEO-INDEXING.md`。
+**当前不要再加内容页。** 已有 8 条 URL 未进索引（2026-09-16 实测），先让现役资产被看见。详见 `SEO-INDEXING.md`。
 
 ### 5. 第 4 个游戏：数据不支持现在加（2026-09-16 实测）
 
@@ -98,7 +100,7 @@ Google 以独立站收录，sitemap 仍提交 121 条 URL，内容与 gridpaw.co
 
 （对照：现有 `shikaku puzzle` KD 49.5 —— 新游戏并不比现有游戏容易。）
 
-**数据指出的替代路径**（不改游戏、改页面形态）：全站仅有的 2 次点击都来自 **solver 页**
+**数据指出的替代路径**（不改游戏、改页面形态）：全站 5 次点击中有 2 次落在 **solver 页**
 （`/solver/` pos6.0、`/akari/solver/` pos4.8；query 侧 `shikaku solver` pos1.0）；教程/规则页排名最好
 （how-to-solve 9.3 / rules 8.0 / how-to-play 7.8）；`/akari/games-like-sudoku/` 16 曝光但只排 30.6，
 query 侧还有 10+ 变体词在 37–74 位。

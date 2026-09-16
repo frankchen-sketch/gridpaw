@@ -149,6 +149,17 @@ Discovered 退回 unknown，2 条反向）。
 
 首个可靠的跨天对比应在 2026-09-16 cron 跑完后产生。
 
+**2026-09-16 全量复测（首次可靠跨天对比）**：
+
+| 状态 | 9/15 读数 | 9/16 读数 |
+|---|---|---|
+| Submitted and indexed | 51 | **60** |
+| Discovered - currently not indexed | 14 | **6** |
+| URL is unknown to Google | 3 | **2** |
+| **未收录合计** | 17 | **8** |
+
+→ 一天内 9 条转正，§3.1 的 sitemap 嵌套修复效果开始显现。
+
 ---
 
 ## 五、持续推进动作
@@ -219,8 +230,23 @@ Option 1 要求 key 文件在根目录且文件名必须是 `{key}.txt`；Option
 **文件所在路径也限定了可提交的 URL 范围**（`/.well-known/` 只能覆盖 `/.well-known/*`）。
 属遗留死文件，且 tracked 着 key。
 
-**历史遗留**：旧 key `390e708d7bc94f369a866111e32df9c3` 仍留在 git 历史里（已从工作树删除并轮换），
-但**已在线上吊销**（该路径返回 404），不可再用。
+**历史遗留 —— ⚠️「已在线上吊销」已被证伪（2026-09-16 实测）**
+
+旧 key `390e708d7bc94f369a866111e32df9c3` 仍留在 git 历史里（已从工作树删除并轮换）。实测结果：
+
+| 目标 | 旧 key 路径 | 新 key 路径 |
+|---|---|---|
+| 最新部署 `c1714195.gridpaw.pages.dev` | **404** ✅ | 200 ✅ |
+| **apex `gridpaw.com`** | **200** ❌（内容是旧 key 本身） | 200 ✅ |
+| 随机不存在路径（对照） | 404 | — |
+
+同一部署、首页 md5 完全一致（`9b1c78…`），但旧 key 表现相反 → **apex 域名上存在额外的 CF 层配置**
+（Page Rule / Transform Rule / Workers Route）在服务该路径。
+
+**风险**：能读到 git 历史的人，可以用旧 key 以 gridpaw.com 名义向 Bing / Naver / Yandex 提交**任意 URL**。
+
+**待办**：在 CF Dashboard 查 `gridpaw.com` zone 的 Page Rules / Transform Rules / Workers Routes，
+清掉命中该路径的规则（或删除残留 asset），然后把本节改写为实测结论。
 
 ---
 
