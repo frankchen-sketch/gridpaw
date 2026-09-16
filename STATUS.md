@@ -75,7 +75,13 @@ Google 以独立站收录，sitemap 仍提交 121 条 URL，内容与 gridpaw.co
 
 ### 3. 索引发现层
 
-**8 条 URL 仍未收录**（6「已发现」+ 2「未知」；2026-09-16 全量 68 条 URL Inspection 实测 = 60 indexed / 6 discovered / 2 unknown，9/15 为 17 条 → **一天转正 9 条**）。cron 每天 09:30 提交 Request Indexing
+**8 条 URL 仍未收录**（6「已发现」+ 2「未知」；2026-09-16 全量 68 条 URL Inspection 实测 = 60 indexed / 6 discovered / 2 unknown，9/15 为 17 条 → **一天转正 9 条**）。
+
+明细（2026-09-16 脚本输出，Request Indexing 目标顺序）：
+- **Google 无法识别（2）**：`/akari/compare/akari-vs-nonogram/`、`/akari/compare/light-up-vs-kakuro/`
+- **已发现 - 尚未编入索引（6）**：`/akari/glossary/backtracking/`、`/akari/rules/`、`/akari/what-is-light-up/`、`/community/`、`/pictomino/blog/what-is-spatial-reasoning`、`/pictomino/cat-breeds`
+
+cron 每天 09:30 提交 Request Indexing
 （配额实测约每轮 1–2 发）。**等 2–4 周跨天数据出来再决定下一批内容写什么。**
 
 ### 4. 内容生产纪律
