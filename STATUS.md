@@ -115,6 +115,30 @@ query 侧还有 10+ 变体词在 37–74 位。
 
 完整数据与页面级曝光表 → `research/2026-09-16_第四个游戏候选与页面形态机会.md`
 
+### 6. compare 页全部 0 入链（旧孤岛问题的残留）——2026-09-16 实测
+
+**事实**：5 条 `/akari/compare/*` 在站内**没有任何页面链接指向它们**。实测方法：抓 sitemap 全部 68 页，
+逐页 grep 目标路径 —— 每条 compare 页的引用数 = **1,且那 1 次是它自己的 canonical 自引用**。
+
+| compare 页 | 站内入链 | GSC 状态 |
+|---|---|---|
+| `/akari/compare/akari-vs-sudoku/` | 0 | 已收录 |
+| `/akari/compare/light-up-vs-slitherlink/` | 0 | 已收录 |
+| `/akari/compare/logic-puzzle-vs-sudoku/` | 0 | 已收录 |
+| **`/akari/compare/akari-vs-nonogram/`** | 0 | **Google 无法识别**（未收录 8 条之一） |
+| **`/akari/compare/light-up-vs-kakuro/`** | 0 | **Google 无法识别**（未收录 8 条之一） |
+
+它们**出链正常**（抽查 akari-vs-sudoku：链向 `/akari/`×4、how-to-play、solver、glossary、games-like-sudoku、daily…），
+只是没人链回来 → 是「单向孤岛」，仅靠 sitemap 被发现。
+
+**与 §3.5 同类**：当时修了 4 个旗舰内容页的孤岛，compare 这批没被覆盖。
+
+**建议修法（未执行）**：在 `/akari/` 或 `/akari/glossary/` 加一个 Compare 区块列出这 5 条（参照 §3.5 的修法），
+或让 compare 页互链。
+
+**额外收益**：`akari-vs-nonogram` / `light-up-vs-kakuro` 卡位的正是 nonogram / kakuro ——
+两个唯一有搜索体量的候选词（见 §二.5）。补内链的成本远低于新做一个游戏。
+
 ---
 
 ## 三、主题文档索引
