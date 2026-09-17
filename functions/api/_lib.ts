@@ -6,6 +6,9 @@ export interface Env {
   GOOGLE_CLIENT_ID: string;
   GOOGLE_CLIENT_SECRET: string;
   OAUTH_STATE_SECRET: string;
+  // 自建漏斗（functions/api/events.ts、funnel.ts）
+  FUNNEL_EVENT_INGESTION_ENABLED?: string; // wrangler.toml [vars] 唯一定义，别处（Dashboard）不要重复设同名变量
+  FUNNEL_ADMIN_TOKEN?: string;             // 生产 secret（wrangler pages secret put），不进 wrangler.toml
 }
 
 export const SESSION_COOKIE = 'mt_session';

@@ -171,6 +171,7 @@ query 侧还有 10+ 变体词在 37–74 位。
 | 索引与发现层（sitemap、canonical、Request Indexing、IndexNow key） | `SEO-INDEXING.md` |
 | 旧域名 301 映射 + 运行态核对 | `REDIRECTS.md` |
 | 分析 ID / 凭据位置 / 待办 | `ASSETS.md` |
+| **自建漏斗 + 版本归因（实施全文档）** | `GRIDPAW-FUNNEL-VERSIONING.md` |
 | 视觉合同（token 体系） | `STYLE.md` + `STYLE-tail-inventory.md` |
 | 页面巡查底账 | `PATROL.md` |
 | 视觉合同落地交接（含未做完项） | `HANDOFF-VISUAL-CONTRACT.md` |
@@ -184,3 +185,25 @@ query 侧还有 10+ 变体词在 37–74 位。
 2. 修 spatialreasoninggame.com 的 2 跳链
 3. 让 cron 继续跑 Request Indexing，2–4 周后复盘索引与曝光
 4. 视觉合同阶段：`HANDOFF-VISUAL-CONTRACT.md` 第三节列了欠账（样式收编 + 验证欠账）
+
+---
+
+## 五、自建漏斗 + 版本归因（2026-09-18 P0+P1+P2 已上线）
+
+照 `GRIDPAW-FUNNEL-VERSIONING.md` 全量落地（furriq 方案跨站适配）。现役事实：
+
+| 项 | 状态 | 证据（2026-09-18 实测） |
+|---|---|---|
+| build id 注入 | ✅ | `pnpm run build` 输出 `[build-info] 299fa4c-dirty …`；`grep 299fa4c-dirty dist/index.html` 命中 |
+| D1 表 | ✅ | remote meowtrail-users：`gp_event` / `gp_build` 存在（`sqlite_master` 实查） |
+| ingest 端点 | ✅ | 生产 `POST /api/events` → 200 + `Set-Cookie: gp_gid=…`；白名单外事件 400 |
+| 归因端点 | ✅ | 无 token 403；带 token 返回 stage/signin/traffic/lastvisit 四段 |
+| admin 页 | ✅ | `/admin/funnel/` 200 + `X-Robots-Tag: noindex`（`public/_headers`）+ robots meta；**未进 sitemap**（`sitemap-0.xml` 实查无 admin） |
+| 生产数据 | ✅ | D1 实查：`visit` 落库带 `build_id='299fa4c-dirty'`；`gp_build` 有该行 |
+| 看板接入 | ✅ | cron-dashboard `CRON_DASH_SAMPLES=1` 全链路 + 真实采集跑通；`buildfunnel = {furriq, gridpaw}` 双站；三层对账一致（D1 直查 = metrics.db = dashboard_data.json） |
+| admin token | 本地 `.funnel-admin-token`（gitignore）+ Pages secret `FUNNEL_ADMIN_TOKEN`；开关 `FUNNEL_EVENT_INGESTION_ENABLED` 只在 wrangler.toml [vars] 一处 |
+
+- 漏斗阶段：visit → start(game_start) → move(first_move) → solve(level_up) → hint(hint_click) → share(share_reddit+share_copy) → signin(daily_progress.user_id)
+- 归因口径：按访客**首次到访**版本（rn=1），回访不重归因；live = 24h 内有 visit
+- **读表纪律**（实施文档 §6.7）：单版本 visit 两位数以内 = 噪声，禁止下改版结论；先查 bot 比例（`json_extract(metadata,'$.isLikelyBot')`，机房流量约半数）；发布后 CDN 旧 HTML 继续报旧 build id 是预期
+- 未做（有意）：pictomino 子站接入（P1 可选项，`public/pictomino/*.html` 需 `build-id.js` + analytics.js 改造）；CF Access 替代 token；identity 合并表

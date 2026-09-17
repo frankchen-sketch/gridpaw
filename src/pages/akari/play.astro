@@ -122,6 +122,7 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
     let hintIndex = 0; // tracks which hint cell we revealed
 
     function track(event, params) {
+    if (window.gpTrack) window.gpTrack(event, params || {});
       if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
       if (window.posthog && typeof window.posthog.capture === 'function') {
         window.posthog.capture(event, Object.assign({ site: 'gridpaw' }, params || {}));

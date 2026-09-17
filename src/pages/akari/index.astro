@@ -889,6 +889,7 @@ const description = "Play GridPaw, a free Light Up puzzle game with cute cats. S
     const X_MARK = '<svg viewBox="0 0 24 24" width="50%" height="50%" style="opacity:0.4"><line x1="6" y1="6" x2="18" y2="18" stroke="#B8A8C8" stroke-width="2.5" stroke-linecap="round"/><line x1="18" y1="6" x2="6" y2="18" stroke="#B8A8C8" stroke-width="2.5" stroke-linecap="round"/></svg>';
     const DIRS = [[-1,0],[1,0],[0,-1],[0,1]];
     function track(event, params) {
+    if (window.gpTrack) window.gpTrack(event, params || {});
       if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
       if (window.posthog && typeof window.posthog.capture === 'function') {
         window.posthog.capture(event, Object.assign({ site: 'gridpaw' }, params || {}));

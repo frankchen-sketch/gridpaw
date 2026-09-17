@@ -173,3 +173,12 @@ const articleJsonLd = type === 'article' ? {
     })(posthogKey);
   })();
 </script>
+
+<!-- 自建漏斗（GRIDPAW-FUNNEL-VERSIONING.md §3.4）：Vite 打包脚本（非 is:inline），
+     import 正常走 bundler，build id 从构建期生成文件 src/lib/app-build.generated.ts 读。
+     dev/预览域在 trackVisit/trackFunnel 内部静默，与上面 GA4 守卫同口径。 -->
+<script>
+  import { trackFunnel, trackVisit } from '../lib/funnel-track';
+  window.gpTrack = trackFunnel;
+  trackVisit(location.pathname);
+</script>
