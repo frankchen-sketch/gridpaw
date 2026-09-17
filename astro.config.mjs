@@ -38,6 +38,10 @@ export default defineConfig({
         if (page.includes('/akari/puzzle/puzzle-')) {
           return false;
         }
+        // Exclude admin pages（否则 /admin/funnel/ 会自动进 sitemap-0.xml → GSC，坑 #9）
+        if (page.includes('/admin/')) {
+          return false;
+        }
         return true;
       },
     }),

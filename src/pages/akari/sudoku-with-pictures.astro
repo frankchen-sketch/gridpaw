@@ -182,6 +182,7 @@ const description = "Play Sudoku with pictures instead of numbers. GridPaw repla
   <script is:inline src="/akari-engine.js"></script>
   <script>
     function track(event, params) {
+    if (window.gpTrack) window.gpTrack(event, params || {});
       if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
       if (typeof window.clarity === 'function') {
         window.clarity('event', event);

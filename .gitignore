@@ -3,6 +3,9 @@ dist/
 .wrangler/
 .dev.vars
 
+# build id 生成物（scripts/gen-build-info.mjs 产出，不入库）
+src/lib/app-build.generated.ts
+
 # 删除缓冲（上级规则：删除先移 .trash/YYYY-MM-DD_原名，保留 30 天）。不入库，靠 git 历史 + 磁盘保留。
 .trash/
 
@@ -12,3 +15,5 @@ dist/
 public/*.txt
 !public/llms.txt
 !public/robots.txt
+# funnel admin token（不入库）
+.funnel-admin-token

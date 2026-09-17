@@ -1,0 +1,103 @@
+---
+// 版本归因漏斗管理页（GRIDPAW-FUNNEL-VERSIONING.md §3.7）
+// 纯静态 + 客户端 fetch /api/funnel?token=…，token 存 localStorage（P0 够用）。
+// 三重 noindex 收口：robots meta（本页）+ public/_headers + astro.config.mjs sitemap filter。
+// 本页刻意不用 SEOHead（不打 GA4/visit，不进分析口径）。
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Build Funnel | GridPaw Admin</title>
+    <style>
+      :root { color-scheme: light dark; }
+      body { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; margin: 2rem auto; max-width: 1200px; padding: 0 1rem; line-height: 1.5; }
+      h1 { font-size: 1.2rem; }
+      .row { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
+      input, select, button { font: inherit; padding: .3rem .6rem; }
+      table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+      th, td { border: 1px solid color-mix(in srgb, currentColor 25%, transparent); padding: .35rem .55rem; text-align: right; white-space: nowrap; }
+      th:first-child, td:first-child { text-align: left; }
+      thead th { position: sticky; top: 0; background: var(--bg, #fff); }
+      .live { color: #16a34a; font-weight: 700; }
+      .traffic { color: gray; font-size: .78rem; text-align: left; white-space: normal; max-width: 340px; }
+      .note { color: gray; font-size: .8rem; margin-top: 1.2rem; max-width: 900px; }
+      .err { color: #dc2626; }
+      @media (prefers-color-scheme: dark) { thead th { background: #1b1b1b; } }
+    </style>
+  </head>
+  <body>
+    <h1>Build Funnel · 版本归因</h1>
+    <div class="row">
+      <input id="token" type="password" placeholder="admin token" size="28">
+      <button id="load">Load</button>
+      <select id="sel" style="display:none"></select>
+      <span id="status"></span>
+    </div>
+    <div id="out"></div>
+    <p class="note">
+      每版本一行 = 归因到该版本的<b>全部访客</b>（按其首次到访版本，不随回访改变）。
+      两版本转化率有差异时先看流量构成列——构成明显不同（如一边全 google、一边全 reddit）时差异可能是流量质量而非代码。
+      live = 最近 24h 有流量的版本；<code>-dirty</code> 后缀 = 部署时工作区有未提交改动（须与干净提交区分）。
+      样本量两位数以内时，版本间差异是噪声，禁止下「改版有效/无效」结论。
+    </p>
+    <script is:inline>
+      (function () {
+        var tokenEl = document.getElementById('token');
+        var statusEl = document.getElementById('status');
+        var out = document.getElementById('out');
+        var saved = localStorage.getItem('gp_funnel_token');
+        if (saved) tokenEl.value = saved;
+        // URL 带 ?token= 时自动填充并落 localStorage（首次引导用）
+        var qs = new URLSearchParams(location.search).get('token');
+        if (qs) { tokenEl.value = qs; localStorage.setItem('gp_funnel_token', qs); history.replaceState(null, '', location.pathname); }
+
+        function esc(s) { var d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; }
+        function pct(a, b) { return b > 0 ? (100 * a / b).toFixed(1) + '%' : '—'; }
+
+        function render(data) {
+          var rows = data.rows || [];
+          var stages = data.stages || [];
+          var sel = document.getElementById('sel');
+          sel.style.display = '';
+          sel.innerHTML = '<option value="">— all versions —</option>' + rows.map(function (r) {
+            return '<option value="' + esc(r.buildId) + '">' + esc(r.buildId || '(before versioning)') + (r.live ? '  [live]' : '') + '</option>';
+          }).join('');
+
+          var head = '<tr><th>build</th>' + stages.map(function (s) { return '<th>' + s + '</th>'; }).join('') +
+            '<th>signin</th><th>traffic (top 5)</th></tr>';
+          var body = rows.map(function (r) {
+            var m = {}; r.stages.forEach(function (x) { m[x.stage] = x.n; });
+            var cells = stages.map(function (s, i) {
+              var v = m[s] || 0;
+              var conv = i > 0 ? ' <span style="color:gray">' + pct(v, m[stages[i - 1]] || 0) + '</span>' : '';
+              return '<td>' + v + conv + '</td>';
+            }).join('');
+            var traffic = (r.traffic || []).slice(0, 5).map(function (t) { return esc(t.source) + ' ×' + t.n; }).join(' · ');
+            return '<tr><td>' + esc(r.buildId || '(before versioning)') + (r.live ? ' <span class="live">live</span>' : '') +
+              '<br><span style="color:gray;font-size:.75rem">' + esc(r.commitMessage).slice(0, 80) + '</span></td>' +
+              cells + '<td>' + (r.signin || 0) + '</td><td class="traffic">' + traffic + '</td></tr>';
+          }).join('');
+          out.innerHTML = '<table><thead>' + head + '</thead><tbody>' + body + '</tbody></table>' +
+            (rows.length ? '' : '<p class="err">no data yet — 等首个带 build_id 的 visit 落库</p>');
+        }
+
+        function load() {
+          var t = tokenEl.value.trim();
+          if (!t) { statusEl.textContent = 'token required'; return; }
+          localStorage.setItem('gp_funnel_token', t);
+          statusEl.textContent = 'loading…';
+          fetch('/api/funnel?token=' + encodeURIComponent(t))
+            .then(function (res) { if (res.status === 403) throw new Error('403 forbidden — token 不对'); if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+            .then(function (data) { statusEl.textContent = 'ok · ' + (data.now || ''); render(data); })
+            .catch(function (e) { statusEl.innerHTML = '<span class="err">' + esc(e.message) + '</span>'; });
+        }
+        document.getElementById('load').addEventListener('click', load);
+        tokenEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') load(); });
+        if (saved || qs) load();
+      })();
+    </script>
+  </body>
+</html>

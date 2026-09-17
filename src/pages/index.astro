@@ -717,6 +717,7 @@ const description = "Play Shikaku online for free at GridPaw. Drag to draw recta
 
   // GA4 + Clarity + PostHog tracking helper
   function track(event, params) {
+    if (window.gpTrack) window.gpTrack(event, params || {});
     if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
     if (window.posthog && typeof window.posthog.capture === 'function') {
       window.posthog.capture(event, Object.assign({ site: 'gridpaw' }, params || {}));

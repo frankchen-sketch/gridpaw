@@ -167,7 +167,7 @@ const totalPuzzles = puzzles.length;
     var playerSolution=[],markX=[];for(var i=0;i<size;i++){playerSolution.push(new Array(size).fill(false));markX.push(new Array(size).fill(false));}
     var won=false,gridEl=document.getElementById('puzzle-grid'),progressEl=document.getElementById('progress'),toastEl=document.getElementById('toast'),winOverlay=document.getElementById('win-overlay'),toastTimer=null;
     var PUZZLE_ID=puzzleData.id,STORAGE_KEY='gridpaw-progress';var sessionSolveCount=0;
-    function track(event,params){if(typeof window.gtag==='function')window.gtag('event',event,params||{});if(window.posthog&&typeof window.posthog.capture==='function')window.posthog.capture(event,Object.assign({site:'gridpaw'},params||{}));if(typeof window.clarity==='function'){window.clarity('event',event);if(params)Object.keys(params).forEach(function(k){window.clarity('set',k,String(params[k]));});}}
+    function track(event,params){if (window.gpTrack) window.gpTrack(event, params || {});if(typeof window.gtag==='function')window.gtag('event',event,params||{});if(window.posthog&&typeof window.posthog.capture==='function')window.posthog.capture(event,Object.assign({site:'gridpaw'},params||{}));if(typeof window.clarity==='function'){window.clarity('event',event);if(params)Object.keys(params).forEach(function(k){window.clarity('set',k,String(params[k]));});}}
     track('game_start',{puzzle_id:PUZZLE_ID,size:size});
     function getSolved(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]')}catch(e){return[]}}
     function markSolved(id){var s=getSolved();if(s.indexOf(id)===-1){s.push(id);localStorage.setItem(STORAGE_KEY,JSON.stringify(s));}}

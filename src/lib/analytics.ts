@@ -15,6 +15,7 @@ declare global {
   interface Window {
     gtag: (...args: any[]) => void;
     clarity: (...args: any[]) => void;
+    gpTrack?: (event: string, params?: Record<string, unknown>) => void;
   }
 }
 
@@ -24,6 +25,9 @@ declare global {
  * @param params - Optional key-value pairs (sent to GA4 as event params, to Clarity as custom properties)
  */
 export function track(event: string, params?: Record<string, string | number | boolean>): void {
+  // 自建漏斗（版本归因），SEOHead.astro 注入 window.gpTrack
+  if (typeof window.gpTrack === 'function') window.gpTrack(event, params || {});
+
   // GA4
   if (typeof window.gtag === 'function') {
     window.gtag('event', event, params || {});
@@ -46,6 +50,7 @@ export function track(event: string, params?: Record<string, string | number | b
  */
 export const trackInline = `
 function track(event, params) {
+  if (window.gpTrack) window.gpTrack(event, params || {});
   if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
   if (typeof window.clarity === 'function') {
     window.clarity('event', event);
