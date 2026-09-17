@@ -115,45 +115,61 @@ const articleJsonLd = type === 'article' ? {
 <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
 {articleJsonLd && <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />}
 
-<!-- Google Analytics 4 -->
-<script async src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}></script>
-<script define:vars={{ ga4Id }}>
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function(){dataLayer.push(arguments);};
-  gtag('js', new Date());
-  gtag('config', ga4Id);
-</script>
+<!-- Analytics (GA4 + Clarity + PostHog) — 只有生产域名上报，dev/预览域静默 -->
+<script define:vars={{ ga4Id, clarityId, posthogKey }}>
+  (function () {
+    // 口径铁律：只有 gridpaw.com / www.gridpaw.com 上报。
+    // localhost、127.0.0.1、局域网 IP、*.pages.dev 预览域一律静默 ——
+    // 否则自测与预览流量会混进 GA4（2026-09 实测污染约 9%，见 STATUS.md §一）。
+    if (!/(^|\.)gridpaw\.com$/.test(location.hostname)) {
+      // 保留同名 no-op，页面里的 track() / gtag() / clarity() 调用不会抛错
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () {};
+      window.clarity = function () {};
+      window.posthog = { capture: function () {}, init: function () {} };
+      return;
+    }
 
-<!-- Microsoft Clarity -->
-<script define:vars={{ clarityId }}>
-  (function(c,l,a,r,i,t,y){
-    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-  })(window, document, "clarity", "script", clarityId);
-</script>
+    // Google Analytics 4
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { dataLayer.push(arguments); };
+    gtag('js', new Date());
+    gtag('config', ga4Id);
+    var g = document.createElement('script');
+    g.async = true;
+    g.src = 'https://www.googletagmanager.com/gtag/js?id=' + ga4Id;
+    document.head.appendChild(g);
 
-<!-- PostHog (quota-friendly: autocapture off, session recording off, anonymous pageview-only) -->
-<script define:vars={{ posthogKey }}>
-  (function(key){
-    var ph = window.posthog = window.posthog || [];
-    if (ph.__SV) return;
-    ph._i = ph._i || [];
-    ph.init = function(){ ph._i.push([].slice.call(arguments)); };
-    ['capture','identify','alias','reset','register','unregister','people.set'].forEach(function(fn){
-      ph[fn] = function(){ ph.push([fn].concat([].slice.call(arguments))); };
-    });
-    ph.init(key, {
-      api_host: 'https://us.i.posthog.com',
-      autocapture: false,
-      capture_pageview: true,
-      disable_session_recording: true,
-      person_profiles: 'identified_only'
-    });
-    var s = document.createElement('script');
-    s.async = true;
-    s.crossOrigin = 'anonymous';
-    s.src = 'https://us-assets.i.posthog.com/static/array.js';
-    document.head.appendChild(s);
-  })(posthogKey);
+    // Microsoft Clarity
+    (function (c, l, a, r, i, t, y) {
+      c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+      t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + i;
+      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(window, document, 'clarity', 'script', clarityId);
+
+    // PostHog (quota-friendly: autocapture off, session recording off, anonymous pageview-only)
+    // posthogKey 为空 = 未启用，直接跳过（避免无意义加载 CDN 脚本）
+    if (!posthogKey) return;
+    (function (key) {
+      var ph = window.posthog = window.posthog || [];
+      if (ph.__SV) return;
+      ph._i = ph._i || [];
+      ph.init = function () { ph._i.push([].slice.call(arguments)); };
+      ['capture','identify','alias','reset','register','unregister','people.set'].forEach(function (fn) {
+        ph[fn] = function () { ph.push([fn].concat([].slice.call(arguments))); };
+      });
+      ph.init(key, {
+        api_host: 'https://us.i.posthog.com',
+        autocapture: false,
+        capture_pageview: true,
+        disable_session_recording: true,
+        person_profiles: 'identified_only'
+      });
+      var s = document.createElement('script');
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      s.src = 'https://us-assets.i.posthog.com/static/array.js';
+      document.head.appendChild(s);
+    })(posthogKey);
+  })();
 </script>
