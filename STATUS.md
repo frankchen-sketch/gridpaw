@@ -1,7 +1,7 @@
 # GridPaw 现役状态（STATUS.md）
 
 > 项目状态的**唯一入口**。主题细节在各主题文档（见下方索引），此处只放现役结论与待决策。
-> 最后核对：2026-09-16（全文件复核：sitemap / 构建 / 索引 / 流量 / IndexNow 均已复测）｜ 分支 `main`
+> 最后核对：2026-09-17（GA4 口径修正 + 上报层加固；sitemap / 构建 / 索引 / 流量 / IndexNow 均已复测）｜ 分支 `main`
 >
 > 治理依据：`~/workspace/AGENTS.md`「AGENTS.md 内容治理」——状态/进度进本文件，不进 AGENTS.md。
 
@@ -19,9 +19,23 @@
 | GA4 | Property 552793510 可 API | 服务账号 A |
 | IndexNow | key 已轮换，新 key 200 | ✅ 2026-09-16 已闭环：旧 key **源站 404**；apex 上因 **CF Pages asset 层边缘缓存**曾间歇 200，**Purge 无效**，最终用 **Redirect Rule**（`/390e…txt` → 301 `/`）解决 —— 实测 30/30 全 301（AMS/LHR/FRA）。详见 `SEO-INDEXING.md` §5.4 |
 
-**流量基线（2026-09-16 复核）**：GA4 30 天 **257 session**（Direct 198 / Unassigned 34 / Organic Search 17 / **AI Assistant 5** / Referral 2 / Social 1）；GSC 近 28 天 **238 曝光 / 5 点击**，平均排名 14.0。（同窗口 9/3–9/12 为 212 曝光 / 5 点击，与旧记录一致。）
+**流量基线（2026-09-17 复核，口径已修正）**：GA4 服务端数据**从 2026-09-04 起才有**（commit `3003a3f` 那天才把埋点换成本站专属衡量 ID `G-4FWP61DJCC`）——所谓「30 天」实际只有 14 天。旧记录「30 天 257 session」即由此误读而来。
 
-> ⚠️ **GSC 口径坑**：**query 维度**同窗口只返回 74 曝光 / 35 个词 —— 其余被 Google **匿名化过滤**（曝光仍计入总数，但不返回关键词）。**不能用 query 维度算总量，会低估 3 倍。**
+| 窗口（hostName=`gridpaw.com`） | session | users | PV |
+|---|---|---|---|
+| 09-04~09-16（全部历史，14 天） | **231** | 198 | 350 |
+| 09-16 单日 | 4 | 4 | 3 |
+| 09-17 单日（当日未完整） | 3 | 3 | 5 |
+
+分渠道（14 天）：**Direct 183 / Unassigned 31 / Organic Search 17 / AI Assistant 5 / Referral 2 / Organic Social 1**。无品牌新站 Direct 占七成，其中**约 50% 会话来自云机房 IP**（Council Bluffs、Boardman、Ashburn、San Jose、Glenview、Amsterdam…），特征是时长 0–31s、人均 1.2–1.5 页、零 referrer —— 机器人/爬虫，不是用户。**Clarity 独立佐证（近 3 天）：真人会话 27 / 机器人 52。**
+
+GSC 近 28 天 **267 曝光 / 5 点击**，平均排名 13.8。**曝光在涨**：W-2（09-04~09-09）117 → W-1（09-10~09-16）150，日均曝光 6 → 30。瓶颈不是流量衰退，是 **CTR 0.67%**（150 曝光 1 点击）与桌面端均位 18.8（移动端 6.0）——「有曝光但进不了前十」。
+
+> ⚠️ **GA4 拉数口径（强制）**：所有 GA4 查询必须加 `hostName` 过滤（只算 `gridpaw.com`）。否则 `localhost` / `*.pages.dev` 预览域 / 局域网 IP 的自测流量会混进来 —— 实测污染 28 会话 ≈ 9%（含 `192.168.31.52` LAN 与 `/?_gsaptest=` 测试 URL）。已落到三处：`public/analytics.js` + `SEOHead.astro`（dev/预览域从 2026-09-17 起不再上报）、`~/.hermes/scripts/gridpaw_ga4_dump.py`、cron-dashboard `build_metrics.py`（`host_filter`）。
+>
+> ⚠️ **别用周环比**：单日 3–4 会话的体量下，周环比是纯噪声。09-04~09-09 的「高位」是上线期一次性访问 + 提交动作招来的爬虫扫描，不是基线。看 **28 天滚动 + 分渠道**，并单独剔除机房 IP。
+
+> ⚠️ **GSC 口径坑**：**query 维度**同窗口只返回部分曝光 / 词 —— 其余被 Google **匿名化过滤**（曝光仍计入总数，但不返回关键词）。**不能用 query 维度算总量，会严重低估。**
 
 ---
 
