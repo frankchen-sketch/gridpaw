@@ -28,7 +28,7 @@
 | **IndexNow key** | `public/<key>.txt`（**已 gitignore，值不入库**） | 文件名即 key；`scripts/indexnow-ping.mjs` 自动探测。管理规则见 SEO-INDEXING.md §5.4 |
 
 > 两个 SA 同属 GCP project `furriq-daily-brief`，权限有重叠。**新增集成一律用 A**（furriq-frank-admin），
-> B 是早期 GA4 专用账号。2026-09-15 gridpaw 的 GSC 授权只加在 A 上。
+> B 是早期 GA4 专用账号。2026-09-15 gridpaw 的 GSC 授权只加在 A 上；2026-09-18 B 也补上了 gridpaw GSC（Full），A/B 现均可 API 读 gridpaw GSC。注意 B 的 gRPC 不通（走 REST+代理，参考 cron-dashboard build_metrics.py fetch_ga4_data）。
 
 ## 消费端（改 ID 后要同步的地方）
 
