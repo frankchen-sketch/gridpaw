@@ -1,7 +1,7 @@
 # GridPaw 现役状态（STATUS.md）
 
 > 项目状态的**唯一入口**。主题细节在各主题文档（见下方索引），此处只放现役结论与待决策。
-> 最后核对：2026-09-17（GA4 口径修正 + 上报层加固；sitemap / 构建 / 索引 / 流量 / IndexNow 均已复测）｜ 分支 `main`
+> 最后核对：2026-09-19（TDK 优化轮部署 + 收录口径对账决策；sitemap / 构建 / 部署 / 内链均已实测）｜ 分支 `main`
 >
 > 治理依据：`~/workspace/AGENTS.md`「AGENTS.md 内容治理」——状态/进度进本文件，不进 AGENTS.md。
 
@@ -101,6 +101,7 @@ Google 以独立站收录，sitemap 仍提交 121 条 URL，内容与 gridpaw.co
 
 cron 每天 09:30 提交 Request Indexing
 （配额实测约每轮 1–2 发）。**等 2–4 周跨天数据出来再决定下一批内容写什么。**
+**2026-09-19 复查**：sitemap 口径基本清零——68 条中 67 已收录，仅 `/community/` 在提交流程中（当天已 Request Indexing，0 撞配额）。
 
 ### 4. 内容生产纪律
 
@@ -161,6 +162,21 @@ query 侧还有 10+ 变体词在 37–74 位。
 **额外收益**：`akari-vs-nonogram` / `light-up-vs-kakuro` 卡位的正是 nonogram / kakuro ——
 两个唯一有搜索体量的候选词（见 §二.5）。补内链的成本远低于新做一个游戏。
 
+### 7. 9/19 TDK 优化轮 + 收录口径对账（与哥飞会商定版）
+
+**已上线（commit `6e38f0a` + 内链补丁，均部署 + IndexNow 200，线上 curl 验证）**：
+
+- 首页 TDK：Title `Shikaku Online: Play Free Cat Logic Puzzles | GridPaw`（53）；Desc 重写（130 字符，砍 free×2 / 品牌重复）
+- 内页 6 页 Title 全部 ≤55：`how-to-solve` / `akari solver` / `levels/hard` / `how-to-play` / `tips` / `akari/rules`；`akari/` Desc 砍「Play GridPaw」品牌当游戏名的写法
+- 内链：`how-to-solve` ↔ `how-to-play` 正文互链（与 §二.6 compare 孤岛修法同类）
+- ⚠️ **组件坑**：`SEOHead` 会给缺品牌名的 Title 自动补 ` | GridPaw`——源码 47 字符可渲染成 57。改 Title 必须验证 `dist/` 渲染值，不能只看源码字面量
+
+**收录口径矛盾（重大，未决）**：GSC Pages 报告「已收录 16 / 已发现不抓取 27」与 URL Inspection API sitemap 口径「67/68 已收录」严重打架。Pages 报告覆盖谷歌自行发现的全部 URL（含 sitemap 外杂页），sitemap 口径才是主动声明的有效资产。**「下架 26 页」已撤回**（不可逆 + 会误伤 `bulb cat` pos8、`daily akari` pos6 等正在出曝光的活页）。待办：从 Pages 报告导出那 27 条 URL（**需 GSC UI，API 不出清单**）与 68 条 sitemap 求交集，先定性再决定动谁。
+
+**how-to-solve 观察期**：新版 Title 9/19 晚才上线，哥飞引用的「30 曝光 0 点击」全部是旧 Title 数据——且其中 17 曝光是 `akari or step back` rank-tracker 工具流量（见 §一），真人曝光仅约 13。**两周内不再叠改 Title**；10/3 复查（cron 已设），仍 0 真人点击则上备选文案 `How to Solve Akari: 5 Techniques That Work | GridPaw`（53 字符；正文 Step 1~5 五个技法已核实对齐，数字钩子是诚实承诺）。
+
+**GSC 顶部「您的另外一个网站正在迁移到此网站」横幅**：meowtrail→gridpaw 迁移的正常提示，已知现象，忽略。
+
 ---
 
 ## 三、主题文档索引
@@ -181,9 +197,9 @@ query 侧还有 10+ 变体词在 37–74 位。
 
 ## 四、下一步（按优先级）
 
-1. **查 meowtrail.org 的 301 为何没生效**（CF Dashboard，本次无法从文档层解决）
-2. 修 spatialreasoninggame.com 的 2 跳链
-3. 让 cron 继续跑 Request Indexing，2–4 周后复盘索引与曝光
+1. **对账 Pages 报告 27 条「已发现不抓取」URL × sitemap 68 条**（GSC UI 导出，API 不出清单）→ 定性后再决定是否 404，禁止在交集弄清前下架（§二.7）
+2. **10/3 复查 how-to-solve 新 Title CTR**（one-shot cron 已设，读数须剔除 `akari or step back` 工具流量），仍 0 真人点击则上备选文案（§二.7）
+3. 让 cron 继续跑 Request Indexing 至 repeat 用完（9/30 前后），2–4 周后复盘索引与曝光
 4. 视觉合同阶段：`HANDOFF-VISUAL-CONTRACT.md` 第三节列了欠账（样式收编 + 验证欠账）
 
 ---
