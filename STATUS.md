@@ -175,6 +175,16 @@ query 侧还有 10+ 变体词在 37–74 位。
 
 **how-to-solve 观察期**：新版 Title 9/19 晚才上线，哥飞引用的「30 曝光 0 点击」全部是旧 Title 数据——且其中 17 曝光是 `akari or step back` rank-tracker 工具流量（见 §一），真人曝光仅约 13。**两周内不再叠改 Title**；10/3 复查（cron 已设），仍 0 真人点击则上备选文案 `How to Solve Akari: 5 Techniques That Work | GridPaw`（53 字符；正文 Step 1~5 五个技法已核实对齐，数字钩子是诚实承诺）。
 
+### 8. 低 KD 双词对齐轮（2026-09-20 执行，观察期至 10/4）
+
+SERP 盘面调研（`research/2026-09-20_要打的词SERP竞品盘面.md`）后，对两个最低 KD 词做 on-page 对齐，**已部署（commit `686cf51`）+ IndexNow 200 + 线上 curl 复核通过**：
+
+- **`akari online`（KD 18.2，竞品 dailyakari DR16 / akari.store DR8）→ 落页 `/akari/`**：H1 改为 `Play Akari Online Free — Light Up Puzzle Game`（目标词从拆开变连续）；首段 + FAQ 各加 1 处 `play akari online`；Title 不动（已含词且排名在动）
+- **`japanese logic puzzles`（KD 14，内容真空，reddit 帖补位）→ 落页 `/japanese-logic-puzzles/`**：Title 转 play 意图 `Japanese Logic Puzzles: Play the 7 Classics Free`（渲染 57 字符）；H1 加 `Where to Play Them Free`；iframe Shikaku 试玩块上移至 Sudoku 段后（intent 前置）
+- **明确不做**：不碰 `shikaku online` 落页（首页 9/19 观察期）、不开新页、不碰 `number grid puzzle`（KD 63.8 不投）
+- ⚠️ Title 里的「7 Classics」是内容级硬编码——若文章游戏列表扩展，Title 需同步改
+- **复查日 10/4**：看 GSC `akari online` / `japanese logic puzzles` 两个 query 的位置变化；外链侧引用域缺口比预算（20/15）还小的话下一轮力度下调
+
 **GSC 顶部「您的另外一个网站正在迁移到此网站」横幅**：meowtrail→gridpaw 迁移的正常提示，已知现象，忽略。
 
 ---
