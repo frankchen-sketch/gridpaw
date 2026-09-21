@@ -41,3 +41,6 @@ run died with FileNotFoundError for exactly this reason). Fixed in place with se
 
 ## Evidence files
 - community-request-indexing.png: success state after submission
+
+- Final recheck 09:57 (24 min after submit): still Discovered, lastCrawlTime: None.
+- Verdict: submission accepted by UI, crawl NOT yet confirmed. Next cron rechecks first.
