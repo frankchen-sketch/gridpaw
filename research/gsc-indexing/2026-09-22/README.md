@@ -20,3 +20,7 @@
 ## 待观察
 - community/ 提交后 `lastCrawlTime` 是否出现（此前多轮提交成功但抓取始终未获确认）
 - privacy/ 的 sitemap↔noindex 矛盾需要站点侧决定：从 sitemap 移除或去掉 noindex（不在本任务范围）
+
+## 复核补充（提交约 22 分钟后，API，2026-09-22 ~09:57 CST）
+- `https://gridpaw.com/community/`：coverageState = `Discovered - currently not indexed`（未变），**lastCrawlTime = null**（抓取未获确认），sitemap 引用正常。
+- 判定：UI 显示提交成功，但按纪律（lastCrawlTime 为准）本轮提交**未确认生效**。与既往多轮（09-19/09-20/09-21）同一判定模式：community/ 连续多轮提交成功但始终无抓取确认。原因未知，不做推测。
