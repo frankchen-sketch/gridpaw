@@ -93,8 +93,11 @@ const description = "Draw rectangles to match every number and fill the grid —
       font-family: 'Nunito', -apple-system, sans-serif;
       background: var(--mt-bg); color: var(--mt-text);
       min-height: 100vh;
-      -webkit-user-select: none; user-select: none; touch-action: none;
+      -webkit-user-select: none; user-select: none;
+      /* touch-action:none 曾挂在 body 上 → 手机上整页无法滑动（真机实测）。
+         只允许棋盘区域拦截触摸滚动，页面其余部分正常滚。 */
     }
+    .board { touch-action: none; }
     .app { width: 100%; max-width: 500px; display: flex; flex-direction: column; position: relative; margin: 0 auto; padding: 0 16px; }
     .top-bar { display: flex; align-items: center; justify-content: space-between; padding: 14px 0 10px; }
     .top-bar .title { font-size: 17px; font-weight: 800; color: var(--mt-primary); }
@@ -113,7 +116,8 @@ const description = "Draw rectangles to match every number and fill the grid —
     .level-info { text-align: center; padding: 0 0 8px; }
     .level-num { font-size: 22px; font-weight: 900; color: var(--mt-text); }
     .level-sub { font-size: 12px; font-weight: 700; color: var(--mt-text-light); text-transform: uppercase; letter-spacing: 0.1em; }
-    .difficulty-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-left: 6px; vertical-align: middle; }
+    .difficulty-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-left: 6px; vertical-align: middle; cursor: pointer; transition: filter .15s; }
+    .difficulty-badge:hover { filter: brightness(1.08); }
     .badge-easy { background: var(--gp-badge-easy-bg); color: var(--gp-badge-easy-text); }
     .badge-medium { background: var(--gp-badge-med-bg); color: var(--gp-badge-med-text); }
     .badge-medium-hard { background: var(--gp-badge-hard-bg); color: var(--gp-badge-hard-text); }
@@ -237,7 +241,8 @@ const description = "Draw rectangles to match every number and fill the grid —
       .icon-btn { width: 32px; height: 32px; font-size: 14px; }
     }
     .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; font-family: 'Nunito', -apple-system, sans-serif; }
-    .seo-section h1 { font-size: 1.6rem; color: var(--mt-text); margin: 1rem 0 0.5rem; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    .seo-section h1, .seo-section h2.seo-h1 { font-size: 1.6rem; color: var(--mt-text); margin: 1rem 0 0.5rem; }
     .seo-section h2 { font-size: 1.3rem; color: var(--mt-text); margin: 1.5rem 0 0.5rem; }
     .seo-section h3 { font-size: 1.1rem; color: var(--mt-text); margin: 1rem 0 0.3rem; }
     .seo-section p { margin: 0.5rem 0; line-height: 1.7; color: var(--gp-brown-600); }
@@ -254,7 +259,7 @@ const description = "Draw rectangles to match every number and fill the grid —
     .seo-footer a:hover { color: var(--mt-primary); }
     /* SEO Content Sections */
     .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem; }
-    .seo-section h1 { font-size: 1.6rem; margin: 1rem 0 0.5rem; color: var(--gp-ink); }
+    .seo-section h1, .seo-section h2.seo-h1 { font-size: 1.6rem; margin: 1rem 0 0.5rem; color: var(--gp-ink); }
     .seo-section h2 { font-size: 1.3rem; margin: 1.5rem 0 0.5rem; color: var(--gp-ink); }
     .seo-section h2 .accent { color: var(--gp-primary-strong); }
     .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; color: var(--gp-ink); }
@@ -367,6 +372,45 @@ const description = "Draw rectangles to match every number and fill the grid —
       .testimonial-card { flex: 0 0 260px; }
     }
 
+    /* Challenge Card — 方案 A：空排行榜位换今日挑战（2026-09-22 拍板，有真实上榜数据自动切回排行榜） */
+    .challenge-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, var(--gp-cream-warm), var(--gp-cream));
+      border: 1.5px solid var(--gp-primary-strong);
+      border-radius: 14px;
+      padding: 12px 16px;
+      box-shadow: 0 3px 12px rgba(212,122,80,0.15);
+    }
+    .challenge-grid-mini {
+      width: 56px; height: 56px; border-radius: 8px;
+      background: white;
+      border: 1.5px solid var(--mt-cell-border);
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 6px;
+      flex-shrink: 0;
+    }
+    .challenge-grid-mini i { border-radius: 2px; background: var(--gp-lilac-soft); }
+    .challenge-grid-mini i.fill { background: var(--gp-primary-strong); opacity: .85; }
+    .challenge-meta { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+    .challenge-title { font-size: 15px; font-weight: 900; color: var(--gp-ink); }
+    .challenge-sub { font-size: 12px; font-weight: 800; color: var(--gp-primary-strong); }
+    .challenge-play {
+      display: inline-block; padding: 10px 20px; border: none; border-radius: 999px;
+      background: var(--mt-primary); color: white; font-family: inherit;
+      font-size: 13px; font-weight: 800; cursor: pointer; text-decoration: none;
+      box-shadow: 0 3px 10px rgba(212,122,80,0.3); flex-shrink: 0;
+    }
+    .challenge-play:hover { transform: scale(1.04); }
+    .challenge-play:active { transform: scale(0.96); }
+
+    /* GridPaw in Numbers — 方案 A：撤虚构评价换真实数据块（2026-09-22 拍板，全站可验证事实） */
+    .gp-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 0.8rem 0; }
+    .gp-stat { display: flex; flex-direction: column; align-items: center; padding: 14px 8px; background: white; border: 1.5px solid var(--gp-lilac-soft); border-radius: 12px; }
+    .gp-stat b { font-size: 22px; font-weight: 900; color: var(--gp-primary-strong); line-height: 1.1; }
+    .gp-stat span { font-size: 10.5px; font-weight: 700; color: var(--gp-stone); margin-top: 4px; text-align: center; line-height: 1.3; }
+    @media (max-width: 420px) { .gp-stats { grid-template-columns: repeat(2, 1fr); } }
+
     /* Section titles */
     .section-title { font-size: 1.2rem; font-weight: 900; text-align: center; margin: 1.5rem 0 0.8rem; }
     .section-title .accent { color: var(--gp-primary-strong); }
@@ -393,23 +437,76 @@ const description = "Draw rectangles to match every number and fill the grid —
     .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: var(--gp-stone); }
     .game-switcher-menu a:hover { background: var(--gp-cream); color: var(--gp-primary-strong) !important; }
     .game-switcher-menu a.active { color: var(--gp-primary-strong) !important; background: var(--gp-cream-warm); font-weight: 800 !important; }
-    @media (max-width: 480px) { .game-switcher:hover .game-switcher-menu { display: none; } .game-switcher-menu.open { display: block; } }
+    @media (max-width: 700px) { .game-switcher:hover .game-switcher-menu { display: none; } .game-switcher-menu.open { display: block; } }
     .hamburger { display: none; background: none; border: 1.5px solid var(--mt-cell-border); border-radius: 8px; padding: 6px 10px; font-size: 18px; cursor: pointer; color: var(--gp-ink); }
     .mobile-nav { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.4); }
     .mobile-nav-inner { position: absolute; top: 0; right: 0; width: 280px; height: 100%; background: white; padding: 1.5rem; box-shadow: -4px 0 20px rgba(0,0,0,0.1); }
     .mobile-nav-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; color: var(--gp-ink); cursor: pointer; }
     .mobile-nav-inner a { display: block; padding: 0.75rem 0; font-weight: 700; color: var(--gp-ink); text-decoration: none; border-bottom: 1.5px solid var(--gp-lilac-soft); font-size: 14px; }
     .mobile-nav-inner a:last-child { border-bottom: none; }
-    @media (max-width: 480px) { .header-nav { display: none; } .hamburger { display: block; } }
+    @media (max-width: 700px) { .header-nav { display: none; } .hamburger { display: block; } }
     /* Game Card */
     .game-card { background: white; border-radius: 16px; padding: 12px; box-shadow: 0 2px 12px rgba(78,64,55,0.08); border: 1.5px solid var(--gp-lilac-soft); margin-bottom: 0; }
     .game-topbar { display: flex; align-items: center; justify-content: space-between; padding: 0 0 8px; flex-wrap: wrap; gap: 6px; position: relative; z-index: 20; }
     .game-actions { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; max-width: 200px; margin-left: auto; }
+    @media (max-width: 480px) {
+      .game-actions { max-width: none; flex: 1; flex-wrap: nowrap; justify-content: space-between; }
+      .game-actions .hint-btn { padding: 0 8px; font-size: 12px; gap: 4px; }
+      .game-actions .icon-btn .tip { display: none !important; }
+    }
     .game-actions .icon-btn { width: 32px; height: 32px; border-radius: 50%; background: white; border: 1.5px solid var(--gp-lilac); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--gp-ink); cursor: pointer; transition: all 0.15s; position: relative; }
     .game-actions .icon-btn:hover { border-color: var(--gp-primary-strong); color: var(--gp-primary-strong); }
     .game-actions .icon-btn .tip { display: none; position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: 600; color: var(--gp-stone); white-space: nowrap; }
     .game-actions .icon-btn:hover .tip { display: block; }
     .hint-badge { position: absolute; top: -4px; right: -4px; min-width: 16px; height: 16px; border-radius: 8px; background: var(--mt-primary); color: white; font-size: 10px; font-weight: 900; display: flex; align-items: center; justify-content: center; padding: 0 3px; pointer-events: none; line-height: 1; }
+    /* Hint 可发现性三层改造 ①：唯一带文字的操作按钮（2026-09-21 法老拍板） */
+    .game-actions .hint-btn { display: flex; align-items: center; gap: 5px; height: 32px; padding: 0 12px; border-radius: 999px; background: white; border: 2px solid var(--gp-primary-strong); font-size: 13px; font-weight: 800; color: var(--gp-ink); cursor: pointer; transition: all 0.15s; position: relative; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .game-actions .hint-btn:hover { background: var(--gp-primary-strong); color: white; }
+    .game-actions .hint-btn .hint-word { line-height: 1; }
+    .game-actions .hint-btn .hint-badge { top: -6px; right: -6px; }
+    .game-actions .hint-btn.hint-nudge { border-color: var(--gp-primary-strong); box-shadow: 0 0 0 4px rgba(212,122,80,0.30), 0 1px 3px rgba(0,0,0,0.08); animation: hint-btn-shake 0.9s ease-in-out 2; }
+    /* 抖动+放大：横向抖三拍、越抖越大，两拍后停（残留光晕常驻指引视线） */
+    @keyframes hint-btn-shake {
+      0%, 100% { transform: scale(1) translateX(0); }
+      15% { transform: scale(1.14) translateX(-3px); }
+      30% { transform: scale(1.18) translateX(3px); }
+      45% { transform: scale(1.22) translateX(-4px); }
+      60% { transform: scale(1.24) translateX(4px); }
+      75% { transform: scale(1.22) translateX(-3px); }
+      90% { transform: scale(1.18) translateX(2px); }
+    }
+    @media (prefers-reduced-motion: reduce) { .game-actions .hint-btn.hint-nudge { animation: none; border-width: 3px; } }
+    /* 三层改造 ③：game over 弹窗的提示重试为主按钮，换新题降为次要 */
+    .game-over-overlay .next-btn.secondary { background: rgba(255,255,255,0.14); box-shadow: none; font-size: 14px; padding: 10px 26px; }
+    /* ── Onboarding coach（真棋盘版，v6 2026-09-23；2026-09-23 修：卡片入文档流放棋盘下方，不再 fixed 盖棋盘；原重复规则 z-index 900/2 打架已合并）── */
+    .onboard-coach { width: auto; max-width: 440px; margin: 12px auto 0; background: #fff; border-radius: 14px; padding: 14px; box-shadow: 0 8px 24px rgba(52,40,30,.30); }
+    .onboard-coach.hidden { display: none; }
+    .onboard-rect { position: absolute; background: rgba(253,208,159,.45); border: 2px dashed var(--gp-primary-strong); border-radius: 8px; z-index: 5; pointer-events: none; }
+    .onboard-drag { position: absolute; background: rgba(253,208,159,.45); border: 2px dashed var(--gp-primary-strong); border-radius: 8px; z-index: 5; pointer-events: none; }
+    .ob-finger { position: absolute; width: 52px; height: 52px; z-index: 6; pointer-events: none; transition: left .9s cubic-bezier(.45,.05,.35,1), top .9s cubic-bezier(.45,.05,.35,1); filter: drop-shadow(0 4px 6px rgba(78,64,55,.30)); animation: ob-breathe 2.2s ease-in-out infinite; }
+    @keyframes ob-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+    .ob-finger .ob-wob { transition: transform .22s; transform-origin: 50% 85%; }
+    .ob-finger.press .ob-wob { transform: scale(.82,.78); }
+    .ob-finger.press { animation: none; }
+    .ob-finger.wig .ob-wob { animation: ob-wig .5s ease-in-out infinite; }
+    .ob-finger.wig { animation: none; }
+    @keyframes ob-wig { 0%,100% { transform: rotate(0); } 50% { transform: rotate(-9deg); } }
+    .ob-ripple { position: absolute; width: 14px; height: 14px; border: 3px solid var(--gp-primary-strong); border-radius: 50%; z-index: 5; pointer-events: none; animation: ob-rip .7s ease-out forwards; }
+    @keyframes ob-rip { 0% { transform: scale(.4); opacity: .9; } 100% { transform: scale(2.6); opacity: 0; } }
+    @keyframes ob-shake-x { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+    .onboard-board.shake { animation: ob-shake-x .18s ease-in-out 2; }
+    .onboard-coach .ob-step { font-size: 10px; font-weight: 800; color: var(--gp-primary-strong); letter-spacing: .08em; }
+    .onboard-coach h4 { font-size: 15px; margin: 3px 0 4px; color: var(--gp-ink); }
+    .onboard-coach p { font-size: 12.5px; line-height: 1.55; color: var(--gp-stone); margin: 0; }
+    .onboard-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+    .onboard-dots { display: flex; gap: 5px; }
+    .onboard-dots .dot { width: 6px; height: 6px; border-radius: 50%; background: #e2d5c6; }
+    .onboard-dots .dot.on { background: var(--gp-primary-strong); }
+    .ob-btn { border: none; border-radius: 999px; padding: 8px 16px; font-size: 12.5px; font-weight: 800; cursor: pointer; }
+    .ob-btn.ghost { background: #f2e9dd; color: var(--gp-stone); }
+    .ob-btn.main { background: var(--gp-primary-strong); color: #fff; }
+    .ob-toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: 120px; background: var(--gp-ink); color: #fff; font-size: 12px; font-weight: 700; padding: 9px 16px; border-radius: 999px; z-index: 950; opacity: 0; transition: opacity .4s; white-space: nowrap; pointer-events: none; }
+    .ob-toast.show { opacity: 1; }
     /* Walkthrough Grid (Level Guides) */
     .walkthrough-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 1rem 0; }
     .walkthrough-card { display: flex; flex-direction: column; background: white; border: 1.5px solid var(--gp-lilac-soft); border-radius: 12px; overflow: hidden; text-decoration: none; color: var(--gp-ink); transition: all 0.15s; }
@@ -477,11 +574,11 @@ const description = "Draw rectangles to match every number and fill the grid —
       gap: 16px; border-radius: 12px;
     }
     .game-over-overlay.hidden { display: none; }
-    .game-over-overlay h2 { color: white; font-size: 28px; }
+    .game-over-overlay .game-over-title { color: white; font-size: 28px; }
     .game-over-overlay p { color: rgba(255,255,255,0.8); font-size: 14px; }
     .signin-prompt-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 800; display: flex; align-items: center; justify-content: center; animation: pop-in 0.3s ease-out; }
     .signin-prompt-card { background: white; border-radius: 20px; padding: 28px 24px; max-width: 320px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
-    .signin-prompt-btn { display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1.5px solid var(--gp-linen); border-radius: 24px; padding: 10px 20px; font-size: 14px; font-weight: 700; color: var(--gp-ink); text-decoration: none; box-shadow: 0 1px 3px rgba(0,0,0,0.08); cursor: pointer; transition: box-shadow 0.15s; }
+    .signin-prompt-btn { display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1.5px solid var(--gp-linen); border-radius: 24px; padding: 12px 22px; min-height: 44px; font-size: 14px; font-weight: 700; color: var(--gp-ink); text-decoration: none; box-shadow: 0 1px 3px rgba(0,0,0,0.08); cursor: pointer; transition: box-shadow 0.15s; }
     .signin-prompt-btn:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
     .signin-prompt-later { display: block; margin: 12px auto 0; background: none; border: none; color: var(--gp-stone); font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: underline; }
     .hearts { display: flex; gap: 2px; font-size: 18px; align-items: center; }
@@ -545,8 +642,10 @@ const description = "Draw rectangles to match every number and fill the grid —
   </div>
 </div>
 <div class="app" id="app">
-  <div id="account-area" style="display:flex;justify-content:center;align-items:center;gap:.6rem;margin:.4rem 0;min-height:2rem;flex-wrap:wrap"></div>
+  <div id="account-area" style="display:flex;justify-content:center;align-items:center;gap:.5rem;margin:.4rem 0;min-height:2.4rem;flex-wrap:nowrap;white-space:nowrap"></div>
   <div class="daily-status" id="dailyStatus"></div>
+  <!-- P0 结构修复：H1 提到全部 H2 section 之前（sr-only，不改变游戏区视觉；SEO 区原位降级为 h2.seo-h1 保持同款样式） -->
+  <h1 class="sr-only">GridPaw: Free <span class="accent">Shikaku</span> Puzzle Game Online</h1>
   <section class="game-card" id="play" aria-label="GridPaw game">
     <div class="game-topbar">
       <div class="level-info" style="margin:0;padding:0">
@@ -563,7 +662,7 @@ const description = "Draw rectangles to match every number and fill the grid —
         <div class="game-actions">
         <button class="icon-btn" id="undoBtn" title="Undo"><span>↩</span><span class="tip">Undo</span></button>
         <button class="icon-btn" id="resetBtn" title="New puzzle"><span>🔄</span><span class="tip">New</span></button>
-        <button class="icon-btn" id="hintBtn" title="Hint"><span>💡</span><span class="tip">Hint</span></button>
+        <button class="hint-btn" id="hintBtn" title="Hint"><span>💡</span><span class="hint-word">Hint</span><span class="hint-badge">3</span></button>
         <button class="icon-btn" id="soundBtn" title="Sound"><span id="soundIcon">🔊</span><span class="tip">Sound</span></button>
         <button class="icon-btn" id="dailyBtn" title="Daily Challenge"><span>📅</span><span class="tip">Daily</span></button>
         </div>
@@ -571,6 +670,20 @@ const description = "Draw rectangles to match every number and fill the grid —
     </div>
     <div class="board-wrap">
       <div class="board" id="board"></div>
+    </div>
+    <!-- Onboarding coach（v6→真棋盘版 2026-09-23：跟随教学 1-4 关真实棋局演示）。
+         2026-09-23 修：从页面尾部移入此处并改文档流定位——fixed 卡会盖住棋盘底部格子和拖拽幻影 -->
+    <div class="onboard-coach hidden" id="obCoach">
+      <div class="ob-step" id="obStep">STEP 1 / 3</div>
+      <h4 id="obTitle">Find the number 🔍</h4>
+      <p id="obText">Each rectangle must contain exactly one number. This level starts with a 3 — it needs a rectangle of exactly 3 cells.</p>
+      <div class="onboard-row">
+        <div class="onboard-dots" id="obDots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+        <div style="display:flex;gap:8px">
+          <button class="ob-btn ghost" id="obSkipBtn">Skip</button>
+          <button class="ob-btn main" id="obNextBtn">Try it →</button>
+        </div>
+      </div>
     </div>
     <div class="bottom-bar">
       <div id="status" style="font-size:14px;font-weight:700;color:var(--mt-text-light)">Drag to draw rectangles</div>
@@ -587,17 +700,37 @@ const description = "Draw rectangles to match every number and fill the grid —
   </div>
 
   <div class="game-over-overlay hidden" id="gameOver">
-    <h2>😿 Game Over</h2>
+    <div class="game-over-title">😿 Game Over</div>
     <p>You ran out of lives!</p>
-    <button class="next-btn" id="retryBtn">Try Again 🔄</button>
+    <button class="next-btn" id="hintRetryBtn">💡 Retry with a Hint</button>
+    <button class="next-btn secondary" id="retryBtn">Try Again 🔄</button>
   </div>
 
   <section class="seo-content" id="daily-leaderboard" style="max-width:520px;margin:1.5rem auto;padding:0 1rem">
-    <h2 style="text-align:center;font-size:1.25rem;margin:.8rem 0 .3rem">🏆 Today's Leaderboard</h2>
-    <p id="leaderboard-hint" style="text-align:center;font-size:.85rem;margin:0 0 1rem;color:var(--gp-brown-600)">Sign in and solve today's Daily Challenge to appear here!</p>
-    <div id="leaderboard-list"></div>
+    <!-- 方案 A：空排行榜位 → Today's Challenge 卡（有真实上榜数据时 JS 自动切回排行榜） -->
+    <div class="challenge-card" id="challengeCard">
+      <div class="challenge-grid-mini" aria-hidden="true"><i class="fill"></i><i></i><i class="fill"></i><i></i><i class="fill"></i><i></i><i></i><i></i><i class="fill"></i></div>
+      <div class="challenge-meta">
+        <div class="challenge-title">Daily Challenge · 6×6</div>
+        <div class="challenge-sub">🔥 Keep your streak alive</div>
+      </div>
+      <a class="challenge-play" href="#play" id="challengePlayNow">Play Now</a>
+    </div>
+    <div class="daily-leaderboard-panel" id="dailyLeaderboardPanel" style="display:none">
+      <h2 style="text-align:center;font-size:1.25rem;margin:.8rem 0 .3rem">🏆 Today's Leaderboard</h2>
+      <p id="leaderboard-hint" style="text-align:center;font-size:.85rem;margin:0 0 1rem;color:var(--gp-brown-600)">Sign in and solve today's Daily Challenge to appear here!</p>
+      <div id="leaderboard-list"></div>
+    </div>
   </section>
 </div>
+
+<!-- Onboarding coach 卡已移入游戏区（board-wrap 后），此处不留副本 -->
+<div class="ob-toast" id="obToast">🎉 Nice! That's how Shikaku works</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <radialGradient id="gpPadG" cx="42%" cy="32%" r="75%"><stop offset="0%" stop-color="#FFD3DE"/><stop offset="65%" stop-color="#FBAEC2"/><stop offset="100%" stop-color="#EF93AF"/></radialGradient>
+  <radialGradient id="gpBeanG" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#FFDFE8"/><stop offset="100%" stop-color="#F5A8BC"/></radialGradient>
+  <linearGradient id="gpFurG" x1="0" y1="0" x2="0.2" y2="1"><stop offset="0%" stop-color="#FFFBF4"/><stop offset="100%" stop-color="#EFD8BE"/></linearGradient>
+</defs></svg>
 
 <script is:inline src="/puzzle-engine.js"></script>
 <script is:inline src="/sfx.js"></script>
@@ -771,6 +904,16 @@ const description = "Draw rectangles to match every number and fill the grid —
   var gameOver = document.getElementById('gameOver');
   var statusEl = document.getElementById('status');
   var levelTitle = document.getElementById('levelTitle');
+  // Clarity 录屏实锤：用户把难度徽章当帮助按钮狂点 → 点它滚到 Tips 区
+  levelTitle.addEventListener('click', function(e) {
+    var t = e.target;
+    if (!t || !t.closest || !t.closest('.difficulty-badge')) return;
+    track('badge_help_click', { level: levelNum, badge: t.textContent.trim() });
+    var tips = document.getElementById('tips-section');
+    if (tips) tips.scrollIntoView({ behavior: 'smooth' });
+    statusEl.textContent = '💡 Stuck? The Hint button reveals a correct area.'; statusEl.style.color = 'var(--mt-primary)';
+    setTimeout(updateStatus, 8000);
+  });
   gameTimerEl = document.getElementById('gameTimer');
 
   function updateHearts() {
@@ -783,7 +926,12 @@ const description = "Draw rectangles to match every number and fill the grid —
   }
   function newPuzzle() {
     lives = 3; updateHearts();
+    consecErrors = 0; nudgeShownThisLevel = false;
+    var hbNew = document.getElementById('hintBtn');
+    if (hbNew) hbNew.classList.remove('hint-nudge');
     gameOver.classList.add('hidden');
+    var bdN = document.getElementById('board');
+    if (bdN) bdN.style.pointerEvents = '';
     var levelIdx = levelNum - 1;
     var levelDef = typeof LEVEL_DEFS !== 'undefined' ? LEVEL_DEFS[levelIdx] : null;
     if (levelDef) {
@@ -827,6 +975,7 @@ const description = "Draw rectangles to match every number and fill the grid —
     board.classList.remove('board-victory');
     resetGameTimer();
     render(); updateStatus();
+    if (window.__obMaybeCoach) window.__obMaybeCoach();
   }
 
   function render() {
@@ -1006,7 +1155,14 @@ const description = "Draw rectangles to match every number and fill the grid —
   function showGameOver() {
     stopGameTimer();
     if (typeof SFX !== 'undefined') SFX.error();
+    // 三层改造 ③：没用完的 hint 才给「提示重试」出口（防无限免费重试）
+    var isDevGo = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    var hr = document.getElementById('hintRetryBtn');
+    if (hr) hr.style.display = (!isDevGo && !isAdmin && hintUsesLeft <= 0) ? 'none' : '';
     gameOver.classList.remove('hidden');
+    // Clarity 实锤 bug：弹窗开着时拖拽穿透到棋盘，2 秒内连吃 3 次 game_over
+    var bd = document.getElementById('board');
+    if (bd) bd.style.pointerEvents = 'none';
     track('game_over', { level: levelNum, time: gameElapsed });
   }
   function onEnd(e) {
@@ -1024,6 +1180,7 @@ const description = "Draw rectangles to match every number and fill the grid —
       if (typeof SFX !== 'undefined') SFX.error();
       lives--;
       updateHearts();
+      consecErrors++;
       if (lives <= 0) {
         statusEl.textContent = 'No lives left!'; statusEl.style.color = 'var(--mt-error)';
         showGameOver();
@@ -1034,9 +1191,16 @@ const description = "Draw rectangles to match every number and fill the grid —
       } else {
         statusEl.textContent = result.reason || 'Invalid'; statusEl.style.color = 'var(--mt-error)';
       }
+      // 三层改造 ②：连续 2 次拖错 = 卡关信号，让 hint 按钮跳出来（每关一次）
+      if (consecErrors >= 2 && !nudgeShownThisLevel && !isAdmin) {
+        nudgeShownThisLevel = true;
+        var hbNudge = document.getElementById('hintBtn');
+        if (hbNudge) hbNudge.classList.add('hint-nudge');
+      }
       setTimeout(updateStatus, 1500);
     } else {
       if (typeof SFX !== 'undefined') SFX.place();
+      consecErrors = 0;
       if (colorPool.length === 0) colorPool = shuffleArray(CAT_PALETTE.slice());
       var color = colorPool.pop();
       var expr = EXPRESSIONS[exprIdx % EXPRESSIONS.length];
@@ -1053,6 +1217,7 @@ const description = "Draw rectangles to match every number and fill the grid —
         }
       rects.push({ rect: sel, color: color, expr: expr, faceLeft: faceLeft });
       updateXReveals();
+      if (window.__obOnPlacement) window.__obOnPlacement();
       render(); checkWin();
     }
     } catch(err) { console.error('[ONEND ERROR]', err.message, err.stack); }
@@ -1215,6 +1380,22 @@ const description = "Draw rectangles to match every number and fill the grid —
   document.getElementById('retryBtn').addEventListener('click', function() {
     newPuzzle();
   });
+  // 三层改造 ③：game over 后「用 1 次提示重试」= 同一道题 + 回满血 + 高亮一块正确矩形
+  document.getElementById('hintRetryBtn').addEventListener('click', function() {
+    gameOver.classList.add('hidden');
+    lives = 3; updateHearts();
+    var isDevHr = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    if (!isDevHr && !isAdmin) hintUsesLeft = Math.max(0, hintUsesLeft - 1);
+    updateHintBadge();
+    var hbUn = document.getElementById('hintBtn');
+    if (hbUn) hbUn.classList.remove('hint-nudge');
+    consecErrors = 0;
+    track('hint_click', { level: levelNum, remaining: isAdmin ? 'admin' : hintUsesLeft, source: 'game_over_retry' });
+    var bdH = document.getElementById('board');
+    if (bdH) bdH.style.pointerEvents = '';
+    startGameTimer();
+    revealHintRect();
+  });
 
   document.getElementById('resetBtn').addEventListener('click', function() { track('puzzle_skip', { level: levelNum, reason: 'new_puzzle' }); levelNum++; isDailyMode = false; newPuzzle(); victory.classList.add('hidden'); });
   document.getElementById('undoBtn').addEventListener('click', function() {
@@ -1236,7 +1417,14 @@ const description = "Draw rectangles to match every number and fill the grid —
     }
     if (!isDev && !isAdmin) hintUsesLeft--;
     updateHintBadge();
+    var hbUse = document.getElementById('hintBtn');
+    if (hbUse) hbUse.classList.remove('hint-nudge');
     track('hint_click', { level: levelNum, remaining: isAdmin ? 'admin' : hintUsesLeft });
+    revealHintRect();
+  });
+
+  // 高亮一块未放置的正确矩形（hintBtn 与 game over 提示重试共用）
+  function revealHintRect() {
     if (!puzzle) return;
     statusEl.textContent = '🧠 Hint…'; statusEl.style.color = 'var(--mt-primary)';
     // O(1) 查表：答案分区在生成时已随 puzzle 返回（solutionRects），无需运行时求解
@@ -1265,7 +1453,7 @@ const description = "Draw rectangles to match every number and fill the grid —
       updateStatus();
       } catch (err) { statusEl.textContent = 'Hint failed — try again.'; }
     }, 30);
-  });
+  }
 
   // Daily challenge — generate inline (no toggle, just replace the board)
   var isDailyMode = false;
@@ -1292,6 +1480,16 @@ const description = "Draw rectangles to match every number and fill the grid —
   }
   document.getElementById('dailyBtn').addEventListener('click', function() { track('daily_challenge_click', { source: 'game_button' }); generateDaily(); });
   document.getElementById('navDaily').addEventListener('click', function(e) { e.preventDefault(); track('daily_challenge_click', { source: 'nav' }); generateDaily(); document.getElementById('play').scrollIntoView({ behavior: 'smooth' }); });
+  var challengePlayNow = document.getElementById('challengePlayNow');
+  if (challengePlayNow) challengePlayNow.addEventListener('click', function(e) { e.preventDefault(); track('daily_challenge_click', { source: 'challenge_card' }); generateDaily(); document.getElementById('play').scrollIntoView({ behavior: 'smooth' }); });
+  // Get the App 区两个 CTA 接线（原为死链接：href="/#play" 不触发 daily，href="/" 直接刷新页面）
+  // ⚠️ 用事件委托：该区块在主脚本之后解析，直接 getElementById 接线时元素尚不存在（2026-09-23 实测踩坑）
+  document.addEventListener('click', function(e) {
+    var dlDaily = e.target.closest && e.target.closest('#downloadDailyBtn');
+    if (dlDaily) { e.preventDefault(); track('daily_challenge_click', { source: 'download_box' }); generateDaily(); document.getElementById('play').scrollIntoView({ behavior: 'smooth' }); return; }
+    var dlPlay = e.target.closest && e.target.closest('#downloadPlayBtn');
+    if (dlPlay) { e.preventDefault(); document.getElementById('play').scrollIntoView({ behavior: 'smooth' }); }
+  });
 
   // Community link click tracking (desktop + mobile nav)
   Array.prototype.forEach.call(document.querySelectorAll('.community-link'), function(link) {
@@ -1376,7 +1574,7 @@ const description = "Draw rectangles to match every number and fill the grid —
     if (state && state.solved) {
       statusEl.innerHTML = '✅ Daily solved! 🔥 ' + (state.streak || 0) + ' day streak';
     } else {
-      statusEl.innerHTML = '📅 Daily Challenge — hit the 📅 button to play!';
+      statusEl.innerHTML = '📅 Daily Challenge ready — hit the <b>Daily</b> button (calendar icon) in the toolbar!';
     }
   })();
 
@@ -1384,6 +1582,8 @@ const description = "Draw rectangles to match every number and fill the grid —
   var currentUser = null;
   var isAdmin = false;        // admin：无限 hint
   var hintUsesLeft = 3;       // 登录用户每关 3 次；换关重置
+  var consecErrors = 0;       // 卡关引导：连续拖错计数（有效落子清零，换关清零）
+  var nudgeShownThisLevel = false; // 卡关引导每关只触发一次
   var ADMIN_GOOGLE_SUBS = ['107340826206298097641'];
   function updateHintBadge() {
     var hintBtn = document.getElementById('hintBtn');
@@ -1422,12 +1622,12 @@ const description = "Draw rectangles to match every number and fill the grid —
       }
       const name = document.createElement('span');
       name.textContent = currentUser.name || 'Cat Fan';
-      name.style.cssText = 'font-size:.85rem;font-weight:700;color:var(--gp-ink)';
+      name.style.cssText = 'font-size:.8rem;font-weight:700;color:var(--gp-ink);max-width:5.5em;overflow:hidden;text-overflow:ellipsis';
       area.appendChild(name);
       const dailyBtn = document.createElement('a');
       dailyBtn.href = '#play';
       dailyBtn.textContent = '📅 Play Daily';
-      dailyBtn.style.cssText = 'font-size:.8rem;font-weight:800;color:#fff;background:var(--gp-pink);border-radius:16px;padding:.3rem .9rem;text-decoration:none;box-shadow:0 2px 8px rgba(255,66,165,.3)';
+      dailyBtn.style.cssText = 'font-size:.75rem;font-weight:800;color:#fff;background:var(--gp-pink);border-radius:14px;padding:.25rem .7rem;text-decoration:none;box-shadow:0 2px 8px rgba(255,66,165,.3)';
       dailyBtn.addEventListener('click', function(e) {
         e.preventDefault();
         if (typeof generateDaily === 'function') { generateDaily(); document.getElementById('play').scrollIntoView({ behavior: 'smooth' }); }
@@ -1441,7 +1641,9 @@ const description = "Draw rectangles to match every number and fill the grid —
     } else {
       var btn = document.createElement('a');
       btn.href = '/api/auth/login?next=/';
-      btn.style.cssText = 'display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1.5px solid var(--gp-linen);border-radius:24px;padding:.4rem 1rem;font-size:.85rem;font-weight:700;color:var(--gp-ink);text-decoration:none;box-shadow:0 1px 3px rgba(0,0,0,.08)';
+      // Clarity #1792s36：iOS 用户 3 次点击 sign-in 都没跳转（GA4 sign_in_click=0 佐证）
+      // → 触控目标加大到 Apple HIG 44px 最小标准，防止点在按钮/横幅间死区
+      btn.style.cssText = 'display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1.5px solid var(--gp-linen);border-radius:24px;padding:.55rem 1.15rem;min-height:44px;font-size:.85rem;font-weight:700;color:var(--gp-ink);text-decoration:none;box-shadow:0 1px 3px rgba(0,0,0,.08);position:relative;z-index:5';
       btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 18.9 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.6 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>Sign in with Google';
       btn.addEventListener('click', function() { track('sign_in_click', { source: 'account_area', level: levelNum }); });
       area.appendChild(btn);
@@ -1525,6 +1727,8 @@ const description = "Draw rectangles to match every number and fill the grid —
         levelNum = data.level;
         localStorage.setItem('gridpaw-level', String(levelNum));
         newPuzzle();
+        statusEl.textContent = '☁️ Cloud progress restored — Level ' + data.level; statusEl.style.color = 'var(--mt-primary)';
+        setTimeout(updateStatus, 3500);
       } else if (levelNum > data.level) {
         postLevel(levelNum);
       }
@@ -1559,18 +1763,31 @@ const description = "Draw rectangles to match every number and fill the grid —
   function renderLeaderboard() {
     var list = document.getElementById('leaderboard-list');
     if (!list) return;
+    var challengeCard = document.getElementById('challengeCard');
+    var panel = document.getElementById('dailyLeaderboardPanel');
+    var hintEl = document.getElementById('leaderboard-hint');
+    function showCard() {
+      if (challengeCard) challengeCard.style.display = '';
+      if (panel) panel.style.display = 'none';
+    }
+    function showBoard() {
+      if (challengeCard) challengeCard.style.display = 'none';
+      if (panel) panel.style.display = '';
+    }
+    showCard(); // 默认：Challenge 卡（空排行榜不再占黄金位）
     fetchWithTimeout('/api/leaderboard?date=' + getToday()).then(function(r) {
       if (!r.ok) return null;
       return r.json();
     }).then(function(data) {
       if (!data) return;
       var entries = data.entries || [];
-      var hintEl = document.getElementById('leaderboard-hint');
-      if (hintEl) hintEl.style.display = entries.length ? 'none' : 'block';
       if (!entries.length) {
-        list.innerHTML = '<p style="text-align:center;font-size:.85rem;color:var(--gp-stone)">🐾 Be the first cat on the leaderboard today!</p>';
+        showCard();
         return;
       }
+      // 有真实上榜数据 → 自动切回排行榜
+      showBoard();
+      if (hintEl) hintEl.style.display = 'none';
       var html = '';
       for (var i = 0; i < entries.length; i++) {
         var e = entries[i];
@@ -1581,7 +1798,7 @@ const description = "Draw rectangles to match every number and fill the grid —
           + '<span style="color:var(--gp-pink);font-weight:700">' + msToClock(e.timeMs) + '</span></div>';
       }
       list.innerHTML = html;
-    }).catch(function() {});
+    }).catch(showCard);
   }
   setInterval(renderLeaderboard, 60000);
   syncCloudOnLoad();
@@ -1605,52 +1822,141 @@ const description = "Draw rectangles to match every number and fill the grid —
   var _embed = _urlP.get('embed') === '1';
   var _ref = document.referrer || '';
   var _source = _embed ? 'embed' : (_ref === '' ? 'direct' : (_ref.indexOf('google') !== -1 ? 'google' : (_ref.indexOf('bing') !== -1 ? 'bing' : 'referral')));
-  track('game_start', { level: levelNum, source: _source });
+  // game_start 延迟到 DOMContentLoaded：gpTrack 由 module 脚本注入（解析完才执行），
+  // 内联脚本同步调用时 window.gpTrack 还不存在 → D1 漏 game_start（GA4 正常），实测 69 vs 6
+  var _fireGameStart = function() { track('game_start', { level: levelNum, source: _source }); };
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _fireGameStart); } else { _fireGameStart(); }
   window.addEventListener('resize', function() { if (puzzle) render(); });
 
-  // Testimonial carousel
+  // ─── Onboarding coach（真棋盘版 2026-09-23）：跟随教学 1-4 关真实棋局演示 ───
   (function() {
-    var track = document.getElementById('testimonialTrack');
-    var dotsEl = document.getElementById('testimonialDots');
-    if (!track || !dotsEl) return;
-    var cards = track.querySelectorAll('.testimonial-card');
-    var total = cards.length;
-    for (var i = 0; i < total; i++) {
-      var dot = document.createElement('button');
-      dot.className = 'testimonial-dot' + (i === 0 ? ' active' : '');
-      dot.setAttribute('aria-label', 'Review ' + (i + 1));
-      dot.dataset.idx = i;
-      dot.addEventListener('click', function() {
-        var idx = parseInt(this.dataset.idx);
-        cards[idx].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
-      });
-      dotsEl.appendChild(dot);
+  var coachCard = document.getElementById('obCoach');
+  if (!coachCard) return;
+  var stepEl = document.getElementById('obStep'), titleEl = document.getElementById('obTitle'), textEl = document.getElementById('obText');
+  var nextBtn = document.getElementById('obNextBtn'), skipBtn = document.getElementById('obSkipBtn'), toast = document.getElementById('obToast');
+  var dots = document.querySelectorAll('#obDots .dot');
+  var PAW_SVG = '<svg viewBox="0 0 96 96"><g class="ob-wob" transform="rotate(-5 48 48)">' +
+    '<path d="M32 90 C22 90 17 83 19 74 C12 70 11 59 17 53 C11 45 14 33 22 28 C23 18 32 13 40 16 C43 10 52 9 56 14 C60 9 70 10 73 16 C81 13 89 19 89 28 C93 36 92 47 86 52 C90 60 87 72 78 76 C79 85 71 91 63 89 C56 94 44 94 40 90 C37 92 34 92 32 90 Z" fill="url(#gpFurG)" stroke="#D9BE9F" stroke-width="1.6"/>' +
+    '<path d="M36 91 q3 2 7 1 M56 93 q4 1 7 -2 M24 86 q-4 -2 -5 -6 M78 84 q4 -3 4 -7" stroke="#E9D4BF" stroke-width="1.6" fill="none" stroke-linecap="round"/>' +
+    '<path d="M50 50 q8 -8 15 -2 q8 7 0 15 q-5 6 -12 11 q-1.5 1.4 -3 0 q-7 -5 -12 -11 q-8 -8 0 -15 q7 -6 12 2z" fill="url(#gpPadG)"/>' +
+    '<path d="M50 50 q8 -8 15 -2 q8 7 0 15 q-5 6 -12 11 q-1.5 1.4 -3 0 q-7 -5 -12 -11 q-8 -8 0 -15 q7 -6 12 2z" fill="none" stroke="#E58BA6" stroke-width="1.2" opacity=".45"/>' +
+    '<ellipse cx="45" cy="57" rx="4" ry="2.3" fill="#FFFFFF" opacity=".55" transform="rotate(-18 45 57)"/>' +
+    '<g transform="rotate(-12 33 31)"><ellipse cx="33" cy="31" rx="7.8" ry="9.2" fill="url(#gpBeanG)"/><ellipse cx="30.8" cy="27.8" rx="2.4" ry="2.7" fill="#fff" opacity=".6"/></g>' +
+    '<g transform="rotate(-3 49 24)"><ellipse cx="49" cy="24" rx="8" ry="9.4" fill="url(#gpBeanG)"/><ellipse cx="46.6" cy="20.9" rx="2.5" ry="2.8" fill="#fff" opacity=".6"/></g>' +
+    '<g transform="rotate(8 65 26)"><ellipse cx="65" cy="26" rx="7.6" ry="9" fill="url(#gpBeanG)"/><ellipse cx="62.8" cy="23" rx="2.4" ry="2.6" fill="#fff" opacity=".6"/></g>' +
+    '<g transform="rotate(20 77 37)"><ellipse cx="77" cy="37" rx="7" ry="8.2" fill="url(#gpBeanG)"/><ellipse cx="75" cy="34.2" rx="2.2" ry="2.4" fill="#fff" opacity=".6"/></g></g></svg>';
+  var coached = {};
+  try { coached = JSON.parse(localStorage.getItem('gp_ob_tut') || '{}'); } catch (e) { coached = {}; }
+  var phase = null, idleT = null, demoFinger = null, demoTimers = [], curStep = 0, everShownRule = false;
+  function saveCoached() { try { localStorage.setItem('gp_ob_tut', JSON.stringify(coached)); } catch (e) {} }
+  function obTrack(ev, data) { if (typeof track === 'function') { try { track(ev, data || {}); } catch (e) {} } }
+  function firstUnplacedRect() {
+    if (!puzzle || !puzzle.solutionRects) return null;
+    for (var i = 0; i < puzzle.solutionRects.length; i++) {
+      var rr = puzzle.solutionRects[i], anchor = null;
+      for (var j = 0; j < puzzle.numbers.length; j++) { var n = puzzle.numbers[j]; if (n.row >= rr.top && n.row < rr.top + rr.height && n.col >= rr.left && n.col < rr.left + rr.width) { anchor = n; break; } }
+      if (anchor && !occupied[anchor.row][anchor.col]) return rr;
     }
-    var dots = dotsEl.querySelectorAll('.testimonial-dot');
-    var scrollTimer = null;
-    track.addEventListener('scroll', function() {
-      if (scrollTimer) clearTimeout(scrollTimer);
-      scrollTimer = setTimeout(function() {
-        var cardWidth = cards[0].offsetWidth + 12;
-        var activeIdx = Math.round(track.scrollLeft / cardWidth);
-        activeIdx = Math.max(0, Math.min(activeIdx, total - 1));
-        dots.forEach(function(d, i) { d.classList.toggle('active', i === activeIdx); });
-      }, 100);
-    });
-    var autoIdx = 0;
-    setInterval(function() {
-      autoIdx = (autoIdx + 1) % total;
-      cards[autoIdx].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
-    }, 4000);
+    return null;
+  }
+  function rectPx(rr) {
+    var b = board.getBoundingClientRect();
+    var a = board.children[rr.top * puzzle.width + rr.left].getBoundingClientRect();
+    var z = board.children[(rr.top + rr.height - 1) * puzzle.width + rr.left + rr.width - 1].getBoundingClientRect();
+    return { x: a.left - b.left, y: a.top - b.top, w: z.right - a.left, h: z.bottom - a.top };
+  }
+  function spawnFinger(x, y) { var f = document.createElement('div'); f.className = 'ob-finger'; f.innerHTML = PAW_SVG; f.style.left = x + 'px'; f.style.top = y + 'px'; board.appendChild(f); return f; }
+  function killDemo() { demoTimers.forEach(clearTimeout); demoTimers = []; if (demoFinger) { demoFinger.remove(); demoFinger = null; } }
+  function ripple(x, y) { var r = document.createElement('div'); r.className = 'ob-ripple'; r.style.left = x + 'px'; r.style.top = y + 'px'; board.appendChild(r); setTimeout(function() { r.remove(); }, 750); }
+  function setDots(n) { dots.forEach(function(d, i) { d.classList.toggle('on', i <= n); }); }
+  function clearCoachArt() { board.querySelectorAll('.onboard-drag,.ob-ripple').forEach(function(e) { e.remove(); }); board.querySelectorAll('.hint-active').forEach(function(e) { e.classList.remove('hint-active'); }); }
+  function showCardFn() { coachCard.classList.remove('hidden'); }
+  function hideCardFn() { coachCard.classList.add('hidden'); }
+  function showToast() { toast.classList.add('show'); setTimeout(function() { toast.classList.remove('show'); }, 1600); }
+  function playGesture(rr, onDone) {
+    var p = rectPx(rr);
+    var anchorCell = board.children[rr.top * puzzle.width + rr.left];
+    var ac = anchorCell.getBoundingClientRect(), bc = board.getBoundingClientRect();
+    demoFinger = spawnFinger(ac.left - bc.left + ac.width/2 - 14, ac.top - bc.top + ac.height/2 - 36);
+    var endCell = board.children[(rr.top + rr.height - 1) * puzzle.width + rr.left + rr.width - 1];
+    var ec = endCell.getBoundingClientRect();
+    var later = function(ms, fn) { demoTimers.push(setTimeout(fn, ms)); };
+    later(500, function() { demoFinger.classList.add('press'); ripple(ac.left - bc.left + ac.width/2 - 7, ac.top - bc.top + ac.height/2 - 7); });
+    later(1300, function() { demoFinger.classList.remove('press'); demoFinger.classList.add('wig');
+      var tr = document.createElement('div'); tr.className = 'onboard-drag';
+      tr.style.left = p.x + 'px'; tr.style.top = p.y + 'px'; tr.style.width = p.w + 'px'; tr.style.height = p.h + 'px'; board.appendChild(tr);
+      demoFinger.style.left = (ec.left - bc.left + ec.width/2 - 14) + 'px'; });
+    later(2300, function() { demoFinger.classList.remove('wig'); demoFinger.classList.add('press'); });
+    later(2900, function() { killDemo(); if (onDone) onDone(); });
+  }
+  function yourTurn() {
+    phase = 'turn'; clearCoachArt();
+    nextBtn.style.display = 'none'; setDots(2);
+    stepEl.textContent = 'STEP 3 / 3'; titleEl.textContent = 'Your turn 🐾 — drag it yourself';
+    textEl.textContent = 'Press the number, drag across cells until the area matches, then release. The board is live now.';
+    var scheduleIdle = function() { clearTimeout(idleT); idleT = setTimeout(function() { if (phase === 'turn' && !demoFinger && !dragging) { var rr = firstUnplacedRect(); if (rr) playGesture(rr, scheduleIdle); } }, 3000); };
+    scheduleIdle();
+  }
+  function startCoach(step) {
+    curStep = step; phase = 'rule';
+    var rr = firstUnplacedRect(); if (!rr) { phase = null; return; }
+    for (var r = rr.top; r < rr.top + rr.height; r++) for (var c = rr.left; c < rr.left + rr.width; c++) { var el = board.children[r * puzzle.width + c]; if (el) el.classList.add('hint-active'); }
+    showCardFn(); setDots(0); nextBtn.style.display = '';
+    if (!everShownRule) {
+      everShownRule = true;
+      stepEl.textContent = 'STEP 1 / 3'; titleEl.textContent = 'Find the number 🔍';
+      textEl.textContent = 'Each rectangle must contain exactly one number, and its area must equal that number. Highlighted cells show one correct move.';
+      nextBtn.textContent = 'Watch how →'; nextBtn.disabled = false;
+      nextBtn.onclick = function() { var rr2 = firstUnplacedRect(); if (rr2) watchDemo(rr2); };
+    } else { watchDemo(rr); }
+    obTrack('onboard_start', { level: levelNum });
+  }
+  function watchDemo(rr) {
+    phase = 'watch'; setDots(1); nextBtn.style.display = 'none';
+    stepEl.textContent = 'STEP 2 / 3'; titleEl.textContent = 'Watch the paw 🐾';
+    textEl.textContent = 'Press on the number, drag across cells until the area matches, then release. (Touch the board any time to take over.)';
+    obTrack('onboard_step', { step: 2, level: levelNum });
+    var takeover = function() { board.removeEventListener('pointerdown', takeover); killDemo(); clearCoachArt(); yourTurn(); };
+    board.addEventListener('pointerdown', takeover);
+    playGesture(rr, function() { board.removeEventListener('pointerdown', takeover); demoTimers.push(setTimeout(function() { clearCoachArt(); yourTurn(); }, 1200)); });
+  }
+  function markCoached() {
+    if (curStep) { coached['t' + curStep] = true; saveCoached(); }
+    clearTimeout(idleT); killDemo(); clearCoachArt(); hideCardFn(); nextBtn.style.display = ''; phase = null;
+  }
+  function finishSkipped() { if (phase === null) return; obTrack('onboard_skip', { level: levelNum }); markCoached(); }
+  window.__obOnPlacement = function() { if (phase === 'turn' || phase === 'watch') { showToast(); obTrack('onboard_complete', { level: levelNum }); markCoached(); } };
+  window.__obMaybeCoach = function() {
+    if (phase !== null) markCoached();
+    if (!puzzle) return;
+    var def = (typeof LEVEL_DEFS !== 'undefined') ? LEVEL_DEFS[levelNum - 1] : null;
+    if (!def || !def.isTutorial) return;
+    if (coached['t' + def.tutorialStep]) return;
+    startCoach(def.tutorialStep);
+  };
+  skipBtn.onclick = function() { finishSkipped(); };
+  nextBtn.onclick = function() { if (phase === 'rule') { var rr = firstUnplacedRect(); if (rr) watchDemo(rr); } };
+  document.addEventListener('click', function(e) {
+    if (e.target.closest && e.target.closest('#obReplay')) { e.preventDefault();
+      if (phase !== null) return;
+      var def = (typeof LEVEL_DEFS !== 'undefined') ? LEVEL_DEFS[levelNum - 1] : null;
+      if (puzzle && def && def.isTutorial && !coached['t' + def.tutorialStep]) { window.__obMaybeCoach(); }
+      else { var rr = firstUnplacedRect(); if (rr) { playGesture(rr, function() { clearCoachArt(); }); } }
+    }
+  });
+  // 初始 newPuzzle 在本 IIFE 之前执行、hook 尚未注册 → 首次进入需在此主动触发一次
+  window.__obMaybeCoach();
   })();
-</script>
 
-<!-- Tips & Techniques -->
-<section class="section" aria-label="Tips">
+  </script>
+
+  <!-- Tips & Techniques（方案 A：合并 Tips 双 section，保留 3 条核心技巧 + 链接 /tips/） -->
+<section class="section" id="tips-section" aria-label="Tips">
   <h2 class="section-title">Tips &amp; <span class="accent">Techniques</span></h2>
+  <p style="max-width:640px;margin:0 auto .9rem;line-height:1.7;color:var(--gp-brown-600);text-align:center">Start with prime numbers — their 1×N shape is forced — then work from corners and the largest clues. Each rectangle's area must match its number exactly, and forced placements come first.</p>
   <div class="tips-grid">
     <a class="tip-card" href="/tips">
-      <div class="tip-icon">1️⃣</div>
+      <div class="tip-icon">⭐</div>
       <h3>Prime Numbers</h3>
       <p>2, 3, 5, 7 can only form 1×N rectangles. Place them first — their shape is forced.</p>
     </a>
@@ -1660,55 +1966,12 @@ const description = "Draw rectangles to match every number and fill the grid —
       <p>A "6" can be 1×6, 2×3, 3×2, or 6×1. Learn which shapes fit where.</p>
     </a>
     <a class="tip-card" href="/tips">
-      <div class="tip-icon">5️⃣</div>
-      <h3>5×5 Strategy</h3>
-      <p>Start with smaller grids to build pattern recognition before tackling larger puzzles.</p>
-    </a>
-    <a class="tip-card" href="/how-to-play-shikaku">
-      <div class="tip-icon">🧠</div>
-      <h3>Elimination</h3>
-      <p>If placing a rectangle blocks another number, it's wrong. Think one step ahead.</p>
-    </a>
-    <a class="tip-card" href="/solver">
-      <div class="tip-icon">🔍</div>
-      <h3>Online Solver</h3>
-      <p>Stuck? Enter your puzzle and get the unique solution instantly.</p>
-    </a>
-    <a class="tip-card" href="/tips">
       <div class="tip-icon">📐</div>
       <h3>Area Rules</h3>
       <p>Each rectangle's area must equal its number. No more, no fewer.</p>
     </a>
   </div>
-
-  <!-- Featured Strategy -->
-  <div class="featured-tip">
-    <div class="featured-tip-label">📖 Featured Strategy</div>
-    <h3>Why Prime Numbers Are Your Best Friend</h3>
-    <p>A cell numbered "2" on a Shikaku grid is the strongest clue — it can only be a 1×2 or 2×1 rectangle, no thinking required. Start every puzzle by scanning for primes first. Then check if those rectangles reveal new forced placements for neighboring numbers. This "cascade from primes" technique works on every difficulty level and is the single fastest way to speed up your solving.</p>
-    <a href="/tips" class="featured-tip-link">Read Full Guide →</a>
-  </div>
-
-  <!-- Strategy Guide Blog List -->
-  <div class="strategy-list">
-    <h3 class="strategy-list-title">📝 From the Strategy Guide</h3>
-    <a href="/how-to-play-shikaku" class="strategy-item">
-      <strong>5 Signs You're Ready for Hard Puzzles</strong>
-      <span>Mastered primes and corners? Here's how to know when to level up.</span>
-    </a>
-    <a href="/tips" class="strategy-item">
-      <strong>The Elimination Method Explained</strong>
-      <span>When basic rules aren't enough, contradiction testing solves the rest.</span>
-    </a>
-    <a href="/rules" class="strategy-item">
-      <strong>Shikaku Rules — Complete Beginner's Guide</strong>
-      <span>Everything you need to solve your first puzzle in 5 minutes.</span>
-    </a>
-    <a href="/tips" class="strategy-item">
-      <strong>All Tips &amp; Strategies →</strong>
-      <span></span>
-    </a>
-  </div>
+  <p style="text-align:center;margin:.8rem 0 0"><a href="/tips" class="featured-tip-link">📚 Read all techniques →</a> &nbsp;·&nbsp; <a href="#" id="obReplay" class="featured-tip-link">🐾 Replay tutorial</a></p>
 </section>
 
 <!-- Level Guides -->
@@ -1778,78 +2041,16 @@ const description = "Draw rectangles to match every number and fill the grid —
   </div>
 </section>
 
-<!-- Testimonials -->
-<section class="section" aria-label="Player reviews">
-  <h2 class="section-title">What <span class="accent">Players</span> Say</h2>
-  <div class="testimonial-track" id="testimonialTrack">
-    <div class="testimonial-card">
-      <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-      <p class="testimonial-text">"Finally a puzzle game that's actually relaxing. The cat visuals make it so much more fun than plain number grids. I play every morning with my coffee."</p>
-      <div class="testimonial-user">
-        <span class="testimonial-avatar">🐱</span>
-        <div>
-          <div class="testimonial-name">Sarah K.</div>
-          <div class="testimonial-badge">Daily Player</div>
-        </div>
-      </div>
-    </div>
-    <div class="testimonial-card">
-      <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-      <p class="testimonial-text">"My 8-year-old loves this! She's learning spatial reasoning without even realizing it. The tutorial levels are perfect for kids."</p>
-      <div class="testimonial-user">
-        <span class="testimonial-avatar">👨‍👧</span>
-        <div>
-          <div class="testimonial-name">James M.</div>
-          <div class="testimonial-badge">Parent</div>
-        </div>
-      </div>
-    </div>
-    <div class="testimonial-card">
-      <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-      <p class="testimonial-text">"I've tried dozens of Shikaku apps. This one has the best UI by far — clean, fast, and the cat expressions when you solve a rectangle are adorable."</p>
-      <div class="testimonial-user">
-        <span class="testimonial-avatar">🧩</span>
-        <div>
-          <div class="testimonial-name">PuzzleMaster_42</div>
-          <div class="testimonial-badge">Reddit</div>
-        </div>
-      </div>
-    </div>
-    <div class="testimonial-card">
-      <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-      <p class="testimonial-text">"The daily challenge keeps me coming back. Competing with friends on solve time is addictive. 10×10 is no joke!"</p>
-      <div class="testimonial-user">
-        <span class="testimonial-avatar">🏆</span>
-        <div>
-          <div class="testimonial-name">Alex T.</div>
-          <div class="testimonial-badge">Streak: 47 days</div>
-        </div>
-      </div>
-    </div>
-    <div class="testimonial-card">
-      <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-      <p class="testimonial-text">"No ads, no paywalls, no nonsense. Just pure logic puzzles. This is how browser games should be made."</p>
-      <div class="testimonial-user">
-        <span class="testimonial-avatar">✨</span>
-        <div>
-          <div class="testimonial-name">dev_rachel</div>
-          <div class="testimonial-badge">Product Hunt</div>
-        </div>
-      </div>
-    </div>
-    <div class="testimonial-card">
-      <div class="testimonial-stars">⭐⭐⭐⭐</div>
-      <p class="testimonial-text">"Great brain trainer during commute. Wish there was a dark mode but otherwise perfect. The hint system is well balanced — helps without spoiling."</p>
-      <div class="testimonial-user">
-        <span class="testimonial-avatar">🚇</span>
-        <div>
-          <div class="testimonial-name">Mike Chen</div>
-          <div class="testimonial-badge">Casual Player</div>
-        </div>
-      </div>
-    </div>
+<!-- GridPaw in Numbers（方案 A：撤 5 条虚构评价 → 全站可验证的真实数据） -->
+<section class="section" aria-label="GridPaw facts">
+  <h2 class="section-title">GridPaw in <span class="accent">Numbers</span></h2>
+  <div class="gp-stats">
+    <div class="gp-stat"><b>∞</b><span>Free puzzles, procedurally generated</span></div>
+    <div class="gp-stat"><b>3</b><span>Puzzle types — Shikaku, Akari &amp; Pictomino</span></div>
+    <div class="gp-stat"><b>0</b><span>Ads, ever</span></div>
+    <div class="gp-stat"><b>15</b><span>Cat expressions per solved rectangle</span></div>
   </div>
-  <div class="testimonial-dots" id="testimonialDots"></div>
+  <p style="font-size:12px;color:var(--gp-stone);text-align:center">From Tutorial 3×3 to Legend 8×8 — every puzzle has a unique logic-only solution.</p>
 </section>
 
 <!-- Get the App -->
@@ -1862,10 +2063,10 @@ const description = "Draw rectangles to match every number and fill the grid —
       <h2 class="section-title" style="margin:0 0 0.5rem">Get the <span class="accent">App</span></h2>
       <p style="color:var(--mt-text,var(--gp-ink));margin-bottom:1rem;line-height:1.6">Play GridPaw anywhere, anytime. Add to your home screen for offline support, no browser bars, and instant launch.</p>
       <div class="download-buttons">
-        <a class="store-btn" href="/#play">
+        <a class="store-btn" href="#play" id="downloadDailyBtn">
           <span aria-hidden="true">📅</span> Try Daily Challenge
         </a>
-        <a class="store-btn store-btn-outline" href="/">
+        <a class="store-btn store-btn-outline" href="#play" id="downloadPlayBtn">
           <span aria-hidden="true">▶</span> Play Now
         </a>
       </div>
@@ -1875,7 +2076,7 @@ const description = "Draw rectangles to match every number and fill the grid —
 
 <!-- SEO Content -->
 <section class="seo-section" aria-label="About GridPaw">
-  <h1>GridPaw: Free <span class="accent">Shikaku</span> Puzzle Game Online</h1>
+  <h2 class="seo-h1">GridPaw: Free <span class="accent">Shikaku</span> Puzzle Game Online</h2>
   <p>GridPaw is a <strong>free Shikaku puzzle game</strong> with adorable cat visuals. Draw rectangles on a numbered grid so each rectangle covers exactly the number of cells shown. It's the classic <strong>Shikaku</strong> (rectangle partition) puzzle by Nikoli — the same company behind Sudoku — reimagined with cats.</p>
   <p>Whether you're new to <strong>Shikaku</strong> or a seasoned solver, GridPaw offers unlimited procedurally generated puzzles across 7 difficulty levels, from Tutorial 3×3 to Legend 8×8. Every puzzle has a unique solution reachable by pure logic — no guessing required.</p>
 
@@ -1901,27 +2102,14 @@ const description = "Draw rectangles to match every number and fill the grid —
     <li><strong>Legend (8×8)</strong> — The ultimate Shikaku challenge (level 51+)</li>
   </ul>
 
-  <h2>Tips &amp; <span class="accent">Strategy</span></h2>
-  <p>Rushing to fill cells is the fastest way to get stuck. Instead, work systematically:</p>
-  <ol>
-    <li><strong>Start with primes.</strong> Numbers like 2, 3, 5, 7 can only form 1×N rectangles — their shape is forced.</li>
-    <li><strong>Work from corners.</strong> Boundary positions have fewer options, making them easier to resolve.</li>
-    <li><strong>Look for the largest number.</strong> Bigger numbers have fewer valid rectangle shapes.</li>
-    <li><strong>Eliminate by overlap.</strong> If a placement blocks another number, it's wrong.</li>
-  </ol>
-  <p>Visit our <a href="/tips">Tips &amp; Strategy</a> page for detailed guides on each technique.</p>
-
   <h2>Why Play <span class="accent">Shikaku</span> at GridPaw?</h2>
   <p>Unlike many puzzle sites, GridPaw has <strong>no ads interrupting gameplay, no paywalls, and no registration</strong>. Every puzzle is free, every solution is unique, and every solve ends with a cute cat celebration. The <a href="/#play">Daily Challenge</a> gives you a reason to come back every day with a fresh 6×6 puzzle and streak tracking.</p>
   <p>If you enjoy Sudoku, KenKen, or other logic puzzles, <strong>Shikaku</strong> offers a refreshing change with spatial reasoning instead of arithmetic. The rectangle partition mechanic is easy to learn but rewards deep thinking — perfect for a coffee break or a long session.</p>
-
-  <h3>Common Shikaku Mistakes to Avoid</h3>
-  <p><strong>Forgetting area constraints:</strong> a rectangle around a "4" must cover exactly 4 cells — no more, no fewer. <strong>Overlapping rectangles:</strong> each cell belongs to exactly one rectangle. <strong>Ignoring forced placements:</strong> if a number can only fit one rectangle shape, place it first.</p>
 </section>
 
 <!-- Strategy Guide Grid -->
 <section class="seo-section" aria-label="Strategy guide">
-  <h2 class="section-title">📖 <span class="accent">Strategy</span> Guide</h2>
+  <h2 class="section-title">📚 <span class="accent">Guides</span> &amp; Tools</h2>
   <div class="strategy-grid">
     <a href="/rules" class="strategy-grid-item">
       <strong>Shikaku Rules</strong>
