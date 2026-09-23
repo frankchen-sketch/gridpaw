@@ -34,6 +34,8 @@
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <script src="/analytics.js"></script>
+<script src="/pictomino/gp-build.js"></script>
+<script src="/pictomino/gp-track.js"></script>
 <style>
 /* ===== 全局与配色 ===== */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -274,15 +276,20 @@ body{
   position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
   background:var(--bg);z-index:100;font-size:18px;font-weight:800;color:var(--ink-soft);
 }
-/* 新手引导 Coach：首次访问的 1 步交互课 */
+/* 新手引导 Coach（2026-09-23 品牌化换肤：白卡+STEP 徽标+琥珀箭头，逻辑零改动） */
+#stage{position:relative}
 #coach{
-  width:100%;max-width:440px;border-radius:16px;padding:12px 42px 10px 14px;
-  background:linear-gradient(135deg,var(--teal),var(--teal-deep));color:#fff;
-  font-size:16px;font-weight:900;text-align:center;line-height:1.4;
-  box-shadow:var(--shadow);position:relative;
+  width:100%;max-width:440px;border-radius:14px;padding:12px 42px 10px 14px;
+  background:#fff;color:#4E4037;
+  font-size:15px;font-weight:800;text-align:left;line-height:1.45;
+  box-shadow:0 -2px 18px rgba(52,40,30,.18);border:1.5px solid #F0E4D2;position:relative;
   animation:coach-in .3s ease;
 }
-#coach .coach-arrow{display:block;font-size:26px;margin-top:2px;animation:bounce .8s ease-in-out infinite}
+#coach .coach-step{display:block;font-size:10.5px;font-weight:900;letter-spacing:.12em;color:#B45309;text-transform:uppercase;margin-bottom:2px}
+#coach .coach-arrow{display:block;font-size:16px;margin-top:2px;animation:bounce .8s ease-in-out infinite;color:#D97706;text-align:center}
+#pt-paw{position:absolute;width:46px;height:46px;z-index:60;pointer-events:none;filter:drop-shadow(0 4px 6px rgba(78,64,55,.3));animation:pt-paw-bounce .9s ease-in-out infinite}
+#pt-paw svg{width:100%;height:100%}
+@keyframes pt-paw-bounce{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-7px) scale(1.06)}}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
 @keyframes coach-in{0%{opacity:0;transform:scale(.9)}100%{opacity:1;transform:scale(1)}}
 #coach-skip{
@@ -326,9 +333,16 @@ body.tut-mode #round-info,body.tut-mode #tray-label{display:none}
   <!-- 新手引导 Coach：首次访问自动触发，可 Skip（JS 会把它移动到棋盘/碎片区上方） -->
   <div id="coach" style="display:none">
     <button id="coach-skip">Skip ➜</button>
+    <span class="coach-step" id="coach-step">STEP 1 / 2</span>
     <span id="coach-text"></span>
-    <span class="coach-arrow">👇</span>
+    <span class="coach-arrow">▼</span>
   </div>
+  <div id="pt-paw" style="display:none"></div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <radialGradient id="gpPadG" cx="42%" cy="32%" r="75%"><stop offset="0%" stop-color="#FFD3DE"/><stop offset="65%" stop-color="#FBAEC2"/><stop offset="100%" stop-color="#EF93AF"/></radialGradient>
+    <radialGradient id="gpBeanG" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#FFDFE8"/><stop offset="100%" stop-color="#F5A8BC"/></radialGradient>
+    <linearGradient id="gpFurG" x1="0" y1="0" x2="0.2" y2="1"><stop offset="0%" stop-color="#FFFBF4"/><stop offset="100%" stop-color="#EFD8BE"/></linearGradient>
+  </defs></svg>
 </main>
 
 <!-- How to Play 规则卡：首局自动弹出（Got it! 后开始），之后仅 ? 按钮触发 -->
@@ -410,7 +424,10 @@ body.tut-mode #round-info,body.tut-mode #tray-label{display:none}
   <div class="dialog">
     <h2>😿 No lives left</h2>
     <p>Don't give up — your cat believes in you!</p>
+    <p id="lose-progress" style="margin:0 0 .75rem;font-size:.85rem;opacity:.75;"></p>
     <button class="btn pink" id="retry-btn">Try again 💪</button>
+    <button class="btn" id="peek-btn" style="background:transparent;border:1.5px solid var(--border,#ddd);color:inherit;">👁 Peek at the picture (2s)</button>
+    <button class="btn" id="skip-btn" style="background:transparent;border:1.5px solid var(--border,#ddd);color:inherit;">Skip this puzzle →</button>
   </div>
 </div>
 
@@ -444,7 +461,10 @@ const isTutorial = lv => lv < TUTORIAL_LEVELS;
 // 等级参数表（index 以外的边界用最末档兜底）
 const DIFF_TABLE = [
   //               time=0 表示不限时（Tutorial/Easy），其他为每轮秒数
-  { until: 3,  label: 'Tutorial',     grid: 3, holes: 4,  candidates: 2, degrade: 0,  time: 0   },
+  // 教学三关递进（2026-09-23）：1 洞认识玩法 → 2 洞连填 → 3 洞+双候选学判别；Level 4 起照旧
+  { until: 1,  label: 'Tutorial 1',    grid: 3, holes: 1,  candidates: 1, degrade: 0,  time: 0   },
+  { until: 2,  label: 'Tutorial 2',    grid: 3, holes: 2,  candidates: 1, degrade: 0,  time: 0   },
+  { until: 3,  label: 'Tutorial 3',    grid: 3, holes: 3,  candidates: 2, degrade: 0,  time: 0   },
   { until: 6,  label: 'Easy',         grid: 4, holes: 6,  candidates: 2, degrade: 0,  time: 0   },
   { until: 8,  label: 'Medium',       grid: 4, holes: 8,  candidates: 3, degrade: 33, time: 40  },  // 每轮40秒
   { until: 9,  label: 'Hard',         grid: 4, holes: 10, candidates: 4, degrade: 50, time: 50  },  // 每轮50秒
@@ -853,6 +873,7 @@ function onHoleClick(cell, i) {
   if (!window.__firstMoveTracked) {
     window.__firstMoveTracked = true;
     if (typeof gtag === 'function') gtag('event', 'first_move', { level: state.level + 1 });
+    if (window.gpTrack) window.gpTrack('first_move', { level: state.level + 1 });
     if (typeof window.clarity === 'function') window.clarity('event', 'first_move');
   }
   if (i === state.targetIdx) {
@@ -980,6 +1001,7 @@ function winLevel() {
   if (new URLSearchParams(window.location.search).get('mode') === 'daily') {
     const dailyState = ptSaveDailyWin(elapsed);
     if (typeof gtag === 'function') gtag('event', 'daily_solved', { streak: dailyState.streak });
+    if (window.gpTrack) window.gpTrack('daily_solved', { streak: dailyState.streak });
     ptSyncWin(dailyState, elapsed);
   }
   updateHUD();
@@ -987,6 +1009,7 @@ function winLevel() {
   $('win-stars').innerHTML =
     '★'.repeat(stars) + '<span class="off">' + '★'.repeat(3 - stars) + '</span>';
   if (typeof gtag === 'function') gtag('event', 'level_up', { difficulty: getDifficulty(), level: state.level, stars: stars });
+  if (window.gpTrack) window.gpTrack('level_up', { level: state.level, difficulty: getDifficulty(), stars: stars });
   if (typeof window.clarity === 'function') {
     window.clarity('event', 'level_completed');
     window.clarity('set', 'difficulty', String(getDifficulty()));
@@ -1043,6 +1066,13 @@ function winLevel() {
 /* ---------- 失败 ---------- */
 function showLose() {
   stopTimer();
+  if (window.gpTrack) window.gpTrack('game_over', { level: state.level + 1, difficulty: getDifficulty() });
+  // 挽留：报今天战绩 + 给「跳过这关」出口（Clarity 实锤：玩家第一次没血就直接走人）
+  try {
+    const stars = JSON.parse(localStorage.getItem('pictomino_stars') || '{}');
+    const cleared = Object.keys(stars).filter(k => stars[k] > 0).length;
+    $('lose-progress').textContent = cleared > 0 ? `🐾 You've cleared ${cleared} level${cleared > 1 ? 's' : ''} — one more push!` : '';
+  } catch (e) {}
   $('lose-overlay').classList.add('show');
 }
 
@@ -1148,12 +1178,31 @@ const coachEl = $('coach'), coachTextEl = $('coach-text');
 const TUT_DONE_KEY = 'pictomino_tutorial_done';
 function isTutorialDone() { try { return localStorage.getItem(TUT_DONE_KEY) === '1'; } catch (e) { return false; } }
 function markTutorialDone() { try { localStorage.setItem(TUT_DONE_KEY, '1'); } catch (e) { /* 隐私模式静默 */ } }
-function setCoach(text, beforeEl) {
+function setCoach(text, beforeEl, step) {
+  $('coach-step').textContent = step ? ('STEP ' + step + ' / 2') : '';
   coachTextEl.textContent = text;
   coachEl.style.display = 'block';
   stageEl.insertBefore(coachEl, beforeEl); // 移到目标元素上方，箭头指向它
 }
-function hideCoach() { coachEl.style.display = 'none'; }
+function hideCoach() { coachEl.style.display = 'none'; ptHidePaw(); }
+// 品牌猫爪：悬在引导目标上方弹跳（2026-09-23）
+const PT_PAW_SVG = '<svg viewBox="0 0 96 96"><g transform="rotate(-5 48 48)">' +
+  '<path d="M32 90 C22 90 17 83 19 74 C12 70 11 59 17 53 C11 45 14 33 22 28 C23 18 32 13 40 16 C43 10 52 9 56 14 C60 9 70 10 73 16 C81 13 89 19 89 28 C93 36 92 47 86 52 C90 60 87 72 78 76 C79 85 71 91 63 89 C56 94 44 94 40 90 C37 92 34 92 32 90 Z" fill="url(#gpFurG)" stroke="#D9BE9F" stroke-width="1.6"/>' +
+  '<path d="M50 50 q8 -8 15 -2 q8 7 0 15 q-5 6 -12 11 q-1.5 1.4 -3 0 q-7 -5 -12 -11 q-8 -8 0 -15 q7 -6 12 2z" fill="url(#gpPadG)"/>' +
+  '<g transform="rotate(-12 33 31)"><ellipse cx="33" cy="31" rx="7.8" ry="9.2" fill="url(#gpBeanG)"/></g>' +
+  '<g transform="rotate(-3 49 24)"><ellipse cx="49" cy="24" rx="8" ry="9.4" fill="url(#gpBeanG)"/></g>' +
+  '<g transform="rotate(8 65 26)"><ellipse cx="65" cy="26" rx="7.6" ry="9" fill="url(#gpBeanG)"/></g>' +
+  '<g transform="rotate(20 77 37)"><ellipse cx="77" cy="37" rx="7" ry="8.2" fill="url(#gpBeanG)"/></g></g></svg>';
+function ptShowPaw(targetEl) {
+  const paw = $('pt-paw');
+  if (!targetEl) { paw.style.display = 'none'; return; }
+  paw.innerHTML = PT_PAW_SVG;
+  const sb = stageEl.getBoundingClientRect(), tb = targetEl.getBoundingClientRect();
+  paw.style.left = (tb.left - sb.left + tb.width/2 - 23) + 'px';
+  paw.style.top = (tb.top - sb.top - 52) + 'px';
+  paw.style.display = 'block';
+}
+function ptHidePaw() { const p = $('pt-paw'); if (p) p.style.display = 'none'; }
 
 function tutorialComplete() {
   hideCoach();
@@ -1189,7 +1238,8 @@ async function runTutorial() {
   renderTray();
   const pieceEl = trayEl.querySelector('.piece');
   pieceEl.classList.add('tut-step1');
-  setCoach('This is a puzzle piece! Tap it to pick it up.', $('tray'));
+  setCoach('This is a puzzle piece! Tap it to pick it up.', $('tray'), 1);
+  ptShowPaw(pieceEl);
   const done = () => {
     // 结束引导：恢复正式关卡状态并标记完成（Skip 与 Let's go! 都走这里）
     hideCoach();
@@ -1217,7 +1267,8 @@ async function runTutorial() {
       renderBoard();
       const holeEl = boardEl.querySelector('.cell[data-idx="' + TUTORIAL_HOLE + '"]');
       if (holeEl) holeEl.classList.add('tut-step2');
-      setCoach('Now tap the + where it fits! It is the only spot.', $('board-wrap'));
+      setCoach('Now tap the + where it fits! It is the only spot.', $('board-wrap'), 2);
+      ptShowPaw(holeEl);
       // Step 2 的填入走正式引擎：onHoleClick → onCorrect → nextPick → tutorialComplete
     });
   });
@@ -1271,6 +1322,7 @@ async function startLevel(n) {
   state.levelStart = Date.now(); // 预览播完才计时，速度奖励不吃亏
   startRound();
   if (typeof gtag === 'function') gtag('event', 'game_start', { difficulty: getDifficulty(), level: n });
+  if (window.gpTrack) window.gpTrack('game_start', { level: n, difficulty: getDifficulty() });
   if (typeof window.clarity === 'function') {
     window.clarity('event', 'game_started');
     window.clarity('set', 'difficulty', String(getDifficulty()));
@@ -1299,6 +1351,19 @@ $('retry-btn').addEventListener('click', () => {
   $('lose-overlay').classList.remove('show');
   startLevel(state.level); // 重开本关
 });
+$('skip-btn').addEventListener('click', () => {
+  $('lose-overlay').classList.remove('show');
+  if (typeof gtag === 'function') gtag('event', 'puzzle_skip', { level: state.level + 1 });
+  if (window.gpTrack) window.gpTrack('puzzle_skip', { level: state.level + 1, source: 'lose_overlay' });
+  if (state.level + 1 < LEVELS.length) { startLevel(state.level + 1); } // 跳过卡关，进下一关
+  else { buildLevels(); startLevel(0); }
+});
+// 「偷看答案」：重放开局预览（目标图已在本关流程里给过，失败后给一次回看机会再试）
+$('peek-btn').addEventListener('click', () => {
+  $('lose-overlay').classList.remove('show');
+  if (window.gpTrack) window.gpTrack('hint_click', { level: state.level + 1, source: 'lose_overlay_peek' });
+  showPreview().then(() => startLevel(state.level)); // 看完重开本关
+});
 $('restart-btn').addEventListener('click', () => {
   $('victory-overlay').classList.remove('show');
   state.score = 0;
@@ -1310,6 +1375,7 @@ $('restart-btn').addEventListener('click', () => {
 window.addEventListener('message', function(ev){
   if (!ev.data || ev.data.type !== 'pictomino_help') return;
   if (typeof gtag === 'function') gtag('event', 'help_click', { difficulty: getDifficulty(), level: state.level });
+  if (window.gpTrack) window.gpTrack('help_click', { level: state.level, difficulty: getDifficulty() });
   if (typeof window.clarity === 'function') {
     window.clarity('event', 'help_click');
     window.clarity('set', 'difficulty', String(getDifficulty()));
@@ -1339,6 +1405,7 @@ async function captureBoardToClipboard() {
 
 $('share-reddit-btn').addEventListener('click', async () => {
   if (typeof gtag === 'function') gtag('event', 'share_reddit', { difficulty: getDifficulty(), level: state.level, stars: state.lastStars || 3 });
+  if (window.gpTrack) window.gpTrack('share_reddit', { level: state.level, difficulty: getDifficulty() });
   if (typeof window.clarity === 'function') {
     window.clarity('event', 'share_reddit');
     window.clarity('set', 'difficulty', String(getDifficulty()));
@@ -1352,6 +1419,7 @@ $('share-reddit-btn').addEventListener('click', async () => {
 });
 $('copy-share-btn').addEventListener('click', async () => {
   if (typeof gtag === 'function') gtag('event', 'share_copy', { difficulty: getDifficulty(), level: state.level, stars: state.lastStars || 3 });
+  if (window.gpTrack) window.gpTrack('share_copy', { level: state.level, difficulty: getDifficulty() });
   if (typeof window.clarity === 'function') {
     window.clarity('event', 'share_copy');
     window.clarity('set', 'difficulty', String(getDifficulty()));
@@ -1380,6 +1448,7 @@ $('copy-share-btn').addEventListener('click', async () => {
 const cbtn = $('community-btn');
 if (cbtn) cbtn.addEventListener('click', () => {
   if (typeof gtag === 'function') gtag('event', 'community_click', { difficulty: getDifficulty(), level: state.level, source: 'game_topbar' });
+  if (window.gpTrack) window.gpTrack('community_click', { level: state.level, difficulty: getDifficulty() });
   if (typeof window.clarity === 'function') {
     window.clarity('event', 'community_click');
     window.clarity('set', 'difficulty', String(getDifficulty()));
