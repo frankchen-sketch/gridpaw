@@ -10,7 +10,7 @@ export const FUNNEL_EVENT_LIST: string[] = [
   'hint_click', 'hint_blocked', 'puzzle_reset', 'puzzle_skip', 'game_over',
   'daily_start', 'daily_solved', 'daily_challenge_click',
   'share_reddit', 'share_copy', 'share_twitter', 'community_click',
-  'sign_in_prompt_shown', 'sign_in_click', 'tool_start', 'tool_action',
+  'sign_in_prompt_shown', 'sign_in_click', 'tool_start', 'tool_action', 'badge_help_click', 'help_click',
 ];
 
 export function isFunnelEvent(name: string): boolean {

@@ -283,9 +283,56 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     @keyframes shake { 0%,100% { transform: translateX(0); } 20%,60% { transform: translateX(-3px); } 40%,80% { transform: translateX(3px); } }
     .cell-shake { animation: shake 0.4s ease; }
 
+    /* ── 新手引导 Coach（与 Shikaku 同款语言，真盘对错对照演示 2026-09-23）── */
+    #ak-coach { position: fixed; left: 50%; transform: translateX(-50%); bottom: max(16px, env(safe-area-inset-bottom)); width: min(340px, 92vw); background: #fff; border-radius: 14px; padding: 13px 14px; box-shadow: 0 8px 24px rgba(52,40,30,.30); z-index: 950; }
+    #ak-coach.hidden { display: none; }
+    #ak-coach .ob-step { font-size: 10.5px; font-weight: 800; letter-spacing: .12em; color: var(--gp-primary-strong, #B45309); text-transform: uppercase; }
+    #ak-coach h4 { font-size: 15px; margin: 3px 0 4px; color: var(--ink); }
+    #ak-coach p { font-size: 12.5px; line-height: 1.5; color: #6B5B4E; min-height: 36px; margin: 0; }
+    #ak-coach .ob-row { display: flex; align-items: center; justify-content: space-between; margin-top: 9px; }
+    #ak-coach .ob-dots { display: flex; gap: 5px; }
+    #ak-coach .ob-dot { width: 7px; height: 7px; border-radius: 50%; background: #E4D6C4; }
+    #ak-coach .ob-dot.on { background: var(--gp-primary-strong, #B45309); }
+    .ob-btn { border: none; border-radius: 999px; padding: 8px 16px; font-size: 12.5px; font-weight: 800; cursor: pointer; font-family: inherit; }
+    .ob-btn.main { background: var(--gp-primary-strong, #B45309); color: #fff; box-shadow: 0 2px 8px rgba(217,119,6,.35); }
+    .ob-btn.ghost { background: none; color: #A08D7C; }
+    #puzzle-grid { position: relative; }
+    .ak-paw { position: absolute; width: 50px; height: 50px; z-index: 60; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(78,64,55,.3)); transition: left .7s cubic-bezier(.45,.05,.35,1), top .7s cubic-bezier(.45,.05,.35,1); animation: ak-breathe 2.2s ease-in-out infinite; }
+    @keyframes ak-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    .ak-paw.press { transform: scale(.82,.78); }
+    /* ❌ 错误示范标记（CSS 双杠画叉，不依赖 emoji 字形） */
+    .ak-obx { position: absolute; z-index: 61; pointer-events: none; width: 72%; height: 72%; left: 14%; top: 14%; animation: ak-x-pop .85s ease forwards; }
+    .ak-obx::before, .ak-obx::after { content: ''; position: absolute; left: 50%; top: 0; width: 15%; height: 100%; margin-left: -7.5%; background: #E74C3C; border-radius: 4px; box-shadow: 0 0 0 2.5px #fff, 0 1px 5px rgba(0,0,0,.35); }
+    .ak-obx::before { transform: rotate(45deg); }
+    .ak-obx::after { transform: rotate(-45deg); }
+    @keyframes ak-x-pop { 0% { transform: scale(0) rotate(-20deg); opacity: 0; } 30% { transform: scale(1.25) rotate(0); opacity: 1; } 70% { transform: scale(1); opacity: 1; } 100% { transform: scale(.75); opacity: 0; } }
+    .ak-ripple { position: absolute; width: 14px; height: 14px; margin: -7px; border-radius: 50%; background: rgba(217,119,6,.35); animation: ak-rip .7s ease-out forwards; pointer-events: none; z-index: 59; }
+    @keyframes ak-rip { to { transform: scale(4.5); opacity: 0; } }
+    /* Coach toast */
+    #ak-toast { position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%) translateY(80px); background: #4E4037; color: #FFF6E8; padding: 10px 20px; border-radius: 999px; font-size: 13.5px; font-weight: 700; transition: transform .3s cubic-bezier(.34,1.56,.64,1); z-index: 960; pointer-events: none; }
+    #ak-toast.show { transform: translateX(-50%) translateY(0); }
     /* ── 难度 badge ── */
     .difficulty-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-left: 6px; vertical-align: middle; }
     .badge-tutorial { background: var(--gp-badge-easy-bg); color: var(--gp-badge-easy-text); }
+    /* Clarity 录屏实锤：用户把难度徽章当帮助按钮狂点 → 让它可点，点了弹帮助 */
+    .difficulty-badge { cursor: pointer; transition: filter .15s; }
+    .difficulty-badge:hover { filter: brightness(1.08); }
+    /* hint 文字胶囊按钮（与 Shikaku 同款）：Clarity 实锤 icon-only 没人看得见 */
+    .game-actions .hint-btn { display: flex; align-items: center; gap: 5px; height: 32px; padding: 0 10px; border-radius: 999px; background: white; border: 1.5px solid var(--gp-primary-strong); font-size: 13px; font-weight: 800; color: var(--ink); cursor: pointer; transition: all 0.15s; position: relative; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .game-actions .hint-btn:hover { background: var(--gp-primary-strong); color: white; }
+    .game-actions .hint-btn .hint-word { line-height: 1; }
+    .game-actions .hint-btn.hint-nudge { border-color: var(--gp-primary-strong); box-shadow: 0 0 0 4px rgba(212,122,80,0.30), 0 1px 3px rgba(0,0,0,0.08); animation: hint-btn-shake 0.9s ease-in-out 2; }
+    /* 抖动+放大：横向抖三拍、越抖越大，两拍后停（残留光晕常驻指引视线） */
+    @keyframes hint-btn-shake {
+      0%, 100% { transform: scale(1) translateX(0); }
+      15% { transform: scale(1.14) translateX(-3px); }
+      30% { transform: scale(1.18) translateX(3px); }
+      45% { transform: scale(1.22) translateX(-4px); }
+      60% { transform: scale(1.24) translateX(4px); }
+      75% { transform: scale(1.22) translateX(-3px); }
+      90% { transform: scale(1.18) translateX(2px); }
+    }
+    @media (prefers-reduced-motion: reduce) { .game-actions .hint-btn.hint-nudge { animation: none; border-width: 3px; } }
     .badge-easy { background: var(--gp-badge-easy-bg); color: var(--gp-badge-easy-text); }
     .badge-medium { background: var(--gp-badge-med-bg); color: var(--gp-badge-med-text); }
     .badge-medium-hard { background: var(--gp-badge-hard-bg); color: var(--gp-badge-hard-text); }
@@ -537,7 +584,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
           </div>
           <div class="game-actions">
             <button class="icon-btn" id="new-btn" aria-label="New Puzzle"><span>🔄</span><span class="tip">New</span></button>
-            <button class="icon-btn" id="hint-btn" aria-label="Hint"><span>💡</span><span class="tip">Hint</span></button>
+            <button class="hint-btn" id="hint-btn" aria-label="Hint"><span>💡</span><span class="hint-word">Hint</span></button>
             <button class="icon-btn" id="undo-btn" aria-label="Undo"><span>↩️</span><span class="tip">Undo (Ctrl+Z)</span></button>
             <button class="icon-btn" id="redo-btn" aria-label="Redo"><span>↪️</span><span class="tip">Redo (Ctrl+Y)</span></button>
             <button class="icon-btn" id="reset-btn" aria-label="Restart"><span>🗑️</span><span class="tip">Restart</span></button>
@@ -595,11 +642,11 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       <section class="section">
         <h2 class="section-title">Tips &amp; <span class="accent">Techniques</span></h2>
         <div class="tips-grid">
-          <a class="tip-card" href="/akari/tips/number-0/"><div class="tip-icon">0️⃣</div><h3>Reading "0" Cells</h3><p>A 0 means no adjacent cats. Mark all 4 neighbors as blocked immediately.</p></a>
-          <a class="tip-card" href="/akari/tips/number-4/"><div class="tip-icon">4️⃣</div><h3>Reading "4" Cells</h3><p>A 4 means all 4 neighbors must have cats. Place them all right away.</p></a>
-          <a class="tip-card" href="/akari/tips/number-1/"><div class="tip-icon">1️⃣</div><h3>Reading "1" Cells</h3><p>Only one neighbor gets a cat. Use elimination to find which one.</p></a>
-          <a class="tip-card" href="/akari/tips/number-2/"><div class="tip-icon">2️⃣</div><h3>Reading "2" Cells</h3><p>Two neighbors need cats. Corner and edge positions narrow the options.</p></a>
-          <a class="tip-card" href="/akari/tips/number-3/"><div class="tip-icon">3️⃣</div><h3>Reading "3" Cells</h3><p>Three neighbors need cats. One neighbor is blocked — figure out which.</p></a>
+          <a class="tip-card" href="/akari/tips/number-0/"><div class="tip-icon">0</div><h3>Reading "0" Cells</h3><p>A 0 means no adjacent cats. Mark all 4 neighbors as blocked immediately.</p></a>
+          <a class="tip-card" href="/akari/tips/number-4/"><div class="tip-icon">4</div><h3>Reading "4" Cells</h3><p>A 4 means all 4 neighbors must have cats. Place them all right away.</p></a>
+          <a class="tip-card" href="/akari/tips/number-1/"><div class="tip-icon">1</div><h3>Reading "1" Cells</h3><p>Only one neighbor gets a cat. Use elimination to find which one.</p></a>
+          <a class="tip-card" href="/akari/tips/number-2/"><div class="tip-icon">2</div><h3>Reading "2" Cells</h3><p>Two neighbors need cats. Corner and edge positions narrow the options.</p></a>
+          <a class="tip-card" href="/akari/tips/number-3/"><div class="tip-icon">3</div><h3>Reading "3" Cells</h3><p>Three neighbors need cats. One neighbor is blocked — figure out which.</p></a>
           <a class="tip-card" href="/akari/tips/elimination/"><div class="tip-icon">🔍</div><h3>Elimination Technique</h3><p>Use line-of-sight and number constraints together to narrow down cat positions.</p></a>
         </div>
 
@@ -712,7 +759,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       </section>
 
       <!-- ═══════════ Strategy Guide Internal Links ═══════════ -->
-      <section class="section" aria-label="Strategy guide">
+      <section class="section" id="strategy-guide" aria-label="Strategy guide">
         <h2 class="section-title">📖 <span class="accent">Strategy</span> Guide</h2>
         <div class="strategy-grid">
           <a href="/akari/how-to-play/" class="strategy-grid-item">
@@ -877,6 +924,25 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
 
   <!-- ═══════════ Game Engine ═══════════ -->
   <script is:inline src="/akari-engine.js"></script>
+  <!-- 新手引导 Coach 卡（真盘对错对照演示）+ 爪子渐变 defs -->
+  <div id="ak-coach" class="hidden">
+    <div class="ob-step" id="ak-ob-step">STEP 1 / 3</div>
+    <h4 id="ak-ob-title">Light up the room 🔍</h4>
+    <p id="ak-ob-text">Tap any cell to place a glowing cat. Cats light up their entire row and column until a wall blocks the light.</p>
+    <div class="ob-row">
+      <div class="ob-dots" id="ak-ob-dots"><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+      <div style="display:flex;gap:6px">
+        <button class="ob-btn ghost" id="ak-ob-skip">Skip</button>
+        <button class="ob-btn main" id="ak-ob-next">Watch how →</button>
+      </div>
+    </div>
+  </div>
+  <div id="ak-toast">🐱 Meow! The whole row lights up</div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <radialGradient id="gpPadG" cx="42%" cy="32%" r="75%"><stop offset="0%" stop-color="#FFD3DE"/><stop offset="65%" stop-color="#FBAEC2"/><stop offset="100%" stop-color="#EF93AF"/></radialGradient>
+    <radialGradient id="gpBeanG" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#FFDFE8"/><stop offset="100%" stop-color="#F5A8BC"/></radialGradient>
+    <linearGradient id="gpFurG" x1="0" y1="0" x2="0.2" y2="1"><stop offset="0%" stop-color="#FFFBF4"/><stop offset="100%" stop-color="#EFD8BE"/></linearGradient>
+  </defs></svg>
   <script is:inline src="/sfx.js"></script>
   <script type="module">
     const CAT_IMAGES = [
@@ -906,6 +972,21 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     }
     let gaStarted = false;
     
+    // ── 固定教学盘（2026-09-23）：4 关手工设计，全部经 solve() 验证唯一解 ──
+    // T1 数字含义（4=四邻全放）→ T2 对立冲突（2 强制两侧、墙挡视线）→ T3 三线索综合 → T4 升格 4×4
+    const AKARI_TUTORIALS = [
+      { size: 3, grid: [[-1, 9, -1], [9, 4, 9], [-1, 9, -1]] },
+      { size: 3, grid: [[9, -1, 9], [9, 2, 9], [9, -1, 9]] },
+      { size: 3, grid: [[9, 1, 9], [2, -1, 9], [9, 9, 1]] },
+      { size: 4, grid: [[2, 9, 9, 9], [9, 9, 9, 9], [2, 1, 9, 9], [9, 9, 9, 9]] },
+    ];
+    function buildTutorialPuzzle(lv) {
+      const t = AKARI_TUTORIALS[lv - 1];
+      if (!t) return null;
+      const r = solve(t.grid, t.size, 2);
+      if (!r.solution) return null;
+      return { id: 'tut' + lv, size: t.size, grid: t.grid.map(row => row.slice()), solution: r.solution, difficulty: 'Tutorial ' + lv };
+    }
     function getDifficulty(level) {
       if (level <= 3)  return { label: 'Tutorial',    badge: 'badge-tutorial',    size: 5 };
       if (level <= 6)  return { label: 'Easy',        badge: 'badge-easy',        size: 6 };
@@ -917,6 +998,8 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     }
     let currentPuzzle = null, playerSolution = null, markX = null, won = false;
     let health = 3, level = 0;
+    let consecErrors = 0;          // 卡关引导：连续违规落子计数（合规落子清零，换关清零）
+    let nudgeShownThisLevel = false; // 每关只抖一次
     let lastPlacedCell = null;
     let gameStartTime = null;
     let historyStack = [], redoStack = [];
@@ -1086,6 +1169,8 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     }
     function newPuzzleSkip() {
       won = false; winOverlay.classList.remove('show'); health = 3; updateHealth();
+      consecErrors = 0; nudgeShownThisLevel = false;
+      const hbR1 = document.getElementById('hint-btn'); if (hbR1) hbR1.classList.remove('hint-nudge');
       historyStack = []; redoStack = [];
       startTimer(); showBestTime();
       const diff = getDifficulty(level); const s = diff.size;
@@ -1093,10 +1178,11 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       progressEl.textContent = '';
       setTimeout(() => {
         try {
-          currentPuzzle = generatePuzzle(s);
+          currentPuzzle = buildTutorialPuzzle(level) || generatePuzzle(s);
           playerSolution = Array.from({length:s}, () => Array(s).fill(false));
           markX = Array.from({length:s}, () => Array(s).fill(false));
           renderBoard(); updateProgress(); autoSave();
+          akObMaybeCoach();
         } catch(e) {}
       }, 10);
     }
@@ -1112,15 +1198,18 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       progressEl.textContent = '';
       setTimeout(() => {
         try {
-          currentPuzzle = generatePuzzle(s);
+          currentPuzzle = buildTutorialPuzzle(level) || generatePuzzle(s);
           playerSolution = Array.from({length:s}, () => Array(s).fill(false));
           markX = Array.from({length:s}, () => Array(s).fill(false));
           renderBoard(); updateProgress();
+          akObMaybeCoach();
           if (!gaStarted) {
             gaStarted = true;
             const p = new URLSearchParams(location.search);
             const src = p.get('embed') ? 'embed' : p.get('daily') ? 'daily' : document.referrer ? 'referral' : 'direct';
-            track('game_start', { level: level, difficulty: diff.label, source: src });
+            // 延迟到 DOMContentLoaded：gpTrack 由 module 脚本注入，太早调用会漏进 D1（同 index.astro 修复）
+            const fireGS = () => track('game_start', { level: level, difficulty: diff.label, source: src });
+            if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', fireGS); } else { fireGS(); }
           }
         } catch(e) { showToast('Failed to generate.', 'error'); }
       }, 10);
@@ -1132,6 +1221,8 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       playerSolution = Array.from({length:s}, () => Array(s).fill(false));
       markX = Array.from({length:s}, () => Array(s).fill(false));
       health = 3; updateHealth(); startTimer();
+      consecErrors = 0; nudgeShownThisLevel = false;
+      const hbR2 = document.getElementById('hint-btn'); if (hbR2) hbR2.classList.remove('hint-nudge');
       renderBoard(); updateProgress(); showToast('Board reset!', 'success'); autoSave();
     }
     function renderBoard() {
@@ -1189,11 +1280,13 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
         playerSolution[r][c] = false; lastPlacedCell = null; SFX.remove();
       } else {
         markX[r][c] = false; playerSolution[r][c] = true; lastPlacedCell = {r, c}; SFX.place();
+        consecErrors = 0;
         const v = checkViolations(g, playerSolution, s);
         let hasViolation = false;
         for (const x of v) { if(x.type==='number_excess'){ showToast('Too many cats around number '+x.number+'!','error'); hasViolation=true; break; } }
         for (const x of v) { if(x.type==='cat_conflict'){ showToast('Two cats are facing each other!','error'); hasViolation=true; break; } }
-        if (hasViolation) { SFX.error(); loseHealth(); }
+        if (hasViolation) { SFX.error(); loseHealth(); consecErrors++; if (consecErrors >= 2 && !nudgeShownThisLevel) { nudgeShownThisLevel = true; const hbN = document.getElementById('hint-btn'); if (hbN) hbN.classList.add('hint-nudge'); } }
+        else akObOnPlace();
       }
       renderBoard(); updateProgress(); autoSave();
       setTimeout(() => { lastPlacedCell = null; }, 500);
@@ -1232,6 +1325,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     document.getElementById('hint-btn').addEventListener('click', () => {
       if (!currentPuzzle || won) return;
       track('hint_click', { level: level });
+      const hbU = document.getElementById('hint-btn'); if (hbU) hbU.classList.remove('hint-nudge');
       const h = getHint(currentPuzzle.grid, currentPuzzle.solution, playerSolution, currentPuzzle.size);
       if (h) {
         const cell = gridEl.querySelector('[data-row="'+h[0]+'"][data-col="'+h[1]+'"]');
@@ -1240,6 +1334,15 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       } else showToast('No hints!','error');
     });
     document.getElementById('reset-btn').addEventListener('click', resetPuzzle);
+    // Clarity 录屏实锤：用户把难度徽章当帮助按钮狂点（1 分钟 17 次）→ 点它就滚到玩法指南
+    document.getElementById('level-display').addEventListener('click', (e) => {
+      const badge = e.target && e.target.closest ? e.target.closest('.difficulty-badge') : null;
+      if (!badge) return;
+      track('badge_help_click', { level: level, badge: badge.textContent.trim() });
+      const guide = document.getElementById('strategy-guide');
+      if (guide) guide.scrollIntoView({ behavior: 'smooth' });
+      showToast('💡 Hint shows the next logical move — guide below.', 'success');
+    });
     document.getElementById('new-btn').addEventListener('click', newPuzzle);
     document.getElementById('sound-btn').addEventListener('click', () => {
       const muted = SFX.toggle();
@@ -1379,6 +1482,128 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       if (currentUser) syncLevelOnLoad();
     }).catch(() => {});
     syncLevelOnLoad();
+
+    /* ── 新手引导 Coach：真盘对错对照演示（2026-09-23，与 Shikaku 同款语言）── */
+    // ⚠️ 不能包 if 块：module 严格模式下块内函数声明外部钩子调不到（已踩坑）
+    const akObCard = document.getElementById('ak-coach');
+    const akObStep = document.getElementById('ak-ob-step'), akObTitle = document.getElementById('ak-ob-title'), akObText = document.getElementById('ak-ob-text');
+    const akObNext = document.getElementById('ak-ob-next'), akObSkip = document.getElementById('ak-ob-skip'), akObToastEl = document.getElementById('ak-toast');
+    const akObDotEls = akObCard.querySelectorAll('.ob-dot');
+    const AK_PAW_SVG = '<svg viewBox="0 0 96 96" style="width:100%;height:100%"><g transform="rotate(-5 48 48)">' +
+      '<path d="M32 90 C22 90 17 83 19 74 C12 70 11 59 17 53 C11 45 14 33 22 28 C23 18 32 13 40 16 C43 10 52 9 56 14 C60 9 70 10 73 16 C81 13 89 19 89 28 C93 36 92 47 86 52 C90 60 87 72 78 76 C79 85 71 91 63 89 C56 94 44 94 40 90 C37 92 34 92 32 90 Z" fill="url(#gpFurG)" stroke="#D9BE9F" stroke-width="1.6"/>' +
+      '<path d="M50 50 q8 -8 15 -2 q8 7 0 15 q-5 6 -12 11 q-1.5 1.4 -3 0 q-7 -5 -12 -11 q-8 -8 0 -15 q7 -6 12 2z" fill="url(#gpPadG)"/>' +
+      '<g transform="rotate(-12 33 31)"><ellipse cx="33" cy="31" rx="7.8" ry="9.2" fill="url(#gpBeanG)"/></g>' +
+      '<g transform="rotate(-3 49 24)"><ellipse cx="49" cy="24" rx="8" ry="9.4" fill="url(#gpBeanG)"/></g>' +
+      '<g transform="rotate(8 65 26)"><ellipse cx="65" cy="26" rx="7.6" ry="9" fill="url(#gpBeanG)"/></g>' +
+      '<g transform="rotate(20 77 37)"><ellipse cx="77" cy="37" rx="7" ry="8.2" fill="url(#gpBeanG)"/></g></g></svg>';
+    let akObTut = {}; try { akObTut = JSON.parse(localStorage.getItem('akari_ob_tut') || '{}'); } catch(e) { akObTut = {}; }
+    let akObPhase = null, akObIdle = null, akObPaw = null, akObT = [], akObLevel = -1;
+    function akObSave() { try { localStorage.setItem('akari_ob_tut', JSON.stringify(akObTut)); } catch(e) {} }
+    function akObCell(r, c) { return gridEl.children[r * currentPuzzle.size + c]; }
+    function akObXY(cell) { const cb = cell.getBoundingClientRect(), hb = gridEl.getBoundingClientRect(); return { x: cb.left - hb.left + cb.width/2 - 25, y: cb.top - hb.top + cb.height/2 - 30, cx: cb.left - hb.left + cb.width/2, cy: cb.top - hb.top + cb.height/2 }; }
+    function akObKillPaw() { akObT.forEach(clearTimeout); akObT = []; if (akObPaw) { akObPaw.remove(); akObPaw = null; } }
+    function akObSpawnPaw() { akObKillPaw(); akObPaw = document.createElement('div'); akObPaw.className = 'ak-paw'; akObPaw.innerHTML = AK_PAW_SVG; gridEl.appendChild(akObPaw); return akObPaw; }
+    function akObRipple(cell) { const p = akObXY(cell); const r = document.createElement('div'); r.className = 'ak-ripple'; r.style.left = p.cx + 'px'; r.style.top = p.cy + 'px'; gridEl.appendChild(r); setTimeout(() => r.remove(), 750); }
+    function akObTap(cell, cb) { const p = akObXY(cell); akObPaw.style.left = p.x + 'px'; akObPaw.style.top = p.y + 'px'; akObT.push(setTimeout(() => { akObPaw.classList.add('press'); akObRipple(cell); }, 700)); akObT.push(setTimeout(() => { akObPaw.classList.remove('press'); if (cb) cb(); }, 1300)); }
+    function akObFlash(cell) {
+      cell.classList.add('cell-violation');
+      const x = document.createElement('div'); x.className = 'ak-obx'; cell.appendChild(x);
+      setTimeout(() => { cell.classList.remove('cell-violation'); x.remove(); }, 850);
+    }
+    function akObWrongCell() {
+      // 优先选「放在已满数字旁边会超标」的格子（number_excess 教学价值最高），退回已亮格
+      const s = currentPuzzle.size;
+      const hyp = playerSolution.map(r => r.slice());
+      for (let r = 0; r < s; r++) for (let c = 0; c < s; c++) {
+        if (currentPuzzle.grid[r][c] !== 9 || playerSolution[r][c]) continue;
+        hyp[r][c] = true;
+        const v = checkViolations(currentPuzzle.grid, hyp, s);
+        hyp[r][c] = false;
+        if (v.some(x => x.type === 'number_excess')) return { r, c };
+      }
+      return akObLitCell();
+    }
+    function akObFirstBulb() { const s = currentPuzzle.size, sol = currentPuzzle.solution; for (let r = 0; r < s; r++) for (let c = 0; c < s; c++) if (sol[r][c] && !playerSolution[r][c]) return { r, c }; return null; }
+    function akObLitCell() { const s = currentPuzzle.size; const lit = illuminate(currentPuzzle.grid, playerSolution, s); for (let r = 0; r < s; r++) for (let c = 0; c < s; c++) if (currentPuzzle.grid[r][c] === 9 && lit[r][c] && !playerSolution[r][c]) return { r, c }; return null; }
+    function akObSetDots(n) { akObDotEls.forEach((d, i) => d.classList.toggle('on', i <= n)); }
+    function akObToast() { akObToastEl.classList.add('show'); setTimeout(() => akObToastEl.classList.remove('show'), 1600); }
+    function akObDemo() {
+      const good = akObFirstBulb();
+      if (!good) { akObFinish(false); return; }
+      akObSpawnPaw();
+      // ① 做对：真落子（handleClick 真实路径：SFX+渲染+autosave）
+      akObTap(akObCell(good.r, good.c), () => {
+        if (akObPhase !== 'demo') return;
+        handleClick(good.r, good.c);
+        akObText.textContent = 'See that? One tap — the cat lights its whole row and column until a wall blocks it!';
+        // renderBoard 清掉了 paw → 重生后演示"做错"
+        akObT.push(setTimeout(() => {
+          if (akObPhase !== 'demo') return;
+          const bad = akObWrongCell();
+          const s2 = () => currentPuzzle.size;
+          akObSpawnPaw();
+          if (bad) akObTap(akObCell(bad.r, bad.c), () => {
+            if (akObPhase !== 'demo') return;
+            akObFlash(akObCell(bad.r, bad.c));
+            const h = playerSolution.map(r => r.slice()); h[bad.r][bad.c] = true;
+            const excess = checkViolations(currentPuzzle.grid, h, s2()).some(x => x.type === 'number_excess');
+            akObText.textContent = excess
+              ? 'Never here! That number already has all its cats — one more would be too many.'
+              : 'Never here! This cell is already lit — two cats would SEE each other. That is the one rule to remember.';
+            akObT.push(setTimeout(akObYourTurn, 1600));
+          }); else akObYourTurn();
+        }, 500));
+      });
+    }
+    function akObYourTurn() {
+      akObPhase = 'turn';
+      akObStep.textContent = 'STEP 3 / 3'; akObTitle.textContent = 'Your turn 🐾';
+      akObText.textContent = ({ 1: 'Tap all four cells around the 4 — the number tells you exactly how many cats touch it!',
+        2: 'Place a cat on BOTH sides of the 2. They face each other — but the wall blocks their sight, so it is legal!',
+        3: 'Three clues, three cats. Each number tells you exactly how many cats touch it.',
+        4: 'Bigger board, same rules. Use every number as your anchor!' })[akObLevel] || 'Tap any unlit cell to place a cat. No two cats in the same row or column without a wall between them!';
+      akObNext.style.display = 'none';
+      akObScheduleIdle();
+    }
+    function akObScheduleIdle() {
+      clearTimeout(akObIdle);
+      akObIdle = setTimeout(() => {
+        if (akObPhase === 'turn' && !akObPaw && currentPuzzle) {
+          const nb = akObFirstBulb();
+          if (nb) { akObSpawnPaw(); akObTap(akObCell(nb.r, nb.c), () => akObKillPaw()); }
+        }
+        akObScheduleIdle();
+      }, 3000);
+    }
+    function akObFinish(complete) {
+      if (akObLevel >= 0) { akObTut['t' + akObLevel] = true; akObSave(); }
+      clearTimeout(akObIdle); akObKillPaw(); akObCard.classList.add('hidden');
+      akObNext.style.display = ''; akObPhase = null;
+      try { track(complete ? 'onboard_complete' : 'onboard_skip', { level: akObLevel + 1 }); } catch(e) {}
+    }
+    function akObOnPlace() { if (akObPhase === 'turn') { akObFinish(true); akObToast(); } }
+    function akObMaybeCoach() {
+      if (akObPhase !== null) akObFinish(false);
+      if (!currentPuzzle || getDifficulty(level).label !== 'Tutorial') return;
+      if (akObTut['t' + level]) return;
+      akObLevel = level; akObPhase = 'rule';
+      akObCard.classList.remove('hidden'); akObSetDots(0); akObNext.style.display = '';
+      if (!Object.keys(akObTut).length) {
+        akObStep.textContent = 'STEP 1 / 3'; akObTitle.textContent = 'Light up the room 🔍';
+        akObText.textContent = 'Tap any cell to place a glowing cat. Cats light their whole row and column until a wall blocks the light.';
+        akObNext.textContent = 'Watch how →';
+        akObNext.onclick = () => { akObNext.style.display = 'none'; akObPhase = 'demo'; akObSetDots(1); akObStep.textContent = 'STEP 2 / 3'; akObTitle.textContent = 'Watch: right vs wrong 🐾'; akObText.textContent = 'The paw shows a correct tap, then a wrong one. Tap the board any time to take over.'; try { track('onboard_step', { step: 2, level: level + 1 }); } catch(e) {} akObDemo(); };
+      } else {
+        akObNext.style.display = 'none'; akObPhase = 'demo'; akObSetDots(1);
+        akObStep.textContent = 'STEP 2 / 3'; akObTitle.textContent = 'Watch: right vs wrong 🐾';
+        akObDemo();
+      }
+      try { track('onboard_start', { level: level + 1 }); } catch(e) {}
+    }
+    akObSkip.onclick = () => akObFinish(false);
+    // 用户接管：demo 期间真点击 → 直接进 your turn（capture 先于格子 handler，随后那次落子自然毕业）
+    gridEl.addEventListener('click', () => { if (akObPhase === 'demo') { akObKillPaw(); akObYourTurn(); } }, true);
+    akObMaybeCoach();
   </script>
 </body>
 </html>

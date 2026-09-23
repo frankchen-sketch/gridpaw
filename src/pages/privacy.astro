@@ -1,15 +1,14 @@
 ---
-import SEOHead from '../../components/SEOHead.astro';
-import ExtensionPromo from '../../components/ExtensionPromo.astro';
+import SEOHead from '../components/SEOHead.astro';
 
 const title = "GridPaw Privacy Policy — How We Handle Your Data";
-const description = "GridPaw privacy policy. Play anonymously — all game progress stays in your browser. Optional Google sign-in only stores your name, email, and profile picture to sync your streak.";
+const description = "GridPaw privacy policy. Play anonymously — all game progress stays in your browser. Optional Google sign-in only stores your name, email, and profile picture to sync your progress.";
 ---
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <SEOHead title={title} description={description} canonical="/akari/privacy" type="article" noindex={true} />
+  <SEOHead title={title} description={description} canonical="/privacy" type="article" noindex={true} />
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Article",
@@ -31,39 +30,32 @@ const description = "GridPaw privacy policy. Play anonymously — all game progr
 <body>
   <header class="site-header">
     <div class="header-inner">
-      <a href="/akari/" class="brand" aria-label="GridPaw home">
-        <span class="brand-logo"><img src="/assets/logo.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+      <a href="/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/icon-192.png" alt="GridPaw" width="40" height="40" /></span>
         <span class="brand-name">
           <span class="big">GridPaw</span>
-          <span class="small">Akari Puzzle Game</span>
+          <span class="small">Cat Logic Puzzles</span>
         </span>
       </a>
       <nav class="nav" aria-label="Main navigation">
-        <div class="game-switcher">
-          <button class="game-switcher-btn" onclick="this.parentElement.classList.toggle('open')">Games</button>
-          <div class="game-switcher-menu">
-            <a href="/"><strong>🟧 Shikaku</strong><span class="game-desc">Rectangle partition puzzle</span></a>
-            <a href="/akari/" class="active"><strong>💡 Akari</strong><span class="game-desc">Light Up puzzle</span></a>
-            <a href="/pictomino/"><strong>🧩 Pictomino</strong><span class="game-desc">Spatial reasoning puzzle</span></a>
-          </div>
-        </div>
-        <a href="/akari/">Play</a>
-        <a href="/akari/how-to-play/">How to Play</a>
-        <a href="/akari/tips/">Tips</a>
-        <a href="/akari/daily/">Daily</a>
-        <a href="/akari/solver/">Solver</a>
+        <a href="/">🟧 Shikaku</a>
+        <a href="/akari/">💡 Akari</a>
+        <a href="/pictomino/">🧩 Pictomino</a>
+        <a href="/akari/privacy/">Privacy (Akari)</a>
       </nav>
     </div>
   </header>
 
   <nav aria-label="Breadcrumb">
-    <a href="/akari/">Home</a> &gt; <span>Privacy Policy</span>
+    <a href="/">Home</a> &gt; <span>Privacy Policy</span>
   </nav>
 
   <main class="prose">
     <h1>Privacy <span class="accent">Policy</span></h1>
+    <p><em>Last updated: September 22, 2026. This policy covers all GridPaw games (Shikaku, Akari, and Pictomino) on gridpaw.com.</em></p>
+
     <h2>Overview</h2>
-    <p>GridPaw is a free Akari (Light Up) puzzle game. We are committed to protecting your privacy. This policy explains what data we handle and how.</p>
+    <p>GridPaw is a collection of free logic puzzle games. We are committed to protecting your privacy. This policy explains what data we handle and how.</p>
 
     <h2>Data We Do NOT Collect</h2>
     <p>GridPaw does <strong>not</strong> collect, store, transmit, or share any of the following:</p>
@@ -84,12 +76,12 @@ const description = "GridPaw privacy policy. Play anonymously — all game progr
     <p>This data never leaves your device unless you choose to sign in. Clearing your browser data will erase this information.</p>
 
     <h2>Optional Google Sign-In</h2>
-    <p>Signing in with Google is <strong>entirely optional</strong>. The game is fully playable without an account. If you choose to sign in, we collect and store only what Google shares after you approve:</p>
+    <p>Signing in with Google is <strong>entirely optional</strong>. All games are fully playable without an account. If you choose to sign in, we collect and store only what Google shares after you approve:</p>
     <ul>
       <li>Your Google account name and profile picture (shown on the leaderboard)</li>
       <li>Your Google account email (used only to identify your account; never shown publicly)</li>
       <li>Your Google account ID (a random number Google uses to identify you to websites)</li>
-      <li>Your daily challenge progress: streak, best streak, best time, and completion dates</li>
+      <li>Your game progress: current level, daily challenge streak, best streak, best time, and completion dates</li>
     </ul>
     <p>We use this data for exactly one purpose: <strong>syncing your puzzle progress across devices and showing the daily leaderboard</strong>. We do not:</p>
     <ul>
@@ -98,6 +90,9 @@ const description = "GridPaw privacy policy. Play anonymously — all game progr
       <li>Post anything to your Google account</li>
     </ul>
     <p>Sign-in uses a secure first-party session cookie (<code>mt_session</code>) that contains no personal information — just a random ID. You can sign out at any time, which clears this cookie. To delete your account and all stored progress, contact us using the link below.</p>
+
+    <h2>Anonymous Usage Analytics</h2>
+    <p>To understand how the games are played and improve them, we record anonymous gameplay events (for example: a level was started, completed, or a hint was used). These events are linked to a random ID stored in a first-party cookie — <strong>not</strong> to your identity. We also use Google Analytics and Microsoft Clarity with the same anonymous approach. If you sign in, gameplay events remain anonymous and are still not linked to your account.</p>
 
     <h2>Chrome Extension</h2>
     <p>The GridPaw Chrome extension uses <code>chrome.storage.local</code> to store streak and puzzle stats locally. The extension:</p>
@@ -116,7 +111,7 @@ const description = "GridPaw privacy policy. Play anonymously — all game progr
     <p>Some pages on GridPaw display ads served by <strong>Adsterra</strong>, a third-party advertising network. When ads are shown, Adsterra and its partners may use cookies or similar technologies to measure ad performance and, where permitted, to personalize the ads you see. This happens only on informational article pages — never inside the puzzle games themselves. You can opt out of personalized advertising via <a href="https://www.google.com/settings/ads" rel="noopener" target="_blank">Google Ads Settings</a> or your browser's cookie controls. For details on how Adsterra handles data, see <a href="https://adsterra.com/privacy-policy/" rel="noopener" target="_blank">Adsterra's Privacy Policy</a>.</p>
 
     <h2>Children's Privacy</h2>
-    <p>GridPaw does not knowingly collect any data from children under 13. The game is fully playable without any account, and sign-in is optional and intended for users 13 and older. The game is suitable for all ages.</p>
+    <p>GridPaw does not knowingly collect any data from children under 13. The games are fully playable without any account, and sign-in is optional and intended for users 13 and older. The games are suitable for all ages.</p>
 
     <h2>Changes to This Policy</h2>
     <p>We may update this privacy policy from time to time. Any changes will be posted on this page with an updated date.</p>
@@ -128,44 +123,34 @@ const description = "GridPaw privacy policy. Play anonymously — all game progr
     </ul>
 
     <div class="cta-box">
-      <a href="/akari/" class="cta-btn">🐱 Play GridPaw Free</a>
+      <a href="/" class="cta-btn">🐱 Play GridPaw Free</a>
     </div>
   </main>
 
-  <ExtensionPromo />
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-links">
-        <a href="/akari/">Play</a>
-        <a href="/akari/rules/">Rules</a>
-        <a href="/akari/tips/">Tips</a>
-        <a href="/akari/daily/">Daily</a>
-        <a href="/akari/solver/">Solver</a>
-        <a href="/akari/privacy/">Privacy</a>
-      </div>
-      <div class="footer-siblings">
-        <span>Our other sites:</span>
-        <a href="https://furriq.com" target="_blank" rel="noopener">Furriq</a>
-        <a href="https://gridpaw.com" target="_blank" rel="noopener">GridPaw</a>
-        <a href="https://pictomino.com" target="_blank" rel="noopener">Pictomino</a>
+        <a href="/">Play Shikaku</a>
+        <a href="/akari/">Play Akari</a>
+        <a href="/pictomino/">Play Pictomino</a>
+        <a href="/akari/privacy/">Privacy (Akari)</a>
       </div>
       <p class="footer-copy">&copy; 2026 GridPaw. All rights reserved.</p>
     </div>
-<p style="margin-top:0.3rem"><a href="https://www.pinterest.com/gridpaw/" rel="noopener">GridPaw on Pinterest</a></p>
   </footer>
 
   <style is:global>
     .prose { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
     .prose h1 { font-size: 2rem; font-weight: 900; color: #342421; margin-bottom: 0.5rem; }
-    .prose h1 .accent { color: #559c68; }
+    .prose h1 .accent { color: #D97706; }
     .prose h2 { font-size: 1.35rem; font-weight: 800; color: #342421; margin: 2rem 0 0.75rem; padding-bottom: 0.5rem; border-bottom: 2px solid #f4dfdc; }
     .prose p { margin-bottom: 1rem; font-size: 1rem; line-height: 1.7; color: #6f5651; }
-    .prose ul, .prose ol { margin: 0 0 1rem 1.5rem; }
+    .prose ul { margin: 0 0 1rem 1.5rem; }
     .prose li { margin-bottom: 0.5rem; font-size: 1rem; line-height: 1.7; color: #6f5651; }
     .prose strong { color: #342421; }
     .prose code { background: #f4dfdc; padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-size: 0.9rem; }
-    .prose a { color: #E8A888; text-decoration: underline; font-weight: 600; }
-    .prose a:hover { color: #D47A50; }
+    .prose a { color: #D47A50; text-decoration: underline; font-weight: 600; }
+    .prose a:hover { color: #b85f3a; }
     .cta-box { text-align: center; margin: 3rem 0 1rem; }
     .cta-btn { display: inline-block; background: linear-gradient(135deg, #E8A888, #D47A50); color: #fff; font-weight: 800; font-size: 1.1rem; padding: 0.9rem 2.5rem; border-radius: 1rem; text-decoration: none; transition: transform 0.15s ease, box-shadow 0.15s ease; box-shadow: 0 4px 16px rgba(232,168,136,0.3); }
     .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,168,136,0.4); }
@@ -175,7 +160,7 @@ const description = "GridPaw privacy policy. Play anonymously — all game progr
     .brand-logo img { border-radius: 0.5rem; }
     .brand-name .big { display: block; font-weight: 900; font-size: 1.15rem; color: #342421; line-height: 1.1; }
     .brand-name .small { display: block; font-size: 0.7rem; color: #9b726c; font-weight: 600; }
-    .nav { display: flex; gap: 1.25rem; }
+    .nav { display: flex; gap: 1.25rem; flex-wrap: wrap; }
     .nav a { font-size: 0.85rem; font-weight: 700; color: #6f5651; text-decoration: none; transition: color 0.15s; }
     .nav a:hover { color: #342421; }
     nav[aria-label="Breadcrumb"] { max-width: 1100px; margin: 0 auto; padding: 1rem 1.5rem 0; font-size: 0.85rem; color: #9b726c; }
@@ -186,28 +171,11 @@ const description = "GridPaw privacy policy. Play anonymously — all game progr
     .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.25rem; margin-bottom: 1rem; }
     .footer-links a { color: #d4c8c0; text-decoration: none; font-size: 0.85rem; font-weight: 600; }
     .footer-links a:hover { color: #E8A888; }
-    .footer-siblings { font-size: 0.8rem; color: #9b8a82; margin-bottom: 1rem; }
-    .footer-siblings a { color: #b8a8a0; margin-left: 0.5rem; }
-    .footer-siblings a:hover { color: #E8A888; }
     .footer-copy { font-size: 0.75rem; color: #7a6a62; }
     @media (max-width: 640px) {
       .header-inner { flex-direction: column; gap: 0.5rem; }
-      .nav { gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
       .prose h1 { font-size: 1.5rem; }
     }
-  
-    /* ── Games Dropdown ── */
-    .game-switcher { position: relative; }
-    .game-switcher-btn { font-size: 0.875rem; font-weight: 700; color: var(--text, #3D3D3D); background: none; border: none; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 0.375rem; display: flex; align-items: center; gap: 4px; font-family: inherit; }
-    .game-switcher-btn::after { content: '▾'; font-size: 10px; }
-    .game-switcher-btn:hover { background: var(--hover-bg, #F0EDF5); color: var(--ink, #3D3D3D); }
-    .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid #E8DDD0; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
-    .game-switcher:hover .game-switcher-menu { display: block; }
-    .game-switcher-menu a { display: flex; flex-direction: column; padding: 10px 16px !important; font-size: 13px !important; gap: 2px; border-radius: 0 !important; }
-    .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: #9E9590; }
-    .game-switcher-menu a:hover { background: #FFF8F0 !important; color: var(--ink, #3D3D3D) !important; }
-    .game-switcher-menu a.active { color: var(--ink, #3D3D3D) !important; background: #FFF5F0 !important; font-weight: 800 !important; }
-    @media (max-width: 480px) { .game-switcher:hover .game-switcher-menu { display: none; } .game-switcher.open .game-switcher-menu { display: block; } }
   </style>
 </body>
 </html>

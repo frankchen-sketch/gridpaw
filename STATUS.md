@@ -4,6 +4,8 @@
 > 最后核对：2026-09-19（TDK 优化轮部署 + 收录口径对账决策；sitemap / 构建 / 部署 / 内链均已实测）｜ 分支 `main`
 >
 > 治理依据：`~/workspace/AGENTS.md`「AGENTS.md 内容治理」——状态/进度进本文件，不进 AGENTS.md。
+>
+> **最新作战地图：`research/2026-09-23_作战地图.md`**（收录警报解除 121 已收录；主靶子降级、唯一立项=brain teasers for adults；日本谜题家族封盘；pictomino 停止投入；P0 待办 3 条）
 
 ---
 
@@ -233,3 +235,115 @@ SERP 盘面调研（`research/2026-09-20_要打的词SERP竞品盘面.md`）后�
 - 归因口径：按访客**首次到访**版本（rn=1），回访不重归因；live = 24h 内有 visit
 - **读表纪律**（实施文档 §6.7）：单版本 visit 两位数以内 = 噪声，禁止下改版结论；先查 bot 比例（`json_extract(metadata,'$.isLikelyBot')`，机房流量约半数）；发布后 CDN 旧 HTML 继续报旧 build id 是预期
 - 未做（有意）：pictomino 子站接入（P1 可选项，`public/pictomino/*.html` 需 `build-id.js` + analytics.js 改造）；CF Access 替代 token；identity 合并表
+
+## 2026-09-23 首页布局方案 A 上线（含一次错误回退的当轮恢复）
+
+**上线内容**（方案 A，法老批准，deploy `71b0e4f4` → 修复性重部署 `8fb09561`）：
+- ① Game Over 弹窗 h2 → div（不再污染页面大纲）
+- ② 空排行榜位 → Today's Challenge 卡（`#challengeCard`，真实上榜数据时 JS 自动切回 `#dailyLeaderboardPanel`）
+- ③ What Players Say 整段虚构评价（6 条假五星，2 条与站内事实自相矛盾）→ GridPaw in Numbers 真实数据块（∞/3/0/15，全部站内可验证）
+- ④ Tips 双 section 合并 + /tips/ 链接（Common Mistakes 折入摘要段）
+
+**事故与恢复**：子 agent 回报的 changed_hunks 实为「工作区 vs HEAD」整段 diff（把 9/21 Clarity 漏斗改造、9/21 真机回归修复等已部署未提交工作误报为自己的产出）。主 agent 用 HEAD 做基线比对、未先查本文件历史轮次，误判「玩法类超纲」并回退（deploy `71b0e4f4` 一度丢失 hint 三层/抖动/徽章帮助），法老拍板回退的前提因此失效。当轮发现（STATUS §9/21 记录佐证）后十处全部逐字恢复并重部署（`8fb09561`），线上 8/8 断言通过。
+**教训（已录入 skill）**：判定「子 agent 超纲」前必须先查本文件历史轮次——**本仓常态化 deploy-but-uncommitted，HEAD ≠ 最近一次上线的代码**；diff 基线错误会把既有功能误判为新改动。
+
+**遗留**：`.astro/` 两个缓存文件已 `git rm --cached` + gitignore（未 commit，随下次提交入库）；`pnpm add -D wrangler` 待办（本机无全局 wrangler，deploy 脚本会 command not found，临时用 `npx -y wrangler`）。
+
+## 2026-09-23 深夜 新手引导上线（deploy `9129581f` → `0a8d7843` → `fc2f02f5` → 真棋盘重构 `83a400d3`→`f4ce0cae`→`840eab44`）
+
+Clarity 实锤（30min 0 次成功拖拽、徽章狂点 17 次/分）→ 3 步教练引导（v6 预览经法老 5 轮反馈迭代后拍板）：
+- **流程**：①聚光数字讲规则 → ②猫爪自动演示拖拽（用户随时上手即接管）→ ③用户亲手拖对为止（拖错仅抖动+提示不扣血，**3 秒无操作猫爪自动回来重演**）。成功出真反馈：CAT_PALETTE 橙 + 游戏真实 `.cat-face` 体系猫脸
+- **触发**：`gp_onboarded_v1` 未设 且 levelNum===1；完成/Skip 均写标记；Tips 区「🐾 Replay tutorial」可重放（事件委托接线）
+- **GA4**：onboard_start / onboard_step(step) / onboard_complete / onboard_skip
+- ** ego-browser 全流程实测 6/6 绿**：新用户触发✓ 演示出猫矩形✓ 真实拖拽判定（坐标几何，鼠标/触摸通吃）✓ 拖错抖动+留在第3步✓ 3秒轮播✓ Skip✓ 老用户不打扰✓ Replay✓ 主游戏无影响✓
+- **⚠️ 第三次踩同一个坑**：主内联脚本在页面中部，其**之后**解析的元素不能 getElementById 直接接线（Get-the-App CTA、obReplay 两次中招）——overlay markup 因此必须放在脚本之前；已写进 AGENTS.md 关键约定
+- 部署暗雷再确认：会话被注入 Clash 代理（HTTP_PROXY=127.0.0.1:7890）时 wrangler 认证失败**但 exit 0 假成功**——每次部署必须核对线上 CSS hash 或部署输出含 "Deployment complete"
+
+### 真棋盘重构（法老指令：引导要跟教学 1-4 关棋局做演示，不走架空练习盘）
+
+### Shikaku 教练卡盖棋盘 bug（2026-09-23 深夜，法老截图报告，deploy `36e84adf`）
+
+- **根因**：index.astro 有**两条 `.onboard-coach` 规则**（v6 残留），前 z-index:900 后 z-index:2，层叠后者胜；棋盘内拖拽幻影 `.onboard-drag` z-index:5 > 2 → 演示矩形画在卡片上。且 fixed 卡片在矮视口直接盖住棋盘底部格子，挡交互。
+- **修法**：①合并重复规则为一条；②卡片从 `position:fixed; bottom` 改**文档流**，标记从页面尾部移入游戏区 board-wrap 之后——卡片永远在棋盘下方，物理上不可能再遮挡。obToast 保持 fixed。
+- 实测：卡片 static 且 boardBottom=518 < cardTop=530 零重叠；STEP 2/3 拖拽幻影 ghostOverCard=false；视觉确认虚线只在棋盘内 ✓。
+- **教训**：同一选择器 CSS 规则写两遍，改 z-index 时必查重复定义；fixed 浮层卡片在游戏页=遮挡风险，游戏 UI 卡片优先文档流。
+
+### Akari ❌ 错误示范 + Pictomino 教学三关递进（2026-09-23 深夜，法老指令，deploy `6f251c48`）
+
+- **Akari**：coach 错拍演示升级——错误目标 `akObWrongCell()` 优先选「数字已满旁会超标」的格子（number_excess，教学价值高于单纯点已亮格），fallback 已亮格；红闪同时弹 **❌**（`.ak-obx` CSS 双杠画叉+白描边，不依赖 emoji 字形）；文案按违规类型动态化（T2=猫冲突 / T3="That number already has all its cats"）。注意 **T1 无错误示范**——它的白格全被墙隔开，落子后不存在非法格（逻辑正确跳过）。实测 T2/T3 均触发 ✓。
+- **Pictomino**：DIFF_TABLE 教学行改为三关递进：T1=1 洞 1 候选（认识玩法）→ T2=2 洞 1 候选（连填）→ T3=3 洞 2 候选（学判别：手里碎片对应哪个 +）；Level 4 起照旧（Easy 4×4/6 洞不动，无级联偏移）。实测 round-info：0/1 → 0/2 → 0/3 ✓。
+- 测试脚手架坑：boot 恒 `startLevel(0)`（跨会话续关在局内推进）；首访必先进引导课（body.tut-mode），DOM 验证须先走完课；`.cell.hole` 数量在 showPreview 过渡期偏少，round-info 的 `Filled X/N` 是权威计数。
+
+### Akari 固定教学盘（2026-09-23 深夜，法老拍板「4 小关递进」，deploy `08c0a1dc`）
+
+教学关从随机改为**固定手工盘**（`AKARI_TUTORIALS` in akari/index.astro，`buildTutorialPuzzle(level)` 在 newPuzzleSkip/newPuzzle 中替换 generatePuzzle）：
+- **T1 数字含义**：中心墙「4」十字盘 → 4=四邻全放，零思考首胜
+- **T2 对立冲突**：中心墙「2」→ 强制两猫分居墙两侧，面对面却合法（墙挡视线）——冲突规则教具
+- **T3 三线索综合**：数字 1/2/1 三墙 → 三只猫各归其位
+- **T4 升格**：4×4 数字 2/2/1 → 进 Easy 前最后课
+- 四盘全部经引擎 `solve(grid,size,2)` 验证**唯一解**（线上实时 solve 出 solution，不硬编码答案）；Level 4 起照旧随机。Coach 文案按关定制（akObYourTurn 查表）。
+- **设计语义坑**：引擎格子编码 `9`=白格、`-1`=黑墙、`>=0`=带数字墙——`0` 是数字 0 的墙不是空格；且 solve 假定方阵，1×3/1×5 概念须嵌进 3×3（补黑行）。
+- 实测：L1 `#.#/.4./#.#` → L2 `.#./.2./.#.` → L3 `.1./2#./..1` 逐关自动进位 ✓ 零报错；T4 机制同构（唯一解由真求解器在筛选时验证）。
+
+### Akari + Pictomino 引导同步（2026-09-23 深夜，deploy `b706c159`→`0f6f9b94`→`5c18daaa`）
+
+**Akari（新建，/akari/）**：教学关无固定棋盘——引擎 `generatePuzzle(5)` 每局随机，"真实教学盘"=玩家当下对局的 `currentPuzzle`。Coach 骑真盘：①规则卡（仅首访）→ ②爪子对错对照演示：点 `solution` 第一猫位**真落子**（handleClick 真实路径）→ 移到已亮格再点 → `cell-violation` 红闪讲解不落子 → ③用户回合：3 秒无操作爪子指下一个 solution 位，**首次合法落子即毕业**（handleClick `else akObOnPlace()` 挂钩）。状态 `akari_ob_tut` {t1,t2,t3}；GA4 onboard_start/step/complete/skip。实测：真落子 1 猫 5 亮→错拍讲解→毕业 t1 落 2 猫 12 亮，零报错。
+**Pictomino（换肤，game.html）**：现有两步交互课逻辑零改动，纯 UI 品牌化——teal 横幅→白卡+STEP 徽标+琥珀箭头+真爪子悬在目标（碎片/洞）上方弹跳。实测 Step1→Step2 全链路 ✓。
+**坑（新增第 4 坑）**：**module 严格模式下块内函数声明是块级作用域**——coach 块包 `if (card) {}` 导致外部钩子 `akObOnPlace` ReferenceError（崩了 handleClick）、`akObMaybeCoach` 被 try/catch 静默吞。module 脚本 deferred，DOM 必就绪，直接写顶层不包块。
+预览迭代坑：::preview 框不随 HTML 加载相对路径外链脚本——预览文件必须零依赖单文件（引擎 13KB 内联）。
+
+- **机制**：newPuzzle() 后经 `window.__obMaybeCoach()` 触发；教学关（LEVEL_DEFS[i].isTutorial）首次进入时：①rule 卡（仅第一次，附 `hint-active` 高亮答案区）→ ②猫爪在**真棋盘**上演示该关 `puzzle.solutionRects[0]` 的正确画法（虚线框+爪子手势，不落子）→ ③用户亲手拖（游戏原生 mouse/touch 路径），3 秒无操作爪子回来重演；**首次成功落子即毕业**（`__obOnPlacement` 挂在 onEnd rects.push 后）
+- **状态**：`gp_ob_tut` JSON `{t1..t4:true}` 逐关记忆；T2-T4 直接进 watch（rule 只讲一次）；Skip 单独记关；老玩家/非教学关不打扰
+- **Replay**：教学关未学完→重跑 coach；普通关→一次性演示手势（等效视觉 hint）
+- **实测 ego-browser 7/7 绿**：T1 rule+高亮✓ 接管✓ 落子毕业✓ T2/T3 自动直进 watch✓ Skip 记关✓ 老用户不打扰✓ 非教学关 Replay 演示✓（T4 布局未模拟走通，代码路径与 T2/T3 同一）
+- **坑**：`currentLevelDef` 非主脚本顶层变量（不能直接引用）→ 用引擎全局 `LEVEL_DEFS[levelNum-1]`；游戏拖拽是 mouse+touch 事件**不是 pointer**（模拟测试须发 MouseEvent）；IIFE 末尾必须主动调一次 `__obMaybeCoach()`（初始 newPuzzle 在 IIFE 之前执行）
+
+## 2026-09-23 晚 真机反馈三连修（deploy `07f31e48` → 委托修复 `cad0a713`）
+
+法老 mini 实测反馈 → 定位 → 修复（ego-browser 全程实测复现）：
+1. **导航栏错位** = `.header-nav` 在 481-700px 宽度溢出（600px 实测溢出 20px，Solver 戳出屏幕）——桌面导航与汉堡菜单断点间有空窗。修：断点 480→700px，700/600/550/480 全宽复验溢出 0
+2. **「Challenge 进去是教学关卡」** = Get the App 区「📅 Try Daily Challenge」是死链接（`href="/#play"` 不调 generateDaily），「▶ Play Now」更是 `href="/"` 直接刷新。Challenge 卡本体（Play Now）一直是好的。修：两 CTA 接线；**踩坑**：该区块在主内联脚本之后解析，直接 getElementById 接线时元素不存在、handler 静默挂空——改事件委托后冷启动 2 轮复验均正确进入 Daily 10×10
+3. **💡 Stuck 提示秒消失** = badge_help 消息 2500ms 太短 → 8000ms，6 秒后仍在复验 ✓
+
+## 2026-09-23 深夜 手机端乱码/错位修（deploy `3a79318b`）
+
+法老手机（鸿蒙 emoji 字体）反馈乱码+工具栏错位，滑动正常 ✓：
+1. **乱码根因 = keycap emoji 缺字形**：`1️⃣`（1+FE0F+20E3 组合序列）在鸿蒙字体渲染成「1」+ tofu 空心方块。首页 tips 卡 `1️⃣`→`⭐`；**全站清洗**：/akari/ 与 /akari/tips/ 的 0️⃣-4️⃣ 一律剥成纯数字（perl `\x{FE0F}\x{20E3}`），语义本就是数字卡
+2. **「错位」观感根因 = status 消息连用两个 📅**：鸿蒙把 📅 渲染成带「SEPT 15」大字的日历图标，`hit the 📅 button` 被撑成三截。改为单 📅 + `hit the Daily button (calendar icon) in the toolbar!`
+3. 390/360px 受控复验：工具栏排布本身正常、body 溢出 0——用户感知的错位即第 2 条
+4. 全站三页线上复验 keycap 残留 0。**教训**：面向国内安卓/鸿蒙用户的站，避免 keycap 组合 emoji（AFE0F+20E3）与重复大 emoji 文案
+
+## 2026-09-21 Clarity 漏斗改造（hint 三层 + 徽章帮助 + iOS 登录修复）
+
+**依据**：Clarity 录屏事件流全量提取（6 会话，方法见 skill `game-event-tracking`）。关键实锤：
+- hint 纯图标没人用（30 分钟重度用户 0 hint）；Tutorial 徽章被当帮助按钮 1 分钟点 17 次；L5 登录弹窗 3/3 会话 2-3 秒点 Maybe later；iOS 用户 3 次点 header sign-in 全 miss（GA4 sign_in_click=0 佐证：点击落在按钮/横幅死区）；game over 弹窗开着时拖拽穿透（2 秒 3 次 game_over）；Pictomino 首次没血即流失。
+- 回放里数字显示 ▫/□ = Clarity 渲染缺陷，非站点 bug，勿按此改代码。
+
+**本次改动**（deploy 5a12b1c6）：
+- Shikaku `index.astro`：hint 图标→文字胶囊按钮（💡 Hint + 次数 badge）；连错 2 次 hint 按钮抖动放大特效（每关一次，prefers-reduced-motion 降级）；game over 弹窗加「💡 Retry with a Hint」（同一道题+回血+高亮正确矩形，无剩余 hint 则隐藏）；弹窗打开时 board pointer-events=none 修穿透；难度徽章可点→滚到 Tips 区+status 提示；game_start 延迟至 DOMContentLoaded（修 gpTrack module 注入竞态，D1 69:6 缺口根因）。
+- Akari `akari/index.astro`：同款 hint 胶囊+抖动 nudge（连错 2 次触发，合规落子/换关/重置清零）；难度徽章可点→滚到 Strategy Guide；game_start 同款 DCL 修复。
+- Pictomino `game.html`：失败弹窗加战绩行 + 「Skip this puzzle →」跳关按钮（puzzle_skip 埋点，GA4）。
+- 白名单：`badge_help_click` 加入 funnel-track.ts + _funnel-sql.ts。
+- sign-in 触控目标 44px（HIG 最小标准）+ z-index，L5 弹窗按钮同款加大。
+
+**待验证**：D1 game_start 应随新流量恢复（部署后暂无流量未验）；iOS 真机点登录是否跳转；抖动 nudge 后 hint 使用率；badge_help_click 数量。
+**未做（本轮范围外）**：sign-in 弹窗价值主张重写（延后触发/进度保存钩子，数据上 3 秒拒绝是文案问题）；pictomino gpTrack 全量接入（D1 侧仍只有 GA4）。
+
+## 2026-09-21 真机回归修复（deploy 22ba9c6c）
+- **滚动锁死**：`body{touch-action:none}` 老 bug（手机整页无法滑动，桌面无感）→ 移到 `.board`，CSS 新 hash `DlDBJQIg` 已上线。
+- **登录态导航换行**：account-area 改 nowrap，名字 5.5em 截断，Play Daily 缩小。
+- **登录后跳第 9 关**：云端进度恢复功能正常（admin 云端存档领先本地）→ 加「☁️ Cloud progress restored」status 提示。
+- **待用户操作**：Google Cloud Console → OAuth 同意屏幕：应用名 MeowTrail-web → GridPaw，徽标换 `public/icon-512.png`，隐私链接 https://gridpaw.com/akari/privacy/（顶级 /privacy/ 待补）。
+
+## 2026-09-22 Pictomino 接入 D1 漏斗（deploy b335cff6）
+- `public/pictomino/gp-track.js`：独立打点客户端（静态页过不了 Vite），白名单/PROD 守卫/visit 去重与 funnel-track.ts 同构——**改白名单要两边同步**。
+- `scripts/gen-build-info.mjs` 构建期同步产出 `public/pictomino/gp-build.js`（window.GP_BUILD）。
+- game.html 埋点：visit / game_start / first_move / level_up / game_over / daily_solved / puzzle_skip / help_click / share_reddit / share_copy / community_click（`help_click` 已加双白名单）。
+- 踩坑：game.html 会 302 到 `/pictomino/game`（无 .html）→ script 必须用绝对路径 `/pictomino/gp-*.js`；**改 public/ 后必须重新 pnpm build 再 deploy**（dist 才会带上）。
+- 外站 iframe 跨域嵌入时 /api/events 静默失败（fetch catch），只统计 gridpaw.com 同源访问。
+- 验证：D1 实收 `visit | 37ff67b-dirty | path=/pictomino/game` ✅（注意 gp_event.created_at 是毫秒整数，比较用 `(strftime('%s','now')-N)*1000`，别用 datetime()）。
+
+## 2026-09-22 排期项落地（deploy ca678f21）
+- **`/privacy/` 顶级隐私政策页**（noindex，覆盖三游戏 + 匿名埋点说明段），OAuth 同意屏链接待用户在 GCP 后台改为此地址。
+- **Pictomino 失败弹窗「👁 Peek」按钮**：重放开局 2 秒预览后重试本关（hint_click source=lose_overlay_peek），与 Try again / Skip 并列。
+- **漏斗周报 cron** `53f2a4b531f1`：每周日 20:00 自动拉 D1+GA4 对比改动前后，deliver=all。含样本纪律（去 bot<10 只报数）与 created_at 毫秒口径说明。
