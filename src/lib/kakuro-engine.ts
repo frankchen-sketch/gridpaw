@@ -349,6 +349,47 @@ export function solveKakuro(p: KakuroPuzzle, maxCount = 2, maxNodes = 200000): K
   return { count: ctx.aborted ? -1 : ctx.count, solution: ctx.first, solutions: ctx.all };
 }
 
+/**
+ * Count solutions consistent with a partial player fill (digits: flat array,
+ * 0 = empty). Used by the UI to detect a dead board early — returns count 0
+ * when no completion exists, so the player can be told to backtrack instead
+ * of grinding an unsolvable grid. maxCount=2 is enough (alive vs dead).
+ */
+export function solveKakuroFromState(
+  p: KakuroPuzzle,
+  digits: number[],
+  maxCount = 2,
+  maxNodes = 120000
+): KakuroSolveResult {
+  const runs = computeRuns(p);
+  if (runs.length === 0) return { count: 0, solution: null };
+  const h = runs.filter((r) => r.dir === 'h');
+  const v = runs.filter((r) => r.dir === 'v');
+  const ctx = makeCtx(h, v, p, [1, 2, 3, 4, 5, 6, 7, 8, 9], maxCount);
+  ctx.maxNodes = maxNodes;
+  // seed player digits into run tallies; a dup inside a run is instantly dead
+  for (let i = 0; i < digits.length && i < p.rows * p.cols; i++) {
+    const d = digits[i];
+    if (!p.white[i] || d < 1 || d > 9) continue;
+    const bit = 1 << d;
+    const ht = ctx.hTally[ctx.hRunOf[i]];
+    const vt = ctx.vTally[ctx.vRunOf[i]];
+    if (!ht || !vt) return { count: 0, solution: null };
+    if (ht.mask & bit || vt.mask & bit) return { count: 0, solution: null };
+    ht.sum -= d;
+    ht.mask |= bit;
+    ht.count--;
+    vt.sum -= d;
+    vt.mask |= bit;
+    vt.count--;
+    ctx.assign[i] = d;
+  }
+  for (const t of ctx.hTally) if (t.sum < 0 || !runFeasible(t)) return { count: 0, solution: null };
+  for (const t of ctx.vTally) if (t.sum < 0 || !runFeasible(t)) return { count: 0, solution: null };
+  search(ctx, 0);
+  return { count: ctx.aborted ? -1 : ctx.count, solution: ctx.first };
+}
+
 // =============================================================================
 // Validation helpers (player-facing)
 // =============================================================================

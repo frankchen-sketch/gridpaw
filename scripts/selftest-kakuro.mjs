@@ -17,7 +17,7 @@ import { resolve } from 'path';
 const code = readFileSync(resolve('./public/kakuro-engine.js'), 'utf-8');
 const E = new Function(
   code +
-    '\nreturn { solveKakuro, generateKakuroPuzzle, generateTutorialPuzzle, checkKakuroWin, getCellError, computeRuns, whiteRuns, fogBlockCells, KAKURO_TUTORIALS, KAKURO_DIFFICULTIES, makeRng };'
+    '\nreturn { solveKakuro, solveKakuroFromState, generateKakuroPuzzle, generateTutorialPuzzle, checkKakuroWin, getCellError, computeRuns, whiteRuns, fogBlockCells, KAKURO_TUTORIALS, KAKURO_DIFFICULTIES, makeRng };'
 )();
 
 let failures = 0;
@@ -153,6 +153,21 @@ console.log('== 5. Fog mode (block-split puzzles) ==');
       if (!ua || !ub || !whole) {
         allOk = false;
         console.log('   fog ' + key + ' puzzle ' + n + ' uniqueness: blockA=' + ua + ' blockB=' + ub + ' whole=' + whole);
+      }
+      // dead-board detector: pristine state must be alive (>=1 solution)
+      const zeros = new Array(p.rows * p.cols).fill(0);
+      if (E.solveKakuroFromState(p, zeros, 2).count < 1) {
+        allOk = false;
+        console.log('   fog ' + key + ' puzzle ' + n + ' dead-detector false positive on empty board');
+      }
+      // corrupted state (solution digit swapped to a wrong legal one) must be
+      // caught as dead... use a digit from solution's run that breaks its run sum
+      const bad = p.solution.slice();
+      const w0 = p.white.findIndex(Boolean);
+      bad[w0] = bad[w0] === 9 ? 1 : 9;
+      if (E.solveKakuroFromState(p, bad, 2).count !== 0) {
+        allOk = false;
+        console.log('   fog ' + key + ' puzzle ' + n + ' dead-detector missed a corrupted board (count=' + E.solveKakuroFromState(p, bad, 2).count + ')');
       }
     }
     const maxMs = Math.max(...times);
