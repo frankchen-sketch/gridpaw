@@ -5,7 +5,7 @@
 >
 > 治理依据：`~/workspace/AGENTS.md`「AGENTS.md 内容治理」——状态/进度进本文件，不进 AGENTS.md。
 >
-> **最新作战地图：`research/2026-09-23_作战地图.md`**（收录警报解除 121 已收录；主靶子降级、唯一立项=brain teasers for adults；日本谜题家族封盘；pictomino 停止投入；P0 待办 3 条）
+> **最新作战地图：`research/2026-09-24_横向拓展前置验证_GamePix供给侧与DR差距.md`**（0924：横向拓展前置验证通过+供给侧实测补全；P0 待办收敛为 3 条：注册 publisher 账号 / 定游戏页形态 / 外链换质；Game Over 降级已结案）
 
 ---
 
