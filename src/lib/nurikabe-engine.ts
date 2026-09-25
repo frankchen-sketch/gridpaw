@@ -569,8 +569,8 @@ export interface NurikabeDifficultyPreset {
 
 export const NURIKABE_DIFFICULTIES: Record<string, NurikabeDifficultyPreset> = {
   easy: { key: 'easy', rows: 5, cols: 5, requirePropSolvable: false, label: 'Easy' },
-  medium: { key: 'medium', rows: 6, cols: 6, requirePropSolvable: false, label: 'Medium' },
-  hard: { key: 'hard', rows: 7, cols: 7, requirePropSolvable: false, label: 'Hard' },
+  medium: { key: 'medium', rows: 7, cols: 7, requirePropSolvable: false, label: 'Medium' },
+  hard: { key: 'hard', rows: 9, cols: 9, requirePropSolvable: false, label: 'Hard' },
 };
 
 export interface NurikabeTutorialDef {

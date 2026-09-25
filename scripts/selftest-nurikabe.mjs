@@ -54,7 +54,7 @@ for (const key of ['easy', 'medium', 'hard']) {
   const d = E.NURIKABE_DIFFICULTIES[key];
   for (let n = 0; n < 3; n++) {
     const t0 = Date.now();
-    const p = E.generateNurikabePuzzle({ rows: d.rows, cols: d.cols, seed: 500 + n * 131, timeBudgetMs: 30000 });
+    const p = E.generateNurikabePuzzle({ rows: d.rows, cols: d.cols, seed: 500 + n * 131, timeBudgetMs: 60000 });
     if (!p) { ok(false, `${key} ${d.rows}x${d.cols} #${n} generates`); continue; }
     const r = E.solveNurikabe(p, 2);
     const valid = E.cluesMatchSolution({ rows: p.rows, cols: p.cols, clues: p.clues, solution: p.solution, name: 'x' });
