@@ -34,3 +34,4 @@ function compileEngine(srcPath, outName) {
 compileEngine('./src/lib/puzzle-engine.ts', 'puzzle-engine.js');
 compileEngine('./src/lib/akari-engine.ts', 'akari-engine.js');
 compileEngine('./src/lib/kakuro-engine.ts', 'kakuro-engine.js');
+compileEngine('./src/lib/nonogram-engine.ts', 'nonogram-engine.js');
