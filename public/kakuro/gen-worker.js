@@ -13,7 +13,8 @@ self.onmessage = function (e) {
       cols: msg.cols,
       blackProb: msg.blackProb,
       fogBlocks: msg.fogBlocks,
-      timeBudgetMs: msg.timeBudgetMs || 8000
+      timeBudgetMs: msg.timeBudgetMs || 8000,
+      seed: msg.seed
     });
     tries++;
   }
