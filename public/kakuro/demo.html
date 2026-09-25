@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Kakuro Demo — GridPaw</title>
+<style>
+  :root {
+    --amber: #d97706;
+    --amber-dark: #b45309;
+    --cream: #fff8ef;
+    --cream-2: #fdeed3;
+    --ink: #3f2d1d;
+    --line: #e7d4b8;
+    --err: #dc2626;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 16px 12px 40px;
+  }
+  header { text-align: center; margin-bottom: 12px; }
+  header h1 { font-size: 20px; color: var(--amber-dark); }
+  header .sub { font-size: 12px; color: #8a6d4e; margin-top: 2px; }
+  .topbar {
+    display: flex; gap: 8px; align-items: center; justify-content: center;
+    margin: 10px 0 14px; flex-wrap: wrap;
+    position: relative; z-index: 20;
+  }
+  .chip {
+    background: var(--amber); color: #fff; font-weight: 700; font-size: 13px;
+    border-radius: 999px; padding: 5px 14px;
+  }
+  .chip.tut { background: #0e9f6e; }
+  button.btn {
+    background: #fff; border: 2px solid var(--line); color: var(--ink);
+    border-radius: 10px; padding: 6px 12px; font-size: 13px; font-weight: 600;
+    cursor: pointer;
+  }
+  button.btn:hover { border-color: var(--amber); color: var(--amber-dark); }
+  .board {
+    display: grid;
+    background: var(--line);
+    gap: 2px;
+    border: 3px solid var(--amber-dark);
+    border-radius: 10px;
+    padding: 3px;
+    touch-action: manipulation;
+  }
+  .cell {
+    width: 46px; height: 46px;
+    background: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 800;
+    user-select: none; -webkit-user-select: none;
+    position: relative;
+  }
+  .cell.black { background: var(--cream-2); }
+  .cell.black.corner { background: var(--ink); }
+  .cell .dv, .cell .rv {
+    position: absolute; font-size: 11px; font-weight: 700; color: var(--amber-dark); line-height: 1;
+  }
+  .cell .dv { top: 3px; left: 4px; }
+  .cell .rv { bottom: 3px; right: 4px; }
+  .cell.sel { outline: 3px solid var(--amber); outline-offset: -3px; background: var(--cream-2); }
+  .cell.given { background: var(--cream-2); }
+  .cell.flash-err { animation: shake 0.3s; background: #fee2e2; color: var(--err); }
+  .cell.flash-over { animation: shake 0.3s; background: #ffedd5; color: var(--amber-dark); }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+  .msg {
+    min-height: 44px; max-width: 420px; text-align: center;
+    font-size: 14px; line-height: 1.45; margin: 12px auto 4px;
+    background: #fff; border: 2px dashed var(--line); border-radius: 10px;
+    padding: 8px 12px;
+    word-wrap: break-word; overflow-wrap: break-word;
+  }
+  .msg.tut { border-color: #0e9f6e; background: #ecfdf5; }
+  .msg.err { border-color: var(--err); color: var(--err); }
+  .pad { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; justify-content: center; }
+  .pad button {
+    width: 44px; height: 44px; font-size: 19px; font-weight: 800;
+    background: #fff; border: 2px solid var(--line); border-radius: 10px;
+    color: var(--ink); cursor: pointer;
+  }
+  .pad button:hover { border-color: var(--amber); color: var(--amber-dark); }
+  .overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(63, 45, 29, 0.55);
+    align-items: center; justify-content: center; z-index: 600;
+  }
+  .overlay.show { display: flex; }
+  .card {
+    background: var(--cream); border-radius: 16px; padding: 28px 32px;
+    text-align: center; border: 3px solid var(--amber);
+    max-width: 320px;
+  }
+  .card .cat { font-size: 52px; }
+  .card h2 { color: var(--amber-dark); margin: 8px 0 4px; font-size: 20px; }
+  .card p { font-size: 14px; margin-bottom: 14px; }
+  .card button {
+    background: var(--amber); color: #fff; border: none; border-radius: 10px;
+    padding: 10px 22px; font-size: 15px; font-weight: 700; cursor: pointer;
+  }
+  /* keypad assist states */
+  #pad button.kpad-dup {
+    background: #eadfce; color: #b3a08a; border-color: #d8c9b4;
+    text-decoration: line-through; cursor: not-allowed;
+  }
+  #pad button.kpad-over {
+    background: #fdecec; color: #c0564f; border-color: #e8b3ae;
+  }
+  #pad button.kpad-ok {
+    background: #fff7ea; color: var(--amber-dark); border-color: var(--amber);
+    box-shadow: 0 0 0 2px rgba(217, 119, 6, .25);
+  }
+  /* hint */
+  .hint-badge {
+    display: inline-block; min-width: 16px; height: 16px; line-height: 16px;
+    border-radius: 8px; background: #fff; color: var(--amber-dark);
+    font-size: 10px; font-weight: 900; text-align: center; margin-left: 2px;
+    vertical-align: 1px;
+  }
+  .cell.hint-run {
+    box-shadow: inset 0 0 0 2px var(--amber);
+    background: #fdeecf !important;
+    transition: background .3s ease, box-shadow .3s ease;
+  }
+  .cell.hint-target {
+    box-shadow: inset 0 0 0 3px var(--amber) !important;
+    animation: hintPulse 1s ease-in-out 2;
+  }
+  @keyframes hintPulse {
+    0%, 100% { background: #fdeecf !important; }
+    50% { background: var(--amber) !important; }
+  }
+
+  .cell.clue-cell { cursor: pointer; }
+  .cell.clue-cell.clue-active {
+    outline: 3px solid var(--amber); outline-offset: -3px;
+    background: #fdeecf !important;
+  }
+  .cell.clue-lit {
+    box-shadow: inset 0 0 0 2px var(--amber);
+    background: #fff3d6 !important;
+  }
+  .coach-card {
+    display: none; position: fixed; left: 50%; transform: translateX(-50%);
+    bottom: 96px; z-index: 480; max-width: min(430px, 90vw);
+    background: var(--cream); border: 3px solid var(--amber); border-radius: 14px;
+    padding: 12px 16px; box-shadow: 0 8px 24px rgba(63, 45, 29, .25);
+    font-size: 13px; line-height: 1.45;
+  }
+  .coach-card.show { display: block; }
+  .coach-card .cc-title { font-weight: 800; color: var(--amber-dark); margin-bottom: 4px; }
+
+  .foot { margin-top: 14px; font-size: 11px; color: #b09a7f; }
+
+  /* ── fog mode ── */
+  .cell.fogB { position: relative; cursor: pointer; }
+  .cell.fogB::after {
+    content: ''; position: absolute; inset: 0; z-index: 2;
+    background: repeating-linear-gradient(45deg, rgba(63,45,29,.30) 0 6px, rgba(63,45,29,.14) 6px 12px);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    transition: opacity .48s ease;
+  }
+  .cell.fogB .pawmark {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 22px; opacity: .55; z-index: 3; pointer-events: none;
+    transition: opacity .5s ease, transform .5s ease;
+  }
+  .cell.fogB .dv, .cell.fogB .rv { filter: blur(5px); opacity: .3; transition: filter .48s ease, opacity .48s ease; }
+  .board.unlocked .cell.fogB::after { opacity: 0; }
+  .board.unlocked .cell.fogB .pawmark { opacity: 0; transform: scale(1.6) rotate(-14deg); }
+  .board.unlocked .cell.fogB .dv, .board.unlocked .cell.fogB .rv { filter: none; opacity: 1; }
+  .peekbar {
+    display: none; margin-top: 8px; font-size: 12.5px; font-weight: 700;
+    color: var(--amber-dark); background: #fff; border: 2px solid var(--line);
+    border-radius: 10px; padding: 6px 14px;
+  }
+  .peekbar.show { display: block; }
+  .paywall {
+    display: none; position: fixed; left: 50%; transform: translateX(-50%);
+    bottom: 24px; z-index: 500; width: min(420px, 92vw);
+    background: var(--cream); border: 3px solid var(--amber); border-radius: 14px;
+    padding: 14px; box-shadow: 0 8px 28px rgba(63,45,29,.3);
+  }
+  .paywall.show { display: block; }
+  .paywall .pw-title { font-size: 14px; font-weight: 800; color: var(--amber-dark); text-align: center; margin-bottom: 10px; }
+  .paywall .pw-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .paywall button {
+    font-size: 12.5px; font-weight: 700; border-radius: 18px; padding: 8px 14px;
+    border: 2px solid var(--amber); background: #fff; color: var(--amber-dark); cursor: pointer;
+  }
+  .paywall button.gold { background: var(--amber); color: #fff; }
+  .paywall button.plain { border-color: var(--line); color: #8a6d4e; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>🐱 Kakuro</h1>
+    <div class="sub">GridPaw demo — sums, no repeats, pure logic</div>
+  </header>
+
+  <div class="topbar">
+    <span class="chip" id="levelChip">Level 1</span>
+    <button class="btn" id="restartBtn">↺ Restart</button>
+    <button class="btn" id="skipBtn" style="display:none">Skip tutorial »</button>
+    <button class="btn" id="hintBtn" style="display:none">💡 Hint <span class="hint-badge" id="hintBadge">3</span></button>
+  </div>
+  <div class="topbar" id="fogJump" style="display:none">
+    <span style="font-size:12px;color:#8a6d4e;font-weight:700;">🐾 Fog preview:</span>
+    <button class="btn" id="jumpMedium">Medium 6×6</button>
+    <button class="btn" id="jumpHard">Hard 7×7</button>
+  </div>
+
+  <div class="board" id="board"></div>
+  <div class="msg tut" id="msg">Loading…</div>
+
+  <div class="pad" id="pad"></div>
+  <div class="peekbar" id="peekbar"></div>
+
+  <div class="paywall" id="paywall">
+    <div class="pw-title">🐾 Free peeks used up</div>
+    <div class="pw-row">
+      <button id="pwAd">📺 Watch ad · reveal 1</button>
+      <button id="pwGold" class="gold">🍬 Cat coins ×3 · unlimited</button>
+      <button id="pwX" class="plain">✕</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="winOverlay">
+    <div class="card">
+      <div class="cat">😺</div>
+      <h2 id="winTitle">Solved!</h2>
+      <p id="winText">Every run sums up. Purrfect.</p>
+      <button id="nextBtn">Next level →</button>
+    </div>
+  </div>
+
+  <div class="coach-card" id="clueCoach">
+    <div class="cc-title">💡 New: clue cells are tappable</div>
+    <div>Tap any clue cell — like the glowing one — and the run it controls lights up, so you always know which cells a number governs.</div>
+  </div>
+
+  <div class="foot">Demo build — engine self-tested via scripts/selftest-kakuro.mjs</div>
+
+<script src="../kakuro-engine.js?v=fog2"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ── state ──
+  var puzzle = null;
+  var digits = [];        // player fill (flat, 0 = empty)
+  var selected = -1;
+  var level = 0;          // 0-3 tutorials, then difficulty cycling
+  var busy = false;
+
+  // fog state
+  var fogActive = false;      // puzzle has fog blocks
+  var fogUnlocked = false;    // first block solved → whole far side revealed
+  var fogCells = [];          // boolean flat: cell belongs to the far block (white)
+  var fogClueCells = [];      // boolean flat: clue-carrying black cells of the far block
+  var revealed = [];          // boolean flat: peeked cells (white) — revealed individually
+  var revealedClues = [];     // boolean flat: peeked clue cells
+  var freeLeft = 2;           // free peeks per level
+  var goldMode = false;
+  var penaltySeconds = 0;     // demo stand-in for the +5s timer penalty
+  var FREE_PEEKS = 2;
+
+  function track(name, params) {
+    try {
+      if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+      else if (window.dataLayer) window.dataLayer.push(Object.assign({ event: name }, params || {}));
+    } catch (e) { /* analytics never blocks gameplay */ }
+  }
+
+  var boardEl = document.getElementById('board');
+  var msgEl = document.getElementById('msg');
+  var chipEl = document.getElementById('levelChip');
+  var overlayEl = document.getElementById('winOverlay');
+  var padEl = document.getElementById('pad');
+
+  // ── level plan: 4 tutorials then difficulties ──
+  function levelInfo(n) {
+    if (n < KAKURO_TUTORIALS.length) {
+      return { type: 'tutorial', def: KAKURO_TUTORIALS[n] };
+    }
+    var keys = ['easy', 'medium', 'hard'];
+    var key = keys[(n - KAKURO_TUTORIALS.length) % keys.length];
+    return { type: 'gen', preset: KAKURO_DIFFICULTIES[key], key: key };
+  }
+
+  function setMsg(text, cls) {
+    msgEl.textContent = text;
+    msgEl.className = 'msg' + (cls ? ' ' + cls : '');
+  }
+
+  // ── fog helpers ──
+  function initFog() {
+    fogActive = !!puzzle && puzzle.fogSplit !== undefined;
+    fogUnlocked = false;
+    revealed = [];
+    revealedClues = [];
+    freeLeft = FREE_PEEKS;
+    goldMode = false;
+    penaltySeconds = 0;
+    hintsLeft = FREE_HINTS;
+    updateHintBadge();
+    hintFocus = null;
+    fogCells = [];
+    fogClueCells = [];
+    if (!fogActive) return;
+    var vertical = puzzle.fogAxis !== 'h';
+    var total = puzzle.rows * puzzle.cols;
+    for (var i = 0; i < total; i++) {
+      var line = vertical ? i % puzzle.cols : Math.floor(i / puzzle.cols);
+      var far = line >= puzzle.fogSplit;
+      fogCells[i] = far && puzzle.white[i];
+      // clue cells beyond (or on) the split line belong to the far block
+      fogClueCells[i] = far && !puzzle.white[i] && !!(puzzle.downSum[i] || puzzle.rightSum[i]);
+    }
+    updatePeekbar();
+  }
+
+  function isFogged(i) {
+    if (!fogActive || fogUnlocked) return false;
+    if (revealed[i] || revealedClues[i]) return false;
+    return fogCells[i] || fogClueCells[i];
+  }
+
+  function updatePeekbar() {
+    var bar = document.getElementById('peekbar');
+    if (!fogActive) { bar.className = 'peekbar'; return; }
+    bar.className = 'peekbar show';
+    bar.textContent = goldMode
+      ? '🍬 Cat coins mode — unlimited peeks this level'
+      : '🐾 Free peeks left: ' + freeLeft + ' / ' + FREE_PEEKS + ' — tap the fog to peek';
+  }
+
+  function attemptPeek(i) {
+    if (goldMode) { revealPeek(i, 'gold'); return; }
+    if (freeLeft <= 0) {
+      document.getElementById('paywall').classList.add('show');
+      track('paywall_shown', { level: level });
+      return;
+    }
+    freeLeft--;
+    updatePeekbar();
+    revealPeek(i, 'free');
+  }
+
+  function revealPeek(i, method) {
+    revealed[i] = true;
+    // also reveal the clue cells of every run through this cell
+    var runs = computeRuns(puzzle);
+    for (var k = 0; k < runs.length; k++) {
+      if (runs[k].cells.indexOf(i) === -1) continue;
+      var clueIdx = runs[k].dir === 'h' ? runs[k].cells[0] - 1 : runs[k].cells[0] - puzzle.cols;
+      if (clueIdx >= 0 && !puzzle.white[clueIdx]) revealedClues[clueIdx] = true;
+    }
+    track('fog_peek', { method: method, level: level });
+    render();
+  }
+
+  function firstBlockSolved() {
+    if (!fogActive || fogUnlocked) return false;
+    var vertical = puzzle.fogAxis !== 'h';
+    var runs = computeRuns(puzzle);
+    for (var k = 0; k < runs.length; k++) {
+      var run = runs[k];
+      var clueIdx = run.dir === 'h' ? run.cells[0] - 1 : run.cells[0] - puzzle.cols;
+      var line = vertical ? run.cells[0] % puzzle.cols : Math.floor(run.cells[0] / puzzle.cols);
+      if (line >= puzzle.fogSplit) continue; // far-block run
+      var sum = 0, mask = 0;
+      for (var j = 0; j < run.cells.length; j++) {
+        var d = digits[run.cells[j]];
+        if (!d) return false; // incomplete
+        sum += d;
+        if (mask & (1 << d)) return false; // duplicate — not solved correctly
+        mask |= 1 << d;
+      }
+      var clue = run.dir === 'h' ? puzzle.rightSum[clueIdx] : puzzle.downSum[clueIdx];
+      if (sum !== clue) return false;
+    }
+    return true;
+  }
+
+  function maybeUnlockFog() {
+    if (!firstBlockSolved()) return;
+    fogUnlocked = true;
+    boardEl.classList.add('unlocked');
+    track('fog_block_unlocked', { level: level });
+    setMsg('🐾 Fog lifted! The far side is revealed — finish the board.');
+    updatePeekbar();
+  }
+
+  // ── hint (demo tier: direct answer reveal; 3 free per level) ──
+  var hintsLeft = 3;
+  var FREE_HINTS = 3;
+  var hintFocus = null; // { idx, digit } while the hinted cell is selected
+
+  function updateHintBadge() {
+    document.getElementById('hintBadge').textContent = hintsLeft;
+  }
+
+  function candidateInfo(i) {
+    // returns { usedMask, minRemaining } for cell i across both its runs
+    var usedMask = 0, minRemaining = Infinity;
+    var runs = computeRuns(puzzle);
+    for (var k = 0; k < runs.length; k++) {
+      if (runs[k].cells.indexOf(i) === -1) continue;
+      var clueIdx = runs[k].dir === 'h' ? runs[k].cells[0] - 1 : runs[k].cells[0] - puzzle.cols;
+      var clue = runs[k].dir === 'h' ? puzzle.rightSum[clueIdx] : puzzle.downSum[clueIdx];
+      var s = 0, m = 0;
+      for (var j = 0; j < runs[k].cells.length; j++) {
+        var ci = runs[k].cells[j];
+        if (ci === i) continue;
+        var v = digits[ci];
+        if (v) { s += v; m |= (1 << v); }
+      }
+      usedMask |= m;
+      var remaining = clue - s;
+      if (remaining < minRemaining) minRemaining = remaining;
+    }
+    return { usedMask: usedMask, minRemaining: minRemaining };
+  }
+
+  function useHint() {
+    if (busy || !puzzle) return;
+    if (hintsLeft <= 0) {
+      setMsg('No hints left this level — use 🐾 peeks or solve it!', 'err');
+      return;
+    }
+    hintsLeft--;
+    updateHintBadge();
+    track('hint_used', { level: level });
+    // target: prefer a FORCED cell (exactly one legal digit), else the most
+    // constrained open cell; reveal THE answer digit for it
+    var target = -1, bestC = 10, bestCell = -1;
+    for (var i = 0; i < puzzle.white.length; i++) {
+      if (!puzzle.white[i] || digits[i] || isFogged(i)) continue;
+      var info = candidateInfo(i);
+      var n = 0;
+      for (var d = 1; d <= 9; d++) {
+        if (!(info.usedMask & (1 << d)) && d <= info.minRemaining) n++;
+      }
+      if (n === 0) continue;
+      if (n === 1) { target = i; break; }
+      if (n < bestC) { bestC = n; bestCell = i; }
+    }
+    if (target < 0) target = bestCell;
+    if (target < 0) { setMsg('Nothing left to hint — board looks complete!'); return; }
+    var answer = puzzle.solution[target];
+    hintFocus = { idx: target, digit: answer };
+    selected = target;
+    render(); // keypad: only the answer digit is green
+    var gr = Math.floor(target / puzzle.cols) + 1;
+    var gc = (target % puzzle.cols) + 1;
+    // highlight the target cell + its runs on the board
+    var highlight = [target];
+    var runs = computeRuns(puzzle);
+    for (var k = 0; k < runs.length; k++) {
+      if (runs[k].cells.indexOf(target) >= 0) highlight = highlight.concat(runs[k].cells);
+    }
+    for (var h = 0; h < highlight.length; h++) {
+      var el = cellEl(highlight[h]);
+      if (el) el.classList.add('hint-run');
+    }
+    var tEl = cellEl(target);
+    if (tEl) tEl.classList.add('hint-target');
+    setTimeout(function () {
+      for (var h2 = 0; h2 < highlight.length; h2++) {
+        var el2 = cellEl(highlight[h2]);
+        if (el2) el2.classList.remove('hint-run');
+      }
+      if (tEl) tEl.classList.remove('hint-target');
+    }, 3000);
+    setMsg('💡 Fill ' + answer + ' in row ' + gr + ', col ' + gc + ' — the green key. (' + hintsLeft + ' hints left)');
+  }
+
+  // ── clue-cell tap: highlight the run(s) a clue governs ──
+  var litTimer = null;
+  function clueCellEl(i) {
+    return boardEl.querySelector('[data-clue-idx="' + i + '"]');
+  }
+  function clearLit() {
+    var lit = boardEl.querySelectorAll('.clue-lit, .clue-active');
+    for (var i = 0; i < lit.length; i++) lit[i].classList.remove('clue-lit', 'clue-active');
+    if (litTimer) { clearTimeout(litTimer); litTimer = null; }
+  }
+  function litClue(i) {
+    clearLit();
+    var clueEl = clueCellEl(i);
+    if (!clueEl || !clueEl.classList.contains('clue-cell')) return;
+    clueEl.classList.add('clue-active');
+    var runs = computeRuns(puzzle);
+    for (var k = 0; k < runs.length; k++) {
+      var clueIdx = runs[k].dir === 'h' ? runs[k].cells[0] - 1 : runs[k].cells[0] - puzzle.cols;
+      if (clueIdx !== i) continue;
+      for (var j = 0; j < runs[k].cells.length; j++) {
+        var el = cellEl(runs[k].cells[j]);
+        if (el) el.classList.add('clue-lit');
+      }
+    }
+    litTimer = setTimeout(clearLit, 2600);
+  }
+  boardEl.addEventListener('click', function () {
+    document.getElementById('clueCoach').classList.remove('show');
+  });
+
+  // ── one-time coach card for the tap-a-clue mechanic (real board, no overlay) ──
+  function maybeClueCoach() {
+    try {
+      if (localStorage.getItem('gridpaw-clue-coach-done')) return;
+      localStorage.setItem('gridpaw-clue-coach-done', '1');
+    } catch (e) { return; }
+    var runs = computeRuns(puzzle);
+    var pickClue = -1, pickRun = null;
+    for (var k = 0; k < runs.length; k++) {
+      var clueIdx = runs[k].dir === 'h' ? runs[k].cells[0] - 1 : runs[k].cells[0] - puzzle.cols;
+      if (clueIdx >= 0 && !isFogged(clueIdx) && !isFogged(runs[k].cells[0]) && runs[k].cells.length >= 2) {
+        pickClue = clueIdx; pickRun = runs[k]; break;
+      }
+    }
+    if (pickClue < 0) return;
+    setTimeout(function () {
+      var ce = clueCellEl(pickClue);
+      if (!ce) return; // board re-rendered meanwhile — skip, player will discover it
+      ce.classList.add('clue-active');
+      for (var j = 0; j < pickRun.cells.length; j++) {
+        var el = cellEl(pickRun.cells[j]);
+        if (el) el.classList.add('clue-lit');
+      }
+      document.getElementById('clueCoach').classList.add('show');
+      setTimeout(function () {
+        document.getElementById('clueCoach').classList.remove('show');
+        clearLit();
+      }, 7000);
+    }, 1600);
+  }
+
+  // ── board rendering ──
+  function render() {
+    updateKeypadHints();
+    boardEl.innerHTML = '';
+    boardEl.style.gridTemplateColumns = 'repeat(' + puzzle.cols + ', 46px)';
+    for (var r = 0; r < puzzle.rows; r++) {
+      for (var c = 0; c < puzzle.cols; c++) {
+        var i = r * puzzle.cols + c;
+        var cell = document.createElement('div');
+        cell.className = 'cell';
+        if (!puzzle.white[i]) {
+          cell.classList.add('black');
+          if (r === 0 && c === 0) cell.classList.add('corner');
+          if (puzzle.downSum[i]) {
+            var dv = document.createElement('span');
+            dv.className = 'dv';
+            dv.textContent = puzzle.downSum[i];
+            cell.appendChild(dv);
+          }
+          if (puzzle.rightSum[i]) {
+            var rv = document.createElement('span');
+            rv.className = 'rv';
+            rv.textContent = puzzle.rightSum[i];
+            cell.appendChild(rv);
+          }
+          if (!isFogged(i)) {
+            cell.classList.add('clue-cell');
+            cell.dataset.clueIdx = i;
+            cell.addEventListener('click', function (idx) {
+              return function () { litClue(idx); };
+            }(i));
+          }
+          if (isFogged(i)) {
+            cell.classList.add('fogB');
+            var paw = document.createElement('div');
+            paw.className = 'pawmark';
+            paw.textContent = '🐾';
+            cell.appendChild(paw);
+            cell.addEventListener('click', function (idx) {
+              return function () { attemptPeek(idx); };
+            }(i));
+          }
+        } else if (isFogged(i)) {
+          cell.classList.add('fogB');
+          var paw2 = document.createElement('div');
+          paw2.className = 'pawmark';
+          paw2.textContent = '🐾';
+          cell.appendChild(paw2);
+          cell.addEventListener('click', function (idx) {
+            return function () { attemptPeek(idx); };
+          }(i));
+        } else {
+          cell.dataset.idx = i;
+          if (digits[i]) cell.textContent = digits[i];
+          if (i === selected) cell.classList.add('sel');
+          cell.addEventListener('click', onCellClick);
+        }
+        boardEl.appendChild(cell);
+      }
+    }
+  }
+
+  function cellEl(i) {
+    return boardEl.querySelector('[data-idx="' + i + '"]');
+  }
+
+  function onCellClick(e) {
+    var i = parseInt(e.currentTarget.dataset.idx, 10);
+    if (selected === i) return;
+    selected = i;
+    render();
+  }
+
+  // ── input ──
+  function placeDigit(d) {
+    if (busy || selected < 0 || !puzzle) return;
+    digits[selected] = d;
+    var cell = cellEl(selected);
+    var err = getCellError(puzzle, digits, selected);
+    if (err) {
+      if (cell) {
+        cell.textContent = d;
+        cell.classList.add(err === 'dup' ? 'flash-err' : 'flash-over');
+        // dup: also flag the existing same-digit cell(s) in the run — the
+        // conflict is between TWO cells, so both must light up
+        var flagged = [];
+        if (err === 'dup') {
+          var runs = computeRuns(puzzle);
+          for (var k = 0; k < runs.length; k++) {
+            if (runs[k].cells.indexOf(selected) === -1) continue;
+            for (var j = 0; j < runs[k].cells.length; j++) {
+              var ci = runs[k].cells[j];
+              if (ci !== selected && digits[ci] === d) {
+                var cc = cellEl(ci);
+                if (cc) { cc.classList.add('flash-err'); flagged.push(cc); }
+              }
+            }
+          }
+        }
+        setTimeout(function () {
+          cell.classList.remove('flash-err', 'flash-over');
+          for (var f = 0; f < flagged.length; f++) flagged[f].classList.remove('flash-err');
+          render();
+        }, 500);
+      }
+      setMsg(
+        err === 'dup'
+          ? 'That digit is already in this run — no repeats!'
+          : 'That run already sums past its clue — too big!',
+        'err'
+      );
+      return; // do not keep the wrong digit
+    }
+    digits[selected] = d; // confirmed
+    hintFocus = null;
+    render();
+    if (checkKakuroWin(puzzle, digits)) onWin();
+    else {
+      maybeUnlockFog();
+      advanceSelection();
+    }
+  }
+
+  function clearCell() {
+    if (busy || selected < 0) return;
+    digits[selected] = 0;
+    render();
+  }
+
+  function advanceSelection() {
+    // move to next empty white cell (skip fogged cells)
+    var total = puzzle.rows * puzzle.cols;
+    for (var k = 1; k <= total; k++) {
+      var i = (selected + k) % total;
+      if (puzzle.white[i] && !digits[i] && !isFogged(i)) {
+        selected = i;
+        render();
+        return;
+      }
+    }
+  }
+
+  // ── keyboard ──
+  document.addEventListener('keydown', function (e) {
+    if (e.key >= '1' && e.key <= '9') placeDigit(parseInt(e.key, 10));
+    else if (e.key === 'Backspace' || e.key === 'Delete' || e.key === '0') clearCell();
+  });
+
+  // ── digit pad ──
+  (function buildPad() {
+    for (var d = 1; d <= 9; d++) {
+      (function (d) {
+        var b = document.createElement('button');
+        b.textContent = d;
+        b.dataset.digit = d;
+        b.addEventListener('click', function () { placeDigit(d); });
+        padEl.appendChild(b);
+      })(d);
+    }
+    var clear = document.createElement('button');
+    clear.textContent = '⌫';
+    clear.addEventListener('click', clearCell);
+    padEl.appendChild(clear);
+  })();
+
+  // ── keypad assist: dim digits that are already used in the selected cell's
+  // runs (dup) or would overflow a run's clue (over) — no board rescanning ──
+  function updateKeypadHints() {
+    var buttons = padEl.querySelectorAll('button[data-digit]');
+    if (selected === -1 || !puzzle || !puzzle.white[selected]) {
+      buttons.forEach(function (b) { b.className = ''; });
+      return;
+    }
+    var runs = computeRuns(puzzle);
+    var usedMask = 0, minRemaining = Infinity;
+    for (var k = 0; k < runs.length; k++) {
+      if (runs[k].cells.indexOf(selected) === -1) continue;
+      var clueIdx = runs[k].dir === 'h' ? runs[k].cells[0] - 1 : runs[k].cells[0] - puzzle.cols;
+      var clue = runs[k].dir === 'h' ? puzzle.rightSum[clueIdx] : puzzle.downSum[clueIdx];
+      var s = 0, m = 0;
+      for (var j = 0; j < runs[k].cells.length; j++) {
+        var ci = runs[k].cells[j];
+        if (ci === selected) continue;
+        var v = digits[ci];
+        if (v) { s += v; m |= (1 << v); }
+      }
+      usedMask |= m;                           // digits blocked by duplicates
+      var remaining = clue - s;
+      if (remaining < minRemaining) minRemaining = remaining; // tightest clue headroom
+    }
+    buttons.forEach(function (b) {
+      var d = parseInt(b.dataset.digit, 10);
+      if (hintFocus && hintFocus.idx === selected) {
+        // answer-reveal mode: only the hinted digit is marked
+        b.className = (d === hintFocus.digit) ? 'kpad-ok' : '';
+        b.title = (d === hintFocus.digit) ? 'The hinted digit' : '';
+        return;
+      }
+      var cls = '';
+      if (usedMask & (1 << d)) { cls = 'kpad-dup'; b.title = 'Already used in this cell\u2019s run \u2014 would be a duplicate'; }
+      else if (d > minRemaining) { cls = 'kpad-over'; b.title = 'Bigger than the remaining sum of this cell\u2019s run \u2014 cannot fit'; }
+      else { cls = 'kpad-ok'; b.title = 'Legal here'; }
+      b.className = cls;
+    });
+  }
+
+  // ── level loading ──
+  var worker = null;
+  var workerOk = false;
+  var pendingId = 0;
+  var pendingCb = null;
+  try {
+    worker = new Worker('gen-worker.js?v=fog2');
+    worker.onmessage = function (e) {
+      if (pendingCb && e.data.id === pendingId) {
+        var cb = pendingCb;
+        pendingCb = null;
+        cb(e.data.puzzle);
+      }
+    };
+    worker.onerror = function () { workerOk = false; };
+    workerOk = true;
+  } catch (err) { workerOk = false; } // file:// blocks workers — sync fallback below
+
+  function generateAsync(preset, cb) {
+    var fogBlocks = preset.key !== 'easy' ? 2 : undefined;
+    if (workerOk && worker) {
+      pendingId++;
+      pendingCb = cb;
+      worker.postMessage({
+        id: pendingId,
+        rows: preset.rows,
+        cols: preset.cols,
+        blackProb: preset.blackProb,
+        fogBlocks: fogBlocks,
+        timeBudgetMs: 8000
+      });
+    } else {
+      // sync fallback (file:// or worker failure) — browser paints first via setTimeout
+      setTimeout(function () {
+        var p = null;
+        var tries = 0;
+        while (!p && tries < 6) {
+          p = generateKakuroPuzzle({
+            rows: preset.rows,
+            cols: preset.cols,
+            blackProb: preset.blackProb,
+            fogBlocks: fogBlocks,
+            timeBudgetMs: 8000
+          });
+          tries++;
+        }
+        cb(p);
+      }, 30);
+    }
+  }
+
+  function newPuzzle() {
+    if (busy) return;
+    busy = true;
+    var info = levelInfo(level);
+    digits = [];
+    selected = -1;
+    overlayEl.classList.remove('show');
+    document.getElementById('paywall').classList.remove('show');
+    boardEl.classList.remove('unlocked');
+
+    if (info.type === 'tutorial') {
+      chipEl.textContent = 'Tutorial ' + (level + 1) + '/4 — ' + info.def.title;
+      chipEl.className = 'chip tut';
+      document.getElementById('skipBtn').style.display = '';
+      setMsg(info.def.lesson, 'tut');
+      // let the browser paint the "Loading" message before blocking
+      setTimeout(function () {
+        puzzle = generateTutorialPuzzle(info.def);
+        busy = false;
+        render();
+      }, 30);
+    } else {
+      chipEl.textContent = info.key.charAt(0).toUpperCase() + info.key.slice(1) +
+        ' — ' + (info.preset.rows) + '×' + (info.preset.cols) + (info.key === 'easy' ? ' · no fog' : ' · 🐾 fog');
+      chipEl.className = 'chip';
+      document.getElementById('skipBtn').style.display = 'none';
+      setMsg('Generating a fresh puzzle…');
+      generateAsync(info.preset, function (p) {
+        puzzle = p;
+        busy = false;
+        if (!p) {
+          setMsg('Could not generate a puzzle this time — tap ↺ Restart to try again.', 'err');
+          return;
+        }
+        initFog();
+        if (fogActive) {
+          setMsg('🐾 Fog mode: solve the visible block first. Tap the fog to peek (' + FREE_PEEKS + ' free).');
+        } else if (info.type === 'gen') {
+          setMsg('Easy has no fog — 🐾 Fog mode starts at Medium (use the fog preview buttons below).');
+        } else {
+          setMsg('Fill every white cell. Runs must sum to their clue — no repeated digits in a run.');
+        }
+        render();
+        maybeClueCoach();
+      });
+    }
+  }
+
+  // ── win ──
+  function onWin() {
+    busy = true;
+    var info = levelInfo(level);
+    var title = document.getElementById('winTitle');
+    var text = document.getElementById('winText');
+    if (info.type === 'tutorial') {
+      // auto-advance tutorials (skill pattern: no "next" friction during teaching)
+      setMsg('✅ ' + info.def.title + ' — got it! Next lesson…', 'tut');
+      setTimeout(function () {
+        level++;
+        busy = false;
+        newPuzzle();
+      }, 900);
+      return;
+    }
+    title.textContent = 'Solved! 😺';
+    text.textContent = 'Every run sums up. Purrfect.';
+    overlayEl.classList.add('show');
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', function () {
+    level++;
+    busy = false;
+    newPuzzle();
+  });
+  document.getElementById('restartBtn').addEventListener('click', function () {
+    busy = false;
+    newPuzzle();
+  });
+  document.getElementById('skipBtn').addEventListener('click', function () {
+    if (level < KAKURO_TUTORIALS.length) {
+      level = KAKURO_TUTORIALS.length;
+      busy = false;
+      newPuzzle();
+    }
+  });
+  // fog preview jumps (demo-only: land straight on a fog level)
+  document.getElementById('jumpMedium').addEventListener('click', function () {
+    level = KAKURO_TUTORIALS.length + 1;
+    busy = false;
+    newPuzzle();
+  });
+  document.getElementById('jumpHard').addEventListener('click', function () {
+    level = KAKURO_TUTORIALS.length + 2;
+    busy = false;
+    newPuzzle();
+  });
+  // show the jump row + hint button once out of tutorials
+  setInterval(function () {
+    var gen = level >= KAKURO_TUTORIALS.length;
+    document.getElementById('fogJump').style.display = gen ? 'flex' : 'none';
+    document.getElementById('hintBtn').style.display = gen ? '' : 'none';
+  }, 500);
+  document.getElementById('hintBtn').addEventListener('click', useHint);
+
+  // ── paywall (demo mock: no real billing — GA4 events record intent) ──
+  function payPeek(method) {
+    var total = puzzle.rows * puzzle.cols;
+    for (var i = 0; i < total; i++) {
+      if (isFogged(i)) { attemptPeekWithMethod(i, method); break; }
+    }
+    document.getElementById('paywall').classList.remove('show');
+  }
+
+  function attemptPeekWithMethod(flatIdx, method) {
+    if (method === 'time') {
+      penaltySeconds += 5;
+      setMsg('⏱ +5s penalty recorded (demo). Total: +' + penaltySeconds + 's.', 'err');
+    }
+    if (method === 'gold') {
+      goldMode = true;
+      updatePeekbar();
+    }
+    revealPeek(flatIdx, method);
+  }
+
+  document.getElementById('pwAd').addEventListener('click', function () {
+    track('paywall_convert', { method: 'ad', level: level });
+    payPeek('ad');
+  });
+  document.getElementById('pwGold').addEventListener('click', function () {
+    track('paywall_convert', { method: 'gold', level: level });
+    payPeek('gold');
+  });
+  document.getElementById('pwX').addEventListener('click', function () {
+    document.getElementById('paywall').classList.remove('show');
+  });
+
+  // ── test hooks (demo page is noindex; enables scripted playtest) ──
+  window.__kakuroTest = {
+    fogActive: function () { return fogActive; },
+    fogCount: function () {
+      var n = 0;
+      for (var i = 0; i < puzzle.rows * puzzle.cols; i++) if (isFogged(i)) n++;
+      return n;
+    },
+    freeLeft: function () { return freeLeft; },
+    solveVisible: function () {
+      if (!puzzle) return;
+      for (var i = 0; i < puzzle.white.length; i++) {
+        if (puzzle.white[i] && !isFogged(i)) digits[i] = puzzle.solution[i];
+      }
+      render();
+      maybeUnlockFog();
+      if (checkKakuroWin(puzzle, digits)) onWin();
+    },
+    solveRest: function () {
+      if (!puzzle) return;
+      for (var i = 0; i < puzzle.white.length; i++) {
+        if (puzzle.white[i]) digits[i] = puzzle.solution[i];
+      }
+      render();
+      if (checkKakuroWin(puzzle, digits)) onWin();
+    }
+  };
+
+  newPuzzle();
+})();
+</script>
+</body>
+</html>
