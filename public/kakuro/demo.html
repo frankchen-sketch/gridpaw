@@ -672,8 +672,21 @@
     render();
     if (checkKakuroWin(puzzle, digits)) onWin();
     else {
-      maybeUnlockFog();
-      advanceSelection();
+      // dead-board detector: run the solver against the current state — if no
+      // completion exists, say so (education, never a lock). Catches wrong
+      // digits that are locally legal but globally doomed.
+      var dead = false;
+      try {
+        dead = typeof solveKakuroFromState === 'function' &&
+               solveKakuroFromState(puzzle, digits, 2).count === 0;
+      } catch (e) { /* solver hiccup — stay silent */ }
+      if (dead) {
+        track('board_dead', { level: level });
+        setMsg('⚠️ This board can no longer be solved — one of your earlier digits must be wrong. Clear cells to backtrack.', 'err');
+      } else {
+        maybeUnlockFog();
+        advanceSelection();
+      }
     }
   }
 
@@ -951,6 +964,13 @@
   // ── test hooks (demo page is noindex; enables scripted playtest) ──
   window.__kakuroTest = {
     fogActive: function () { return fogActive; },
+    solutionAt: function (i) { return puzzle ? puzzle.solution[i] : null; },
+    digitAt: function (i) { return puzzle ? digits[i] : null; },
+    whiteCells: function () {
+      var out = [];
+      for (var i = 0; i < puzzle.white.length; i++) if (puzzle.white[i]) out.push(i);
+      return out;
+    },
     fogCount: function () {
       var n = 0;
       for (var i = 0; i < puzzle.rows * puzzle.cols; i++) if (isFogged(i)) n++;
