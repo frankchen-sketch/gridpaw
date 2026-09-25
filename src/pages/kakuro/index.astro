@@ -3,6 +3,7 @@
 // Game lives in public/kakuro/demo.html, embedded via iframe (?embed=1).
 import SEOHead from '../../components/SEOHead.astro';
 import ExtensionPromo from '../../components/ExtensionPromo.astro';
+import GameNav from '../../components/GameNav.astro';
 
 const title = 'Play Kakuro Online: Free Cross-Sum Puzzle Game';
 const description =
@@ -62,24 +63,10 @@ const faqs = [
   })} />
 </head>
 <body>
-  <header class="site-head">
-    <div class="head-inner">
-      <a href="/" class="brand">🐱 <strong>GridPaw</strong></a>
-      <nav class="nav" aria-label="Main navigation">
-        <div class="game-switcher">
-          <button class="switcher-btn" onclick="this.nextElementSibling.classList.toggle('open')">Games</button>
-          <div class="switcher-menu">
-            <a href="/"><strong>🟧 Shikaku</strong><span class="game-desc">Rectangle partition puzzle</span></a>
-            <a href="/akari/"><strong>💡 Akari</strong><span class="game-desc">Light Up puzzle</span></a>
-            <a href="/kakuro/" class="active"><strong>🔢 Kakuro</strong><span class="game-desc">Cross-sum puzzle</span></a>
-            <a href="/pictomino/"><strong>🧩 Pictomino</strong><span class="game-desc">Spatial reasoning puzzle</span></a>
-          </div>
-        </div>
-        <a href="#how-to-play">How to Play</a>
-        <a href="#kakuro-faq">FAQ</a>
-      </nav>
-    </div>
-  </header>
+  <GameNav active="/kakuro/">
+    <a href="#how-to-play" style="text-decoration:none;color:#3f2d1d;font-size:.92rem">How to Play</a>
+    <a href="#kakuro-faq" style="text-decoration:none;color:#3f2d1d;font-size:.92rem">FAQ</a>
+  </GameNav>
   <nav class="crumbs" aria-label="Breadcrumb">
     <a href="/">Home</a> <span aria-hidden="true">›</span> <span>Kakuro</span>
   </nav>
