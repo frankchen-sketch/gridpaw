@@ -142,6 +142,22 @@
   /* first-visit how-to-play guide card */
   .card.guide { max-width: 420px; text-align: left; padding: 20px 22px; }
   .card.guide h2 { text-align: center; }
+  .mini-wrap { text-align: center; margin: 2px 0 10px; }
+  .mini-board {
+    display: grid; grid-template-columns: repeat(5, 22px); gap: 2px;
+    width: max-content; margin: 0 auto 5px; padding: 3px;
+    background: #e7d4b8; border-radius: 8px;
+  }
+  .mini-board span { width: 22px; height: 22px; border-radius: 3px; box-sizing: border-box; }
+  .m-sea { background: #4a3a28; }
+  .m-island { background: #fffdf8; box-shadow: inset 0 0 0 1px #d9c6a8; }
+  .m-clue {
+    background: var(--amber); color: #fff; font-weight: 800; font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .m-hl { outline: 2px solid var(--amber); outline-offset: -2px; }
+  .mini-cap { font-size: 11.5px; color: var(--muted); line-height: 1.45; }
+  .card.guide { max-height: 92vh; overflow-y: auto; }
   .card.guide p { font-size: 13.5px; line-height: 1.5; margin: 0 0 9px; }
   .card.guide .rule { margin-bottom: 3px; }
   .card.guide .rule-seg {
@@ -203,6 +219,16 @@
     <div class="card guide">
       <div class="cat">🐾</div>
       <h2>How to play Nurikabe</h2>
+      <div class="mini-wrap">
+        <div class="mini-board" aria-hidden="true">
+          <span class="m-sea"></span><span class="m-sea"></span><span class="m-sea"></span><span class="m-sea"></span><span class="m-sea"></span>
+          <span class="m-sea"></span><span class="m-clue m-hl">3</span><span class="m-island m-hl"></span><span class="m-sea"></span><span class="m-clue">1</span>
+          <span class="m-sea"></span><span class="m-sea"></span><span class="m-island m-hl"></span><span class="m-sea"></span><span class="m-sea"></span>
+          <span class="m-clue">3</span><span class="m-sea"></span><span class="m-sea"></span><span class="m-clue">1</span><span class="m-sea"></span>
+          <span class="m-island"></span><span class="m-island"></span><span class="m-sea"></span><span class="m-sea"></span><span class="m-sea"></span>
+        </div>
+        <div class="mini-cap">A finished board: every island holds exactly its number · the sea is one connected mass · no 2×2 sea.</div>
+      </div>
       <div class="rule-seg">
         <div class="seg-title">👆 How to Play</div>
         <p class="rule">Tap a cell to cycle it: unknown → sea · → island ⬛. Clue cells are fixed.</p>
