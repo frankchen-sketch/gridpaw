@@ -446,21 +446,28 @@
     hintsLeft--;
     updateHintBadge();
     track('hint_used', { level: level });
-    // target: prefer a FORCED cell (exactly one legal digit), else the most
-    // constrained open cell; reveal THE answer digit for it
-    var target = -1, bestC = 10, bestCell = -1;
-    for (var i = 0; i < puzzle.white.length; i++) {
-      if (!puzzle.white[i] || digits[i] || isFogged(i)) continue;
-      var info = candidateInfo(i);
-      var n = 0;
-      for (var d = 1; d <= 9; d++) {
-        if (!(info.usedMask & (1 << d)) && d <= info.minRemaining) n++;
-      }
-      if (n === 0) continue;
-      if (n === 1) { target = i; break; }
-      if (n < bestC) { bestC = n; bestCell = i; }
+    // target: the user's selected cell (if valid) takes priority — a hint for
+    // a cell you didn't pick feels broken; otherwise auto-pick
+    var target = -1;
+    if (selected >= 0 && puzzle.white[selected] && !digits[selected] && !isFogged(selected)) {
+      target = selected;
     }
-    if (target < 0) target = bestCell;
+    if (target < 0) {
+      // prefer a FORCED cell (exactly one legal digit), else the most constrained open cell
+      var bestC = 10, bestCell = -1;
+      for (var i = 0; i < puzzle.white.length; i++) {
+        if (!puzzle.white[i] || digits[i] || isFogged(i)) continue;
+        var info = candidateInfo(i);
+        var n = 0;
+        for (var d = 1; d <= 9; d++) {
+          if (!(info.usedMask & (1 << d)) && d <= info.minRemaining) n++;
+        }
+        if (n === 0) continue;
+        if (n === 1) { target = i; break; }
+        if (n < bestC) { bestC = n; bestCell = i; }
+      }
+      if (target < 0) target = bestCell;
+    }
     if (target < 0) { setMsg('Nothing left to hint — board looks complete!'); return; }
     var answer = puzzle.solution[target];
     hintFocus = { idx: target, digit: answer };
