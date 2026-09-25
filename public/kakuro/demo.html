@@ -410,9 +410,12 @@
   var hintsLeft = 3;
   var FREE_HINTS = 3;
   var hintFocus = null; // { idx, digit } while the hinted cell is selected
+  // dev builds (localhost/LAN) get unlimited hints for testing — mirrors the
+  // admin/dev bypass pattern used by the other GridPaw games
+  var isDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '192.168.31.91';
 
   function updateHintBadge() {
-    document.getElementById('hintBadge').textContent = hintsLeft;
+    document.getElementById('hintBadge').textContent = isDev ? '∞' : hintsLeft;
   }
 
   function candidateInfo(i) {
@@ -439,12 +442,14 @@
 
   function useHint() {
     if (busy || !puzzle) return;
-    if (hintsLeft <= 0) {
+    if (!isDev && hintsLeft <= 0) {
       setMsg('No hints left this level — use 🐾 peeks or solve it!', 'err');
       return;
     }
-    hintsLeft--;
-    updateHintBadge();
+    if (!isDev) {
+      hintsLeft--;
+      updateHintBadge();
+    }
     track('hint_used', { level: level });
     // target: the user's selected cell (if valid) takes priority — a hint for
     // a cell you didn't pick feels broken; otherwise auto-pick
@@ -494,7 +499,7 @@
       }
       if (tEl) tEl.classList.remove('hint-target');
     }, 3000);
-    setMsg('💡 Fill ' + answer + ' in row ' + gr + ', col ' + gc + ' — the green key. (' + hintsLeft + ' hints left)');
+    setMsg('💡 Fill ' + answer + ' in row ' + gr + ', col ' + gc + ' — the green key. (' + (isDev ? '∞' : hintsLeft) + ' hints left)');
   }
 
   // ── clue-cell tap: highlight the run(s) a clue governs ──
