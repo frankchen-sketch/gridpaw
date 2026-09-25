@@ -1,0 +1,225 @@
+---
+// /nonogram/ — official SEO game page.
+// Game lives in public/nonogram/demo.html, embedded via iframe (?embed=1).
+import SEOHead from '../../components/SEOHead.astro';
+import ExtensionPromo from '../../components/ExtensionPromo.astro';
+import GameNav from '../../components/GameNav.astro';
+
+const title = 'Play Nonogram Online: Free Picture Logic Puzzles';
+const description =
+  'Play Nonogram free online: paint-by-number logic puzzles with a 4-step tutorial, a picture to reveal in every level, an 11-level campaign and daily challenges.';
+
+const faqs = [
+  {
+    q: 'What is a Nonogram?',
+    a: 'A Nonogram, also known as Picross or a paint-by-number puzzle, is a Japanese logic puzzle played on a grid. The numbers along each row and column are run lengths: they tell you the sizes of consecutive filled blocks in that line. Fill the right cells and a hidden picture emerges.'
+  },
+  {
+    q: 'How do I play this Nonogram game?',
+    a: 'Tap a cell once to fill it, again to mark it empty with an X, and again to clear it. Start from lines whose clues pin cells down immediately: a 5 clue in a 5-wide line fills the whole line, and a clue of 4 in a 5-wide line fills at least three cells. Cross-check rows against columns and the picture resolves itself.'
+  },
+  {
+    q: 'What do I get when I solve a puzzle?',
+    a: 'A picture. Every Nonogram hides an image in its filled cells, and GridPaw levels are themed: the tutorials and early campaign levels each reveal a cat. Solving the logic earns you the reveal, which is the moment Nonogram players come back for.'
+  },
+  {
+    q: 'Is this Nonogram game free to play?',
+    a: 'Yes. The tutorial, all 11 campaign levels and the daily puzzles are free in your browser with no download and no account. Hints come with a free allowance per level, and the current build does not charge anything.'
+  },
+  {
+    q: 'Is Nonogram the same as Picross or Griddler?',
+    a: 'Yes — Nonogram, Picross, Griddler, Paint by Numbers and Japanese Crosswords are all names for the same puzzle type. The name Picross is a trademark of Jupiter Corporation, so independent sites like GridPaw use the generic name Nonogram. The rules are identical.'
+  }
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/nonogram/" type="website" />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/nonogram/">
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/nonogram/">
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebApplication',
+        'name': 'GridPaw Nonogram',
+        'applicationCategory': 'GameApplication',
+        'operatingSystem': 'Web Browser',
+        'url': 'https://gridpaw.com/nonogram/',
+        'description': 'Free online Nonogram (paint-by-number) logic puzzles with a 4-step tutorial, a picture to reveal in every level, an 11-level campaign and daily challenges.',
+        'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' }
+      },
+      {
+        '@type': 'FAQPage',
+        'mainEntity': faqs.map((f) => ({
+          '@type': 'Question',
+          'name': f.q,
+          'acceptedAnswer': { '@type': 'Answer', 'text': f.a }
+        }))
+      }
+    ]
+  })} />
+</head>
+<body>
+  <GameNav active="/nonogram/">
+    <a href="#how-to-play" style="text-decoration:none;color:#3f2d1d;font-size:.92rem">How to Play</a>
+    <a href="#nonogram-faq" style="text-decoration:none;color:#3f2d1d;font-size:.92rem">FAQ</a>
+  </GameNav>
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <a href="/">Home</a> <span aria-hidden="true">›</span> <span>Nonogram</span>
+  </nav>
+
+  <main>
+    <h1>Play Nonogram Online — Free Picture Logic Puzzles</h1>
+    <p class="lede">
+      Nonogram is the paint-by-number member of the Japanese logic puzzle family: the
+      clues count the filled blocks in every row and column, and the picture only
+      appears when every line is true. Learn it in four guided lessons — each one
+      reveals a cat — then clear an 11-level campaign and keep going with daily
+      puzzles. Everything runs in your browser.
+    </p>
+
+    <div class="game-frame">
+      <iframe
+        src="/nonogram/demo.html?embed=1"
+        title="Play Nonogram free online at GridPaw"
+        width="100%"
+        height="820"
+        style="border:0;border-radius:16px;display:block;background:#fff8ef"
+      ></iframe>
+    </div>
+    <p class="cta-line">🐱 In a sums mood? <a href="/kakuro/">Play Kakuro, our cross-sum game, free in your browser →</a></p>
+
+    <section>
+      <h2 id="how-to-play">How to Play Nonogram in 3 Rules</h2>
+      <ol class="rules">
+        <li>
+          <strong>Numbers are block lengths.</strong>
+          A clue like <em>3 1</em> means: a block of 3 filled cells, at least one gap,
+          then a block of 1 — in that exact order along the line. Blocks never touch.
+        </li>
+        <li>
+          <strong>Edge clues pin cells.</strong>
+          A clue that touches the border forces cells immediately: 5 in a 5-wide line
+          fills the whole line, and a 4 in a 5-wide line pins at least three cells no
+          matter where it starts. Scan the borders first — they are free deductions.
+        </li>
+        <li>
+          <strong>Cross the lines.</strong>
+          Rows alone stall. Every filled cell you commit narrows the crossing column's
+          options, and vice versa. Alternate between rows and columns and the picture
+          resolves without guessing.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Every Level Reveals a Picture</h2>
+      <p>
+        Most Nonogram sites hand you anonymous grids. GridPaw levels are built around
+        the reveal: the four tutorial lessons each uncover a cat, the campaign keeps
+        the theme going, and the win screen replays your picture cell by cell. The
+        reveal is the point — we made sure you can see it.
+      </p>
+      <p>
+        Every generated board is verified to have exactly one solution, and the Easy
+        and Medium levels are additionally verified to be solvable by pure line logic
+        alone — no guessing required. When you do get stuck, the hint button reveals
+        one true cell and the message bar tells you where it sits.
+      </p>
+    </section>
+
+    <section>
+      <h2>Levels, Progress and Daily Puzzles</h2>
+      <p>
+        The campaign runs 4 tutorial lessons, then 11 levels: three Easy 5×5 boards,
+        four Medium 10×10 boards and four Hard 15×15 boards. Your progress is saved
+        in your browser, so you can leave and resume anytime. After the campaign,
+        endless daily puzzles keep coming: a date-seeded board that is the same for
+        every player on the same day, alternating Medium and Hard.
+      </p>
+    </section>
+
+    <section>
+      <h2 id="nonogram-faq">Nonogram FAQ</h2>
+      {faqs.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </section>
+
+    <section class="more">
+      <h2>More Logic Puzzles on GridPaw</h2>
+      <ul class="links">
+        <li><a href="/kakuro/">Kakuro (Cross Sums)</a> — the mathematical crossword cousin.</li>
+        <li><a href="/akari/">Akari (Light Up)</a> — place lights, light every cell, obey the numbered walls.</li>
+        <li><a href="/japanese-logic-puzzles/">Japanese logic puzzles</a> — the family Nonogram belongs to.</li>
+        <li><a href="/brain-teasers-for-adults/">Brain teasers for adults</a> — warm up before the Hard levels.</li>
+      </ul>
+      <p class="cta-line">🐱 Ready to paint? <a href="/">Play Shikaku on GridPaw →</a></p>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <ExtensionPromo />
+    <p>GridPaw: Free online Nonogram picture logic puzzles with cats.</p>
+    <p><a href="/">GridPaw Shikaku</a> · <a href="/akari/">GridPaw Akari</a> · <a href="/kakuro/">GridPaw Kakuro</a> · <a href="/pictomino/">GridPaw Pictomino</a></p>
+    <p><a href="https://www.pinterest.com/gridpaw/">Pinterest</a> · <a href="https://chromewebstore.google.com/detail/gridpaw-%E2%80%94-daily-akari-puz/mjdplaoanamjdbbpkgccjnhmlgnpcamj">Chrome Extension</a> · <a href="https://gridpaw-games.lovable.app">Lovable</a> · <a href="/community/">Community</a></p>
+  </footer>
+
+  <style>
+    :root {
+      --amber: #d97706;
+      --amber-dark: #b45309;
+      --cream: #fff8ef;
+      --cream-2: #fdeed3;
+      --ink: #3f2d1d;
+      --muted: #8a6f55;
+      --line: #e7d4b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.65;
+    }
+    main { max-width: 860px; margin: 0 auto; padding: 0 1.2rem 3rem; }
+    .crumbs { max-width: 860px; margin: 0 auto; padding: 1rem 1.2rem; font-size: .9rem; color: var(--muted); }
+    .crumbs a { color: var(--amber-dark); text-decoration: none; }
+    .crumbs a:hover { text-decoration: underline; }
+    h1 { font-size: 1.9rem; line-height: 1.25; margin: .5rem 0 1rem; }
+    h2 { font-size: 1.35rem; margin: 2.4rem 0 .8rem; }
+    .lede { font-size: 1.05rem; color: var(--ink); margin-bottom: 1.4rem; }
+    .game-frame { margin: 1rem 0; }
+    .cta-line { margin: .6rem 0 1.6rem; color: var(--muted); font-size: .95rem; }
+    .cta-line a { color: var(--amber-dark); font-weight: 600; }
+    .rules { margin: .4rem 0 0 1.4rem; display: grid; gap: .9rem; }
+    .rules li { padding-left: .3rem; }
+    section p { margin-bottom: .8rem; }
+    details {
+      border: 1px solid var(--line); border-radius: 10px; background: var(--cream-2);
+      padding: .7rem 1rem; margin-bottom: .6rem;
+    }
+    summary { font-weight: 700; cursor: pointer; }
+    details p { margin-top: .5rem; color: var(--ink); }
+    .more .links { margin-left: 1.4rem; display: grid; gap: .4rem; }
+    .more a { color: var(--amber-dark); font-weight: 600; }
+    .site-foot {
+      border-top: 1px solid var(--line); margin-top: 3rem;
+      padding: 1.6rem 1.2rem 2.4rem; text-align: center; color: var(--muted); font-size: .92rem;
+    }
+    .site-foot p { margin: .35rem 0; }
+    .site-foot a { color: var(--amber-dark); text-decoration: none; }
+    .site-foot a:hover { text-decoration: underline; }
+    @media (max-width: 640px) {
+      h1 { font-size: 1.5rem; }
+      .rules { margin-left: 1.1rem; }
+    }
+  </style>
+</body>
+</html>
