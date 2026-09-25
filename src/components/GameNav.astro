@@ -1,0 +1,56 @@
+---
+// Hub navigation: sticky header with the four-game switcher.
+// Self-contained styles (each page has its own palette). active = current page.
+interface Props {
+  active?: string; // current page href; '' (default) = no highlight, for content pages
+}
+const { active = '' } = Astro.props;
+const games = [
+  { href: '/', emoji: '🟧', name: 'Shikaku', desc: 'Rectangle partition puzzle' },
+  { href: '/akari/', emoji: '💡', name: 'Akari', desc: 'Light Up puzzle' },
+  { href: '/kakuro/', emoji: '🔢', name: 'Kakuro', desc: 'Cross-sum puzzle' },
+  { href: '/pictomino/', emoji: '🧩', name: 'Pictomino', desc: 'Spatial reasoning puzzle' },
+];
+---
+<header class="gp-nav" aria-label="Site navigation">
+  <div class="gp-nav-inner">
+    <a href="/" class="gp-nav-brand">🐱 <strong>GridPaw</strong></a>
+    <div class="gp-nav-right">
+      <div class="gp-switcher">
+        <button class="gp-switcher-btn" onclick="this.nextElementSibling.classList.toggle('open')">Games</button>
+        <div class="gp-switcher-menu">
+          {games.map((g) => (
+            <a href={g.href} class={g.href === active ? 'active' : ''}>
+              <strong>{g.emoji} {g.name}</strong>
+              <span class="gp-game-desc">{g.desc}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+      <slot />
+    </div>
+  </div>
+</header>
+<style>
+  .gp-nav { position: sticky; top: 0; z-index: 30; background: #fff8ef; border-bottom: 1px solid #e7d4b8; }
+  .gp-nav-inner { max-width: 72rem; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 3.2rem; padding: 0 1.2rem; }
+  .gp-nav-brand { text-decoration: none; color: #3f2d1d; font-size: 1rem; }
+  .gp-nav-right { display: flex; align-items: center; gap: 1rem; }
+  .gp-switcher { position: relative; }
+  .gp-switcher-btn {
+    background: #d97706; color: #fff; border: none; border-radius: 8px;
+    padding: .35rem .8rem; font-weight: 700; cursor: pointer; font-size: .9rem;
+  }
+  .gp-switcher-menu {
+    display: none; position: absolute; right: 0; background: #fff; border: 1px solid #e7d4b8;
+    border-radius: 10px; padding: .4rem; box-shadow: 0 8px 20px rgba(63,45,29,.15); min-width: 230px;
+  }
+  .gp-switcher-menu.open { display: block; }
+  .gp-switcher-menu a {
+    display: flex; flex-direction: column; padding: .5rem .7rem;
+    border-radius: 8px; text-decoration: none; color: #3f2d1d;
+  }
+  .gp-switcher-menu a:hover { background: #fdeed3; }
+  .gp-switcher-menu a.active { background: #fdeed3; }
+  .gp-game-desc { font-size: .78rem; color: #8a6f55; }
+</style>
