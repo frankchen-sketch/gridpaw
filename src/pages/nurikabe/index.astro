@@ -1,0 +1,225 @@
+---
+// /nurikabe/ — official SEO game page.
+// Game lives in public/nurikabe/demo.html, embedded via iframe (?embed=1).
+import SEOHead from '../../components/SEOHead.astro';
+import ExtensionPromo from '../../components/ExtensionPromo.astro';
+import GameNav from '../../components/GameNav.astro';
+
+const title = 'Play Nurikabe Online: Free Island and Sea Logic Puzzles';
+const description =
+  'Play Nurikabe free online: grow numbered islands, keep the sea connected and never allow a 2×2 ocean. A 4-step tutorial, an 11-level campaign and daily challenges — all in your browser.';
+
+const faqs = [
+  {
+    q: 'What is a Nurikabe puzzle?',
+    a: 'Nurikabe is a Japanese logic puzzle played on a grid. Some cells contain numbers; each number is the size of an island — a connected group of white cells — and every island contains exactly one number. All the remaining cells are sea (black). The sea must form one single connected area and may never contain a 2×2 square. The name comes from a Japanese myth: a spirit that manifests as a wall, which is exactly what the black cells feel like.'
+  },
+  {
+    q: 'How do I play this Nurikabe game?',
+    a: 'Tap a cell to cycle it between island, sea and unknown. Start from the numbers: a clue of 1 tells you its four neighbours are sea, and a clue of 2 in a corner pins an entire island immediately. Watch the sea, too — two sea cells that would close off a 2×2 square must be islands, and a cell that no island can reach must be sea.'
+  },
+  {
+    q: 'What strategies solve Nurikabe fastest?',
+    a: 'Three habits cover most of the board. First, exhaust each island: when an island has reached its number, every unknown neighbour becomes sea. Second, protect the sea: any island that would cut the sea in two, or complete a 2×2 black square, is impossible. Third, count reachability: a cell that no unfinished island can grow into within its remaining capacity must be sea.'
+  },
+  {
+    q: 'Is this Nurikabe game free to play?',
+    a: 'Yes. The tutorial, all 11 campaign levels and the daily puzzles are free in your browser with no download and no account. Hints come with a free allowance per level, and the current build does not charge anything.'
+  },
+  {
+    q: 'Do I need to guess in Nurikabe?',
+    a: 'Well-constructed Nurikabe boards are solvable by pure logic — every cell is forced by the three rules. Every GridPaw board is verified to have exactly one solution, and when you do stall, the hint button reveals one true cell instead of leaving you stuck.'
+  }
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/nurikabe/" type="website" />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/nurikabe/">
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/nurikabe/">
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebApplication',
+        'name': 'GridPaw Nurikabe',
+        'applicationCategory': 'GameApplication',
+        'operatingSystem': 'Web Browser',
+        'url': 'https://gridpaw.com/nurikabe/',
+        'description': 'Free online Nurikabe logic puzzles: grow numbered islands, keep the sea connected, no 2×2 ocean. 4-step tutorial, 11-level campaign and daily challenges.',
+        'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' }
+      },
+      {
+        '@type': 'FAQPage',
+        'mainEntity': faqs.map((f) => ({
+          '@type': 'Question',
+          'name': f.q,
+          'acceptedAnswer': { '@type': 'Answer', 'text': f.a }
+        }))
+      }
+    ]
+  })} />
+</head>
+<body>
+  <GameNav active="/nurikabe/">
+    <a href="#how-to-play" style="text-decoration:none;color:#3f2d1d;font-size:.92rem">How to Play</a>
+    <a href="#nurikabe-faq" style="text-decoration:none;color:#3f2d1d;font-size:.92rem">FAQ</a>
+  </GameNav>
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <a href="/">Home</a> <span aria-hidden="true">›</span> <span>Nurikabe</span>
+  </nav>
+
+  <main>
+    <h1>Play Nurikabe Online — Free Island &amp; Sea Logic Puzzles</h1>
+    <p class="lede">
+      Nurikabe is the wall-building member of the Japanese logic puzzle family: numbered
+      islands rise out of a connected sea, and the whole board is decided by three rules.
+      Learn it in four guided lessons, clear an 11-level campaign from 5×5 to 7×7, then
+      keep going with daily puzzles. Everything runs in your browser.
+    </p>
+
+    <div class="game-frame">
+      <iframe
+        src="/nurikabe/demo.html?embed=1"
+        title="Play Nurikabe free online at GridPaw"
+        width="100%"
+        height="820"
+        style="border:0;border-radius:16px;display:block;background:#fff8ef"
+      ></iframe>
+    </div>
+    <p class="cta-line">🎨 In a picture mood? <a href="/nonogram/">Play Nonogram, our picture logic game, free in your browser →</a></p>
+
+    <section>
+      <h2 id="how-to-play">How to Play Nurikabe in 3 Rules</h2>
+      <ol class="rules">
+        <li>
+          <strong>Numbers are island sizes.</strong>
+          Each clue is the exact number of white cells in its island. Islands are
+          connected orthogonally, contain exactly one clue each, and never touch —
+          two islands never share an edge, so a white cell between two numbers
+          belongs to exactly one of them.
+        </li>
+        <li>
+          <strong>The sea stays connected.</strong>
+          Every black cell must be reachable from every other black cell without
+          crossing an island. A wall of islands that cuts the ocean in two is the most
+          common way to kill a Nurikabe board.
+        </li>
+        <li>
+          <strong>No 2×2 sea.</strong>
+          Four black cells in a square are forbidden. This rule finishes more boards
+          than any other: three black cells around one corner force the fourth cell to
+          be island.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Every Board Is Verified Unique</h2>
+      <p>
+        Random grids make terrible Nurikabe boards — most of them have many valid
+        solutions or none. Every GridPaw board is generated and then checked by a
+        solver that proves exactly one solution exists, and the tutorial levels walk
+        you through each rule with a guided lesson before the campaign starts.
+      </p>
+      <p>
+        When you do get stuck, the hint button reveals one true cell — the real answer
+        for the cell you selected, not a vague nudge — and a contradiction warning
+        tells you when something you placed already breaks the rules.
+      </p>
+    </section>
+
+    <section>
+      <h2>Levels, Progress and Daily Puzzles</h2>
+      <p>
+        The campaign runs 4 tutorial lessons, then 11 levels: three Easy 5×5 boards,
+        four Medium 6×6 boards and four Hard 7×7 boards. Your progress is saved in
+        your browser, so you can leave and resume anytime. After the campaign, endless
+        daily puzzles keep coming: a date-seeded board that is the same for every
+        player on the same day.
+      </p>
+    </section>
+
+    <section>
+      <h2 id="nurikabe-faq">Nurikabe FAQ</h2>
+      {faqs.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </section>
+
+    <section class="more">
+      <h2>More Logic Puzzles on GridPaw</h2>
+      <ul class="links">
+        <li><a href="/nonogram/">Nonogram (Picture Logic)</a> — paint by numbers, reveal the cat.</li>
+        <li><a href="/kakuro/">Kakuro (Cross Sums)</a> — the mathematical crossword cousin.</li>
+        <li><a href="/akari/">Akari (Light Up)</a> — place lights, light every cell, obey the numbered walls.</li>
+        <li><a href="/japanese-logic-puzzles/">Japanese logic puzzles</a> — the family Nurikabe belongs to.</li>
+      </ul>
+      <p class="cta-line">🐱 Ready to build? <a href="/">Play Shikaku on GridPaw →</a></p>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <ExtensionPromo />
+    <p>GridPaw: Free online Nurikabe island and sea logic puzzles with cats.</p>
+    <p><a href="/">GridPaw Shikaku</a> · <a href="/akari/">GridPaw Akari</a> · <a href="/kakuro/">GridPaw Kakuro</a> · <a href="/nonogram/">GridPaw Nonogram</a> · <a href="/pictomino/">GridPaw Pictomino</a></p>
+    <p><a href="https://www.pinterest.com/gridpaw/">Pinterest</a> · <a href="https://chromewebstore.google.com/detail/gridpaw-%E2%80%94-daily-akari-puz/mjdplaoanamjdbbpkgccjnhmlgnpcamj">Chrome Extension</a> · <a href="https://gridpaw-games.lovable.app">Lovable</a> · <a href="/community/">Community</a></p>
+  </footer>
+
+  <style>
+    :root {
+      --amber: #d97706;
+      --amber-dark: #b45309;
+      --cream: #fff8ef;
+      --cream-2: #fdeed3;
+      --ink: #3f2d1d;
+      --muted: #8a6f55;
+      --line: #e7d4b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.65;
+    }
+    main { max-width: 860px; margin: 0 auto; padding: 0 1.2rem 3rem; }
+    .crumbs { max-width: 860px; margin: 0 auto; padding: 1rem 1.2rem; font-size: .9rem; color: var(--muted); }
+    .crumbs a { color: var(--amber-dark); text-decoration: none; }
+    .crumbs a:hover { text-decoration: underline; }
+    h1 { font-size: 1.9rem; line-height: 1.25; margin: .5rem 0 1rem; }
+    h2 { font-size: 1.35rem; margin: 2.4rem 0 .8rem; }
+    .lede { font-size: 1.05rem; color: var(--ink); margin-bottom: 1.4rem; }
+    .game-frame { margin: 1rem 0; }
+    .cta-line { margin: .6rem 0 1.6rem; color: var(--muted); font-size: .95rem; }
+    .cta-line a { color: var(--amber-dark); font-weight: 600; }
+    .rules { margin: .4rem 0 0 1.4rem; display: grid; gap: .9rem; }
+    .rules li { padding-left: .3rem; }
+    section p { margin-bottom: .8rem; }
+    details {
+      border: 1px solid var(--line); border-radius: 10px; background: var(--cream-2);
+      padding: .7rem 1rem; margin-bottom: .6rem;
+    }
+    summary { font-weight: 700; cursor: pointer; }
+    details p { margin-top: .5rem; color: var(--ink); }
+    .more .links { margin-left: 1.4rem; display: grid; gap: .4rem; }
+    .more a { color: var(--amber-dark); font-weight: 600; }
+    .site-foot {
+      border-top: 1px solid var(--line); margin-top: 3rem;
+      padding: 1.6rem 1.2rem 2.4rem; text-align: center; color: var(--muted); font-size: .92rem;
+    }
+    .site-foot p { margin: .35rem 0; }
+    .site-foot a { color: var(--amber-dark); text-decoration: none; }
+    .site-foot a:hover { text-decoration: underline; }
+    @media (max-width: 640px) {
+      h1 { font-size: 1.5rem; }
+      .rules { margin-left: 1.1rem; }
+    }
+  </style>
+</body>
+</html>
