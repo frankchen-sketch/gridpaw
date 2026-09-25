@@ -81,7 +81,7 @@ console.log('== 4. lineOptions ==');
   const split = E.lineOptions([2, 2], new Array(7).fill(0));
   ok(split.length === 6, '[2,2] on 7-line → 6 arrangements (got ' + split.length + ')');
   const blocked = E.lineOptions([3], [2, 0, 0, 0, 0]);
-  ok(blocked.length === 1 && blocked[0][0] === 2 && blocked[0][1] === 2 && blocked[0][2] === 1, 'known-empty first cell forces [3] to cells 2-4 (got ' + blocked.length + ' options)');
+  ok(blocked.length === 2 && blocked.every((o) => o[0] === 2), 'known-empty first cell: [3] has 2 options, none touching cell 0 (got ' + blocked.length + ')');
 }
 
 // ── 5. Daily determinism ──
