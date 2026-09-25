@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Kakuro Demo — GridPaw</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4FWP61DJCC"></script>
+<script>
+  // Standalone page carries its own analytics (Pictomino pattern) — the Astro
+  // parent page cannot see inside the iframe. window.gtag must be a function
+  // expression, NOT a hoisted declaration (define:vars IIFE trap).
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  window.gtag('js', new Date());
+  window.gtag('config', 'G-4FWP61DJCC');
+</script>
 <style>
   :root {
     --amber: #d97706;
@@ -292,14 +302,30 @@
   var overlayEl = document.getElementById('winOverlay');
   var padEl = document.getElementById('pad');
 
-  // ── level plan: 4 tutorials then difficulties ──
+  // ── level plan: 4 tutorials → campaign (3 easy / 4 medium / 4 hard) → endless daily ──
+  var CAMPAIGN = [];
+  (function () {
+    var i;
+    for (i = 0; i < 3; i++) CAMPAIGN.push('easy');
+    for (i = 0; i < 4; i++) CAMPAIGN.push('medium');
+    for (i = 0; i < 4; i++) CAMPAIGN.push('hard');
+  })();
+  var CAMPAIGN_LEN = KAKURO_TUTORIALS.length + CAMPAIGN.length;
+
   function levelInfo(n) {
     if (n < KAKURO_TUTORIALS.length) {
       return { type: 'tutorial', def: KAKURO_TUTORIALS[n] };
     }
-    var keys = ['easy', 'medium', 'hard'];
-    var key = keys[(n - KAKURO_TUTORIALS.length) % keys.length];
-    return { type: 'gen', preset: KAKURO_DIFFICULTIES[key], key: key };
+    var idx = n - KAKURO_TUTORIALS.length;
+    if (idx < CAMPAIGN.length) {
+      var key = CAMPAIGN[idx];
+      return { type: 'gen', preset: KAKURO_DIFFICULTIES[key], key: key, num: idx + 1 };
+    }
+    // endless daily puzzles past the campaign: date-seeded, medium/hard alternate,
+    // same board for every player on the same day
+    var day = Math.floor(Date.now() / 86400000);
+    var dk = (day + idx) % 2 === 0 ? 'medium' : 'hard';
+    return { type: 'daily', preset: KAKURO_DIFFICULTIES[dk], key: dk, seed: day * 1000 + idx, num: idx + 1 };
   }
 
   function setMsg(text, cls) {
@@ -791,7 +817,7 @@
     workerOk = true;
   } catch (err) { workerOk = false; } // file:// blocks workers — sync fallback below
 
-  function generateAsync(preset, cb) {
+  function generateAsync(preset, cb, seed) {
     var fogBlocks = preset.key !== 'easy' ? 2 : undefined;
     if (workerOk && worker) {
       pendingId++;
@@ -802,6 +828,7 @@
         cols: preset.cols,
         blackProb: preset.blackProb,
         fogBlocks: fogBlocks,
+        seed: seed,
         timeBudgetMs: 8000
       });
     } else {
@@ -815,6 +842,7 @@
             cols: preset.cols,
             blackProb: preset.blackProb,
             fogBlocks: fogBlocks,
+            seed: seed,
             timeBudgetMs: 8000
           });
           tries++;
@@ -846,11 +874,12 @@
         render();
       }, 30);
     } else {
-      chipEl.textContent = info.key.charAt(0).toUpperCase() + info.key.slice(1) +
+      var lvlLabel = info.type === 'daily' ? 'Daily' : 'Level ' + info.num + '/11';
+      chipEl.textContent = lvlLabel + ' — ' + info.key.charAt(0).toUpperCase() + info.key.slice(1) +
         ' — ' + (info.preset.rows) + '×' + (info.preset.cols) + (info.key === 'easy' ? ' · no fog' : ' · 🐾 fog');
       chipEl.className = 'chip';
       document.getElementById('skipBtn').style.display = 'none';
-      setMsg('Generating a fresh puzzle…');
+      setMsg(info.type === 'daily' ? '📅 Daily puzzle — same board for everyone today.' : 'Generating a fresh puzzle…');
       generateAsync(info.preset, function (p) {
         puzzle = p;
         busy = false;
@@ -861,14 +890,14 @@
         initFog();
         if (fogActive) {
           setMsg('🐾 Fog mode: solve the visible block first. Tap the fog to peek (' + FREE_PEEKS + ' free).');
-        } else if (info.type === 'gen') {
+        } else if (info.type === 'gen' && info.key === 'easy') {
           setMsg('Easy has no fog — 🐾 Fog mode starts at Medium (use the fog preview buttons below).');
         } else {
           setMsg('Fill every white cell. Runs must sum to their clue — no repeated digits in a run.');
         }
         render();
         maybeClueCoach();
-      });
+      }, info.seed);
     }
   }
 
@@ -888,8 +917,20 @@
       }, 900);
       return;
     }
-    title.textContent = 'Solved! 😺';
-    text.textContent = 'Every run sums up. Purrfect.';
+    // campaign progress: unlock the next level, persist it
+    var nextLevel = level + 1;
+    if (info.type === 'gen') {
+      try { localStorage.setItem('gridpaw-kakuro-progress', String(nextLevel)); } catch (e) { /* private mode */ }
+      track('level_up', { level: level, difficulty: info.key });
+    } else if (info.type === 'daily') {
+      track('daily_solved', { level: level });
+    }
+    title.textContent = info.type === 'daily' ? 'Daily solved! 😺' : 'Solved! 😺';
+    text.textContent = info.type === 'daily'
+      ? 'Same board, everyone, today. Come back tomorrow for a fresh one.'
+      : (nextLevel >= CAMPAIGN_LEN
+        ? 'Campaign complete! Endless daily puzzles unlocked.'
+        : 'Every run sums up. Purrfect.');
     overlayEl.classList.add('show');
   }
 
@@ -909,14 +950,15 @@
       newPuzzle();
     }
   });
-  // fog preview jumps (demo-only: land straight on a fog level)
+  // fog preview jumps (demo-only: land straight on the FIRST fog level of that
+  // difficulty in the campaign — easy ×3 → medium starts at campaign slot 3)
   document.getElementById('jumpMedium').addEventListener('click', function () {
-    level = KAKURO_TUTORIALS.length + 1;
+    level = KAKURO_TUTORIALS.length + 3;
     busy = false;
     newPuzzle();
   });
   document.getElementById('jumpHard').addEventListener('click', function () {
-    level = KAKURO_TUTORIALS.length + 2;
+    level = KAKURO_TUTORIALS.length + 7;
     busy = false;
     newPuzzle();
   });
@@ -996,6 +1038,11 @@
     }
   };
 
+  // resume campaign progress (never resume into the tutorial range)
+  var savedProgress = 0;
+  try { savedProgress = parseInt(localStorage.getItem('gridpaw-kakuro-progress') || '0', 10) || 0; } catch (e) { savedProgress = 0; }
+  if (savedProgress > KAKURO_TUTORIALS.length && savedProgress < CAMPAIGN_LEN) level = savedProgress;
+  track('game_start', { level: level, source: (location.search.indexOf('embed=1') >= 0 ? 'embed' : 'direct') });
   newPuzzle();
 })();
 </script>

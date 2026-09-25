@@ -1,17 +1,237 @@
 ---
-// Convenience redirect: /kakuro/ → /kakuro/demo.html (dev demo entry).
-// The production kakuro page will replace this in the SEO iteration.
+// /kakuro/ — official SEO game page (replaces the dev redirect).
+// Game lives in public/kakuro/demo.html, embedded via iframe (?embed=1).
+import SEOHead from '../../components/SEOHead.astro';
+
+const title = 'Play Kakuro Online: Free Cross-Sum Puzzle Game';
+const description =
+  'Play Kakuro free online: a 4-step tutorial, an 11-level campaign, fog puzzles and daily challenges. Learn cross-sum rules in a minute — no download needed.';
+
+const faqs = [
+  {
+    q: 'What is Kakuro?',
+    a: 'Kakuro, also called Cross Sums, is a Japanese logic puzzle often described as a mathematical crossword. Every white run of cells must add up to the clue at its start, and no digit may repeat inside a run. Kakuro looks like Sudoku but plays with addition and combination logic instead of placement rules.'
+  },
+  {
+    q: 'How do I play this Kakuro game?',
+    a: 'Tap any white cell, then tap a digit on the keypad. Each cell belongs to two runs: one across and one down. Both must reach their clue sums without repeated digits. The keypad marks digits that would be a duplicate (struck through) or overflow the remaining sum (red), so you learn the rules as you play.'
+  },
+  {
+    q: 'Is Kakuro harder than Sudoku?',
+    a: 'It is different rather than harder. Sudoku tests elimination across rows, columns and boxes; Kakuro tests sum combinations, so solving starts with clue arithmetic like knowing that 17 in two cells can only be 8+9. Beginners usually find our 4-step tutorial enough to start solving confidently.'
+  },
+  {
+    q: 'Is this Kakuro game free to play?',
+    a: 'Yes. All levels, fog mode and daily puzzles are free in your browser with no download and no account. Fog peeks and hints come with free allowances per level, and the current demo build does not charge anything.'
+  },
+  {
+    q: 'What is fog mode?',
+    a: 'Fog mode is a GridPaw twist on Kakuro that no other Kakuro site offers. From Level 4 the board is partly hidden under a paw-print fog. Solve the visible block correctly and the fog lifts. Stuck? Peek under the fog with your free peeks. Every fog board is still guaranteed to have exactly one solution.'
+  }
+];
 ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="refresh" content="0;url=/kakuro/demo.html">
-  <link rel="canonical" href="/kakuro/demo.html">
-  <title>Kakuro — GridPaw</title>
+  <SEOHead title={title} description={description} canonical="/kakuro/" type="website" />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/kakuro/">
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/kakuro/">
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebApplication',
+        'name': 'GridPaw Kakuro',
+        'applicationCategory': 'GameApplication',
+        'operatingSystem': 'Web Browser',
+        'url': 'https://gridpaw.com/kakuro/',
+        'description': 'Free online Kakuro (cross-sum) logic puzzles with a 4-step tutorial, an 11-level campaign, exclusive fog mode and daily challenges.',
+        'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' }
+      },
+      {
+        '@type': 'FAQPage',
+        'mainEntity': faqs.map((f) => ({
+          '@type': 'Question',
+          'name': f.q,
+          'acceptedAnswer': { '@type': 'Answer', 'text': f.a }
+        }))
+      }
+    ]
+  })} />
 </head>
 <body>
-  <script is:inline>window.location.replace('/kakuro/demo.html');</script>
-  <p><a href="/kakuro/demo.html">Play Kakuro →</a></p>
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <a href="/">Home</a> <span aria-hidden="true">›</span> <span>Kakuro</span>
+  </nav>
+
+  <main>
+    <h1>Play Kakuro Online — Free Cross-Sum Logic Puzzles</h1>
+    <p class="lede">
+      Kakuro is the mathematical crossword of Japanese logic puzzles: every run sums to
+      its clue, no repeats allowed. Learn it in four guided lessons, clear an 11-level
+      campaign, then push into paw-print fog territory. Everything runs in your browser.
+    </p>
+
+    <div class="game-frame">
+      <iframe
+        src="/kakuro/demo.html?embed=1"
+        title="Play Kakuro free online at GridPaw"
+        width="100%"
+        height="780"
+        style="border:0;border-radius:16px;display:block;background:#fff8ef"
+      ></iframe>
+    </div>
+    <p class="cta-line">🐱 Prefer light and shadow? <a href="/akari/">Play Akari, our Light Up game, free in your browser →</a></p>
+
+    <section>
+      <h2>How to Play Kakuro in 3 Rules</h2>
+      <ol class="rules">
+        <li>
+          <strong>Runs must sum to their clue.</strong>
+          A clue sits where a run begins: the number below-right of a black cell belongs
+          to the white run to its right, the number above-left belongs to the run below.
+          Fill the run so its digits add up to that clue.
+        </li>
+        <li>
+          <strong>No digit repeats in a run.</strong>
+          A run of three cells reading 3, 3, 4 is always wrong, even if the sum matches.
+          Nine different digits, one of each maximum.
+        </li>
+        <li>
+          <strong>Use sum logic, not guessing.</strong>
+          Some clues pin combinations immediately: 17 in two cells can only be 8+9,
+          3 in two cells can only be 1+2. Start from those forced runs and the rest
+          of the board follows.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Fog Mode: Our Twist on Kakuro</h2>
+      <p>
+        Classic Kakuro sites give you a grid and a timer. GridPaw adds a fog. From the
+        first Medium level the board is split into blocks, and the far block hides under
+        a paw-print fog. Solve the visible block correctly and the fog lifts, revealing
+        a fresh half of the puzzle. Because the blocks never share a run, every fog board
+        is verified to have exactly one solution, so the reveal never traps you.
+      </p>
+      <p>
+        Each fog level includes free peeks to scratch a cell clear, and the hint button
+        points at the smartest cell to fill next. The tutorial and the first three Easy
+        levels teach the pure rules first, so fog feels like a reward, not a wall.
+      </p>
+    </section>
+
+    <section>
+      <h2>Levels, Progress and Daily Puzzles</h2>
+      <p>
+        The campaign runs 4 tutorial lessons, then 11 levels: three Easy 5×5 boards,
+        four Medium 6×6 fog boards and four Hard 7×7 fog boards. Your progress is saved
+        in your browser, so you can leave and resume anytime. After the campaign, endless
+        daily puzzles keep coming: a date-seeded board that is the same for every player
+        on the same day, alternating Medium and Hard.
+      </p>
+    </section>
+
+    <section>
+      <h2>Kakuro FAQ</h2>
+      {faqs.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </section>
+
+    <section class="more">
+      <h2>More Logic Puzzles on GridPaw</h2>
+      <ul class="links">
+        <li><a href="/akari/">Akari (Light Up)</a> — place lights, light every cell, obey the numbered walls.</li>
+        <li><a href="/akari/compare/light-up-vs-kakuro/">Light Up vs Kakuro</a> — how the two cousins compare.</li>
+        <li><a href="/japanese-logic-puzzles/">Japanese logic puzzles</a> — the family Kakuro belongs to.</li>
+        <li><a href="/brain-teasers-for-adults/">Brain teasers for adults</a> — warm up before the Hard levels.</li>
+      </ul>
+      <p class="cta-line">🐱 Ready to sum? <a href="/">Play Shikaku on GridPaw →</a></p>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <p>GridPaw — free cat-themed logic puzzles. <a href="/">Shikaku</a> · <a href="/akari/">Akari</a> · <a href="/kakuro/">Kakuro</a></p>
+  </footer>
+
+  <style>
+    :root {
+      --amber: #d97706;
+      --amber-dark: #b45309;
+      --cream: #fff8ef;
+      --cream-2: #fdeed3;
+      --ink: #3f2d1d;
+      --muted: #8a6f55;
+      --line: #e7d4b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.65;
+    }
+    main { max-width: 860px; margin: 0 auto; padding: 0 1.2rem 3rem; }
+    .crumbs { max-width: 860px; margin: 0 auto; padding: 1rem 1.2rem; font-size: .9rem; color: var(--muted); }
+    .crumbs a { color: var(--amber-dark); text-decoration: none; }
+    .crumbs a:hover { text-decoration: underline; }
+    h1 { font-size: 1.9rem; line-height: 1.25; margin: .5rem 0 1rem; }
+    h2 { font-size: 1.35rem; margin: 2.4rem 0 .8rem; }
+    .lede { font-size: 1.05rem; color: var(--muted); margin-bottom: 1.4rem; }
+    .game-frame { box-shadow: 0 12px 28px rgba(63,45,29,.12); border-radius: 16px; }
+    .cta-line { margin: .9rem 0 0; font-size: .95rem; }
+    .cta-line a { color: var(--amber-dark); font-weight: 600; }
+    section { margin-top: 2.6rem; }
+    .rules { list-style: none; counter-reset: rule; }
+    .rules li {
+      counter-increment: rule;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1rem 1.1rem 1rem 3.4rem;
+      margin-bottom: .8rem;
+      position: relative;
+    }
+    .rules li::before {
+      content: counter(rule);
+      position: absolute; left: 1rem; top: 1.05rem;
+      width: 1.7rem; height: 1.7rem;
+      background: var(--amber); color: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: .95rem;
+    }
+    details {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: .85rem 1.1rem;
+      margin-bottom: .6rem;
+    }
+    summary { font-weight: 700; cursor: pointer; }
+    details p { margin-top: .55rem; color: #5a4633; }
+    .links { list-style: none; }
+    .links li { margin-bottom: .45rem; }
+    .links a { color: var(--amber-dark); font-weight: 600; }
+    .more { margin-bottom: 1rem; }
+    .site-foot {
+      border-top: 1px solid var(--line);
+      text-align: center;
+      padding: 1.2rem 1rem 1.6rem;
+      font-size: .9rem;
+      color: var(--muted);
+    }
+    .site-foot a { color: var(--amber-dark); }
+    @media (max-width: 640px) {
+      h1 { font-size: 1.5rem; }
+      .game-frame iframe { height: 720px; }
+    }
+  </style>
 </body>
 </html>
