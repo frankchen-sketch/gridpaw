@@ -62,6 +62,24 @@ const faqs = [
   })} />
 </head>
 <body>
+  <header class="site-head">
+    <div class="head-inner">
+      <a href="/" class="brand">🐱 <strong>GridPaw</strong></a>
+      <nav class="nav" aria-label="Main navigation">
+        <div class="game-switcher">
+          <button class="switcher-btn" onclick="this.nextElementSibling.classList.toggle('open')">Games</button>
+          <div class="switcher-menu">
+            <a href="/"><strong>🟧 Shikaku</strong><span class="game-desc">Rectangle partition puzzle</span></a>
+            <a href="/akari/"><strong>💡 Akari</strong><span class="game-desc">Light Up puzzle</span></a>
+            <a href="/kakuro/" class="active"><strong>🔢 Kakuro</strong><span class="game-desc">Cross-sum puzzle</span></a>
+            <a href="/pictomino/"><strong>🧩 Pictomino</strong><span class="game-desc">Spatial reasoning puzzle</span></a>
+          </div>
+        </div>
+        <a href="#how-to-play">How to Play</a>
+        <a href="#kakuro-faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
   <nav class="crumbs" aria-label="Breadcrumb">
     <a href="/">Home</a> <span aria-hidden="true">›</span> <span>Kakuro</span>
   </nav>
@@ -86,7 +104,7 @@ const faqs = [
     <p class="cta-line">🐱 Prefer light and shadow? <a href="/akari/">Play Akari, our Light Up game, free in your browser →</a></p>
 
     <section>
-      <h2>How to Play Kakuro in 3 Rules</h2>
+      <h2 id="how-to-play">How to Play Kakuro in 3 Rules</h2>
       <ol class="rules">
         <li>
           <strong>Runs must sum to their clue.</strong>
@@ -136,7 +154,7 @@ const faqs = [
     </section>
 
     <section>
-      <h2>Kakuro FAQ</h2>
+      <h2 id="kakuro-faq">Kakuro FAQ</h2>
       {faqs.map((f) => (
         <details>
           <summary>{f.q}</summary>
@@ -187,6 +205,29 @@ const faqs = [
     .crumbs a:hover { text-decoration: underline; }
     h1 { font-size: 1.9rem; line-height: 1.25; margin: .5rem 0 1rem; }
     h2 { font-size: 1.35rem; margin: 2.4rem 0 .8rem; }
+    .site-head { position: sticky; top: 0; z-index: 30; background: var(--cream); border-bottom: 1px solid var(--line); }
+    .head-inner { max-width: 860px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 3.2rem; padding: 0 1.2rem; }
+    .brand { text-decoration: none; color: var(--ink); font-size: 1rem; }
+    .nav { display: flex; align-items: center; gap: 1rem; }
+    .nav a { text-decoration: none; color: var(--ink); font-size: .92rem; }
+    .nav a:hover { color: var(--amber-dark); }
+    .switcher-btn {
+      background: var(--amber); color: #fff; border: none; border-radius: 8px;
+      padding: .35rem .8rem; font-weight: 700; cursor: pointer; font-size: .9rem;
+    }
+    .switcher-menu {
+      display: none; position: absolute; background: #fff; border: 1px solid var(--line);
+      border-radius: 10px; padding: .4rem; box-shadow: 0 8px 20px rgba(63,45,29,.15); min-width: 230px;
+    }
+    .game-switcher { position: relative; }
+    .switcher-menu.open { display: block; }
+    .switcher-menu a {
+      display: flex; flex-direction: column; padding: .5rem .7rem;
+      border-radius: 8px; text-decoration: none; color: var(--ink);
+    }
+    .switcher-menu a:hover { background: var(--cream-2); }
+    .switcher-menu a.active { background: var(--cream-2); }
+    .game-desc { font-size: .78rem; color: var(--muted); }
     .lede { font-size: 1.05rem; color: var(--muted); margin-bottom: 1.4rem; }
     .game-frame { box-shadow: 0 12px 28px rgba(63,45,29,.12); border-radius: 16px; }
     .cta-line { margin: .9rem 0 0; font-size: .95rem; }
