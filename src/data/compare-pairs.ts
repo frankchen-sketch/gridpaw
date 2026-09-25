@@ -51,7 +51,7 @@ export const comparePairs: ComparePair[] = [
     titleA: 'Light Up',
     titleB: 'Kakuro',
     slugA: '/akari/light-up-puzzle/',
-    slugB: '#',
+    slugB: '/kakuro/',
     description: 'Light Up vs Kakuro — two Nikoli puzzles compared. One uses light and space, the other uses numbers and sums. Which logic puzzle suits you?',
     specs: [
       ['Core Mechanic', 'Place bulbs to illuminate cells', 'Fill digits that sum to clues'],
