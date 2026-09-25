@@ -480,23 +480,10 @@
     render(); // keypad: only the answer digit is green
     var gr = Math.floor(target / puzzle.cols) + 1;
     var gc = (target % puzzle.cols) + 1;
-    // highlight the target cell + its runs on the board
-    var highlight = [target];
-    var runs = computeRuns(puzzle);
-    for (var k = 0; k < runs.length; k++) {
-      if (runs[k].cells.indexOf(target) >= 0) highlight = highlight.concat(runs[k].cells);
-    }
-    for (var h = 0; h < highlight.length; h++) {
-      var el = cellEl(highlight[h]);
-      if (el) el.classList.add('hint-run');
-    }
+    // highlight ONLY the target cell — run highlighting felt noisy
     var tEl = cellEl(target);
     if (tEl) tEl.classList.add('hint-target');
     setTimeout(function () {
-      for (var h2 = 0; h2 < highlight.length; h2++) {
-        var el2 = cellEl(highlight[h2]);
-        if (el2) el2.classList.remove('hint-run');
-      }
       if (tEl) tEl.classList.remove('hint-target');
     }, 3000);
     setMsg('💡 Fill ' + answer + ' in row ' + gr + ', col ' + gc + ' — the green key. (' + (isDev ? '∞' : hintsLeft) + ' hints left)');
