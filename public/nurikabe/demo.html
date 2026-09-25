@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Nurikabe Demo — GridPaw</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4FWP61DJCC"></script>
+<script>
+  // Standalone page carries its own analytics (Pictomino pattern) — the Astro
+  // parent page cannot see inside the iframe. window.gtag must be a function
+  // expression, NOT a hoisted declaration (define:vars IIFE trap).
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  window.gtag('js', new Date());
+  window.gtag('config', 'G-4FWP61DJCC');
+</script>
+<style>
+  :root {
+    --amber: #d97706;
+    --amber-dark: #b45309;
+    --cream: #fff8ef;
+    --cream-2: #fdeed3;
+    --ink: #3f2d1d;
+    --line: #e7d4b8;
+    --err: #dc2626;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 16px 12px 40px;
+  }
+  header { text-align: center; margin-bottom: 10px; }
+  header h1 { font-size: 20px; color: var(--amber-dark); }
+  header .sub { font-size: 12px; color: #8a6d4e; margin-top: 2px; }
+  .topbar {
+    display: flex; gap: 8px; align-items: center; justify-content: center;
+    margin: 10px 0 14px; flex-wrap: wrap;
+    position: relative; z-index: 20;
+  }
+  .chip {
+    background: var(--amber); color: #fff; font-weight: 700; font-size: 13px;
+    border-radius: 999px; padding: 5px 14px;
+  }
+  .chip.tut { background: #0e9f6e; }
+  button.btn {
+    background: #fff; border: 2px solid var(--line); color: var(--ink);
+    border-radius: 10px; padding: 6px 12px; font-size: 13px; font-weight: 600;
+    cursor: pointer;
+  }
+  button.btn:hover { border-color: var(--amber); color: var(--amber-dark); }
+  .scroller { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+  .board {
+    display: grid;
+    background: var(--line);
+    gap: 2px;
+    border: 3px solid var(--amber-dark);
+    border-radius: 10px;
+    padding: 4px;
+    touch-action: manipulation;
+    width: max-content;
+  }
+  .cell {
+    background: #fff;
+    user-select: none; -webkit-user-select: none;
+    touch-action: manipulation;
+    display: flex; align-items: center; justify-content: center;
+    transition: background-color .15s ease;
+  }
+  .cell.island { background: var(--amber); cursor: pointer; }
+  .cell.sea { background: #fff; cursor: pointer; }
+  .cell.sea .mark { font-size: calc(var(--cell) * .5); font-weight: 700; color: #8a6d4e; line-height: 1; }
+  .cell.clue {
+    background: var(--cream-2);
+    box-shadow: inset 0 0 0 2px rgba(180, 83, 9, .35);
+    cursor: default;
+  }
+  .cell.clue .num { font-size: calc(var(--cell) * .5); font-weight: 900; color: var(--amber-dark); line-height: 1; }
+  .cell.err-flash { animation: shake 0.3s; background: #fee2e2; }
+  .cell.err-flash .mark { color: var(--err); }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+  .msg {
+    min-height: 44px; max-width: 440px; text-align: center;
+    font-size: 14px; line-height: 1.45; margin: 12px auto 4px;
+    background: #fff; border: 2px dashed var(--line); border-radius: 10px;
+    padding: 8px 12px;
+    word-wrap: break-word; overflow-wrap: break-word;
+  }
+  .msg.tut { border-color: #0e9f6e; background: #ecfdf5; }
+  .msg.err { border-color: var(--err); color: var(--err); }
+  .overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(63, 45, 29, 0.55);
+    align-items: center; justify-content: center; z-index: 600;
+  }
+  .overlay.show { display: flex; }
+  .card {
+    background: var(--cream); border-radius: 16px; padding: 22px 26px;
+    text-align: center; border: 3px solid var(--amber);
+    max-width: 360px;
+  }
+  .card .cat { font-size: 44px; }
+  .card h2 { color: var(--amber-dark); margin: 6px 0 2px; font-size: 20px; }
+  .card .name { font-size: 14px; font-weight: 700; color: var(--amber-dark); margin: 4px 0 8px; }
+  .card p { font-size: 14px; margin-bottom: 10px; }
+  #winPix {
+    display: inline-grid; gap: 2px; background: var(--line); padding: 4px;
+    border-radius: 8px; border: 2px solid var(--amber-dark); margin: 0 0 10px;
+  }
+  #winPix .px { width: 17px; height: 17px; background: var(--cream-2); }
+  #winPix .px.on { transition: background-color .1s linear; transition-delay: var(--d); }
+  #winPix.lit .px.on { background: var(--amber); }
+  .card button {
+    background: var(--amber); color: #fff; border: none; border-radius: 10px;
+    padding: 10px 22px; font-size: 15px; font-weight: 700; cursor: pointer;
+  }
+  .hint-badge {
+    display: inline-block; min-width: 16px; height: 16px; line-height: 16px;
+    border-radius: 8px; background: #fff; color: var(--amber-dark);
+    font-size: 11px; font-weight: 900; text-align: center; margin-left: 2px;
+    vertical-align: 1px;
+  }
+  .foot { margin-top: 14px; font-size: 11px; color: #b09a7f; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>🐾 Nurikabe</h1>
+    <div class="sub">GridPaw demo — every island matches its number, the sea stays one</div>
+  </header>
+
+  <div class="topbar">
+    <span class="chip" id="levelChip">Tutorial 1/4</span>
+    <button class="btn" id="restartBtn">↺ Restart</button>
+    <button class="btn" id="skipBtn" style="display:none">Skip tutorial »</button>
+    <button class="btn" id="hintBtn">💡 Hint <span class="hint-badge" id="hintBadge">3</span></button>
+    <button class="btn" id="jumpMedium">Practice Medium</button>
+    <button class="btn" id="jumpHard">Practice Hard</button>
+  </div>
+
+  <div class="scroller"><div class="board" id="board"></div></div>
+  <div class="msg tut" id="msg">Loading…</div>
+
+  <div class="overlay" id="winOverlay">
+    <div class="card">
+      <div class="cat">😺</div>
+      <h2 id="winTitle">Solved!</h2>
+      <p class="name" id="winName"></p>
+      <div id="winPix"></div>
+      <p id="winText"></p>
+      <button id="nextBtn" style="display:none">Next level →</button>
+    </div>
+  </div>
+
+  <div class="foot" id="foot">Demo build — engine self-tested via scripts/selftest-nurikabe.mjs</div>
+
+<script src="../nurikabe-engine.js?v=1"></script>
+<script>
+(function () {
+  'use strict';
+// ── state ──
+  var puzzle = null;
+  var grid = [];          // player state, flat 0/1/2 (UNKNOWN/SEA/ISLAND)
+  var clueOf = [];        // flat: given island-size number per cell (0 = not a clue)
+  var level = 0;          // 0-3 tutorials, then campaign, then endless daily
+  var busy = false;
+  var mistakes = 0;
+  var hintsLeft = 3;
+  var FREE_HINTS = 3;
+  // dev builds (localhost/LAN) get unlimited hints for testing — mirrors the
+  // admin/dev bypass pattern used by the other GridPaw games
+  var isDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '192.168.31.91';
+
+  var boardEl = document.getElementById('board');
+  var msgEl = document.getElementById('msg');
+  var chipEl = document.getElementById('levelChip');
+  var overlayEl = document.getElementById('winOverlay');
+
+  function track(name, params) {
+    try {
+      if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+      else if (window.dataLayer) window.dataLayer.push(Object.assign({ event: name }, params || {}));
+    } catch (e) { /* analytics never blocks gameplay */ }
+  }
+
+  // ── level plan: 4 tutorials → easy×3 → medium×4 → hard×4 → endless daily ──
+  var CAMPAIGN = [];
+  (function () {
+    var i;
+    for (i = 0; i < 3; i++) CAMPAIGN.push('easy');
+    for (i = 0; i < 4; i++) CAMPAIGN.push('medium');
+    for (i = 0; i < 4; i++) CAMPAIGN.push('hard');
+  })();
+  var CAMPAIGN_LEN = NURIKABE_TUTORIALS.length + CAMPAIGN.length;
+
+  function levelInfo(n) {
+    if (n < NURIKABE_TUTORIALS.length) {
+      return { type: 'tutorial', def: NURIKABE_TUTORIALS[n] };
+    }
+    var idx = n - NURIKABE_TUTORIALS.length;
+    if (idx < CAMPAIGN.length) {
+      var key = CAMPAIGN[idx];
+      return { type: 'gen', preset: NURIKABE_DIFFICULTIES[key], key: key, num: idx + 1 };
+    }
+    // endless daily puzzles past the campaign: date-seeded, medium/hard alternate,
+    // same board for every player on the same day
+    var day = Math.floor(Date.now() / 86400000);
+    var dk = (day + idx) % 2 === 0 ? 'medium' : 'hard';
+    return { type: 'daily', preset: NURIKABE_DIFFICULTIES[dk], key: dk, seed: day * 1000 + idx, num: idx + 1 };
+  }
+
+  function setMsg(text, cls) {
+    msgEl.textContent = text;
+    msgEl.className = 'msg' + (cls ? ' ' + cls : '');
+  }
+
+  function updateHintBadge() {
+    var badge = document.getElementById('hintBadge');
+    badge.textContent = isDev ? '∞' : hintsLeft;
+    // ∞ must never render as "10" — keep it ≥13px with horizontal padding
+    badge.style.fontSize = isDev ? '13px' : '11px';
+    badge.style.padding = isDev ? '0 4px' : '0';
+    badge.title = isDev ? 'Unlimited hints (dev mode)' : '';
+  }
+
+  // responsive sizing: no clue gutters in Nurikabe, so each cell just fits the viewport
+  function layoutSize() {
+    var cols = puzzle.cols;
+    var avail = Math.min(window.innerWidth - 24, 720);
+    if (avail < 240) avail = 240;
+    var cell = Math.floor((avail - 8 - 2 * (cols + 1)) / cols);
+    cell = Math.max(15, Math.min(48, cell));
+    return { cell: cell };
+  }
+
+// ── board ──
+  function mk(className) {
+    var el = document.createElement('div');
+    el.className = className;
+    return el;
+  }
+
+  function render() {
+    boardEl.innerHTML = '';
+    var s = layoutSize();
+    var i, r, c;
+    boardEl.style.gridTemplateColumns = 'repeat(' + puzzle.cols + ', ' + s.cell + 'px)';
+    boardEl.style.gridTemplateRows = 'repeat(' + puzzle.rows + ', ' + s.cell + 'px)';
+    boardEl.style.setProperty('--cell', s.cell + 'px');
+
+    for (r = 0; r < puzzle.rows; r++) {
+      for (c = 0; c < puzzle.cols; c++) {
+        i = r * puzzle.cols + c;
+        var cell = mk('cell');
+        cell.dataset.idx = i;
+        cell.style.gridArea = (r + 1) + ' / ' + (c + 1);
+        if (clueOf[i]) {
+          // given number cell — always an island, never changeable
+          cell.classList.add('clue');
+          var n = document.createElement('span');
+          n.className = 'num';
+          n.textContent = clueOf[i];
+          cell.appendChild(n);
+        } else if (grid[i] === CELL_ISLAND) {
+          cell.classList.add('island');
+        } else if (grid[i] === CELL_SEA) {
+          cell.classList.add('sea');
+          var m = document.createElement('span');
+          m.className = 'mark';
+          m.textContent = '·';
+          cell.appendChild(m);
+        }
+        if (!clueOf[i]) cell.addEventListener('click', onCellClick);
+        boardEl.appendChild(cell);
+      }
+    }
+  }
+
+  function cellEl(i) {
+    return boardEl.querySelector('[data-idx="' + i + '"]');
+  }
+
+  // ── input: tap cycles unknown → sea · → island ⬛ → unknown ──
+  function onCellClick(e) {
+    if (busy || !puzzle) return;
+    var i = parseInt(e.currentTarget.dataset.idx, 10);
+    var next = (grid[i] + 1) % 3; // 0 UNKNOWN → 1 SEA → 2 ISLAND → 0
+    if (next === CELL_ISLAND && puzzle.solution[i] === CELL_SEA) {
+      // educational, never locks: wrong island → red flash, auto-set to sea, count it
+      mistakes++;
+      grid[i] = CELL_SEA;
+      var el = e.currentTarget;
+      var m = document.createElement('span');
+      m.className = 'mark';
+      m.textContent = '·';
+      el.appendChild(m);
+      el.classList.add('err-flash');
+      setMsg('That cell is sea in the solution — auto-marked · (mistake №' + mistakes + ')', 'err');
+      track('puzzle_mistake', { level: level });
+      setTimeout(function () {
+        el.classList.remove('err-flash');
+        render();
+        maybeWin();
+      }, 620);
+      return;
+    }
+    grid[i] = next;
+    var cls = ['unknown', 'sea', 'island'][next];
+    if (next === CELL_UNKNOWN) {
+      setMsg('Cleared.');
+    } else if (next === CELL_SEA) {
+      setMsg('Marked as sea ·');
+    } else {
+      setMsg('Marked as island ⬛');
+    }
+    render();
+    maybeWin();
+  }
+
+  function allKnown() {
+    for (var i = 0; i < grid.length; i++) if (grid[i] === CELL_UNKNOWN) return false;
+    return true;
+  }
+
+  // win = checkNurikabeWin AND every cell is known (no blanks left)
+  function maybeWin() {
+    if (!allKnown()) return;
+    if (checkNurikabeWin(puzzle, grid)) onWin();
+    else setMsg('Every cell is marked, but the islands don\u2019t match the numbers — some sea cells are actually island, or an island has the wrong size. Review and fix!', 'err');
+  }
+
+// ── hint (demo tier: direct reveal; 3 per level, unlimited in dev) ──
+  function useHint() {
+    if (busy || !puzzle) return;
+    if (!isDev && hintsLeft <= 0) {
+      setMsg('No hints left this level — solve it!', 'err');
+      return;
+    }
+    if (!isDev) {
+      hintsLeft--;
+      updateHintBadge();
+    }
+    track('hint_used', { level: level });
+    // target: prefer an unknown ISLAND cell (real progress), else any unknown
+    var target = -1, i;
+    for (i = 0; i < grid.length; i++) {
+      if (grid[i] !== CELL_UNKNOWN || clueOf[i]) continue;
+      if (puzzle.solution[i] === CELL_ISLAND) { target = i; break; }
+    }
+    if (target < 0) {
+      for (i = 0; i < grid.length; i++) {
+        if (grid[i] === CELL_UNKNOWN && !clueOf[i]) { target = i; break; }
+      }
+    }
+    if (target < 0) {
+      setMsg('Nothing left to hint — every cell is already marked!');
+      return;
+    }
+    grid[target] = puzzle.solution[target];
+    var gr = Math.floor(target / puzzle.cols) + 1;
+    var gc = (target % puzzle.cols) + 1;
+    setMsg('💡 Row ' + gr + ', col ' + gc + ' is ' + (grid[target] === CELL_ISLAND ? 'island ⬛ — tap it twice.' : 'sea · — tap it once.') +
+      ' (' + (isDev ? 'unlimited hints' : hintsLeft + ' hints left') + ')');
+    render();
+    maybeWin();
+  }
+
+// ── level loading ──
+  function newPuzzle() {
+    if (busy) return;
+    busy = true;
+    var info = levelInfo(level);
+    grid = [];
+    mistakes = 0;
+    hintsLeft = FREE_HINTS;
+    updateHintBadge();
+    overlayEl.classList.remove('show');
+
+    if (info.type === 'tutorial') {
+      chipEl.textContent = 'Tutorial ' + (level + 1) + '/4 — ' + info.def.title;
+      chipEl.className = 'chip tut';
+      document.getElementById('skipBtn').style.display = '';
+      setMsg(info.def.lesson, 'tut');
+      // let the browser paint the lesson before blocking
+      setTimeout(function () {
+        puzzle = generateNurikabeTutorial(info.def);
+        clueOf = new Array(puzzle.rows * puzzle.cols).fill(0);
+        var i;
+        for (i = 0; i < puzzle.clues.length; i++) clueOf[puzzle.clues[i].idx] = puzzle.clues[i].size;
+        grid = new Array(puzzle.rows * puzzle.cols).fill(CELL_UNKNOWN);
+        // clue cells are always island and never changeable
+        for (i = 0; i < grid.length; i++) if (clueOf[i]) grid[i] = CELL_ISLAND;
+        busy = false;
+        render();
+      }, 30);
+      return;
+    }
+
+    chipEl.className = 'chip';
+    document.getElementById('skipBtn').style.display = 'none';
+    var label = info.type === 'daily' ? 'Daily' : 'Level ' + info.num + '/11';
+    chipEl.textContent = label + ' — ' + info.preset.label +
+      (info.type === 'daily' ? ' ' : ' — ') + info.preset.rows + '×' + info.preset.cols;
+    setMsg(info.type === 'daily' ? '📅 Daily puzzle — same board for everyone today.' : 'Generating a fresh puzzle…');
+    setTimeout(function () {
+      var p = null, tries = 0;
+      while (!p && tries < 6) {
+        p = generateNurikabePuzzle({
+          rows: info.preset.rows,
+          cols: info.preset.cols,
+          seed: info.seed,
+          timeBudgetMs: 20000,
+          name: info.type === 'daily' ? 'Daily' : 'Level ' + info.num
+        });
+        tries++;
+      }
+      busy = false;
+      if (!p) {
+        setMsg('Could not generate a puzzle this time — tap ↺ Restart to try again.', 'err');
+        return;
+      }
+      puzzle = p;
+      clueOf = new Array(p.rows * p.cols).fill(0);
+      var i2;
+      for (i2 = 0; i2 < p.clues.length; i2++) clueOf[p.clues[i2].idx] = p.clues[i2].size;
+      grid = new Array(p.rows * p.cols).fill(CELL_UNKNOWN);
+      for (i2 = 0; i2 < grid.length; i2++) if (clueOf[i2]) grid[i2] = CELL_ISLAND;
+      setMsg(info.type === 'daily'
+        ? '📅 Same board for everyone today — come back tomorrow for a fresh one.'
+        : 'Mark the sea · and the islands ⬛: every island must hold exactly its number of cells, the sea must stay connected, and no 2×2 sea is allowed.');
+      render();
+    }, 30);
+  }
+
+  // ── win ──
+  function onWin() {
+    busy = true;
+    var info = levelInfo(level);
+    var title = document.getElementById('winTitle');
+    var nameEl = document.getElementById('winName');
+    var text = document.getElementById('winText');
+    var nextBtnEl = document.getElementById('nextBtn');
+
+    if (info.type === 'tutorial') {
+      // skill pattern: brief reveal, then auto-advance (no button)
+      title.textContent = 'Solved! 😺';
+      nameEl.textContent = info.def.title;
+      text.textContent = 'That\u2019s the rule. Next lesson…';
+      nextBtnEl.style.display = 'none';
+      showIslandReveal(puzzle);
+      overlayEl.classList.add('show');
+      setTimeout(function () {
+        level++;
+        busy = false;
+        newPuzzle();
+      }, 900);
+      return;
+    }
+
+    if (info.type === 'gen') {
+      var nextLevel = level + 1;
+      try { localStorage.setItem('gridpaw-nurikabe-progress', String(nextLevel)); } catch (e) { /* private mode */ }
+      track('level_up', { level: level, difficulty: info.key });
+    } else {
+      track('daily_solved', { level: level });
+    }
+
+    title.textContent = info.type === 'daily' ? 'Daily solved! 😺' : 'Solved! 😺';
+    nameEl.textContent = puzzle.name || '';
+    text.textContent = info.type === 'daily'
+      ? 'Same board, everyone, today. Come back tomorrow for a fresh one.'
+      : (level + 1 >= CAMPAIGN_LEN
+        ? 'Campaign complete! Endless daily puzzles unlocked.'
+        : 'Every island holds its number, the sea stays one. Purrfect.');
+    nextBtnEl.style.display = '';
+    showIslandReveal(puzzle);
+    overlayEl.classList.add('show');
+  }
+
+  // ── island reveal: the solved islands flip to amber in a ≤1s cascade ──
+  function showIslandReveal(p) {
+    var pix = document.getElementById('winPix');
+    pix.innerHTML = '';
+    var total = p.rows * p.cols;
+    var ps = Math.max(10, Math.min(22, Math.floor(296 / p.cols)));
+    pix.style.gridTemplateColumns = 'repeat(' + p.cols + ', ' + ps + 'px)';
+    for (var i = 0; i < total; i++) {
+      var d = document.createElement('div');
+      d.className = 'px';
+      if (p.solution[i] === CELL_ISLAND) {
+        d.classList.add('on');
+        d.style.setProperty('--d', (i / total) * 0.94 + 's');
+      }
+      pix.appendChild(d);
+    }
+    void pix.offsetWidth; // force reflow so the cascade actually transitions
+    pix.classList.add('lit');
+  }
+
+document.getElementById('nextBtn').addEventListener('click', function () {
+    level++;
+    busy = false;
+    newPuzzle();
+  });
+  document.getElementById('restartBtn').addEventListener('click', function () {
+    busy = false;
+    newPuzzle();
+  });
+  document.getElementById('skipBtn').addEventListener('click', function () {
+    if (level < NURIKABE_TUTORIALS.length) {
+      level = NURIKABE_TUTORIALS.length;
+      busy = false;
+      newPuzzle();
+    }
+  });
+  document.getElementById('hintBtn').addEventListener('click', useHint);
+  document.getElementById('jumpMedium').addEventListener('click', function () {
+    level = NURIKABE_TUTORIALS.length + 3; // campaign slot 4 = first Medium
+    busy = false;
+    newPuzzle();
+  });
+  document.getElementById('jumpHard').addEventListener('click', function () {
+    level = NURIKABE_TUTORIALS.length + 7; // campaign slot 8 = first Hard
+    busy = false;
+    newPuzzle();
+  });
+
+  // ── test hooks (page is noindex; enables scripted playtest) ──
+  window.__nurikabeTest = {
+    solutionAt: function (i) { return puzzle ? puzzle.solution[i] : null; },
+    stateAt: function (i) { return puzzle ? grid[i] : null; },
+    clueAt: function (i) { return puzzle ? clueOf[i] : null; },
+    totalCells: function () { return puzzle ? puzzle.rows * puzzle.cols : 0; },
+    clues: function () { return puzzle ? puzzle.clues : []; },
+    islandCount: function () {
+      var n = 0;
+      for (var i = 0; i < grid.length; i++) if (grid[i] === CELL_ISLAND) n++;
+      return n;
+    },
+    seaCount: function () {
+      var n = 0;
+      for (var i = 0; i < grid.length; i++) if (grid[i] === CELL_SEA) n++;
+      return n;
+    },
+    markN: function (n) {
+      if (!puzzle) return { applied: 0 };
+      var applied = 0;
+      for (var i = 0; i < grid.length && applied < n; i++) {
+        if (grid[i] === CELL_UNKNOWN && !clueOf[i]) {
+          grid[i] = puzzle.solution[i];
+          applied++;
+        }
+      }
+      render();
+      maybeWin();
+      return { applied: applied };
+    },
+    wrongIsland: function () {
+      // find a cell the player wrongly marked as island (sea in solution)
+      if (!puzzle) return -1;
+      for (var i = 0; i < grid.length; i++) {
+        if (grid[i] === CELL_ISLAND && !clueOf[i] && puzzle.solution[i] === CELL_SEA) return i;
+      }
+      return -1;
+    },
+    solveBoard: function () {
+      if (!puzzle) return;
+      for (var i = 0; i < grid.length; i++) grid[i] = puzzle.solution[i];
+      render();
+      maybeWin();
+    },
+    jumpMedium: function () {
+      level = NURIKABE_TUTORIALS.length + 3;
+      busy = false;
+      newPuzzle();
+    },
+    jumpHard: function () {
+      level = NURIKABE_TUTORIALS.length + 7;
+      busy = false;
+      newPuzzle();
+    }
+  };
+
+  // ── resume campaign progress (never resume into the tutorial range) ──
+  var savedProgress = 0;
+  try { savedProgress = parseInt(localStorage.getItem('gridpaw-nurikabe-progress') || '0', 10) || 0; } catch (e) { savedProgress = 0; }
+  if (savedProgress > NURIKABE_TUTORIALS.length && savedProgress < CAMPAIGN_LEN) level = savedProgress;
+
+  // hide the demo footer inside the production embed
+  if (location.search.indexOf('embed=1') >= 0) document.getElementById('foot').style.display = 'none';
+
+  track('game_start', { level: level, source: (location.search.indexOf('embed=1') >= 0 ? 'embed' : 'direct') });
+  newPuzzle();
+})();
+</script>
+</body>
+</html>
