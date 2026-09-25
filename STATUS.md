@@ -9,6 +9,8 @@
 >
 > **Kakuro 线（2026-09-25）**：引擎+demo 全功能交付并入库（雾分块/爪窥/付费墙 mock/键盘三态/答案 hint/clue 高亮/死局检测，selftest ALL PASS）；`/kakuro/` 已从跳转页升级为正式 SEO 页（推关 11 关+无限每日关+FAQ/WebApplication schema+内链，进度存 localStorage）。下一步：部署 + GSC 提交收录 + IndexNow。
 
+> **Nonogram 线（2026-09-26）**：第 4 个游戏立项（选型依据：nonogram 43,280/月为唯一真体量候选词，onlinenonograms DR 10 证明行为驱动可上榜；差异化=每关揭猫像素画）。引擎已交付（lineOptions 枚举→lineSolve 纯逻辑传播→回溯计数唯一性；Easy/Medium 生成强制纯逻辑可解；猫 pattern ×4 教学；生成 1-2ms/盘，selftest ALL PASS）。正式页 `/nonogram/` + GameNav 五游戏 + llms.txt 已入库（commit 0543b79）。demo 由子 agent 产出中，验收后部署。
+
 ---
 
 ## 一、现役事实（2026-09-15 工具实测）
