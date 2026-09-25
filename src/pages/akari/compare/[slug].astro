@@ -152,12 +152,16 @@ const faqJsonLd = {
     <div class="cta-section">
       <p style="margin-bottom:.8rem;font-weight:600;color:#342421">Ready to try {pair.titleA}?</p>
       <a href="/akari/" class="cta-btn">🐱 Play GridPaw Free</a>
+      {pair.slugB && pair.slugB !== '#' && (
+        <a href={pair.slugB} class="cta-btn" style="background:#d97706;margin-left:.5rem">Play {pair.titleB} Free</a>
+      )}
     </div>
 
     <!-- Related Links -->
     <div class="related-links">
       <h3>Explore More</h3>
       <a href={pair.slugA}>{pair.titleA} Guide</a>
+      {pair.slugB && pair.slugB !== '#' && <a href={pair.slugB}>{pair.titleB} Guide</a>}
       <a href="/akari/glossary/">Puzzle Glossary</a>
       <a href="/akari/how-to-play/">How to Play</a>
       <a href="/akari/games-like-sudoku/">More Games Like Sudoku</a>
