@@ -6,7 +6,7 @@
  *
  * Mirrors public/kakuro/gen-worker.js — same protocol: the demo posts
  * { id, rows, cols, seed, timeBudgetMs, name }, we reply { id, puzzle|null }. */
-importScripts('../nurikabe-engine.js?v=2');
+importScripts('../nurikabe-engine.js?v=3');
 
 self.onmessage = function (e) {
   var msg = e.data;
