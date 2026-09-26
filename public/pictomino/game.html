@@ -320,7 +320,7 @@ body.tut-mode #round-info,body.tut-mode #tray-label{display:none}
 </head>
 <body>
 
-<div id="loading">🐱 Loading…</div>
+<div id="loading">Loading…</div>
 
 <!-- 顶栏已上移至外层页面统一工具栏（iframe 外）；game.html 直接打开时无 HUD，数据仍正常 -->
 <main id="stage">
@@ -348,7 +348,7 @@ body.tut-mode #round-info,body.tut-mode #tray-label{display:none}
 <!-- How to Play 规则卡：首局自动弹出（Got it! 后开始），之后仅 ? 按钮触发 -->
 <div class="overlay" id="help-overlay">
   <div class="dialog">
-    <h2>🐱 How to Play</h2>
+ <h2>How to Play</h2>
     <div id="help-visual">
       <div id="help-board">
         <div class="help-cell filled"></div>
@@ -422,7 +422,7 @@ body.tut-mode #round-info,body.tut-mode #tray-label{display:none}
 <!-- 失败 -->
 <div class="overlay" id="lose-overlay">
   <div class="dialog">
-    <h2>😿 No lives left</h2>
+ <h2>No lives left</h2>
     <p>Don't give up — your cat believes in you!</p>
     <p id="lose-progress" style="margin:0 0 .75rem;font-size:.85rem;opacity:.75;"></p>
     <button class="btn pink" id="retry-btn">Try again 💪</button>
@@ -1019,9 +1019,9 @@ function winLevel() {
   const catId = LEVELS[state.level].src.split('/').pop().replace('.jpg', '');
   const catFacts = CAT_FACTS[catId] || {};
   const catName = catFacts.nameEn || LEVELS[state.level].name;
-  $('win-cat').textContent = `You completed the ${catName} puzzle! 🐱`;
+ $('win-cat').textContent = `You completed the ${catName} puzzle! `;
   // 科普卡：品种名标题 + 3 条趣味事实
-  $('fact-cat-name').textContent = `🐱 ${catName}`;
+ $('fact-cat-name').textContent = ` ${catName}`;
   const factListEl = $('fact-list');
   factListEl.innerHTML = '';
   (catFacts.facts || []).forEach(f => {
@@ -1071,7 +1071,7 @@ function showLose() {
   try {
     const stars = JSON.parse(localStorage.getItem('pictomino_stars') || '{}');
     const cleared = Object.keys(stars).filter(k => stars[k] > 0).length;
-    $('lose-progress').textContent = cleared > 0 ? `🐾 You've cleared ${cleared} level${cleared > 1 ? 's' : ''} — one more push!` : '';
+ $('lose-progress').textContent = cleared > 0 ? ` You've cleared ${cleared} level${cleared > 1 ? 's' : ''} — one more push!` : '';
   } catch (e) {}
   $('lose-overlay').classList.add('show');
 }
@@ -1219,7 +1219,7 @@ async function runTutorial() {
   state.tutorial = true;
   document.body.classList.add('tut-mode');
   const loading = $('loading');
-  loading.textContent = '🐱 Loading…';
+ loading.textContent = 'Loading…';
   loading.style.display = 'flex';
   try {
     const img = await loadImage(TUTORIAL_CAT);
@@ -1292,13 +1292,13 @@ async function startLevel(n) {
   state.activeHoles = [];
   state.targetIdx = -1;
   const loading = $('loading');
-  loading.textContent = '🐱 Loading…';
+ loading.textContent = 'Loading…';
   loading.style.display = 'flex';
   try {
     const img = await loadImage(LEVELS[n].src);
     state.offCanvas = makeOffscreen(img);
   } catch (err) {
-    loading.textContent = '😿 Failed to load image. Please refresh.';
+ loading.textContent = 'Failed to load image. Please refresh.';
     console.error(err);
     return;
   }
@@ -1388,7 +1388,7 @@ window.addEventListener('message', function(ev){
 function shareMessage() {
   const stars = state.lastStars || 3;
   const diff = getDifficulty();
-  return '🐱 Beat Pictomino Level ' + (state.level + 1) + ' (' + diff + ') ' + '⭐'.repeat(stars) + ' — can you do better? → gridpaw.com/pictomino';
+ return 'Beat Pictomino Level ' + (state.level + 1) + ' (' + diff + ') ' + '⭐'.repeat(stars) + ' — can you do better? → gridpaw.com/pictomino';
 }
 
 async function captureBoardToClipboard() {

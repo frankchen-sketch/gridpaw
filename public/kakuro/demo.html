@@ -256,7 +256,7 @@
   <div class="peekbar" id="peekbar"></div>
 
   <div class="paywall" id="paywall">
-    <div class="pw-title">🐾 Free peeks used up</div>
+ <div class="pw-title">Free peeks used up</div>
     <div class="pw-row">
       <button id="pwAd">📺 Watch ad · reveal 1</button>
       <button id="pwGold" class="gold">🍬 Cat coins ×3 · unlimited</button>
@@ -410,7 +410,7 @@
     bar.className = 'peekbar show';
     bar.textContent = goldMode
       ? '🍬 Cat coins mode — unlimited peeks this level'
-      : '🐾 Free peeks left: ' + freeLeft + ' / ' + FREE_PEEKS + ' — tap the fog to peek';
+ : ' Free peeks left: ' + freeLeft + ' / ' + FREE_PEEKS + ' — tap the fog to peek';
   }
 
   function attemptPeek(i) {
@@ -466,7 +466,7 @@
     fogUnlocked = true;
     boardEl.classList.add('unlocked');
     track('fog_block_unlocked', { level: level });
-    setMsg('🐾 Fog lifted! The far side is revealed — finish the board.');
+ setMsg(' Fog lifted! The far side is revealed — finish the board.');
     updatePeekbar();
   }
 
@@ -511,7 +511,7 @@
   function useHint() {
     if (busy || !puzzle) return;
     if (!isDev && hintsLeft <= 0) {
-      setMsg('No hints left this level — use 🐾 peeks or solve it!', 'err');
+ setMsg('No hints left this level — use peeks or solve it!', 'err');
       return;
     }
     if (!isDev) {
@@ -654,7 +654,7 @@
             cell.classList.add('fogB');
             var paw = document.createElement('div');
             paw.className = 'pawmark';
-            paw.textContent = '🐾';
+ paw.textContent = '';
             cell.appendChild(paw);
             cell.addEventListener('click', function (idx) {
               return function () { attemptPeek(idx); };
@@ -664,7 +664,7 @@
           cell.classList.add('fogB');
           var paw2 = document.createElement('div');
           paw2.className = 'pawmark';
-          paw2.textContent = '🐾';
+ paw2.textContent = '';
           cell.appendChild(paw2);
           cell.addEventListener('click', function (idx) {
             return function () { attemptPeek(idx); };
@@ -927,9 +927,9 @@
         }
         initFog();
         if (fogActive) {
-          setMsg('🐾 Fog mode: solve the visible block first. Tap the fog to peek (' + FREE_PEEKS + ' free).');
+ setMsg(' Fog mode: solve the visible block first. Tap the fog to peek (' + FREE_PEEKS + ' free).');
         } else if (info.type === 'gen' && info.key === 'easy') {
-          setMsg('Easy has no fog — 🐾 Fog mode starts at Medium (use the fog preview buttons below).');
+ setMsg('Easy has no fog — Fog mode starts at Medium (use the fog preview buttons below).');
         } else {
           setMsg('Fill every white cell. Runs must sum to their clue — no repeated digits in a run.');
         }

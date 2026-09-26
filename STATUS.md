@@ -360,6 +360,7 @@ Clarity 实锤（30min 0 次成功拖拽、徽章狂点 17 次/分）→ 3 步�
 
 ## 2026-09-26 Adsterra 变现线（过审 + 提现链路 + 格式路线决策）
 - **账号侧**：公司审核 09-25 过审（主体 Guangzhou Zhuayin Intelligent Technology Co Ltd，爪印）；Native Banner Active（Site 6063560，Ad Unit 31317669）。⚠️ Adsterra 后台公司名拼成了 Zhuoyin，字段锁死改不了，工单已发 support@adsterra.com（09-25，SENT id 1a0d820ad0b5eec4），回复后去 /payout-information 复核显示名。
+- **furriq.com 已建站（09-26）**：Site 6078380（category Other，成人广告关，建站直接 Active）+ Ad Unit 31420265（NativeBanner_1）。只挂 /blog/* 文章页正文中部（品种/对比/工具/定价/首页红线不挂），详情与代码坑见 `furriq/.adsterra/native-banner.snippet.md` + `furriq/AD-TIER.md`。
 - **提现链路（已打通）**：Wire EUR 已随 KYB 生效（Banking Circle S.A.，IBAN DE62...5678），EUR $0 手续费 / min $1,000 / 到账 5 工作日；满额提现 → Subotiz Global Account（USD+EUR 双户）→ 换 RMB。Subotiz 侧拼写正确，无需动。
 - **现状数据**：Balance $0.03（09/25 起）；广告位=4 个 SEO 内容页正文各 1 个 Native Banner（brain-teasers-for-adults / logic-puzzle-grid / japanese-logic-puzzles / number-grid-puzzle），游戏页/首页/?embed=1 全部无广告（红线维持）。
 - **格式路线决策（09-26 定）**：
