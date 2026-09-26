@@ -193,6 +193,7 @@
 
   <div class="topbar">
     <span class="chip" id="levelChip">Tutorial 1/4</span>
+    <span class="chip hearts-chip" id="heartsChip">❤️❤️❤️</span>
     <button class="btn" id="restartBtn">↺ Restart</button>
     <button class="btn" id="skipBtn" style="display:none">Skip tutorial »</button>
     <button class="btn" id="hintBtn">💡 Hint <span class="hint-badge" id="hintBadge">3</span></button>
@@ -215,6 +216,15 @@
       <div id="winPix"></div>
       <p id="winText"></p>
       <button id="nextBtn" style="display:none">Next level →</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="failOverlay">
+    <div class="card">
+      <div class="cat">💔</div>
+      <h2 id="failTitle">Out of hearts</h2>
+      <p id="failText">Three wrong marks — this board got away from you.</p>
+      <button id="retryBtn">New board ↻</button>
     </div>
   </div>
 
@@ -270,6 +280,9 @@
   var level = 0;          // 0-3 tutorials, then campaign, then endless daily
   var busy = false;
   var mistakes = 0;
+  var HEARTS_MAX = 3;
+  var hearts = HEARTS_MAX;
+  var locked = {}; // cells auto-corrected this level — reveal, cannot be re-marked
   var hintsLeft = 3;
   var FREE_HINTS = 3;
   // dev builds (localhost/LAN) get unlimited hints for testing — mirrors the
@@ -326,6 +339,17 @@
   function setMsg(text, cls) {
     msgEl.textContent = text;
     msgEl.className = 'msg' + (cls ? ' ' + cls : '');
+  }
+
+  var heartsChip = document.getElementById('heartsChip');
+  function renderHearts() {
+    if (levelInfo(level).type === 'tutorial') {
+      heartsChip.textContent = '❤ ∞';
+      return;
+    }
+    var s = '';
+    for (var k = 0; k < HEARTS_MAX; k++) s += (k < hearts ? '❤️' : '🖤');
+    heartsChip.textContent = s;
   }
 
   function updateHintBadge() {
@@ -421,19 +445,41 @@
   function onCellClick(e) {
     if (busy || !puzzle) return;
     var i = parseInt(e.currentTarget.dataset.idx, 10);
+    if (locked[i]) return;
     var next = (grid[i] + 1) % 3; // 0 UNKNOWN → 1 SEA → 2 ISLAND → 0
-    if (next === CELL_ISLAND && puzzle.solution[i] === CELL_SEA) {
-      // educational, never locks: wrong island → red flash, auto-set to sea, count it
+    var truth = puzzle.solution[i];
+    if (next !== CELL_UNKNOWN && next !== truth) {
+      // wrong mark (either direction) → auto-correct to the true value, lock it, cost a heart
       mistakes++;
-      grid[i] = CELL_SEA;
+      grid[i] = truth;
+      locked[i] = true;
       var el = e.currentTarget;
-      var m = document.createElement('span');
-      m.className = 'mark';
-      m.textContent = '≈';
-      el.appendChild(m);
+      if (truth === CELL_SEA) {
+        var m = document.createElement('span');
+        m.className = 'mark';
+        m.textContent = '≈';
+        el.appendChild(m);
+      }
       el.classList.add('err-flash');
-      setMsg('That cell is sea in the solution — auto-marked ≈ (mistake №' + mistakes + ')', 'err');
-      track('puzzle_mistake', { level: level });
+      var label = truth === CELL_SEA ? 'sea ≈' : 'island';
+      if (levelInfo(level).type === 'tutorial') {
+        setMsg('Wrong — that cell is ' + label + ' in the solution — auto-marked (mistake №' + mistakes + ')', 'err');
+        track('puzzle_mistake', { level: level });
+      } else {
+        hearts--;
+        renderHearts();
+        setMsg('Wrong — auto-marked ' + label + ' (−1 ❤, ' + hearts + ' left)', 'err');
+        track('puzzle_mistake', { level: level });
+        track('hp_loss', { level: level, hearts: hearts });
+        if (hearts <= 0) {
+          setTimeout(function () {
+            el.classList.remove('err-flash');
+            render();
+            showFail();
+          }, 700);
+          return;
+        }
+      }
       setTimeout(function () {
         el.classList.remove('err-flash');
         render();
@@ -571,6 +617,9 @@
     var info = levelInfo(level);
     grid = [];
     mistakes = 0;
+    hearts = HEARTS_MAX;
+    locked = {};
+    renderHearts();
     hintsLeft = FREE_HINTS;
     updateHintBadge();
     overlayEl.classList.remove('show');
@@ -666,6 +715,21 @@
     showIslandReveal(puzzle);
     overlayEl.classList.add('show');
   }
+
+  function showFail() {
+    busy = true;
+    track('level_fail', { level: level, difficulty: (levelInfo(level).preset || {}).label || 'tutorial' });
+    document.getElementById('failTitle').textContent = '💔 Out of hearts';
+    document.getElementById('failText').textContent =
+      'Three wrong marks — this board got away from you. A fresh one is coming up.';
+    document.getElementById('failOverlay').classList.add('show');
+  }
+
+  document.getElementById('retryBtn').addEventListener('click', function () {
+    document.getElementById('failOverlay').classList.remove('show');
+    busy = false;
+    newPuzzle();
+  });
 
   // ── island reveal: the solved islands flip to amber in a ≤1s cascade ──
   function showIslandReveal(p) {
