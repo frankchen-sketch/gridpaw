@@ -176,6 +176,7 @@ function propagateNurikabe(p, states) {
             cstack.push(n);
           }
         }
+        for (const c of comp) inComp.add(c);
         const need = clue.size - comp.size;
         if (need <= 0) continue;
         const dist = /* @__PURE__ */ new Map();
@@ -413,7 +414,7 @@ function buildSeaSnake(rows, cols, rng, targetSea) {
     if (cells.length > 9) return null;
     islands.push(cells);
   }
-  if (islands.length < 2) return null;
+  if (islands.length < 1) return null;
   return { sea, islands };
 }
 function generateNurikabePuzzle(opts) {
@@ -450,31 +451,31 @@ const NURIKABE_DIFFICULTIES = {
 const NURIKABE_TUTORIALS = [
   {
     title: "Islands and sea",
-    lesson: "Each number is the size of its island: that many connected white cells, and no other island may touch it. Everything else becomes sea. Fill a whole line island first \u2014 a 2 next to a wall can only grow one way.",
+    lesson: "A number is an island of exactly that many cells. On this 2\xD72, tap every other cell once \u2014 it becomes sea \u2248 and the board is solved. That is the whole game: islands grow to their number, everything else drowns.",
     seed: 20260926,
-    rows: 5,
-    cols: 5
+    rows: 2,
+    cols: 2
   },
   {
     title: "The sea stays connected",
-    lesson: "All black cells must form one unbroken mass. Watch for sea cells that would get cut off \u2014 and remember: islands may never touch, even diagonally-unrelated corners.",
+    lesson: "The sea must be one single mass \u2014 an island may never cut it in two. On this 3\xD73, grow the island to its number, then flood the rest and check: can every \u2248 reach every other \u2248?",
     seed: 20260927,
-    rows: 5,
-    cols: 5
+    rows: 3,
+    cols: 3
   },
   {
     title: "No 2\xD72 sea",
-    lesson: "The sea can never contain a 2\xD72 square. Three black cells around one corner force the fourth cell to be island \u2014 this rule finishes more boards than any other.",
+    lesson: "The sea may never fill a 2\xD72 square. Three sea cells around one corner force the fourth cell to be island \u2014 on this 4\xD74, watch for corners where three \u2248 already meet.",
     seed: 20260928,
-    rows: 6,
-    cols: 6
+    rows: 4,
+    cols: 4
   },
   {
     title: "Corner pinning",
-    lesson: "A clue in a corner has very few ways to grow. Pin the corners first, watch which sea cells would get sealed off, and the whole board falls into place.",
+    lesson: "A clue in a corner has very few ways to grow. Pin the corners first, watch which sea cells would get sealed off, and this 5\xD75 falls into place.",
     seed: 20260929,
-    rows: 6,
-    cols: 6
+    rows: 5,
+    cols: 5
   }
 ];
 function generateNurikabeTutorial(def) {
