@@ -1,7 +1,7 @@
 # GridPaw — Agent Rules
 
 ## 项目定位
-猫主题日式逻辑谜题游戏站。三合一：Shikaku（矩形分割）+ Akari（Light Up）+ Pictomino（空间推理）。Astro 5.x 静态站 + Cloudflare Pages 部署。
+猫主题日式逻辑谜题游戏站。六游戏：Shikaku（矩形分割，首页）+ Akari + Kakuro + Nonogram + Nurikabe（均 `src/lib/*-engine.ts` 编译到 `public/*-engine.js`）+ Pictomino（`public/pictomino/` 纯静态 HTML）。Astro 5.x 静态站 + Cloudflare Pages 部署。
 
 ## 怎么跑
 ```bash
@@ -19,6 +19,8 @@ pnpm run deploy       # 部署 = wrangler pages deploy + IndexNow 提交（勿�
 - Shikaku 引擎：`src/lib/puzzle-engine.ts` → `public/puzzle-engine.js`
 - Akari 引擎：`src/lib/akari-engine.ts` → `public/akari-engine.js`
 - Pictomino：纯静态 HTML（`public/pictomino/game.html`）
+- PWA：`public/manifest.webmanifest`（SEOHead 全站挂 link + apple-touch-icon + theme-color）；无 service worker，装桌面/主屏=书签级
+- 分享：胜利弹窗统一三按钮（📋 Copy / 𝕏 Share / 👽 Reddit），事件 `share_copy/share_twitter/share_reddit`。Akari+Shikaku 在 astro 页内，Kakuro/Nonogram/Nurikabe 在各自 `public/*/demo.html` 的 winOverlay 里
 - SEOHead：`src/components/SEOHead.astro`（从 site-config.ts 读 GA4/Clarity）
 - 搜索：pagefind
 - IndexNow：`scripts/indexnow-ping.mjs`（key 自动从 `public/<key>.txt` 探测，不硬编码；Bing Webmaster 已注册）
