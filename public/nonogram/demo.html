@@ -130,6 +130,7 @@
   }
   .card .cat { font-size: 44px; }
   .card .cat img { width: 48px; height: 48px; border-radius: 12px; display: block; margin: 0 auto; }
+  .card .game-tag { font-size: 12px; font-weight: 700; color: var(--amber-dark); opacity: .75; letter-spacing: .4px; margin: 2px 0 4px; }
   .card h2 { color: var(--amber-dark); margin: 6px 0 2px; font-size: 20px; }
   .card .name { font-size: 14px; font-weight: 700; color: var(--amber-dark); margin: 4px 0 8px; }
   .card p { font-size: 14px; margin-bottom: 10px; }
@@ -182,6 +183,7 @@
     <div class="card">
       <div class="cat"><img src="/assets/logo.png" alt="GridPaw"></div>
       <h2 id="winTitle">Solved!</h2>
+      <p class="game-tag" id="winGameLevel"></p>
       <p class="name" id="winName"></p>
       <div id="winPix"></div>
       <p id="winText"></p>
@@ -530,6 +532,7 @@
     if (info.type === 'tutorial') {
       // skill pattern: brief pixel-art reveal, then auto-advance (no button)
       title.textContent = 'Solved!';
+      document.getElementById('winGameLevel').textContent = 'GridPaw Nonogram · Tutorial';
       nameEl.textContent = info.def.pattern.name;
       text.textContent = 'That\u2019s the picture. Next lesson…';
       nextBtnEl.style.display = 'none';
@@ -552,6 +555,9 @@
     }
 
     title.textContent = info.type === 'daily' ? 'Daily solved!' : 'Solved!';
+    document.getElementById('winGameLevel').textContent = info.type === 'daily'
+      ? 'GridPaw Nonogram · Daily'
+      : 'GridPaw Nonogram · Level ' + level;
     nameEl.textContent = puzzle.name || '';
     text.textContent = info.type === 'daily'
       ? 'Same board, everyone, today. Come back tomorrow for a fresh one.'
