@@ -51,7 +51,7 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
 
   <main>
     <div class="game-header">
-      <h1>🐱 Play GridPaw</h1>
+ <h1>Play GridPaw</h1>
       <p class="subtitle">Light up all the white cells without letting bulbs see each other in this cat-themed Akari puzzle!</p>
     </div>
 
@@ -176,7 +176,7 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
         hintIndex = 0;
         computeIllumination(playerGrid);
         renderBoard();
-        setMessage('Daily puzzle loaded! 🐱', 'info');
+ setMessage('Daily puzzle loaded!', 'info');
         loadStreak();
       } catch (e) {
         setMessage('Failed to generate daily puzzle. Try refreshing.', 'error');
@@ -234,7 +234,7 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
         hintIndex = 0;
         computeIllumination(playerGrid);
         renderBoard();
-        setMessage(`New ${difficulty} ${size}×${size} puzzle generated! 🐱`, 'info');
+ setMessage(`New ${difficulty} ${size}×${size} puzzle generated! `, 'info');
         track('game_start', { size: size, difficulty: difficulty });
       } catch (e) {
         setMessage('Failed to generate puzzle. Try a different size or difficulty.', 'error');
@@ -382,7 +382,7 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
         sessionSolveCount++;
         track('level_up', { size: puzzle.size, difficulty: puzzle.difficulty });
         if ([1,3,5,7,9].indexOf(sessionSolveCount) !== -1) { track('level_complete_' + sessionSolveCount, { size: puzzle.size, difficulty: puzzle.difficulty }); }
-        setMessage('🎉 Meow-velous! Puzzle solved correctly! 🐱✨', 'success');
+ setMessage('🎉 Meow-velous! Puzzle solved correctly! ✨', 'success');
         if (isDaily) {
           streak++;
           saveStreak();
@@ -451,7 +451,7 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
       hintIndex = 0;
       computeIllumination(playerGrid);
       renderBoard();
-      setMessage('Board reset. Try again! 🐱', 'info');
+ setMessage('Board reset. Try again!', 'info');
       document.getElementById('check-btn')?.classList.remove('solved');
     }
 

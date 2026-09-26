@@ -252,7 +252,7 @@ footer a{color:var(--muted)}
 <header class="site-header">
   <div class="header-inner">
     <a href="/pictomino/" class="brand" aria-label="GridPaw home">
-      <span class="brand-logo">🐱</span>
+      <span class="brand-logo"><img src="/favicon.svg" alt="GridPaw" style="width:1em;height:1em;vertical-align:-0.12em"></span>
       <span class="brand-name">
         <span class="big">GridPaw</span>
         <span class="small">Pictomino</span>
@@ -330,7 +330,7 @@ footer a{color:var(--muted)}
         <li>🗓️ <strong>A fresh challenge every day</strong> — no repeating puzzles, so the brain can't coast on memory</li>
         <li>❤️ <strong>5 lives, no guessing</strong> — every mistake teaches something, and every win is earned with pure logic</li>
         <li>🧩 <strong>Growing difficulty</strong> — grids grow as you progress, keeping the daily spatial reasoning puzzle challenging from day one</li>
-        <li>😺 <strong>Cat facts as rewards</strong> — finish today's puzzle and learn something new about a real cat breed</li>
+ <li><strong>Cat facts as rewards</strong> — finish today's puzzle and learn something new about a real cat breed</li>
       </ul>
       <p>It only takes about five minutes — the perfect daily routine before school, after dinner, or during a rainy afternoon. If today's puzzle is too easy, jump into <a href="hard" style="color:var(--pink);font-weight:800">hard puzzle mode</a>; if you're brand new, the <a href="easy" style="color:var(--pink);font-weight:800">easy game for younger kids</a> is the gentlest place to start.</p>
     </div>
@@ -348,7 +348,7 @@ footer a{color:var(--muted)}
         <p>No timer pressure, no luck — just reasoning about how pieces fit.</p>
       </div>
       <div class="feature">
-        <div class="icon">🐱</div>
+        <div class="icon">🧩</div>
         <h3>Real Cats</h3>
         <p>Beautiful photos of 15 real breeds, with a fun fact after every win.</p>
       </div>
@@ -503,7 +503,7 @@ fetch('/api/leaderboard?date=' + new Date().toISOString().split('T')[0]).then(r=
   const entries=data.entries||[];
   const hint=document.getElementById('lb-hint');
   if(hint)hint.style.display=entries.length?'none':'block';
-  if(!entries.length){list.innerHTML='<p style="text-align:center;font-size:.85rem;color:var(--muted)">🐾 Be the first cat today!</p>';return;}
+ if(!entries.length){list.innerHTML='<p style="text-align:center;font-size:.85rem;color:var(--muted)">Be the first cat today!</p>';return;}
   const medal=r=>r===1?'🥇':r===2?'🥈':r===3?'🥉':'#'+r;
   list.innerHTML=entries.map(e=>{
     const name=String(e.name||'Anonymous Cat').replace(/[<>&]/g,'');

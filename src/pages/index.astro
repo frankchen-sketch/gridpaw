@@ -652,7 +652,7 @@ const description = "Draw rectangles to match every number and fill the grid —
   <div id="account-area" style="display:flex;justify-content:center;align-items:center;gap:.5rem;margin:.4rem 0;min-height:2.4rem;flex-wrap:nowrap;white-space:nowrap"></div>
   <div class="daily-status" id="dailyStatus"></div>
   <!-- P0 结构修复：H1 提到全部 H2 section 之前（sr-only，不改变游戏区视觉；SEO 区原位降级为 h2.seo-h1 保持同款样式） -->
-  <h1 class="sr-only">GridPaw: Free <span class="accent">Shikaku</span> Puzzle Game Online</h1>
+  <h1 class="sr-only">GridPaw: Free <span class="accent">Shikaku</span>Puzzle Game Online</h1>
   <section class="game-card" id="play" aria-label="GridPaw game">
     <div class="game-topbar">
       <div class="level-info" style="margin:0;padding:0">
@@ -857,10 +857,10 @@ const description = "Draw rectangles to match every number and fill the grid —
   var puzzle = null, occupied = [], cellColors = [], rects = [];
   var lives = 3, enhancedNumbers = [], validCells = null;
   var TUTORIAL_MESSAGES = {
-    1: '😺 Drag horizontally to cover 3 cells →',
-    2: '😺 Drag vertically to cover 3 cells ↓',
-    3: '😺 Two numbers — draw one rectangle for each!',
-    4: '😺 Last tutorial! Fill the entire grid.'
+ 1: ' Drag horizontally to cover 3 cells →',
+ 2: ' Drag vertically to cover 3 cells ↓',
+ 3: ' Two numbers — draw one rectangle for each!',
+ 4: ' Last tutorial! Fill the entire grid.'
   };
   var dragging = false, dragStart = null, levelNum = savedLevel ? parseInt(savedLevel) : 1, _cellSize = 56;
   // Timer
@@ -1973,7 +1973,7 @@ const description = "Draw rectangles to match every number and fill the grid —
   function yourTurn() {
     phase = 'turn'; clearCoachArt();
     nextBtn.style.display = 'none'; setDots(2);
-    stepEl.textContent = 'STEP 3 / 3'; titleEl.textContent = 'Your turn 🐾 — drag it yourself';
+ stepEl.textContent = 'STEP 3 / 3'; titleEl.textContent = 'Your turn — drag it yourself';
     textEl.textContent = 'Press the number, drag across cells until the area matches, then release. The board is live now.';
     var scheduleIdle = function() { clearTimeout(idleT); idleT = setTimeout(function() { if (phase === 'turn' && !demoFinger && !dragging) { var rr = firstUnplacedRect(); if (rr) playGesture(rr, scheduleIdle); } }, 3000); };
     scheduleIdle();
@@ -1994,7 +1994,7 @@ const description = "Draw rectangles to match every number and fill the grid —
   }
   function watchDemo(rr) {
     phase = 'watch'; setDots(1); nextBtn.style.display = 'none';
-    stepEl.textContent = 'STEP 2 / 3'; titleEl.textContent = 'Watch the paw 🐾';
+ stepEl.textContent = 'STEP 2 / 3'; titleEl.textContent = 'Watch the paw ';
     textEl.textContent = 'Press on the number, drag across cells until the area matches, then release. (Touch the board any time to take over.)';
     obTrack('onboard_step', { step: 2, level: levelNum });
     var takeover = function() { board.removeEventListener('pointerdown', takeover); killDemo(); clearCoachArt(); yourTurn(); };
@@ -2052,7 +2052,7 @@ const description = "Draw rectangles to match every number and fill the grid —
       <p>Each rectangle's area must equal its number. No more, no fewer.</p>
     </a>
   </div>
-  <p style="text-align:center;margin:.8rem 0 0"><a href="/tips" class="featured-tip-link">📚 Read all techniques →</a> &nbsp;·&nbsp; <a href="#" id="obReplay" class="featured-tip-link">🐾 Replay tutorial</a></p>
+ <p style="text-align:center;margin:.8rem 0 0"><a href="/tips" class="featured-tip-link">📚 Read all techniques →</a> &nbsp;·&nbsp; <a href="#" id="obReplay" class="featured-tip-link">Replay tutorial</a></p>
 </section>
 
 <!-- Level Guides -->
@@ -2145,10 +2145,10 @@ const description = "Draw rectangles to match every number and fill the grid —
       <p style="color:var(--mt-text,var(--gp-ink));margin-bottom:1rem;line-height:1.6">Play GridPaw anywhere, anytime. Add to your home screen for offline support, no browser bars, and instant launch.</p>
       <div class="download-buttons">
         <a class="store-btn" href="#play" id="downloadDailyBtn">
-          <span aria-hidden="true">📅</span> Try Daily Challenge
+          <span aria-hidden="true">📅</span>Try Daily Challenge
         </a>
         <a class="store-btn store-btn-outline" href="#play" id="downloadPlayBtn">
-          <span aria-hidden="true">▶</span> Play Now
+          <span aria-hidden="true">▶</span>Play Now
         </a>
       </div>
     </div>
@@ -2157,11 +2157,11 @@ const description = "Draw rectangles to match every number and fill the grid —
 
 <!-- SEO Content -->
 <section class="seo-section" aria-label="About GridPaw">
-  <h2 class="seo-h1">GridPaw: Free <span class="accent">Shikaku</span> Puzzle Game Online</h2>
+  <h2 class="seo-h1">GridPaw: Free <span class="accent">Shikaku</span>Puzzle Game Online</h2>
   <p>GridPaw is a <strong>free Shikaku puzzle game</strong> with adorable cat visuals. Draw rectangles on a numbered grid so each rectangle covers exactly the number of cells shown. It's the classic <strong>Shikaku</strong> (rectangle partition) puzzle by Nikoli — the same company behind Sudoku — reimagined with cats.</p>
   <p>Whether you're new to <strong>Shikaku</strong> or a seasoned solver, GridPaw offers unlimited procedurally generated puzzles across 7 difficulty levels, from Tutorial 3×3 to Legend 8×8. Every puzzle has a unique solution reachable by pure logic — no guessing required.</p>
 
-  <h2>How to <span class="accent">Play</span> Shikaku</h2>
+  <h2>How to <span class="accent">Play</span>Shikaku</h2>
   <p>The rules of <strong>Shikaku</strong> are simple:</p>
   <ul>
     <li>The grid contains several <strong>numbered cells</strong>.</li>
@@ -2260,7 +2260,7 @@ const description = "Draw rectangles to match every number and fill the grid —
 
 <!-- Explore More -->
 <section class="seo-section" aria-label="More cat puzzle games">
-  <h2 class="section-title">Explore More <span class="accent">Cat Puzzle</span> Games</h2>
+  <h2 class="section-title">Explore More <span class="accent">Cat Puzzle</span>Games</h2>
   <ul style="margin-left:1.5rem">
     <li><a href="/akari/">GridPaw Akari</a> — Cat Light Up puzzle</li>
     <li><a href="/nonogram/">GridPaw Nonogram</a> — Picture logic puzzle: fill the grid, reveal the cat</li>
