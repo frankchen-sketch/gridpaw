@@ -358,6 +358,8 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     .win-btn { margin-top: 1.5rem; padding: 0.7rem 2rem; background: var(--accent); color: #fff; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; font-family: inherit; }
     .win-btn:hover { background: var(--gp-primary-strong); }
     .win-share-row { display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; justify-content: center; }
+    #board-img { max-width: min(78vw, 420px); border-radius: 12px; border: 2px solid var(--mt-primary); display: block; margin: 0 auto 0.4rem; }
+    .board-card { position: relative; z-index: 3; background: var(--mt-surface); border-radius: 20px; padding: 1.4rem 1.6rem; box-shadow: 0 12px 40px rgba(52,36,33,.25); max-height: 88vh; overflow-y: auto; text-align: center; }
     .share-btn { padding: 0.5rem 1rem; border: none; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: 600; font-family: inherit; transition: transform 0.1s; }
     .share-btn:active { transform: scale(0.95); }
     .share-copy { background: var(--gp-cream-warm); color: var(--gp-brown-600); }
@@ -610,14 +612,32 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       <div class="win-overlay" id="win-overlay">
         <div class="win-glow"></div>
         <div id="confetti-container"></div>
-        <div class="win-cat"><svg width="160" height="160" viewBox="0 0 120 120"><defs><radialGradient id="wg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#E8A888" stop-opacity="0.6"/><stop offset="100%" stop-color="#E8A888" stop-opacity="0"/></radialGradient></defs><circle cx="60" cy="60" r="58" fill="url(#wg)"/><circle cx="60" cy="65" r="30" fill="#E8A888"/><polygon points="35,42 42,18 52,42" fill="#E8A888"/><polygon points="68,42 78,18 85,42" fill="#E8A888"/><circle cx="48" cy="58" r="4" fill="#7B6B8A"/><circle cx="72" cy="58" r="4" fill="#7B6B8A"/><ellipse cx="60" cy="68" rx="4" ry="3" fill="#E8A888"/><path d="M56,70 Q60,76 64,70" fill="none" stroke="#7B6B8A" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-        <div class="win-text">🎉 Meow-velous! 🐱✨</div>
+        <div class="win-cat"><img src="/assets/logo.png" alt="GridPaw" style="width:120px;height:120px;border-radius:24px;box-shadow:0 8px 24px rgba(212,122,80,.35)"></div>
+        <div class="win-text">🎉 Solved!</div>
+        <div class="win-sub" id="winGameLevel" style="font-weight:800;color:var(--mt-primary)">GridPaw Akari</div>
         <div class="win-sub">All cells lit, all constraints satisfied!</div>
         <button class="win-btn" id="win-next">Next Puzzle →</button>
         <div class="win-share-row">
           <button class="share-btn share-copy" id="share-copy">📋 Copy Result</button>
           <button class="share-btn share-twitter" id="share-twitter">𝕏 Share</button>
           <button class="share-btn share-reddit" id="share-reddit">👽 Reddit</button>
+        </div>
+      </div>
+
+      <div class="win-overlay" id="board-overlay">
+        <div class="win-glow"></div>
+        <div class="board-card">
+          <div style="font-weight:900;color:var(--mt-ink);font-size:1.1rem;margin-bottom:0.6rem">Your board</div>
+          <img id="board-img" alt="Your winning board">
+          <div class="win-share-row">
+            <button class="share-btn share-copy" id="board-copy">📋 Copy Image</button>
+            <button class="share-btn share-copy" id="board-save">⬇️ Save</button>
+          </div>
+          <div class="win-share-row">
+            <button class="share-btn share-twitter" id="board-x">𝕏 Post</button>
+            <button class="share-btn share-reddit" id="board-reddit">👽 Post</button>
+          </div>
+          <button class="win-btn" id="board-close" style="margin-top:0.6rem">✕ Close</button>
         </div>
       </div>
 
@@ -697,7 +717,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
             <p style="color:var(--text);margin-bottom:1rem;line-height:1.6">GridPaw works on any device with a browser. No download needed — just open and play. Your progress saves automatically.</p>
             <div class="download-buttons">
               <a class="store-btn" href="/akari/" style="background:var(--accent);color:#fff">
-                <span aria-hidden="true">🐱</span> Play Now
+                <span aria-hidden="true">💡</span> Play Now
               </a>
             </div>
           </div>
@@ -943,7 +963,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       </div>
     </div>
   </div>
-  <div id="ak-toast">🐱 Meow! The whole row lights up</div>
+  <div id="ak-toast">💡 Meow! The whole row lights up</div>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
     <radialGradient id="gpPadG" cx="42%" cy="32%" r="75%"><stop offset="0%" stop-color="#FFD3DE"/><stop offset="65%" stop-color="#FBAEC2"/><stop offset="100%" stop-color="#EF93AF"/></radialGradient>
     <radialGradient id="gpBeanG" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#FFDFE8"/><stop offset="100%" stop-color="#F5A8BC"/></radialGradient>
@@ -1121,7 +1141,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
         el.style.width = (8+Math.random()*8)+'px'; el.style.height = (8+Math.random()*8)+'px'; c.appendChild(el);
       }
       for (let i = 0; i < 12; i++) {
-        const el = document.createElement('div'); el.className = 'paw-confetti'; el.textContent = '🐾';
+        const el = document.createElement('div'); el.className = 'paw-confetti'; el.textContent = '✨';
         el.style.left = Math.random()*100+'%'; el.style.animationDuration = (3+Math.random()*3)+'s';
         el.style.animationDelay = Math.random()*2+'s'; c.appendChild(el);
       }
@@ -1310,6 +1330,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
         const isNewRecord = checkBestTime();
         SFX.win(); spawnConfetti();
         setTimeout(()=>{ winOverlay.classList.add('show');
+          document.getElementById('winGameLevel').textContent = 'GridPaw Akari · Level ' + level;
           if (isNewRecord) {
             document.querySelector('.win-sub').textContent = '🏆 New Best Time: ' + formatTime(timerSeconds) + '!';
           }
@@ -1384,27 +1405,53 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     document.getElementById('share-copy').addEventListener('click', () => {
       track('share_copy', { level: level, difficulty: getDifficulty(level).label });
       const diff = getDifficulty(level);
-      const text = '🐱 Cleared GridPaw Level ' + level + ' (' + diff.label + ' ' + diff.size + '×' + diff.size + ') — can you beat my time?\ngridpaw.com';
+      const text = 'Cleared GridPaw Akari Level ' + level + ' (' + diff.label + ' ' + diff.size + '×' + diff.size + ') ⏱ ' + formatTime(timerSeconds) + ' — your turn → gridpaw.com/akari/';
       navigator.clipboard.writeText(text).then(() => showToast('📋 Copied to clipboard!', 'success'));
     });
     document.getElementById('share-twitter').addEventListener('click', () => {
+      openBoardCard(); // 点分享先弹棋盘卡，卡内再发帖
+    });
+    document.getElementById('share-reddit').addEventListener('click', () => {
+      openBoardCard();
+    });
+
+    // ── board share-card popup ──
+    const boardOverlay = document.getElementById('board-overlay');
+    function openBoardCard() {
+      track('share_card', { level: level, difficulty: getDifficulty(level).label });
+      document.getElementById('board-img').src = generateShareCard();
+      boardOverlay.classList.add('show');
+    }
+    document.getElementById('board-copy').addEventListener('click', async function () {
+      track('share_card_copy', { level: level });
+      try { navigator.clipboard.write([new ClipboardItem({ 'image/png': await (await fetch(document.getElementById('board-img').src)).blob() })]).catch(() => {}); } catch(e) {}
+      this.textContent = '✅ Copied';
+      const self = this;
+      setTimeout(() => { self.textContent = '📋 Copy Image'; }, 1500);
+    });
+    document.getElementById('board-save').addEventListener('click', () => {
+      const a = document.createElement('a'); a.download = 'gridpaw-akari-level-' + level + '.png'; a.href = document.getElementById('board-img').src; a.click();
+    });
+    document.getElementById('board-x').addEventListener('click', () => {
       track('share_twitter', { level: level, difficulty: getDifficulty(level).label });
       const diff = getDifficulty(level);
-      const timeStr = timerSeconds > 0 ? '⏱ ' + formatTime(timerSeconds) + ' — ' : '';
-      const text = encodeURIComponent('🐱 Cleared GridPaw Level ' + level + ' (' + diff.label + ' ' + diff.size + '×' + diff.size + ') ' + timeStr + 'your turn → gridpaw.com');
+      const text = encodeURIComponent('Cleared GridPaw Akari Level ' + level + ' (' + diff.label + ' ' + diff.size + '×' + diff.size + ') ⏱ ' + formatTime(timerSeconds) + ' — your turn → gridpaw.com/akari/');
       window.open('https://twitter.com/intent/tweet?text=' + text, '_blank');
     });
-    document.getElementById('share-reddit').addEventListener('click', async () => {
-      const diff = getDifficulty(level);
-      const timeStr = timerSeconds > 0 ? '⏱ ' + formatTime(timerSeconds) + ' — ' : '';
-      const text = encodeURIComponent('🐱 Cleared GridPaw Level ' + level + ' (' + diff.label + ' ' + diff.size + '×' + diff.size + ') ' + timeStr + 'your turn → gridpaw.com');
-      track('share_reddit', { level: level, difficulty: diff.label });
+    document.getElementById('board-reddit').addEventListener('click', async () => {
+      track('share_reddit', { level: level, difficulty: getDifficulty(level).label });
       await captureBoardToClipboard();
-      window.open('https://www.reddit.com/r/gridpaw/submit?url=' + encodeURIComponent('https://gridpaw.com') + '&title=' + text, '_blank');
+      const diff = getDifficulty(level);
+      const text = encodeURIComponent('Cleared GridPaw Akari Level ' + level + ' (' + diff.label + ' ' + diff.size + '×' + diff.size + ') ⏱ ' + formatTime(timerSeconds) + ' — your turn → gridpaw.com/akari/');
+      window.open('https://www.reddit.com/r/gridpaw/submit?url=' + encodeURIComponent('https://gridpaw.com/akari/') + '&title=' + text, '_blank');
+    });
+    document.getElementById('board-close').addEventListener('click', () => {
+      boardOverlay.classList.remove('show');
     });
     document.getElementById('daily-btn').addEventListener('click', () => {
       track('daily_challenge_click');
     });
+    const shareLogoImg = new Image(); shareLogoImg.src = '/assets/logo.png';
     function generateShareCard() {
       const s = currentPuzzle.size, g = currentPuzzle.grid;
       const lit = illuminate(g, playerSolution, s);
@@ -1416,25 +1463,25 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       const gradient = ctx.createLinearGradient(0, 0, cardW, cardH);
       gradient.addColorStop(0, '#f8f6ef'); gradient.addColorStop(1, '#f8f6ef');
       ctx.fillStyle = gradient; ctx.fillRect(0, 0, cardW, cardH);
+      if (shareLogoImg.complete && shareLogoImg.naturalWidth) ctx.drawImage(shareLogoImg, 18, 14, 44, 44);
       ctx.fillStyle = '#342421'; ctx.font = 'bold 28px system-ui'; ctx.textAlign = 'center';
-      ctx.fillText('🐱 GridPaw Challenge', cardW / 2, 40);
+      ctx.fillText('GridPaw Akari Challenge', cardW / 2 + 14, 40);
       ctx.font = '16px system-ui'; ctx.fillStyle = '#6f5651';
       const diff = getDifficulty(level);
       ctx.fillText(s + '×' + s + ' · ' + diff.label + ' · Level ' + level, cardW / 2, 65);
       ctx.font = 'bold 18px system-ui'; ctx.fillStyle = '#342421';
       const timeStr = gameStartTime ? (Math.floor((Date.now()-gameStartTime)/60000)+':'+String(Math.floor(((Date.now()-gameStartTime)/1000)%60)).padStart(2,'0')) : '--:--';
-      ctx.fillText('⏱ '+timeStr+'   ❤️ '+health+' lives   🐱 '+currentPuzzle.solution.flat().filter(Boolean).length+' cats', cardW/2, 100);
+      ctx.fillText('⏱ '+timeStr+'   ❤️ '+health+' lives   💡 '+currentPuzzle.solution.flat().filter(Boolean).length+' bulbs', cardW/2, 100);
       ctx.fillStyle = '#E8DDD8'; ctx.beginPath(); ctx.roundRect(gridX-4, gridY-4, gridW+8, gridW+8, 12); ctx.fill();
       for (let r=0;r<s;r++) for (let c=0;c<s;c++) {
         const x=gridX+c*(cellSize+2)+2, y=gridY+r*(cellSize+2)+2, val=g[r][c];
         if (val!==9) { ctx.fillStyle='#8B7B9A'; ctx.beginPath(); ctx.roundRect(x,y,cellSize,cellSize,6); ctx.fill();
           if(val>=0){ctx.fillStyle='#F0E8FF';ctx.font='bold '+Math.max(10,cellSize*0.4)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(val,x+cellSize/2,y+cellSize/2);}
-        } else if(playerSolution[r][c]){ctx.fillStyle='#F0E8FF';ctx.beginPath();ctx.roundRect(x,y,cellSize,cellSize,6);ctx.fill();ctx.font=(cellSize*0.6)+'px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🐱',x+cellSize/2,y+cellSize/2);}
+        } else if(playerSolution[r][c]){ctx.fillStyle='#D97706';ctx.beginPath();ctx.roundRect(x,y,cellSize,cellSize,6);ctx.fill();}
         else if(lit[r][c]){ctx.fillStyle='#FFF8F0';ctx.beginPath();ctx.roundRect(x,y,cellSize,cellSize,6);ctx.fill();}
         else{ctx.fillStyle='#F0EBE5';ctx.beginPath();ctx.roundRect(x,y,cellSize,cellSize,6);ctx.fill();}
       }
-      const ctaY=gridY+gridW+30; ctx.font='bold 16px system-ui';ctx.fillStyle='#6f5651';ctx.textAlign='center';ctx.fillText('Play free at gridpaw.com',cardW/2,ctaY);
-      ctx.font='30px serif';ctx.fillText('🐾',40,ctaY+40);ctx.fillText('🐾',cardW-40,ctaY+40);
+      const ctaY=gridY+gridW+30; ctx.font='bold 16px system-ui';ctx.fillStyle='#6f5651';ctx.textAlign='center';ctx.fillText('Play free at gridpaw.com/akari/',cardW/2,ctaY);
       return canvas.toDataURL('image/png');
     }
     document.getElementById('share-copy').addEventListener('click', () => {

@@ -160,7 +160,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
   </header>
 
   <div class="container">
-    <h1>🐱 GridPaw Daily Challenge</h1>
+    <h1><img src="/assets/logo.png" alt="GridPaw" style="height:26px;border-radius:7px;vertical-align:-5px"> GridPaw Daily Akari</h1>
     <p class="subtitle" id="daily-subtitle">A fresh puzzle every day — can you solve it?</p>
     <div id="account-area" style="display:flex;justify-content:center;align-items:center;gap:.6rem;margin:.6rem 0;min-height:2.2rem;flex-wrap:wrap"></div>
     <div style="text-align:center"><span class="daily-badge" id="daily-badge">🔥 HARD 10×10</span></div>
@@ -423,7 +423,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
         el.style.width = (8+Math.random()*8)+'px'; el.style.height = (8+Math.random()*8)+'px'; c.appendChild(el);
       }
       for (let i = 0; i < 12; i++) {
-        const el = document.createElement('div'); el.className = 'paw-confetti'; el.textContent = '🐾';
+        const el = document.createElement('div'); el.className = 'paw-confetti'; el.textContent = '✨';
         el.style.left = Math.random()*100+'%'; el.style.animationDuration = (3+Math.random()*3)+'s';
         el.style.animationDelay = Math.random()*2+'s'; c.appendChild(el);
       }
@@ -627,7 +627,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       ctx.fillStyle = '#342421';
       ctx.font = 'bold 32px SF Pro Rounded, system-ui';
       ctx.textAlign = 'center';
-      ctx.fillText('🐱 GridPaw Daily Challenge', 300, 50);
+      ctx.fillText('GridPaw Daily Akari', 300, 50);
       
       ctx.font = 'bold 24px SF Pro Rounded, system-ui';
       const dow = new Date().getUTCDay();
@@ -654,10 +654,6 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       ctx.font = '16px SF Pro Rounded, system-ui';
       ctx.fillStyle = '#6f5651';
       ctx.fillText('Play free at gridpaw.com', 300, 320);
-      
-      ctx.font = '40px serif';
-      ctx.fillText('🐾', 50, 370);
-      ctx.fillText('🐾', 550, 370);
       
       return canvas.toDataURL('image/png');
     }
@@ -703,7 +699,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       const streak = state ? state.streak : 1;
       const badge = getBadge(streak);
       const badgeText = badge ? ' ' + badge.emoji + badge.label : '';
-      const text = encodeURIComponent('🐱 Cleared the GridPaw Daily Challenge (10×10 Akari)! ⏱ ' + timerEl.textContent + ' 🔥 ' + streak + ' day streak' + badgeText + ' — your turn → gridpaw.com');
+      const text = encodeURIComponent('Cleared the GridPaw Daily Akari (10×10)! ⏱ ' + timerEl.textContent + ' 🔥 ' + streak + ' day streak' + badgeText + ' — your turn → gridpaw.com');
       window.open('https://www.reddit.com/r/gridpaw/submit?url=' + encodeURIComponent('https://gridpaw.com/daily/') + '&title=' + text, '_blank');
     });
     document.getElementById('win-close').addEventListener('click', () => {
@@ -715,7 +711,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       track('share_copy', { mode: 'daily', streak: streak, board: currentPuzzle ? currentPuzzle.size : 0 });
       const badge = getBadge(streak);
       const badgeText = badge ? ' ' + badge.emoji + ' ' + badge.label : '';
-      const text = '🐱 GridPaw Daily Challenge\n⏱️ ' + timerEl.textContent + '\n🔥 ' + streak + ' day streak' + badgeText + '\n\nPlay free at gridpaw.com';
+      const text = 'GridPaw Daily Akari\n⏱️ ' + timerEl.textContent + '\n🔥 ' + streak + ' day streak' + badgeText + '\n\nPlay free at gridpaw.com';
       navigator.clipboard.writeText(text).then(() => showToast('📋 Copied to clipboard!', 'success'));
     });
     document.getElementById('share-twitter').addEventListener('click', () => {
@@ -724,7 +720,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       track('share_twitter', { mode: 'daily', streak: streak, board: currentPuzzle ? currentPuzzle.size : 0 });
       const badge = getBadge(streak);
       const badgeText = badge ? ' ' + badge.emoji + ' ' + badge.label : '';
-      const text = encodeURIComponent('🐱 Just completed the GridPaw Daily Challenge!\n⏱️ ' + timerEl.textContent + '\n🔥 ' + streak + ' day streak' + badgeText + '\n\nPlay free at gridpaw.com');
+      const text = encodeURIComponent('Just completed the GridPaw Daily Akari!\n⏱️ ' + timerEl.textContent + '\n🔥 ' + streak + ' day streak' + badgeText + '\n\nPlay free at gridpaw.com');
       window.open('https://twitter.com/intent/tweet?text=' + text, '_blank');
     });
 

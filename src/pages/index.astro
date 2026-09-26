@@ -221,6 +221,7 @@ const description = "Draw rectangles to match every number and fill the grid —
     .victory-overlay { position: absolute; inset: 0; background: rgba(245,240,247,0.95); z-index: 600; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; animation: pop-in 0.5s ease-out; border-radius: 12px; }
     .victory-overlay.hidden { display: none; }
     .victory-title { font-size: 36px; font-weight: 900; color: var(--mt-primary); text-shadow: 0 2px 8px rgba(212,122,80,0.3); }
+    .victory-tag { font-size: 14px; font-weight: 800; color: var(--mt-text-light); letter-spacing: .4px; margin-top: 2px; }
     .victory-cats { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
     .victory-cats img { width: 56px; height: 56px; object-fit: contain; border-radius: 10px; animation: cat-dance 1s ease-in-out infinite alternate; }
     .victory-cats img:nth-child(2) { animation-delay: 0.15s; }
@@ -698,15 +699,31 @@ const description = "Draw rectangles to match every number and fill the grid —
 
   <div class="victory-overlay hidden" id="victory">
     <div class="victory-title">🎉 Purrfect!</div>
+    <div class="victory-tag" id="victoryTag">GridPaw Shikaku</div>
     <div class="victory-cats" id="victoryCats"></div>
     <button class="next-btn" id="nextBtn">Next Level →</button>
     <button class="share-btn" id="shareBtn">📋 Share Result</button>
+    <button class="share-btn" id="xBtn" style="background:var(--mt-primary);color:#fff">𝕏 Share</button>
     <button class="reddit-btn" id="redditBtn">🔥 Share on Reddit</button>
     <button id="victory-close" style="background:none;border:1.5px solid var(--gp-lilac-soft);color:var(--gp-stone);font-family:inherit;font-weight:700;font-size:.85rem;padding:.5rem 1.6rem;border-radius:999px;cursor:pointer">Continue ✓</button>
   </div>
 
+  <div id="boardPopup" style="display:none;position:fixed;inset:0;background:rgba(63,45,29,.55);z-index:900;align-items:center;justify-content:center;">
+    <div style="background:var(--mt-surface,#FFF8F0);border-radius:16px;padding:18px;max-width:92vw;max-height:88vh;overflow:auto;text-align:center;box-shadow:0 12px 40px rgba(52,36,33,.3)">
+      <div style="font-weight:900;color:var(--gp-brown-600,#6f5651);margin-bottom:8px;font-size:1.05rem">Your board</div>
+      <img id="boardPopupImg" alt="Your winning board" style="max-width:100%;border-radius:12px;border:2px solid #d97706;display:block;margin:0 auto 10px">
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+        <button class="share-btn" id="boardPopupCopy">📋 Copy Image</button>
+        <button class="share-btn" id="boardPopupSave">⬇️ Save</button>
+        <button class="share-btn" id="boardPopupX" style="background:var(--mt-primary);color:#fff">𝕏 Post</button>
+        <button class="share-btn" id="boardPopupReddit" style="background:var(--accent);color:#fff">👽 Post</button>
+        <button class="share-btn" id="boardPopupClose" style="background:var(--gp-lilac-soft,#EDE7F6);color:var(--gp-stone,#7B6B8A)">✕ Close</button>
+      </div>
+    </div>
+  </div>
+
   <div class="game-over-overlay hidden" id="gameOver">
-    <div class="game-over-title">😿 Game Over</div>
+    <div class="game-over-title">💔 Game Over</div>
     <p>You ran out of lives!</p>
     <button class="next-btn" id="hintRetryBtn">💡 Retry with a Hint</button>
     <button class="next-btn secondary" id="retryBtn">Try Again 🔄</button>
@@ -1319,6 +1336,7 @@ const description = "Draw rectangles to match every number and fill the grid —
       catsDiv.appendChild(div);
     });
     victory.classList.remove('hidden'); spawnConfetti();
+    document.getElementById('victoryTag').textContent = 'GridPaw Shikaku · Level ' + levelNum;
     // GSAP entrance: title bounce-in, cats stagger-up (contract Signature), reduced-motion safe
     if (typeof window.gsap === 'undefined' || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
     var title = victory.querySelector('.victory-title');
@@ -1336,7 +1354,7 @@ const description = "Draw rectangles to match every number and fill the grid —
       // fallback: original CSS-keyframe confetti (also the reduced-motion path)
       var colors = ['#D47A50','#F0B898','#CFC2E8','#B3D9FF','#B8E8C0','#FFB3C6']; var app0 = document.getElementById('app');
       for (var i = 0; i < 30; i++) { var piece = document.createElement('div'); piece.className = 'confetti-piece'; piece.style.left = (5 + Math.random() * 90) + '%'; piece.style.top = '-10px'; piece.style.background = colors[i % colors.length]; piece.style.animationDelay = (Math.random() * 0.8) + 's'; piece.style.animationDuration = (1.5 + Math.random() * 1.5) + 's'; app0.appendChild(piece); (function(p) { setTimeout(function() { p.remove(); }, 3500); })(piece); }
-      for (var i2 = 0; i2 < 12; i2++) { var paw = document.createElement('div'); paw.className = 'paw-confetti'; paw.textContent = '🐾'; paw.style.left = (5 + Math.random() * 90) + '%'; paw.style.top = '-40px'; paw.style.animationDelay = (Math.random() * 1.2) + 's'; app0.appendChild(paw); (function(p) { setTimeout(function() { p.remove(); }, 4000); })(paw); }
+      for (var i2 = 0; i2 < 12; i2++) { var paw = document.createElement('div'); paw.className = 'paw-confetti'; paw.textContent = '✨'; paw.style.left = (5 + Math.random() * 90) + '%'; paw.style.top = '-40px'; paw.style.animationDelay = (Math.random() * 1.2) + 's'; app0.appendChild(paw); (function(p) { setTimeout(function() { p.remove(); }, 4000); })(paw); }
       return;
     }
     // GSAP timeline: confetti + paw-print rain (contract Signature)
@@ -1358,7 +1376,7 @@ const description = "Draw rectangles to match every number and fill the grid —
     for (var j = 0; j < 16; j++) {
       var paw2 = document.createElement('div');
       paw2.className = 'paw-confetti'; paw2.style.animation = 'none';
-      paw2.textContent = '🐾';
+      paw2.textContent = '✨';
       paw2.style.left = (5 + Math.random() * 90) + '%'; paw2.style.top = '-48px';
       paw2.style.fontSize = (16 + Math.random() * 14) + 'px';
       app.appendChild(paw2);
@@ -1377,7 +1395,7 @@ const description = "Draw rectangles to match every number and fill the grid —
     var overlay = document.createElement('div');
     overlay.className = 'signin-prompt-overlay';
     overlay.innerHTML = '<div class="signin-prompt-card">' +
-      '<div style="font-size:40px;margin-bottom:8px">🐱</div>' +
+      '<img src="/assets/logo.png" alt="GridPaw" style="width:48px;height:48px;border-radius:12px;margin-bottom:8px">' +
       '<h3 style="margin:0 0 6px;font-size:18px;font-weight:900;color:var(--gp-ink)">Save your progress?</h3>' +
       '<p style="margin:0 0 16px;font-size:13px;color:var(--gp-stone);line-height:1.5">Sign in to save progress, appear on the daily leaderboard, and track your streak.</p>' +
       '<a href="/api/auth/login?next=/" class="signin-prompt-btn" onclick="track(\'sign_in_click\',{source:\'level5_prompt\',level:5})">' +
@@ -1426,7 +1444,7 @@ const description = "Draw rectangles to match every number and fill the grid —
     var isDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
     if (!isDev && !isAdmin && hintUsesLeft <= 0) {
       track('hint_blocked', { reason: 'limit', level: levelNum });
-      statusEl.textContent = '💡 Hint used up for this level — solve it like a cat! 🐱'; statusEl.style.color = 'var(--mt-error)';
+      statusEl.textContent = '💡 Hint used up for this level — solve it like a pro!'; statusEl.style.color = 'var(--mt-error)';
       setTimeout(updateStatus, 2500);
       return;
     }
@@ -1534,7 +1552,7 @@ const description = "Draw rectangles to match every number and fill the grid —
     // Map colors to emoji squares
     var colorEmoji = { '#FFB3C6': '🩷', '#CFC2E8': '🟪', '#FDD09F': '🟧', '#B3D9FF': '🟦', '#B8E8C0': '🟩', '#FCE883': '🟨', '#FF9A9E': '🟥', '#A0E8E0': '🟦' };
     var emojiLine = usedColors.map(function(bg) { return colorEmoji[bg] || '🟩'; }).join('');
-    return '🐱 Just cracked GridPaw ' + diffLabel + ' in ' + formatGameTime(gameElapsed) + '!\n' + emojiLine + '\nThink you can beat my time? → gridpaw.com';
+    return 'Just cracked GridPaw Shikaku (' + diffLabel + ') in ' + formatGameTime(gameElapsed) + '!\n' + emojiLine + '\nThink you can beat my time? → gridpaw.com';
   }
 
   // Share button handler
@@ -1554,6 +1572,54 @@ const description = "Draw rectangles to match every number and fill the grid —
       document.getElementById('shareBtn').textContent = '✅ Copied!';
       setTimeout(function() { document.getElementById('shareBtn').textContent = '📋 Share Result'; }, 2000);
     }
+  });
+
+  document.getElementById('xBtn').addEventListener('click', openBoardPopup);
+  document.getElementById('redditBtn').addEventListener('click', openBoardPopup);
+
+  var boardPopupCanvas = null;
+  async function openBoardPopup() {
+    track('share_card', { level: levelNum, time: gameElapsed });
+    var popup = document.getElementById('boardPopup');
+    popup.style.display = 'flex';
+    document.getElementById('boardPopupImg').src = '';
+    try {
+      var boardEl = document.getElementById('board');
+      if (boardEl && typeof html2canvas !== 'undefined') {
+        boardPopupCanvas = await html2canvas(boardEl, { backgroundColor: '#FFF8F0', scale: 2 });
+        document.getElementById('boardPopupImg').src = boardPopupCanvas.toDataURL('image/png');
+      }
+    } catch(e) {}
+  }
+  document.getElementById('boardPopupClose').addEventListener('click', function() {
+    document.getElementById('boardPopup').style.display = 'none';
+  });
+  document.getElementById('boardPopupCopy').addEventListener('click', function() {
+    track('share_card_copy', { level: levelNum });
+    if (!boardPopupCanvas) return;
+    var self = this;
+    boardPopupCanvas.toBlob(async function(blob) {
+      if (!blob) return;
+      try { await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]); } catch(e) {}
+      self.textContent = '✅ Copied';
+      setTimeout(function() { self.textContent = '📋 Copy Image'; }, 1500);
+    }, 'image/png');
+  });
+  document.getElementById('boardPopupSave').addEventListener('click', function() {
+    if (!boardPopupCanvas) return;
+    var a = document.createElement('a');
+    a.download = 'gridpaw-shikaku-level-' + levelNum + '.png';
+    a.href = boardPopupCanvas.toDataURL('image/png');
+    a.click();
+  });
+  document.getElementById('boardPopupX').addEventListener('click', function() {
+    track('share_twitter', { level: levelNum, time: gameElapsed });
+    window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(buildShareText()), '_blank');
+  });
+  document.getElementById('boardPopupReddit').addEventListener('click', async function() {
+    track('share_reddit', { level: levelNum, time: gameElapsed });
+    await captureBoardToClipboard();
+    window.open('https://www.reddit.com/r/gridpaw/submit?url=' + encodeURIComponent('https://gridpaw.com') + '&title=' + encodeURIComponent(buildShareText()), '_blank');
   });
 
   // Capture the game board as an image and copy it to the clipboard (for Reddit paste)
