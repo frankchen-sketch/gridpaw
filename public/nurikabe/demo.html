@@ -130,6 +130,7 @@
     max-width: 360px;
   }
   .card .cat { font-size: 44px; }
+  .card .cat img { width: 48px; height: 48px; border-radius: 12px; display: block; margin: 0 auto; }
   .card h2 { color: var(--amber-dark); margin: 6px 0 2px; font-size: 20px; }
   .card .name { font-size: 14px; font-weight: 700; color: var(--amber-dark); margin: 4px 0 8px; }
   .card p { font-size: 14px; margin-bottom: 10px; }
@@ -199,7 +200,7 @@
 </head>
 <body>
   <header>
-    <h1>🐾 Nurikabe</h1>
+    <h1><img src="/favicon.svg" alt="" style="width:24px;height:24px;border-radius:6px;vertical-align:-5px"> Nurikabe</h1>
     <div class="sub">GridPaw demo — every island matches its number, the sea stays one</div>
   </header>
 
@@ -222,7 +223,7 @@
 
   <div class="overlay" id="winOverlay">
     <div class="card">
-      <div class="cat">😺</div>
+      <div class="cat"><img src="/favicon.svg" alt="GridPaw"></div>
       <h2 id="winTitle">Solved!</h2>
       <p class="name" id="winName"></p>
       <div id="winPix"></div>
@@ -700,7 +701,7 @@
 
     if (info.type === 'tutorial') {
       // skill pattern: brief reveal, then auto-advance (no button)
-      title.textContent = 'Solved! 😺';
+      title.textContent = 'Solved!';
       nameEl.textContent = info.def.title;
       text.textContent = 'Rule learned: ' + info.def.title + ' — next lesson…';
       nextBtnEl.style.display = 'none';
@@ -722,7 +723,7 @@
       track('daily_solved', { level: level });
     }
 
-    title.textContent = info.type === 'daily' ? 'Daily solved! 😺' : 'Solved! 😺';
+    title.textContent = info.type === 'daily' ? 'Daily solved!' : 'Solved!';
     nameEl.textContent = puzzle.name || '';
     text.textContent = info.type === 'daily'
       ? 'Same board, everyone, today. Come back tomorrow for a fresh one.'
@@ -779,8 +780,8 @@ document.getElementById('nextBtn').addEventListener('click', function () {
   function shareText() {
     var info = levelInfo(level);
     return info.type === 'daily'
-      ? '\uD83C\uDF0A Daily Nurikabe: conquered, no hearts lost \uD83D\uDC3E\uD83D\uDE3E Can you do it without drowning? \u2192 gridpaw.com/nurikabe/'
-      : '\uD83C\uDF0A\uD83D\uDC31 Sank GridPaw Nurikabe Level ' + level + ' \u2014 every island in place, sea stays one \uD83D\uDE3E Don\u2019t drown \u2192 gridpaw.com/nurikabe/';
+      ? '\uD83C\uDF0A GridPaw Daily Nurikabe conquered \u2014 no hearts lost. Can you do it without drowning? \u2192 gridpaw.com/nurikabe/'
+      : '\uD83C\uDF0A Sank GridPaw Nurikabe Level ' + level + ' \u2014 every island in place, sea stays one. Don\u2019t drown \u2192 gridpaw.com/nurikabe/';
   }
   document.getElementById('share-copy').addEventListener('click', function () {
     track('share_copy', { level: level });
