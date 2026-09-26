@@ -131,6 +131,7 @@
   .card .cat { font-size: 44px; }
   .card .cat img { width: 48px; height: 48px; border-radius: 12px; display: block; margin: 0 auto; }
   .card .game-tag { font-size: 12px; font-weight: 700; color: var(--amber-dark); opacity: .75; letter-spacing: .4px; margin: 2px 0 4px; }
+  #boardImg { max-width: 100%; border-radius: 12px; border: 2px solid var(--amber-dark); display: block; margin: 0 auto 10px; }
   .card h2 { color: var(--amber-dark); margin: 6px 0 2px; font-size: 20px; }
   .card .name { font-size: 14px; font-weight: 700; color: var(--amber-dark); margin: 4px 0 8px; }
   .card p { font-size: 14px; margin-bottom: 10px; }
@@ -193,6 +194,22 @@
         <button class="share-btn share-twitter" id="share-twitter">𝕏 Share</button>
         <button class="share-btn share-reddit" id="share-reddit">👽 Reddit</button>
       </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="boardOverlay">
+    <div class="card">
+      <h2>Your board</h2>
+      <img id="boardImg" alt="Your winning board">
+      <div class="win-share-row">
+        <button class="share-btn share-copy" id="board-copy">📋 Copy Image</button>
+        <button class="share-btn share-copy" id="board-save">⬇️ Save</button>
+      </div>
+      <div class="win-share-row">
+        <button class="share-btn share-twitter" id="board-x">𝕏 Post</button>
+        <button class="share-btn share-reddit" id="board-reddit">👽 Post</button>
+      </div>
+      <button class="share-btn share-copy" id="board-close">✕ Close</button>
     </div>
   </div>
 
@@ -611,13 +628,84 @@ document.getElementById('nextBtn').addEventListener('click', function () {
     });
   });
   document.getElementById('share-twitter').addEventListener('click', function () {
+    openBoardCard(); // 点分享先弹棋盘卡，卡内再发帖
+  });
+  document.getElementById('share-reddit').addEventListener('click', function () {
+    openBoardCard();
+  });
+
+  // ── board share-card popup: preview the winning board before posting ──
+  var boardOverlayEl = document.getElementById('boardOverlay');
+  var boardCanvas = null;
+  var logoImg = new Image();
+  logoImg.src = '/assets/logo.png';
+
+  function boardTag() {
+    var info = levelInfo(level);
+    return info.type === 'daily' ? 'GridPaw Nonogram · Daily' : 'GridPaw Nonogram · Level ' + level;
+  }
+
+  function renderBoardCard() {
+    var W = 640;
+    var rows = puzzle.rows, cols = puzzle.cols;
+    var cell = Math.min(36, Math.floor(460 / cols));
+    var bw = cell * cols, bh = cell * rows;
+    var boardX = (W - bw) / 2, boardY = 130;
+    var H = boardY + bh + 70;
+    var c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    var g = c.getContext('2d');
+    g.fillStyle = '#fff8ef'; g.fillRect(0, 0, W, H);
+    if (logoImg.complete && logoImg.naturalWidth) g.drawImage(logoImg, W / 2 - 24, 12, 48, 48);
+    g.textAlign = 'center'; g.fillStyle = '#3f2d1d'; g.font = 'bold 26px system-ui';
+    g.fillText(boardTag(), W / 2, 96);
+    g.strokeStyle = '#b45309'; g.lineWidth = 3;
+    g.strokeRect(boardX - 3, boardY - 3, bw + 6, bh + 6);
+    for (var i = 0; i < rows * cols; i++) {
+      var cx = boardX + (i % cols) * cell, cy = boardY + Math.floor(i / cols) * cell;
+      g.fillStyle = puzzle.solution[i] === 1 ? '#D97706' : '#ffffff';
+      g.fillRect(cx, cy, cell, cell);
+      g.strokeStyle = '#e7d4b8'; g.lineWidth = 1; g.strokeRect(cx + .5, cy + .5, cell - 1, cell - 1);
+    }
+    g.fillStyle = '#8a6f55'; g.font = '16px system-ui';
+    g.fillText('gridpaw.com/nonogram/', W / 2, boardY + bh + 38);
+    return c;
+  }
+
+  function openBoardCard() {
+    track('share_card', { level: level });
+    boardCanvas = renderBoardCard();
+    document.getElementById('boardImg').src = boardCanvas.toDataURL('image/png');
+    boardOverlayEl.classList.add('show');
+  }
+  document.getElementById('board-copy').addEventListener('click', function () {
+    if (!boardCanvas) return;
+    track('share_card_copy', { level: level });
+    boardCanvas.toBlob(function (blob) {
+      try { navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]); } catch (e) {}
+    }, 'image/png');
+    this.textContent = '✅ Copied';
+    var self = this;
+    setTimeout(function () { self.textContent = '📋 Copy Image'; }, 1500);
+  });
+  document.getElementById('board-save').addEventListener('click', function () {
+    if (!boardCanvas) return;
+    var a = document.createElement('a');
+    a.download = 'gridpaw-nonogram-level' + level + '.png';
+    a.href = boardCanvas.toDataURL('image/png');
+    a.click();
+  });
+  document.getElementById('board-x').addEventListener('click', function () {
     track('share_twitter', { level: level });
     window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText()), '_blank');
   });
-  document.getElementById('share-reddit').addEventListener('click', function () {
+  document.getElementById('board-reddit').addEventListener('click', function () {
     track('share_reddit', { level: level });
     window.open('https://www.reddit.com/r/gridpaw/submit?url=' + encodeURIComponent('https://gridpaw.com/nonogram/')
       + '&title=' + encodeURIComponent(shareText()), '_blank');
+  });
+  document.getElementById('board-close').addEventListener('click', function () {
+    boardOverlayEl.classList.remove('show');
   });
   document.getElementById('restartBtn').addEventListener('click', function () {
     busy = false;
