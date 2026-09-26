@@ -122,6 +122,7 @@
   }
   .card .cat { font-size: 52px; }
   .card .cat img { width: 56px; height: 56px; border-radius: 14px; display: block; margin: 0 auto; }
+  .card .game-tag { font-size: 12px; font-weight: 700; color: var(--amber-dark); opacity: .75; letter-spacing: .4px; margin: 2px 0 6px; }
   .card h2 { color: var(--amber-dark); margin: 8px 0 4px; font-size: 20px; }
   .card p { font-size: 14px; margin-bottom: 14px; }
   .card button {
@@ -266,6 +267,7 @@
     <div class="card">
       <div class="cat"><img src="/assets/logo.png" alt="GridPaw"></div>
       <h2 id="winTitle">Solved!</h2>
+      <p class="game-tag" id="winGameLevel"></p>
       <p id="winText">Every run sums up. Purrfect.</p>
       <button id="nextBtn">Next level →</button>
       <div class="win-share-row">
@@ -945,6 +947,9 @@
       track('daily_solved', { level: level });
     }
     title.textContent = info.type === 'daily' ? 'Daily solved!' : 'Solved!';
+    document.getElementById('winGameLevel').textContent = info.type === 'daily'
+      ? 'GridPaw Kakuro · Daily'
+      : 'GridPaw Kakuro · Level ' + level;
     text.textContent = info.type === 'daily'
       ? 'Same board, everyone, today. Come back tomorrow for a fresh one.'
       : (nextLevel >= CAMPAIGN_LEN
