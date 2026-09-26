@@ -129,6 +129,7 @@
     max-width: 360px;
   }
   .card .cat { font-size: 44px; }
+  .card .cat img { width: 48px; height: 48px; border-radius: 12px; display: block; margin: 0 auto; }
   .card h2 { color: var(--amber-dark); margin: 6px 0 2px; font-size: 20px; }
   .card .name { font-size: 14px; font-weight: 700; color: var(--amber-dark); margin: 4px 0 8px; }
   .card p { font-size: 14px; margin-bottom: 10px; }
@@ -161,7 +162,7 @@
 </head>
 <body>
   <header>
-    <h1>🐾 Nonogram</h1>
+    <h1><img src="/favicon.svg" alt="" style="width:24px;height:24px;border-radius:6px;vertical-align:-5px"> Nonogram</h1>
     <div class="sub">GridPaw demo — clues count runs, fill the picture</div>
   </header>
 
@@ -179,7 +180,7 @@
 
   <div class="overlay" id="winOverlay">
     <div class="card">
-      <div class="cat">😺</div>
+      <div class="cat"><img src="/favicon.svg" alt="GridPaw"></div>
       <h2 id="winTitle">Solved!</h2>
       <p class="name" id="winName"></p>
       <div id="winPix"></div>
@@ -528,7 +529,7 @@
 
     if (info.type === 'tutorial') {
       // skill pattern: brief pixel-art reveal, then auto-advance (no button)
-      title.textContent = 'Solved! 😺';
+      title.textContent = 'Solved!';
       nameEl.textContent = info.def.pattern.name;
       text.textContent = 'That\u2019s the picture. Next lesson…';
       nextBtnEl.style.display = 'none';
@@ -550,7 +551,7 @@
       track('daily_solved', { level: level });
     }
 
-    title.textContent = info.type === 'daily' ? 'Daily solved! 😺' : 'Solved! 😺';
+    title.textContent = info.type === 'daily' ? 'Daily solved!' : 'Solved!';
     nameEl.textContent = puzzle.name || '';
     text.textContent = info.type === 'daily'
       ? 'Same board, everyone, today. Come back tomorrow for a fresh one.'
@@ -592,8 +593,8 @@ document.getElementById('nextBtn').addEventListener('click', function () {
   function shareText() {
     var info = levelInfo(level);
     return info.type === 'daily'
-      ? '\uD83C\uDFA8 Daily Nonogram: the cat\u2019s out of the bag \uD83D\uDC08 \uD83D\uDE3E I uncovered today\u2019s picture \u2014 show me you\u2019re faster \u2192 gridpaw.com/nonogram/'
-      : '\uD83C\uDFA8\uD83D\uDC31 Uncovered a hidden cat on GridPaw Nonogram Level ' + level + ' \u2014 zero wrong taps\u2026 okay, maybe a few \uD83D\uDE0F Your turn \u2192 gridpaw.com/nonogram/';
+      ? '\uD83C\uDFA8 GridPaw Daily Nonogram: today\u2019s cat is out of the bag \u2014 show me you\u2019re faster \u2192 gridpaw.com/nonogram/'
+      : '\uD83C\uDFA8 Uncovered the hidden picture in GridPaw Nonogram Level ' + level + ' \u2014 zero wrong taps\u2026 mostly \uD83D\uDE0F Your turn \u2192 gridpaw.com/nonogram/';
   }
   document.getElementById('share-copy').addEventListener('click', function () {
     track('share_copy', { level: level });

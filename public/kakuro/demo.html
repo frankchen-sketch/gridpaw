@@ -121,6 +121,7 @@
     max-width: 320px;
   }
   .card .cat { font-size: 52px; }
+  .card .cat img { width: 56px; height: 56px; border-radius: 14px; display: block; margin: 0 auto; }
   .card h2 { color: var(--amber-dark); margin: 8px 0 4px; font-size: 20px; }
   .card p { font-size: 14px; margin-bottom: 14px; }
   .card button {
@@ -230,7 +231,7 @@
 </head>
 <body>
   <header>
-    <h1>🐱 Kakuro</h1>
+    <h1><img src="/favicon.svg" alt="" style="width:26px;height:26px;border-radius:7px;vertical-align:-5px"> Kakuro</h1>
     <div class="sub">GridPaw demo — sums, no repeats, pure logic</div>
   </header>
 
@@ -263,7 +264,7 @@
 
   <div class="overlay" id="winOverlay">
     <div class="card">
-      <div class="cat">😺</div>
+      <div class="cat"><img src="/favicon.svg" alt="GridPaw"></div>
       <h2 id="winTitle">Solved!</h2>
       <p id="winText">Every run sums up. Purrfect.</p>
       <button id="nextBtn">Next level →</button>
@@ -943,7 +944,7 @@
     } else if (info.type === 'daily') {
       track('daily_solved', { level: level });
     }
-    title.textContent = info.type === 'daily' ? 'Daily solved! 😺' : 'Solved! 😺';
+    title.textContent = info.type === 'daily' ? 'Daily solved!' : 'Solved!';
     text.textContent = info.type === 'daily'
       ? 'Same board, everyone, today. Come back tomorrow for a fresh one.'
       : (nextLevel >= CAMPAIGN_LEN
@@ -962,8 +963,8 @@
   function shareText() {
     var info = levelInfo(level);
     return info.type === 'daily'
-      ? '\u26A1 Daily Kakuro: cracked before my coffee went cold \u2615\uD83D\uDE3E Same board for everyone \u2014 come lose to me \u2192 gridpaw.com/kakuro/'
-      : '\uD83E\uDDEE\uD83D\uDC31 Cracked GridPaw Kakuro Level ' + level + ' \u2014 my brain does sums your calculator fears \uD83D\uDE3E Your turn \u2192 gridpaw.com/kakuro/';
+      ? '\u26A1 Daily GridPaw Kakuro: cracked before my coffee went cold \u2615 Same board for everyone \u2014 come lose to me \u2192 gridpaw.com/kakuro/'
+      : '\uD83E\uDDEE Cracked GridPaw Kakuro Level ' + level + ' \u2014 sums, no repeats, no mercy. Your turn \u2192 gridpaw.com/kakuro/';
   }
   document.getElementById('share-copy').addEventListener('click', function () {
     track('share_copy', { level: level });
