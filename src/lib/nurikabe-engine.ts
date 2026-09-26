@@ -237,6 +237,7 @@ export function propagateNurikabe(
             cstack.push(n);
           }
         }
+        for (const c of comp) inComp.add(c); // protect clue cells even when need=0
         const need = clue.size - comp.size;
         if (need <= 0) continue;
         // BFS from comp through unknown cells, depth-capped at need
@@ -523,7 +524,8 @@ function buildSeaSnake(rows: number, cols: number, rng: () => number, targetSea:
     if (cells.length > 9) return null; // island too big — retry construction
     islands.push(cells);
   }
-  if (islands.length < 2) return null;
+  // tiny boards (2×2 tutorial) legitimately have a single island
+  if (islands.length < 1) return null;
   return { sea, islands };
 }
 
@@ -588,23 +590,23 @@ export interface NurikabeTutorialDef {
 export const NURIKABE_TUTORIALS: NurikabeTutorialDef[] = [
   {
     title: 'Islands and sea',
-    lesson: 'Each number is the size of its island: that many connected white cells, and no other island may touch it. Everything else becomes sea. Fill a whole line island first — a 2 next to a wall can only grow one way.',
-    seed: 20260926, rows: 5, cols: 5,
+    lesson: 'A number is an island of exactly that many cells. On this 2×2, tap every other cell once — it becomes sea ≈ and the board is solved. That is the whole game: islands grow to their number, everything else drowns.',
+    seed: 20260926, rows: 2, cols: 2,
   },
   {
     title: 'The sea stays connected',
-    lesson: 'All black cells must form one unbroken mass. Watch for sea cells that would get cut off — and remember: islands may never touch, even diagonally-unrelated corners.',
-    seed: 20260927, rows: 5, cols: 5,
+    lesson: 'The sea must be one single mass — an island may never cut it in two. On this 3×3, grow the island to its number, then flood the rest and check: can every ≈ reach every other ≈?',
+    seed: 20260927, rows: 3, cols: 3,
   },
   {
     title: 'No 2×2 sea',
-    lesson: 'The sea can never contain a 2×2 square. Three black cells around one corner force the fourth cell to be island — this rule finishes more boards than any other.',
-    seed: 20260928, rows: 6, cols: 6,
+    lesson: 'The sea may never fill a 2×2 square. Three sea cells around one corner force the fourth cell to be island — on this 4×4, watch for corners where three ≈ already meet.',
+    seed: 20260928, rows: 4, cols: 4,
   },
   {
     title: 'Corner pinning',
-    lesson: 'A clue in a corner has very few ways to grow. Pin the corners first, watch which sea cells would get sealed off, and the whole board falls into place.',
-    seed: 20260929, rows: 6, cols: 6,
+    lesson: 'A clue in a corner has very few ways to grow. Pin the corners first, watch which sea cells would get sealed off, and this 5×5 falls into place.',
+    seed: 20260929, rows: 5, cols: 5,
   },
 ];
 
