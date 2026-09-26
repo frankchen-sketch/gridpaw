@@ -13,6 +13,8 @@
 
 > **Nurikabe 线（2026-09-26 收官）**：第 5 个游戏，**已部署上线**（deployment `fb570629`）。全链：引擎（sea-snake 构造 + repairToUnique；档位 easy 5×5 / medium 7×7 / hard 9×9，selftest 16/16）→ demo（拟真皮肤：深海蓝≈海 + 沙滩岛 + 线索格小岛图案；首访五段式引导卡带真解迷你盘；教学爬梯 2×2→3×3→4×4→5×5；血量机制 3 血/关、双向纠错+纠正格锁定、血尽换盘、教学 ∞）→ 正式页 + GameNav 六游戏 + llms.txt + footer 互链。**线上验证全绿**（/nurikabe/ 200、demo v=3、引擎 16479B）、IndexNow 200、GSC sitemap 204（key=furriq A key，auto-detect 会错抓）、Request Indexing /nurikabe/ 已提交（「已请求编入索引」）。关键坑已沉淀：引擎引用 ?v=N 缓存戳（demo+worker 两处）、rule-(d) need=0 clue 格豁免（2×2 全灭根因）。
 
+> **视觉统一线（2026-09-26 上线，commit `e376e7a`）**：Akari 首页/Akari Daily/Shikaku 首页三页对齐新标准——胜利弹窗手绘 SVG 猫头→`/assets/logo.png` 彩色 logo；game-tag 行（游戏名 · Level N）全六游戏统一；分享文案挑衅风零猫脸（Shikaku 彩块 emoji 行保留=成绩艺术，玩法内 🐾 爪印保留=品牌同源）；Shikaku 新增 𝕏 Share 按钮+棋盘卡（html2canvas 截真实棋盘），Akari 棋盘卡复用 generateShareCard（卡内 🐱 灯块→琥珀块、cats→bulbs、🐾 角标删除）。埋点六游戏同名：`share_card` / `share_card_copy` / `share_twitter` / `share_reddit` / `share_copy`。Pictomino 子站独立受众，故意不动。线上实拍全验（design-live-preview 流程，Playwright 从 gridpaw.com 抓 9 图）。
+
 > **分享+PWA 线（2026-09-26 上线，commit `e6c6a49` 收官）**：Kakuro/Nonogram/Nurikabe 三 demo 的 winOverlay 三按钮分享 + `manifest.webmanifest`（SEOHead 全站挂 link）。迭代四版后定稿：① 文案挑衅风、零猫 emoji，每条挂 GridPaw 品牌名+游戏机制梗；② 胜利卡顶部/页面 h1 用 `/assets/logo.png` 四色猫爪网格（favicon.svg 只是米色标签页图标，勿再混用）；③ Solved! 下加 game-tag 行（游戏名 · Level N / Daily / Tutorial）；④ **点 𝕏/Reddit 先弹「Your board」棋盘卡**：canvas 实时渲染胜利棋盘（logo+标题+棋盘+域名），卡内 Copy Image / Save / Post / Close，新事件 `share_card` / `share_card_copy`。Playwright 全程回归（分享 18/18 → 棋盘卡 12/12）。抓图脚本与坑沉淀在 `~/.hermes/cache/scratch/test-board-card.py` 及 webapp-testing skill。**待观察**：`share_card*` vs 直接发帖的比例，验证棋盘图对分享转化的提升。
 
 ---
@@ -355,3 +357,14 @@ Clarity 实锤（30min 0 次成功拖拽、徽章狂点 17 次/分）→ 3 步�
 - **`/privacy/` 顶级隐私政策页**（noindex，覆盖三游戏 + 匿名埋点说明段），OAuth 同意屏链接待用户在 GCP 后台改为此地址。
 - **Pictomino 失败弹窗「👁 Peek」按钮**：重放开局 2 秒预览后重试本关（hint_click source=lose_overlay_peek），与 Try again / Skip 并列。
 - **漏斗周报 cron** `53f2a4b531f1`：每周日 20:00 自动拉 D1+GA4 对比改动前后，deliver=all。含样本纪律（去 bot<10 只报数）与 created_at 毫秒口径说明。
+
+## 2026-09-26 Adsterra 变现线（过审 + 提现链路 + 格式路线决策）
+- **账号侧**：公司审核 09-25 过审（主体 Guangzhou Zhuayin Intelligent Technology Co Ltd，爪印）；Native Banner Active（Site 6063560，Ad Unit 31317669）。⚠️ Adsterra 后台公司名拼成了 Zhuoyin，字段锁死改不了，工单已发 support@adsterra.com（09-25，SENT id 1a0d820ad0b5eec4），回复后去 /payout-information 复核显示名。
+- **提现链路（已打通）**：Wire EUR 已随 KYB 生效（Banking Circle S.A.，IBAN DE62...5678），EUR $0 手续费 / min $1,000 / 到账 5 工作日；满额提现 → Subotiz Global Account（USD+EUR 双户）→ 换 RMB。Subotiz 侧拼写正确，无需动。
+- **现状数据**：Balance $0.03（09/25 起）；广告位=4 个 SEO 内容页正文各 1 个 Native Banner（brain-teasers-for-adults / logic-puzzle-grid / japanese-logic-puzzles / number-grid-puzzle），游戏页/首页/?embed=1 全部无广告（红线维持）。
+- **格式路线决策（09-26 定）**：
+  - 现在（<100 UV/天）：不加任何格式，保持现状。
+  - 内容页日 UV 几百：内容页底部加 1 个 Banner 300x250（CPM 低于 Native，纯增量库存）。
+  - 稳定流量 + 余额几百刀垫底：再评估游戏页 Social Bar（只开单格式、观察一周账号状态）；游戏页零广告红线要破需单独决策。
+  - **永不**：Popunder、Smartlink（整页跳转，毁回头客）。Adsterra 无激励视频格式（实测仅 Popunder/Native Banner/Banner/Smartlink/Social Bar 五种）。
+- **检查广告的已知结论**：Agent 本地无法看到真实创意（CN IP 空填充/代理 403/云浏览器被识别为 bot 直接重定向 direct link），唯一现成渠道=Clarity 会话录屏（流量小暂无深滚样本，筛选路径已跑通：录制页筛选器→已访问 URL 包含页面 slug）。教训沉淀在 skill `ad-network-monetization`。
