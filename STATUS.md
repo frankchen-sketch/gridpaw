@@ -13,6 +13,8 @@
 
 > **Nurikabe 线（2026-09-26 收官）**：第 5 个游戏，**已部署上线**（deployment `fb570629`）。全链：引擎（sea-snake 构造 + repairToUnique；档位 easy 5×5 / medium 7×7 / hard 9×9，selftest 16/16）→ demo（拟真皮肤：深海蓝≈海 + 沙滩岛 + 线索格小岛图案；首访五段式引导卡带真解迷你盘；教学爬梯 2×2→3×3→4×4→5×5；血量机制 3 血/关、双向纠错+纠正格锁定、血尽换盘、教学 ∞）→ 正式页 + GameNav 六游戏 + llms.txt + footer 互链。**线上验证全绿**（/nurikabe/ 200、demo v=3、引擎 16479B）、IndexNow 200、GSC sitemap 204（key=furriq A key，auto-detect 会错抓）、Request Indexing /nurikabe/ 已提交（「已请求编入索引」）。关键坑已沉淀：引擎引用 ?v=N 缓存戳（demo+worker 两处）、rule-(d) need=0 clue 格豁免（2×2 全灭根因）。
 
+> **分享+PWA 线（2026-09-26 上线，commit `e9147cf`）**：Kakuro/Nonogram/Nurikabe 三 demo 的 winOverlay 补齐三按钮分享（📋 Copy / 𝕏 / 👽 Reddit，事件 `share_copy/share_twitter/share_reddit`，与 akari 模式对齐）；新增 `public/manifest.webmanifest`（icons 192/512+maskable、daily shortcuts、theme #d97706），SEOHead 全站挂 link+apple-touch-icon+theme-color。Playwright 实测 18/18（按钮/剪贴板/X+Reddit 弹窗 URL/manifest）。线上实测：manifest 200 `application/manifest+json`、三 demo 按钮全在线、IndexNow 200。**待观察**：share_* 事件 GA4 数据；PWA 无 service worker（书签级安装，够用不加）。测试脚本坑沉淀：本机 TUN 下 chromium 禁用 direct://（走系统代理才通）；astro preview 4321 被 divination dev server 常驻占用，测试用静态 server 替代。
+
 ---
 
 ## 一、现役事实（2026-09-15 工具实测）
