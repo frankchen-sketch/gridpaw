@@ -150,6 +150,13 @@
     vertical-align: 1px;
   }
   .foot { margin-top: 14px; font-size: 11px; color: #b09a7f; }
+
+  .win-share-row { display: flex; gap: .5rem; margin-top: .8rem; justify-content: center; flex-wrap: wrap; }
+  .share-btn { padding: .5rem 1rem; border: none; border-radius: 10px; cursor: pointer; font-size: .85rem; font-weight: 600; font-family: inherit; transition: transform .1s; }
+  .share-btn:active { transform: scale(.95); }
+  .share-copy { background: var(--cream-2, #fdeed3); color: #8a5a2b; }
+  .share-twitter { background: #1d9bf0; color: #fff; }
+  .share-reddit { background: #FF4500; color: #fff; }
 </style>
 </head>
 <body>
@@ -178,6 +185,11 @@
       <div id="winPix"></div>
       <p id="winText"></p>
       <button id="nextBtn" style="display:none">Next level →</button>
+      <div class="win-share-row">
+        <button class="share-btn share-copy" id="share-copy">📋 Copy</button>
+        <button class="share-btn share-twitter" id="share-twitter">𝕏 Share</button>
+        <button class="share-btn share-reddit" id="share-reddit">👽 Reddit</button>
+      </div>
     </div>
   </div>
 
@@ -574,6 +586,31 @@ document.getElementById('nextBtn').addEventListener('click', function () {
     level++;
     busy = false;
     newPuzzle();
+  });
+
+  // ── share (Wordle-style victory loop; buttons live in the win overlay) ──
+  function shareText() {
+    var info = levelInfo(level);
+    return info.type === 'daily'
+      ? '🐱 Solved today\u2019s GridPaw Daily Nonogram! Your turn → gridpaw.com/nonogram/'
+      : '🐱 Cleared GridPaw Nonogram Level ' + level + ' — can you beat it? → gridpaw.com/nonogram/';
+  }
+  document.getElementById('share-copy').addEventListener('click', function () {
+    track('share_copy', { level: level });
+    var self = this;
+    navigator.clipboard.writeText(shareText()).then(function () {
+      self.textContent = '✅ Copied';
+      setTimeout(function () { self.textContent = '📋 Copy'; }, 1500);
+    });
+  });
+  document.getElementById('share-twitter').addEventListener('click', function () {
+    track('share_twitter', { level: level });
+    window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText()), '_blank');
+  });
+  document.getElementById('share-reddit').addEventListener('click', function () {
+    track('share_reddit', { level: level });
+    window.open('https://www.reddit.com/r/gridpaw/submit?url=' + encodeURIComponent('https://gridpaw.com/nonogram/')
+      + '&title=' + encodeURIComponent(shareText()), '_blank');
   });
   document.getElementById('restartBtn').addEventListener('click', function () {
     busy = false;
