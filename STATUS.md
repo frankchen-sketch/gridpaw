@@ -11,7 +11,7 @@
 
 > **Nonogram 线（2026-09-26）**：第 4 个游戏立项（选型依据：nonogram 43,280/月为唯一真体量候选词，onlinenonograms DR 10 证明行为驱动可上榜；差异化=每关揭猫像素画）。引擎已交付（lineOptions 枚举→lineSolve 纯逻辑传播→回溯计数唯一性；Easy/Medium 生成强制纯逻辑可解；猫 pattern ×4 教学；生成 1-2ms/盘，selftest ALL PASS）。正式页 `/nonogram/` + GameNav 五游戏 + llms.txt 已入库（commit 0543b79）。demo（669 行，子 agent 产出+浏览器实测验收）已部署上线（deployment aef3dcb7，commit 5eda059），线上 /nonogram/、demo、引擎全 200，IndexNow 已推。
 
-> **Nurikabe 线（2026-09-25）**：第 5 个游戏立项（选型依据：nurikabe 5,970/月，剩余候选唯一有量）。引擎已交付并 selftest 16/16 ALL PASS（commit 4cd8990）：sea-snake 构造（海=自避行走天然连通+增量 2×2 检查，海密度 66-78% 是唯一解率的关键杠杆）+ repairToUnique 修复循环（岛生长/收缩算子）；传播规则经 4 轮 soundness 修复（岛组件归属/comp 含 clue 格/封海豁免/不可达格）；生成毫秒级无需 Worker；档位 easy 5×5 / medium 6×6 / hard 7×7。`/nurikabe/` 正式页 + GameNav 六游戏 + llms.txt + 7 页 footer 互链已入库（commit 4417a81）。**在途：demo 子 agent 产出中 → 主 agent 浏览器验收 → 部署 + IndexNow + GSC。**
+> **Nurikabe 线（2026-09-26 收官）**：第 5 个游戏，**已部署上线**（deployment `fb570629`）。全链：引擎（sea-snake 构造 + repairToUnique；档位 easy 5×5 / medium 7×7 / hard 9×9，selftest 16/16）→ demo（拟真皮肤：深海蓝≈海 + 沙滩岛 + 线索格小岛图案；首访五段式引导卡带真解迷你盘；教学爬梯 2×2→3×3→4×4→5×5；血量机制 3 血/关、双向纠错+纠正格锁定、血尽换盘、教学 ∞）→ 正式页 + GameNav 六游戏 + llms.txt + footer 互链。**线上验证全绿**（/nurikabe/ 200、demo v=3、引擎 16479B）、IndexNow 200、GSC sitemap 204（key=furriq A key，auto-detect 会错抓）、Request Indexing /nurikabe/ 已提交（「已请求编入索引」）。关键坑已沉淀：引擎引用 ?v=N 缓存戳（demo+worker 两处）、rule-(d) need=0 clue 格豁免（2×2 全灭根因）。
 
 ---
 
