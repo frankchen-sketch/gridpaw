@@ -272,7 +272,16 @@ const description = "Play cat logic puzzles online free. Place glowing cats on a
   <script>
     function track(event, params) {
     if (window.gpTrack) window.gpTrack(event, params || {});
-      if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
+      if (typeof window.gtag === 'function') {
+        var gtagParams = {};
+        Object.keys(params || {}).forEach(function(k) {
+          if (k === 'source') gtagParams['trigger'] = params[k];
+          else if (k === 'medium') gtagParams['evt_medium'] = params[k];
+          else if (k === 'campaign') gtagParams['evt_campaign'] = params[k];
+          else gtagParams[k] = params[k];
+        });
+        window.gtag('event', event, gtagParams);
+      }
       if (typeof window.clarity === 'function') {
         window.clarity('event', event);
         if (params) Object.keys(params).forEach(function(k) { window.clarity('set', k, String(params[k])); });
