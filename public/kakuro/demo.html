@@ -10,10 +10,15 @@
   // Standalone page carries its own analytics (Pictomino pattern) — the Astro
   // parent page cannot see inside the iframe. window.gtag must be a function
   // expression, NOT a hoisted declaration (define:vars IIFE trap).
+  // 口径铁律：只有 gridpaw.com / www.gridpaw.com 上报，localhost/预览域静默
+  // （与 src/components/SEOHead.astro 同款 guard，本机 QA 流量曾污染生产 GA4）。
+  var IS_PROD = /(^|\.)gridpaw\.com$/.test(location.hostname);
   window.dataLayer = window.dataLayer || [];
   window.gtag = function () { window.dataLayer.push(arguments); };
-  window.gtag('js', new Date());
-  window.gtag('config', 'G-4FWP61DJCC');
+  if (IS_PROD) {
+    window.gtag('js', new Date());
+    window.gtag('config', 'G-4FWP61DJCC');
+  }
 </script>
 <style>
   :root {
@@ -290,6 +295,7 @@
   var FREE_PEEKS = 2;
 
   function track(name, params) {
+    if (!IS_PROD) return; // 非生产域静默，本机 QA 流量不进 GA4
     try {
       if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
       else if (window.dataLayer) window.dataLayer.push(Object.assign({ event: name }, params || {}));
@@ -1042,7 +1048,7 @@
   var savedProgress = 0;
   try { savedProgress = parseInt(localStorage.getItem('gridpaw-kakuro-progress') || '0', 10) || 0; } catch (e) { savedProgress = 0; }
   if (savedProgress > KAKURO_TUTORIALS.length && savedProgress < CAMPAIGN_LEN) level = savedProgress;
-  track('game_start', { level: level, source: (location.search.indexOf('embed=1') >= 0 ? 'embed' : 'direct') });
+  track('game_start', { level: level, trigger: (location.search.indexOf('embed=1') >= 0 ? 'embed' : 'direct') });
   newPuzzle();
 })();
 </script>

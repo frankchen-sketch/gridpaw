@@ -123,7 +123,16 @@ const description = "Play GridPaw (Akari) puzzles online for free. Choose diffic
 
     function track(event, params) {
     if (window.gpTrack) window.gpTrack(event, params || {});
-      if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
+      if (typeof window.gtag === 'function') {
+        const gtagParams = {};
+        Object.keys(params || {}).forEach(k => {
+          if (k === 'source') gtagParams['trigger'] = params[k];
+          else if (k === 'medium') gtagParams['evt_medium'] = params[k];
+          else if (k === 'campaign') gtagParams['evt_campaign'] = params[k];
+          else gtagParams[k] = params[k];
+        });
+        window.gtag('event', event, gtagParams);
+      }
       if (window.posthog && typeof window.posthog.capture === 'function') {
         window.posthog.capture(event, Object.assign({ site: 'gridpaw' }, params || {}));
       }
