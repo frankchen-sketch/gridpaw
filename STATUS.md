@@ -17,6 +17,8 @@
 
 > **分享+PWA 线（2026-09-26 上线，commit `e6c6a49` 收官）**：Kakuro/Nonogram/Nurikabe 三 demo 的 winOverlay 三按钮分享 + `manifest.webmanifest`（SEOHead 全站挂 link）。迭代四版后定稿：① 文案挑衅风、零猫 emoji，每条挂 GridPaw 品牌名+游戏机制梗；② 胜利卡顶部/页面 h1 用 `/assets/logo.png` 四色猫爪网格（favicon.svg 只是米色标签页图标，勿再混用）；③ Solved! 下加 game-tag 行（游戏名 · Level N / Daily / Tutorial）；④ **点 𝕏/Reddit 先弹「Your board」棋盘卡**：canvas 实时渲染胜利棋盘（logo+标题+棋盘+域名），卡内 Copy Image / Save / Post / Close，新事件 `share_card` / `share_card_copy`。Playwright 全程回归（分享 18/18 → 棋盘卡 12/12）。抓图脚本与坑沉淀在 `~/.hermes/cache/scratch/test-board-card.py` 及 webapp-testing skill。**待观察**：`share_card*` vs 直接发帖的比例，验证棋盘图对分享转化的提升。
 
+> **Shikaku 触屏修复（2026-09-28 上线，commit `dae2b64`）**：Lemmy !dailygames 真实玩家反馈三项全修——拖拽高亮 8%→32% + 实时 `W×H=面积` 徽章（固定棋盘下方，永不遮棋盘格）、猫耳 top:-7px→0 收进块内+阴影收窄（不再压上方行数字）、C1 误触保护（选区无数字=静默放过不扣命，真错误照扣）。Playwright 5/5 实测（含触屏事件路径+徽章几何断言）。已同步四端：gridpaw.com 部署验证 / GameJolt release 1528718 / NG 草稿 8138600（新 zip+1000×800+触屏，13:00 cron 发布）/ itch MeowBlock（公开页 iframe 已播新包）。**平台铺量现役状态唯一入口 → skill `game-directory-submission/references/gridpaw-platform-status.md`**（GameJolt 5/5 Published、NG 2 发布+3 待发、IndieDB 公司页+3 款+2 待建、Lemmy 反馈帖已回）。
+
 ---
 
 ## 一、现役事实（2026-09-15 工具实测）
