@@ -134,7 +134,9 @@ const description = "Draw rectangles to match every number and fill the grid —
     .cell { border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; position: relative; cursor: pointer; transition: background 0.15s, border 0.15s, transform 0.15s; }
     .cell-empty { background: #FFFFFF; border: 1.5px solid var(--gp-lilac); }
     .cell-number { background: #FFFFFF; border: 2px solid var(--gp-primary-strong); border-radius: 8px; color: var(--gp-ink); box-shadow: 0 2px 6px rgba(212,122,80,0.12); }
-    .cell-selecting { border: 2px dashed var(--mt-primary) !important; background: rgba(212,122,80,0.08) !important; }
+    .cell-selecting { border: 2.5px dashed var(--mt-primary) !important; background: rgba(217,119,6,0.32) !important; }
+    /* 拖拽实时尺寸徽章：放在棋盘下方独立位置，绝不遮挡棋盘格 */
+    .drag-dims { position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%); background: var(--mt-primary); color: #fff; font-size: 13px; font-weight: 800; padding: 4px 14px; border-radius: 14px; box-shadow: 0 3px 8px rgba(0,0,0,0.18); pointer-events: none; display: none; z-index: 30; white-space: nowrap; font-variant-numeric: tabular-nums; }
     .cell-filled { border: none; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3); }
     .cell-error { animation: shake 0.3s ease; }
 
@@ -142,16 +144,16 @@ const description = "Draw rectangles to match every number and fill the grid —
     .cat-block {
       position: absolute;
       border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
       z-index: 10;
       animation: pop-in 0.35s cubic-bezier(0.34,1.56,0.64,1);
       pointer-events: none;
     }
-    /* Ears — above the face, centered on the block (never overflow narrow cells) */
+    /* Ears — 收进块内（top:0），不再溢出盖住上方行的数字（Lemmy 反馈 2026-09-26） */
     .cat-block::before, .cat-block::after {
       content: '';
       position: absolute;
-      top: -7px;
+      top: 0;
       width: 0; height: 0;
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
@@ -677,6 +679,7 @@ const description = "Draw rectangles to match every number and fill the grid —
     </div>
     <div class="board-wrap">
       <div class="board" id="board"></div>
+      <div class="drag-dims" id="dragDims"></div>
     </div>
     <!-- Onboarding coach（v6→真棋盘版 2026-09-23：跟随教学 1-4 关真实棋局演示）。
          2026-09-23 修：从页面尾部移入此处并改文档流定位——fixed 卡会盖住棋盘底部格子和拖拽幻影 -->
@@ -1128,8 +1131,17 @@ const description = "Draw rectangles to match every number and fill the grid —
         }
       }
     }
+    updateDragDims(rect);
   }
-  function clearHighlight() { document.querySelectorAll('.cell-selecting').forEach(function(el) { el.classList.remove('cell-selecting'); }); }
+  // 拖拽实时尺寸徽章（Lemmy 反馈：触屏看不到标了几个格子）。固定在棋盘下方，不遮棋盘。
+  var dragDimsEl = document.getElementById('dragDims');
+  function updateDragDims(rect) {
+    if (!dragDimsEl) return;
+    dragDimsEl.textContent = rect.width + '×' + rect.height + ' = ' + (rect.width * rect.height);
+    dragDimsEl.style.display = 'block';
+  }
+  function hideDragDims() { if (dragDimsEl) dragDimsEl.style.display = 'none'; }
+  function clearHighlight() { document.querySelectorAll('.cell-selecting').forEach(function(el) { el.classList.remove('cell-selecting'); }); hideDragDims(); }
 
   function onStart(e) {
     var cell = getCell(e);
@@ -1206,6 +1218,14 @@ const description = "Draw rectangles to match every number and fill the grid —
     var startCol = dragStart.col;
     dragStart = null;
     if (!puzzle) return;
+    // C1 误触保护（Lemmy 反馈 2026-09-26）：选区内一个数字都没有 = 误触/滑手，
+    // 静默清高亮，不扣命不报错。只有框住 ≥1 个数字的错误拖拽才算一次尝试。
+    var numsInSel = 0;
+    for (var ni = 0; ni < puzzle.numbers.length; ni++) {
+      var n0 = puzzle.numbers[ni];
+      if (n0.row >= sel.top && n0.row < sel.top + sel.height && n0.col >= sel.left && n0.col < sel.left + sel.width) numsInSel++;
+    }
+    if (numsInSel === 0) return;
     var result = validatePlacement(sel, puzzle, occupied);
     if (!result.valid) {
       for (var r = sel.top; r < sel.top + sel.height; r++) for (var c = sel.left; c < sel.left + sel.width; c++) if (r < puzzle.height && c < puzzle.width) { var el = board.children[r * puzzle.width + c]; if (el) { el.classList.add('cell-error'); setTimeout(function(e) { return function() { e.classList.remove('cell-error'); }; }(el), 300); } }
