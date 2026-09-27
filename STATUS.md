@@ -363,6 +363,7 @@ Clarity 实锤（30min 0 次成功拖拽、徽章狂点 17 次/分）→ 3 步�
 - **furriq.com 已建站（09-26）**：Site 6078380（category Other，成人广告关，建站直接 Active）+ Ad Unit 31420265（NativeBanner_1）。只挂 /blog/* 文章页正文中部（品种/对比/工具/定价/首页红线不挂），详情与代码坑见 `furriq/.adsterra/native-banner.snippet.md` + `furriq/AD-TIER.md`。
 - **提现链路（已打通）**：Wire EUR 已随 KYB 生效（Banking Circle S.A.，IBAN DE62...5678），EUR $0 手续费 / min $1,000 / 到账 5 工作日；满额提现 → Subotiz Global Account（USD+EUR 双户）→ 换 RMB。Subotiz 侧拼写正确，无需动。
 - **现状数据**：Balance $0.03（09/25 起）；广告位=4 个 SEO 内容页正文各 1 个 Native Banner（brain-teasers-for-adults / logic-puzzle-grid / japanese-logic-puzzles / number-grid-puzzle），游戏页/首页/?embed=1 全部无广告（红线维持）。
+- **付费点（Kakuro 爪窥付费墙）路线（09-27 定，暂缓执行）**：现状=仅 `public/kakuro/demo.html`（noindex）里 mock（`payPeek()` 点按钮直接解锁，零支付/零广告 SDK），正式 `/kakuro/` 不带，D1 paywall_* 事件 0 条。顺序：①正式页先上门控+mock 采漏斗数据 → ②paywall_shown 有样本后看触达/转化 → ③UV 起来 + Adsterra 余额真实进账后再接支付。⚠️ demo 里「📺 Watch ad」按钮是死承诺——Adsterra 无激励视频格式（见 skill ad-network-monetization），真实现无格式可接，别让真人点到。Cat coins 真实化=整套支付集成，等数据支撑。
 - **格式路线决策（09-26 定）**：
   - 现在（<100 UV/天）：不加任何格式，保持现状。
   - 内容页日 UV 几百：内容页底部加 1 个 Banner 300x250（CPM 低于 Native，纯增量库存）。
