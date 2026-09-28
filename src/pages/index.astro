@@ -129,14 +129,14 @@ const description = "Draw rectangles to match every number and fill the grid —
     .reddit-btn { padding: 12px 32px; border-radius: 24px; border: none; background: #FF4500; color: white; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(255,69,0,0.3); transition: all 0.15s; }
     .reddit-btn:hover { transform: scale(1.04); box-shadow: 0 6px 20px rgba(255,69,0,0.4); }
     .reddit-btn:active { transform: scale(0.96); }
-    .board-wrap { display: flex; align-items: center; justify-content: center; padding: 0; }
+    .board-wrap { position: relative; display: flex; align-items: center; justify-content: center; padding: 0; }
     .board { display: inline-grid; gap: 3px; padding: 8px; background: var(--mt-board-bg); border-radius: 12px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.06), var(--mt-shadow-md); position: relative; }
     .cell { border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; position: relative; cursor: pointer; transition: background 0.15s, border 0.15s, transform 0.15s; }
     .cell-empty { background: #FFFFFF; border: 1.5px solid var(--gp-lilac); }
     .cell-number { background: #FFFFFF; border: 2px solid var(--gp-primary-strong); border-radius: 8px; color: var(--gp-ink); box-shadow: 0 2px 6px rgba(212,122,80,0.12); }
     .cell-selecting { border: 2.5px dashed var(--mt-primary) !important; background: rgba(217,119,6,0.32) !important; }
-    /* 拖拽实时尺寸徽章：放在棋盘下方独立位置，绝不遮挡棋盘格 */
-    .drag-dims { position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%); background: var(--mt-primary); color: #fff; font-size: 13px; font-weight: 800; padding: 4px 14px; border-radius: 14px; box-shadow: 0 3px 8px rgba(0,0,0,0.18); pointer-events: none; display: none; z-index: 30; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    /* 拖拽实时尺寸徽章：JS 四向落位（贴远离手指侧），坐标由 updateDragDims() 每帧计算，永不溢出棋盘容器 */
+    .drag-dims { position: absolute; left: 0; top: 0; background: var(--mt-primary); color: #fff; font-size: 13px; font-weight: 800; padding: 4px 14px; border-radius: 14px; box-shadow: 0 3px 8px rgba(0,0,0,0.18); pointer-events: none; display: none; z-index: 30; white-space: nowrap; font-variant-numeric: tabular-nums; }
     .cell-filled { border: none; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3); }
     .cell-error { animation: shake 0.3s ease; }
 
@@ -1133,12 +1133,40 @@ const description = "Draw rectangles to match every number and fill the grid —
     }
     updateDragDims(rect);
   }
-  // 拖拽实时尺寸徽章（Lemmy 反馈：触屏看不到标了几个格子）。固定在棋盘下方，不遮棋盘。
+  // 拖拽实时尺寸徽章（Lemmy 反馈 v2 跟手版：四向落位——贴远离手指侧，放不下按 上→下→右→左 级联，取第一个「完全在棋盘容器内」的解；永不溢出棋盘/压工具栏）
   var dragDimsEl = document.getElementById('dragDims');
   function updateDragDims(rect) {
     if (!dragDimsEl) return;
     dragDimsEl.textContent = rect.width + '×' + rect.height + ' = ' + (rect.width * rect.height);
     dragDimsEl.style.display = 'block';
+    if (!puzzle || !dragStart) return;
+    var W = puzzle.width;
+    var wrap = dragDimsEl.offsetParent;
+    if (!wrap) return;
+    var wr = wrap.getBoundingClientRect(), br = board.getBoundingClientRect();
+    var cA = board.children[rect.top * W + rect.left];
+    var cB = board.children[(rect.top + rect.height - 1) * W + rect.left + rect.width - 1];
+    if (!cA || !cB) return;
+    var ar = cA.getBoundingClientRect(), cr = cB.getBoundingClientRect();
+    var bw = dragDimsEl.offsetWidth, bh = dragDimsEl.offsetHeight, gap = 8;
+    var selL = ar.left - wr.left, selT = ar.top - wr.top, selR = cr.right - wr.left, selB = cr.bottom - wr.top;
+    var bl = br.left - wr.left, bt = br.top - wr.top, brr = br.right - wr.left, bbb = br.bottom - wr.top;
+    var fingerBelow = (dragStart.row === rect.top);   // 起点在顶边 → 手指向下拖
+    var fingerRight = (dragStart.col === rect.left);  // 起点在左边 → 手指向右拖
+    var cand = [];
+    if (fingerBelow) { cand.push([selR - bw, selT - bh - gap], [selR - bw, selB + gap]); }
+    else { cand.push([selR - bw, selB + gap], [selR - bw, selT - bh - gap]); }
+    if (fingerRight) { cand.push([selL - bw - gap, selT], [selR + gap, selT]); }
+    else { cand.push([selR + gap, selT], [selL - bw - gap, selT]); }
+    for (var i = 0; i < cand.length; i++) {
+      var l = cand[i][0], t = cand[i][1];
+      if (l >= bl && t >= bt && l + bw <= brr && t + bh <= bbb) {
+        dragDimsEl.style.left = l + 'px'; dragDimsEl.style.top = t + 'px'; return;
+      }
+    }
+    // 兜底：贴选区下方右对齐并 clamp 进棋盘
+    dragDimsEl.style.left = Math.max(bl, Math.min(selR - bw, brr - bw)) + 'px';
+    dragDimsEl.style.top = Math.max(bt, Math.min(selB + gap, bbb - bh)) + 'px';
   }
   function hideDragDims() { if (dragDimsEl) dragDimsEl.style.display = 'none'; }
   function clearHighlight() { document.querySelectorAll('.cell-selecting').forEach(function(el) { el.classList.remove('cell-selecting'); }); hideDragDims(); }
