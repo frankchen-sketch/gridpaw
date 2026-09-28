@@ -1,0 +1,158 @@
+---
+// /help/nurikabe/ — How to play GridPaw Nurikabe.
+// Source: help-docs/nurikabe.md (verified against public/nurikabe/demo.html + engine, 2026-09-28).
+import HelpArticle from '../../../components/HelpArticle.astro';
+
+const title = 'Nurikabe Help: How to Play Islands & Sea';
+const description = 'How to play GridPaw Nurikabe (islands and sea): the 3 rules, the cell cycle, your 3 hearts, every toolbar button and the difficulty structure.';
+
+const faqs = [
+  {
+    q: 'Do I need an account to play Nurikabe?',
+    a: 'No — playable fully logged out, no account system in-game.',
+  },
+  {
+    q: 'My tap did nothing on a number cell. Why?',
+    a: 'Correct: clue cells are fixed islands — they can\'t be changed.',
+  },
+  {
+    q: 'It auto-corrected my cell and locked it. What happened?',
+    a: 'That\'s the tutorial-style guard: wrong marks are corrected to the truth, locked for the level, and cost a heart. Use it as free information.',
+  },
+  {
+    q: 'I\'m stuck. What do I do?',
+    a: '💡 Hint reveals one correct cell (3 per level). And watch the tell-tale pattern from Rule 3: three ≈ cells around one corner force the fourth cell to be island.',
+  },
+  {
+    q: 'What is the Daily puzzle?',
+    a: 'After the campaign, every level is date-seeded: same board for everyone that day, alternating Medium (7×7) / Hard (9×9), refreshed daily.',
+  },
+  {
+    q: 'Medium/Hard takes a moment to load?',
+    a: 'Normal — the board is generated in a Web Worker and shown behind a spinner.',
+  },
+  {
+    q: 'Is this the same as classic Nurikabe?',
+    a: 'Yes — identical rules (islands match numbers, connected sea, no 2×2 sea). GridPaw adds cat styling and unlimited generated boards.',
+  },
+  {
+    q: 'Why does the game mention "≈"?',
+    a: '≈ is the sea marker on marked sea cells.',
+  },
+  {
+    q: 'Are Hard boards solvable without guessing?',
+    a: 'The generator validates every board has exactly one solution before serving it (solveNurikabe count = 1).',
+  },
+];
+---
+<HelpArticle
+  title={title}
+  description={description}
+  canonical="/help/nurikabe"
+  breadcrumbTitle="Nurikabe"
+  faqs={faqs}
+  gameHref="/nurikabe/"
+  ctaText="Play Nurikabe free in your browser →"
+>
+  <h1>How to Play Nurikabe (Islands and Sea)</h1>
+  <p class="lede">
+    Nurikabe ("islands and sea") is a classic Nikoli logic puzzle. Some cells
+    carry a <strong>number clue</strong>: each number is the exact size of an
+    <em>island</em> — a connected group of white cells holding exactly that one
+    number. All other cells are <em>sea</em> (dark), and the solver must obey
+    three rules:
+  </p>
+  <ol>
+    <li><strong>Islands</strong> — each island is a connected group containing exactly one number, and its size equals that number. Islands never touch each other edge-to-edge.</li>
+    <li><strong>The sea</strong> — all sea cells form <strong>one single connected mass</strong> (an island may never cut the sea in two).</li>
+    <li><strong>No 2×2 sea</strong> — four sea cells in a square are forbidden.</li>
+  </ol>
+  <p>
+    GridPaw Nurikabe is the cat version: skinnier boards than the other GridPaw
+    games (<strong>5×5 → 7×7 → 9×9</strong>), <strong>4 heart-based
+    tutorials</strong>, an <strong>11-level campaign</strong>, then endless
+    date-seeded daily puzzles — free, no sign-up. Play at
+    <a href="/nurikabe/">gridpaw.com/nurikabe/</a>.
+  </p>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-nurikabe-1.png" alt="A Nurikabe board in progress with islands, sea, clue cells and the hearts badge" loading="lazy" />
+    <figcaption>A board in progress — number cells, island and sea marks, and the ❤️ hearts badge.</figcaption>
+  </figure>
+
+  <h2>Your First Puzzle</h2>
+  <ol>
+    <li><strong>Open the game.</strong> A <strong>How to play</strong> card pops up once (first visit) with a mini finished board and the 3 rules; tap <strong>"Got it — start with Tutorial 1"</strong>. You're then on <strong>Tutorial 1/4</strong> — a 2×2 board for rule 1. (Reopen anytime with 📖 <strong>How to play</strong>.)</li>
+    <li><strong>Cycle cells like traffic lights.</strong> Tap any non-number cell to cycle it: <strong>blank → sea ≈ → island → blank</strong>. Tapping the wrong value <strong>auto-corrects</strong> the cell to its true value, locks it for the level, and costs a heart — mistakes are warned, never left floating. Clue cells (with the little paw/plant icon and number) are fixed and can never be changed.</li>
+    <li><strong>Satisfy all three rules.</strong> The puzzle checks itself the moment every cell is known: wrong-but-complete boards get the message "Every cell is marked, but the islands don't match the numbers — some sea cells are actually island, or an island has the wrong size. Review and fix!"</li>
+  </ol>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-nurikabe-2.png" alt="Close-up of the Nurikabe three-state cycle: sea marker, island and a clue cell" loading="lazy" />
+    <figcaption>Tap to cycle: blank → sea ≈ → island → blank. Clue cells are fixed.</figcaption>
+  </figure>
+
+  <h2>Every Button on the Screen</h2>
+  <table>
+    <thead>
+      <tr><th>Control</th><th>What it does</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Level chip</strong> (amber; green on tutorials)</td><td>Shows your position: <code>Tutorial 1/4 — &lt;lesson&gt;</code> · <code>Level 4/11 — Medium — 7×7</code> · <code>Daily — Medium 7×7</code></td></tr>
+      <tr><td><strong>❤️ hearts chip</strong></td><td>Your health: 3 hearts (<code>❤️❤️❤️</code>), lost hearts turn <code>🖤</code>. Tutorials show <code>❤ ∞</code> (unlimited).</td></tr>
+      <tr><td>↺ <strong>Restart</strong></td><td>Discards the current board and generates a fresh puzzle at the same level</td></tr>
+      <tr><td><strong>Skip tutorial »</strong> (only during the 4 tutorials)</td><td>Skips straight to campaign Level 1 — your first Easy 5×5</td></tr>
+      <tr><td>💡 <strong>Hint</strong> (badge shows <code>3</code>)</td><td>Reveals exactly one correct cell — prefers an island cell — and tells you: "💡 Row 3, col 2 is sea ≈ — tap it once. (2 hints left)". <strong>3 hints per level</strong>, refills on every new level. (Dev builds show ∞.)</td></tr>
+      <tr><td>📖 <strong>How to play</strong></td><td>Reopens the rules card with the mini-board diagram and tap instructions</td></tr>
+      <tr><td><strong>Practice Medium 7×7</strong></td><td>Jumps to the first Medium board: Level 4/11</td></tr>
+      <tr><td><strong>Practice Hard 9×9</strong></td><td>Jumps to the first Hard board: Level 8/11</td></tr>
+    </tbody>
+  </table>
+  <p>On Medium (7×7) and Hard (9×9), generating a board can take a couple of seconds, so a spinner overlay ("Generating puzzle…") covers the board while a Web Worker builds it off the main thread.</p>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-nurikabe-3.png" alt="The Nurikabe toolbar with level chip, hearts, Restart, Hint, How to play and practice jumps" loading="lazy" />
+    <figcaption>The toolbar: chip, ❤️ hearts, Restart, Hint, How to play and the Practice jumps.</figcaption>
+  </figure>
+
+  <h2>Difficulty Levels</h2>
+  <table>
+    <thead>
+      <tr><th>Stage</th><th>Grid</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Tutorial ×4</td><td><strong>2×2 → 3×3 → 4×4 → 5×5</strong></td><td>Seeded boards, one rule each: Islands and sea · The sea stays connected · No 2×2 sea · Corner pinning; auto-advances ~0.9s after each win</td></tr>
+      <tr><td>Easy ×3</td><td><strong>5×5</strong></td><td>Pure constraint-propagation solvable</td></tr>
+      <tr><td>Medium ×4</td><td><strong>7×7</strong></td><td>Pure constraint-propagation solvable</td></tr>
+      <tr><td>Hard ×4</td><td><strong>9×9</strong></td><td>May need light backtracking</td></tr>
+      <tr><td>Endless Daily</td><td>7×7 / 9×9</td><td>Alternates medium/hard; <strong>date-seeded — same board for every player on the same day</strong>; after the campaign's 15 boards</td></tr>
+    </tbody>
+  </table>
+  <p>Campaign order is fixed: 3 Easy → 4 Medium → 4 Hard (<code>Level N/11</code>). Finishing the 11th unlocks "Campaign complete! Endless daily puzzles unlocked."</p>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-nurikabe-4.png" alt="The Nurikabe difficulty chip: a green Tutorial chip and an amber Level 4/11 chip" loading="lazy" />
+    <figcaption>The chip is green on tutorials and amber during the campaign.</figcaption>
+  </figure>
+
+  <h2>Winning, Losing &amp; Sharing</h2>
+  <p><strong>Winning.</strong> When every cell is correct, the victory popup shows <code>Solved!</code> (or <code>Daily solved!</code>), a pixel-grid reveal where all island cells flip to amber in a ≤1s cascade, and <strong>Next level →</strong> (tutorials auto-advance instead). The win overlay carries the <strong>3 share buttons</strong>:</p>
+  <ul>
+    <li>📋 <strong>Copy</strong> — copies the share text (✅ Copied, 1.5s): "🌊 Sank GridPaw Nurikabe Level N — every island in place, sea stays one. Don't drown → gridpaw.com/nurikabe/" (daily variant: "no hearts lost")</li>
+    <li>𝕏 <strong>Share</strong> — opens the <strong>board card</strong> first (rendered image of your solved board, tagged "GridPaw Nurikabe · Level N", footer gridpaw.com/nurikabe/)</li>
+    <li>👽 <strong>Reddit</strong> — same board card, posts to r/gridpaw</li>
+  </ul>
+  <p><strong>In the board card:</strong> 📋 Copy Image, ⬇️ Save (<code>gridpaw-nurikabe-levelN.png</code>), 𝕏 Post, 👽 Post, ✕ Close.</p>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-nurikabe-5.png" alt="The Nurikabe victory popup with island cells flipping to amber, Next and share buttons" loading="lazy" />
+    <figcaption>The victory popup: island cells flip amber, then Next and the share buttons.</figcaption>
+  </figure>
+
+  <p><strong>Losing.</strong> Wrong marks cost a heart per mistake (not in tutorials — they only count mistakes). Losing all 3 hearts opens the 💔 <strong>Out of hearts</strong> overlay: "Three wrong marks — this board got away from you. A fresh one is coming up." Tap <strong>New board ↻</strong> for a fresh puzzle at the same level. Campaign progress is saved automatically (<code>gridpaw-nurikabe-progress</code>) and resumes next visit.</p>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-nurikabe-6.png" alt="The Nurikabe Out of hearts overlay with the New board button" loading="lazy" />
+    <figcaption>Out of hearts: tap New board ↻ for a fresh puzzle at the same level.</figcaption>
+  </figure>
+</HelpArticle>

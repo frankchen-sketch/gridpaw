@@ -1,0 +1,193 @@
+---
+// /help/pictomino/ — How to play GridPaw Pictomino.
+// Source: help-docs/pictomino.md (verified against public/pictomino/*.html, 2026-09-28).
+// Note: the doc's internal "⚠ easy/hard mode needs Frank review" caveat is a
+// process flag, not user-facing content, so it is deliberately not republished
+// verbatim in the public FAQ (see report).
+import HelpArticle from '../../../components/HelpArticle.astro';
+
+const title = 'Pictomino Help: How to Play the Cat Puzzle Game';
+const description = 'How to play GridPaw Pictomino for kids: memorize the picture, place the pieces on the + spots, earn stars and points, and beat the Daily Challenge.';
+
+const faqs = [
+  {
+    q: 'Do I need an account to play Pictomino?',
+    a: 'No. Everything is playable signed out; the account (optional Google Sign in) only unlocks cloud streak sync and the daily leaderboard.',
+  },
+  {
+    q: 'How do I place a piece?',
+    a: 'Tap the + spot on the board — you do not need to select the tray piece first (tapping it just plays a selection animation). Correct spots snap the piece in; wrong spots cost a life.',
+  },
+  {
+    q: 'I\'m stuck on a level. What do I do?',
+    a: 'Tap 👁 Peek at the picture (2s) after losing to re-see the full image, or Skip this puzzle → to move on. Wrong guesses reveal information too — the piece stays in the tray, so try another +.',
+  },
+  {
+    q: 'What do the blurred pieces mean?',
+    a: 'On Medium and above the candidate piece is deliberately blurred/dimmed to force comparison, not recognition. The higher the level, the weaker the piece (weak → super-weak).',
+  },
+  {
+    q: 'Why did my round restart with fewer lives?',
+    a: 'The timer ran out on a timed level — it costs 1 life and resets the current round\'s fills on the same puzzle.',
+  },
+  {
+    q: 'Can my child play alone?',
+    a: 'Yes — pre-readers can play with no text; there\'s no reading required to place pieces. Cat facts after each win add a reading moment to share.',
+  },
+  {
+    q: 'Is progress saved?',
+    a: 'Per-level best stars survive reloads (pictomino_stars); streak and best time are stored locally and cloud-synced when signed in (best-of-both merged). The cat lineup re-shuffles on every page load.',
+  },
+  {
+    q: 'Is this game like a jigsaw?',
+    a: 'It\'s the same idea with a logic twist: only a few candidate + spots are active at once and the piece may be blurred — you deduce from edges and colors instead of trying every spot.',
+  },
+  {
+    q: 'Are the cats real breeds?',
+    a: 'Yes — 15 real breeds (pictures under assets/cats/), each with 3 verified fun facts shown after you complete its puzzle.',
+  },
+];
+---
+<HelpArticle
+  title={title}
+  description={description}
+  canonical="/help/pictomino"
+  breadcrumbTitle="Pictomino"
+  faqs={faqs}
+  gameHref="/pictomino/"
+  ctaText="Play Pictomino free in your browser →"
+>
+  <h1>How to Play Pictomino</h1>
+  <p class="lede">
+    Pictomino is GridPaw's <strong>spatial reasoning game for kids</strong>: a
+    real cat photo is cut into grid squares and shuffled; you rebuild the picture
+    piece by piece using logic — never guessing. It's pure static HTML (no build
+    step), free, no account needed, and works on phones, tablets, and computers
+    with taps or mouse clicks. Each level shows you the <strong>complete picture
+    for 2 seconds</strong> ("👀 Remember the picture!"), then one piece at a time:
+    find where it snaps into the board by comparing edges, fur color, ears,
+    whiskers. <strong>5 lives per level</strong> — a wrong tap costs one; lose all
+    5 and the level ends. Finishing a level earns <strong>stars + points</strong>
+    plus a <strong>fun fact about the cat breed</strong> you just rebuilt.
+  </p>
+  <p>Entry points: <a href="/pictomino/">gridpaw.com/pictomino/</a> (classic 10-level game) · <a href="/pictomino/daily-puzzle">/pictomino/daily-puzzle</a> (one puzzle per day + leaderboard) · <code>/pictomino/easy</code> and <code>/pictomino/hard</code> (SEO landing variants).</p>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-pictomino-1.png" alt="A Pictomino board in progress with pre-filled cells, dashed pending cells, + spots and the candidate piece tray" loading="lazy" />
+    <figcaption>A board in progress: dashed outlines mark empty cells and a few glow with a + for your candidate spots.</figcaption>
+  </figure>
+
+  <h2>Your First Puzzle</h2>
+  <ol>
+    <li><strong>Open the game.</strong> The first time you play, a <strong>How to Play</strong> card explains the loop ("Look at the pieces. Find where they fit. Tap to place.") with a "Auto-show at start" toggle — tap <strong>Got it!</strong>. Then a short <strong>tutorial coach</strong> (STEP 1/2) walks you through one real placement: tap the highlighted piece, then tap the single <code>+</code> spot; a bouncing paw points at each target. Skip it anytime with <strong>Skip ➜</strong>.</li>
+    <li><strong>Memorize the picture.</strong> Before every round the full photo shows for <strong>2 seconds</strong> with a countdown (also after a retry, and via the Peek button after losing).</li>
+    <li><strong>Place pieces one at a time.</strong> One candidate piece sits in the tray under the board (<code>👇 Find where this piece belongs, then tap the +!</code>). On the board, some cells are already filled in; empty cells show dashed outlines, and a few glow with a <strong><code>+</code></strong> — those are your candidate spots. Tap the <code>+</code> where the piece belongs. Correct: the piece pops in (+50 points) and a new <code>+</code> appears. Wrong: red flash, the piece shakes, <strong>−1 life</strong>.</li>
+    <li><strong>Keep going until the photo is whole.</strong> When every <code>+</code> is filled, the level completes — stars, score, and a cat fact card appear.</li>
+  </ol>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-pictomino-2.png" alt="The 2-second full picture preview in Pictomino with the Remember the picture countdown" loading="lazy" />
+    <figcaption>Every round opens with a 2-second look at the full photo.</figcaption>
+  </figure>
+
+  <h2>Every Control on the Screen</h2>
+  <p>The game runs inside an iframe; the <strong>toolbar above it</strong> (on <code>/pictomino/</code> and <code>/pictomino/daily-puzzle</code>) is the real UI:</p>
+  <table>
+    <thead>
+      <tr><th>Control</th><th>What it does</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Level pill</strong></td><td><code>Level 1/10</code> … <code>Level 10/10</code> (Daily: <code>Level 1/1</code>)</td></tr>
+      <tr><td><strong>Difficulty pill</strong></td><td><code>Classic</code> on the main page; daily shows its label</td></tr>
+      <tr><td><strong>❤️❤️❤️❤️❤️ hearts</strong></td><td>Lives for the current level (lost hearts show 🤍). Max 5.</td></tr>
+      <tr><td><strong>⭐ score</strong></td><td>Cumulative score across all levels this session</td></tr>
+      <tr><td><strong>⏱ timer</strong></td><td>Appears only on timed difficulties (Medium+): countdown per round; turns red under 5s</td></tr>
+      <tr><td><strong>❓ How to play</strong></td><td>Reopens the rules card mid-game (doesn't interrupt)</td></tr>
+      <tr><td><strong>🔊 / 🔇 Sound</strong></td><td>Toggles the synthesized sound effects on/off (persisted in the browser)</td></tr>
+      <tr><td><strong>Sign in</strong> (Google)</td><td>Optional. Enables daily <strong>streak cloud-sync</strong>, <strong>level progress sync</strong>, and <strong>leaderboard</strong> posting; signed-out play always works</td></tr>
+    </tbody>
+  </table>
+  <p>Inside the game frame: the board (3×3 or 4×4, Daily 6×6), the tray with the one candidate piece, and a tip line like <code>Filled 3/6 · Find the piece's spot and tap the +!</code>.</p>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-pictomino-3.png" alt="The Pictomino toolbar with Level, Difficulty, Hearts, Score, Timer pills and How to play and Sound buttons" loading="lazy" />
+    <figcaption>The toolbar: Level / Difficulty / Hearts / Score / Timer pills, plus How to play, Sound and Sign in.</figcaption>
+  </figure>
+
+  <h2>Difficulty Levels (Classic, 10 levels)</h2>
+  <table>
+    <thead>
+      <tr><th>Levels</th><th>Label</th><th>Grid</th><th>Holes to fill</th><th>Candidate <code>+</code> spots</th><th>Piece look</th><th>Timer per round</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>Tutorial 1</td><td>3×3</td><td>1</td><td>1</td><td>Full color</td><td>none</td></tr>
+      <tr><td>2</td><td>Tutorial 2</td><td>3×3</td><td>2</td><td>1</td><td>Full color</td><td>none</td></tr>
+      <tr><td>3</td><td>Tutorial 3</td><td>3×3</td><td>3</td><td>2</td><td>Full color</td><td>none</td></tr>
+      <tr><td>4–6</td><td>Easy</td><td>4×4</td><td>6</td><td>2</td><td>Full color</td><td>none</td></tr>
+      <tr><td>7–8</td><td>Medium</td><td>4×4</td><td>8</td><td>3</td><td><strong>Slightly blurred/dimmed</strong> (33%)</td><td><strong>40s</strong></td></tr>
+      <tr><td>9</td><td>Hard</td><td>4×4</td><td>10</td><td>4</td><td>Blurred 50%</td><td><strong>50s</strong></td></tr>
+      <tr><td>10</td><td>Super Hard 💀</td><td>4×4</td><td>12</td><td>4</td><td>Heavily blurred 66%</td><td><strong>60s</strong></td></tr>
+    </tbody>
+  </table>
+  <p>
+    Mechanics that scale with difficulty: more holes, more candidate <code>+</code>
+    spots hiding the true one, the candidate piece getting
+    <strong>blurred/desaturated</strong> (<code>weak</code> / <code>super-weak</code>),
+    and <strong>per-round timers</strong>. Medium+ boards show a 1.5s warning first
+    ("⚠️ Hard level! Watch the piece and find its spot"). A round timeout costs 1
+    life and resets that round's fills (same puzzle, no progress lost beyond the
+    round). The 10 cats: levels 1–2 are fixed (Siamese, American Shorthair),
+    levels 3–10 shuffle from the remaining pool — a fresh lineup every page load
+    (re-shuffled when you hit <strong>Play again 🔁</strong>).
+  </p>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-pictomino-4a.png" alt="A full-color Pictomino candidate piece" loading="lazy" />
+    <figcaption>Lower levels show the candidate piece in full color.</figcaption>
+  </figure>
+  <figure class="shot">
+    <img src="/assets/screenshots/help-pictomino-4b.png" alt="A blurred super-weak Pictomino candidate piece on a Hard level" loading="lazy" />
+    <figcaption>From Medium up the piece gets blurred and dimmed to force comparison.</figcaption>
+  </figure>
+
+  <h2>Scoring, Stars &amp; Winning</h2>
+  <ul>
+    <li><strong>+50 points</strong> per correct placement; running total in the ⭐ pill.</li>
+    <li><strong>Level score</strong> = <code>lives remaining × 100</code> + <code>speed bonus</code> (up to +300, earned by finishing within 60 seconds: +5 per second faster, capped).</li>
+    <li><strong>Stars:</strong> 3★ if you finish with 4–5 lives, 2★ with 2–3, 1★ with 1 (you can never get 0★). Your <strong>best star record per level</strong> is kept in the browser and survives reloads.</li>
+    <li><strong>Win screen:</strong> "Well Done! 🎉" — star row, "You completed the {'{Breed}'} puzzle!", <code>Level score +N</code> with the breakdown "Lives bonus +N · Speed bonus +N", a <strong>cat-fact card</strong> (breed name + 3 facts), then <strong>Next level ➜</strong> (or <strong>See total 🏆</strong> on level 10), and the share row (<strong>📣 Share on Reddit</strong> / <strong>🔗 Copy link</strong>), plus <strong>Continue ✓</strong> to stay on the finished board.</li>
+    <li><strong>All 10 done:</strong> 👑 <strong>Puzzle Master!</strong> — "You finished all 10 cat puzzles!" with your <strong>total score</strong>; <strong>Play again 🔁</strong> reshuffles the cats and resets the score.</li>
+    <li><strong>Lose screen ("No lives left"):</strong> "Don't give up — your cat believes in you!", plus a nudge showing how many levels you've cleared. Three ways out: <strong>Try again 💪</strong> (restart the level), <strong>👁 Peek at the picture (2s)</strong> (replays the preview, then restarts), or <strong>Skip this puzzle →</strong> (advance with no score).</li>
+    <li><strong>Share:</strong> Reddit opens <code>reddit.com/r/pictomino/submit</code> (title like "Beat Pictomino Level 3 (easy) ⭐⭐⭐ — can you do better? → gridpaw.com/pictomino") and first copies a picture of your board to the clipboard via html2canvas; <strong>Copy link</strong> copies the same text (shows ✅ Copied! 1.6s).</li>
+    <li><strong>Sound:</strong> synthesized Web Audio chips — rising double-tone on correct, descending buzz on wrong, arpeggio on win. No audio files, muted state persisted.</li>
+  </ul>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-pictomino-5.png" alt="The Pictomino win screen with stars, score breakdown, cat fact card and share buttons" loading="lazy" />
+    <figcaption>The win screen: stars, the score breakdown, a cat-fact card and the share row.</figcaption>
+  </figure>
+
+  <h2>Daily Challenge &amp; Leaderboard</h2>
+  <p>
+    The <strong>Daily Challenge</strong> (<a href="/pictomino/daily-puzzle">gridpaw.com/pictomino/daily-puzzle</a>)
+    is a separate, harder mode: <strong>one puzzle per day, same for every player
+    worldwide</strong> (date-seeded from UTC). It's a <strong>6×6 grid with 18
+    holes, 4 candidate spots, 33% blur, 50s per round</strong> — the hardest board
+    in the game.
+  </p>
+  <ul>
+    <li>Your <strong>streak</strong> grows by 1 for each day you solve it (broken if you skip a day), with badges: 💪 Keep it up! (3) → 🔥 Week warrior! (7) → ⭐ Two-week legend! (14) → 🏆 30-day champion! (30).</li>
+    <li>Your <strong>best time</strong> is tracked; finishing the puzzle shows the streak card on the win screen.</li>
+    <li>Below the game, <strong>🏆 Today's Leaderboard</strong> ranks the day's fastest solvers (🥇🥈🥉 + times). To appear on it you must <strong>Sign in</strong> (Google) — "📅 Sign in and finish today's puzzle to compete!" — otherwise it's purely local. After you win, the page auto-scrolls to the leaderboard.</li>
+    <li>The Daily win screen hides "Next level" (there's only one) and its close button reads <strong>Done ✓</strong>.</li>
+  </ul>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-pictomino-6.png" alt="The Pictomino Daily win panel with the streak card and Done button" loading="lazy" />
+    <figcaption>The Daily win screen: streak card and Done ✓.</figcaption>
+  </figure>
+  <figure class="shot">
+    <img src="/assets/screenshots/help-pictomino-7.png" alt="The Pictomino Today's Leaderboard with medal times" loading="lazy" />
+    <figcaption>Today's Leaderboard ranks the day's fastest solvers.</figcaption>
+  </figure>
+</HelpArticle>

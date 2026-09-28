@@ -225,6 +225,7 @@ SERP 盘面调研（`research/2026-09-20_要打的词SERP竞品盘面.md`）后�
 2. **10/3 复查 how-to-solve 新 Title CTR**（one-shot cron 已设，读数须剔除 `akari or step back` 工具流量），仍 0 真人点击则上备选文案（§二.7）
 3. 让 cron 继续跑 Request Indexing 至 repeat 用完（9/30 前后），2–4 周后复盘索引与曝光
 4. 视觉合同阶段：`HANDOFF-VISUAL-CONTRACT.md` 第三节列了欠账（样式收编 + 验证欠账）
+5. **Pictomino 实现 easy/hard 模式**（2026-09-28 法老拍板）：`public/pictomino/easy.html`/`hard.html` 落地页宣传 3×3+7 命等模式，但 `game.html` 只实现了 `mode=daily`，`difficulty=easy|hard` 参数仅用于埋点——落地页实际跑经典 5 命难度表。要么把 easy/hard 模式真正实现进 `game.html`（读 URL 参数切难度阶梯+命数），要么改落地页文案（已拍板做前者）。帮助文档草稿 `help-docs/pictomino.md` FAQ 已标注 ⚠ 待修，实现后同步更新文档
 
 ---
 
