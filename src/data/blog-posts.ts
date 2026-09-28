@@ -61,6 +61,7 @@ export const blogPosts: BlogPost[] = [
 
 <h2>Practice These Strategies</h2>
 <p>Theory is nothing without practice. Start with GridPaw's Easy 7×7 puzzles to build muscle memory, then graduate to Medium and Hard. Use the Hint button when stuck — it shows you which cell to focus on, helping you learn which strategy applies.</p>
+<p>For the full technique library, the <a href="/akari/tips/">Akari tips hub</a> breaks down every number read in detail — start with the <a href="/akari/tips/number-0/">number 0</a> and <a href="/akari/tips/number-4/">number 4</a> cells from Strategy 1 above. Prefer to see a solve from start to finish? The <a href="/akari/how-to-solve/">step-by-step solving guide</a> walks a complete grid.</p>
     `,
   },
   {
