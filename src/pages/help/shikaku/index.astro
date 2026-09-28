@@ -1,0 +1,124 @@
+---
+// /help/shikaku/ — How to play GridPaw Shikaku.
+// Source: help-docs/shikaku.md (verified against src/pages/index.astro, 2026-09-28).
+import HelpArticle from '../../../components/HelpArticle.astro';
+
+const title = 'Shikaku Help: How to Play, Buttons & Levels';
+const description = 'How to play GridPaw Shikaku: draw rectangles that match the numbers, every toolbar button explained, all 7 difficulty tiers, and how winning and sharing work.';
+
+const faqs = [
+  {
+    q: 'Do I need an account to play Shikaku?',
+    a: 'No. Everything is playable without signing in.',
+  },
+  {
+    q: 'My rectangle won\'t place. Why?',
+    a: 'The rectangle is invalid: it either doesn\'t match the number\'s area, overlaps a placed rectangle, or contains more than one number. Adjust the drag.',
+  },
+  {
+    q: 'I\'m stuck. What do I do?',
+    a: 'Use Hint — it lights up one rectangle that is definitely correct. You get 3 per level, so save them for the endgame.',
+  },
+  {
+    q: 'Is this the same as the classic Shikaku?',
+    a: 'Yes — identical rules to the classic Nikoli puzzle. GridPaw just generates unlimited free puzzles with cat art.',
+  },
+  {
+    q: 'Can I play on my phone?',
+    a: 'Yes. Tap the first cell, then tap the opposite corner cell instead of dragging.',
+  },
+];
+---
+<HelpArticle
+  title={title}
+  description={description}
+  canonical="/help/shikaku"
+  breadcrumbTitle="Shikaku"
+  faqs={faqs}
+  gameHref="/"
+  ctaText="Play Shikaku free in your browser →"
+>
+  <h1>How to Play Shikaku</h1>
+  <p class="lede">
+    Shikaku is a rectangle-partition logic puzzle from Nikoli. Every puzzle gives
+    you a grid with numbers on it. Each number tells you the <strong>area</strong>
+    of a rectangle you must draw. The puzzle is solved when the whole grid is
+    covered by rectangles, none overlapping, and every rectangle contains exactly
+    one number matching its area. GridPaw is Shikaku with cat visuals: unlimited
+    procedurally generated puzzles, free, no sign-up required to play.
+  </p>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/level-easy.png" alt="A Shikaku puzzle in progress on a GridPaw board" loading="lazy" />
+    <figcaption>An Easy board in progress — numbers mark the area each rectangle must cover.</figcaption>
+  </figure>
+
+  <h2>Your First Puzzle</h2>
+  <ol>
+    <li><strong>Open the game.</strong> Go to <a href="/">gridpaw.com</a>. Level 1 is a guided Tutorial on a 3×3 grid that walks you through the rules step by step — you can't fail it.</li>
+    <li><strong>Draw a rectangle.</strong> Click (or tap) on a cell and drag to another cell to cover a rectangle. The number inside must equal the rectangle's area. For example, a <code>6</code> can be covered by a 2×3 or 3×2 rectangle.</li>
+    <li><strong>Cover the whole grid.</strong> Repeat until every cell is part of exactly one rectangle and every number is inside its own matching rectangle. The puzzle auto-solves the moment the last rectangle is correct.</li>
+  </ol>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-shikaku-2.png" alt="Dragging a rectangle with a semi-transparent preview in Shikaku" loading="lazy" />
+    <figcaption>Dragging shows a live preview of the rectangle you are about to place.</figcaption>
+  </figure>
+
+  <h2>Every Button on the Screen</h2>
+  <table>
+    <thead>
+      <tr><th>Button</th><th>What it does</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>💡 <strong>Hint</strong> (badge shows <code>3</code>)</td><td>Highlights one not-yet-placed correct rectangle for 3 seconds. <strong>3 hints per level</strong>, refills to 3 when you move to the next level.</td></tr>
+      <tr><td>↩️ <strong>Undo</strong></td><td>Removes the last rectangle you placed.</td></tr>
+      <tr><td>🔄 <strong>New puzzle</strong></td><td>Discards the current puzzle and generates a fresh one at the same level.</td></tr>
+      <tr><td>🔊 <strong>Sound</strong></td><td>Toggles game sounds on/off.</td></tr>
+      <tr><td>📅 <strong>Daily Challenge</strong></td><td>A special puzzle of the day, same for everyone. Weekends run a larger "Weekend Super" board.</td></tr>
+      <tr><td>👥 <strong>Share</strong> (after winning)</td><td>Opens the victory popup with Copy / 𝕏 / Reddit / Save options.</td></tr>
+    </tbody>
+  </table>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-shikaku-3.png" alt="The Shikaku top toolbar with Hint, Undo, New puzzle and Sound buttons" loading="lazy" />
+    <figcaption>The toolbar: Hint, Undo, New puzzle, Sound and the Daily Challenge.</figcaption>
+  </figure>
+
+  <h2>Difficulty Levels</h2>
+  <p>There are 7 tiers. Grid size (and the size of the numbers) grows with difficulty:</p>
+  <table>
+    <thead>
+      <tr><th>Tier</th><th>Grid</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Tutorial</td><td>3×3</td><td>Guided, step-by-step</td></tr>
+      <tr><td>Easy</td><td>5×5</td><td></td></tr>
+      <tr><td>Medium</td><td>5×6</td><td></td></tr>
+      <tr><td>Medium-Hard</td><td>6×6</td><td></td></tr>
+      <tr><td>Hard</td><td>7×8</td><td>🔥 badge shown</td></tr>
+      <tr><td>Expert</td><td>—</td><td></td></tr>
+      <tr><td>Legend</td><td>8×8</td><td>Largest boards</td></tr>
+    </tbody>
+  </table>
+  <p>Levels are sequential: finishing a level (Next →) automatically moves you to the next one with a fresh puzzle.</p>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-shikaku-4.png" alt="The difficulty badge and level title in Shikaku" loading="lazy" />
+    <figcaption>The difficulty badge and level title at the top of the board.</figcaption>
+  </figure>
+
+  <h2>Winning &amp; Sharing</h2>
+  <p>When the grid is fully covered correctly, the victory popup appears with:</p>
+  <ul>
+    <li><strong>Next</strong> — jump to the next level (also resets your hints to 3)</li>
+    <li><strong>Retry</strong> — replay the same level with a new layout</li>
+    <li><strong>Close</strong> — stay on the finished board; you can still use the share popup to Copy your result, post to 𝕏, or post to Reddit</li>
+    <li>At level 5, logged-out players see a one-time optional sign-up prompt (dismissible with "Maybe later"; playing without an account always works)</li>
+  </ul>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-shikaku-5.png" alt="The victory popup in Shikaku with Next, Retry and Close" loading="lazy" />
+    <figcaption>The victory popup: Next, Retry, Close and the share options.</figcaption>
+  </figure>
+</HelpArticle>

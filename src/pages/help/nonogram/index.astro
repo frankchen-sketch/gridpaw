@@ -1,0 +1,152 @@
+---
+// /help/nonogram/ — How to play GridPaw Nonogram.
+// Source: help-docs/nonogram.md (verified against public/nonogram/demo.html + engine, 2026-09-28).
+import HelpArticle from '../../../components/HelpArticle.astro';
+
+const title = 'Nonogram Help: How to Play & Reveal the Picture';
+const description = 'How to play GridPaw Nonogram (Picross): tap cells to match the row and column clues and reveal the hidden cat. Buttons and levels explained.';
+
+const faqs = [
+  {
+    q: 'Do I need an account to play Nonogram?',
+    a: 'No. Everything works without signing in; there is no account system in this game.',
+  },
+  {
+    q: 'I filled a cell and it flashed red. Why?',
+    a: 'That cell is empty in the picture — the game auto-marked it ✕ and counted a mistake. It never locks; just keep going.',
+  },
+  {
+    q: 'It says "Every cell is marked, but the picture doesn\'t match the clues." What now?',
+    a: 'You have ✕ where the picture needs ⬛ somewhere. Review the lines whose clues don\'t match and fix them.',
+  },
+  {
+    q: 'I\'m stuck. What do I do?',
+    a: 'Use 💡 Hint: it reveals one certainly-correct cell each time. You have 3 per level — save them for Hard.',
+  },
+  {
+    q: 'Can I play on my phone?',
+    a: 'Yes — the whole game is tap-driven, and the board auto-sizes to the viewport.',
+  },
+  {
+    q: 'What is the Daily puzzle?',
+    a: 'After the campaign, every level is a date-seeded daily board: same for everyone that day, alternating Medium/Hard, refreshed daily.',
+  },
+  {
+    q: 'Is this the same as the classic Nonogram?',
+    a: 'Yes — identical run-length rules. GridPaw just generates unlimited unique puzzles (density fill → derive clues → uniqueness check, Easy/Medium also force pure line-logic solvability) with cat art.',
+  },
+  {
+    q: 'What happens after the last tutorial?',
+    a: '"Skip tutorial »" or finishing Tutorial 4 takes you to campaign Level 1 (Easy 5×5).',
+  },
+  {
+    q: 'Are Hard puzzles solvable without guessing?',
+    a: 'They can require light backtracking, but the generator verifies each grid has exactly one solution (solveNonogram count = 1) before serving it.',
+  },
+];
+---
+<HelpArticle
+  title={title}
+  description={description}
+  canonical="/help/nonogram"
+  breadcrumbTitle="Nonogram"
+  faqs={faqs}
+  gameHref="/nonogram/"
+  ctaText="Play Nonogram free in your browser →"
+>
+  <h1>How to Play Nonogram (Picross)</h1>
+  <p class="lede">
+    Nonogram (also called Picross or Griddler) is a paint-by-numbers logic puzzle.
+    The grid comes with <strong>row clues on the left</strong> and
+    <strong>column clues on top</strong>. Each clue gives the run-lengths of
+    filled blocks — e.g. <code>2 2</code> means "a block of 2 filled cells, at
+    least one empty cell, then another block of 2". Fill in every cell so that
+    <em>all</em> rows and <em>all</em> columns match their clues at the same time,
+    and a hidden picture appears. GridPaw Nonogram is the cat version:
+    <strong>4 guided tutorials, an 11-level campaign, then endless date-seeded
+    daily puzzles</strong> — free, no sign-up. What makes it different from every
+    other GridPaw game: the solved picture IS the reward — a pixel-art cat flips
+    to amber in a ≤1s cascade when you finish.
+  </p>
+  <p>Play at <a href="/nonogram/">gridpaw.com/nonogram/</a>.</p>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-nonogram-1.png" alt="A Nonogram board in progress with row and column clues, filled and crossed cells" loading="lazy" />
+    <figcaption>A board in progress — clues on top and left, filled ⬛ and crossed ✕ cells.</figcaption>
+  </figure>
+
+  <h2>Your First Puzzle</h2>
+  <ol>
+    <li><strong>Open the game.</strong> You start on <strong>Tutorial 1/4</strong> (green chip). Four tutorials teach the four core ideas with authored cat pictures: <em>Clues are run lengths</em> (Heart 5×5), <em>Gaps must exist</em> (Cat Face 5×5), <em>Edge pinning</em> (Cat Whiskers 7×7), <em>Cross logic</em> (Big Cat 10×10). Each shows a lesson line under the board; you can't get stuck.</li>
+    <li><strong>Mark cells with taps.</strong> Tap a cell repeatedly to cycle it: <strong>blank → filled ⬛ → cross ✕ → blank</strong>. Fill a ⬛ tap on a cell that is empty in the solution and the game auto-corrects it to ✕ with a red shake and counts it as a mistake ("mistake №1") — it never locks your input, it just teaches.</li>
+    <li><strong>Match every clue.</strong> Keep going row by row and column by column. The puzzle auto-solves the moment the <em>last</em> cell is correctly marked — the win overlay shows the hidden picture lighting up.</li>
+  </ol>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-nonogram-2.png" alt="Close-up of the three-state cell cycle in Nonogram: blank, filled and crossed" loading="lazy" />
+    <figcaption>Tapping cycles a cell: blank → filled ⬛ → cross ✕ → blank.</figcaption>
+  </figure>
+
+  <h2>Every Button on the Screen</h2>
+  <table>
+    <thead>
+      <tr><th>Control</th><th>What it does</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Level chip</strong> (amber; green on tutorials)</td><td>Shows your position: <code>Tutorial 1/4 — &lt;lesson&gt;</code> · <code>Level 4/11 — Medium — 10×10</code> · <code>Daily — Medium 10×10</code></td></tr>
+      <tr><td>↺ <strong>Restart</strong></td><td>Discards the current board and generates a fresh puzzle at the same level</td></tr>
+      <tr><td><strong>Skip tutorial »</strong> (only during the 4 tutorials)</td><td>Skips straight to campaign Level 1 — your first Easy 5×5</td></tr>
+      <tr><td>💡 <strong>Hint</strong> (badge shows <code>3</code>)</td><td>Reveals exactly one correct cell — prefers a cell that should be filled — and tells you where: "💡 Row 3, col 2 is filled — tap it ⬛. (2 hints left)". <strong>3 hints per level</strong>, refills to 3 on every new level. (Dev builds show ∞.)</td></tr>
+      <tr><td><strong>Practice Medium</strong></td><td>Jumps to the first Medium board: Level 4/11, 10×10</td></tr>
+      <tr><td><strong>Practice Hard</strong></td><td>Jumps to the first Hard board: Level 8/11, 15×15</td></tr>
+    </tbody>
+  </table>
+  <p>Row/column clues are also <strong>clickable</strong>: tap any clue (row or column) and its whole line highlights amber for 2.6 seconds — a free way to focus your eyes.</p>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-nonogram-3.png" alt="The Nonogram toolbar with level chip, Restart, Skip tutorial, Hint badge and practice jumps" loading="lazy" />
+    <figcaption>The toolbar: level chip, Restart, Skip tutorial, Hint and the Practice jumps.</figcaption>
+  </figure>
+
+  <h2>Difficulty Levels</h2>
+  <table>
+    <thead>
+      <tr><th>Stage</th><th>Grid</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Tutorial ×4</td><td>5×5 → 7×7 → 10×10</td><td>Authored cat art (Heart, Cat Face, Cat Whiskers, Big Cat); auto-advances ~0.9s after each win</td></tr>
+      <tr><td>Easy ×3</td><td><strong>5×5</strong></td><td>Generator guarantees pure line-logic solvability (no guessing needed)</td></tr>
+      <tr><td>Medium ×4</td><td><strong>10×10</strong></td><td>Same guarantee</td></tr>
+      <tr><td>Hard ×4</td><td><strong>15×15</strong></td><td>May require light backtracking — hints matter here</td></tr>
+      <tr><td>Endless Daily</td><td>10×10 / 15×15</td><td>Alternates medium/hard; <strong>date-seeded — same board for every player on the same day</strong>; comes after the 15 boards (4 tutorials + 11 campaign)</td></tr>
+    </tbody>
+  </table>
+  <p>Campaign order is fixed: 3 Easy → 4 Medium → 4 Hard, shown as <code>Level N/11</code>. Finishing the 11th unlocks the message "Campaign complete! Endless daily puzzles unlocked."</p>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-nonogram-4.png" alt="The Nonogram difficulty chip: a green Tutorial chip and an amber Level 4/11 chip" loading="lazy" />
+    <figcaption>The chip is green on tutorials and amber during the campaign.</figcaption>
+  </figure>
+
+  <h2>Winning &amp; Sharing</h2>
+  <p>When every cell is marked correctly, the victory popup appears with:</p>
+  <ul>
+    <li><strong>Win title</strong> — <code>Solved!</code> (campaign) or <code>Daily solved!</code></li>
+    <li><strong>Pixel-art reveal</strong> — the solved picture's filled cells flip to amber in a ≤1s cascade</li>
+    <li><strong>Next level →</strong> — moves up one level (tutorials instead auto-advance after ~0.9s with no button)</li>
+    <li><strong>Share row (3 buttons)</strong>:
+      <ul>
+        <li>📋 <strong>Copy</strong> — copies the Wordle-style share text to your clipboard (turns ✅ Copied, 1.5s): "🎨 Uncovered the hidden picture in GridPaw Nonogram Level N — zero wrong taps… mostly 😏 Your turn → gridpaw.com/nonogram/" (daily variant mentions today's cat)</li>
+        <li>𝕏 <strong>Share</strong> — opens the <strong>board card</strong> popup first (rendered image of your solved board, 640px, tagged "GridPaw Nonogram · Level N" with the gridpaw.com/nonogram/ footer) ready to post</li>
+        <li>👽 <strong>Reddit</strong> — same board card, then posts to r/gridpaw with the share text as title</li>
+      </ul>
+    </li>
+  </ul>
+  <p><strong>In the board card:</strong> 📋 Copy Image (PNG to clipboard), ⬇️ Save (downloads <code>gridpaw-nonogram-levelN.png</code>), 𝕏 Post, 👽 Post, ✕ Close.</p>
+  <p>Your campaign progress is saved automatically in the browser (<code>gridpaw-nonogram-progress</code>) and resumes on your next visit — but never into the tutorial range.</p>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-nonogram-5.png" alt="The Nonogram victory popup with the pixel-art reveal, Next button and share buttons" loading="lazy" />
+    <figcaption>The victory popup: pixel-art reveal, Next level and the three share buttons.</figcaption>
+  </figure>
+</HelpArticle>

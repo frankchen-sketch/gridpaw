@@ -1,0 +1,150 @@
+---
+// /help/akari/ — How to play GridPaw Akari (Light Up).
+// Source: help-docs/akari.md (verified against src/pages/akari/index.astro + engine, 2026-09-28).
+import HelpArticle from '../../../components/HelpArticle.astro';
+
+const title = 'Akari Help: How to Play Light Up Puzzles';
+const description = 'How to play GridPaw Akari (Light Up): place cats that light every cell, read the numbered walls, use your 3 lives, and understand every toolbar button.';
+
+const faqs = [
+  {
+    q: 'Do I need an account to play Akari?',
+    a: 'No. Everything works without signing in. Your current level, lives and board are auto-saved in your browser\'s local storage (kept for 24 hours), so a refresh or a closing tab doesn\'t lose your game.',
+  },
+  {
+    q: 'Why won\'t my cat place, or why did I lose a life?',
+    a: 'Placing it broke a rule: too many cats around a numbered wall, or two cats facing each other along a row/column with no wall between. The toast tells you which one. Remove the cat and try another cell.',
+  },
+  {
+    q: 'I\'m stuck. What do I do?',
+    a: 'Press Hint — it\'s free and unlimited here. It always points at a cell that is correct in the final solution. Two wrong moves in a row make the button pulse.',
+  },
+  {
+    q: 'What does the ✗ mark do?',
+    a: 'Classic Akari solvers mark cells that must stay empty. Double-click (or right-click on desktop, long-press on mobile) toggles it. It\'s a memory aid — the game doesn\'t count it as a move.',
+  },
+  {
+    q: 'Is this the same as classic Akari?',
+    a: 'Yes — identical rules to the Nikoli puzzle. GridPaw just generates unlimited free boards with cat art.',
+  },
+  {
+    q: 'Can I play on my phone?',
+    a: 'Yes — tap to place/remove, long-press to ✗-mark. The Daily page tracks streaks and a leaderboard if you sign in.',
+  },
+];
+---
+<HelpArticle
+  title={title}
+  description={description}
+  canonical="/help/akari"
+  breadcrumbTitle="Akari"
+  faqs={faqs}
+  gameHref="/akari/"
+  ctaText="Play Akari free in your browser →"
+>
+  <h1>How to Play Akari (Light Up)</h1>
+  <p class="lede">
+    Akari (also called Light Up) is a Japanese logic puzzle from Nikoli. You place
+    glowing cats (the "lights") on a grid of white cells. Every white cell must be
+    lit by at least one cat, and no two cats may ever face each other along the
+    same row or column — unless a black wall cell blocks their view. The dark wall
+    cells sometimes carry a number: that number tells you <strong>exactly</strong>
+    how many cats must sit in the four cells directly touching it (0–4). The
+    puzzle is solved when every white cell is lit, every number is satisfied, and
+    no two cats see each other. GridPaw is Akari with cat visuals: unlimited
+    procedurally generated puzzles, free, no sign-up required to play.
+  </p>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/game-beginner.png" alt="An Akari board in progress with cats lighting rows and columns" loading="lazy" />
+    <figcaption>A board in progress — cats light their whole row and column until a wall blocks the beam.</figcaption>
+  </figure>
+
+  <h2>Your First Puzzle</h2>
+  <ol>
+    <li><strong>Open the game.</strong> Go to <a href="/akari/">gridpaw.com/akari</a>. Level 1 starts on a small 3×3 board with a <strong>coach popup</strong> that teaches the rules in 3 steps: "Light up the room" → "Watch: right vs wrong" → "Your turn". Levels 1–4 are hand-built tutorial boards, so you can't get stuck on the basics.</li>
+    <li><strong>Place a cat.</strong> Click or tap any empty white cell — a cat appears and lights its entire row and column until a wall blocks the beam. Click the same cell again to remove it.</li>
+    <li><strong>Read the numbered walls.</strong> A black cell with <code>4</code> means all 4 neighbor cells get cats. A <code>0</code> means none of them do. You can ✗-mark a cell you want to exclude: double-click or right-click on desktop, or press-and-hold on touch screens.</li>
+    <li><strong>Fill until everything is lit.</strong> You win the moment all white cells are lit, every number has its exact neighbor count, and no two cats see each other — the game checks for you and shows the win popup automatically.</li>
+  </ol>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-akari-2.png" alt="The Akari tutorial coach card with Skip and Watch how buttons" loading="lazy" />
+    <figcaption>The coach popup walks you through the rules in three short steps.</figcaption>
+  </figure>
+
+  <h2>Every Button on the Screen</h2>
+  <table>
+    <thead>
+      <tr><th>Button</th><th>What it does</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>💡 <strong>Hint</strong></td><td>Highlights the next correct cell for 2 seconds and shows "Hint: try row X, col Y". <strong>Unlimited and free</strong> — no counter. If you make 2 wrong moves in a row, the button pulses to get your attention.</td></tr>
+      <tr><td>↩️ <strong>Undo</strong> (Ctrl+Z / ⌘+Z)</td><td>Undoes your last change.</td></tr>
+      <tr><td>↪️ <strong>Redo</strong> (Ctrl+Y / ⌘+Shift+Z)</td><td>Re-applies a change you just undid.</td></tr>
+      <tr><td>🔄 <strong>New</strong></td><td><strong>Skips ahead</strong>: discards the current puzzle, moves you up one level, refills your 3 lives and generates a fresh board at the next level. It does <em>not</em> regenerate the same level.</td></tr>
+      <tr><td>🗑️ <strong>Restart</strong></td><td>Clears your cats on the <em>current</em> puzzle, refills your lives and restarts the timer — same level, same layout.</td></tr>
+      <tr><td>🔇 / 🔊 <strong>Sound</strong></td><td>Toggles game sounds. <strong>Off by default</strong> — click once to turn sounds on.</td></tr>
+      <tr><td>🔥 <strong>Daily</strong></td><td>Link to the Daily Challenge page (<a href="/akari/daily/">/akari/daily/</a>): one fresh 10×10 puzzle per day, the same for every player, with streaks and a leaderboard. Weekends run a larger 14×14 "Weekend Super" board.</td></tr>
+      <tr><td>📋 Copy Result / 𝕏 Share / 👽 Reddit (after winning)</td><td>Opens the victory flow: copy a text summary, or open the share card with Copy Image / Save / post options.</td></tr>
+    </tbody>
+  </table>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-akari-3.png" alt="The Akari toolbar with Hint, Undo, Redo, Restart, New, Sound and Daily" loading="lazy" />
+    <figcaption>The toolbar: Hint, Undo, Redo, Restart, New, Sound and Daily.</figcaption>
+  </figure>
+
+  <h2>Your 3 Lives</h2>
+  <p>
+    The three hearts in the top bar are lives. Placing a cat that violates a rule —
+    <strong>too many cats around a number</strong> or <strong>two cats facing each
+    other</strong> — flashes the offending cells, plays an error sound and costs
+    you one heart. Lose all three and you get "Game Over! Try again." before the
+    board resets automatically. Lives refill on Restart, on New, and on every
+    level-up.
+  </p>
+
+  <h2>Difficulty Levels</h2>
+  <p>Levels are sequential (1, 2, 3, …∞). The board size and badge grow with the level:</p>
+  <table>
+    <thead>
+      <tr><th>Tier</th><th>Grid</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Tutorial (levels 1–3)</td><td>3×3</td><td>Hand-built lesson boards + coach popup</td></tr>
+      <tr><td>Level 4</td><td>4×4</td><td>Hand-built "put it together" board</td></tr>
+      <tr><td>Easy (levels 5–6)</td><td>6×6</td><td></td></tr>
+      <tr><td>Medium (levels 7–9)</td><td>7×7</td><td></td></tr>
+      <tr><td>Medium-Hard (levels 10–12)</td><td>8×8</td><td></td></tr>
+      <tr><td>Hard (levels 13–15)</td><td>9×9</td><td>🔥 badge shown</td></tr>
+      <tr><td>Expert (levels 16–18)</td><td>10×10</td><td></td></tr>
+      <tr><td>Master (level 19+)</td><td>12×12</td><td>Largest boards</td></tr>
+    </tbody>
+  </table>
+  <p>
+    The cat art also changes every 3 levels. The progress line under the board
+    shows how many of the puzzle's cats you've placed (e.g. <code>4 / 7 cats placed</code>),
+    and a timer tracks your solve time — your best time per difficulty is saved as
+    a trophy (🏆) in your browser.
+  </p>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-akari-4.png" alt="The difficulty badge and level title in Akari" loading="lazy" />
+    <figcaption>The difficulty badge grows with the level, and the cat art changes every 3 levels.</figcaption>
+  </figure>
+
+  <h2>Winning &amp; Sharing</h2>
+  <p>As soon as the board is correct, the "🎉 Solved!" popup appears with confetti and:</p>
+  <ul>
+    <li><strong>Next Puzzle →</strong> — jump to the next level; also refills your lives. If you don't click it, the game <strong>auto-advances after about 3 seconds</strong>.</li>
+    <li><strong>📋 Copy Result</strong> — copies a one-line summary of your win to the clipboard.</li>
+    <li><strong>𝕏 Share / 👽 Reddit</strong> — open a "Your board" share card with your finished grid, where you can <strong>📋 Copy Image</strong>, <strong>⬇️ Save</strong> it as PNG, or post directly to 𝕏 or Reddit.</li>
+  </ul>
+  <p>No sign-in is needed to play or share. If you do sign in on the Daily page, your level syncs across devices automatically.</p>
+
+  <figure class="shot">
+    <img src="/assets/screenshots/help-akari-5.png" alt="The Akari victory popup and share card" loading="lazy" />
+    <figcaption>The victory popup with Next Puzzle, Copy Result and the share card.</figcaption>
+  </figure>
+</HelpArticle>

@@ -1,0 +1,77 @@
+---
+// /help/ — GridPaw Help Center index.
+// Lists all six game help guides (Games switcher on GameNav lists 6 games; here
+// we only link the 6 game guides, not the other 9 helper pages).
+import HelpArticle from '../../components/HelpArticle.astro';
+
+const title = 'GridPaw Help Center: How to Play All 6 Games';
+const description = 'Free how-to-play guides for all six GridPaw puzzle games: Shikaku, Akari, Kakuro, Nonogram, Nurikabe and Pictomino. Rules, buttons, levels, and how to win.';
+
+const faqs = [
+  {
+    q: 'Do I need an account to play GridPaw games?',
+    a: 'No. All six GridPaw games — Shikaku, Akari, Kakuro, Nonogram, Nurikabe and Pictomino — are fully playable without signing in. Progress is saved automatically in your browser. An optional Google sign-in exists only in Akari Daily and Pictomino, where it enables cloud streak sync and the leaderboard.',
+  },
+  {
+    q: 'Are the games free to play?',
+    a: 'Yes, every game is free, runs entirely in your browser, and needs no download. Hints come with a free allowance per level in Shikaku, Kakuro, Nonogram and Nurikabe, and are unlimited in Akari.',
+  },
+  {
+    q: 'Which games are the classic Japanese logic puzzles?',
+    a: 'Shikaku, Akari, Kakuro, Nonogram and Nurikabe all follow the classic Nikoli rules — GridPaw adds cat visuals and unlimited procedurally generated boards. Pictomino is a different spatial reasoning game for kids: a cat photo cut into pieces that you rebuild by logic.',
+  },
+  {
+    q: 'Where do the daily puzzles live?',
+    a: 'Each game has a daily cadence: Shikaku and Akari on the Daily Challenge page, and Kakuro, Nonogram and Nurikabe switch to date-seeded daily puzzles after their campaign, so everyone worldwide gets the same board on the same day. Pictomino has a separate Daily Challenge page.',
+  },
+];
+---
+<HelpArticle
+  title={title}
+  description={description}
+  canonical="/help"
+  breadcrumbTitle="Help"
+  faqs={faqs}
+  gameHref="/"
+  ctaText="Play any of these puzzles free in your browser →"
+>
+  <h1>GridPaw Help Center</h1>
+  <p class="lede">
+    Every GridPaw puzzle is free, browser-based and playable without an account.
+    Pick a game below for a full guide: the rules, your first puzzle, every
+    button on the screen, the difficulty tiers and how winning and sharing work.
+  </p>
+
+  <div class="gp-card-grid">
+    <a class="gp-card" href="/help/shikaku/">
+      <span class="gp-card-arrow">→</span>
+      <strong>🟧 Shikaku Help</strong>
+      <span>Draw rectangles that match the numbers. 7 tiers, 3 hints per level.</span>
+    </a>
+    <a class="gp-card" href="/help/akari/">
+      <span class="gp-card-arrow">→</span>
+      <strong>💡 Akari Help</strong>
+      <span>Place glowing cats, light every cell, obey the numbered walls.</span>
+    </a>
+    <a class="gp-card" href="/help/kakuro/">
+      <span class="gp-card-arrow">→</span>
+      <strong>🔢 Kakuro Help</strong>
+      <span>Cross sums: fill runs that add to the clue, no repeats. Fog mode!</span>
+    </a>
+    <a class="gp-card" href="/help/nonogram/">
+      <span class="gp-card-arrow">→</span>
+      <strong>🎨 Nonogram Help</strong>
+      <span>Paint by numbers. Match the row and column clues to reveal a cat.</span>
+    </a>
+    <a class="gp-card" href="/help/nurikabe/">
+      <span class="gp-card-arrow">→</span>
+      <strong>🏝️ Nurikabe Help</strong>
+      <span>Islands and sea: match the numbers, keep the sea connected.</span>
+    </a>
+    <a class="gp-card" href="/help/pictomino/">
+      <span class="gp-card-arrow">→</span>
+      <strong>🧩 Pictomino Help</strong>
+      <span>Rebuild a cat photo piece by piece. The kids' spatial reasoning game.</span>
+    </a>
+  </div>
+</HelpArticle>
