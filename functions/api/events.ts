@@ -19,10 +19,19 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const sid = getCookie(request, 'mt_session');
   const userId = sid ? (await verifySessionValue(env.OAUTH_STATE_SECRET, sid)) ?? '' : '';
 
-  // 访客 id：无 cookie 则签发新 gp_gid（HttpOnly，1 年）
+  // 访客 id：优先 gp_gid cookie；cookie 缺席时采纳客户端 anonId（无 cookie 客户端如
+  // embed iframe / 高隐私浏览器会拒 Set-Cookie，靠每请求签发新 id 会让身份碎片化——
+  // 2026-10-01 实锤：同一次加载里 visit 和 game_start 分成两个 guest，永远 join 不上）。
+  // 采纳格式收紧为 anon-<uuid>，防止把恶意值直接写进库。
   let guestId = getCookie(request, GUEST_COOKIE) ?? '';
-  const isNewGuest = !guestId;
-  if (isNewGuest) guestId = crypto.randomUUID();
+  let clientAnonId = '';
+  try {
+    const parsed = JSON.parse(raw || '{}');
+    if (typeof parsed?.anonId === 'string') clientAnonId = parsed.anonId.slice(0, 80);
+  } catch { /* raw JSON 解析失败在下方统一 400 */ }
+  const isNewGuest = !guestId && !/^anon-[0-9a-fA-F-]{6,70}$/.test(clientAnonId);
+  if (!guestId && /^anon-[0-9a-fA-F-]{6,70}$/.test(clientAnonId)) guestId = clientAnonId;
+  if (!guestId) guestId = crypto.randomUUID();
 
   let body: any;
   try { body = JSON.parse(raw); } catch { return json({ error: 'bad_json' }, 400); }
