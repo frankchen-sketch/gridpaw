@@ -360,6 +360,16 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     .win-btn:hover { background: var(--gp-primary-strong); }
     .win-share-row { display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; justify-content: center; }
     #board-img { max-width: min(78vw, 420px); border-radius: 12px; border: 2px solid var(--mt-primary); display: block; margin: 0 auto 0.4rem; }
+    /* ── Rules overlay（点 Tutorial 徽章 / ? how to play 徽标 → 游戏内弹层，不离棋盘）── */
+    .rules-card { background: #fff8ef; border: 1.5px solid #e7d4b8; border-radius: 16px; max-width: 340px; width: 88%; padding: 1.2rem 1.3rem; box-shadow: 0 12px 30px rgba(74,59,50,.25); text-align: left; animation: text-pop 0.4s 0.05s cubic-bezier(0.34,1.56,0.64,1) both; }
+    .rules-card h3 { margin: 0 0 0.7rem; font-size: 1.05rem; font-weight: 900; color: var(--ink); text-align: center; }
+    .rules-rule { display: flex; gap: 0.6rem; margin: 0.6rem 0; align-items: flex-start; font-size: 0.85rem; line-height: 1.5; color: var(--text); }
+    .rules-rule .ic { flex: 0 0 28px; height: 28px; border-radius: 9px; background: #fff3dd; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; }
+    .rules-ok { display: block; width: 100%; margin-top: 0.9rem; background: var(--accent); color: #fff; border: 0; border-radius: 12px; padding: 0.7rem; font-weight: 800; font-size: 0.95rem; cursor: pointer; font-family: inherit; }
+    .rules-ok:hover { background: var(--gp-primary-strong); }
+    .rules-note { font-size: 0.72rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem; }
+    .howto-chip { display: inline-flex; align-items: center; gap: 0.3rem; background: #fff; border: 1.5px dashed var(--accent); color: var(--gp-primary-strong); border-radius: 999px; font-size: 0.72rem; font-weight: 800; padding: 0.35rem 0.7rem; cursor: pointer; font-family: inherit; }
+    .howto-chip:hover { background: #fde8c8; }
     .board-card { position: relative; z-index: 3; background: var(--mt-surface); border-radius: 20px; padding: 1.4rem 1.6rem; box-shadow: 0 12px 40px rgba(52,36,33,.25); max-height: 88vh; overflow-y: auto; text-align: center; }
     .share-btn { padding: 0.5rem 1rem; border: none; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: 600; font-family: inherit; transition: transform 0.1s; }
     .share-btn:active { transform: scale(0.95); }
@@ -594,6 +604,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
           <div class="game-actions">
             <button class="icon-btn" id="new-btn" aria-label="New Puzzle"><span>🔄</span><span class="tip">New</span></button>
             <button class="hint-btn" id="hint-btn" aria-label="Hint"><span>💡</span><span class="hint-word">Hint</span></button>
+            <button class="howto-chip" id="howto-chip" aria-label="How to play"><span>❓</span>how to play</button>
             <button class="icon-btn" id="undo-btn" aria-label="Undo"><span>↩️</span><span class="tip">Undo (Ctrl+Z)</span></button>
             <button class="icon-btn" id="redo-btn" aria-label="Redo"><span>↪️</span><span class="tip">Redo (Ctrl+Y)</span></button>
             <button class="icon-btn" id="reset-btn" aria-label="Restart"><span>🗑️</span><span class="tip">Restart</span></button>
@@ -622,6 +633,18 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
           <button class="share-btn share-copy" id="share-copy">📋 Copy Result</button>
           <button class="share-btn share-twitter" id="share-twitter">𝕏 Share</button>
           <button class="share-btn share-reddit" id="share-reddit">👽 Reddit</button>
+        </div>
+      </div>
+
+      <!-- Rules Overlay（徽章 / how-to-play 徽标触发；不改棋盘，不滚页） -->
+      <div class="win-overlay" id="rules-overlay">
+        <div class="rules-card">
+          <h3>💡 How to play Akari</h3>
+          <div class="rules-rule"><span class="ic">1️⃣</span><span>Tap cells to place light bulbs. Every white cell must be <b>lit</b>.</span></div>
+          <div class="rules-rule"><span class="ic">2️⃣</span><span>Bulbs can't shine on each other — light stops at black cells.</span></div>
+          <div class="rules-rule"><span class="ic">3️⃣</span><span>A numbered black cell must touch <b>exactly</b> that many bulbs.</span></div>
+          <button class="rules-ok" id="rules-close">Got it, let me play</button>
+          <div class="rules-note">💡 Hint button shows the next logical move anytime.</div>
         </div>
       </div>
 
@@ -1374,15 +1397,27 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       } else showToast('No hints!','error');
     });
     document.getElementById('reset-btn').addEventListener('click', resetPuzzle);
-    // Clarity 录屏实锤：用户把难度徽章当帮助按钮狂点（1 分钟 17 次）→ 点它就滚到玩法指南
+    // Clarity 录屏实锤：用户把难度徽章当帮助按钮狂点（k3dlzr 75 秒点 8 次）。
+    // 9/23 曾改成滚到页底玩法指南——实测把人带离棋盘（1mllfzf 点完 5 秒离开）。改为原地弹规则弹层。
+    const rulesOverlay = document.getElementById('rules-overlay');
+    function openRules(source) {
+      rulesOverlay.classList.add('show');
+      track(source === 'badge' ? 'badge_help_click' : 'howto_open', { level: level, source: source });
+      track('rules_overlay_open', { level: level, source: source });
+    }
+    function closeRules() {
+      if (!rulesOverlay.classList.contains('show')) return;
+      rulesOverlay.classList.remove('show');
+      track('rules_overlay_close', {});
+    }
     document.getElementById('level-display').addEventListener('click', (e) => {
       const badge = e.target && e.target.closest ? e.target.closest('.difficulty-badge') : null;
       if (!badge) return;
-      track('badge_help_click', { level: level, badge: badge.textContent.trim() });
-      const guide = document.getElementById('strategy-guide');
-      if (guide) guide.scrollIntoView({ behavior: 'smooth' });
-      showToast('💡 Hint shows the next logical move — guide below.', 'success');
+      openRules('badge');
     });
+    document.getElementById('howto-chip').addEventListener('click', () => openRules('chip'));
+    document.getElementById('rules-close').addEventListener('click', closeRules);
+    rulesOverlay.addEventListener('click', (e) => { if (e.target === rulesOverlay) closeRules(); });
     document.getElementById('new-btn').addEventListener('click', newPuzzle);
     document.getElementById('sound-btn').addEventListener('click', () => {
       const muted = SFX.toggle();
