@@ -1,0 +1,74 @@
+---
+// GameHub — cross-game entry tiles, reused below the game card on the homepage
+// and on every official game page. Props:
+//   active: current game href ('/' on homepage). That game is excluded from tiles.
+// Analytics: fires GA4 game_nav_click { target, from } on tile click (inline,
+// non-bundled script — see AGENTS.md: Astro inline scripts are not Vite-processed).
+interface Props {
+  active?: string;
+}
+const { active = '/' } = Astro.props;
+const games = [
+  { href: '/', icon: '/assets/game-icons/shikaku.webp', name: 'Shikaku', desc: 'Rectangles' },
+  { href: '/akari/', icon: '/assets/game-icons/akari.webp', name: 'Akari', desc: 'Light Up' },
+  { href: '/kakuro/', icon: '/assets/game-icons/kakuro.webp', name: 'Kakuro', desc: 'Cross-sum' },
+  { href: '/nonogram/', icon: '/assets/game-icons/nonogram.webp', name: 'Nonogram', desc: 'Picture logic' },
+  { href: '/nurikabe/', icon: '/assets/game-icons/nurikabe.webp', name: 'Nurikabe', desc: 'Islands & sea' },
+  { href: '/pictomino/', icon: '/assets/game-icons/pictomino.webp', name: 'Pictomino', desc: 'Spatial' },
+];
+const tiles = games.filter((g) => g.href !== active);
+---
+
+<nav class="gp-hub" aria-label="More cat puzzle games" data-gp-hub>
+  <h2 class="gp-hub-title">More <span class="gp-hub-accent">Cat Puzzle</span> Games</h2>
+  <div class="gp-hub-grid">
+    {tiles.map((g) => (
+      <a href={g.href} class="gp-hub-tile">
+        <img src={g.icon} alt="" width="40" height="40" loading="lazy" />
+        <b>{g.name}</b>
+        <span>{g.desc}</span>
+      </a>
+    ))}
+  </div>
+</nav>
+
+<style>
+  .gp-hub { max-width: 720px; margin: 0.4rem auto 0; padding: 0 1rem; }
+  .gp-hub-title { font-size: 1.15rem; font-weight: 900; text-align: center; margin: 0.7rem 0 0.55rem; color: #3f2d1d; }
+  .gp-hub-accent { color: #d97706; }
+  .gp-hub-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .gp-hub-tile {
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    background: #fff; border: 1.5px solid #e7d4b8; border-radius: 12px;
+    padding: 10px 4px 8px; text-decoration: none; color: #3f2d1d;
+    transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  }
+  .gp-hub-tile:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(63,45,29,.12); border-color: #d97706; }
+  .gp-hub-tile img { width: 40px; height: 40px; border-radius: 9px; display: block; margin-bottom: 5px; }
+  .gp-hub-tile b { font-size: .8rem; font-weight: 800; line-height: 1.2; }
+  .gp-hub-tile span { font-size: .68rem; color: #8a6f55; line-height: 1.25; margin-top: 2px; }
+  @media (max-width: 719px) {
+    .gp-hub-grid { gap: 6px; }
+    .gp-hub-tile { padding: 7px 2px 6px; }
+    .gp-hub-tile img { width: 30px; height: 30px; border-radius: 7px; margin-bottom: 3px; }
+    .gp-hub-tile b { font-size: .68rem; }
+    .gp-hub-tile span { display: none; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      while (t && t !== document) {
+        if (t.classList && t.classList.contains('gp-hub-tile')) {
+          var target = t.getAttribute('href');
+          if (typeof window.gtag === 'function') window.gtag('event', 'game_nav_click', { target: target, from: location.pathname });
+          if (typeof window.clarity === 'function') window.clarity('event', 'game_nav_click');
+          return;
+        }
+        t = t.parentNode;
+      }
+    }, true);
+  })();
+</script>

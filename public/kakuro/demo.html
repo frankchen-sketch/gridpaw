@@ -20,6 +20,8 @@
     window.gtag('config', 'G-4FWP61DJCC');
   }
 </script>
+<script src="/kakuro/gp-build.js"></script>
+<script src="/kakuro/gp-track.js"></script>
 <style>
   :root {
     --amber: #d97706;
@@ -329,6 +331,7 @@
   function track(name, params) {
     if (!IS_PROD) return; // 非生产域静默，本机 QA 流量不进 GA4
     try {
+      if (window.gpTrack) window.gpTrack(name, params || {}); // 自建漏斗（D1），白名单在 gp-track.js
       if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
       else if (window.dataLayer) window.dataLayer.push(Object.assign({ event: name }, params || {}));
     } catch (e) { /* analytics never blocks gameplay */ }
