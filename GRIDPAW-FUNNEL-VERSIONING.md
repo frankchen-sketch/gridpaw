@@ -303,6 +303,8 @@ import { APP_BUILD } from '../lib/app-build.generated';
 
 ### 3.5 上报端点（#7）
 
+> **2026-10-01 更新**：无 cookie 客户端（embed iframe / 高隐私浏览器）会拒 Set-Cookie → 服务端每请求签发新 guest_id，同一次加载里 visit 和 game_start 分家、永远 join 不上（实测 1068 guest 里 880 个单事件孤儿）。修复：客户端随 payload 发 `anonId`（localStorage→sessionStorage→内存 三级兜底），服务端在 cookie 缺席时采纳（格式收紧为 `anon-<uuid>`）。历史数据已用「时间就近 ±5s 一对一配对」合并（144 对，备份表 `gp_event_backup_20261001`）。**合并日之前的用户级数字仍带残余误差，分析时以 GA4 交叉验证。**
+
 `functions/api/events.ts` 骨架（复用现有 `_lib.ts` 的 `getCookie` / `json` / `verifySessionValue`，签名已核对：`json(data, status=200, headers={})`）：
 
 ```ts

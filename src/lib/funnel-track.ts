@@ -48,21 +48,55 @@ function send(payload: unknown): void {
   }).catch(() => undefined);
 }
 
+// 会话身份：无 cookie 客户端（embed iframe / 高隐私浏览器）会拒 Set-Cookie，
+// 服务端只能每请求签发新 guest_id → 同一次加载里 visit 和 game_start 分家（2026-10-01 实锤的碎片化坑）。
+// 客户端 anon_id 兜底：localStorage 拒 → sessionStorage 拒 → 内存（至少同页加载内一致）。
+// 服务端优先用 gp_gid cookie，cookie 缺席才采纳 anon_id（见 functions/api/events.ts）。
+let memAnonId: string | null = null;
+export function getAnonId(): string {
+  if (memAnonId) return memAnonId;
+  try {
+    const ls = localStorage.getItem('gp_anon_id');
+    if (ls) { memAnonId = ls; return ls; }
+  } catch { /* 存储被拒，降级 */ }
+  try {
+    const ss = sessionStorage.getItem('gp_anon_id');
+    if (ss) { memAnonId = ss; return ss; }
+  } catch { /* 存储被拒，降级 */ }
+  const fresh = 'anon-' + (typeof crypto !== 'undefined' && crypto.randomUUID
+    ? crypto.randomUUID()
+    : Date.now() + '-' + Math.random().toString(36).slice(2));
+  try { localStorage.setItem('gp_anon_id', fresh); }
+  catch {
+    try { sessionStorage.setItem('gp_anon_id', fresh); }
+    catch { /* 内存兜底：同页加载内一致，跨页无法保 */ }
+  }
+  memAnonId = fresh;
+  return fresh;
+}
+
 export function trackFunnel(eventName: string, metadata: Record<string, unknown> = {}): void {
   if (!PROD.test(location.hostname)) return;
   if (FUNNEL_EVENTS.indexOf(eventName) === -1) return;
-  send({ events: [{ eventName, source: 'web', buildId: APP_BUILD.id, metadata }] });
+  send({ anonId: getAnonId(), events: [{ eventName, source: 'web', buildId: APP_BUILD.id, metadata }] });
 }
 
 // 每页每会话一条 visit；归因原料必须齐（utmSource + referrerHost），
 // 否则三级兜底退化成 organic/direct，P1 流量注脚失去解释力（坑 #5）
 export function trackVisit(path: string): void {
   if (!PROD.test(location.hostname)) return;
+  // 存储被拒（Safari 隐私模式/embed iframe）时 visit 不能整个丢——去重失败就重复上报，
+  // 服务端按 anon_id 归并；之前这里裸访问 sessionStorage，throw 会连带打断后续打点
   const key = 'gp_visit_logged:' + path;
-  if (sessionStorage.getItem(key)) return;
-  sessionStorage.setItem(key, '1');
-  const firstSeen = localStorage.getItem('gp_first_visit_at');
-  if (!firstSeen) localStorage.setItem('gp_first_visit_at', new Date().toISOString());
+  try {
+    if (sessionStorage.getItem(key)) return;
+    sessionStorage.setItem(key, '1');
+  } catch { /* 存储被拒：继续上报，靠 anon_id/服务端归并 */ }
+  let firstSeen: string | null = null;
+  try {
+    firstSeen = localStorage.getItem('gp_first_visit_at');
+    if (!firstSeen) localStorage.setItem('gp_first_visit_at', new Date().toISOString());
+  } catch { /* 存储被拒 */ }
   trackFunnel('visit', {
     path,
     referrerHost: referrerHost(),

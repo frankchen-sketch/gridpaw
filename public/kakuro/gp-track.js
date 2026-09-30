@@ -42,11 +42,35 @@
       }).catch(function () {});
     } catch (e) {}
   }
+  // 会话身份：cookie 被拒（embed iframe / 高隐私浏览器）时服务端每请求签发新 guest_id，
+  // visit 和 game_start 会分家。客户端 anon_id 兜底：localStorage 拒 → sessionStorage 拒 → 内存。
+  // 与 src/lib/funnel-track.ts 的 getAnonId 保持同构。
+  var memAnonId = null;
+  function getAnonId() {
+    if (memAnonId) return memAnonId;
+    try {
+      var ls = localStorage.getItem('gp_anon_id');
+      if (ls) { memAnonId = ls; return ls; }
+    } catch (e) {}
+    try {
+      var ss = sessionStorage.getItem('gp_anon_id');
+      if (ss) { memAnonId = ss; return ss; }
+    } catch (e) {}
+    var fresh = 'anon-' + (window.crypto && crypto.randomUUID
+      ? crypto.randomUUID()
+      : Date.now() + '-' + Math.random().toString(36).slice(2));
+    try { localStorage.setItem('gp_anon_id', fresh); }
+    catch (e) {
+      try { sessionStorage.setItem('gp_anon_id', fresh); } catch (e2) {}
+    }
+    memAnonId = fresh;
+    return fresh;
+  }
   function trackFunnel(eventName, metadata) {
     if (!PROD.test(location.hostname)) return;
     if (FUNNEL_EVENTS.indexOf(eventName) === -1) return;
     var build = (window.GP_BUILD && window.GP_BUILD.id) || '';
-    send({ events: [{ eventName: eventName, source: 'web', buildId: build, metadata: metadata || {} }] });
+    send({ anonId: getAnonId(), events: [{ eventName: eventName, source: 'web', buildId: build, metadata: metadata || {} }] });
   }
   function trackVisit(path) {
     if (!PROD.test(location.hostname)) return;
@@ -54,7 +78,7 @@
     try {
       if (sessionStorage.getItem(key)) return;
       sessionStorage.setItem(key, '1');
-    } catch (e) { return; }
+    } catch (e) { /* 存储被拒：继续上报，靠 anon_id 归并 */ }
     var firstSeen = null;
     try { firstSeen = localStorage.getItem('gp_first_visit_at'); } catch (e) {}
     if (!firstSeen) { try { localStorage.setItem('gp_first_visit_at', new Date().toISOString()); } catch (e) {} }
