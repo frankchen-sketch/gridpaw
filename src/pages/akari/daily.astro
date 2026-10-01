@@ -86,6 +86,8 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
     .win-share-row{display:flex;gap:.5rem;margin-top:.8rem;flex-wrap:wrap;justify-content:center}
     .share-btn{padding:.5rem 1rem;border:none;border-radius:10px;cursor:pointer;font-size:.85rem;font-weight:600;font-family:inherit;transition:transform .1s}
     .share-btn:active{transform:scale(.95)}
+    .share-link-opt{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;color:var(--gp-brown-600);margin:2px 0 10px;user-select:none}
+    .share-link-opt input{accent-color:var(--gp-primary);cursor:pointer}
     .share-copy{background:var(--gp-cream-warm);color:var(--gp-brown-900)}.share-copy:hover{background:var(--gp-linen)}
     .share-twitter{background:var(--gp-info);color:#fff}.share-twitter:hover{background:var(--gp-info)}
     .confetti{position:absolute;width:12px;height:12px;border-radius:3px;animation:confetti-fall linear forwards}
@@ -199,11 +201,16 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
           <div class="stat-label">Your Time</div>
         </div>
         <div class="stat">
-          <div class="stat-value" id="win-streak-info">🔥 0 day streak</div>
-          <div class="stat-label">Current Streak</div>
+          <div class="stat-value" id="win-hints">💡 0</div>
+          <div class="stat-label">Hints Used</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="win-mistakes">✅ 0</div>
+          <div class="stat-label">Mistakes</div>
         </div>
       </div>
       <div id="win-badge" style="display:none;font-size:1.2rem;font-weight:700;margin:.5rem 0;padding:.4rem 1rem;border-radius:20px;background:var(--gp-cream);border:2px solid var(--gp-primary)"></div>
+      <div class="share-link-opt"><input type="checkbox" id="share-include-link" checked> Include link (gridpaw.com)</div>
       <div class="win-share-row">
         <button class="share-btn share-reddit" id="share-reddit" style="background:#FF4500;color:#fff">👽 Reddit</button>
         <button class="share-btn share-copy" id="share-copy">📋 Copy Result</button>
@@ -258,6 +265,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
     const DIRS = [[-1,0],[1,0],[0,-1],[0,1]];
     let currentPuzzle = null, playerSolution = null, markX = null, won = false;
     let health = 3, timerInterval = null, startTime = null, elapsedTime = 0;
+    let hintsUsed = 0, mistakes = 0;   // 分享统计维度（本局计数，start/reset 清零，solve 时随 state 落库）
     let lastPlacedCell = null;
     const STORAGE_KEY = 'gridpaw-daily';
     const gridEl = document.getElementById('puzzle-grid');
@@ -306,7 +314,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       }
       return { date: today, streak: 0, bestStreak: d.bestStreak, solved: false, bestTime: d.bestTime };
     }
-    function saveState(solved, time) {
+    function saveState(solved, time, hints, miss) {
       const today = getToday();
       let st = loadState() || { date: today, streak: 0, bestStreak: 0, bestTime: null };
       if (solved && !st.solved) {
@@ -317,6 +325,8 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       }
       st.lastPlayedDate = today;
       st.date = today;
+      if (hints != null) st.hintsUsed = hints;
+      if (miss != null) st.mistakes = miss;
       localStorage.setItem(STORAGE_KEY, JSON.stringify(st));
       return st;
     }
@@ -432,6 +442,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
     function startDailyChallenge() {
       won = false; winOverlay.classList.remove('show');
       health = 3;
+      hintsUsed = 0; mistakes = 0;
       updateHealth();
       const seed = getDailySeed();
       const rng = seededRandom(seed);
@@ -460,6 +471,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
 
     function resetPuzzle() {
       if (!currentPuzzle) return; won = false; winOverlay.classList.remove('show');
+      hintsUsed = 0; mistakes = 0;
       track('puzzle_reset', { mode: 'daily', size: currentPuzzle.size });
       const s = currentPuzzle.size;
       playerSolution = Array.from({length:s}, () => Array(s).fill(false));
@@ -550,6 +562,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
         }
         if (hasViolation) {
           if (typeof SFX !== 'undefined') SFX.error();
+          mistakes++;
           loseHealth();
         }
       }
@@ -559,7 +572,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
         won=true;
         if (typeof SFX !== 'undefined') SFX.win();
         stopTimer();
-        const state = saveState(true, elapsedTime);
+        const state = saveState(true, elapsedTime, hintsUsed, mistakes);
         track('daily_solved', { streak: state.streak, seconds: elapsedTime });
         updateStreakDisplay();
         syncToExtension();
@@ -568,9 +581,9 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
         setTimeout(()=>{
           winOverlay.classList.add('show');
           document.getElementById('final-time').textContent = timerEl.textContent;
+          document.getElementById('win-hints').textContent = '💡 ' + hintsUsed;
+          document.getElementById('win-mistakes').textContent = mistakes === 0 ? '✅ 0' : '⚠ ' + mistakes;
           const badge = getBadge(state.streak);
-          const streakInfo = document.getElementById('win-streak-info');
-          streakInfo.textContent = '🔥 ' + state.streak + ' day streak!';
           if (badge) {
             document.getElementById('win-badge').textContent = badge.emoji + ' ' + badge.label;
             document.getElementById('win-badge').style.display = 'block';
@@ -658,12 +671,38 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       return canvas.toDataURL('image/png');
     }
 
+    // ── 分享统计（P0：对齐 dailyakari 的信息密度）──
+    const CLOCK_FACES = ['🕛','🕐','🕑','🕒','🕓','🕔','🕕','🕖','🕗','🕘','🕙','🕚'];
+    function clockEmoji(sec) {
+      const h = Math.min(11, Math.max(0, Math.round((sec || 0) / 3600 * 12)));
+      return CLOCK_FACES[h];
+    }
+    function mistakeToken() {
+      if (mistakes === 0 && hintsUsed === 0) return '✨ Perfect';
+      if (mistakes === 0) return '✅ 0 mistakes';
+      return '⚠ ' + mistakes + ' mistake' + (mistakes > 1 ? 's' : '');
+    }
+    function buildShareText(withLink) {
+      const st = loadState();
+      const streak = st ? st.streak : 1;
+      const badge = getBadge(streak);
+      const badgeText = badge ? ' ' + badge.emoji + ' ' + badge.label : '';
+      const size = currentPuzzle ? currentPuzzle.size : 10;
+      const dateStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+      let text = 'GridPaw Daily Akari · ' + dateStr + ' ' + size + '×' + size + '\n'
+        + clockEmoji(elapsedTime) + ' ' + timerEl.textContent + ' · 💡 ' + hintsUsed + (hintsUsed === 1 ? ' hint' : ' hints') + ' · ' + mistakeToken() + '\n'
+        + '🔥 ' + streak + ' day streak' + badgeText;
+      if (withLink) text += '\n\nPlay free at gridpaw.com';
+      return text;
+    }
+
     document.getElementById('start-btn').addEventListener('click', () => { track('daily_start'); startDailyChallenge(); });
     document.getElementById('hint-btn').addEventListener('click', () => {
       if (!currentPuzzle || won) return;
       track('hint_click');
       const h = getHint(currentPuzzle.grid, currentPuzzle.solution, playerSolution, currentPuzzle.size);
       if (h) {
+        hintsUsed++;
         const cell = gridEl.querySelector('[data-row="'+h[0]+'"][data-col="'+h[1]+'"]');
         if (cell) { cell.classList.add('cell-hint'); setTimeout(()=>cell.classList.remove('cell-hint'),2000); }
         showToast('Hint: try row '+(h[0]+1)+', col '+(h[1]+1),'success');
@@ -686,6 +725,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
     });
     document.getElementById('share-reddit').addEventListener('click', async () => {
       track('share_reddit', { board: 'daily' });
+      const withLink = document.getElementById('share-include-link').checked;
       // 棋盘截图到剪贴板（Reddit 发帖时可直接粘贴）
       try {
         if (typeof html2canvas !== 'undefined') {
@@ -695,32 +735,22 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
           }, 'image/png');
         }
       } catch(e) {}
-      const state = loadState();
-      const streak = state ? state.streak : 1;
-      const badge = getBadge(streak);
-      const badgeText = badge ? ' ' + badge.emoji + badge.label : '';
-      const text = encodeURIComponent('Cleared the GridPaw Daily Akari (10×10)! ⏱ ' + timerEl.textContent + ' 🔥 ' + streak + ' day streak' + badgeText + ' — your turn → gridpaw.com');
+      const text = encodeURIComponent('Cleared the GridPaw Daily Akari!\n' + buildShareText(withLink));
       window.open('https://www.reddit.com/r/gridpaw/submit?url=' + encodeURIComponent('https://gridpaw.com/daily/') + '&title=' + text, '_blank');
     });
     document.getElementById('win-close').addEventListener('click', () => {
       winOverlay.classList.remove('show');
     });
     document.getElementById('share-copy').addEventListener('click', () => {
-      const state = loadState();
-      const streak = state ? state.streak : 1;
-      track('share_copy', { mode: 'daily', streak: streak, board: currentPuzzle ? currentPuzzle.size : 0 });
-      const badge = getBadge(streak);
-      const badgeText = badge ? ' ' + badge.emoji + ' ' + badge.label : '';
-      const text = 'GridPaw Daily Akari\n⏱️ ' + timerEl.textContent + '\n🔥 ' + streak + ' day streak' + badgeText + '\n\nPlay free at gridpaw.com';
+      const withLink = document.getElementById('share-include-link').checked;
+      track('share_copy', { mode: 'daily', streak: (loadState() || { streak: 1 }).streak, board: currentPuzzle ? currentPuzzle.size : 0 });
+      const text = buildShareText(withLink);
       navigator.clipboard.writeText(text).then(() => showToast('📋 Copied to clipboard!', 'success'));
     });
     document.getElementById('share-twitter').addEventListener('click', () => {
-      const state = loadState();
-      const streak = state ? state.streak : 1;
-      track('share_twitter', { mode: 'daily', streak: streak, board: currentPuzzle ? currentPuzzle.size : 0 });
-      const badge = getBadge(streak);
-      const badgeText = badge ? ' ' + badge.emoji + ' ' + badge.label : '';
-      const text = encodeURIComponent('Just completed the GridPaw Daily Akari!\n⏱️ ' + timerEl.textContent + '\n🔥 ' + streak + ' day streak' + badgeText + '\n\nPlay free at gridpaw.com');
+      const withLink = document.getElementById('share-include-link').checked;
+      track('share_twitter', { mode: 'daily', streak: (loadState() || { streak: 1 }).streak, board: currentPuzzle ? currentPuzzle.size : 0 });
+      const text = encodeURIComponent('Just completed the GridPaw Daily Akari!\n' + buildShareText(withLink));
       window.open('https://twitter.com/intent/tweet?text=' + text, '_blank');
     });
 
