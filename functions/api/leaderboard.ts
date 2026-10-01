@@ -68,7 +68,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   } else {
     sql = `SELECT u.name, r.time_ms, r.solved_at
        FROM daily_results r JOIN users u ON u.id = r.user_id
-       WHERE r.puzzle_date = ?2
+       WHERE r.puzzle_date = ?1
        ORDER BY r.time_ms ASC LIMIT 20`;
     bind = [date];
   }
