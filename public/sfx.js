@@ -63,6 +63,8 @@ const SFX = (function() {
   return {
     get muted() { return muted; },
     
+    setMuted: function(m) { muted = !!m; },
+    
     toggle: function() {
       muted = !muted;
       if (!muted) {

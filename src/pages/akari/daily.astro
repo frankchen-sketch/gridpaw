@@ -93,6 +93,23 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
     .share-btn{padding:.5rem 1rem;border:none;border-radius:10px;cursor:pointer;font-size:.85rem;font-weight:600;font-family:inherit;transition:transform .1s}
     .share-btn:active{transform:scale(.95)}
     .share-link-opt{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;color:var(--gp-brown-600);margin:2px 0 10px;user-select:none}
+    .settings-overlay{position:fixed;inset:0;background:rgba(107,74,43,.35);display:flex;align-items:center;justify-content:center;z-index:1200;opacity:0;pointer-events:none;transition:opacity .25s}
+    .settings-overlay.show{opacity:1;pointer-events:auto}
+    .settings-card{width:340px;max-width:92vw;max-height:86vh;overflow-y:auto;background:var(--gp-cream);border:1px solid var(--gp-linen);border-radius:14px;padding:18px 16px 14px;box-shadow:0 10px 30px rgba(107,74,43,.18),0 2px 8px rgba(107,74,43,.08);transform:translateY(8px);transition:transform .25s}
+    .settings-overlay.show .settings-card{transform:translateY(0)}
+    .settings-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}
+    .settings-title{font-size:16px;font-weight:800;color:var(--gp-brown-900)}
+    .settings-reset{font-size:12px;color:var(--gp-brown-600);background:var(--gp-parchment);border:1px solid var(--gp-linen);border-radius:999px;padding:5px 11px;cursor:pointer}
+    .settings-row{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--gp-linen);border-radius:10px;padding:10px 13px;margin-bottom:9px;min-height:54px;cursor:pointer}
+    .settings-lab{font-size:13.5px;font-weight:600;color:var(--gp-brown-900)}
+    .settings-lab small{display:block;font-size:11px;color:var(--gp-brown-600);font-weight:400;margin-top:2px}
+    .settings-tgl{width:42px;height:24px;border-radius:12px;background:#E5D5BC;position:relative;flex-shrink:0;transition:background .2s}
+    .settings-tgl.on{background:var(--gp-primary)}
+    .settings-tgl::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;box-shadow:0 1px 3px rgba(107,74,43,.3);transition:left .2s}
+    .settings-tgl.on::after{left:21px}
+    .settings-sel{min-width:118px;height:38px;background:var(--gp-parchment);border:1px solid var(--gp-linen);border-radius:8px;font-size:12.5px;color:var(--gp-brown-900);padding:0 11px;cursor:pointer}
+    .settings-ok{width:100%;height:42px;background:var(--gp-primary);color:#fff;font-weight:700;border-radius:10px;border:none;font-size:14.5px;margin-top:3px;cursor:pointer}
+    .settings-ok:active{transform:scale(.98)}
     .share-link-opt input{accent-color:var(--gp-primary);cursor:pointer}
     .share-copy{background:var(--gp-cream-warm);color:var(--gp-brown-900)}.share-copy:hover{background:var(--gp-linen)}
     .share-twitter{background:var(--gp-info);color:#fff}.share-twitter:hover{background:var(--gp-info)}
@@ -183,7 +200,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       <button class="btn btn-primary" id="start-btn">▶ Start Challenge</button>
       <button class="btn btn-secondary" id="hint-btn">💡 Hint</button>
       <button class="btn btn-secondary" id="reset-btn">↺ Reset</button>
-      <button class="btn btn-secondary" id="sound-btn">🔊 Sound</button>
+      <button class="btn btn-secondary" id="settings-btn">⚙ Settings</button>
     </div>
     <div class="game-status">
       <div class="health-display" id="health-display">
@@ -237,6 +254,20 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       <h3>🏆 Today's Leaderboard</h3>
       <p style="font-size:.8rem;color:var(--gp-brown-600);margin:.2rem 0 1rem">Sign in and solve today's challenge to appear here!</p>
       <div id="leaderboard-list" style="text-align:left;max-width:420px;margin:0 auto"></div>
+    </div>
+
+    <div class="settings-overlay" id="settings-overlay">
+      <div class="settings-card">
+        <div class="settings-head">
+          <div class="settings-title">⚙ Settings</div>
+          <button class="settings-reset" id="settings-reset">Restore defaults</button>
+        </div>
+        <div class="settings-row" data-k="sound"><div class="settings-lab">Sound<small>Place / error / win effects</small></div><div class="settings-tgl" id="tgl-sound"></div></div>
+        <div class="settings-row" data-k="wheels"><div class="settings-lab">Training wheels<small>Highlight the most recent bulb</small></div><div class="settings-tgl" id="tgl-wheels"></div></div>
+        <div class="settings-row" data-k="hidex"><div class="settings-lab">Hide ✗ on lit cells<small>Auto-fade marks on solved lights</small></div><div class="settings-tgl" id="tgl-hidex"></div></div>
+        <div class="settings-row"><div class="settings-lab">Include link in share<small>Default for the win-popup checkbox</small></div><select class="settings-sel" id="sel-share"><option value="on">On</option><option value="ask">Ask each time</option><option value="off">Off</option></select></div>
+        <button class="settings-ok" id="settings-ok">Done</button>
+      </div>
     </div>
 
     <section class="seo-content" style="margin-top:2rem;padding-top:1.5rem;border-top:2px solid var(--gp-linen);max-width:720px;margin-left:auto;margin-right:auto">
@@ -522,13 +553,13 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
         } else {
           if (playerSolution[r][c]) { 
             cell.classList.add('cell-cat');
-            if (lastPlacedCell && lastPlacedCell.r === r && lastPlacedCell.c === c) {
+            if (lastPlacedCell && lastPlacedCell.r === r && lastPlacedCell.c === c && akSettings().wheels) {
               cell.classList.add('cell-cat-new');
             }
             cell.innerHTML = CAT_IMG; 
             if(cp[key]) cell.classList.add('cell-shake'); 
           }
-          else if (markX[r][c]) { cell.classList.add('cell-x'); cell.innerHTML = X_MARK; }
+          else if (markX[r][c] && (!lit[r][c] || !akSettings().hideX)) { cell.classList.add('cell-x'); cell.innerHTML = X_MARK; }
           else if (lit[r][c]) { cell.classList.add('cell-lit'); }
           else { cell.classList.add('cell-dark'); }
           cell.addEventListener('click', e => { e.preventDefault(); if(!won) handleClick(r,c); });
@@ -595,6 +626,8 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
           document.getElementById('final-time').textContent = timerEl.textContent;
           document.getElementById('win-hints').textContent = '💡 ' + hintsUsed;
           document.getElementById('win-mistakes').textContent = mistakes === 0 ? '✅ 0' : '⚠ ' + mistakes;
+          const shareChk = document.getElementById('share-include-link');
+          if (shareChk) shareChk.checked = shareDefaultOn();
           const badge = getBadge(state.streak);
           if (badge) {
             document.getElementById('win-badge').textContent = badge.emoji + ' ' + badge.label;
@@ -721,10 +754,53 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       } else showToast('No hints!','error');
     });
     document.getElementById('reset-btn').addEventListener('click', resetPuzzle);
-    document.getElementById('sound-btn').addEventListener('click', () => {
-      const muted = SFX.toggle();
-      document.getElementById('sound-btn').textContent = muted ? '🔇 Sound' : '🔊 Sound';
+    // ── 设置面板（localStorage 持久化）──
+    const AK_SET_KEY = 'gp_akari_settings';
+    function akSettings() {
+      const d = { sound: true, wheels: false, hideX: true, share: 'ask' };
+      try { return Object.assign(d, JSON.parse(localStorage.getItem(AK_SET_KEY) || '{}')); } catch (e) { return d; }
+    }
+    function akSaveSettings(s) { try { localStorage.setItem(AK_SET_KEY, JSON.stringify(s)); } catch (e) {} }
+    function shareDefaultOn() {
+      const s = akSettings();
+      if (s.share === 'on') return true;
+      if (s.share === 'off') return false;
+      try { return localStorage.getItem('gp_akari_share_last') !== '0'; } catch (e) { return true; }  // ask each time：取上次选择
+    }
+    if (typeof SFX !== 'undefined') SFX.setMuted(!akSettings().sound);
+    const settingsOverlay = document.getElementById('settings-overlay');
+    document.getElementById('settings-btn').addEventListener('click', () => {
+      const s = akSettings();
+      document.getElementById('tgl-sound').classList.toggle('on', s.sound);
+      document.getElementById('tgl-wheels').classList.toggle('on', s.wheels);
+      document.getElementById('tgl-hidex').classList.toggle('on', s.hideX);
+      document.getElementById('sel-share').value = s.share;
+      settingsOverlay.classList.add('show');
     });
+    document.querySelectorAll('#settings-overlay .settings-row[data-k]').forEach(row => {
+      row.addEventListener('click', () => { row.querySelector('.settings-tgl').classList.toggle('on'); });
+    });
+    document.getElementById('settings-reset').addEventListener('click', () => {
+      document.getElementById('tgl-sound').classList.add('on');
+      document.getElementById('tgl-wheels').classList.remove('on');
+      document.getElementById('tgl-hidex').classList.add('on');
+      document.getElementById('sel-share').value = 'ask';
+    });
+    document.getElementById('settings-ok').addEventListener('click', () => {
+      const s = {
+        sound: document.getElementById('tgl-sound').classList.contains('on'),
+        wheels: document.getElementById('tgl-wheels').classList.contains('on'),
+        hideX: document.getElementById('tgl-hidex').classList.contains('on'),
+        share: document.getElementById('sel-share').value
+      };
+      akSaveSettings(s);
+      if (typeof SFX !== 'undefined') SFX.setMuted(!s.sound);
+      settingsOverlay.classList.remove('show');
+      if (currentPuzzle && !won) renderBoard();
+    });
+    settingsOverlay.addEventListener('click', e => { if (e.target === settingsOverlay) settingsOverlay.classList.remove('show'); });
+    const shareChkEl = document.getElementById('share-include-link');
+    if (shareChkEl) shareChkEl.addEventListener('change', () => { try { localStorage.setItem('gp_akari_share_last', shareChkEl.checked ? '1' : '0'); } catch (e) {} });
     // Download Share Card（弹窗外的隐藏功能，保留给需要图片的用户）
     const scb = document.getElementById('share-card-btn');
     if (scb) scb.addEventListener('click', () => {
