@@ -85,6 +85,15 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env, params })
   }
 
   const sessionVal = await makeSessionValue(env.OAUTH_STATE_SECRET, uid);
+  // P0-1b 首登/再登绑定：把该浏览器 guest cookie 名下的历史行为数据归到 user（幂等，
+  // 无行也不报错）。此后 GA4/D1 分析可见真人全周期漏斗。
+  const gid = getCookie(request, 'gp_gid');
+  if (gid) {
+    await db
+      .prepare(`UPDATE gp_event SET user_id = ?1 WHERE guest_id = ?2 AND (user_id IS NULL OR user_id = '')`)
+      .bind(uid, gid)
+      .run();
+  }
   const headers = new Headers({ Location: next, 'cache-control': 'no-store' });
   headers.append('Set-Cookie', sessionCookie(sessionVal));
   // 清掉一次性 state cookie
