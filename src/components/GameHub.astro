@@ -68,7 +68,7 @@ const tiles = games.filter((g) => g.href !== active);
       while (t && t !== document) {
         if (t.classList && t.classList.contains('gp-hub-tile')) {
           var target = t.getAttribute('href');
-          if (typeof window.gtag === 'function') window.gtag('event', 'game_nav_click', { target: target, from: location.pathname });
+          if (typeof window.gtag === 'function') window.gtag('event', 'game_nav_click', { target: target, from: location.pathname, source: 'hub' });
           if (typeof window.clarity === 'function') window.clarity('event', 'game_nav_click');
           return;
         }
