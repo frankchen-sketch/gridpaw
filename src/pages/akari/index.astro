@@ -387,6 +387,23 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     .share-reddit:hover { background: var(--gp-primary-dark); }
     .share-link-opt { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12.5px; color: var(--gp-brown-600); margin: 4px 0 2px; user-select: none; }
     .share-link-opt input { accent-color: var(--gp-primary-strong); cursor: pointer; }
+    .settings-overlay { position: fixed; inset: 0; background: rgba(107,74,43,0.35); display: flex; align-items: center; justify-content: center; z-index: 1200; opacity: 0; pointer-events: none; transition: opacity .25s; }
+    .settings-overlay.show { opacity: 1; pointer-events: auto; }
+    .settings-card { width: 340px; max-width: 92vw; max-height: 86vh; overflow-y: auto; background: var(--gp-cream); border: 1px solid var(--gp-linen); border-radius: 14px; padding: 18px 16px 14px; box-shadow: 0 10px 30px rgba(107,74,43,0.18), 0 2px 8px rgba(107,74,43,0.08); transform: translateY(8px); transition: transform .25s; }
+    .settings-overlay.show .settings-card { transform: translateY(0); }
+    .settings-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 13px; }
+    .settings-title { font-size: 16px; font-weight: 800; color: var(--gp-brown-900); }
+    .settings-reset { font-size: 12px; color: var(--gp-brown-600); background: var(--gp-parchment); border: 1px solid var(--gp-linen); border-radius: 999px; padding: 5px 11px; cursor: pointer; }
+    .settings-row { display: flex; justify-content: space-between; align-items: center; background: #fff; border: 1px solid var(--gp-linen); border-radius: 10px; padding: 10px 13px; margin-bottom: 9px; min-height: 54px; cursor: pointer; }
+    .settings-lab { font-size: 13.5px; font-weight: 600; color: var(--gp-brown-900); }
+    .settings-lab small { display: block; font-size: 11px; color: var(--gp-brown-600); font-weight: 400; margin-top: 2px; }
+    .settings-tgl { width: 42px; height: 24px; border-radius: 12px; background: #E5D5BC; position: relative; flex-shrink: 0; transition: background .2s; }
+    .settings-tgl.on { background: var(--gp-primary); }
+    .settings-tgl::after { content: ''; position: absolute; width: 18px; height: 18px; border-radius: 50%; background: #fff; top: 3px; left: 3px; box-shadow: 0 1px 3px rgba(107,74,43,0.3); transition: left .2s; }
+    .settings-tgl.on::after { left: 21px; }
+    .settings-sel { min-width: 118px; height: 38px; background: var(--gp-parchment); border: 1px solid var(--gp-linen); border-radius: 8px; font-size: 12.5px; color: var(--gp-brown-900); padding: 0 11px; cursor: pointer; }
+    .settings-ok { width: 100%; height: 42px; background: var(--gp-primary); color: #fff; font-weight: 700; border-radius: 10px; border: none; font-size: 14.5px; margin-top: 3px; cursor: pointer; }
+    .settings-ok:active { transform: scale(.98); }
     .confetti { position: absolute; width: 12px; height: 12px; border-radius: 3px; animation: confetti-fall linear forwards; }
     @keyframes confetti-fall { 0% { transform: translateY(-100vh) rotate(0); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
     .paw-confetti { position: absolute; font-size: 24px; animation: paw-fall linear forwards; }
@@ -617,7 +634,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
             <button class="icon-btn" id="undo-btn" aria-label="Undo"><span>↩️</span><span class="tip">Undo (Ctrl+Z)</span></button>
             <button class="icon-btn" id="redo-btn" aria-label="Redo"><span>↪️</span><span class="tip">Redo (Ctrl+Y)</span></button>
             <button class="icon-btn" id="reset-btn" aria-label="Restart"><span>🗑️</span><span class="tip">Restart</span></button>
-            <button class="icon-btn" id="sound-btn" aria-label="Sound"><span>🔇</span><span class="tip">Sound</span></button>
+            <button class="icon-btn" id="settings-btn" aria-label="Settings"><span>⚙️</span><span class="tip">Settings</span></button>
             <a href="/akari/daily/" id="daily-btn" class="icon-btn" aria-label="Daily Challenge" style="text-decoration:none;background:linear-gradient(145deg,var(--gp-primary-soft),var(--gp-primary-strong));color:#fff;border-color:var(--gp-primary-strong)"><span>🔥</span><span class="tip">Daily</span></a>
           </div>
         </div>
@@ -628,6 +645,21 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       </section>
 
       <div class="toast" id="toast"></div>
+
+      <!-- Settings Overlay -->
+      <div class="settings-overlay" id="settings-overlay">
+        <div class="settings-card">
+          <div class="settings-head">
+            <div class="settings-title">⚙ Settings</div>
+            <button class="settings-reset" id="settings-reset">Restore defaults</button>
+          </div>
+          <div class="settings-row" data-k="sound"><div class="settings-lab">Sound<small>Place / error / win effects</small></div><div class="settings-tgl" id="tgl-sound"></div></div>
+          <div class="settings-row" data-k="wheels"><div class="settings-lab">Training wheels<small>Highlight the most recent bulb</small></div><div class="settings-tgl" id="tgl-wheels"></div></div>
+          <div class="settings-row" data-k="hidex"><div class="settings-lab">Hide ✗ on lit cells<small>Auto-fade marks on solved lights</small></div><div class="settings-tgl" id="tgl-hidex"></div></div>
+          <div class="settings-row"><div class="settings-lab">Include link in share<small>Default for the win-popup checkbox</small></div><select class="settings-sel" id="sel-share"><option value="on">On</option><option value="ask">Ask each time</option><option value="off">Off</option></select></div>
+          <button class="settings-ok" id="settings-ok">Done</button>
+        </div>
+      </div>
 
       <!-- Win Overlay -->
       <div class="win-overlay" id="win-overlay">
@@ -1362,11 +1394,11 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
         } else {
           if (playerSolution[r][c]) {
             cell.classList.add('cell-cat');
-            if (lastPlacedCell && lastPlacedCell.r === r && lastPlacedCell.c === c) cell.classList.add('cell-cat-new');
+            if (lastPlacedCell && lastPlacedCell.r === r && lastPlacedCell.c === c && akSettings().wheels) cell.classList.add('cell-cat-new');
             cell.innerHTML = CAT_IMG;
             if(cp[key]) cell.classList.add('cell-shake');
           }
-          else if (markX[r][c]) { cell.classList.add('cell-x'); cell.innerHTML = X_MARK; }
+          else if (markX[r][c] && (!lit[r][c] || !akSettings().hideX)) { cell.classList.add('cell-x'); cell.innerHTML = X_MARK; }
           else if (lit[r][c]) { cell.classList.add('cell-lit'); }
           else { cell.classList.add('cell-dark'); }
           cell.addEventListener('click', e => { e.preventDefault(); if(!won) handleClick(r,c); });
@@ -1404,6 +1436,8 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
         const isNewRecord = checkBestTime();
         SFX.win(); spawnConfetti();
         setTimeout(()=>{ winOverlay.classList.add('show');
+          const shareChk = document.getElementById('share-include-link');
+          if (shareChk) shareChk.checked = shareDefaultOn();
           document.getElementById('winGameLevel').textContent = 'GridPaw Akari · Level ' + level;
           if (isNewRecord) {
             document.querySelector('.win-sub').textContent = '🏆 New Best Time: ' + formatTime(timerSeconds) + '!';
@@ -1474,10 +1508,53 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     document.getElementById('rules-close').addEventListener('click', closeRules);
     rulesOverlay.addEventListener('click', (e) => { if (e.target === rulesOverlay) closeRules(); });
     document.getElementById('new-btn').addEventListener('click', newPuzzle);
-    document.getElementById('sound-btn').addEventListener('click', () => {
-      const muted = SFX.toggle();
-      document.getElementById('sound-btn').textContent = muted ? '🔇' : '🔊';
+    // ── 设置面板（localStorage 持久化，与 daily.astro 副本对齐）──
+    const AK_SET_KEY = 'gp_akari_settings';
+    function akSettings() {
+      const d = { sound: true, wheels: false, hideX: true, share: 'ask' };
+      try { return Object.assign(d, JSON.parse(localStorage.getItem(AK_SET_KEY) || '{}')); } catch (e) { return d; }
+    }
+    function akSaveSettings(s) { try { localStorage.setItem(AK_SET_KEY, JSON.stringify(s)); } catch (e) {} }
+    function shareDefaultOn() {
+      const s = akSettings();
+      if (s.share === 'on') return true;
+      if (s.share === 'off') return false;
+      try { return localStorage.getItem('gp_akari_share_last') !== '0'; } catch (e) { return true; }  // ask each time：取上次选择
+    }
+    if (typeof SFX !== 'undefined') SFX.setMuted(!akSettings().sound);
+    const settingsOverlay = document.getElementById('settings-overlay');
+    document.getElementById('settings-btn').addEventListener('click', () => {
+      const s = akSettings();
+      document.getElementById('tgl-sound').classList.toggle('on', s.sound);
+      document.getElementById('tgl-wheels').classList.toggle('on', s.wheels);
+      document.getElementById('tgl-hidex').classList.toggle('on', s.hideX);
+      document.getElementById('sel-share').value = s.share;
+      settingsOverlay.classList.add('show');
     });
+    document.querySelectorAll('#settings-overlay .settings-row[data-k]').forEach(row => {
+      row.addEventListener('click', () => { row.querySelector('.settings-tgl').classList.toggle('on'); });
+    });
+    document.getElementById('settings-reset').addEventListener('click', () => {
+      document.getElementById('tgl-sound').classList.add('on');
+      document.getElementById('tgl-wheels').classList.remove('on');
+      document.getElementById('tgl-hidex').classList.add('on');
+      document.getElementById('sel-share').value = 'ask';
+    });
+    document.getElementById('settings-ok').addEventListener('click', () => {
+      const s = {
+        sound: document.getElementById('tgl-sound').classList.contains('on'),
+        wheels: document.getElementById('tgl-wheels').classList.contains('on'),
+        hideX: document.getElementById('tgl-hidex').classList.contains('on'),
+        share: document.getElementById('sel-share').value
+      };
+      akSaveSettings(s);
+      if (typeof SFX !== 'undefined') SFX.setMuted(!s.sound);
+      settingsOverlay.classList.remove('show');
+      if (currentPuzzle && !won) renderBoard();
+    });
+    settingsOverlay.addEventListener('click', e => { if (e.target === settingsOverlay) settingsOverlay.classList.remove('show'); });
+    const shareChkEl = document.getElementById('share-include-link');
+    if (shareChkEl) shareChkEl.addEventListener('change', () => { try { localStorage.setItem('gp_akari_share_last', shareChkEl.checked ? '1' : '0'); } catch (e) {} });
     document.getElementById('undo-btn').addEventListener('click', undo);
     document.getElementById('redo-btn').addEventListener('click', redo);
     document.addEventListener('keydown', e => {
