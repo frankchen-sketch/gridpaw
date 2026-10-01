@@ -517,6 +517,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+  <script is:inline src="/leaderboard.js"></script>
 </head>
 <body>
 
@@ -634,6 +635,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
           <button class="share-btn share-twitter" id="share-twitter">𝕏 Share</button>
           <button class="share-btn share-reddit" id="share-reddit">👽 Reddit</button>
         </div>
+        <div class="gp-lb-panel" id="gp-lb-win" style="margin-top:14px;min-width:280px;max-width:340px;text-align:left;background:rgba(255,255,255,.92);border:1.5px solid #e7d4b8;border-radius:14px;padding:12px 16px"></div>
       </div>
 
       <!-- Rules Overlay（徽章 / how-to-play 徽标触发；不改棋盘，不滚页） -->
@@ -858,7 +860,23 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       </section>
 
       <!-- ═══════════ FAQ ═══════════ -->
-      <section class="section" aria-label="Frequently asked questions">
+      <!-- ═══════════ Leaderboard ═══════════ -->
+    <section class="section" id="leaderboard" aria-label="Akari leaderboard">
+      <h2 class="section-title">🏆 Daily <span class="accent">Leaderboard</span></h2>
+      <div class="gp-lb-panel" style="background:#fff8ef;border:1.5px solid #e7d4b8;border-radius:16px;padding:18px 22px;max-width:460px" id="gp-lb-page"></div>
+      <script is:inline>
+        (function () {
+          function init() {
+            if (window.GPLeaderboard && document.getElementById('gp-lb-page')) {
+              GPLeaderboard.mount('akari', document.getElementById('gp-lb-page'));
+            } else setTimeout(init, 300);
+          }
+          init();
+        })();
+      </script>
+    </section>
+
+    <section class="section" aria-label="Frequently asked questions">
         <h2 class="section-title">Frequently Asked <span class="accent">Questions</span></h2>
 
         <details class="faq-item">
@@ -1362,7 +1380,14 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
           if (isNewRecord) {
             document.querySelector('.win-sub').textContent = '🏆 New Best Time: ' + formatTime(timerSeconds) + '!';
           }
-          setTimeout(() => { if (won) { winOverlay.classList.remove('show'); newPuzzle(); } }, 3000);
+          // leaderboard：上报成绩 + 胜利面板当日榜（未登录静默跳过）
+          if (window.GPLeaderboard) {
+            GPLeaderboard.submit('akari', timerSeconds * 1000).then(function () {
+              return GPLeaderboard.mount('akari', document.getElementById('gp-lb-win'));
+            });
+          }
+          // 3s 自动关 → 10s：给 leaderboard 面板渲染+阅读时间；点 Next 仍立即走
+          setTimeout(() => { if (won) { winOverlay.classList.remove('show'); newPuzzle(); } }, 10000);
         },300);
       }
     }
