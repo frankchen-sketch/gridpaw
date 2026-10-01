@@ -1,0 +1,52 @@
+---
+// GamePortal — Poki-style display entry grid, homepage first screen (plan B:
+// portal cards on top, Shikaku playable stays below unchanged).
+// Icons: /assets/game-icons/*.webp (shared with GameHub).
+const games = [
+  { href: '/#play', icon: '/assets/game-icons/shikaku.webp', name: 'Shikaku', desc: 'Rectangle partition' },
+  { href: '/akari/', icon: '/assets/game-icons/akari.webp', name: 'Akari', desc: 'Light Up' },
+  { href: '/kakuro/', icon: '/assets/game-icons/kakuro.webp', name: 'Kakuro', desc: 'Cross Sums' },
+  { href: '/nonogram/', icon: '/assets/game-icons/nonogram.webp', name: 'Nonogram', desc: 'Picture logic' },
+  { href: '/nurikabe/', icon: '/assets/game-icons/nurikabe.webp', name: 'Nurikabe', desc: 'Islands & sea' },
+  { href: '/pictomino/', icon: '/assets/game-icons/pictomino.webp', name: 'Pictomino', desc: 'Spatial dominoes' },
+];
+---
+<div class="gp-portal" aria-label="All cat puzzle games" data-gp-portal>
+  <div class="gp-portal-title"><strong>GridPaw</strong> · Cat Logic Puzzle Games</div>
+  <div class="gp-portal-grid">
+    {games.map(g => (
+      <a href={g.href} class="gp-portal-card">
+        <img src={g.icon} alt={g.name} width="64" height="64" loading="eager" />
+        <b>{g.name}</b>
+        <span>{g.desc}</span>
+        <span class="gp-portal-play">▶ Play</span>
+      </a>
+    ))}
+  </div>
+</div>
+<style is:global>
+  .gp-portal { max-width: 720px; margin: 0.6rem auto 0; padding: 0 1rem; }
+  .gp-portal-title { text-align: center; font-size: 1.05rem; color: #3f2d1d; margin: 0.5rem 0 0.6rem; }
+  .gp-portal-title strong { font-weight: 900; }
+  .gp-portal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .gp-portal-card { display: flex; flex-direction: column; align-items: center; text-align: center; background: #fff; border: 1.5px solid #e7d4b8; border-radius: 14px; padding: 12px 10px 10px; text-decoration: none; color: #3f2d1d; transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; }
+  .gp-portal-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(74,59,50,.15); border-color: #d97706; }
+  .gp-portal-card img { width: 64px; height: 64px; border-radius: 14px; }
+  .gp-portal-card b { font-size: 0.8rem; margin-top: 6px; }
+  .gp-portal-card > span { font-size: 0.62rem; color: #a08a70; margin-top: 2px; line-height: 1.3; }
+  .gp-portal-play { display: inline-block; margin-top: 6px; font-size: 0.6rem; font-weight: 800; color: #fff; background: #d97706; border-radius: 99px; padding: 3px 10px; }
+  @media (max-width: 560px) { .gp-portal-grid { grid-template-columns: repeat(2, 1fr); } }
+</style>
+<script is:inline>
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    while (t && t !== document) {
+      if (t.classList && t.classList.contains('gp-portal-card')) {
+        var target = t.getAttribute('href');
+        if (typeof window.gtag === 'function') window.gtag('event', 'game_nav_click', { target: target, from: 'portal' });
+        break;
+      }
+      t = t.parentNode;
+    }
+  }, true);
+</script>
