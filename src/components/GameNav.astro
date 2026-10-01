@@ -62,3 +62,20 @@ const games = [
   .gp-switcher-menu a.gp-menu-help:hover { background: #fdeed3; }
   .gp-game-desc { font-size: .78rem; color: #8a6f55; }
 </style>
+<script is:inline>
+  (function () {
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      while (t && t !== document) {
+        if (t.matches && t.matches('.gp-switcher-menu a')) {
+          var target = t.getAttribute('href');
+          if (typeof window.gtag === 'function') window.gtag('event', 'game_nav_click', { target: target, from: 'dropdown', page: location.pathname });
+          if (typeof window.clarity === 'function') window.clarity('event', 'game_nav_click');
+          return;
+        }
+        if (t.classList && t.classList.contains('gp-switcher')) return;
+        t = t.parentNode;
+      }
+    }, true);
+  })();
+</script>
