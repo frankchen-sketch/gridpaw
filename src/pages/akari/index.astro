@@ -379,6 +379,8 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     .share-twitter:hover { background: var(--gp-info); }
     .share-reddit { background: #FF4500; color: #fff; }
     .share-reddit:hover { background: var(--gp-primary-dark); }
+    .share-link-opt { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12.5px; color: var(--gp-brown-600); margin: 4px 0 2px; user-select: none; }
+    .share-link-opt input { accent-color: var(--gp-primary-strong); cursor: pointer; }
     .confetti { position: absolute; width: 12px; height: 12px; border-radius: 3px; animation: confetti-fall linear forwards; }
     @keyframes confetti-fall { 0% { transform: translateY(-100vh) rotate(0); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
     .paw-confetti { position: absolute; font-size: 24px; animation: paw-fall linear forwards; }
@@ -630,7 +632,8 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
         <div class="win-sub" id="winGameLevel" style="font-weight:800;color:var(--mt-primary)">GridPaw Akari</div>
         <div class="win-sub">All cells lit, all constraints satisfied!</div>
         <button class="win-btn" id="win-next">Next Puzzle →</button>
-        <div class="win-share-row">
+        <div class="share-link-opt"><input type="checkbox" id="share-include-link" checked> Include link (gridpaw.com)</div>
+      <div class="win-share-row">
           <button class="share-btn share-copy" id="share-copy">📋 Copy Result</button>
           <button class="share-btn share-twitter" id="share-twitter">𝕏 Share</button>
           <button class="share-btn share-reddit" id="share-reddit">👽 Reddit</button>
@@ -1080,6 +1083,17 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     let currentPuzzle = null, playerSolution = null, markX = null, won = false;
     let health = 3, level = 0;
     let consecErrors = 0;          // 卡关引导：连续违规落子计数（合规落子清零，换关清零）
+    let hintsUsed = 0, mistakes = 0;   // 分享统计维度（本局计数，换关/重开清零）
+    const CLOCK_FACES = ['🕛','🕐','🕑','🕒','🕓','🕔','🕕','🕖','🕗','🕘','🕙','🕚'];
+    function clockEmoji(sec) {
+      const h = Math.min(11, Math.max(0, Math.round((sec || 0) / 3600 * 12)));
+      return CLOCK_FACES[h];
+    }
+    function mistakeToken() {
+      if (mistakes === 0 && hintsUsed === 0) return '✨ Perfect';
+      if (mistakes === 0) return '✅ 0 mistakes';
+      return '⚠ ' + mistakes + ' mistake' + (mistakes > 1 ? 's' : '');
+    }
     let nudgeShownThisLevel = false; // 每关只抖一次
     let lastPlacedCell = null;
     let gameStartTime = null;
@@ -1251,6 +1265,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     function newPuzzleSkip() {
       won = false; winOverlay.classList.remove('show'); health = 3; updateHealth();
       consecErrors = 0; nudgeShownThisLevel = false;
+      hintsUsed = 0; mistakes = 0;
       const hbR1 = document.getElementById('hint-btn'); if (hbR1) hbR1.classList.remove('hint-nudge');
       historyStack = []; redoStack = [];
       startTimer(); showBestTime();
@@ -1303,6 +1318,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       markX = Array.from({length:s}, () => Array(s).fill(false));
       health = 3; updateHealth(); startTimer();
       consecErrors = 0; nudgeShownThisLevel = false;
+      hintsUsed = 0; mistakes = 0;
       const hbR2 = document.getElementById('hint-btn'); if (hbR2) hbR2.classList.remove('hint-nudge');
       renderBoard(); updateProgress(); showToast('Board reset!', 'success'); autoSave();
     }
@@ -1366,7 +1382,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
         let hasViolation = false;
         for (const x of v) { if(x.type==='number_excess'){ showToast('Too many cats around number '+x.number+'!','error'); hasViolation=true; break; } }
         for (const x of v) { if(x.type==='cat_conflict'){ showToast('Two cats are facing each other!','error'); hasViolation=true; break; } }
-        if (hasViolation) { SFX.error(); loseHealth(); consecErrors++; if (consecErrors >= 2 && !nudgeShownThisLevel) { nudgeShownThisLevel = true; const hbN = document.getElementById('hint-btn'); if (hbN) hbN.classList.add('hint-nudge'); } }
+        if (hasViolation) { SFX.error(); mistakes++; loseHealth(); consecErrors++; if (consecErrors >= 2 && !nudgeShownThisLevel) { nudgeShownThisLevel = true; const hbN = document.getElementById('hint-btn'); if (hbN) hbN.classList.add('hint-nudge'); } }
         else akObOnPlace();
       }
       renderBoard(); updateProgress(); autoSave();
@@ -1417,6 +1433,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       const hbU = document.getElementById('hint-btn'); if (hbU) hbU.classList.remove('hint-nudge');
       const h = getHint(currentPuzzle.grid, currentPuzzle.solution, playerSolution, currentPuzzle.size);
       if (h) {
+        hintsUsed++;
         const cell = gridEl.querySelector('[data-row="'+h[0]+'"][data-col="'+h[1]+'"]');
         if (cell) { cell.classList.add('cell-hint'); setTimeout(()=>cell.classList.remove('cell-hint'),2000); }
         SFX.hint(); showToast('Hint: try row '+(h[0]+1)+', col '+(h[1]+1),'success');
@@ -1470,7 +1487,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     document.getElementById('share-copy').addEventListener('click', () => {
       track('share_copy', { level: level, difficulty: getDifficulty(level).label });
       const diff = getDifficulty(level);
-      const text = 'Cleared GridPaw Akari Level ' + level + ' (' + diff.label + ' ' + diff.size + '×' + diff.size + ') ⏱ ' + formatTime(timerSeconds) + ' — your turn → gridpaw.com/akari/';
+      const text = 'Cleared GridPaw Akari Level ' + level + ' (' + diff.label + ' ' + diff.size + '×' + diff.size + ') ' + clockEmoji(timerSeconds) + ' ' + formatTime(timerSeconds) + ' · 💡 ' + hintsUsed + (hintsUsed === 1 ? ' hint' : ' hints') + ' · ' + mistakeToken() + (document.getElementById('share-include-link').checked ? ' — your turn → gridpaw.com/akari/' : '');
       navigator.clipboard.writeText(text).then(() => showToast('📋 Copied to clipboard!', 'success'));
     });
     document.getElementById('share-twitter').addEventListener('click', () => {
@@ -1500,14 +1517,14 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     document.getElementById('board-x').addEventListener('click', () => {
       track('share_twitter', { level: level, difficulty: getDifficulty(level).label });
       const diff = getDifficulty(level);
-      const text = encodeURIComponent('Cleared GridPaw Akari Level ' + level + ' (' + diff.label + ' ' + diff.size + '×' + diff.size + ') ⏱ ' + formatTime(timerSeconds) + ' — your turn → gridpaw.com/akari/');
+      const text = encodeURIComponent('Cleared GridPaw Akari Level ' + level + ' (' + diff.label + ' ' + diff.size + '×' + diff.size + ') ' + clockEmoji(timerSeconds) + ' ' + formatTime(timerSeconds) + ' · 💡 ' + hintsUsed + (hintsUsed === 1 ? ' hint' : ' hints') + ' · ' + mistakeToken() + (document.getElementById('share-include-link').checked ? ' — your turn → gridpaw.com/akari/' : ''));
       window.open('https://twitter.com/intent/tweet?text=' + text, '_blank');
     });
     document.getElementById('board-reddit').addEventListener('click', async () => {
       track('share_reddit', { level: level, difficulty: getDifficulty(level).label });
       await captureBoardToClipboard();
       const diff = getDifficulty(level);
-      const text = encodeURIComponent('Cleared GridPaw Akari Level ' + level + ' (' + diff.label + ' ' + diff.size + '×' + diff.size + ') ⏱ ' + formatTime(timerSeconds) + ' — your turn → gridpaw.com/akari/');
+      const text = encodeURIComponent('Cleared GridPaw Akari Level ' + level + ' (' + diff.label + ' ' + diff.size + '×' + diff.size + ') ' + clockEmoji(timerSeconds) + ' ' + formatTime(timerSeconds) + ' · 💡 ' + hintsUsed + (hintsUsed === 1 ? ' hint' : ' hints') + ' · ' + mistakeToken() + (document.getElementById('share-include-link').checked ? ' — your turn → gridpaw.com/akari/' : ''));
       window.open('https://www.reddit.com/r/gridpaw/submit?url=' + encodeURIComponent('https://gridpaw.com/akari/') + '&title=' + text, '_blank');
     });
     document.getElementById('board-close').addEventListener('click', () => {
