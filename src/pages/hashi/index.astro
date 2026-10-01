@@ -475,6 +475,8 @@ const description = "Play Hashi (Bridges) free online: connect every island with
     }
   </style>
   <script is:inline src="/leaderboard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+  <script is:inline src="/gp-share-image.js"></script>
 </head>
 <body>
 
@@ -1273,15 +1275,32 @@ const description = "Play Hashi (Bridges) free online: connect every island with
 
       document.getElementById('share-twitter').addEventListener('click', function () {
         track('share_twitter', { islands: state.puzzle.islands.length, difficulty: DIFFS[state.difficulty].label });
-        var url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText()) + '&url=' + encodeURIComponent('https://gridpaw.com/hashi/');
-        window.open(url, '_blank', 'noopener,width=620,height=480');
+        // 带图分享：系统分享面板优先（附棋盘截图）；不可用回退 web intent
+        GPShare.shareWithImage({
+          boardEl: document.getElementById('hj-board-wrap'),
+          filename: 'gridpaw-hashi.png',
+          text: shareText(),
+          url: 'https://gridpaw.com/hashi/',
+          fallback: function () {
+            var url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText()) + '&url=' + encodeURIComponent('https://gridpaw.com/hashi/');
+            window.open(url, '_blank', 'noopener,width=620,height=480');
+          }
+        }).then(function (shared) { if (shared) track('share_image', { game: 'hashi', via: 'system' }); });
       });
 
       document.getElementById('share-reddit').addEventListener('click', function () {
         track('share_reddit', { islands: state.puzzle.islands.length, difficulty: DIFFS[state.difficulty].label });
         var title = 'I solved a ' + DIFFS[state.difficulty].label + ' Hashi (Bridges) puzzle on GridPaw!';
-        var url = 'https://www.reddit.com/submit?url=' + encodeURIComponent('https://gridpaw.com/hashi/') + '&title=' + encodeURIComponent(title);
-        window.open(url, '_blank', 'noopener,width=680,height=520');
+        GPShare.shareWithImage({
+          boardEl: document.getElementById('hj-board-wrap'),
+          filename: 'gridpaw-hashi.png',
+          text: title,
+          url: 'https://gridpaw.com/hashi/',
+          fallback: function () {
+            var url = 'https://www.reddit.com/submit?url=' + encodeURIComponent('https://gridpaw.com/hashi/') + '&title=' + encodeURIComponent(title);
+            window.open(url, '_blank', 'noopener,width=680,height=520');
+          }
+        }).then(function (shared) { if (shared) track('share_image', { game: 'hashi', via: 'system' }); });
       });
 
       // 难度切换
