@@ -500,6 +500,8 @@ const description = "Play Star Battle (Two Not Touch) free online: cat-themed lo
     }
   </style>
 <script is:inline src="/leaderboard.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+<script is:inline src="/gp-share-image.js"></script>
 </head>
 <body>
 
@@ -1225,15 +1227,32 @@ const description = "Play Star Battle (Two Not Touch) free online: cat-themed lo
 
       document.getElementById('share-twitter').addEventListener('click', function () {
         track('share_twitter', { level: state.puzzle.size, difficulty: DIFFS[state.difficulty].label });
-        var url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText()) + '&url=' + encodeURIComponent('https://gridpaw.com/star-battle/');
-        window.open(url, '_blank', 'noopener,width=620,height=480');
+        // 带图分享：系统分享面板优先（附棋盘截图）；不可用回退 web intent
+        GPShare.shareWithImage({
+          boardEl: document.getElementById('sb-grid-wrap'),
+          filename: 'gridpaw-star-battle.png',
+          text: shareText(),
+          url: 'https://gridpaw.com/star-battle/',
+          fallback: function () {
+            var url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText()) + '&url=' + encodeURIComponent('https://gridpaw.com/star-battle/');
+            window.open(url, '_blank', 'noopener,width=620,height=480');
+          }
+        }).then(function (shared) { if (shared) track('share_image', { game: 'star-battle', via: 'system' }); });
       });
 
       document.getElementById('share-reddit').addEventListener('click', function () {
         track('share_reddit', { level: state.puzzle.size, difficulty: DIFFS[state.difficulty].label });
         var title = 'I solved a ' + state.puzzle.size + '×' + state.puzzle.size + ' ' + DIFFS[state.difficulty].label + ' Star Battle puzzle on GridPaw!';
-        var url = 'https://www.reddit.com/submit?url=' + encodeURIComponent('https://gridpaw.com/star-battle/') + '&title=' + encodeURIComponent(title);
-        window.open(url, '_blank', 'noopener,width=680,height=520');
+        GPShare.shareWithImage({
+          boardEl: document.getElementById('sb-grid-wrap'),
+          filename: 'gridpaw-star-battle.png',
+          text: title,
+          url: 'https://gridpaw.com/star-battle/',
+          fallback: function () {
+            var url = 'https://www.reddit.com/submit?url=' + encodeURIComponent('https://gridpaw.com/star-battle/') + '&title=' + encodeURIComponent(title);
+            window.open(url, '_blank', 'noopener,width=680,height=520');
+          }
+        }).then(function (shared) { if (shared) track('share_image', { game: 'star-battle', via: 'system' }); });
       });
 
       // ── 难度切换 ──

@@ -488,6 +488,8 @@ const description = "Play Slitherlink free online: draw one closed loop through 
     }
   </style>
 <script is:inline src="/leaderboard.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+<script is:inline src="/gp-share-image.js"></script>
 </head>
 <body>
 
@@ -1164,15 +1166,32 @@ const description = "Play Slitherlink free online: draw one closed loop through 
 
       document.getElementById('share-twitter').addEventListener('click', function () {
         track('share_twitter', { level: state.rows, difficulty: DIFFS[state.difficulty].label });
-        var url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText()) + '&url=' + encodeURIComponent('https://gridpaw.com/slitherlink/');
-        window.open(url, '_blank', 'noopener,width=620,height=480');
+        // 带图分享：系统分享面板优先（附棋盘截图）；不可用回退 web intent
+        GPShare.shareWithImage({
+          boardEl: document.getElementById('sl-board'),
+          filename: 'gridpaw-slitherlink.png',
+          text: shareText(),
+          url: 'https://gridpaw.com/slitherlink/',
+          fallback: function () {
+            var url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText()) + '&url=' + encodeURIComponent('https://gridpaw.com/slitherlink/');
+            window.open(url, '_blank', 'noopener,width=620,height=480');
+          }
+        }).then(function (shared) { if (shared) track('share_image', { game: 'slitherlink', via: 'system' }); });
       });
 
       document.getElementById('share-reddit').addEventListener('click', function () {
         track('share_reddit', { level: state.rows, difficulty: DIFFS[state.difficulty].label });
         var title = 'I solved a ' + state.rows + '×' + state.cols + ' ' + DIFFS[state.difficulty].label + ' Slitherlink puzzle on GridPaw!';
-        var url = 'https://www.reddit.com/submit?url=' + encodeURIComponent('https://gridpaw.com/slitherlink/') + '&title=' + encodeURIComponent(title);
-        window.open(url, '_blank', 'noopener,width=680,height=520');
+        GPShare.shareWithImage({
+          boardEl: document.getElementById('sl-board'),
+          filename: 'gridpaw-slitherlink.png',
+          text: title,
+          url: 'https://gridpaw.com/slitherlink/',
+          fallback: function () {
+            var url = 'https://www.reddit.com/submit?url=' + encodeURIComponent('https://gridpaw.com/slitherlink/') + '&title=' + encodeURIComponent(title);
+            window.open(url, '_blank', 'noopener,width=680,height=520');
+          }
+        }).then(function (shared) { if (shared) track('share_image', { game: 'slitherlink', via: 'system' }); });
       });
 
       // 难度切换
