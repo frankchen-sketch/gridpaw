@@ -36,3 +36,29 @@ compileEngine('./src/lib/akari-engine.ts', 'akari-engine.js');
 compileEngine('./src/lib/kakuro-engine.ts', 'kakuro-engine.js');
 compileEngine('./src/lib/nonogram-engine.ts', 'nonogram-engine.js');
 compileEngine('./src/lib/nurikabe-engine.ts', 'nurikabe-engine.js');
+
+// ── Bundle channel: multi-file engines (puzzle-core/*) ──────────────────────
+// esbuild.build with bundle:true + IIFE global, for engines that import shared
+// constraint layers. Existing single-file engines keep the transformSync path above.
+async function compileBundle(entryPath, outName, globalName) {
+  await esbuild.build({
+    entryPoints: [resolve(entryPath)],
+    bundle: true,
+    format: 'iife',
+    globalName,
+    target: 'es2020',
+    outfile: resolve('./public/' + outName),
+    logLevel: 'silent',
+  });
+  console.log('[bundle-engine] ' + entryPath + ' -> public/' + outName + ' (bundle, global ' + globalName + ')');
+  if (existsSync(resolve('./dist'))) {
+    copyFileSync(resolve('./public/' + outName), resolve('./dist/' + outName));
+    console.log('[bundle-engine] Copied to dist/' + outName);
+  }
+}
+
+await compileBundle('./src/lib/puzzle-core/calcudoku-engine.ts', 'calcudoku-engine.js', 'CalcudokuEngine');
+await compileBundle('./src/lib/puzzle-core/binary-engine.ts', 'binary-engine.js', 'BinaryEngine');
+await compileBundle('./src/lib/puzzle-core/hashi-engine.ts', 'hashi-engine.js', 'HashiEngine');
+await compileBundle('./src/lib/puzzle-core/slitherlink-engine.ts', 'slitherlink-engine.js', 'SlitherEngine');
+await compileBundle('./src/lib/puzzle-core/star-battle-engine.ts', 'star-battle-engine.js', 'StarBattleEngine');
