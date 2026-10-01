@@ -57,6 +57,12 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
     .cell:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(123,107,138,.2)}
     .cell-black{background:linear-gradient(145deg,var(--gp-brown-600),var(--gp-brown-900));cursor:default;box-shadow:inset 0 3px 6px rgba(0,0,0,.3),0 2px 4px rgba(123,107,138,.2)}
     .cell-number{font-weight:800;color:var(--gp-cream-warm);text-shadow:0 1px 2px rgba(0,0,0,.3)}
+    .cell-satisfied .smile{position:relative;display:block;width:100%;height:100%;animation:smilePop .25s ease-out}
+    .cell-satisfied .smile i{position:absolute;top:26%;width:13%;height:19%;border-radius:50%;background:#FDE68A}
+    .cell-satisfied .smile i:first-child{left:24%}
+    .cell-satisfied .smile i+i{right:24%}
+    .cell-satisfied .smile b{position:absolute;left:27%;right:27%;bottom:22%;height:26%;border:2.5px solid #FDE68A;border-top:none;border-left-color:transparent;border-right-color:transparent;border-radius:0 0 18px 18px}
+    @keyframes smilePop{0%{transform:scale(.5);opacity:0}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
     .cell-lit{background:linear-gradient(145deg,#FFE9C4,#FFD9A3);box-shadow:inset 0 0 12px rgba(245,158,11,.35)}
     .cell-cat{background:linear-gradient(145deg,#FFF3D9,#FFE9C4);box-shadow:inset 0 0 14px rgba(245,158,11,.5)}
     .cell-x{background:var(--gp-white);box-shadow:inset 0 0 4px rgba(0,0,0,.05)}
@@ -506,7 +512,13 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
         const val = g[r][c], key = r+','+c;
         if (val !== 9) {
           cell.classList.add('cell-black');
-          if (val >= 0) { cell.classList.add('cell-number'); cell.textContent = val; cell.style.fontSize = Math.max(10,cs*.4)+'px'; if(vc[key]) cell.classList.add('cell-violation'); }
+          if (val >= 0) {
+            cell.classList.add('cell-number');
+            cell.style.fontSize = Math.max(10,cs*.4)+'px';
+            const cnt = countCatsAround(g, playerSolution, r, c);
+            if (cnt === val) { cell.classList.add('cell-satisfied'); cell.innerHTML = '<span class="smile"><i></i><i></i><b></b></span>'; }
+            else { cell.textContent = val; if(vc[key]) cell.classList.add('cell-violation'); }
+          }
         } else {
           if (playerSolution[r][c]) { 
             cell.classList.add('cell-cat');
