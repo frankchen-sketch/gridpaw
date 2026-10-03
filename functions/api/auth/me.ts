@@ -10,5 +10,6 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
     .bind(uid)
     .first<{ id: string; name: string | null; picture: string | null; email: string | null }>();
   if (!user) return json({ user: null });
-  return json({ user: { id: user.id, name: user.name, picture: user.picture } });
+  // email 一并返回（修复：callback 拿得到但 me 没回的 bug；邮箱/社交登录前端可展示）
+  return json({ user: { id: user.id, name: user.name, picture: user.picture, email: user.email } });
 };
