@@ -1788,7 +1788,7 @@ const description = "Draw rectangles to match every number and fill the grid —
       area.appendChild(fl);
     }
     if (currentUser) {
-      if (currentUser.picture && /^https:\/\/(lh3|lh4|lh5|lh6)\.googleusercontent\.com\//.test(currentUser.picture)) {
+      if (currentUser.picture && /^https:\/\//.test(currentUser.picture)) {
         var img = document.createElement('img');
         img.src = currentUser.picture; img.alt = '';
         img.referrerPolicy = 'no-referrer';
@@ -1814,15 +1814,84 @@ const description = "Draw rectangles to match every number and fill the grid —
       out.style.cssText = 'font-size:.75rem;color:var(--gp-stone);text-decoration:underline';
       area.appendChild(out);
     } else {
-      var btn = document.createElement('a');
-      btn.href = '/api/auth/login?next=/';
-      // Clarity #1792s36：iOS 用户 3 次点击 sign-in 都没跳转（GA4 sign_in_click=0 佐证）
-      // → 触控目标加大到 Apple HIG 44px 最小标准，防止点在按钮/横幅间死区
-      btn.style.cssText = 'display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1.5px solid var(--gp-linen);border-radius:24px;padding:.55rem 1.15rem;min-height:44px;font-size:.85rem;font-weight:700;color:var(--gp-ink);text-decoration:none;box-shadow:0 1px 3px rgba(0,0,0,.08);position:relative;z-index:5';
-      btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 18.9 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.6 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>Sign in with Google';
-      btn.addEventListener('click', function() { track('sign_in_click', { source: 'account_area', level: levelNum }); });
-      area.appendChild(btn);
+      area.appendChild(buildSignInPanel('/'));
     }
+  }
+  // ─── 多供应商登录面板：Google/Microsoft/Facebook 三按钮 + 邮箱密码小表单 ───
+  // 点 pill 展开面板，点外部关闭；登录成功 location.reload，失败静默（不挡游戏）
+  function buildSignInPanel(next) {
+    var GOOGLE_SVG = '<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 18.9 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.6 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>';
+    var MS_SVG = '<svg width="16" height="16" viewBox="0 0 23 23"><path fill="#f35325" d="M1 1h10v10H1z"/><path fill="#81bc06" d="M12 1h10v10H12z"/><path fill="#05a6f0" d="M1 12h10v10H1z"/><path fill="#ffba08" d="M12 12h10v10H12z"/></svg>';
+    var FB_SVG = '<svg width="16" height="16" viewBox="0 0 24 24"><path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>';
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'position:relative;display:inline-flex;z-index:30';
+    // Clarity #1792s36：触控目标保持 Apple HIG 44px 最小标准
+    var pill = document.createElement('button');
+    pill.type = 'button';
+    pill.style.cssText = 'display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1.5px solid var(--gp-linen);border-radius:24px;padding:.55rem 1.15rem;min-height:44px;font-size:.85rem;font-weight:700;color:var(--gp-ink);cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.08);position:relative;z-index:5';
+    pill.innerHTML = GOOGLE_SVG + 'Sign in';
+    wrap.appendChild(pill);
+    var panel = document.createElement('div');
+    panel.style.cssText = 'display:none;position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);z-index:60;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.16);padding:10px;width:224px;text-align:left;white-space:normal';
+    var providers = [
+      { prov: 'google', label: 'Sign in with Google', svg: GOOGLE_SVG },
+      { prov: 'microsoft', label: 'Sign in with Microsoft', svg: MS_SVG },
+      { prov: 'facebook', label: 'Sign in with Facebook', svg: FB_SVG }
+    ];
+    providers.forEach(function(p) {
+      var a = document.createElement('a');
+      a.href = '/api/auth/login?provider=' + p.prov + '&next=' + next;
+      a.style.cssText = 'display:flex;align-items:center;gap:.55rem;width:100%;box-sizing:border-box;background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:.45rem .6rem;margin-bottom:6px;font-size:.8rem;font-weight:700;color:var(--gp-ink);text-decoration:none';
+      a.innerHTML = p.svg + '<span>' + p.label + '</span>';
+      a.addEventListener('click', function() { track('sign_in_click', { source: 'account_area', provider: p.prov, level: levelNum }); });
+      panel.appendChild(a);
+    });
+    var divider = document.createElement('div');
+    divider.style.cssText = 'margin:4px 0 8px;height:1px;background:#f0ece4';
+    panel.appendChild(divider);
+    var form = document.createElement('form');
+    form.style.cssText = 'margin:0';
+    var em = document.createElement('input');
+    em.type = 'email'; em.placeholder = 'Email'; em.autocomplete = 'email'; em.required = true;
+    em.style.cssText = 'width:100%;box-sizing:border-box;border:1px solid #e5e7eb;border-radius:8px;padding:.45rem .55rem;font-size:.8rem;color:var(--gp-ink);margin-bottom:6px';
+    var pw = document.createElement('input');
+    pw.type = 'password'; pw.placeholder = 'Password'; pw.autocomplete = 'current-password'; pw.required = true;
+    pw.style.cssText = em.style.cssText;
+    var row = document.createElement('div');
+    row.style.cssText = 'display:flex;gap:6px;margin-top:6px';
+    var shellBtnStyle = 'flex:1;border-radius:8px;padding:.42rem 0;font-size:.78rem;font-weight:800;cursor:pointer;border:1px solid #e5e7eb;background:#fff;color:var(--gp-ink)';
+    var regBtn = document.createElement('button');
+    regBtn.type = 'submit'; regBtn.setAttribute('data-action', 'register'); regBtn.textContent = 'Register';
+    regBtn.style.cssText = shellBtnStyle;
+    var logBtn = document.createElement('button');
+    logBtn.type = 'submit'; logBtn.setAttribute('data-action', 'login'); logBtn.textContent = 'Log in';
+    logBtn.style.cssText = shellBtnStyle + ';background:var(--gp-pink);color:#fff;border-color:var(--gp-pink)';
+    row.appendChild(regBtn); row.appendChild(logBtn);
+    form.appendChild(em); form.appendChild(pw); form.appendChild(row);
+    // Enter 键默认走 Log in
+    form.addEventListener('submit', function(ev) {
+      ev.preventDefault();
+      var action = ev.submitter && ev.submitter.getAttribute ? ev.submitter.getAttribute('data-action') : 'login';
+      submitCreds(action, em.value, pw.value);
+    });
+    panel.appendChild(form);
+    wrap.appendChild(panel);
+    pill.addEventListener('click', function() { panel.style.display = panel.style.display === 'none' ? 'block' : 'none'; });
+    // 点面板外部关闭
+    document.addEventListener('click', function(ev) { if (!wrap.contains(ev.target)) panel.style.display = 'none'; });
+    return wrap;
+  }
+  // 邮箱密码提交：成功 location.reload（服务端已发会话 cookie），失败静默降级
+  function submitCreds(action, email, password) {
+    var e = (email || '').trim().toLowerCase(), p = password || '';
+    if (!e || !p) return;
+    fetchWithTimeout(action === 'register' ? '/api/auth/register' : '/api/auth/login-password', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: e, password: p })
+    }).then(function(r) { return r.json(); }).then(function(j) {
+      if (j && j.ok) window.location.reload();
+    }).catch(function() {});
   }
   function applyCloudProgress(cloud) {
     if (!cloud) return;
