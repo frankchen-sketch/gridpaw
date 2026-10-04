@@ -11,6 +11,9 @@ export interface Env {
   MICROSOFT_CLIENT_SECRET?: string;
   FACEBOOK_CLIENT_ID?: string;
   FACEBOOK_CLIENT_SECRET?: string;
+  // 邮箱密码重置（Resend）：未配置时 forgot-password 返回 503 email_not_configured
+  RESEND_API_KEY?: string;
+  RESEND_FROM_EMAIL?: string; // 形如 'GridPaw <noreply@gridpaw.com>'
   // 自建漏斗（functions/api/events.ts、funnel.ts）
   FUNNEL_EVENT_INGESTION_ENABLED?: string; // wrangler.toml [vars] 唯一定义，别处（Dashboard）不要重复设同名变量
   FUNNEL_ADMIN_TOKEN?: string;             // 生产 secret（wrangler pages secret put），不进 wrangler.toml
