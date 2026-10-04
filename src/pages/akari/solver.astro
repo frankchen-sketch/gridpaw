@@ -2,7 +2,7 @@
 import SEOHead from '../../components/SEOHead.astro';
 import ExtensionPromo from '../../components/ExtensionPromo.astro';
 const title = "Akari Solver — Free Light Up Puzzle Solver | GridPaw";
-const description = "Free online Akari puzzle solver. Input any Light Up grid and get the solution instantly. Master solving techniques and play free at GridPaw.";
+const description = "Free Akari (Light Up) puzzle solver and strategy guide. GridPaw checks every move, catches conflicts instantly, and hints the next logical step. Play free in your browser.";
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -123,6 +123,19 @@ const description = "Free online Akari puzzle solver. Input any Light Up grid an
       <p>Every light bulb shines in a straight line along its row and column until it hits a wall. If placing a bulb in a candidate cell would shine on another bulb, that placement is illegal. Use this to eliminate candidates: trace the rays from existing bulbs and mark every cell they illuminate as "cannot hold a bulb."</p>
       <h3>4. Unlit Cell Analysis</h3>
       <p>If a white cell can only be lit by one specific neighbor (because walls block all other directions), that neighbor must contain a bulb. This technique is especially powerful in narrow corridors between walls where the lighting options are severely limited.</p>
+
+      <h2>What the GridPaw Solver Checks, Step by Step</h2>
+      <p>When you play on GridPaw, a solver watches every move on boards from 5×5 up to 14×14 and checks three things in real time:</p>
+      <ol>
+        <li><strong>Wall counts.</strong> Every numbered cell must end up touching exactly its number of bulbs. The moment a count can no longer be satisfied, you get an instant error.</li>
+        <li><strong>Line of sight.</strong> Two bulbs in the same row or column with no wall between them is illegal. The solver flags the pair immediately instead of letting you carry the mistake forward.</li>
+        <li><strong>Full illumination.</strong> When every white cell is lit and every count matches, the solver confirms the win — no manual checking required.</li>
+      </ol>
+      <p>The Hint button runs a fresh deduction pass over your current grid and reveals exactly one cell that must be a bulb given what you have already placed. It never suggests a guess, because every GridPaw Akari puzzle is generated to have exactly one solution reachable by pure logic.</p>
+
+      <h2>The Solver Behind the Scenes</h2>
+      <p>GridPaw's solver runs entirely in your browser — grid data never leaves your device. It uses the two techniques from the previous section in combination: <strong>constraint propagation</strong> (a "4" wall with four open neighbors forces four bulbs; a "0" wall blocks all of them) and <strong>MRV backtracking</strong>, which always tries the most-constrained cell next and prunes the search as soon as a contradiction appears.</p>
+      <p>That same solver has a second job: before you ever see a puzzle, it verifies the freshly generated grid. The generator places bulbs at random, then removes number clues one at a time, re-running the full solve after each removal and keeping a clue only when the solution stays unique. That is how GridPaw can promise a unique, guess-free solution on every board, every difficulty, every day.</p>
 
       <h2>Frequently Asked Questions</h2>
       <details>

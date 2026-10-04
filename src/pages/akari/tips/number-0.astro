@@ -68,41 +68,40 @@ const description = "Master Akari number 0 cells with this strategy guide. Learn
  <h1>Akari Number 0 Strategy</h1>
     <p style="text-align:center;color:#6f5651;margin-bottom:1rem;">How to solve number 0 cells in Akari puzzles.</p>
     <section class="seo-content">
-      <h2>What Does a Number 0 Cell Mean?</h2>
-      <p>A number 0 cell in an Akari puzzle indicates that exactly 0 of its four adjacent cells (up, down, left, right) must contain a light bulb. This is one of the fundamental <strong>akari number 0</strong> rules that every puzzle solver needs to understand.</p>
-      <p>When you encounter a <strong>number 0 cell</strong>, it provides critical information about how many light bulbs surround it. Understanding this constraint is essential for solving any Akari puzzle.</p>
+      <h2>What a Number 0 Cell Tells You</h2>
+      <p>A wall cell numbered <strong>0</strong> is a hard prohibition: exactly 0 of its four orthogonally adjacent cells (up, down, left, right) may hold a light bulb. Every open neighbor gets an immediate ✗ mark — it can never contain a light. It is the fastest deduction in the game, which is why reading 0s first is a universal Akari habit.</p>
+      <p>Unlike numbers 1–4, a 0 never gives you a bulb placement of its own. Its power is elimination: each neighbor it clears shrinks the space where remaining bulbs can go, and in narrow corridors that alone can force a bulb one cell further out.</p>
 
-      <h2>The 0 Things a Number 0 Tells You</h2>
-      <p>Here's what a <strong>number 0 cell</strong> reveals about the puzzle:</p>
-      <ol>
-        <li><strong>Exact count:</strong> Exactly 0 adjacent cells must contain bulbs</li>
-        <li><strong>Remaining cells:</strong> The other 4 adjacent cells cannot contain bulbs</li>
-        <li><strong>Propagation:</strong> This constraint affects the entire row and column</li>
-      </ol>
-      <p>For <strong>akari number 0</strong> cells, the deduction process is straightforward once you understand the constraint.</p>
+      <h2>Why 0 Cells Come First</h2>
+      <p>Scan the whole grid for 0s before placing anything. On a typical GridPaw Easy board (6×6) two or three 0 cells can clear a third of the board's impossible spots in under a minute — no other clue produces that many provable marks that fast. On the 10×10 Daily Challenge, a full 0-sweep is the standard opening move for the same reason.</p>
+      <p>After each 0 is marked, re-check the cells that just lost a possible light source. A white corner cell with only two open neighbors, one of them now ✗'d, leaves exactly one direction a bulb can come from — a forced placement. This "0s first, then read forced lighting" loop is the engine behind most Easy and Medium solves.</p>
 
-      <h2>Number 0 Strategy Example</h2>
-      <p>Let's walk through a practical example of solving a <strong>number 0 cell</strong>:</p>
-      <ol>
-        <li>Identify the number 0 cell on the grid</li>
-        <li>Count how many adjacent cells are available (not blocked by walls)</li>
-        <li>If exactly 0 cells are available, all must contain bulbs</li>
-        <li>If more than 0 cells are available, use elimination to find forced placements</li>
-      </ol>
-      <p>This <strong>akari number 0</strong> strategy works consistently across all difficulty levels.</p>
+      <h2>Worked Example: A 0 in a Corner</h2>
+      <p>Take a 5×5 grid with a 0 wall in the top-left corner. That corner has only two neighbors — right and down — and both get ✗ marks. Now look at the white cell diagonally below-right of the corner. Its only neighbors are a wall (the 0), a ✗ cell, the cell below it, and the cell to its right. If the right neighbor is also blocked by a wall, the below neighbor becomes the sole possible light source, so a bulb there is forced.</p>
+      <p>The same reasoning scales to edges: a 0 on the top row blocks all three of its open neighbors. In GridPaw, mark those cells with a paw print note (right-click on desktop, long-press on mobile) so the game tracks your deductions for you.</p>
 
-      <h2>Common Mistakes with Number 0 Cells</h2>
+      <h2>How a 0 Interacts With Other Clues</h2>
       <ul>
-        <li><strong>Placing too many bulbs:</strong> Remember, only 0 bulbs around a number 0 cell</li>
-        <li><strong>Ignoring line-of-sight:</strong> Bulbs illuminate entire rows and columns</li>
-        <li><strong>Forgetting the X rule:</strong> Cells that can't have bulbs should be marked with X</li>
+        <li><strong>0 next to a numbered wall:</strong> the numbered wall is a wall, so it was never a bulb candidate — the 0 only blocks white cells.</li>
+        <li><strong>0 sharing a neighbor with a 2:</strong> the shared cell is ✗ for the 0, so the 2 must fit both of its bulbs into its remaining neighbors, often forcing both.</li>
+        <li><strong>0 and 4 in the same block:</strong> a 4 forces bulbs in all four neighbors while a 0 forbids them. Together on a small board they can fully determine the lighting of that section.</li>
+        <li><strong>0 as a guard:</strong> a 0 beside a long wall segment protects that whole segment from bulb placement, which makes line-of-sight tracing along the wall much easier.</li>
+      </ul>
+
+      <h2>Common Mistakes With 0 Cells</h2>
+      <ul>
+        <li><strong>Marking the 0 cell itself:</strong> the 0 is a wall — it never holds a bulb and never needs to be lit. Only its neighbors are affected.</li>
+        <li><strong>Forgetting line of sight:</strong> ✗ cells can still be lit, they just can't hold a bulb. A bulb placed at the end of a row still illuminates every ✗ cell between it and the wall.</li>
+        <li><strong>Skipping the follow-up:</strong> marking four neighbors and moving on misses the payoff. Re-scan for cells whose only remaining light path was just eliminated — those are your next forced bulbs.</li>
       </ul>
 
       <h2>FAQ</h2>
-      <details><summary>What if a number 0 cell is next to a wall?</summary><p>Walls block light and don't count as adjacent cells. A number 0 cell next to walls only counts the available white cells.</p></details>
-      <details><summary>Can I place more than 0 bulbs around a number 0 cell?</summary><p>No! The number indicates the exact count. Placing more would violate the puzzle rules.</p></details>
+      <details><summary>What if a 0 has fewer than 4 open neighbors?</summary><p>Walls and the grid edge don't count as neighbors, so the prohibition simply covers the open ones. A corner 0 blocks only two cells; an edge 0 blocks three.</p></details>
+      <details><summary>Can a 0 cell ever contain a bulb?</summary><p>No. Numbered cells are walls in Akari — they block light and never hold bulbs. The 0 tells you about its neighbors, never about itself.</p></details>
+      <details><summary>Is a 0 still useful after its neighbors are marked?</summary><p>Yes. Recheck the ✗ cells: if a white cell can now only be lit from one direction, that direction is a forced bulb. The 0 keeps paying off for the rest of the solve.</p></details>
+      <details><summary>Where can I practise 0 reads?</summary><p>Start on <a href="/akari/levels/easy/">Easy 6×6 boards</a>, where 0s appear often enough to build the habit, then move to the <a href="/akari/daily/">Daily Challenge</a>. Or use the Hint button on any GridPaw puzzle when a 0's follow-up isn't obvious — it reveals the next logical placement.</p></details>
     </section>
-    <div class="nav-links"><a href="/akari/tips/number-1/">Number 1 Strategy →</a></div>
+    <div class="nav-links"><a href="/akari/tips/number-1/">Number 1 Strategy →</a> <a href="/akari/tips/number-4/" style="margin-left:1rem">Number 4 Strategy →</a></div>
     <a href="/akari/" class="play-cta">🎮 Practice Number 0 Cells</a>
     <ExtensionPromo />
     <footer><p>© 2026 GridPaw. All rights reserved.</p><p style="margin-top:0.3rem"><a href="https://www.pinterest.com/gridpaw/" rel="noopener">GridPaw on Pinterest</a></p>
