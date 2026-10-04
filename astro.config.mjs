@@ -10,6 +10,7 @@ const excludedPages = [
   '/akari/blog/',           // Index page — let sub-pages be indexed individually
   '/akari/privacy/',
   '/akari/akari-puzzle-online/',  // Duplicate — redirects to /akari/akari-puzzle/
+  '/privacy/',              // noindex page — must not be in sitemap (jev-seo audit 2026-10)
 ];
 
 export default defineConfig({
@@ -30,6 +31,7 @@ export default defineConfig({
           'https://gridpaw.com/akari/blog/',        // Index page only
           'https://gridpaw.com/akari/privacy/',
           'https://gridpaw.com/akari/akari-puzzle-online/',
+          'https://gridpaw.com/privacy/',           // noindex page (jev-seo audit 2026-10)
         ];
         if (exactExcludes.includes(page)) {
           return false;

@@ -1019,8 +1019,14 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       <a href="https://dles.gg/game/gridpaw" rel="noopener">DLES.gg</a> ·
       <a href="/community/" rel="noopener">Community</a>
     </p>
-    <p style="margin-top:0.75rem"><a href="/privacy/">Privacy Policy</a> · <a href="mailto:hello@gridpaw.com">Contact</a> · © 2026 GridPaw. All rights reserved.</p>
+    <p style="margin-top:0.75rem"><a href="/privacy/">Privacy Policy</a> · <a href="#" data-mail-user="hello" data-mail-domain="gridpaw.com" class="js-mail">Contact</a> · © 2026 GridPaw. All rights reserved.</p>
   </footer>
+  <script>
+    // mailto assembled in JS: CF Email Obfuscation rewrites literal mailto: to a 404 /cdn-cgi link (jev-seo audit 2026-10)
+    document.querySelectorAll('a.js-mail').forEach(function (a) {
+      a.href = 'mailto:' + a.dataset.mailUser + '@' + a.dataset.mailDomain;
+    });
+  </script>
 
   <!-- ═══════════ Mobile Nav Script ═══════════ -->
   <script is:inline>
