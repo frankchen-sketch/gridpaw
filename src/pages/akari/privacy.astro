@@ -125,7 +125,7 @@ const description = "GridPaw privacy policy. Play anonymously — all game progr
     <h2>Contact</h2>
     <p>If you have questions about this privacy policy, or want to delete your account and stored progress, you can reach us at:</p>
     <ul>
-      <li>Email: <a href="mailto:hello@gridpaw.com">hello@gridpaw.com</a></li>
+      <li>Email: <a href="#" data-mail-user="hello" data-mail-domain="gridpaw.com" class="js-mail">hello@gridpaw.com</a></li>
       <li>Website: <a href="https://gridpaw.com">gridpaw.com</a></li>
     </ul>
 
@@ -133,6 +133,12 @@ const description = "GridPaw privacy policy. Play anonymously — all game progr
  <a href="/akari/" class="cta-btn">Play GridPaw Free</a>
     </div>
   </main>
+  <script>
+    // mailto assembled in JS: CF Email Obfuscation rewrites literal mailto: to a 404 /cdn-cgi link (jev-seo audit 2026-10)
+    document.querySelectorAll('a.js-mail').forEach(function (a) {
+      a.href = 'mailto:' + a.dataset.mailUser + '@' + a.dataset.mailDomain;
+    });
+  </script>
 
   <ExtensionPromo />
   <footer class="site-footer">

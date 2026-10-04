@@ -2487,7 +2487,14 @@ const description = "Draw rectangles to match every number and fill the grid —
   <p>GridPaw — Free online Shikaku puzzle with cats.</p>
   <p style="margin-top:0.3rem;"><a href="/rules">Rules</a> · <a href="/tips">Tips</a> · <a href="/#play">Daily</a> · <a href="/solver">Solver</a> · <a href="/how-to-play-shikaku">How to Play</a> · <a href="/help/">Help</a> · <a href="/changelog">Changelog</a></p>
   <p style="margin-top:0.3rem;"><a href="/akari/">GridPaw Akari</a> · <a href="/nonogram/">GridPaw Nonogram</a> · <a href="/nurikabe/">GridPaw Nurikabe</a> · <a href="/pictomino/">GridPaw Pictomino</a> · <a href="https://furriq.com">Furriq</a> · <a href="https://www.pinterest.com/gridpaw/">Pinterest</a> · <a href="https://chromewebstore.google.com/detail/gridpaw-%E2%80%94-daily-akari-puz/mjdplaoanamjdbbpkgccjnhmlgnpcamj">Chrome Extension</a> · <a href="https://gridpaw-games.lovable.app">Lovable</a> · <a href="https://dles.gg/game/gridpaw" rel="noopener">DLES.gg</a> · <a href="/community/">Community</a></p>
-  <p style="margin-top:0.3rem;"><a href="/privacy/">Privacy Policy</a> · <a href="mailto:hello@gridpaw.com">Contact</a></p>
+  <p style="margin-top:0.3rem;"><a href="/privacy/">Privacy Policy</a> · <a href="#" data-mail-user="hello" data-mail-domain="gridpaw.com" class="js-mail">Contact</a></p>
 </footer>
+<script>
+  // mailto is assembled in JS: Cloudflare Email Obfuscation rewrites literal mailto:
+  // links to /cdn-cgi/l/email-protection (a 404 for crawlers) — jev-seo audit 2026-10
+  document.querySelectorAll('a.js-mail').forEach(function (a) {
+    a.href = 'mailto:' + a.dataset.mailUser + '@' + a.dataset.mailDomain;
+  });
+</script>
 </body>
 </html>

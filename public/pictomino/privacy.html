@@ -189,8 +189,14 @@ footer a:hover{color:var(--pink)}
 
     <div class="contact-box">
       <strong>📮 Contact the Pictomino team</strong><br>
-      <a href="mailto:privacy@pictomino.com">privacy@pictomino.com</a>
+      <a href="#" data-mail-user="privacy" data-mail-domain="pictomino.com" class="js-mail">privacy@pictomino.com</a>
     </div>
+    <script>
+      // mailto assembled in JS: CF Email Obfuscation rewrites literal mailto: to a 404 /cdn-cgi link (jev-seo audit 2026-10)
+      document.querySelectorAll('a.js-mail').forEach(function (a) {
+        a.href = 'mailto:' + a.dataset.mailUser + '@' + a.dataset.mailDomain;
+      });
+    </script>
 
     <p style="margin-top:20px;font-size:14px;color:var(--ink-soft)"><em>All cat images on this site are AI-generated original artwork, created specifically for Pictomino.</em></p>
     <p style="font-size:14px;color:var(--ink-soft)"><em>Last updated: September 1, 2026.</em></p>
