@@ -137,15 +137,34 @@ const description = "Design your own Akari (Light Up) puzzle! Set grid size, pla
     </div>
     
     <div class="instructions">
-      <h3>How to Create</h3>
+      <h3>How Validation Works</h3>
+      <p>Click <strong>Validate</strong> and the page runs your grid through the exact same solver engine that powers the main game. The solver counts every solution your walls and numbers allow, and reports three outcomes:</p>
       <ul>
-        <li><strong>Click</strong> a cell to toggle: white → black wall</li>
-        <li><strong>Click</strong> a black wall to add a number (cycles 0→1→2→3→4→remove number)</li>
-        <li><strong>Right-click</strong> a black wall to remove it</li>
-        <li>Numbers show how many adjacent cells must have cats</li>
-        <li>Click <strong>Validate</strong> to check if your puzzle has a unique solution</li>
-        <li>Click <strong>Get Link</strong> to get a shareable URL</li>
+        <li><strong>0 solutions</strong> — your clues contradict each other somewhere. Check walls that touch a numbered cell: every number must be satisfied, and no light can pass through a wall.</li>
+        <li><strong>2+ solutions</strong> — the puzzle is under-constrained. Add more numbered walls (or raise their values) until exactly one solution remains.</li>
+        <li><strong>Exactly 1 solution</strong> — valid! The <strong>Get Link</strong> button appears, and the whole grid is packed into a shareable URL your friends can open and solve.</li>
       </ul>
+      <p><strong>Designing tip:</strong> the easiest way to build a valid puzzle is to start from a fully lit grid you have already solved, then delete clues one at a time and re-validate after every deletion. Only keep the deletions that still leave exactly one solution — that is the same clue-removal method the GridPaw puzzle generator uses for its own levels.</p>
+    </div>
+
+    <div class="instructions" style="margin-top:0.8rem">
+      <h3>Puzzle Maker FAQ</h3>
+      <details>
+        <summary><strong>What grid sizes can I use?</strong></summary>
+        <p>5×5 up to 10×10, with 7×7 selected by default. Each size keeps the same rule: numbered cells show how many of the 4 neighboring cells must hold a light.</p>
+      </details>
+      <details>
+        <summary><strong>How do I place walls and numbers?</strong></summary>
+        <p>Click a white cell to turn it into a black wall. Click that wall again to cycle its number 0 → 1 → 2 → 3 → 4; a fourth click removes the number, and right-click removes the wall entirely.</p>
+      </details>
+      <details>
+        <summary><strong>Does my puzzle get saved anywhere?</strong></summary>
+        <p>Everything runs in your browser tab — no account, no server. Your design only leaves the page when you click <strong>Get Link</strong>, which packs the full grid into a URL. Anyone who opens that link lands on this page with your puzzle already loaded, ready to solve.</p>
+      </details>
+      <details>
+        <summary><strong>Why does the validator reject my puzzle?</strong></summary>
+        <p>The most common cause is a numbered wall that cannot be satisfied — for example, a "4" with fewer than four open neighbors. Validate always tells you whether the problem is no solution at all (clues contradict each other) or multiple solutions (not enough constraints).</p>
+      </details>
     </div>
     
     <ExtensionPromo />
