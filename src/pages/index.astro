@@ -1875,6 +1875,45 @@ const description = "Draw rectangles to match every number and fill the grid —
       submitCreds(action, em.value, pw.value);
     });
     panel.appendChild(form);
+    // 忘记密码：邮箱小表单 → POST /api/auth/forgot-password（防枚举，成功文案固定）
+    var fpLink = document.createElement('button');
+    fpLink.type = 'button';
+    fpLink.textContent = 'Forgot password?';
+    fpLink.style.cssText = 'display:block;width:100%;text-align:left;background:none;border:none;padding:4px 0 0;font-size:.72rem;font-weight:600;color:var(--gp-stone);text-decoration:underline;cursor:pointer;font-family:inherit';
+    var fpWrap = document.createElement('div');
+    fpWrap.style.cssText = 'display:none;margin-top:6px;border-top:1px dashed #f0ece4;padding-top:8px';
+    var fpMsg = document.createElement('div');
+    fpMsg.style.cssText = 'font-size:.72rem;line-height:1.5;color:#559c68;margin:4px 0 2px';
+    var fpForm = document.createElement('form');
+    fpForm.style.cssText = 'margin:0';
+    var fpEm = document.createElement('input');
+    fpEm.type = 'email'; fpEm.placeholder = 'Email'; fpEm.autocomplete = 'email'; fpEm.required = true;
+    fpEm.style.cssText = em.style.cssText;
+    var fpBtn = document.createElement('button');
+    fpBtn.type = 'submit'; fpBtn.textContent = 'Send reset link';
+    fpBtn.style.cssText = shellBtnStyle + ';width:100%;margin-top:6px';
+    fpForm.appendChild(fpEm); fpForm.appendChild(fpBtn);
+    fpWrap.appendChild(fpForm); fpWrap.appendChild(fpMsg);
+    fpLink.addEventListener('click', function() { fpWrap.style.display = fpWrap.style.display === 'none' ? 'block' : 'none'; });
+    fpForm.addEventListener('submit', function(ev) {
+      ev.preventDefault();
+      var e = (fpEm.value || '').trim().toLowerCase();
+      if (!e) return;
+      fpBtn.disabled = true;
+      fetchWithTimeout('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email: e })
+      }).then(function(r) { return r.json(); }).then(function(j) {
+        if (j && j.ok) {
+          fpForm.style.display = 'none';
+          fpMsg.textContent = 'If that email has an account, a reset link is on the way';
+        } else {
+          fpBtn.disabled = false;
+        }
+      }).catch(function() { fpBtn.disabled = false; });
+    });
+    panel.appendChild(fpLink); panel.appendChild(fpWrap);
     wrap.appendChild(panel);
     pill.addEventListener('click', function() { panel.style.display = panel.style.display === 'none' ? 'block' : 'none'; });
     // 点面板外部关闭
