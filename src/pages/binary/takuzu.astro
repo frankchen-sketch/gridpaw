@@ -1,0 +1,276 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import ExtensionPromo from '../../components/ExtensionPromo.astro';
+
+// ── Takuzu alias page - /binary/takuzu/ ────────────────────────────────
+// Authority page for the "takuzu" keyword family (GSC positions ~8-9 for
+// "takuzu" / "takuzu game"). Positioning: Takuzu = Binary Puzzle = Binairo,
+// one game invented in Belgium in 2009. Links to the playable game at /binary/
+// (which owns the "binary puzzle" family) instead of cannibalizing it.
+// Product facts: sizes are 6×6 / 8×8 / 10×10 only. The engine lives in
+// public/binary-engine.js (global BinaryEngine). We do NOT claim 14×14.
+const title = "Takuzu Puzzle: Same Game as Binary Puzzle";
+const description = "Takuzu and Binary Puzzle are the same logic game, born in Belgium in 2009, also known as Binairo. Learn the rules and play free 6×6, 8×8 and 10×10 grids online.";
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <SEOHead title={title} description={description} canonical="/binary/takuzu" type="article" image="/og-binary.png" breadcrumbTitle="Takuzu Puzzle" />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/binary/takuzu/">
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/binary/takuzu/">
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://gridpaw.com/#website",
+        "url": "https://gridpaw.com/",
+        "name": "GridPaw",
+        "publisher": { "@id": "https://gridpaw.com/#organization" }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://gridpaw.com/#organization",
+        "name": "GridPaw",
+        "url": "https://gridpaw.com/"
+      },
+      {
+        "@type": "WebApplication",
+        "name": "GridPaw Binary Puzzle",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Web Browser",
+        "url": "https://gridpaw.com/binary/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question", "name": "Is Takuzu the same as Binary Puzzle?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Takuzu, Binary Puzzle and Binairo are the exact same game with identical rules. The puzzle was invented in Belgium in 2009, and Takuzu is simply the name most apps and newspapers use for it." }
+          },
+          {
+            "@type": "Question", "name": "What does Takuzu mean?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Takuzu is the Japanese-styled name under which many apps and newspapers publish this binary logic puzzle. The puzzle itself was invented in Belgium in 2009 and has no official Japanese origin, but the name suits its minimal 0 and 1 aesthetic." }
+          },
+          {
+            "@type": "Question", "name": "Is Takuzu free on GridPaw?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. The GridPaw Takuzu puzzle (called Binary Puzzle on the game page) is completely free to play in your browser. There is no download, no account and no payment required." }
+          },
+          {
+            "@type": "Question", "name": "Why is there no 14x14 Takuzu on GridPaw?",
+            "acceptedAnswer": { "@type": "Answer", "text": "GridPaw Takuzu comes in 6x6, 8x8 and 10x10 grids and stops there. We keep every puzzle solvable with pure logic in a short session, and 10x10 is already a proper challenge. 14x14 grids found elsewhere simply fall outside our size range." }
+          },
+          {
+            "@type": "Question", "name": "Can I play Takuzu on my phone?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. The grid is fully responsive: tap any cell to cycle it between 0 and 1 on phones and tablets, or use the keyboard on a computer." }
+          }
+        ]
+      }
+    ]
+  })} />
+
+  <style is:global>
+    /* ── GridPaw 视觉合同 token（STYLE.md）── */
+    :root {
+      --gp-primary: #E8A888;
+      --gp-primary-strong: #D47A50;
+      --gp-brown-900: #342421;
+      --gp-brown-600: #6F5651;
+      --gp-brown-400: #9B726C;
+      --gp-ink: #3D3D3D;
+      --gp-stone: #9E9590;
+      --gp-cream: #FFF8F0;
+      --gp-cream-warm: #FFF4F0;
+      --gp-sand: #F8F6EF;
+      --gp-blush: #F4DFDC;
+      --gp-linen: #E7DACF;
+      --gp-parchment: #E8DDD0;
+      --gp-white: #FFFFFF;
+      --gp-error: #E74C3C;
+      --gp-success: #559C68;
+      --gp-lilac-soft: #E8E0EB;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:var(--gp-sand);color:var(--gp-brown-900);min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.8rem;color:var(--gp-brown-900);text-align:center;margin:.5rem 0}
+    .subtitle{text-align:center;color:var(--gp-brown-600);margin-bottom:1.2rem;font-size:.95rem}
+    .cta-center{display:flex;justify-content:center;margin:1rem 0}
+    .btn{padding:.6rem 1.4rem;border:none;border-radius:12px;cursor:pointer;font-size:.95rem;font-weight:700;transition:transform .1s,background .2s;font-family:inherit;text-decoration:none;display:inline-block}
+    .btn:active{transform:scale(.95)}
+    .btn-primary{background:var(--gp-primary);color:#fff}.btn-primary:hover{background:var(--gp-primary-strong)}
+    .seo-content{margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid var(--gp-linen)}
+    .seo-content p{margin:.5rem 0;line-height:1.7}
+    .seo-content ol,.seo-content ul{padding-left:1.5rem;margin:.5rem 0}
+    .seo-content li{margin-bottom:.4rem}
+    .seo-content a{color:var(--gp-primary);text-decoration:underline}
+    .seo-content h2{font-size:1.3rem;color:var(--gp-brown-900);margin:1.6rem 0 .5rem}
+    details{margin:.5rem 0;padding:.5rem .8rem;background:var(--gp-sand);border-radius:8px}
+    summary{cursor:pointer;font-weight:600;color:var(--gp-primary)}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:var(--gp-brown-600)}
+    footer a{color:var(--gp-brown-600)}
+    @media(max-width:480px){h1{font-size:1.3rem}.btn{padding:.5rem 1rem;font-size:.85rem}}
+
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid var(--gp-blush);background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:var(--gp-brown-900);font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:var(--gp-brown-400);font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:var(--gp-brown-600);text-decoration:none}
+    .nav a:hover{background:var(--gp-cream-warm);color:var(--gp-brown-900)}
+
+    /* ── Games Dropdown ── */
+    .game-switcher { position: relative; }
+    .game-switcher-btn { font-size: 0.875rem; font-weight: 700; color: var(--text, var(--gp-ink)); background: none; border: none; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 0.375rem; display: flex; align-items: center; gap: 4px; font-family: inherit; }
+    .game-switcher-btn::after { content: '▾'; font-size: 10px; }
+    .game-switcher-btn:hover { background: var(--hover-bg, var(--gp-lilac-soft)); color: var(--ink, var(--gp-ink)); }
+    .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid var(--gp-parchment); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
+    .game-switcher:hover .game-switcher-menu { display: block; }
+    .game-switcher-menu a { display: flex; flex-direction: column; padding: 10px 16px !important; font-size: 13px !important; gap: 2px; border-radius: 0 !important; }
+    .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: var(--gp-stone); }
+    .game-switcher-menu a:hover { background: var(--gp-cream) !important; color: var(--ink, var(--gp-ink)) !important; }
+    .game-switcher-menu a.active { color: var(--ink, var(--gp-ink)) !important; background: var(--gp-cream-warm) !important; font-weight: 800 !important; }
+    @media (max-width: 480px) { .game-switcher:hover .game-switcher-menu { display: none; } .game-switcher.open .game-switcher-menu { display: block; } }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/binary/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Binary Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <div class="game-switcher">
+          <button class="game-switcher-btn" onclick="this.parentElement.classList.toggle('open')">Games</button>
+          <div class="game-switcher-menu">
+            <a href="/binary/" class="active"><strong>0️⃣1️⃣ Binary</strong><span class="game-desc">Takuzu logic puzzle</span></a>
+            <a href="/akari/"><strong>💡 Akari</strong><span class="game-desc">Light Up puzzle</span></a>
+            <a href="/hashi/"><strong>🌉 Hashi</strong><span class="game-desc">Bridges puzzle</span></a>
+          </div>
+        </div>
+        <a href="/binary/">Play</a>
+        <a href="#rules">Rules</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>Takuzu Puzzle: The Same Game as Binary Puzzle</h1>
+    <p class="subtitle">Takuzu, Binary Puzzle and Binairo are one and the same logic game, invented in Belgium in 2009. Learn the three rules, then play free 6×6, 8×8 and 10×10 grids right in your browser.</p>
+    <div class="cta-center">
+      <a class="btn btn-primary" href="/binary/">Play Takuzu Free</a>
+    </div>
+
+    <section class="seo-content">
+      <h2 id="what-is-takuzu">What Is Takuzu?</h2>
+      <p><strong>Takuzu</strong> is a binary logic puzzle in which every cell of a square grid holds exactly one of two symbols, <strong>0 or 1</strong>. You start from a few given digits and fill the rest of the grid using three simple rules. It is the same puzzle you will also see published as <strong>Binary Puzzle</strong> or <strong>Binairo</strong>: same grid, same 0s and 1s, same rules, just a different name.</p>
+      <p>The puzzle was invented in <strong>Belgium in 2009</strong> and spread quickly across European newspapers, puzzle apps and websites. In the Netherlands it became famous as <strong>Binairo</strong> (from "binary zero"), while many other apps and papers adopted <strong>Takuzu</strong>, a Japanese-styled name that suits the puzzle's elegant minimalism. None of the names describes a different game.</p>
+      <p>On GridPaw, the game lives at <a href="/binary/">the Binary Puzzle page</a>, where every grid is generated with exactly one solution and the Takuzu uniqueness rule is always switched on.</p>
+
+      <h2 id="rules">Takuzu Rules: The Three Golden Rules</h2>
+      <p>Only three rules govern every Takuzu puzzle. All three are easy to state and easy to check as you play:</p>
+      <ol>
+        <li><strong>Balanced rows and columns.</strong> Every row and every column must contain the same number of 0s and 1s. A 6×6 row finishes with three of each, an 8×8 row with four of each, a 10×10 row with five of each.</li>
+        <li><strong>No three in a row.</strong> No three identical digits may sit next to each other, horizontally or vertically. Runs like <strong>000</strong> or <strong>111</strong> are always illegal.</li>
+        <li><strong>Unique rows and columns.</strong> No two rows and no two columns may be identical. This is the rule that gives Takuzu its character, and it is enabled on every GridPaw puzzle.</li>
+      </ol>
+      <p>That is the entire ruleset. Two symbols, three rules, one unique solution. The simplicity is what makes Takuzu so satisfying: you can explain it to a child in a minute, yet the harder 10×10 grids still demand real discipline.</p>
+      <div class="cta-center">
+        <a class="btn btn-primary" href="/binary/">Start Solving Takuzu</a>
+      </div>
+
+      <h2 id="names">Takuzu vs Binary Puzzle vs Binairo</h2>
+      <p>People often ask whether these are different puzzles. They are <strong>exactly the same game</strong>:</p>
+      <table style="width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.95rem;">
+        <thead><tr style="border-bottom:2px solid var(--gp-primary);text-align:left;"><th style="padding:.4rem;">Name</th><th style="padding:.4rem;">Where it is used</th><th style="padding:.4rem;">Rules</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--gp-linen);"><td style="padding:.4rem;">Takuzu</td><td style="padding:.4rem;">Most puzzle apps and newspapers</td><td style="padding:.4rem;">Identical</td></tr>
+          <tr style="border-bottom:1px solid var(--gp-linen);"><td style="padding:.4rem;">Binary Puzzle</td><td style="padding:.4rem;">English-language puzzle sites</td><td style="padding:.4rem;">Identical</td></tr>
+          <tr style="border-bottom:1px solid var(--gp-linen);"><td style="padding:.4rem;">Binairo</td><td style="padding:.4rem;">Dutch and Belgian publications</td><td style="padding:.4rem;">Identical</td></tr>
+          <tr><td style="padding:.4rem;">Binario</td><td style="padding:.4rem;">Spanish and Italian sites</td><td style="padding:.4rem;">Identical</td></tr>
+        </tbody>
+      </table>
+      <p>If you have solved one, you have solved them all. On this site we call the playable game <strong>Binary Puzzle</strong> because it is the clearest, most searchable name, but the grid you will play is a pure Takuzu: unique rows and columns included. If you came here hoping to play, head to the <a href="/binary/">Binary Puzzle game page</a> and start a 6×6 round right now.</p>
+
+      <h2 id="how-to-play">How to Play Takuzu</h2>
+      <p>Playing Takuzu online takes seconds to learn:</p>
+      <ol>
+        <li><strong>Read the givens.</strong> Some cells already contain a 0 or a 1. These are fixed and never change.</li>
+        <li><strong>Fill empty cells.</strong> Click any empty cell to cycle it between 0 and 1. On desktop you can also select a cell and press the <strong>0</strong> or <strong>1</strong> key; Backspace clears it and arrow keys move around the board.</li>
+        <li><strong>Check the three rules as you go.</strong> Cells that break a rule get a red tint, so mistakes are caught instantly instead of at the end.</li>
+        <li><strong>Finish the grid.</strong> The puzzle is solved when every row and column is balanced, no three identical digits touch, and no two rows or columns match.</li>
+      </ol>
+      <p>Every GridPaw puzzle has exactly one solution, so pure logic is always enough. Stuck? The Hint button on the game page drops the correct digit into the selected cell (three hints per puzzle).</p>
+
+      <h2 id="difficulty">Takuzu Difficulty Levels: 6×6, 8×8 and 10×10</h2>
+      <p>GridPaw offers Takuzu in three sizes, each a distinct difficulty step:</p>
+      <ul>
+        <li><strong>Easy 6×6.</strong> The warm-up. Rows need three 0s and three 1s, and the small board almost solves itself once you spot the pairs. Perfect for kids and first-timers.</li>
+        <li><strong>Medium 8×8.</strong> The everyday challenge. Four of each digit per line, enough cells for the uniqueness rule to start mattering.</li>
+        <li><strong>Hard 10×10.</strong> The cap. Five of each digit per row and column, and the final cells usually hinge on spotting two identical rows or columns and flipping one digit.</li>
+      </ul>
+      <p>These are the largest sizes on offer: GridPaw ends at <strong>10×10</strong>. You will find 12×12 or 14×14 Takuzu grids on other sites, but we deliberately keep the range where every puzzle stays comfortably solvable with pure logic in a short session. A 10×10 hard puzzle is already a proper workout.</p>
+      <div class="cta-center">
+        <a class="btn btn-primary" href="/binary/">Play Takuzu at Every Level</a>
+      </div>
+
+      <h2 id="strategy">Takuzu Strategy: Three Techniques That Solve Almost Everything</h2>
+      <p>The same three techniques unlock nearly every GridPaw Takuzu grid:</p>
+      <ol>
+        <li><strong>The pairs rule.</strong> Two identical digits side by side (<strong>00</strong> or <strong>11</strong>) force the cell on each outside flank to be the opposite digit. It also works across one gap: <strong>0_0</strong> forces a 1 into the middle, and <strong>1_1</strong> forces a 0.</li>
+        <li><strong>Count your lines.</strong> In a 6×6 grid every row and column must end with exactly three 0s and three 1s. Once a row holds three of one digit, every remaining empty cell in that row must be the other digit. Fill them confidently, then sweep the columns the same way.</li>
+        <li><strong>Enforce uniqueness.</strong> On larger grids, once most lines are complete, scan for two rows that look identical. They are not allowed, so one digit somewhere in the pair must flip; the same applies to columns. On a nearly full board this is usually the key that unlocks the last cells.</li>
+      </ol>
+      <p>Combine these with the no-triples rule and you can solve every puzzle on the site without guessing. If you want a different flavor of Japanese-style deduction afterwards, try <a href="/akari/">Akari (Light Up)</a> or bridge-building <a href="/hashi/">Hashi</a>, both free on GridPaw.</p>
+
+      <h2 id="faq">Frequently Asked Questions</h2>
+      <details>
+        <summary>Is Takuzu the same as Binary Puzzle?</summary>
+        <p>Yes. Takuzu, Binary Puzzle and Binairo are the exact same game with identical rules. The puzzle was invented in Belgium in 2009, and Takuzu is simply the name most apps and newspapers use for it.</p>
+      </details>
+      <details>
+        <summary>What does Takuzu mean?</summary>
+        <p>Takuzu is the Japanese-styled name under which many apps and newspapers publish this binary logic puzzle. The puzzle itself was invented in Belgium in 2009 and has no official Japanese origin, but the name suits its minimal 0 and 1 aesthetic.</p>
+      </details>
+      <details>
+        <summary>Is Takuzu free on GridPaw?</summary>
+        <p>Yes. The GridPaw Takuzu puzzle (called Binary Puzzle on the game page) is completely free to play in your browser. There is no download, no account and no payment. Pick 6×6, 8×8 or 10×10 and start solving immediately.</p>
+      </details>
+      <details>
+        <summary>Why is there no 14x14 Takuzu on GridPaw?</summary>
+        <p>GridPaw Takuzu comes in 6×6, 8×8 and 10×10 grids and stops there. We keep every puzzle solvable with pure logic in a short session, and 10×10 is already a proper challenge. 14×14 grids found elsewhere simply fall outside our size range.</p>
+      </details>
+      <details>
+        <summary>Are Takuzu puzzles good for your brain?</summary>
+        <p>Yes. Takuzu trains pattern recognition, systematic elimination and forward planning with a very light rule set, which makes it an accessible daily brain workout for all ages and a great first step toward harder logic puzzles.</p>
+      </details>
+
+      <h2 id="more">More Puzzles from GridPaw</h2>
+      <ul>
+        <li><a href="/binary/">Binary Puzzle (Takuzu)</a> - the playable game with Easy, Medium and Hard grids</li>
+        <li><a href="/akari/">Akari (Light Up)</a> - place glowing cats to illuminate every cell</li>
+        <li><a href="/hashi/">Hashi (Bridges)</a> - connect islands with bridges under tight constraints</li>
+      </ul>
+    </section>
+    <ExtensionPromo />
+    <footer>
+      <p>GridPaw - Takuzu Puzzle Online, Free in Your Browser · <a href="/binary/">Play Binary Puzzle</a></p>
+      <p style="margin-top:0.3rem"><a href="https://www.pinterest.com/gridpaw/" rel="noopener">GridPaw on Pinterest</a></p>
+    </footer>
+  </div>
+</body>
+</html>

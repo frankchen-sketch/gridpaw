@@ -1,0 +1,239 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+const title = "Binary Puzzle Strategy: How to Solve Takuzu";
+const description = "Learn how to solve binary puzzles (Takuzu) step by step: the three rules, balance counting, run breaking, and strategy for hard 10x10 grids.";
+
+const faqs = [
+  { q: "Is Takuzu the same as a binary puzzle?", a: "Yes. Takuzu, Binary Puzzle, and Binairo are different names for the same 0 and 1 logic game: equal numbers per line, no three identical digits in a row, and no duplicate rows or columns in Takuzu mode. GridPaw uses the name Binary Puzzle on the page and the Takuzu rules under the hood." },
+  { q: "Do binary puzzles have only one solution?", a: "On GridPaw, yes. Every level is generated and then verified by a solver to have exactly one solution before it reaches you. If your logical moves run out, a deduction you missed is hiding somewhere, not a second answer." },
+  { q: "What sizes and difficulties does GridPaw offer?", a: "Easy is 6x6, Medium is 8x8, and Hard is 10x10. The hard tier opens with the fewest starting digits, about fifteen, while Easy and Medium start with roughly twenty filled cells." },
+  { q: "How do GridPaw hints work?", a: "A hint reads the puzzle's unique solution and fills the cell you chose with its exact correct digit, either 0 or 1. There is no partial clue: a hint settles that cell completely." },
+  { q: "Are binary puzzles hard to learn?", a: "Not at all. The three rules fit in a sentence, and the first techniques are just spotting pairs and counting. Most people finish an easy 6x6 within a few minutes of learning the rules." },
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/binary/how-to-solve" type="article" breadcrumbTitle="How to Solve Binary" />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/binary/how-to-solve/">
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/binary/how-to-solve/">
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://gridpaw.com/#website",
+        "url": "https://gridpaw.com/",
+        "name": "GridPaw",
+        "publisher": { "@id": "https://gridpaw.com/#organization" }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://gridpaw.com/#organization",
+        "name": "GridPaw",
+        "url": "https://gridpaw.com/"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://gridpaw.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Binary Puzzle", "item": "https://gridpaw.com/binary/" },
+          { "@type": "ListItem", "position": 3, "name": "How to Solve Binary", "item": "https://gridpaw.com/binary/how-to-solve/" }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": faqs.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } }))
+      }
+    ]
+  })} />
+
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:linear-gradient(180deg,#f8f6ef,#f8f6ef);color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.8rem;color:#342421;text-align:center;margin:.5rem 0;line-height:1.3}
+    .seo-content{margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .seo-content p{margin:.5rem 0;line-height:1.7}
+    .seo-content ol,.seo-content ul{padding-left:1.5rem;margin:.5rem 0}
+    .seo-content li{margin-bottom:.4rem}
+    .seo-content a{color:#E8A888;text-decoration:underline}
+    .seo-content h2{font-size:1.3rem;color:#342421;margin:1.5rem 0 .5rem}
+    .seo-content h3{font-size:1.1rem;color:#342421;margin:1rem 0 .3rem}
+    details{margin:.5rem 0;padding:.5rem .8rem;background:#f8f6ef;border-radius:8px}
+    summary{cursor:pointer;font-weight:600;color:#E8A888}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    footer a{color:#6f5651}
+    .play-cta{display:block;text-align:center;margin:2rem 0;padding:1rem;background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;border-radius:12px;text-decoration:none;font-weight:600;font-size:1.1rem}
+    .play-cta:hover{background:linear-gradient(145deg,#E0A888,#D08868)}
+
+    /* Header */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+
+    /* Games Dropdown */
+    .game-switcher { position: relative; }
+    .game-switcher-btn { font-size: 0.875rem; font-weight: 700; color: var(--text, #3D3D3D); background: none; border: none; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 0.375rem; display: flex; align-items: center; gap: 4px; font-family: inherit; }
+    .game-switcher-btn::after { content: '▾'; font-size: 10px; }
+    .game-switcher-btn:hover { background: var(--hover-bg, #F0EDF5); color: var(--ink, #3D3D3D); }
+    .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid #E8DDD0; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
+    .game-switcher:hover .game-switcher-menu { display: block; }
+    .game-switcher-menu a { display: flex; flex-direction: column; padding: 10px 16px !important; font-size: 13px !important; gap: 2px; border-radius: 0 !important; }
+    .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: #9E9590; }
+    .game-switcher-menu a:hover { background: #FFF8F0 !important; color: var(--ink, #3D3D3D) !important; }
+    .game-switcher-menu a.active { color: var(--ink, #3D3D3D) !important; background: #FFF5F0 !important; font-weight: 800 !important; }
+    @media (max-width: 480px) { .game-switcher:hover .game-switcher-menu { display: none; } .game-switcher.open .game-switcher-menu { display: block; } }
+
+    /* CTA boxes (single-line, /binary/ only) */
+    .cta-box{margin:1.5rem 0;padding:1rem 1.25rem;background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;border-radius:12px;text-align:center;font-weight:600;font-size:1.02rem;line-height:1.7}
+    .cta-box a{color:#fff;text-decoration:underline}
+
+    /* Board diagram */
+    .puzzle-board{max-width:500px;margin:1.2rem auto;background:#fff;border:1.5px solid #e7dacf;border-radius:12px;padding:.9rem 1rem .6rem;text-align:center}
+    .puzzle-board figcaption{font-size:.8rem;color:#6f5651;margin-top:.4rem;line-height:1.5;text-align:left}
+    .pz-svg{width:100%;height:auto;max-width:460px}
+    .pz-cell{fill:#fff;stroke:#E7DACF;stroke-width:1.5}
+    .pz-given{fill:#FFF8F0;stroke:#E7DACF;stroke-width:1.5}
+    .pz-pair{fill:#FFF8F0;stroke:#FFB3C6;stroke-width:3}
+    .pz-txt{font-family:"SF Pro Rounded","Segoe UI",system-ui,sans-serif;font-size:21px;font-weight:800;fill:#342421;text-anchor:middle;dominant-baseline:central}
+    .pz-pill{fill:#F0B898}
+    .pz-pill-txt{font-family:"SF Pro Rounded","Segoe UI",system-ui,sans-serif;font-size:11.5px;font-weight:700;fill:#342421;text-anchor:middle;dominant-baseline:central}
+
+    /* More puzzles */
+    .more-puzzles{margin:2rem 0 1rem;text-align:center;font-size:.95rem;color:#6f5651;line-height:1.8}
+    .more-puzzles h3{font-size:1rem;color:#342421;margin-bottom:.5rem}
+    .more-puzzles a{color:#E8A888;font-weight:600}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/binary/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Binary Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <div class="game-switcher">
+          <button class="game-switcher-btn" onclick="this.nextElementSibling.classList.toggle('open')">Games</button>
+          <div class="game-switcher-menu">
+            <a href="/"><strong>🟧 Shikaku</strong><span class="game-desc">Rectangle partition puzzle</span></a>
+            <a href="/akari/"><strong>💡 Akari</strong><span class="game-desc">Light Up puzzle</span></a>
+            <a href="/kakuro/"><strong>🔢 Kakuro</strong><span class="game-desc">Cross-sum puzzle</span></a>
+            <a href="/binary/" class="active"><strong>0️⃣1️⃣ Binary Puzzle</strong><span class="game-desc">Takuzu 0/1 logic puzzle</span></a>
+            <a href="/kenken/"><strong>🧮 KenKen</strong><span class="game-desc">Calcudoku math puzzle</span></a>
+            <a href="/nonogram/"><strong>🎨 Nonogram</strong><span class="game-desc">Picture logic puzzle</span></a>
+            <a href="/nurikabe/"><strong>🏝️ Nurikabe</strong><span class="game-desc">Islands and sea puzzle</span></a>
+            <a href="/pictomino/"><strong>🧩 Pictomino</strong><span class="game-desc">Spatial reasoning puzzle</span></a>
+          </div>
+        </div>
+        <a href="/binary/">Play</a>
+        <a href="/binary/how-to-solve/">How to Solve</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>How to Solve Binary Puzzles: A Friendly Takuzu Guide</h1>
+    <p style="text-align:center;color:#6f5651;margin-bottom:1rem;">Master Binary Puzzle (Takuzu) with step by step techniques for every grid size.</p>
+
+    <section class="seo-content">
+      <p>Binary puzzles go by many names: Takuzu, Binairo, or simply "the 0 and 1 grid." Whatever you call them, the appeal is the same: a tiny rule set that produces deep, satisfying deductions. In a binary puzzle every cell is either <strong>0</strong> or <strong>1</strong>, and three golden laws make the solve. This guide walks through the binary puzzle rules, then builds a step by step method you can apply from your first 6x6 game to a hard 10x10 and beyond. Prefer to learn by doing? <a href="/binary/">Play a binary puzzle on GridPaw</a> and keep this page open as your coach.</p>
+
+      <div class="cta-box">New here? <a href="/binary/">Play free binary puzzle</a> · <a href="/binary/">Start with Easy 6x6</a></div>
+
+      <h2>Binary Puzzle Rules: The Three Golden Laws</h2>
+      <p>The whole game rests on three rules. The engine behind <a href="/binary/">GridPaw's takuzu</a> checks all three on every move, and once you internalize them you will recognize the same structure in any binary puzzle book, app, or newspaper.</p>
+      <ol>
+        <li><strong>Balance.</strong> Each row and each column must end with an equal number of 0s and 1s. On a 6x6 board that means three of each per line; on a 10x10 board, five of each. A line can never let one digit pass half its length, and no cells may be left over at the end.</li>
+        <li><strong>No three in a row.</strong> You can never write three identical digits next to each other, horizontally or vertically. Runs of two are fine: 0 0 is legal, while 0 0 0 is not.</li>
+        <li><strong>Unique lines.</strong> In Takuzu mode, which GridPaw uses by default, no two rows may be identical and no two columns may be identical. Every line has to carry a distinct pattern.</li>
+      </ol>
+      <p>That is the complete ruleset. Everything else in this guide is technique: how to turn those three laws into forced moves. If you enjoy puzzles built from a few clean rules, you will probably love our <a href="/akari/">Akari (Light Up) guide</a> too; it is the same spirit, with bulbs instead of digits.</p>
+
+      <h2>How to Solve Takuzu Step by Step: Opening Moves</h2>
+      <p>Every solve starts the same way: sweep the grid for cells the rules force immediately. Use this order and you will rarely stall.</p>
+      <ol>
+        <li><strong>Hit the doubles.</strong> Wherever two identical digits sit side by side, both outer neighbors must be the opposite digit. A row reading 1 1 _ forces the third cell to 0, and _ 0 0 forces the cell before the pair to 1. Scan rows and columns alike.</li>
+        <li><strong>Fill the gap between equals.</strong> If two identical digits are separated by exactly one empty cell, like 0 _ 0, the middle cell must be the opposite digit. A 0 there would make 0 0 0, which breaks rule two, so it has to be 1. The same holds for 1 _ 1.</li>
+        <li><strong>Use the walls.</strong> At the edge of the grid a pair flush against the border behaves the same way. In _ 1 1 at the start of a row, the first cell must be 0.</li>
+      </ol>
+      <p>These three opening moves come from the no-three rule alone. They are fast, safe, and they usually unlock a chain of further placements on easy boards. GridPaw's <a href="/binary/">free takuzu</a> makes the payoff visible: an easy 6x6 opens with about twenty given digits, so the first sweep tends to settle half of your row ends for you.</p>
+
+      <figure class="puzzle-board">
+        <svg class="pz-svg" viewBox="0 0 460 330" role="img" aria-label="Partial 6 by 6 binary puzzle grid with balance markers" xmlns="http://www.w3.org/2000/svg"><rect class="pz-given" x="30" y="24" width="46" height="46" rx="6"/><text class="pz-txt" x="53" y="47">1</text><rect class="pz-given" x="76" y="24" width="46" height="46" rx="6"/><text class="pz-txt" x="99" y="47">0</text><rect class="pz-cell" x="122" y="24" width="46" height="46" rx="6"/><rect class="pz-cell" x="168" y="24" width="46" height="46" rx="6"/><rect class="pz-cell" x="214" y="24" width="46" height="46" rx="6"/><rect class="pz-cell" x="260" y="24" width="46" height="46" rx="6"/><rect class="pz-cell" x="30" y="70" width="46" height="46" rx="6"/><rect class="pz-cell" x="76" y="70" width="46" height="46" rx="6"/><rect class="pz-given" x="122" y="70" width="46" height="46" rx="6"/><text class="pz-txt" x="145" y="93">0</text><rect class="pz-given" x="168" y="70" width="46" height="46" rx="6"/><text class="pz-txt" x="191" y="93">1</text><rect class="pz-cell" x="214" y="70" width="46" height="46" rx="6"/><rect class="pz-cell" x="260" y="70" width="46" height="46" rx="6"/><rect class="pz-pair" x="30" y="116" width="46" height="46" rx="6"/><text class="pz-txt" x="53" y="139">0</text><rect class="pz-pair" x="76" y="116" width="46" height="46" rx="6"/><text class="pz-txt" x="99" y="139">0</text><rect class="pz-cell" x="122" y="116" width="46" height="46" rx="6"/><rect class="pz-cell" x="168" y="116" width="46" height="46" rx="6"/><rect class="pz-given" x="214" y="116" width="46" height="46" rx="6"/><text class="pz-txt" x="237" y="139">1</text><rect class="pz-cell" x="260" y="116" width="46" height="46" rx="6"/><rect class="pz-cell" x="30" y="162" width="46" height="46" rx="6"/><rect class="pz-given" x="76" y="162" width="46" height="46" rx="6"/><text class="pz-txt" x="99" y="185">1</text><rect class="pz-cell" x="122" y="162" width="46" height="46" rx="6"/><rect class="pz-cell" x="168" y="162" width="46" height="46" rx="6"/><rect class="pz-pair" x="214" y="162" width="46" height="46" rx="6"/><text class="pz-txt" x="237" y="185">0</text><rect class="pz-pair" x="260" y="162" width="46" height="46" rx="6"/><text class="pz-txt" x="283" y="185">0</text><rect class="pz-cell" x="30" y="208" width="46" height="46" rx="6"/><rect class="pz-cell" x="76" y="208" width="46" height="46" rx="6"/><rect class="pz-given" x="122" y="208" width="46" height="46" rx="6"/><text class="pz-txt" x="145" y="231">1</text><rect class="pz-cell" x="168" y="208" width="46" height="46" rx="6"/><rect class="pz-cell" x="214" y="208" width="46" height="46" rx="6"/><rect class="pz-cell" x="260" y="208" width="46" height="46" rx="6"/><rect class="pz-cell" x="30" y="254" width="46" height="46" rx="6"/><rect class="pz-cell" x="76" y="254" width="46" height="46" rx="6"/><rect class="pz-cell" x="122" y="254" width="46" height="46" rx="6"/><rect class="pz-cell" x="168" y="254" width="46" height="46" rx="6"/><rect class="pz-cell" x="214" y="254" width="46" height="46" rx="6"/><rect class="pz-cell" x="260" y="254" width="46" height="46" rx="6"/><rect class="pz-pill" x="328" y="32" width="108" height="30"/><text class="pz-pill-txt" x="382" y="47">0×2 · 1×2</text><rect class="pz-pill" x="328" y="78" width="108" height="30"/><text class="pz-pill-txt" x="382" y="93">0×2 · 1×2</text><rect class="pz-pill" x="328" y="124" width="108" height="30"/><text class="pz-pill-txt" x="382" y="139">0×1 · 1×2</text><rect class="pz-pill" x="328" y="170" width="108" height="30"/><text class="pz-pill-txt" x="382" y="185">0×1 · 1×2</text><rect class="pz-pill" x="328" y="216" width="108" height="30"/><text class="pz-pill-txt" x="382" y="231">0×3 · 1×2</text><rect class="pz-pill" x="328" y="262" width="108" height="30"/><text class="pz-pill-txt" x="382" y="277">0×3 · 1×3</text></svg>
+        <figcaption>A 6x6 takuzu in progress. Filled cells are givens; the ringed 0 0 pairs force the cell next to each pair to be 1. The pills on the right show how many 0s and 1s each row still needs to reach three of each.</figcaption>
+      </figure>
+
+      <h2>Balance Technique: Count Zeros and Ones in Every Line</h2>
+      <p>Once the no-three moves run dry, switch to counting. The balance law is a scanner, not a chooser: it tells you when a digit's quota is full.</p>
+      <p>On a 6x6 board every row needs three 0s and three 1s. The moment a row already holds three of one digit, every remaining empty cell in that row must be the other digit. The same law runs down the columns. Watch lines that sit close to their quota, because they convert fastest.</p>
+      <p>There is a subtler version of the same law, and GridPaw's checker uses it on every move. A line is only legal when its empty cells can exactly absorb the missing 0s and 1s. If a row has three blanks but only needs two more digits to reach its split, that row can never be completed, so whatever move created that state is dead. Use this to reject candidate cells before you even write them.</p>
+      <p><strong>Whenever a line's remaining blanks exactly match its missing digits, every blank gets a fixed value.</strong> Suppose a row has three blanks, already contains two 0s and one 1, and still needs one more 0 and two more 1s. Those three blanks are now fully determined: one of them is 0 and the other two are 1. Combine this with the no-three rule and the 1 _ 1 gap rule to work out which blank is which.</p>
+
+      <h2>No Three in a Row: Finding Forced Cells</h2>
+      <p>Rule two is the most visual, which makes it the most fun to exploit. Scan every row and column for the two dangerous shapes.</p>
+      <ul>
+        <li><strong>Double, then blank:</strong> 0 0 _ or 1 1 _. The blank is forced to the opposite digit.</li>
+        <li><strong>Blank, then double:</strong> _ 0 0 or _ 1 1. The blank ahead of the pair takes the opposite digit.</li>
+        <li><strong>Equals with a gap:</strong> 0 _ 0 and 1 _ 1. The middle cell flips to the other digit.</li>
+      </ul>
+      <p>Notice what is <em>not</em> on that list: 0 _ 1. Both values can complete it, 0 0 1 or 0 1 1, so it is neutral. Do not waste time on shapes that are not forced.</p>
+      <p>A fast way to find these is to re-check the neighbors of every pair you already placed. Each new digit is a potential member of a fresh double or a fresh gap, so after every placement, scan its two row neighbors and its two column neighbors. GridPaw flags mistakes live: place a digit that creates a third in a line and the game calls the three-in-a-row error instantly, which makes practicing the scan completely safe.</p>
+
+      <h2>Row and Column Uniqueness: No Two Lines Alike</h2>
+      <p>Rule three is the one most beginners forget, and it is the key to finishing boards. In Takuzu mode every row must be a pattern no other row repeats, and every column must do the same.</p>
+      <p>The practical payoff shows up late in a solve. When a board is down to its last unfilled row, that row can only take one of the balanced patterns that is not already sitting in the grid. List the completed rows, see which valid pattern is missing, and you have the row's full contents; the column givens and the no-three rule then pin down the exact order.</p>
+      <p>Earlier in the solve, use the copy shortcut as a constraint. Once a row is complete, compare other rows against its prefix. If a nearly finished row already shares several digits with a complete row, the uniqueness rule can force or forbid specific cells to keep them apart. Columns behave identically. If this single-solution discipline feels familiar, it should: <a href="/hashi/">Hashi (Bridges)</a> players live by the same logic, and our Hashi guide shows how uniqueness thinking scales once you add bridge counts.</p>
+
+      <h2>Hard Takuzu Strategy: Mastering the 10x10 Board</h2>
+      <p>Hard takuzu is where the three rules start talking to each other. GridPaw's Hard tier is a 10x10 board that opens with only about fifteen givens, so early doubles are scarce and the first deduction often comes from balance rather than from pairs.</p>
+      <p>The strategy that scales is <strong>candidate narrowing</strong>. For a stubborn cell, list what it cannot be: a digit that breaks a run, pushes a line past its quota, or would duplicate a row. If one digit survives, place it. When both survive, look one move ahead: try a digit, apply the three rules to the cells it touches, and see whether the board breaks. If it does, the other digit was forced. This is the same elimination habit you use in <a href="/akari/">Akari</a>, just adapted to 0 and 1.</p>
+      <p>Do not be shy with hints. GridPaw's hint system reads the puzzle's unique solution and returns the exact correct value for the cell you picked, either 0 or 1, never a vague nudge.</p>
+      <p>What about a 14x14 hard takuzu? That size is common in printed puzzle collections and larger mobile apps, and the rules do not change: seven 0s and seven 1s per line, no triples, no duplicate lines. The difference is that counting carries far more weight. Practicing on GridPaw's hard 10x10s is the best warmup for those giants, because the 10x10 already forces you to track quotas across a wide grid while the pair scans stay fast.</p>
+
+      <div class="cta-box">Ready to test the technique? <a href="/binary/">Play takuzu free</a> · <a href="/binary/">Try a Medium 8x8</a></div>
+
+      <h2>Binary Puzzle Tips for Beginners</h2>
+      <ul>
+        <li><strong>Start on 6x6.</strong> Easy boards give you about twenty digits and almost write themselves. Medium 8x8 and hard 10x10 can wait a few days.</li>
+        <li><strong>Keep a running count.</strong> Track how many 0s and 1s each line has. The moment a line hits its quota, every blank in it is decided.</li>
+        <li><strong>Scan after every move.</strong> Each digit you place creates new doubles and new gaps. Re-check its row and column neighbors before looking further.</li>
+        <li><strong>Do not guess early.</strong> On a well-made puzzle the first twenty moves are usually all forced. If you stall, you missed a balance or a gap, not a miracle.</li>
+        <li><strong>Treat hints as teachers.</strong> When stuck, ask the hint, note the value it proves, and reverse-engineer why that digit had to be there.</li>
+        <li><strong>Play daily.</strong> Ten minutes of takuzu is a lovely warm habit, and the pattern library builds surprisingly fast.</li>
+      </ul>
+
+      <h2>Frequently Asked Questions</h2>
+      {faqs.map(f => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </section>
+
+    <div class="cta-box">Feeling sharp? <a href="/binary/">Play Binary Puzzle now</a> · <a href="/binary/">Jump into Hard 10x10</a></div>
+
+    <div class="more-puzzles">
+      <h3>More Puzzles</h3>
+      <p><a href="/akari/">Akari</a> · <a href="/hashi/">Hashi</a> · <a href="/kakuro/">Kakuro</a></p>
+    </div>
+
+    <footer><p>© 2026 GridPaw. All rights reserved.</p><p style="margin-top:0.3rem"><a href="https://www.pinterest.com/gridpaw/" rel="noopener">GridPaw on Pinterest</a></p>
+</footer>
+  </div>
+</body>
+</html>

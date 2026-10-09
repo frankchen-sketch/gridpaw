@@ -1,0 +1,246 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+const title = "Hashi Solver - Free Bridges Puzzle Solver Online";
+const description = "Free Hashi solver online: it checks every bridge, catches mistakes, and hints the next move. Learn bridges puzzle rules and play free puzzles.";
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <SEOHead title={title} description={description} canonical="/hashi/solver" type="article" image="/og-hashi.png" />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/hashi/solver/">
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/hashi/solver/">
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://gridpaw.com/#website",
+        "url": "https://gridpaw.com/",
+        "name": "GridPaw",
+        "publisher": { "@id": "https://gridpaw.com/#organization" }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://gridpaw.com/#organization",
+        "name": "GridPaw",
+        "url": "https://gridpaw.com/"
+      },
+      {
+        "@type": "WebApplication",
+        "name": "GridPaw Hashi Puzzle",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Web Browser",
+        "url": "https://gridpaw.com/hashi/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question", "name": "Is the GridPaw Hashi solver free to use?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. GridPaw is completely free, with no account, no subscription, and no ads. The Hashi game includes the solver and hint features built in, so you get instant checking and step by step guidance on every puzzle from the moment you open the page." }
+          },
+          {
+            "@type": "Question", "name": "What is the difference between Hashi, Bridges, and Hashiwokakero?",
+            "acceptedAnswer": { "@type": "Answer", "text": "They all describe the same puzzle. Hashi is the Japanese name meaning bridge, Hashiwokakero translates as building bridges, and Bridges is the common English name. The rules are identical in every version." }
+          },
+          {
+            "@type": "Question", "name": "What sizes do GridPaw Hashi puzzles come in?",
+            "acceptedAnswer": { "@type": "Answer", "text": "GridPaw generates three difficulty sizes. Easy boards are 8 by 8 with 10 islands, medium boards are 10 by 10 with 14 islands, and hard boards are 12 by 12 with 18 islands. Every board is generated fresh in your browser with a unique solution." }
+          },
+          {
+            "@type": "Question", "name": "Can a Hashi puzzle have more than one solution?",
+            "acceptedAnswer": { "@type": "Answer", "text": "A well-made Hashi puzzle has exactly one solution, and GridPaw makes sure of it. The generator re-runs a full solve after building each board and keeps only grids whose solution is unique, so a hint is always a fact, never a guess." }
+          }
+        ]
+      }
+    ]
+  })} />
+
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:linear-gradient(180deg,#f8f6ef,#f8f6ef);color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.8rem;color:#342421;text-align:center;margin:.5rem 0}
+    .seo-content{margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .seo-content p{margin:.5rem 0;line-height:1.7}
+    .seo-content ol,.seo-content ul{padding-left:1.5rem;margin:.5rem 0}
+    .seo-content li{margin-bottom:.4rem}
+    .seo-content a{color:#E8A888;text-decoration:underline}
+    .seo-content h2{font-size:1.3rem;color:#342421;margin:1.5rem 0 .5rem}
+    .seo-content h3{font-size:1.1rem;color:#342421;margin:1rem 0 .3rem}
+    details{margin:.5rem 0;padding:.5rem .8rem;background:#f8f6ef;border-radius:8px}
+    summary{cursor:pointer;font-weight:600;color:#E8A888}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    footer a{color:#6f5651}
+    .play-cta{display:block;text-align:center;margin:2rem 0;padding:1rem;background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;border-radius:12px;text-decoration:none;font-weight:600;font-size:1.1rem}
+    .play-cta:hover{background:linear-gradient(145deg,#E0A888,#D08868)}
+    .cta-box{display:block;text-align:center;margin:2rem 0;padding:1rem;background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;border-radius:12px;text-decoration:none;font-weight:600;font-size:1.1rem}
+    .cta-box:hover{background:linear-gradient(145deg,#E0A888,#D08868)}
+    .game-frame{margin:1.5rem auto 0}
+    .more-puzzles{text-align:center;margin:1.5rem 0;color:#6f5651}
+    .more-puzzles a{color:#E8A888;text-decoration:underline;margin:0 .3rem}
+
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+
+    /* ── Games Dropdown ── */
+    .game-switcher { position: relative; }
+    .game-switcher-btn { font-size: 0.875rem; font-weight: 700; color: var(--text, #3D3D3D); background: none; border: none; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 0.375rem; display: flex; align-items: center; gap: 4px; font-family: inherit; }
+    .game-switcher-btn::after { content: '▾'; font-size: 10px; }
+    .game-switcher-btn:hover { background: var(--hover-bg, #F0EDF5); color: var(--ink, #3D3D3D); }
+    .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid #E8DDD0; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
+    .game-switcher:hover .game-switcher-menu { display: block; }
+    .game-switcher-menu a { display: flex; flex-direction: column; padding: 10px 16px !important; font-size: 13px !important; gap: 2px; border-radius: 0 !important; }
+    .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: #9E9590; }
+    .game-switcher-menu a:hover { background: #FFF8F0 !important; color: var(--ink, #3D3D3D) !important; }
+    .game-switcher-menu a.active { color: var(--ink, #3D3D3D) !important; background: #FFF5F0 !important; font-weight: 800 !important; }
+    @media (max-width: 480px) { .game-switcher:hover .game-switcher-menu { display: none; } .game-switcher.open .game-switcher-menu { display: block; } }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/hashi/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo.png" alt="GridPaw cat mascot, Hashi puzzle game" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Hashi Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <div class="game-switcher">
+          <button class="game-switcher-btn" onclick="this.parentElement.classList.toggle('open')">Games</button>
+          <div class="game-switcher-menu">
+            <a href="/"><strong>🟧 Shikaku</strong><span class="game-desc">Rectangle partition puzzle</span></a>
+            <a href="/akari/"><strong>💡 Akari</strong><span class="game-desc">Light Up puzzle</span></a>
+            <a href="/kakuro/"><strong>🔢 Kakuro</strong><span class="game-desc">Cross-sum puzzle</span></a>
+            <a href="/hashi/" class="active"><strong>🌉 Hashi</strong><span class="game-desc">Bridges island puzzle</span></a>
+            <a href="/binary/"><strong>0️⃣1️⃣ Binary Puzzle</strong><span class="game-desc">Takuzu 0/1 logic puzzle</span></a>
+          </div>
+        </div>
+        <a href="/hashi/">Play</a>
+        <a href="/hashi/#how-to-play">How to Play</a>
+        <a href="/hashi/#tips">Tips</a>
+        <a href="/hashi/#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>Hashi Solver: Solve Any Bridges Puzzle Online</h1>
+    <p style="text-align:center;color:#6f5651;margin-bottom:1rem;">Free online Hashi puzzle solver. Learn the rules, master the techniques, and play Bridges puzzles with built-in hints.</p>
+
+    <div class="game-frame">
+      <iframe src="/hashi/?embed=1" title="Play Hashi puzzle online" loading="lazy" width="100%" height="560" style="border:0;border-radius:12px;max-width:560px;margin:0 auto;display:block"></iframe>
+    </div>
+
+    <a href="/hashi/" class="cta-box">Play Hashi Online Free</a>
+
+    <section class="seo-content">
+      <h2>How to Use This Hashi Solver</h2>
+      <p>GridPaw comes with a built-in Hashi solver that watches your bridges as you draw them, catches mistakes the moment they happen, and offers a hint exactly when you need one. Here is how it works:</p>
+      <ol>
+        <li><strong>Open a puzzle on the GridPaw Hashi page.</strong> Choose easy, medium, or hard, or replay any of the daily boards.</li>
+        <li><strong>Draw bridges between islands.</strong> Tap one island, then tap a second island in the same row or column with no island in between. Tap the bridge again to cycle its count from one to two to none. Because islands sit on grid points, bridges always stay neat, horizontal, and vertical.</li>
+        <li><strong>Read the live validation.</strong> Every time you tap, the solver checks two properties: the bridge total at every island and the connectivity of the whole network. If an island ends up with too many or too few bridges, the error shows up on the board immediately.</li>
+        <li><strong>Hint when stuck.</strong> Tap the hint button and the solver returns the exact number of bridges that edge needs: 0, 1, or 2. It never guesses, because GridPaw puzzles are designed to have one unique solution.</li>
+        <li><strong>Complete the network.</strong> When every island shows its exact number and all islands are connected as one piece, the solver confirms your win.</li>
+      </ol>
+      <p>If you have looked for a hashi solver online before, you have probably met standalone tools that ask you to type a grid in by hand. GridPaw takes a different path: the solver is built into the game itself, so there is nothing to enter and nothing to download. You still make every decision; the solver just checks your work and keeps you moving.</p>
+
+      <h2>Bridges Puzzle Rules</h2>
+      <p>Before the solver makes sense, the rules should. Hashi (Hashiwokakero in Japanese, Bridges in English) is one of the classic logic puzzles, and its rule set fits on a small card:</p>
+      <ul>
+        <li><strong>Count the bridges.</strong> Every island is a numbered dot on the grid. Its number tells you exactly how many bridges must touch it in the finished puzzle.</li>
+        <li><strong>Draw straight lines only.</strong> Bridges run horizontally or vertically between two islands in the same row or column, with no other island between them. Each connection can carry one bridge or two parallel bridges.</li>
+        <li><strong>Never cross or pass through.</strong> Bridges do not cross each other and never pass through an island.</li>
+        <li><strong>Stay connected.</strong> The finished puzzle must connect every island into a single network. No island, and no group of islands, may be cut off from the rest.</li>
+      </ul>
+      <p>That last rule is the one newcomers forget most, and it is also the most powerful one: it lets you rule out placements that look legal but would strand part of the board.</p>
+
+      <h2>How to Solve Hashiwokakero Step by Step</h2>
+      <p>Every Hashi puzzle, easy or hard, rewards the same habit: find a move that the numbers force, draw it, and take a fresh look. GridPaw's easy, medium, and hard boards are all generated to be solvable this way, by pure step by step logic, with exactly one solution. A reliable order of attack:</p>
+      <ol>
+        <li><strong>Scan for small islands.</strong> An island numbered 1 has few options. If it sits on the edge or in a corner, the choice is even narrower, and when a numbered island has exactly as many reachable neighbors as its number, every one of those neighbors must connect to it.</li>
+        <li><strong>Work the corners and edges first.</strong> A corner island has at most two neighbors, so a corner 2 connects to both and a corner 1 connects to exactly one. Edge islands have at most three neighbors. Fewer neighbors means forced moves appear faster.</li>
+        <li><strong>Update the numbers as you go.</strong> Each bridge you draw reduces the remaining need of both islands it touches. An island that needed 3 and now needs 1 changes what is possible for every neighbor around it.</li>
+        <li><strong>Protect connectivity.</strong> Before you commit a double bridge, ask whether some islands could still reach the rest of the board. If removing a path strands part of the puzzle, that path must stay open.</li>
+        <li><strong>Use the hint to unstick the logic.</strong> Select the edge you are unsure about and the solver will tell you its true bridge count. Apply it and continue your deductions from there.</li>
+      </ol>
+
+      <h2>Hashi Puzzle Techniques Worth Mastering</h2>
+      <p>A handful of named techniques covers almost every situation you will meet. These are the same patterns the GridPaw game was built to teach.</p>
+      <h3>1. Forced connections</h3>
+      <p>Count the reachable neighbors of an island. When the island's number equals the number of neighbors it can still reach, all of those neighbors must be connected. This single rule solves the opening of nearly every puzzle.</p>
+      <h3>2. Maximum saturation</h3>
+      <p>An island numbered 8 has exactly four neighbors (up, down, left, right), so all four connections must be double bridges. Likewise, a 6 with three neighbors is three doubles, a 4 with two neighbors is two doubles, and a 2 with exactly one neighbor is one double bridge. Whenever you see the maximum, fill it in at once.</p>
+      <h3>3. The connectivity check</h3>
+      <p>The finished puzzle is one network. Before drawing, picture the cut: if a bridge you are about to remove would block off part of the board, that bridge must stay. This is the same connectivity rule the solver's validator enforces, and you can preempt errors by thinking in cuts.</p>
+      <h3>4. Near-saturated islands</h3>
+      <p>When an island still needs one bridge and most of its neighbors are already full, only the empty neighbor can take it. Look for islands whose remaining need points at a single possible partner.</p>
+
+      <h2>Hashi Hints, Step by Step</h2>
+      <p>GridPaw's hint feature is a learning tool as much as a rescue button. Here is the full flow, step by step:</p>
+      <ol>
+        <li><strong>Select an edge.</strong> Tap the line between the two islands you are wondering about.</li>
+        <li><strong>Tap Hint.</strong> The solver reads the puzzle state and returns the exact bridge count for that edge: 0 means no bridge, 1 means a single bridge, 2 means a double.</li>
+        <li><strong>Apply what you learned.</strong> Draw the bridges the hint revealed, then re-derive the rest of the board yourself.</li>
+        <li><strong>Repeat sparingly.</strong> Each hint covers one edge, so you keep control of the solve. Over time you will notice the hint confirming exactly the techniques above, which is how the game teaches without a lecture.</li>
+      </ol>
+      <p>Because every GridPaw board has a unique solution, hints are always facts about the puzzle, never a coin flip. The engine simply reads the true bridge count for that edge, so what you get is something you can learn from.</p>
+
+      <h2>What the GridPaw Solver Checks</h2>
+      <p>Under the hood, GridPaw runs the same engine for playing and for generating. Its validator checks two things on every move:</p>
+      <ul>
+        <li><strong>Degree.</strong> The bridges touching an island must add up to exactly its number. If a number is overfilled or can no longer be reached, the error appears instantly.</li>
+        <li><strong>Connectivity.</strong> Every island must stay reachable from every other island. A network split into two separate pieces is never accepted, even if every number happens to match.</li>
+      </ul>
+      <p>The generator builds each board with the dimensions you choose: easy 8 by 8 boards with 10 islands, medium 10 by 10 boards with 14 islands, and hard 12 by 12 boards with 18 islands. Before you ever see a board, the engine re-solves it and keeps only grids with exactly one solution, which is why hints can always be trusted.</p>
+      <p>If you enjoy this kind of instant feedback, the same approach powers the <a href="/akari/">Akari solver</a> for Light Up puzzles, and the <a href="/binary/">Binary puzzle</a> page has a twin validator for 0 and 1 grids. Every GridPaw game shares the same philosophy: the computer checks, you solve.</p>
+
+      <h2>Frequently Asked Questions</h2>
+      <details>
+        <summary>Is the GridPaw Hashi solver free to use?</summary>
+        <p>Yes. GridPaw is completely free, with no account, no subscription, and no ads. The Hashi game includes the solver and hint features built in, so you get instant checking and step by step guidance on every puzzle from the moment you open the page.</p>
+      </details>
+      <details>
+        <summary>What is the difference between Hashi, Bridges, and Hashiwokakero?</summary>
+        <p>They all describe the same puzzle. Hashi is the Japanese name meaning bridge, Hashiwokakero translates as building bridges, and Bridges is the common English name. The rules are identical in every version.</p>
+      </details>
+      <details>
+        <summary>What sizes do GridPaw Hashi puzzles come in?</summary>
+        <p>GridPaw generates three difficulty sizes. Easy boards are 8 by 8 with 10 islands, medium boards are 10 by 10 with 14 islands, and hard boards are 12 by 12 with 18 islands. Every board is generated fresh in your browser with a unique solution.</p>
+      </details>
+      <details>
+        <summary>Can a Hashi puzzle have more than one solution?</summary>
+        <p>A well-made Hashi puzzle has exactly one solution, and GridPaw makes sure of it. The generator re-runs a full solve after building each board and keeps only grids whose solution is unique, so a hint is always a fact, never a guess.</p>
+      </details>
+    </section>
+
+    <a href="/hashi/" class="cta-box">Practice with a Hashi Puzzle Now</a>
+
+    <div class="more-puzzles">
+      <strong>More puzzles:</strong> <a href="/akari/">Akari</a> · <a href="/binary/">Binary</a> · <a href="/kakuro/">Kakuro</a>
+    </div>
+
+    <a href="/hashi/" class="cta-box">Give the Bridges Solver a Try</a>
+
+    <footer><p>© 2026 GridPaw. All rights reserved.</p><p style="margin-top:0.3rem"><a href="https://www.pinterest.com/gridpaw/" rel="noopener">GridPaw on Pinterest</a></p>
+</footer>
+  </div>
+</body>
+</html>
