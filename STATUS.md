@@ -235,6 +235,43 @@ SERP 盘面调研（`research/2026-09-20_要打的词SERP竞品盘面.md`）后�
 
 ---
 
+## 六、扩量决策 + 内容集群线（2026-10-09 上线，commit `93c1525`）
+
+> **扩量拍板（法老 2026-10-09）**：不加第 9 个游戏，克隆 akari 内容集群模式到 binary + hashi。依据（GSC 28d 实测）：akari 集群 26 页 = 谜题词曝光 411（全站其他词根总和 2.5 倍）= 模式验证；binary/takuzu 词族 pos 8.6-9.1 已在第 1 页（产品未投内容就自己爬上来）、hashiwokakero pos 8 / hashi sudoku pos 10；kenken 被 NYT 官方压着（pos 43+）不投内容；star-battle/slitherlink 继续养信号。
+>
+> **噪声排除**：全站最大曝光词「akari or step back」（302 impr/月且 10 月加速）= 菲律宾女排联赛 Akari Chargers 队相关词（TikTok/排球流量误落 /akari/how-to-solve/），**假曝光，不追不接**，读 how-to-solve 页数据时必须剔除（真实曝光约 120 不是 425）。
+
+### 首批 4 页（2026-10-09 上线，全部实测 200 + IndexNow 已推）
+
+| 页 | 承接词 | 说明 |
+|---|---|---|
+| `/binary/how-to-solve/` | takuzu strategy / binary puzzle rules | 验收修正：标题/meta 的「14x14 grids」宣传已删（产品最大 10×10） |
+| `/binary/takuzu/` | takuzu / takuzu game | 别名权威页，FAQ 如实答「为什么没有 14x14」 |
+| `/hashi/solver/` | hashi solver / bridges puzzle solver | 带 `?embed=1` 游戏 iframe |
+| `/hashi/how-to-play/` | hashiwokakero / hashi sudoku | hashiwokakero 别名权威页 |
+
+4 页均 FAQPage + BreadcrumbList JSON-LD（build 后逐块解析验证，无伪造评分）、canonical/hreflang 尾斜杠正确、sitemap-0.xml 全收录、akari/binary/hashi 三向互链。子 agent 产出 + 主会话逐条验收（build 产物上做）。
+
+### 后续节奏
+
+- **Phase 2 裁决点 = 11-10**（月度体检 cron `1041dc2740c8`）：takuzu/hashiwokakero 词位动了 → 补 blog/glossary 页型到爬得快的集群；某页连续两月零曝光 → 查 thin/意图
+- GSC 收录预期 1-2 周（hub 内链 + 新 sitemap 已被 build 收录）
+
+---
+
+## 七、Lemmy 运营线（2026-10-09 恢复正常运营，法老拍板）
+
+- **定位：dev log 风格正常运营**（类似 reddit gamedev），**永不降级**（此前复盘 cron 的降级建议已作废）
+- 发帖 cron `88953652f56c`：周一/周四 10:00 各一轮（!dailygames + 自有社区 !gridpaw_dailyakari 各 1 帖），内容角度从 gridpaw.com 真实素材轮换（新游戏/引擎改进/changelog），自带「查评论→优先回评论」纪律
+- 复盘 cron `a23ec4836634`：每日 11:00（6+2 帖存活性/订阅数/GA4 归因/被删警），**ROI 警不再升级、只记录数据**
+- 账本真源：`~/workspace/backlink-workspace/records/lemmy-post-status.txt` + `records/daily/`；自有社区 39 订阅（38 联邦全沉睡，subscribers_local=1），开刊两周评论 0 条，真实互动 = dailygames 大盘帖那批（5 up + 5 评论）
+- 归因基建：`/from/lemmy-*` path 短链（public/_redirects，commit 879036e；Lemmy 剥 query → 站内 302 附加 utm），`/from/lemmy-devlog` → /changelog/
+- 首轮双帖（10-09）：[dailygames dev log](https://lemmy.zip/post/72921573) + [自有社区](https://lemmy.zip/post/72921575)
+- **遗留待办**：漏斗周报 cron `53f2a4b531f1` deliver=all 投递坏（10-04 结果丢失）→ 待改 deliver 目标
+- 新游戏收录（10-09 实测）：5 页（slitherlink/star-battle/kenken/hashi/binary）GSC URL Inspection **5/5 Submitted and indexed**，无孤岛（首页+akari 双入口内链），UV 基线：近 7 天 178 UV / 日均 ~30
+
+---
+
 ## 五、自建漏斗 + 版本归因（2026-09-18 P0+P1+P2 已上线）
 
 照 `GRIDPAW-FUNNEL-VERSIONING.md` 全量落地（furriq 方案跨站适配）。现役事实：
