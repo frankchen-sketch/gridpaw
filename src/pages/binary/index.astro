@@ -841,6 +841,7 @@ const description = "Play Binary Puzzle (Takuzu) free online: cat-themed 0/1 log
         }
         state.sel = -1;
         state.winShown = false;
+        window.__firstMoveTracked = false; goTracked = false;
         state.hintsLeft = 3;
         // 徽标 / 难度按钮
         diffBadge.className = 'difficulty-badge ' + d.badge;
@@ -860,10 +861,18 @@ const description = "Play Binary Puzzle (Takuzu) free online: cat-themed 0/1 log
       }
 
       var gaFiredOnce = false;
+      var goTracked = false;
       function fireGameStart() {
         if (gaFiredOnce) return;
         gaFiredOnce = true;
         track('game_start', { difficulty: DIFFS[state.difficulty].label, source: detectSource() });
+      }
+
+      // ── game_over（盘满但 validate 不过 = 首次提交校验失败，每关一次）──
+      function fireGameOver() {
+        if (goTracked) return;
+        goTracked = true;
+        track('game_over', { level: state.size, difficulty: DIFFS[state.difficulty].label, size: state.size });
       }
 
       // ── Cell sizing ──
@@ -1018,6 +1027,7 @@ const description = "Play Binary Puzzle (Takuzu) free online: cat-themed 0/1 log
       function setValue(i, v) {
         if (state.locked[i]) return;
         if (state.board[i] === v) return; // 重复输入保持
+        if (!window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { level: state.size, difficulty: DIFFS[state.difficulty].label }); }
         state.board[i] = v;
         renderBoard();
         maybeWin();
@@ -1026,6 +1036,7 @@ const description = "Play Binary Puzzle (Takuzu) free online: cat-themed 0/1 log
       // 点按切换约定：empty → 0 → 1 → empty
       function toggleValue(i) {
         if (state.locked[i]) return;
+        if (!window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { level: state.size, difficulty: DIFFS[state.difficulty].label }); }
         var v = state.board[i];
         state.board[i] = (v === -1) ? 0 : (v === 0) ? 1 : -1;
         renderBoard();
@@ -1038,7 +1049,7 @@ const description = "Play Binary Puzzle (Takuzu) free online: cat-themed 0/1 log
         var N2 = state.size * state.size;
         for (var i = 0; i < N2; i++) if (state.board[i] === -1) return;
         var res = BinaryEngine.validate(state.puzzle, state.board);
-        if (!res.ok) return;
+        if (!res.ok) { track('game_over', { level: state.size, difficulty: DIFFS[state.difficulty].label }); return; }
         showWin();
       }
 

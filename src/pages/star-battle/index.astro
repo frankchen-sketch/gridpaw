@@ -1047,6 +1047,7 @@ const description = "Play Star Battle (Two Not Touch) free online: cat-themed lo
       // ── Toggle ──
       function toggleCell(i) {
         if (state.locked[i]) return;
+        if (!window.__firstMoveTracked && state.board[i] !== 1) { window.__firstMoveTracked = true; track('first_move', { level: state.puzzle.size, difficulty: DIFFS[state.difficulty].label }); }
         state.board[i] = state.board[i] === 1 ? -1 : 1;
         renderBoard();
         maybeWin();
@@ -1061,6 +1062,7 @@ const description = "Play Star Battle (Two Not Touch) free online: cat-themed lo
         if (cnt !== K * N) return;  // 星星数没放满不放赢
         var res = StarBattleEngine.validate(state.puzzle, state.board); // -1 视为空，语义正确
         if (!res.ok) {
+          track('game_over', { level: state.puzzle.size, difficulty: DIFFS[state.difficulty].label });
           toast('Not quite — ' + res.errors.length + ' rule' + (res.errors.length === 1 ? '' : 's') + ' still broken', 'error');
           return;
         }

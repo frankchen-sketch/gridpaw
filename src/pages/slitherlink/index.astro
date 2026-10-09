@@ -1052,7 +1052,16 @@ const description = "Play Slitherlink free online: draw one closed loop through 
       function maybeWin() {
         if (state.winShown) return;
         var res = SlitherEngine.validate(state.puzzle, state.edges);
-        if (res.ok) showWin();
+        if (!res.ok) {
+          // game_over：环已闭合（无度数错误）但线索不匹配 → 结构性失败时刻
+          var degreeError = false;
+          for (var k = 0; k < res.errors.length; k++) if (/degree/.test(res.errors[k])) { degreeError = true; break; }
+          if (!degreeError && res.errors.length && !/Loop is empty/.test(res.errors[0])) {
+            track('game_over', { level: state.rows, difficulty: DIFFS[state.difficulty].label });
+          }
+          return;
+        }
+        showWin();
       }
 
       function showWin() {
@@ -1099,6 +1108,7 @@ const description = "Play Slitherlink free online: draw one closed loop through 
         var edge = e.target.closest('.sl-edge');
         if (!edge) return;
         var ei = parseInt(edge.getAttribute('data-ei'), 10);
+        if (!window.__firstMoveTracked && !state.edges[ei]) { window.__firstMoveTracked = true; track('first_move', { level: state.rows, difficulty: DIFFS[state.difficulty].label }); }
         state.edges[ei] = state.edges[ei] ? 0 : 1;
         renderEdges();
         maybeWin();
