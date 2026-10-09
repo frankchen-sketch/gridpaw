@@ -1,0 +1,289 @@
+---
+// How to Play Hashiwokakero (Bridges) - alias authority page for Hashi.
+// Engine facts (public/hashi-engine.js, global HashiEngine):
+//   generate(rows, cols, islandCount, difficulty, seed)
+//   easy 8x8 / islandCount 10, medium 10x10 / 14, hard 12x12 / 18
+//   validate(p, counts) -> { ok, errors } (degree + connectivity)
+import SEOHead from '../../components/SEOHead.astro';
+import GameHub from '../../components/GameHub.astro';
+const title = "How to Play Hashiwokakero (Bridges): Beginner Guide";
+const description = "Learn how to play Hashiwokakero, the Bridges puzzle from Nikoli. Master the rules, difficulty levels, and how it differs from Sudoku. Play free.";
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/hashi/how-to-play" type="website" />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/hashi/how-to-play/">
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/hashi/how-to-play/">
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://gridpaw.com/#website",
+        "url": "https://gridpaw.com/",
+        "name": "GridPaw",
+        "publisher": { "@id": "https://gridpaw.com/#organization" }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://gridpaw.com/#organization",
+        "name": "GridPaw",
+        "url": "https://gridpaw.com/"
+      },
+      {
+        "@type": "WebApplication",
+        "name": "GridPaw Hashi Puzzle",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Web Browser",
+        "url": "https://gridpaw.com/hashi/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question", "name": "What does Hashiwokakero mean?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Hashiwokakero (橋をかけろ) is Japanese for \"let's build bridges\". It is the original name of the puzzle published by Nikoli in 1990, and it is usually shortened to Hashi or translated as Bridges." }
+          },
+          {
+            "@type": "Question", "name": "Is Hashi the same as Bridges?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Hashi is a short form of Hashiwokakero, and Bridges is the English name. All three names describe the exact same puzzle with identical rules: numbered islands connected by horizontal and vertical bridges." }
+          },
+          {
+            "@type": "Question", "name": "Is Hashi like Sudoku?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Hashi and Sudoku are different games, but both are pure-logic puzzles from the Nikoli tradition. Sudoku fills a number grid by elimination, while Hashi builds a connected network of bridges by planning. No digits are placed in Hashi; the numbers are given." }
+          },
+          {
+            "@type": "Question", "name": "Is Hashi free on GridPaw?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes, the GridPaw Hashi puzzle is completely free to play in your browser. No download, no account and no payment are required. Choose Easy 8x8, Medium 10x10 or Hard 12x12 and start building bridges immediately." }
+          },
+          {
+            "@type": "Question", "name": "Do Hashi puzzles require guessing?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. Every GridPaw puzzle has a unique solution reachable through pure logic. The generator checks both bridge counts and full connectivity, so a puzzle only ships when it is truly solvable." }
+          }
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://gridpaw.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Hashi",
+            "item": "https://gridpaw.com/hashi/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "How to Play Hashiwokakero",
+            "item": "https://gridpaw.com/hashi/how-to-play/"
+          }
+        ]
+      }
+    ]
+  })} />
+
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:linear-gradient(180deg,#f8f6ef,#f8f6ef);color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.8rem;color:#342421;text-align:center;margin:.5rem 0}
+    .seo-content{margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .seo-content p{margin:.5rem 0;line-height:1.7}
+    .seo-content ol,.seo-content ul{padding-left:1.5rem;margin:.5rem 0}
+    .seo-content li{margin-bottom:.4rem}
+    .seo-content a{color:#E8A888;text-decoration:underline}
+    .seo-content h2{font-size:1.3rem;color:#342421;margin:1.5rem 0 .5rem}
+    .seo-content h3{font-size:1.1rem;color:#342421;margin:1rem 0 .3rem}
+    .seo-content table{width:100%;border-collapse:collapse;margin:1rem 0}
+    .seo-content th,.seo-content td{padding:.5rem;border:1px solid #e7dacf;text-align:left}
+    .seo-content th{background:#fff4f0;color:#342421}
+    details{margin:.5rem 0;padding:.5rem .8rem;background:#f8f6ef;border-radius:8px}
+    summary{cursor:pointer;font-weight:600;color:#E8A888}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    footer a{color:#6f5651}
+    .play-cta{display:block;text-align:center;margin:2rem 0;padding:1rem;background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;border-radius:12px;text-decoration:none;font-weight:600;font-size:1.1rem}
+    .play-cta:hover{background:linear-gradient(145deg,#E0A888,#D08868)}
+
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+
+    /* ── Games Dropdown ── */
+    .game-switcher { position: relative; }
+    .game-switcher-btn { font-size: 0.875rem; font-weight: 700; color: var(--text, #3D3D3D); background: none; border: none; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 0.375rem; display: flex; align-items: center; gap: 4px; font-family: inherit; }
+    .game-switcher-btn::after { content: '▾'; font-size: 10px; }
+    .game-switcher-btn:hover { background: var(--hover-bg, #F0EDF5); color: var(--ink, #3D3D3D); }
+    .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid #E8DDD0; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
+    .game-switcher:hover .game-switcher-menu { display: block; }
+    .game-switcher-menu a { display: flex; flex-direction: column; padding: 10px 16px !important; font-size: 13px !important; gap: 2px; border-radius: 0 !important; }
+    .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: #9E9590; }
+    .game-switcher-menu a:hover { background: #FFF8F0 !important; color: var(--ink, #3D3D3D) !important; }
+    @media (max-width: 480px) { .game-switcher:hover .game-switcher-menu { display: none; } .game-switcher.open .game-switcher-menu { display: block; } }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Hashi Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <div class="game-switcher">
+          <button class="game-switcher-btn" onclick="this.parentElement.classList.toggle('open')">Games</button>
+          <div class="game-switcher-menu">
+            <a href="/"><strong>🟧 Shikaku</strong><span class="game-desc">Rectangle partition puzzle</span></a>
+            <a href="/akari/"><strong>💡 Akari</strong><span class="game-desc">Light Up puzzle</span></a>
+            <a href="/binary/"><strong>0️⃣1️⃣ Binary</strong><span class="game-desc">Takuzu logic puzzle</span></a>
+            <a href="/pictomino/"><strong>🧩 Pictomino</strong><span class="game-desc">Spatial reasoning puzzle</span></a>
+          </div>
+        </div>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>How to Play Hashiwokakero (Bridges)</h1>
+    <p style="text-align:center;color:#6f5651;margin-bottom:1rem;">Master the rules of Hashiwokakero, the classic Nikoli bridge puzzle also known as Hashi, and start solving for free.</p>
+
+    <section class="seo-content">
+
+      <h2>What Is Hashiwokakero?</h2>
+      <p><strong>Hashiwokakero</strong> (橋をかけろ) is Japanese for <em>"let's build bridges"</em>, and it is the original name of the puzzle most people call <strong>Hashi</strong> or <strong>Bridges</strong>. The puzzle was invented in 1990 and first appeared in puzzle compilations from <a href="https://www.nikoli.co.jp/en/puzzles/hashiwokakero/" target="_blank" rel="noopener">Nikoli</a>, the same Japanese publisher that popularized Sudoku, Kakuro and Akari. The full name is a mouthful, so English-speaking players quickly shortened Hashiwokakero to <strong>Hashi</strong>, or simply described what you do and called it <strong>Bridges</strong>.</p>
+      <p>A Hashiwokakero puzzle is a set of numbered <strong>islands</strong> scattered across a grid. Each island carries a number that tells you exactly how many bridges must touch it when the puzzle is finished. Your task is to draw bridges between islands, following four simple rules, until every island is connected into one network. If you searched for a <em>hashi puzzle online</em>, this is exactly the game you found: islands, numbers, and quiet water between them.</p>
+      <p>All three names are the same game with identical rules. If you have solved a Bridges puzzle in one app and a Hashi puzzle in another, you solved Hashiwokakero twice. On GridPaw we use the short, searchable name <strong>Hashi</strong>, and you can <a href="/hashi/">play Hashiwokakero online for free</a> right now.</p>
+
+      <h2>Hashi vs Sudoku</h2>
+      <p><strong>Is Hashi like Sudoku?</strong> It is a fair question, because both are pure-logic puzzles from the same Japanese tradition, but they are different games. <strong>Sudoku</strong> gives you a 9x9 grid of digits to fill so every row, column and box holds 1 to 9 exactly once. The work is elimination: crossing out candidates until one digit remains in each cell.</p>
+      <p><strong>Hashi</strong> is a <strong>graph puzzle</strong>, not a number grid. No digit is ever placed: the numbers on the islands are <em>given</em>, and the logic lives in counting connections and planning a network. Every bridge you draw satisfies two islands at once, so the puzzle forces you to think about the whole archipelago rather than one cell. The final rule, that all islands must be connected, adds a global constraint Sudoku simply does not have.</p>
+      <p>In short: different games, same puzzle family. Both are solved by deduction alone, with no guessing and no luck. If you enjoy Hashi's spatial planning, you will likely enjoy <a href="/akari/">Akari (Light Up)</a>, where you place lamps to illuminate a grid, or <a href="/binary/">Binary (Takuzu)</a>, a deceptively simple 0-and-1 logic grid. Each one trains a different slice of the same logical muscle.</p>
+
+      <h2>Bridges Puzzle Rules</h2>
+      <p>There are only four rules in Hashiwokakero. Once they click, every Bridges puzzle in the world is the same game:</p>
+      <ul>
+        <li><strong>The number is the total.</strong> An island marked <strong>3</strong> must connect to exactly 3 bridges when the puzzle is finished. This is called the island's degree, and it never changes. Satisfied islands turn amber in the GridPaw game; islands with the wrong count turn red.</li>
+        <li><strong>Bridges run straight between neighbors.</strong> A bridge connects two islands that are <strong>closest neighbors</strong> in the same row or column, with no other island in between. Bridges are always horizontal or vertical, never diagonal.</li>
+        <li><strong>One or two bridges per pair.</strong> Two islands can be joined by at most <strong>2 bridges</strong>. A single connection means you drew one line; a double connection means two parallel lines, which is the strongest bond on the board.</li>
+        <li><strong>No crossing, no passing through.</strong> Bridges may never cross one another, and they never pass through an island. Every bridge travels the open water between its two islands.</li>
+      </ul>
+      <p>There is one final, silent rule the puzzle never lets you forget: when all island numbers are satisfied, the whole network must be <strong>connected</strong>. One island cut off from the rest, even with the correct number of bridges, means the puzzle is not solved. The GridPaw generator validates both bridge counts and connectivity, so a puzzle only ships when it has a unique, logical solution.</p>
+
+      <h2>How to Play Bridges: Your First Hashi Puzzle</h2>
+      <p>Ready to draw your first bridges? Here is the thought process behind every Hashiwokakero solve, step by step.</p>
+      <ol>
+        <li><strong>Read the degrees first.</strong> Ignore the water and read the island numbers as a list of demands. A <strong>1</strong> island that has only one neighbor is already decided: it must take a double bridge to that neighbor to reach count 1, and that neighbor instantly loses two of its own slots.</li>
+        <li><strong>Attack the corners and edges.</strong> A corner island has at most two directions, so a corner <strong>3</strong> is half-solved: both directions must take bridges, and at least one of them must be a double. Edge islands with few neighbors are almost as locked in.</li>
+        <li><strong>Count the remaining slots.</strong> After each bridge, recalculate. If an island still needs <strong>2</strong> and has exactly two unused directions left, both must be single bridges. If it needs <strong>2</strong> and only one unused direction remains, that direction must be a double bridge.</li>
+        <li><strong>Forbid what you can.</strong> A fully satisfied island can take no more bridges: mark its remaining neighboring directions as forbidden. Eliminating options is half of solving, exactly like crossing out candidates in Sudoku.</li>
+        <li><strong>Think connectivity before you finish.</strong> Never double a far-flung pair if it would seal an island off from the rest of the map. The final puzzle must be one connected network, so keep an eye on the whole archipelago, not just the island in front of you.</li>
+        <li><strong>Use the game feedback.</strong> On GridPaw, tap one island and then a neighboring island to place a bridge between them. Tap the gap between two islands to cycle that bridge from 0 to 1 to 2 and back. Islands turn <strong>amber</strong> when matched and <strong>red</strong> when wrong; the puzzle is solved when every island is amber and all islands are connected.</li>
+      </ol>
+      <p>Work these six steps in a loop and most medium puzzles solve themselves. The beauty of Hashiwokakero is that there is always a deduction hiding somewhere: when you feel stuck, go back to the edges and recount.</p>
+
+      <h2>Hashi Difficulty Levels</h2>
+      <p>GridPaw generates every Hashi puzzle in the browser with a seeded engine, so each board is fresh, fair and guaranteed solvable. There are three difficulty levels:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Level</th>
+            <th>Grid size</th>
+            <th>Islands</th>
+            <th>Ideal for</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Easy</td>
+            <td>8x8</td>
+            <td>10</td>
+            <td>First-time players learning the rules</td>
+          </tr>
+          <tr>
+            <td>Medium</td>
+            <td>10x10</td>
+            <td>14</td>
+            <td>Solvers comfortable with counting and connectivity</td>
+          </tr>
+          <tr>
+            <td>Hard</td>
+            <td>12x12</td>
+            <td>18</td>
+            <td>Experienced players who think in whole networks</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Bigger boards mean more islands, more possible bridges, and more ways to trap yourself with a disconnected final move. If it is your first time playing a hashi puzzle online, <a href="/hashi/">start with an easy 8x8 board</a>, finish it, and only then move up to Medium and Hard.</p>
+
+      <h2>Hashi Tips for Beginners</h2>
+      <p>New players ask for the same handful of shortcuts, so here they are:</p>
+      <ul>
+        <li><strong>Lock degree-1 islands early.</strong> An island that still needs exactly 1 bridge can take it from any neighbor, so decide its direction before its options shrink.</li>
+        <li><strong>Prefer double bridges as anchors.</strong> A double bridge consumes two slots on both islands at once and is almost impossible to reroute later. Locking doubles early keeps the rest of the board flexible.</li>
+        <li><strong>Finish corners first.</strong> Corner islands have the fewest directions, so they are the most constrained and the fastest to settle.</li>
+        <li><strong>Check connectedness last, but always.</strong> The classic endgame trap is a fully counted island that is stranded. Before you celebrate, make sure every island can still reach the network.</li>
+        <li><strong>Let red guide you.</strong> When an island glows red in the GridPaw game, undo your last bridge and recount. The red tint is a prompt, not a penalty.</li>
+      </ul>
+
+      <h2>Frequently Asked Questions</h2>
+
+      <details>
+        <summary>What does Hashiwokakero mean?</summary>
+        <p>Hashiwokakero (橋をかけろ) is Japanese for <em>"let's build bridges"</em>. It is the original name of the puzzle, published by Nikoli beginning in 1990, and it is usually shortened to Hashi or translated to Bridges. All three names describe the exact same game.</p>
+      </details>
+
+      <details>
+        <summary>Is Hashi the same as Bridges?</summary>
+        <p>Yes. Hashi is simply a short form of Hashiwokakero, and Bridges is the English name Western publications gave it. Same islands, same numbered clues, same rules, same solution. Only the sticker on the box changes.</p>
+      </details>
+
+      <details>
+        <summary>Is Hashi like Sudoku?</summary>
+        <p>No, Hashi is not a Sudoku variant, though both are pure-logic puzzles from the Nikoli tradition. Sudoku fills a grid of digits by elimination, while Hashi builds a connected graph of bridges by planning. In Hashi you never place a number; the island numbers are given and the work is counting connections.</p>
+      </details>
+
+      <details>
+        <summary>Is Hashi free on GridPaw?</summary>
+        <p>Yes, completely free. The GridPaw Hashi puzzle runs in your browser with no download, no account and no payment. Pick Easy 8x8, Medium 10x10 or Hard 12x12 and start building bridges immediately.</p>
+      </details>
+
+      <details>
+        <summary>Do Hashi puzzles require guessing?</summary>
+        <p>No. Every well-formed Hashiwokakero puzzle, including every board on GridPaw, has a unique solution reachable through pure logical deduction. If you feel stuck, return to the corners and the degree-1 islands; there is always a clue you have not counted yet.</p>
+      </details>
+
+    </section>
+
+    <a href="/hashi/" class="play-cta">🎮 Play Hashiwokakero (Hashi) Online Free</a>
+
+    <GameHub active="/hashi/" />
+
+    <footer>
+      <p>© 2026 GridPaw. All rights reserved.</p>
+      <p style="margin-top:0.3rem"><a href="https://www.pinterest.com/gridpaw/" rel="noopener">GridPaw on Pinterest</a></p>
+      <p style="margin-top:0.3rem">Hashiwokakero® is acknowledged where applicable as a trademark of its respective owner; GridPaw is not affiliated with any official publisher.</p>
+    </footer>
+  </div>
+</body>
+</html>
