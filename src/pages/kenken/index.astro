@@ -896,6 +896,7 @@ const description = "Play KenKen (Calcudoku) free online: cat-themed math logic 
 
         state.sel = -1;
         state.winShown = false;
+        window.__firstMoveTracked = false; goTracked = false;
         state.hintsLeft = 3;
         // 徽标 / 难度按钮
         diffBadge.className = 'difficulty-badge ' + d.badge;
@@ -916,10 +917,18 @@ const description = "Play KenKen (Calcudoku) free online: cat-themed math logic 
       }
 
       var gaFiredOnce = false;
+      var goTracked = false;
       function fireGameStart() {
         if (gaFiredOnce) return;
         gaFiredOnce = true;
         track('game_start', { difficulty: DIFFS[state.difficulty].label, source: detectSource() });
+      }
+
+      // ── game_over（盘满但行/列/cage 校验不过 = 首次提交校验失败，每关一次）──
+      function fireGameOver() {
+        if (goTracked) return;
+        goTracked = true;
+        track('game_over', { level: state.size, difficulty: DIFFS[state.difficulty].label, size: state.size });
       }
 
       // ── Cell sizing ──
@@ -1044,7 +1053,7 @@ const description = "Play KenKen (Calcudoku) free online: cat-themed math logic 
       function setValue(i, v) {
         if (state.locked[i]) return;
         if (state.board[i] === v) return; // 重复输入保持
-        if (!window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { level: state.size, difficulty: DIFFS[state.difficulty].label }); }
+        if (!window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { level: state.size, difficulty: DIFFS[state.difficulty].label, size: state.size }); }
         state.board[i] = v;
         renderBoard();
         maybeWin();
@@ -1068,20 +1077,20 @@ const description = "Play KenKen (Calcudoku) free online: cat-themed math logic 
         if (state.winShown) return;
         var N = state.size, N2 = N * N;
         for (var i = 0; i < N2; i++) if (state.board[i] === -1) return;
-        // game_over：盘满但行/列有重复 → 结构性失败时刻（cage 不满足不算，太常见）
+        // game_over：盘满但行/列/cage 校验不过 → 首次提交校验失败，每关一次
         var conflict = false;
         for (var j = 0; j < N2; j++) if (inConflict(j)) { conflict = true; break; }
-        if (conflict) { track('game_over', { level: state.size, difficulty: DIFFS[state.difficulty].label }); return; }
+        if (conflict) { fireGameOver(); return; }
         for (var k = 0; k < N; k++) {
           var seenR = {}, seenC = {};
           for (var j2 = 0; j2 < N; j2++) {
             var vr = state.board[k * N + j2], vc = state.board[j2 * N + k];
-            if (seenR[vr]) return; seenR[vr] = 1;
-            if (seenC[vc]) return; seenC[vc] = 1;
+            if (seenR[vr]) { fireGameOver(); return; } seenR[vr] = 1;
+            if (seenC[vc]) { fireGameOver(); return; } seenC[vc] = 1;
           }
         }
         for (var ci = 0; ci < state.puzzle.cages.length; ci++) {
-          if (!cageOk(state.puzzle.cages[ci])) return;
+          if (!cageOk(state.puzzle.cages[ci])) { fireGameOver(); return; }
         }
         showWin();
       }

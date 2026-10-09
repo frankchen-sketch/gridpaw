@@ -865,6 +865,7 @@ const description = "Play Star Battle (Two Not Touch) free online: cat-themed lo
         state.difficulty = difficulty;
         state.sel = -1;
         state.winShown = false;
+        window.__firstMoveTracked = false; goTracked = false;
         closeWin();
         updateDiffUI(d);
         var showLoad = difficulty === 'hard';
@@ -930,10 +931,18 @@ const description = "Play Star Battle (Two Not Touch) free online: cat-themed lo
       }
 
       var gaFiredOnce = false;
+      var goTracked = false;
       function fireGameStart() {
         if (gaFiredOnce) return;
         gaFiredOnce = true;
         track('game_start', { difficulty: DIFFS[state.difficulty].label, source: detectSource() });
+      }
+
+      // ── game_over（星满但 validate 不过 = 首次提交校验失败，每关一次）──
+      function fireGameOver() {
+        if (goTracked) return;
+        goTracked = true;
+        track('game_over', { level: state.puzzle.size, difficulty: DIFFS[state.difficulty].label, size: state.puzzle.size });
       }
 
       // ── Cell sizing ──
@@ -1047,7 +1056,7 @@ const description = "Play Star Battle (Two Not Touch) free online: cat-themed lo
       // ── Toggle ──
       function toggleCell(i) {
         if (state.locked[i]) return;
-        if (!window.__firstMoveTracked && state.board[i] !== 1) { window.__firstMoveTracked = true; track('first_move', { level: state.puzzle.size, difficulty: DIFFS[state.difficulty].label }); }
+        if (!window.__firstMoveTracked && state.board[i] !== 1) { window.__firstMoveTracked = true; track('first_move', { level: state.puzzle.size, difficulty: DIFFS[state.difficulty].label, size: state.puzzle.size }); }
         state.board[i] = state.board[i] === 1 ? -1 : 1;
         renderBoard();
         maybeWin();
@@ -1062,7 +1071,7 @@ const description = "Play Star Battle (Two Not Touch) free online: cat-themed lo
         if (cnt !== K * N) return;  // 星星数没放满不放赢
         var res = StarBattleEngine.validate(state.puzzle, state.board); // -1 视为空，语义正确
         if (!res.ok) {
-          track('game_over', { level: state.puzzle.size, difficulty: DIFFS[state.difficulty].label });
+          fireGameOver();
           toast('Not quite — ' + res.errors.length + ' rule' + (res.errors.length === 1 ? '' : 's') + ' still broken', 'error');
           return;
         }

@@ -891,6 +891,7 @@ const description = "Play Slitherlink free online: draw one closed loop through 
         state.puzzle = p;
         state.edges = new Uint8Array(SlitherEngine.edgeCount(state.rows, state.cols));
         state.winShown = false;
+        window.__firstMoveTracked = false; goTracked = false;
         state.hintsLeft = 3;
         // 徽标 / 难度按钮
         diffBadge.className = 'difficulty-badge ' + d.badge;
@@ -909,10 +910,18 @@ const description = "Play Slitherlink free online: draw one closed loop through 
       }
 
       var gaFiredOnce = false;
+      var goTracked = false;
       function fireGameStart() {
         if (gaFiredOnce) return;
         gaFiredOnce = true;
         track('game_start', { difficulty: DIFFS[state.difficulty].label, source: detectSource() });
+      }
+
+      // ── game_over（环已闭合但线索不匹配 = 首次提交校验失败，每关一次）──
+      function fireGameOver() {
+        if (goTracked) return;
+        goTracked = true;
+        track('game_over', { level: state.rows, difficulty: DIFFS[state.difficulty].label, size: state.rows });
       }
 
       // ── Cell sizing ──
@@ -1057,7 +1066,7 @@ const description = "Play Slitherlink free online: draw one closed loop through 
           var degreeError = false;
           for (var k = 0; k < res.errors.length; k++) if (/degree/.test(res.errors[k])) { degreeError = true; break; }
           if (!degreeError && res.errors.length && !/Loop is empty/.test(res.errors[0])) {
-            track('game_over', { level: state.rows, difficulty: DIFFS[state.difficulty].label });
+            fireGameOver();
           }
           return;
         }
@@ -1108,7 +1117,7 @@ const description = "Play Slitherlink free online: draw one closed loop through 
         var edge = e.target.closest('.sl-edge');
         if (!edge) return;
         var ei = parseInt(edge.getAttribute('data-ei'), 10);
-        if (!window.__firstMoveTracked && !state.edges[ei]) { window.__firstMoveTracked = true; track('first_move', { level: state.rows, difficulty: DIFFS[state.difficulty].label }); }
+        if (!window.__firstMoveTracked && !state.edges[ei]) { window.__firstMoveTracked = true; track('first_move', { level: state.rows, difficulty: DIFFS[state.difficulty].label, size: state.rows }); }
         state.edges[ei] = state.edges[ei] ? 0 : 1;
         renderEdges();
         maybeWin();

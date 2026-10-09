@@ -878,6 +878,7 @@ const description = "Play Hashi (Bridges) free online: connect every island with
         state.counts = new Int8Array(p.edges.length);
         state.selA = -1; state.selB = -1;
         state.winShown = false;
+        window.__firstMoveTracked = false; goTracked = false;
         state.hintsLeft = 3;
         diffBadge.className = 'difficulty-badge ' + d.badge;
         diffBadge.textContent = d.full;
@@ -897,10 +898,18 @@ const description = "Play Hashi (Bridges) free online: connect every island with
       }
 
       var gaFiredOnce = false;
+      var goTracked = false;
       function fireGameStart() {
         if (gaFiredOnce) return;
         gaFiredOnce = true;
         track('game_start', { difficulty: DIFFS[state.difficulty].label, source: detectSource() });
+      }
+
+      // ── game_over（度全满足但 validate 不过 = 首次提交校验失败，每关一次）──
+      function fireGameOver() {
+        if (goTracked) return;
+        goTracked = true;
+        track('game_over', { islands: state.puzzle.islands.length, difficulty: DIFFS[state.difficulty].label });
       }
 
       // ── 布局：格子点阵尺寸（对齐 kenken：上限 72px + 视口高度约束，保证棋盘单屏可见）──
@@ -1080,7 +1089,7 @@ const description = "Play Hashi (Bridges) free online: connect every island with
         if (!allMatched) return;
         var check = HashiEngine.validate(p, state.counts);
         if (!check.ok) {
-          track('game_over', { islands: state.puzzle.islands.length, difficulty: DIFFS[state.difficulty].label });
+          fireGameOver();
           toast('All islands are matched — but the network is not fully connected!', 'error');
           return;
         }
