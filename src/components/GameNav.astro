@@ -13,6 +13,13 @@ const games = [
   { href: '/nurikabe/', emoji: '🏝️', name: 'Nurikabe', desc: 'Islands and sea puzzle' },
   { href: '/pictomino/', emoji: '🧩', name: 'Pictomino', desc: 'Spatial reasoning puzzle' },
 ];
+const guides = [
+  { href: '/arrows-puzzle-walkthrough/', name: 'Arrows Puzzle Walkthrough', desc: 'Strategy for every level' },
+  { href: '/arrows-puzzle/', name: 'Arrows Puzzle', desc: 'Rules & how to play' },
+  { href: '/block-blast-hints/', name: 'Block Blast Hints', desc: '10+ score strategies' },
+  { href: '/meowdoku-guide/', name: 'Meowdoku Guide', desc: 'Hints & games like it' },
+  { href: '/cross-math-puzzle/', name: 'Cross Math Puzzle', desc: 'Rules & strategies' },
+];
 ---
 <header class="gp-nav" aria-label="Site navigation">
   <div class="gp-nav-inner">
@@ -31,6 +38,17 @@ const games = [
             <strong>❓ Help Center</strong>
             <span class="gp-game-desc">How to play all 6 games</span>
           </a>
+        </div>
+      </div>
+      <div class="gp-switcher">
+        <button class="gp-switcher-btn" onclick="this.nextElementSibling.classList.toggle('open')">Guides</button>
+        <div class="gp-switcher-menu">
+          {guides.map((g) => (
+            <a href={g.href} class={g.href === active ? 'active' : ''}>
+              <strong>📚 {g.name}</strong>
+              <span class="gp-game-desc">{g.desc}</span>
+            </a>
+          ))}
         </div>
       </div>
       <slot />
