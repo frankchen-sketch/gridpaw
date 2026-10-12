@@ -1,0 +1,47 @@
+---
+// SideAd — 桌面侧栏 sticky 广告（160x600 Banner，unit 31688449）
+// 仅 ≥1200px 渲染：内容列 500px 居中，两侧空白 gutter 各 ≥350px，广告放 gutter 不碰内容
+// 单元代码见 .adsterra/banner-160x600.snippet.md；embed 模式下不渲染
+const invokeKey = '309484c05af1066efb6f321317c94311';
+const invokeHost = 'https://www.highrevenueformat.com';
+---
+<div class="gp-side-ad gp-side-ad--left" aria-hidden="true"></div>
+<div class="gp-side-ad gp-side-ad--right" aria-hidden="true"></div>
+<script is:inline>
+(function () {
+  if (new URLSearchParams(location.search).has('embed')) return;
+  if (window.innerWidth < 1200) return;
+  var KEY = '309484c05af1066efb6f321317c94311';
+  var SRC = 'https://www.highrevenueformat.com/' + KEY + '/invoke.js';
+  function fill(side) {
+    var slot = document.querySelector('.gp-side-ad--' + side);
+    if (!slot || slot.childElementCount > 0) return;
+    // 每侧独立注入一份 atOptions（脚本按全局 atOptions 执行，两份注入必须串行且各自瞬时完成）
+    window.atOptions = { 'key': KEY, 'format': 'iframe', 'height': 600, 'width': 160, 'params': {} };
+    var s = document.createElement('script');
+    s.src = SRC;
+    s.async = false;
+    slot.appendChild(s);
+  }
+  fill('left');
+  fill('right');
+})();
+</script>
+<style>
+  .gp-side-ad {
+    display: none;
+  }
+  @media (min-width: 1200px) {
+    .gp-side-ad {
+      display: block;
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 160px;
+      height: 600px;
+      z-index: 30;
+    }
+    .gp-side-ad--left { left: max(8px, calc((100vw - 840px) / 2 - 160px - 16px)); }
+    .gp-side-ad--right { right: max(8px, calc((100vw - 840px) / 2 - 160px - 16px)); }
+  }
+</style>

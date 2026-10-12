@@ -1,9 +1,18 @@
 ---
 // Adsterra Native Banner — gridpaw.com (Website ID 6063560, Ad Unit 31317669)
-// 唯一广告位组件：只在 SEO 内容页使用，禁止放入游戏页/首页/?embed=1 页面
+// 文流广告位组件：内容页 + 游戏页/首页 GameHub 之下（2026-10-12 扩量，方案 v2）
+// 红线：?embed=1（iframe 嵌入场景）不注入脚本；pictomino/game.html 禁用本组件
 // 上线四项实测（无痕首访/移动端返回键/关拦截器）通过后才允许部署 — 见 .adsterra/native-banner.snippet.md
 ---
 <div class="adsterra-slot" aria-hidden="true" style="margin:1.2rem 0">
   <div id="container-da224f8ab8a18845cf7b27479830ecfb"></div>
 </div>
-<script is:inline async="async" data-cfasync="false" src="https://pl31418168.profitableratecpmnetwork.com/da224f8ab8a18845cf7b27479830ecfb/invoke.js"></script>
+<script is:inline data-cfasync="false">
+(function () {
+  if (new URLSearchParams(location.search).has('embed')) return;
+  var s = document.createElement('script');
+  s.src = 'https://pl31418168.profitableratecpmnetwork.com/da224f8ab8a18845cf7b27479830ecfb/invoke.js';
+  s.async = true;
+  document.currentScript.parentNode.appendChild(s);
+})();
+</script>

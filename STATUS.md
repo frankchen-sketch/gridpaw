@@ -11,6 +11,10 @@
 
 > **Nonogram 线（2026-09-26）**：第 4 个游戏立项（选型依据：nonogram 43,280/月为唯一真体量候选词，onlinenonograms DR 10 证明行为驱动可上榜；差异化=每关揭猫像素画）。引擎已交付（lineOptions 枚举→lineSolve 纯逻辑传播→回溯计数唯一性；Easy/Medium 生成强制纯逻辑可解；猫 pattern ×4 教学；生成 1-2ms/盘，selftest ALL PASS）。正式页 `/nonogram/` + GameNav 五游戏 + llms.txt 已入库（commit 0543b79）。demo（669 行，子 agent 产出+浏览器实测验收）已部署上线（deployment aef3dcb7，commit 5eda059），线上 /nonogram/、demo、引擎全 200，IndexNow 已推。
 
+> **Murdoku 备选（2026-10-10）**：数独×谋杀推理品类（纸质书 100 万+册爆款），文章沉淀 → `research/2026-10-10_Murdoku游戏备选.md`。结论：引擎复用度高（区域约束+传播求解）、叙事内容页是新杠杆；**立项前置**：web.cafe 实测 `murder sudoku`/`murder mystery logic puzzle` 量与 KD，品牌词 Murdoku 不可用（商标）。
+
+> **Pinterest 冷启动线（2026-10-10 上线 3 pin + 旧 pin UTM 补齐）**：新 pin Kakuro `1103241240027570976`（Brain Teasers 板）/ Nonogram `1103241240027571637`（Cat Games 板）/ Nurikabe `1103241240027572241`（Logic Puzzles 板），API 回读全验过（title/UTM/board/description 92-110 字符）。制作规范：真游戏截图（ego-browser 实拍，AI 不画棋盘）+ AI 背景 + GridPaw logo + CTA 按钮 + gridpaw.com 水印，1080x1620。**基线对照**：账号 30 天仅 326 曝光/1 外链（10k 邮件查证为 furriq 账号通知，非 gridpaw）；旧 10 pin UTM 补齐 **8/10 完成**（`pin-shikaku`×4/`pin-pictomino`×3/`pin-akari`×1，API 确认；剩 2 条 `…961171`/`…759874` 编辑弹窗内值已改+保存关闭，但 API/SSR 迟迟不回读——Pinterest 服务端同步滞后，48h 后复查）。**2-3 周后复盘**：新 pin 出站率 vs furriq 0.08% 基线，验证 CTA 模板；旧 Shikaku 重复 4 条可清理。Chrome profile 映射：jameschen=gridpaw。编辑 pin 弹窗技术要点：链接字段在弹窗下半部（需滚动容器），保存要点 `primary_l` class 的按钮（顶栏同名「保存」是摆设）。
+
 > **Nurikabe 线（2026-09-26 收官）**：第 5 个游戏，**已部署上线**（deployment `fb570629`）。全链：引擎（sea-snake 构造 + repairToUnique；档位 easy 5×5 / medium 7×7 / hard 9×9，selftest 16/16）→ demo（拟真皮肤：深海蓝≈海 + 沙滩岛 + 线索格小岛图案；首访五段式引导卡带真解迷你盘；教学爬梯 2×2→3×3→4×4→5×5；血量机制 3 血/关、双向纠错+纠正格锁定、血尽换盘、教学 ∞）→ 正式页 + GameNav 六游戏 + llms.txt + footer 互链。**线上验证全绿**（/nurikabe/ 200、demo v=3、引擎 16479B）、IndexNow 200、GSC sitemap 204（key=furriq A key，auto-detect 会错抓）、Request Indexing /nurikabe/ 已提交（「已请求编入索引」）。关键坑已沉淀：引擎引用 ?v=N 缓存戳（demo+worker 两处）、rule-(d) need=0 clue 格豁免（2×2 全灭根因）。
 
 > **视觉统一线（2026-09-26 上线，commit `e376e7a`）**：Akari 首页/Akari Daily/Shikaku 首页三页对齐新标准——胜利弹窗手绘 SVG 猫头→`/assets/logo.png` 彩色 logo；game-tag 行（游戏名 · Level N）全六游戏统一；分享文案挑衅风零猫脸（Shikaku 彩块 emoji 行保留=成绩艺术，玩法内 🐾 爪印保留=品牌同源）；Shikaku 新增 𝕏 Share 按钮+棋盘卡（html2canvas 截真实棋盘），Akari 棋盘卡复用 generateShareCard（卡内 🐱 灯块→琥珀块、cats→bulbs、🐾 角标删除）。埋点六游戏同名：`share_card` / `share_card_copy` / `share_twitter` / `share_reddit` / `share_copy`。Pictomino 子站独立受众，故意不动。线上实拍全验（design-live-preview 流程，Playwright 从 gridpaw.com 抓 9 图）。
@@ -20,8 +24,9 @@
 > **移动端首屏重构方案A（2026-10-09 上线，commit `5241637`，deployment `fa32020c`）**：移动端（≤560px）隐藏 GamePortal 导航网格——它占首屏 59% 把 Shikaku 棋盘挤出首屏（实测棋盘 y=808 只露 36px、教学卡 y=892 完全屏外）。改后棋盘 y=295、教学卡 y=379 完整进首屏；桌面端（>560px）portal 保留不动；零 DOM 变化不影响 SEO。依据：外链真人 71% 落首页、取证报告 62.5% 流失会话为加载即走 + dles.gg 引流秒退。方案对比与广告位评估见 `~/.hermes/cache/scratch/mobile-firstscreen-proposal.md`。
 
 > **Adsterra 低填充诊断（2026-10-09）**：15 天 8 impressions 根因=流量量级（4 SEO 页 14 天 19 会话）+ CN IP 拒服务，配置/代码健康（后台 API 逐字节比对 hash 一致，active=3 无 decline）——**严禁点后台重新生成代码**（会作废 invoke.js）。本机验收广告填充用 `~/.hermes/cache/scratch/adsterra-fill-check.py`（三级链路：invoke.js 200 → 二跳注入 → container children>0）。报告 `~/.hermes/cache/scratch/adsterra-lowfill-diagnosis.md`。
+> **漏斗复核（2026-10-12，GSC/GA4/Clarity 三源）**：结论不变且更实锤——**广告没坏，是「人数×观看深度」乘积太小**。① 流量层：28 天全站 645 会话仅 **40（6%）落在 9 个挂广告的内容页**（游戏页/首页才是流量主体且按红线不挂广告）；② 深度层：Clarity 内容页会话多为 1-7 秒弹走（meowdoku-guide×2 / japanese-logic×2 全 ≤7s），AdSlot 在文中很深（brain-teasers 实测 y≈3033px），48 分钟深读者仅 brain-teasers 一位回访（bing 来的尼日利亚用户，4 次 Show answer 0 死点击=质量最高）；③ 填充层：10-12 复测 invoke.js 从 CN 出口（MacBook curl + mini ego）双 403/0 字节=Adsterra 拒 CN IP，预期行为非故障；④ 唯一杠杆 = **给内容页导搜索流量**（与内页攻略战同一杠杆：5 新页全部挂了 AdSlot，GSC 曝光起量后广告才有钱赚）+ 可选把 AdSlot 从文末上移到首段后（抬 viewability，需 A/B 前先算流量红线：40 会话/月的页面做什么都不显著）。
 
-> **漏斗与埋点线（2026-10-09 上线，commit `a02f221`，deployment `c8a42f53`）**：binary/hashi/slitherlink/star-battle/kenken 五游戏页补齐 first_move + game_over 埋点（Playwright gtag-stub 实机验收全绿，IndexNow 已推 6 URL）。game_over 语义裁决：五款是 Zen 式谜题无血量机制，挂「主动提交校验失败」时刻（盘满/星满/环闭但 validate 不过）。**同日取证推翻「76% 首局流失」口径**：game_start 页面加载即触发（index.astro:2110），37% 死开局是 bot（isLikelyBot 已入库），真人死户 92% 为 10 秒内无交互离开，CDP 复现无 bug；真人 gs→fm ≈33%（mobile+google 达 37-60%）。取证报告 `~/.hermes/cache/scratch/shikaku-firstmove-forensics.md`。**待办 P0**：① game_start 口径改 pointerdown 触发或改名 board_ready；② 看板查询过滤 isLikelyBot（真人转化 23%→33%）；③ onboard_* 进 D1 白名单（GA4 现值 start 435/complete 151/skip 54）。
+> **漏斗与埋点线（2026-10-09 上线，commit `a02f221`，deployment `c8a42f53`）**：binary/hashi/slitherlink/star-battle/kenken 五游戏页补齐 first_move + game_over 埋点（Playwright gtag-stub 实机验收全绿，IndexNow 已推 6 URL）。game_over 语义裁决：五款是 Zen 式谜题无血量机制，挂「主动提交校验失败」时刻（盘满/星满/环闭但 validate 不过）。**同日取证推翻「76% 首局流失」口径**：game_start 页面加载即触发（index.astro:2110），37% 死开局是 bot（isLikelyBot 已入库），真人死户 92% 为 10 秒内无交互离开，CDP 复现无 bug；真人 gs→fm ≈33%（mobile+google 达 37-60%）。取证报告 `~/.hermes/cache/scratch/shikaku-firstmove-forensics.md`。**待办 P0**：① game_start 口径改 pointerdown 触发或改名 board_ready；② 看板查询过滤 isLikelyBot（真人转化 23%→33%）；③ onboard_* 进 D1 白名单（GA4 现值 start 435/complete 151/skip 54）。D1 免费配额 7500 写/日，UTC 午夜重置。
 
 > **Shikaku 触屏修复（2026-09-28 上线，commit `dae2b64`）**：Lemmy !dailygames 真实玩家反馈三项全修——拖拽高亮 8%→32% + 实时 `W×H=面积` 徽章（固定棋盘下方，永不遮棋盘格）、猫耳 top:-7px→0 收进块内+阴影收窄（不再压上方行数字）、C1 误触保护（选区无数字=静默放过不扣命，真错误照扣）。Playwright 5/5 实测（含触屏事件路径+徽章几何断言）。已同步四端：gridpaw.com 部署验证 / GameJolt release 1528718 / NG 草稿 8138600（新 zip+1000×800+触屏，13:00 cron 发布）/ itch MeowBlock（公开页 iframe 已播新包）。**平台铺量现役状态唯一入口 → skill `game-directory-submission/references/gridpaw-platform-status.md`**（GameJolt 5/5 Published、NG 2 发布+3 待发、IndieDB 公司页+3 款+2 待建、Lemmy 反馈帖已回）。
 
@@ -227,6 +232,7 @@ SERP 盘面调研（`research/2026-09-20_要打的词SERP竞品盘面.md`）后�
 
 ## 四、下一步（按优先级）
 
+0. **10/17 内页攻略战复查**（§八）：meowdoku-guide 日曝光 <15 或 arrows 双页停 9 不动 → 给 walkthrough 加内链权重（外链结构验证已完成，见 §八外链策略）
 1. **对账 Pages 报告 27 条「已发现不抓取」URL × sitemap 68 条**（GSC UI 导出，API 不出清单）→ 定性后再决定是否 404，禁止在交集弄清前下架（§二.7）
 2. **10/3 复查 how-to-solve 新 Title CTR**（one-shot cron 已设，读数须剔除 `akari or step back` 工具流量），仍 0 真人点击则上备选文案（§二.7）
 3. 让 cron 继续跑 Request Indexing 至 repeat 用完（9/30 前后），2–4 周后复盘索引与曝光
@@ -269,6 +275,32 @@ SERP 盘面调研（`research/2026-09-20_要打的词SERP竞品盘面.md`）后�
 - 首轮双帖（10-09）：[dailygames dev log](https://lemmy.zip/post/72921573) + [自有社区](https://lemmy.zip/post/72921575)
 - **遗留待办**：漏斗周报 cron `53f2a4b531f1` deliver=all 投递坏（10-04 结果丢失）→ 待改 deliver 目标
 - 新游戏收录（10-09 实测）：5 页（slitherlink/star-battle/kenken/hashi/binary）GSC URL Inspection **5/5 Submitted and indexed**，无孤岛（首页+akari 双入口内链），UV 基线：近 7 天 178 UV / 日均 ~30
+
+---
+
+## 八、内页攻略战（2026-10-10 上线 5 页，雷达首个实战命中）
+
+> 源头：T1 品类反推 arrows puzzle 词族（com.ecffri.arrows 100M+ 装，词 12 个月单边爬升）。全量词/KD 数据与状态机见 `NEWWORD-LEDGER.md`（去重真源），本节只记作战面。
+
+### 5 页清单与首次读数（2026-10-12，窗口第 2-3 天）
+
+| 页 | 承接词 | KD | GSC 读数（10-10~12） | 判断 |
+|---|---|---|---|---|
+| /arrows-puzzle/ | arrows puzzle | 40.5 | 9 imp / pos 6.8 / com.ecffri.arrows 已出曝光 | hub 起位 |
+| /arrows-puzzle-walkthrough/ | walkthrough | **11.6** 旗舰 | 9 imp / pos 6.7 | 起位，观察斜率 |
+| /block-blast-hints/ | block blast hints | 20.3 | 3 imp / pos 8.3 | 慢热 |
+| /meowdoku-guide/ | meowdoku alternative/tips | 42.2 | **33 imp / 2 clk / pos 7.9**；meowdoku tips pos 1.0 | **领跑**，变体词打法 2 天见牙 |
+| /cross-math-puzzle/ | cross math puzzle | 53.8 | 2 imp / pos **3.5** | 位置好量未起 |
+
+- GA4 落地这 5 页 = 0 会话（窗口早期正常，GSC 2 clk 需排自测）；全站大盘 217-305 imp/日未被带动
+- **复查点 2026-10-17**（GSC 滞后消化完 + 满 7 天）：meowdoku-guide 日曝光 <15 或 arrows 双页停 9 不动 → 给 walkthrough 页加内链权重
+- 28 天验证窗口至 **2026-11-07**
+
+### 外链策略（2026-10-12 拍板：分层，不均摊）
+
+内链全站必做（零成本）；外链只给「有排名机会但差一口气」的页——若 10-17 复查确认 walkthrough 卡住，KD 11.6 对应预算（10-20 引用域）花在它身上。
+
+**3ue 实证（2026-10-12，两轮抓取，完整判定报告 `backlink-pool/meowdoku.org-classified-final.md`）**：竞品 DR39 = 101 引荐域，链接 **100% 砸首页**（根域 939 反链/92 域，子页 /play 仅 32 反链 1 域）。头部 edu 链真身 = **博客评论**（fsu/bc/american/williams/uco.es 全是 NOFOLLOW UGC 评论，锚文本统一 "Meowdoku Game Guide"，话术模板化）——即一条规模化评论外链流水线，非自然 editorial。**结论**：gridpaw 不给内页买外链；5 页权重走内链体系；外链若做打 gridpaw.com 首页，载体用现成 blog-comment 管线（锚品牌词 "GridPaw"，话术手写不套模板）。优先级：不急，10-17 复查确认卡住后再动。
 
 ---
 

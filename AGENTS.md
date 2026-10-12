@@ -11,7 +11,11 @@ pnpm run build        # 构建（含引擎编译 + pagefind 索引）
 pnpm run deploy       # 部署 = wrangler pages deploy + IndexNow 提交（勿只跑裸 wrangler，会漏 IndexNow）
                       # ⚠️ 本机未装全局 wrangler（项目也没进 devDeps）：报 command not found 时用
                       # `npx -y wrangler pages deploy dist --project-name gridpaw --commit-dirty=true`
-                      # + `node scripts/indexnow-ping.mjs` 手动等价执行（登录态在 ~/.config/.wrangler）
+                      # + `node scripts/indexnow-ping.mjs` 手动等价执行（登录态在 ~/Library/Preferences/.wrangler/config/default.toml）
+                      # ⚠️ wrangler oauth 登录态会静默过期（token 401 + refresh_token 一起死，2026-10-10 实测）：
+                      # 部署前先 `npx -y wrangler whoami` 探活；过期后必须 `npx wrangler login` 重新 OAuth（浏览器点授权，交互式）
+                      # ⚠️ 部署落地瞬间的新 URL 可能被 CF 边缘缓存 404（爬虫先到）——上线后 curl 验证 404 时先
+                      # 试 `?cb=随机数` 排除边缘缓存（cache-bust 200 = 内容正常，等缓存过期或 Dashboard 手动 Purge）
 ```
 
 ## 技术栈
