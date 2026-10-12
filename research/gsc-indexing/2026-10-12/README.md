@@ -33,3 +33,15 @@
 - robots.txt `Allow: /`，无 sitemap URL 被 Disallow。
 
 ## API 验证结果（提交后追加）
+（2026-10-12 10:10 追加，URL Inspection API 直查）
+
+| URL | coverageState | lastCrawlTime | sitemap 引用 |
+|---|---|---|---|
+| https://gridpaw.com/community/ | Discovered - currently not indexed | None（提交后 ~30min 未观察到新抓取） | sitemap-0.xml + sitemap.xml |
+| https://gridpaw.com/reset-password/ | URL is unknown to Google | None | 无 |
+
+## 复查（gridpaw_unindexed.py，10:10）
+- 已收录 91 / 未收录 2（community、reset-password），查询失败 0。
+- community 提交前「无法识别/无sitemap」→ 提交后「已发现/有sitemap」：状态与 sitemap 字段联动变化，按对账期飘动处理，不算进展归因。
+- reset-password：直接 API 显示 unknown/无sitemap，脚本显示已发现/有sitemap，两处读取不一致（对账期飘动）；noindex 页，Google 不收录属预期。
+- 上轮 /binary/takuzu/ 已不在未收录列表（90→91）。
