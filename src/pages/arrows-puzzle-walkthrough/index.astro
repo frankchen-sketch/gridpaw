@@ -14,50 +14,50 @@ const faqJsonLd = [
     mainEntity: [
       {
         "@type": "Question",
-        name: "What is the arrows puzzle?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "The arrows puzzle (Arrows – Puzzle Escape) is a mobile logic game where you drag directional arrows into empty grid cells so that every arrow points at a matching target. Each level is a sliding-tile-style placement puzzle: you move arrows around the board and every arrow must end up pointing at its goal. Levels grow from a 3x3 warm-up all the way to dense multi-colored grids with locked tiles and teleporters."
-        }
-      },
-      {
-        "@type": "Question",
         name: "How many levels are in Arrows Puzzle Escape?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "There are well over 1,000 hand-made levels in Arrows – Puzzle Escape, organized into themed level packs. New packs are added regularly, so the exact count keeps growing. Most players consider the first 100 levels a tutorial: they teach placement, rotation, and color rules one concept at a time."
+          text: "Per the official listing, Arrows – Puzzle Escape contains thousands of handcrafted levels. The developer has not published an exact total, and daily challenges keep adding fresh boards, so any specific number you see online is a guess — treat the official 'thousands' as the real answer."
         }
       },
       {
         "@type": "Question",
-        name: "What should I do when I get stuck on an arrows puzzle level?",
+        name: "What happens when I lose all hearts in Arrows Puzzle Escape?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "First, look for an arrow that has only one legal landing spot left — that is your forcing move. If that does not help, try working backward from the targets: imagine an arrow already placed and ask which arrow could possibly point at the remaining targets. A deadlock usually means a chain trigger happened in the wrong order, so undo your last few moves and re-trigger the chain differently. When all else fails, reset the level and follow the color rule first: place the locked colored arrows before touching movable tiles."
+          text: "The developer has not published a detailed statement of what happens when your three hearts run out. What is certain: a collision only happens when you tap an arrow whose path is blocked, and levels have no timer, so you are never forced into a risky tap. Keep hearts by reading the board first — the framework on this page is built exactly around that."
         }
       },
       {
         "@type": "Question",
-        name: "Are arrows puzzle levels the same for everyone?",
+        name: "What are the difficulty tiers in Arrows Puzzle Escape?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Yes, in Arrows – Puzzle Escape the levels are hand-designed and identical for every player. You can look up a solution for a specific level number and it will match your board exactly. That is different from procedurally generated puzzles, where every player sees a different layout."
+          text: "The official difficulty ladder is Normal, Hard, Super Hard, and Nightmare, plus daily challenges that rotate fresh boards. There is no published level-number-to-tier mapping, so judge a tier by its boards: longer paths, denser arrow traffic, and more re-blocking as you clear."
         }
       },
       {
         "@type": "Question",
-        name: "Can I play an arrows puzzle online instead of on mobile?",
+        name: "Does Arrows Puzzle Escape have a timer?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "The official Arrows – Puzzle Escape by Ecffri is a mobile app (Android and iOS) with 100M+ installs, and the levels themselves are not officially available on the web. If you want a similar direction-pointing logic puzzle you can play right in your browser for free, GridPaw's Shikaku game trains the same spatial reasoning with no download and no signup."
+          text: "No. Every level is untimed — the only pressure is your three hearts. You can stare at a board as long as you need, which makes careful planning strictly better than fast tapping."
         }
       },
       {
         "@type": "Question",
-        name: "Is there a trick to solving arrows puzzles faster?",
+        name: "Does Arrows Puzzle Escape have hints?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "The fastest solvers use three habits: scan for single-choice arrows first, resolve color-locked tiles before free tiles, and never move an arrow twice. Every move should place a final arrow. If you are sliding arrows around experimentally, you are training to be slow — instead, plan the landing spot before you touch the tile."
+          text: "Yes, Arrows – Puzzle Escape has a built-in hint system. On a tangled board, a hint beats a gamble: collisions cost hearts, hints do not."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "What is the fastest way to clear an Arrows Puzzle Escape board?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Read the board in layers, tap the free arrows first, and peel each layer off one by one. In practice: slide every arrow with an empty path immediately, clear the outer rim before the interior, then resolve single-blocker pairs — arrows stopped by exactly one other arrow — before anything else. No-timer levels reward that steady peel over speed."
         }
       }
     ]
@@ -80,13 +80,13 @@ const faqJsonLd = [
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style is:global>
     :root {
-      --ap-primary: #3D6BF0;
-      --ap-secondary: #F2A03D;
-      --ap-bg: #F6F8FF;
-      --ap-cell-border: #D8DFF2;
-      --ap-text: #333A4E;
-      --ap-text-light: #8B93A8;
-      --ap-shadow-sm: 0 2px 8px rgba(61,107,240,0.08);
+      --ap-primary: #E87A4F;
+      --ap-secondary: #6B8FE8;
+      --ap-bg: #FFFAF5;
+      --ap-cell-border: #F0DFD2;
+      --ap-text: #42352E;
+      --ap-text-light: #A08D80;
+      --ap-shadow-sm: 0 2px 8px rgba(232,122,79,0.08);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--ap-bg); color: var(--ap-text); min-height: 100vh; }
@@ -115,22 +115,31 @@ const faqJsonLd = [
     .cta-box a { color: var(--ap-primary); font-weight: 800; text-decoration: none; }
     .cta-box a:hover { text-decoration: underline; }
     .disclaimer { font-size: 0.82rem; color: var(--ap-text-light); font-style: italic; background: #fff; border: 1px solid var(--ap-cell-border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
-    .tip-card { background: white; border: 1.5px solid var(--ap-cell-border); border-left: 4px solid var(--ap-primary); border-radius: 10px; padding: 0.7rem 0.9rem; margin: 0.6rem 0; box-shadow: var(--ap-shadow-sm); }
-    .tip-card strong { color: var(--ap-text); display: block; margin-bottom: 0.15rem; }
-    .tip-card p { margin: 0; }
-    .pill { display: inline-block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.12rem 0.5rem; border-radius: 999px; margin-bottom: 0.3rem; }
-    .pill-early { background: #DFF3E4; color: #1E7A3C; }
-    .pill-mid { background: #FFF0D4; color: #B26A00; }
-    .pill-late { background: #FDE4E4; color: #B3261E; }
-    .pill-blue { background: #E3E9FF; color: #2E4AC0; }
-    .stuck-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; margin: 0.8rem 0; }
-    .stuck-card { background: white; border: 1.5px solid var(--ap-cell-border); border-radius: 12px; padding: 0.8rem 0.9rem; box-shadow: var(--ap-shadow-sm); }
-    .stuck-card h3 { margin-top: 0; font-size: 1rem; }
-    .stuck-card .symptom { font-size: 0.8rem; color: var(--ap-text-light); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+    .lede { font-size: 1rem; color: #3a4054; line-height: 1.75; margin: 0.5rem 0 0.25rem; }
+
+    /* ===== callouts ===== */
+    .callout { font-size: 0.88rem; padding: 0.55rem 0.75rem; border-radius: 8px; margin: 0.7rem 0; display: flex; gap: 6px; align-items: flex-start; line-height: 1.6; }
+    .callout.warn { background: #FFF4E0; color: #92610A; border: 1px dashed #E8B15C; }
+    .callout.grn { background: rgba(34,197,94,.1); color: #15803d; }
+
+    /* ===== strategy list ===== */
+    .strat { margin: 6px 0; columns: 2; column-gap: 30px; }
+    .strat .st { break-inside: avoid; display: flex; gap: 10px; padding: 7px 2px; border-bottom: 1px dashed var(--ap-cell-border); font-size: 0.88rem; color: #555; line-height: 1.55; }
+    .strat .st i { font-style: normal; color: var(--ap-primary); font-weight: 800; font-size: 1.05rem; line-height: 1.15; flex: 0 0 16px; font-family: Georgia, 'Times New Roman', serif; }
+    .strat .st b { color: var(--ap-text); }
+
+    /* ===== snapshot gallery ===== */
+    .snaprow { display: flex; gap: 12px; margin: 6px 0; flex-wrap: wrap; }
+    .snaprow figure { flex: 1 1 150px; margin: 0; text-align: center; }
+    .snaprow img { width: 100%; max-width: 200px; border-radius: 8px; border: 1.5px solid #D8DFF2; }
+    .snaprow figcaption { font-size: 10px; color: var(--ap-text-light); margin-top: 3px; }
+
+    @media (max-width: 600px) {
+      .strat { columns: 1; }
+    }
     @media (max-width: 480px) {
       .seo-section h1 { font-size: 1.4rem; }
       .seo-section h2 { font-size: 1.2rem; }
-      .stuck-grid { grid-template-columns: 1fr; }
       .seo-section { padding: 1.2rem 0.8rem 1rem; }
     }
   </style>
@@ -142,136 +151,65 @@ const faqJsonLd = [
   <main class="seo-section">
     <h1>Arrows Puzzle Walkthrough: Escape Every Level with These Strategies</h1>
 
-    <p>Arrows – Puzzle Escape looks simple: drag directional arrows around a grid until each one points at its target. Then level 40 hands you your first impossible-looking deadlock, and you realize this game is quietly one of the most elegant logic puzzles on mobile. This walkthrough covers everything you need — the general strategy that carries you through the early, middle, and late levels, the five most common stuck points and how to unstick them, and level progression tips that turn a casual player into someone who finishes packs without a single hint.</p>
+    <p class="lede"><strong>Arrows – Puzzle Escape</strong> throws thousands of handcrafted boards at you, from short Normal paths to packed Nightmare mazes. The good news: every single board is solved with the same method — read the board in <b>layers</b>, find the <b>free arrows</b> whose path is already empty, and <b>peel each layer off</b> in order. This walkthrough teaches that method, explains the official difficulty tiers so you know what each level is asking, and answers the questions players actually search for.</p>
 
-    <p>Grab your board, and let's start pointing arrows.</p>
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Lessmore GmbH.</div>
 
-    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Ecffri.</div>
+    <div class="callout warn"><span><b>About per-level solutions:</b> this page teaches the universal method, not step-by-step answers for individual levels. With thousands of handcrafted boards plus rotating daily challenges, no static level list can stay complete. The layered framework below transfers to any board the game deals you — Normal or Nightmare.</span></div>
 
-    <h2>What Is the Arrows Puzzle?</h2>
-    <p>Arrows – Puzzle Escape is a logic-based sliding puzzle from developer Ecffri with more than 100 million installs. You are given an empty grid of cells, a set of arrow tiles, and a set of targets. Your job: place every arrow so that it points at exactly one target, using the empty cells as your canvas. The twist is that arrows move like sliding tiles — you can only slide them through empty space, you cannot lift them off the board, and locked tiles can never move. The result is a hybrid of a sliding puzzle and a logic deduction game, and it gets deeply strategic long before the mid-game.</p>
+    <h2>How to Use This Walkthrough</h2>
+    <p>There is no single solution path through Arrows – Puzzle Escape, but there is a reliable <em>procedure</em> that works on every board:</p>
+    <ol>
+      <li><b>Read the board in layers.</b> Before tapping anything, walk every path from edge to edge and note which arrows can already slide out safely.</li>
+      <li><b>Find the free arrows.</b> An arrow with an empty slide path is a guaranteed safe tap. Collect all of them first.</li>
+      <li><b>Peel each layer.</b> Every arrow you pull out empties paths behind it, which creates the next layer of free arrows. Keep peeling until the grid is bare.</li>
+    </ol>
+    <p>Everything else in this walkthrough — the tier notes and the six-step framework below — is a refinement of those three lines.</p>
 
-    <h2>General Arrows Puzzle Walkthrough Strategy</h2>
-    <p>There is no single solution path through the game, but there is a reliable <em>method</em>. It changes shape as the levels get harder, so here is the strategy in three stages.</p>
-
-    <h3>First 100 Levels: Learn the Placement Alphabet</h3>
-    <div class="tip-card">
-      <span class="pill pill-early">Early Game</span>
-      <strong>Treat every level as a training exercise, not a race.</strong>
-      <p>The first hundred levels introduce one concept at a time: straight shots, corner arrows, blocked cells, then colors. Play each one until you can explain <em>why</em> every arrow landed where it did. The discipline you build here is what makes later levels feel fair instead of random.</p>
-    </div>
-    <div class="tip-card">
-      <span class="pill pill-early">Early Game</span>
-      <strong>Find the forcing moves first.</strong>
-      <p>In small grids, at least one arrow usually has exactly one possible landing spot — maybe because every other spot is blocked, or because another arrow already owns the space. Locate it, place it, and the board opens up. This is the single most important habit in the entire game.</p>
-    </div>
-    <div class="tip-card">
-      <span class="pill pill-early">Early Game</span>
-      <strong>Learn to read rows and columns like equations.</strong>
-      <p>An arrow in the top row can only point right, left, or down. A corner arrow is even more constrained: it points in one of two directions. Every tile's position limits its legal directions, and counting those constraints is how you solve without guessing.</p>
-    </div>
-
-    <h3>Middle Levels: Chain Reactions and Color Logic</h3>
-    <div class="tip-card">
-      <span class="pill pill-mid">Mid Game</span>
-      <strong>Place colored locked arrows before anything else.</strong>
-      <p>Once levels introduce colored arrows with locked tiles, color becomes a hard constraint: colored arrows must point at targets of their own color, and locked tiles never move. Solve the color structure first, then treat the rest of the board as a fresh (smaller) puzzle.</p>
-    </div>
-    <div class="tip-card">
-      <span class="pill pill-mid">Mid Game</span>
-      <strong>Plan chains backward — from target to arrow.</strong>
-      <p>Many mid-game levels are chain triggers: moving one arrow unlocks a path for another, which unlocks a third. Instead of pushing tiles forward and hoping, pick the final target and ask: "What is the last arrow that can point at this target?" Work backward from that answer and the chain order becomes obvious.</p>
-    </div>
-    <div class="tip-card">
-      <span class="pill pill-mid">Mid Game</span>
-      <strong>Never move an arrow twice.</strong>
-      <p>If you find yourself sliding the same tile back and forth, you are not solving — you are experimenting. Stop, undo to a clean state, and find the forced move you missed. A solved arrows level usually lets you place each arrow exactly once.</p>
-    </div>
-    <div class="tip-card">
-      <span class="pill pill-mid">Mid Game</span>
-      <strong>Use the edge of the board as a wall.</strong>
-      <p>Grid borders are permanent walls, which makes edge-adjacent targets the easiest to satisfy — an arrow can only approach them from a small set of directions. Solving edges first narrows the interior dramatically.</p>
-    </div>
-
-    <h3>Late Levels: Multi-Step Planning</h3>
-    <div class="tip-card">
-      <span class="pill pill-late">Late Game</span>
-      <strong>Solve in layers: colors → edges → interior → leftovers.</strong>
-      <p>Late boards can have 40+ arrows. Trying to solve them linearly is a recipe for deadlocks. Maintain a strict layer order — color constraints, then edge/corner tiles, then the interior, then any leftover special tiles — and you will rarely trap yourself.</p>
-    </div>
-    <div class="tip-card">
-      <span class="pill pill-late">Late Game</span>
-      <strong>Count occupancy like a Sudoku player.</strong>
-      <p>Every empty cell must eventually hold an arrow (or be a permanent gap). If three arrows remain and only two legal cells remain, you have found a contradiction — one of your earlier placements is wrong. Backtrack with confidence instead of re-trying randomly.</p>
-    </div>
-    <div class="tip-card">
-      <span class="pill pill-late">Late Game</span>
-      <strong>Beware the self-blocking arrow.</strong>
-      <p>The classic late-game trap: an arrow points at its target perfectly, but in doing so it blocks the sliding path of every arrow behind it. Before committing, trace the slide paths of the remaining arrows and make sure your "perfect" placement is not actually a wall.</p>
-    </div>
-    <div class="tip-card">
-      <span class="pill pill-late">Late Game</span>
-      <strong>Take breaks on big boards.</strong>
-      <p>On 8x8 and larger grids, mental fatigue causes real mistakes. If you have stared at a board for more than five minutes, walk away for sixty seconds. A fresh look at the color layer usually reveals the forced move you kept skipping.</p>
-    </div>
-
-    <h2>Common Stuck Points in the Arrows Puzzle (and How to Unstick)</h2>
-    <p>Getting stuck is not a sign of a bad player — it is a sign the level is doing its job. Here are the five situations that trap most players, and the exact trick that gets you out of each one.</p>
-
-    <div class="stuck-grid">
-      <div class="stuck-card">
-        <span class="symptom">Scenario 1 — Arrow Deadlock</span>
-        <h3>Two arrows, one legal cell, neither can move</h3>
-        <p>You have two arrows left and only a single empty cell between them. This is a classic occupancy deadlock: you do not actually have enough space left for both arrows. Undo your most recent placement — one of your earlier arrows is blocking the path. Find the arrow that should have landed elsewhere and re-route it.</p>
-      </div>
-      <div class="stuck-card">
-        <span class="symptom">Scenario 2 — Chain Trigger Order</span>
-        <h3>Moving arrow A makes arrow B impossible</h3>
-        <p>Chain levels are order-sensitive by design. If your chain collapses, the trigger order was wrong. Work backward: instead of asking which arrow to move first, ask which arrow <em>must</em> move last. That final arrow's landing spot dictates everything that came before it.</p>
-      </div>
-      <div class="stuck-card">
-        <span class="symptom">Scenario 3 — Color Mismatch</span>
-        <h3>Two same-colored targets, one matching arrow left</h3>
-        <p>You counted wrong somewhere earlier — a colored arrow is sitting on the wrong target and "stealing" it. Retrace the color layer specifically. Every color on the board has a locked structure: arrows of a color must be countable against targets of that color. The mismatch reveals the bad placement.</p>
-      </div>
-      <div class="stuck-card">
-        <span class="symptom">Scenario 4 — Path Blocking</span>
-        <h3>Every arrow points correctly, but one cannot slide home</h3>
-        <p>Your placements are logically correct but physically unreachable — the arrow's slide path is walled off. The fix is usually a reorder trick: slide a blocking arrow to a temporary spot, slide your target arrow home, then return the blocking arrow to its final position. Temporary park moves are a legitimate mid-game technique.</p>
-      </div>
-      <div class="stuck-card">
-        <span class="symptom">Scenario 5 — The Last Arrow Paradox</span>
-        <h3>One arrow left, one target left, but they cannot see each other</h3>
-        <p>The final arrow is blocked by locked tiles or has no line of sight. This means your earlier placement of the <em>other</em> arrows is subtly wrong — probably a chain fired in the wrong order. Undo to the last color-placed arrow and replay the sequence with the final arrow's line of sight in mind.</p>
-      </div>
-    </div>
-
-    <h2>Arrows Puzzle Escape Levels: Progression Tips</h2>
-    <p>The game organizes levels into themed packs, and each pack has a personality. Here is how to move through them without burning hints.</p>
+    <h2>Arrows Puzzle Difficulty Tiers</h2>
+    <p>The official difficulty ladder is <strong>Normal / Hard / Super Hard / Nightmare</strong>, plus daily challenges. There is no published level-number-to-tier mapping, so judge a tier by its boards rather than its number:</p>
     <ul>
-      <li><strong>Pack 1 (Tutorial):</strong> do not skip anything, even the levels you find trivial. They quietly install the habits (forcing moves, edge solving) you will need at level 200.</li>
-      <li><strong>Color packs:</strong> before starting, count the arrows and targets per color. If the numbers do not balance, you know you misread the board.</li>
-      <li><strong>Big-grid packs:</strong> use the layer method religiously. Edges first, then corners, then the interior. The board may look like a wall of arrows, but it still falls apart one forced move at a time.</li>
-      <li><strong>Special-tile packs (teleporters, reflectors):</strong> treat the special tile as a new wall type, and solve around it exactly like a locked tile. The special tile rarely changes the logic — it only changes the geometry.</li>
+      <li><strong>Normal</strong> — single winding paths and few arrows. Most taps are obviously safe; this is where you build the free-arrows habit.</li>
+      <li><strong>Hard</strong> — longer paths with more arrows packed along them. Collisions stop being theoretical: you must count paths before tapping.</li>
+      <li><strong>Super Hard</strong> — dense boards where clearing one arrow's path can re-block another's. Order of extraction becomes the real puzzle.</li>
+      <li><strong>Nightmare</strong> — packed grids where one careless tap can cascade into a lost heart. Plan the whole peel before the first tap.</li>
+      <li><strong>Daily Challenge</strong> — a curated fresh board each day, typically tougher than Normal, that resets your routine. The framework applies unchanged.</li>
     </ul>
-    <p>If a pack feels like a brick wall, that is the game telling you a mechanic you skimmed has become load-bearing. Go back to the first level that used that mechanic and replay it until it is effortless.</p>
+
+    <h2>Universal Solving Framework: 6 Steps</h2>
+    <div class="strat">
+      <div class="st"><i>1</i><span><b>Scan every arrow before the first tap.</b> Walk each arrow's path to the edge in your head. Arrows with a clear run are your opening layer.</span></div>
+      <div class="st"><i>2</i><span><b>Tap the free arrows in any order you like.</b> They are guaranteed safe, and each removal empties a path that frees the next arrow behind it.</span></div>
+      <div class="st"><i>3</i><span><b>Peel the outside in.</b> Rim arrows have short paths and few blockers; clearing the outer ring opens the interior instead of leaving it to tangle.</span></div>
+      <div class="st"><i>4</i><span><b>Resolve single-blocker pairs.</b> An arrow stopped by exactly one other arrow tells you the next move: slide that blocker out, and the arrow behind it becomes a free tap.</span></div>
+      <div class="st"><i>5</i><span><b>Use double-headed arrows as escape doors.</b> When a double arrow is the only thing standing in a path, try both exits and take the direction that frees the most arrows with the least risk.</span></div>
+      <div class="st"><i>6</i><span><b>Count hearts, not time.</b> There is no timer, so hesitation is free and collisions are not. If a tap's outcome is unclear, study or hint instead of gambling a heart.</span></div>
+    </div>
+    <div class="callout grn"><span><b>One check before every tap:</b> "Is the path in front of this arrow empty?" If yes — tap. If no — resolve the blocker first. That single question clears more boards than any other habit.</span></div>
+
+    <h2>Real Boards: Official Screenshots</h2>
+    <div class="snaprow">
+      <figure><img src="/arrows-puzzle/board-1.jpg" alt="Arrows – Puzzle Escape official screenshot: a knight-shaped arrow path, three hearts at top, no timer" loading="lazy"><figcaption>Official board · read the layers</figcaption></figure>
+      <figure><img src="/arrows-puzzle/board-2.jpg" alt="Arrows – Puzzle Escape official screenshot: a dense arrow path where blockers sit in each other's way" loading="lazy"><figcaption>Official board · find the free arrows</figcaption></figure>
+    </div>
+    <p>Try the layered read on these two boards: every arrow touching an outside edge with a clear run is layer one; every arrow behind it is layer two. Dense boards like the second one are exactly where the single-blocker rule (Step 4) earns its keep.</p>
 
     <h2>Frequently Asked Questions</h2>
 
-    <details><summary>What is the arrows puzzle?</summary><p>The arrows puzzle (Arrows – Puzzle Escape) is a mobile logic game where you drag directional arrows into empty grid cells so that every arrow points at a matching target. Each level is a sliding-tile-style placement puzzle: you move arrows around the board and every arrow must end up pointing at its goal. Levels grow from a 3x3 warm-up all the way to dense multi-colored grids with locked tiles and teleporters.</p></details>
+    <details><summary>How many levels are in Arrows Puzzle Escape?</summary><p>Per the official listing, Arrows – Puzzle Escape contains thousands of handcrafted levels. The developer has not published an exact total, and daily challenges keep adding fresh boards, so any specific number you see online is a guess — treat the official "thousands" as the real answer.</p></details>
 
-    <details><summary>How many levels are in Arrows Puzzle Escape?</summary><p>There are well over 1,000 hand-made levels in Arrows – Puzzle Escape, organized into themed level packs. New packs are added regularly, so the exact count keeps growing. Most players consider the first 100 levels a tutorial: they teach placement, rotation, and color rules one concept at a time.</p></details>
+    <details><summary>What happens when I lose all hearts in Arrows Puzzle Escape?</summary><p>The developer has not published a detailed statement of what happens when your three hearts run out. What is certain: a collision only happens when you tap an arrow whose path is blocked, and levels have no timer, so you are never forced into a risky tap. Keep hearts by reading the board first — the framework on this page is built exactly around that.</p></details>
 
-    <details><summary>What should I do when I get stuck on an arrows puzzle level?</summary><p>First, look for an arrow that has only one legal landing spot left — that is your forcing move. If that does not help, try working backward from the targets: imagine an arrow already placed and ask which arrow could possibly point at the remaining targets. A deadlock usually means a chain trigger happened in the wrong order, so undo your last few moves and re-trigger the chain differently. When all else fails, reset the level and follow the color rule first: place the locked colored arrows before touching movable tiles.</p></details>
+    <details><summary>What are the difficulty tiers in Arrows Puzzle Escape?</summary><p>The official difficulty ladder is Normal, Hard, Super Hard, and Nightmare, plus daily challenges that rotate fresh boards. There is no published level-number-to-tier mapping, so judge a tier by its boards: longer paths, denser arrow traffic, and more re-blocking as you clear.</p></details>
 
-    <details><summary>Are arrows puzzle levels the same for everyone?</summary><p>Yes, in Arrows – Puzzle Escape the levels are hand-designed and identical for every player. You can look up a solution for a specific level number and it will match your board exactly. That is different from procedurally generated puzzles, where every player sees a different layout.</p></details>
+    <details><summary>Does Arrows Puzzle Escape have a timer?</summary><p>No. Every level is untimed — the only pressure is your three hearts. You can stare at a board as long as you need, which makes careful planning strictly better than fast tapping.</p></details>
 
-    <details><summary>Can I play an arrows puzzle online instead of on mobile?</summary><p>The official Arrows – Puzzle Escape by Ecffri is a mobile app (Android and iOS) with 100M+ installs, and the levels themselves are not officially available on the web. If you want a similar direction-pointing logic puzzle you can play right in your browser for free, GridPaw's Shikaku game trains the same spatial reasoning with no download and no signup.</p></details>
+    <details><summary>Does Arrows Puzzle Escape have hints?</summary><p>Yes, Arrows – Puzzle Escape has a built-in hint system. On a tangled board, a hint beats a gamble: collisions cost hearts, hints do not.</p></details>
 
-    <details><summary>Is there a trick to solving arrows puzzles faster?</summary><p>The fastest solvers use three habits: scan for single-choice arrows first, resolve color-locked tiles before free tiles, and never move an arrow twice. Every move should place a final arrow. If you are sliding arrows around experimentally, you are training to be slow — instead, plan the landing spot before you touch the tile.</p></details>
+    <details><summary>What is the fastest way to clear an Arrows Puzzle Escape board?</summary><p>Read the board in layers, tap the free arrows first, and peel each layer off one by one. In practice: slide every arrow with an empty path immediately, clear the outer rim before the interior, then resolve single-blocker pairs — arrows stopped by exactly one other arrow — before anything else. No-timer levels reward that steady peel over speed.</p></details>
 
     <div class="cta-box">
-      <p>🐱 Want to try logic puzzles yourself? No download, no signup — play free in your browser: <a href="/">Play Free →</a></p>
+      <p>🐱 Want to practice that layered read right now? No download, no signup — play free in your browser: <a href="/">Play Shikaku Free →</a></p>
     </div>
 
     <AdSlot />
@@ -279,8 +217,8 @@ const faqJsonLd = [
     <h2>Related Puzzle Guides</h2>
     <p>Direction and placement logic share a lot of DNA with other classic puzzles. Feed the habit:</p>
     <ul>
-      <li><a href="/arrows-puzzle/">Arrows Puzzle: How to Play, Rules, and Where to Play</a> — the complete hub for rules, history, and beginner tips.</li>
-      <li><a href="/cross-math-puzzle/">Cross Math Puzzle: Rules, Strategies &amp; Printable Tips</a> — number-grid logic for puzzle fans who love constraints.</li>
+      <li><a href="/arrows-puzzle/">Arrows Puzzle: How to Play, Full Rules, and Beginner Tips</a> — the complete hub for the rules, a visual collision demo, and the six core strategies.</li>
+      <li><a href="/meowdoku-guide/">Meowdoku Guide</a> — hints, strategy, and games like Meowdoku for Queens-style puzzle fans.</li>
       <li><a href="/">Play Shikaku on GridPaw</a> — the rectangle-partition logic puzzle that trains the same spatial reasoning for free.</li>
     </ul>
   </main>
@@ -288,9 +226,9 @@ const faqJsonLd = [
   <section class="seo-section" style="border-top:2px solid #e7dacf;padding-top:1rem;margin-top:2rem">
     <h2>Read Next</h2>
     <ul>
-      <li><a href="/arrows-puzzle/">Arrows Puzzle Hub</a> — how to play, full rules, and where to play</li>
-      <li><a href="/cross-math-puzzle/">Cross Math Puzzle</a> — rules, solving strategies, and printable tips</li>
-      <li><a href="/logic-puzzle-grid/">Logic Puzzle Grid</a> — 6 grid puzzles with step-by-step examples</li>
+      <li><a href="/arrows-puzzle/">Arrows Puzzle Hub</a> — how to play, full rules, and beginner tips</li>
+      <li><a href="/meowdoku-guide/">Meowdoku Guide</a> — hints, strategy &amp; games like Meowdoku</li>
+      <li><a href="/block-blast-hints/">Block Blast Hints</a> — 10+ strategies for higher scores</li>
     </ul>
   </section>
 
