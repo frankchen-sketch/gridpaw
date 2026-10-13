@@ -512,6 +512,9 @@ window.addEventListener('message', function(ev){
     const lb = document.getElementById('daily-leaderboard');
     if (lb) { lb.style.display = ''; lb.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
   }
+  // iframe 内 first_move/game_over 只进 D1（gpTrack），GA4 侧靠这里转发
+  if (ev.data.type === 'pictomino_first_move' && !window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { level: ev.data.level, source: 'daily-puzzle' }); }
+  if (ev.data.type === 'pictomino_game_over') { track('game_over', { level: ev.data.level, difficulty: ev.data.difficulty, source: 'daily-puzzle' }); }
   // 倒计时同步（每秒推送）
   if (ev.data.type === 'pictomino_timer') {
     const timerEl = document.getElementById('gt-timer');

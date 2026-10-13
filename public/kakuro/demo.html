@@ -698,6 +698,7 @@
   function placeDigit(d) {
     if (busy || selected < 0 || !puzzle) return;
     digits[selected] = d;
+    if (!window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { level: level }); }
     var cell = cellEl(selected);
     var err = getCellError(puzzle, digits, selected);
     if (err) {
@@ -749,6 +750,7 @@
       } catch (e) { /* solver hiccup — stay silent */ }
       if (dead) {
         track('board_dead', { level: level });
+        track('game_over', { level: level }); // 通用失败漏斗事件（board_dead 的跨游戏别名，口径对齐 zen 页 game_over）
         setMsg('⚠️ This board can no longer be solved — one of your earlier digits must be wrong. Clear cells to backtrack.', 'err');
       } else {
         maybeUnlockFog();
