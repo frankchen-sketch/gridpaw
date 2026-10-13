@@ -17,7 +17,7 @@ const faqJsonLd = [
         name: "What is Meowdoku?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Meowdoku is a cozy Sudoku-style puzzle game from developer Oakever where every solved cell rewards you with cute cat visuals. The core puzzle works exactly like a classic 9x9 Sudoku — every row, column, and 3x3 box must contain the digits 1 through 9 exactly once — wrapped in a light, cat-themed presentation aimed at relaxed daily play."
+          text: "Meowdoku is a free cat-themed placement puzzle by Oakever for iOS and Android. You settle exactly one cat in each colored region of a grid, under three constraints: one cat per row, one per column, and no two cats touching — corners and diagonals included. Boards grow from 4×4 upward and regions get more intricate as levels climb. Its closest cousin is LinkedIn Queens, not Sudoku."
         }
       },
       {
@@ -25,7 +25,7 @@ const faqJsonLd = [
         name: "What are the best Meowdoku hints for stuck players?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Six reliable no-hint techniques: scan each row, column, and box for missing numbers; use pencil marks for every candidate; find cells where a digit can only go in one place; apply the cross-hatching method to lock digits; check for naked pairs and triples; and revisit unsolved cells after every deduction. Together these solve almost every humanly solvable Sudoku-style grid without needing the hint button."
+          text: "Six no-hint techniques that solve any board: place single-cell regions first; follow row and column pressure; draw the exclusion circle of the 8 cells around every new cat; eliminate candidates systematically with X-marks; prefer corners and edges because they touch fewer neighbors; and re-scan the whole board after every placement. Together these make the hint button unnecessary."
         }
       },
       {
@@ -33,7 +33,7 @@ const faqJsonLd = [
         name: "Where can I find Meowdoku answers?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Meowdoku does not publish an official answer list, and the daily puzzles change every day, so chasing an answer site is a losing game. The more reliable approach is learning to derive the answer yourself: fill in pencil marks, apply the six solving techniques, and the grid resolves logically. That skill transfers to every Sudoku-style puzzle you will ever play."
+          text: "Right here for Levels 1–3: each answer is shown on a real board with the reasoning behind every placement. One caveat — Meowdoku can randomize boards based on player progress, so the same level number may look different on your device. If your grid doesn't match, use the walkthrough as a derivation demo; the technique transfers to any board."
         }
       },
       {
@@ -41,7 +41,7 @@ const faqJsonLd = [
         name: "Is Meowdoku the same as regular Sudoku?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "The logic is identical to classic Sudoku — same rows, columns, and boxes rule. What Meowdoku adds is presentation and pacing: cat-themed visuals, spaced numbers, smaller or larger grids in some modes, and a more relaxed, game-like wrapper. If you can solve Sudoku, you can solve Meowdoku; the strategies carry over one-to-one."
+          text: "No — and it is not a numbers game at all. Meowdoku is a Queens-style placement puzzle: one cat per colored region, one per row and column, with no two cats touching even diagonally. It shares only a spirit of pure-logic deduction with Sudoku. Its closest cousins are Star Battle and LinkedIn Queens."
         }
       },
       {
@@ -49,7 +49,7 @@ const faqJsonLd = [
         name: "What games are like Meowdoku?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "If you like Meowdoku's logic-with-cosmetics style, the closest free browser alternatives are GridPaw's grid-puzzle games: Kakuro (cross sums, the same fill-the-grid logic with math), Nonogram (picture logic with the same deductive clarity), and Shikaku (rectangle partition). All are playable free in the browser with no download, and all share the relaxing single-solution-puzzle feel."
+          text: "GridPaw's placement-logic lineup is the closest free browser match: Shikaku (partition the grid into numbered rectangles), Akari (place lights so every cell glows), Nurikabe (islands in a sea of black cells), Nonogram (picture logic from row and column clues), and Kakuro (cross sums). All are free in the browser with no download, and all share the calm single-solution feel."
         }
       },
       {
@@ -57,7 +57,7 @@ const faqJsonLd = [
         name: "Is Meowdoku good for your brain?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Yes. Meowdoku's Sudoku core is one of the most-studied brain-training activities: it exercises logical deduction, working memory, and concentration. Regular Sudoku-style play is linked in research to sharper performance on reasoning and memory tasks. The cat presentation adds a bonus — a relaxed, low-stress daily habit is easier to keep than an intense one."
+          text: "Yes. Meowdoku's deduction core exercises logical reasoning, working memory, and concentration — the same mental muscles behind well-studied puzzle training. Regular play is linked in research to sharper performance on reasoning and memory tasks, and the cozy cat presentation makes the habit easy to keep."
         }
       }
     ]
@@ -107,6 +107,8 @@ const faqJsonLd = [
     .seo-section summary { cursor: pointer; font-weight: 800; color: var(--md-text); line-height: 1.5; }
     .seo-section summary:hover { color: var(--md-primary); }
     .seo-section details p { margin-top: 0.5rem; }
+    .lede { font-size: 1rem; color: #4a3d35; line-height: 1.75; margin: 0.5rem 0 0.25rem; }
+    .disclaimer { font-size: 0.82rem; color: var(--md-text-light); font-style: italic; background: #fff; border: 1px solid var(--md-cell-border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
     .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--md-text-light); }
     .seo-footer a { color: var(--md-text-light); }
     .seo-footer a:hover { color: var(--md-primary); }
@@ -114,13 +116,6 @@ const faqJsonLd = [
     .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--md-text); }
     .cta-box a { color: var(--md-primary); font-weight: 800; text-decoration: none; }
     .cta-box a:hover { text-decoration: underline; }
-    .disclaimer { font-size: 0.82rem; color: var(--md-text-light); font-style: italic; background: #fff; border: 1px solid var(--md-cell-border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
-    .tip-card { background: white; border: 1.5px solid var(--md-cell-border); border-left: 4px solid var(--md-primary); border-radius: 10px; padding: 0.7rem 0.9rem; margin: 0.6rem 0; box-shadow: var(--md-shadow-sm); }
-    .tip-card strong { color: var(--md-text); display: block; margin-bottom: 0.15rem; }
-    .tip-card p { margin: 0; }
-    .pill { display: inline-block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.12rem 0.5rem; border-radius: 999px; margin-bottom: 0.3rem; }
-    .pill-rules { background: #E3E9FF; color: #2E4AC0; }
-    .pill-hint { background: #DFF3E4; color: #1E7A3C; }
     .compare-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; background: white; border-radius: 12px; overflow: hidden; box-shadow: var(--md-shadow-sm); }
     .compare-table th, .compare-table td { padding: 0.6rem 0.8rem; text-align: left; border-bottom: 1px solid var(--md-cell-border); font-size: 0.9rem; }
     .compare-table th { background: #FFF1E8; color: var(--md-text); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
@@ -129,6 +124,63 @@ const faqJsonLd = [
     .compare-table a:hover { text-decoration: underline; }
     .compare-table .sim-high { color: #1E7A3C; font-weight: 800; }
     .compare-table .sim-mid { color: #B26A00; font-weight: 700; }
+
+    /* ===== callouts ===== */
+    .callout { font-size: 0.88rem; padding: 0.55rem 0.75rem; border-radius: 8px; margin: 0.7rem 0; display: flex; gap: 6px; align-items: flex-start; line-height: 1.6; }
+    .callout.warn { background: #FFF4E0; color: #92610A; border: 1px dashed #E8B15C; }
+    .callout.grn { background: rgba(34,197,94,.1); color: #15803d; }
+
+    /* ===== rules demo ===== */
+    .rulewrap { display: flex; gap: 14px; align-items: flex-start; flex-wrap: wrap; background: #fff; border: 1.5px solid var(--md-cell-border); border-radius: 10px; padding: 12px 14px; margin: 6px 0; }
+    .rulewrap ol { margin: 0; padding-left: 0; list-style: none; counter-reset: rl; flex: 1; min-width: 260px; }
+    .rulewrap ol li { counter-increment: rl; position: relative; padding: 0 0 10px 30px; font-size: 0.78rem; color: #555; line-height: 1.55; }
+    .rulewrap ol li:last-child { padding-bottom: 0; }
+    .rulewrap ol li::before { content: counter(rl); position: absolute; left: 0; top: 1px; width: 19px; height: 19px; border-radius: 50%; background: #42352E; color: #FFFAF5; font-size: 10.5px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+    .rulewrap ol li b { display: block; color: #42352E; font-size: 0.84rem; margin-bottom: 1px; }
+    .xdemo { display: grid; grid-template-columns: repeat(4, 21px); grid-auto-rows: 21px; gap: 2px; background: #fff; padding: 3px; border: 2px solid #E8D8CA; border-radius: 8px; flex: 0 0 auto; }
+    .xdemo .c { border-radius: 3px; position: relative; }
+    .xdemo .x::after { content: "✕"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; color: rgba(66,53,46,.45); font-weight: 700; }
+    .xdemo .off { opacity: .35; }
+
+    /* ===== strategy list ===== */
+    .strat { margin: 6px 0; columns: 2; column-gap: 30px; }
+    .strat .st { break-inside: avoid; display: flex; gap: 10px; padding: 7px 2px; border-bottom: 1px dashed var(--md-cell-border); font-size: 0.88rem; color: #555; line-height: 1.55; }
+    .strat .st i { font-style: normal; color: var(--md-primary); font-weight: 800; font-size: 1.05rem; line-height: 1.15; flex: 0 0 16px; font-family: Georgia, 'Times New Roman', serif; }
+    .strat .st b { color: var(--md-text); }
+
+    /* ===== boards ===== */
+    .boardrow { display: flex; gap: 14px; align-items: flex-start; flex-wrap: wrap; background: #fff; border: 1.5px solid var(--md-cell-border); border-radius: 10px; padding: 10px 12px; margin: 8px 0; box-shadow: 0 1px 5px rgba(232,122,79,.08); }
+    .bd { display: grid; gap: 2px; background: #fff; padding: 3px; border: 2px solid #E8D8CA; border-radius: 8px; }
+    .c { border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+    .cP { background: #FD9FEB; } .cL { background: #E6A8C1; } .cD { background: #C1658A; } .cU { background: #9179D1; } .cO { background: #FEA96B; }
+    .cat { width: 82%; height: 82%; background: url('/meowdoku-guide/cat-sprite.png') center/contain no-repeat; filter: drop-shadow(0 1px 1px rgba(0,0,0,.25)); }
+    .b4 { grid-template-columns: repeat(4, 24px); grid-auto-rows: 24px; }
+    .b5 { grid-template-columns: repeat(5, 20px); grid-auto-rows: 20px; }
+    .s4 { grid-template-columns: repeat(4, 13px); grid-auto-rows: 13px; gap: 1.5px; border-width: 1.5px; }
+    .s4 .c { border-radius: 2px; }
+    .s4 .cat { width: 88%; height: 88%; }
+    .stepstrip { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; }
+    .step { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .step i { font-style: normal; font-size: 9px; color: var(--md-text-light); font-weight: 700; }
+    .lvmeta { flex: 1; min-width: 230px; }
+    .lvmeta h4 { margin: 0 0 4px; font-size: 13.5px; color: var(--md-text); }
+    .lvmeta ol { margin: 4px 0 0; padding-left: 18px; font-size: 0.78rem; color: #555; }
+    .lvmeta ol li { margin-bottom: 3px; line-height: 1.55; }
+    .lvmeta .ans { font-size: 0.78rem; background: #FFF4E0; border-radius: 6px; padding: 4px 8px; margin-top: 5px; display: inline-block; color: #92610A; font-weight: 700; }
+    .lvtag { font-size: 9px; font-weight: 800; padding: 1px 7px; border-radius: 99px; vertical-align: 2px; margin-left: 5px; }
+    .lvtag.e { background: #DFF3E4; color: #1E7A3C; } .lvtag.m { background: #FFF4E0; color: #B26A00; }
+
+    /* ===== snapshot gallery ===== */
+    .snaprow { display: flex; gap: 10px; margin: 6px 0; flex-wrap: wrap; }
+    .snaprow figure { flex: 1 1 150px; margin: 0; text-align: center; }
+    .snaprow img { width: 100%; border-radius: 8px; border: 1.5px solid #F0DFD2; }
+    .snaprow figcaption { font-size: 10px; color: var(--md-text-light); margin-top: 3px; }
+
+    @media (max-width: 600px) {
+      .strat { columns: 1; }
+      .lvmeta { min-width: 0; }
+      .stepstrip { width: 100%; justify-content: center; }
+    }
     @media (max-width: 480px) {
       .seo-section h1 { font-size: 1.4rem; }
       .seo-section h2 { font-size: 1.2rem; }
@@ -145,134 +197,115 @@ const faqJsonLd = [
   <main class="seo-section">
     <h1>Meowdoku Guide: Hints, Strategy &amp; Games Like Meowdoku</h1>
 
-    <p>Meowdoku is Sudoku with a soft, cat-themed coat — but beneath the cozy presentation is a serious logic puzzle that rewards real technique. Most guides stop at "use the hint button." This one goes deeper: a complete rules recap, six strategies that let you solve without any hints at all, a honest look at why chasing daily Meowdoku answers is a losing game (and what to do instead), and a table of the best games like Meowdoku you can play free in your browser.</p>
+    <p class="lede">Played LinkedIn Queens? Then you already know how to think in Meowdoku — same deduction, but every token is a cat. Below: the rules, six techniques that finish any board without the hint button, and fully verified answer boards for the early levels.</p>
 
     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Oakever.</div>
 
     <h2>What Is Meowdoku?</h2>
-    <p>Meowdoku, from developer Oakever, is a daily Sudoku-style puzzle game with a cat-themed art style. The puzzle itself follows the classic Sudoku rule set exactly: a 9x9 grid divided into nine 3x3 boxes, where each row, each column, and each box must contain every digit from 1 to 9 exactly once. What Meowdoku adds is atmosphere — animated cat reactions, soft colors, gentle sounds, and a daily rotation that keeps players coming back. It sits squarely in the "cozy logic puzzle" genre: relaxing enough for a coffee break, but with a genuine deductive core underneath.</p>
+    <p>Meowdoku is a free cat-themed placement puzzle by Oakever for iOS and Android. Settle one cat in each colored region — never two in the same row or column, never touching, corners included. Boards grow from 4×4 upward, and regions get more intricate as levels climb. Its closest cousin is <b>LinkedIn Queens</b>, not Sudoku.</p>
 
-    <p>Because the logic is pure Sudoku, everything you know about Sudoku strategy applies one-to-one. That makes Meowdoku an easy puzzle to get good at — you do not need game-specific tricks, you need solid general technique. The six strategies below are exactly that: a complete no-hint solving toolkit.</p>
-
-    <h2>Meowdoku Rules Recap</h2>
-    <div class="tip-card">
-      <span class="pill pill-rules">Rule 1</span>
-      <strong>Every row contains the digits 1–9 exactly once.</strong>
-      <p>Scan each horizontal line. If any digit is missing, one of the empty cells in that row must hold it.</p>
-    </div>
-    <div class="tip-card">
-      <span class="pill pill-rules">Rule 2</span>
-      <strong>Every column contains the digits 1–9 exactly once.</strong>
-      <p>Same rule, vertical version. A digit that cannot go anywhere else in a column is a locked placement.</p>
-    </div>
-    <div class="tip-card">
-      <span class="pill pill-rules">Rule 3</span>
-      <strong>Every 3x3 box contains the digits 1–9 exactly once.</strong>
-      <p>The boxes are the heart of Sudoku logic — most deductions come from the interplay between boxes and the rows/columns that cross them.</p>
-    </div>
-    <div class="tip-card">
-      <span class="pill pill-rules">Rule 4</span>
-      <strong>You start with a partially filled grid and fill the rest.</strong>
-      <p>Each puzzle is a single-solution grid: there is exactly one correct way to complete it. If you ever reach a contradiction, one of your earlier placements is wrong.</p>
+    <h2>Meowdoku Rules</h2>
+    <div class="rulewrap">
+      <div class="xdemo" id="xdemo"></div>
+      <ol>
+        <li><b>One cat per colored region.</b> Every color territory contains exactly one cat — no region left empty.</li>
+        <li><b>One cat per row and column.</b> Cats never share a row or column, like rooks that can't see each other.</li>
+        <li><b>Cats can't touch — even diagonally.</b> The moment a cat settles, the 8 cells around it are off-limits.</li>
+        <li><b>Every board has exactly one solution.</b> It's always reachable by logic alone — if you're guessing, an earlier placement is wrong.</li>
+      </ol>
     </div>
 
-    <h2>Meowdoku Hint Strategy: Solve Without the Hint Button</h2>
-    <p>The hint button feels like help; these six techniques make it obsolete. Use them in order and the grid will practically solve itself.</p>
+    <h2>How to Play: Controls</h2>
+    <p>Three clicks per cell: the <b>1st</b> click places an X mark (excluded cell), the <b>2nd</b> click places a cat, and the <b>3rd</b> click clears the cell. X marks are the pencil marks of Queens-style puzzles — use them liberally.</p>
 
-    <div class="tip-card">
-      <span class="pill pill-hint">Hint Strategy 1</span>
-      <strong>Scan for missing digits one at a time.</strong>
-      <p>Pick a digit (start with 1) and scan every row, column, and box to find where that digit can appear. If a digit has only one legal home in a box, place it. Repeat for every digit, then loop again — each pass unlocks new placements.</p>
-    </div>
-    <div class="tip-card">
-      <span class="pill pill-hint">Hint Strategy 2</span>
-      <strong>Use pencil marks for every candidate.</strong>
-      <p>For each empty cell, write the small candidate digits that are not yet used in its row, column, or box. Pencil marks turn vague "maybe it goes here" feelings into concrete constraints. This is the single highest-leverage habit in Sudoku-style play.</p>
-    </div>
-    <div class="tip-card">
-      <span class="pill pill-hint">Hint Strategy 3</span>
-      <strong>Find the lone candidate ("naked single").</strong>
-      <p>A naked single is a cell whose pencil marks contain exactly one digit. It has no choice — place it immediately. After any placement, recalculate the affected row, column, and box; naked singles appear in cascades.</p>
-    </div>
-    <div class="tip-card">
-      <span class="pill pill-hint">Hint Strategy 4</span>
-      <strong>Apply cross-hatching by box.</strong>
-      <p>For each box, take one missing digit and check its crossing rows and columns. If existing digits block every cell in the box except one, that cell is the digit's place. Cross-hatching is the classic human method and it solves a shocking percentage of moderate grids.</p>
-    </div>
-    <div class="tip-card">
-      <span class="pill pill-hint">Hint Strategy 5</span>
-      <strong>Watch for naked pairs and triples.</strong>
-      <p>If two cells in the same row share the same two candidates — and no other cell in the row has either — those two digits are locked to those cells, so you can remove them from every other cell in that row. The same trick works with three digits in three cells. Pairs and triples break most "hard" grids.</p>
-    </div>
-    <div class="tip-card">
-      <span class="pill pill-hint">Hint Strategy 6</span>
-      <strong>Revisit unsolved cells after every deduction.</strong>
-      <p>Every placement changes the board for its row, column, and box. Before moving to a new area, re-scan the cells you just touched — one earlier placement often resolves a cell that was impossible a minute ago. Deliberate re-scanning beats aimless staring by an enormous margin.</p>
+    <h2>6 Solving Strategies</h2>
+    <div class="strat">
+      <div class="st"><i>1</i><span><b>Place single-cell regions first.</b> A region with one open cell settles itself.</span></div>
+      <div class="st"><i>2</i><span><b>Follow row &amp; column pressure.</b> A row or column with one legal cell left is a locked placement.</span></div>
+      <div class="st"><i>3</i><span><b>Draw the exclusion circle.</b> Before placing, mark the 8 cells a cat would block.</span></div>
+      <div class="st"><i>4</i><span><b>Eliminate with X-marks.</b> Rule out candidates systematically — the last cat reveals itself.</span></div>
+      <div class="st"><i>5</i><span><b>Prefer corners and edges.</b> Edge cells touch fewer neighbors, so they're safer.</span></div>
+      <div class="st"><i>6</i><span><b>Re-scan after every cat.</b> Each placement cascades — always recheck the whole board.</span></div>
     </div>
 
-    <h2>Meowdoku Answers: Why You Should Derive Them Yourself</h2>
-    <p>Search results for "Meowdoku answers" mostly lead to daily-updated answer lists that are stale by the time you open them — the daily puzzle changes every 24 hours, and answer sites cannot keep up reliably. Even when they do, copying an answer teaches your future self nothing.</p>
-    <p>The honest, durable approach is to <em>derive</em> the answer: fill in your pencil marks, run the six hint strategies above, and watch the grid resolve. Here is the mindset that makes it work:</p>
-    <ul>
-      <li><strong>Trust the single-solution guarantee.</strong> Every Meowdoku puzzle has exactly one valid completion. If you reach a contradiction, you do not have a broken puzzle — you have a wrong placement. Undo to your last certain move and re-deduce.</li>
-      <li><strong>Place only what you can defend.</strong> A placement you cannot explain is a gamble. Restrict yourself to moves backed by naked singles, cross-hatching, or pair logic, and you will never need to guess.</li>
-      <li><strong>Time-box the stuck moment.</strong> If nothing moves for two minutes, switch strategies (try cross-hatching a different digit) instead of staring harder. Fresh angles resolve stuck boards.</li>
-    </ul>
-    <p>This is the same logic that makes every <a href="/logic-puzzle-grid/">grid-based logic puzzle</a> satisfying: the answer is not handed to you, it is discovered. Once you can derive one Meowdoku from scratch, you can derive any Sudoku-style puzzle ever made.</p>
+    <h2>Meowdoku Level Answers: Level 1–3, Verified</h2>
+    <div class="callout warn">⚠️ <span>Meowdoku can randomize boards based on player progress — the same level number may look different on your device. If your grid doesn't match the diagrams below, treat this walkthrough as a <b>derivation demo</b>, not coordinates to copy.</span></div>
+    <div class="callout grn">✔ <span><b>Programmatically verified unique solutions</b>: all legal placements were enumerated for each board (one cat per row, column, and region; no two cats touching, diagonals included) — each level has exactly one solution, matching the official answers. Answer cells are rendered with the official cat sprite.</span></div>
 
-    <h2>Games Like Meowdoku</h2>
-    <p>If you love Meowdoku's logic-with-coziness formula, the closest free games are GridPaw's browser puzzle lineup. None of them require a download, account, or install — exactly the "open the browser and play" convenience Meowdoku players tend to appreciate. Here is how each one compares:</p>
+    <!-- Level 1 -->
+    <div class="boardrow">
+      <div class="stepstrip">
+        <div class="step"><div class="bd s4" id="l1s0"></div><i>Start</i></div>
+        <div class="step"><div class="bd s4" id="l1s1"></div><i>S1 R1C3</i></div>
+        <div class="step"><div class="bd s4" id="l1s2"></div><i>S2 R2C1</i></div>
+        <div class="step"><div class="bd s4" id="l1s3"></div><i>S3 R3C4</i></div>
+        <div class="step"><div class="bd s4" id="l1s4"></div><i>Done ✔</i></div>
+      </div>
+      <div class="lvmeta">
+        <h4>Level 1 <span class="lvtag e">4×4 · Easy</span></h4>
+        <ol>
+          <li><b>R1C3</b> — the light-rose region has exactly one cell, so it settles itself (Strategy 1).</li>
+          <li><b>R2C1</b> — same story: the deep-rose region is a single cell (Strategy 1).</li>
+          <li><b>R3C4</b> — row 3's only legal cell: R3C3 sits under the column-3 cat, and R3C1 / R3C2 share or diagonally touch the R2C1 cat (Strategies 2 + 4).</li>
+          <li><b>R4C2</b> — row 4 × column 2 is the only cell left (Strategy 2).</li>
+        </ol>
+        <div class="ans">Answer: R1C3 · R2C1 · R3C4 · R4C2</div>
+      </div>
+    </div>
 
-    <table class="compare-table">
-      <thead>
-        <tr><th>Game</th><th>Why it's like Meowdoku</th><th>Similarity</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><a href="/kakuro/">Kakuro</a></td>
-          <td>Fill a grid with digits 1–9, every run sums to its clue — the same "fill the grid exactly right" logic with a math twist.</td>
-          <td class="sim-high">Very close</td>
-        </tr>
-        <tr>
-          <td><a href="/nonogram/">Nonogram</a></td>
-          <td>Picture-logic puzzles with the same deductive clarity: clues force cells either filled or empty, one logical step at a time.</td>
-          <td class="sim-high">Very close</td>
-        </tr>
-        <tr>
-          <td><a href="/">Shikaku</a></td>
-          <td>Partition the grid into numbered rectangles — pure spatial reasoning with the same calm, single-solution feel.</td>
-          <td class="sim-mid">Close</td>
-        </tr>
-        <tr>
-          <td><a href="/nurikabe/">Nurikabe</a></td>
-          <td>Islands-and-sea logic with a strong visual payoff — closer to Meowdoku's "watch the picture form" charm.</td>
-          <td class="sim-mid">Close</td>
-        </tr>
-        <tr>
-          <td><a href="/akari/">Akari</a></td>
-          <td>Light-up logic puzzles: place lights so every cell glows — same grid-and-rules structure, different brain muscle.</td>
-          <td>Similar</td>
-        </tr>
-      </tbody>
-    </table>
-    <p>All five are free to play online, all have unlimited generated levels, and all share the Meowdoku philosophy: one clean rule set, one guaranteed solution, zero guesswork.</p>
+    <!-- Level 2 -->
+    <div class="boardrow">
+      <div class="bd b4" id="l2"></div>
+      <div class="lvmeta">
+        <h4>Level 2 <span class="lvtag e">4×4 · Easy</span></h4>
+        <ol>
+          <li><b>R1C2</b> — the light-rose region has a single cell (Strategy 1).</li>
+          <li><b>R2C4</b> — every other row-2 cell touches or shares with the R1C2 cat, making this the row's only legal cell; it also covers the deep-rose region (Strategy 2).</li>
+          <li><b>R3C1</b> — the purple region's only cell left standing in row 3 (Strategies 2 + 4).</li>
+          <li><b>R4C3</b> — row 4 closes with its single legal cell (Strategy 2).</li>
+        </ol>
+        <div class="ans">Answer: R1C2 · R2C4 · R3C1 · R4C3</div>
+      </div>
+    </div>
+
+    <!-- Level 3 -->
+    <div class="boardrow">
+      <div class="bd b5" id="l3"></div>
+      <div class="lvmeta">
+        <h4>Level 3 <span class="lvtag m">5×5 · 5 cats</span></h4>
+        <ol>
+          <li><b>R1C3</b> / <b>R2C1</b> — two single-cell regions (light-rose and deep-rose), place both immediately (Strategy 1).</li>
+          <li><b>R4C2</b> — the pink region has one cell (Strategy 1).</li>
+          <li><b>R3C5</b> — every other purple cell is blocked by a row, column, or contact rule — the only legal home left (Strategies 2 + 4).</li>
+          <li><b>R5C4</b> — the orange region × row 5 closes the board: every other orange cell touches or shares with an earlier cat (Strategy 2).</li>
+        </ol>
+        <div class="ans">Answer: R1C3 · R2C1 · R3C5 · R4C2 · R5C4</div>
+      </div>
+    </div>
+
+    <h2>Real Board Screenshots</h2>
+    <div class="snaprow">
+      <figure><img src="/meowdoku-guide/board-level1.jpg" alt="Meowdoku Level 1 board, 4×4, official in-game screenshot" loading="lazy"><figcaption>Level 1 · 4×4</figcaption></figure>
+      <figure><img src="/meowdoku-guide/board-level2.jpg" alt="Meowdoku Level 2 board, 4×4, official in-game screenshot" loading="lazy"><figcaption>Level 2 · 4×4</figcaption></figure>
+      <figure><img src="/meowdoku-guide/board-level3.jpg" alt="Meowdoku Level 3 board, 5×5, official in-game screenshot" loading="lazy"><figcaption>Level 3 · 5×5</figcaption></figure>
+    </div>
 
     <h2>Frequently Asked Questions</h2>
 
-    <details><summary>What is Meowdoku?</summary><p>Meowdoku is a cozy Sudoku-style puzzle game from developer Oakever where every solved cell rewards you with cute cat visuals. The core puzzle works exactly like a classic 9x9 Sudoku — every row, column, and 3x3 box must contain the digits 1 through 9 exactly once — wrapped in a light, cat-themed presentation aimed at relaxed daily play.</p></details>
+    <details><summary>What is Meowdoku?</summary><p>Meowdoku is a free cat-themed placement puzzle by Oakever for iOS and Android. You settle exactly one cat in each colored region of a grid, under three constraints: one cat per row, one per column, and no two cats touching — corners and diagonals included. Boards grow from 4×4 upward and regions get more intricate as levels climb. Its closest cousin is LinkedIn Queens, not Sudoku.</p></details>
 
-    <details><summary>What are the best Meowdoku hints for stuck players?</summary><p>Six reliable no-hint techniques: scan each row, column, and box for missing numbers; use pencil marks for every candidate; find cells where a digit can only go in one place; apply the cross-hatching method to lock digits; check for naked pairs and triples; and revisit unsolved cells after every deduction. Together these solve almost every humanly solvable Sudoku-style grid without needing the hint button.</p></details>
+    <details><summary>What are the best Meowdoku hints for stuck players?</summary><p>Six no-hint techniques that solve any board: place single-cell regions first; follow row and column pressure; draw the exclusion circle of the 8 cells around every new cat; eliminate candidates systematically with X-marks; prefer corners and edges because they touch fewer neighbors; and re-scan the whole board after every placement. Together these make the hint button unnecessary.</p></details>
 
-    <details><summary>Where can I find Meowdoku answers?</summary><p>Meowdoku does not publish an official answer list, and the daily puzzles change every day, so chasing an answer site is a losing game. The more reliable approach is learning to derive the answer yourself: fill in pencil marks, apply the six solving techniques, and the grid resolves logically. That skill transfers to every Sudoku-style puzzle you will ever play.</p></details>
+    <details><summary>Where can I find Meowdoku answers?</summary><p>Right here for Levels 1–3: each answer is shown on a real board with the reasoning behind every placement. One caveat — Meowdoku can randomize boards based on player progress, so the same level number may look different on your device. If your grid doesn't match, use the walkthrough as a derivation demo; the technique transfers to any board.</p></details>
 
-    <details><summary>Is Meowdoku the same as regular Sudoku?</summary><p>The logic is identical to classic Sudoku — same rows, columns, and boxes rule. What Meowdoku adds is presentation and pacing: cat-themed visuals, spaced numbers, smaller or larger grids in some modes, and a more relaxed, game-like wrapper. If you can solve Sudoku, you can solve Meowdoku; the strategies carry over one-to-one.</p></details>
+    <details><summary>Is Meowdoku the same as regular Sudoku?</summary><p>No — and it is not a numbers game at all. Meowdoku is a Queens-style placement puzzle: one cat per colored region, one per row and column, with no two cats touching even diagonally. It shares only a spirit of pure-logic deduction with Sudoku. Its closest cousins are Star Battle and LinkedIn Queens.</p></details>
 
-    <details><summary>What games are like Meowdoku?</summary><p>If you like Meowdoku's logic-with-cosmetics style, the closest free browser alternatives are GridPaw's grid-puzzle games: Kakuro (cross sums, the same fill-the-grid logic with math), Nonogram (picture logic with the same deductive clarity), and Shikaku (rectangle partition). All are playable free in the browser with no download, and all share the relaxing single-solution-puzzle feel.</p></details>
+    <details><summary>What games are like Meowdoku?</summary><p>GridPaw's placement-logic lineup is the closest free browser match: Shikaku (partition the grid into numbered rectangles), Akari (place lights so every cell glows), Nurikabe (islands in a sea of black cells), Nonogram (picture logic from row and column clues), and Kakuro (cross sums). All are free in the browser with no download, and all share the calm single-solution feel.</p></details>
 
-    <details><summary>Is Meowdoku good for your brain?</summary><p>Yes. Meowdoku's Sudoku core is one of the most-studied brain-training activities: it exercises logical deduction, working memory, and concentration. Regular Sudoku-style play is linked in research to sharper performance on reasoning and memory tasks. The cat presentation adds a bonus — a relaxed, low-stress daily habit is easier to keep than an intense one.</p></details>
+    <details><summary>Is Meowdoku good for your brain?</summary><p>Yes. Meowdoku's deduction core exercises logical reasoning, working memory, and concentration — the same mental muscles behind well-studied puzzle training. Regular play is linked in research to sharper performance on reasoning and memory tasks, and the cozy cat presentation makes the habit easy to keep.</p></details>
 
     <div class="cta-box">
-      <p>🐱 Want to try logic puzzles yourself? No download, no signup — play free in your browser: <a href="/nonogram/">Play Free →</a></p>
+      <p>🐱 Want to try a placement puzzle right now? No download, no signup — play free in your browser: <a href="/">Play Shikaku Free →</a></p>
     </div>
 
     <AdSlot />
@@ -285,7 +318,7 @@ const faqJsonLd = [
     </ul>
   </main>
 
-  <section class="seo-content" style="border-top:2px solid #e7dacf;padding-top:1rem;margin-top:2rem">
+  <section class="seo-section" style="border-top:2px solid #e7dacf;padding-top:1rem;margin-top:2rem">
     <h2>Read Next</h2>
     <ul>
       <li><a href="/arrows-puzzle/">Arrows Puzzle</a> — how to play, full rules, and beginner tips</li>
@@ -300,5 +333,57 @@ const faqJsonLd = [
     <p style="margin-top:0.3rem;"><a href="/">GridPaw Shikaku</a> · <a href="/akari/">GridPaw Akari</a> · <a href="/nonogram/">GridPaw Nonogram</a> · <a href="/nurikabe/">GridPaw Nurikabe</a> · <a href="/pictomino/">GridPaw Pictomino</a> · <a href="https://www.pinterest.com/gridpaw/">Pinterest</a> · <a href="/community/">Community</a></p>
     <p style="margin-top:0.3rem;"><a href="/">Home</a> · <a href="/akari/">Akari</a> · <a href="/pictomino/">Pictomino</a></p>
   </footer>
+
+  <script is:inline>
+    // Board renderer. Region letters: P pink / L light-rose / D deep-rose / U purple / O orange / M magenta (renders pink)
+    function mk(id, n, regions, cats) {
+      const el = document.getElementById(id);
+      const letters = { P: 'cP', L: 'cL', D: 'cD', U: 'cU', O: 'cO', M: 'cP' };
+      for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) {
+        const d = document.createElement('div');
+        d.className = 'c ' + letters[regions[r][c]];
+        if (cats.some(p => p[0] === r && p[1] === c)) d.innerHTML = '<span class="cat"></span>';
+        el.appendChild(d);
+      }
+    }
+    // L1 regions: P pink / L light-rose / D deep-rose / U purple
+    const L1R = ["PPLP", "DPPP", "PPUU", "PPPU"];
+    const L1C = [[0, 2], [1, 0], [2, 3], [3, 1]];
+    // progressive strips: 0..4 cats placed
+    [0, 1, 2, 3, 4].forEach(k => {
+      const id = 'l1s' + k, el = document.getElementById(id);
+      const letters = { P: 'cP', L: 'cL', D: 'cD', U: 'cU' };
+      for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) {
+        const d = document.createElement('div'); d.className = 'c ' + letters[L1R[r][c]];
+        if (L1C.slice(0, k).some(p => p[0] === r && p[1] === c)) d.innerHTML = '<span class="cat"></span>';
+        el.appendChild(d);
+      }
+    });
+    // Rules demo: one cat at R2C2, row/column + 8-neighbor exclusion marked ✕
+    (function () {
+      const el = document.getElementById('xdemo');
+      const R = ["ULMM", "UMMD", "UUMD", "UMMM"]; // reuse L2 region map
+      const cat = [1, 1]; // R2C2
+      const letters = { P: 'cP', L: 'cL', D: 'cD', U: 'cU', O: 'cO', M: 'cP' };
+      for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) {
+        const d = document.createElement('div');
+        d.className = 'c ' + letters[R[r][c]];
+        const isCat = (r === cat[0] && c === cat[1]);
+        const blocked = !isCat && (r === cat[0] || c === cat[1] || (Math.abs(r - cat[0]) <= 1 && Math.abs(c - cat[1]) <= 1));
+        if (isCat) { d.innerHTML = '<span class="cat"></span>'; }
+        else if (blocked) { d.classList.add('x'); }
+        else { d.classList.add('off'); }
+        el.appendChild(d);
+      }
+    })();
+    // L2: U purple / L light / D deep / M magenta (pink)
+    const L2R = ["ULMM", "UMMD", "UUMD", "UMMM"];
+    const L2C = [[0, 1], [1, 3], [2, 0], [3, 2]];
+    mk('l2', 4, L2R, L2C);
+    // L3: U purple / D deep / P pink / O orange / L light-rose
+    const L3R = ["UULUU", "DUUUU", "UUUOU", "UPUOO", "OOOOO"];
+    const L3C = [[0, 2], [1, 0], [2, 4], [3, 1], [4, 3]];
+    mk('l3', 5, L3R, L3C);
+  </script>
 </body>
 </html>
