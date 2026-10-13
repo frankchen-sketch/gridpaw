@@ -1,0 +1,298 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import ExtensionPromo from '../../components/ExtensionPromo.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const title = "How to Play Murder Sudoku: Rules + Example";
+const description = "Murder sudoku rules in five minutes: rooms, suspects, witness statements, and how to finger the killer. A solved 4x4 case walks through every deduction. Free.";
+
+const faqJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What is murder sudoku?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Murder sudoku is a hybrid of sudoku and a whodunit mystery. You place named suspects on a grid carved into rooms, guided by witness statements, while a sudoku rule keeps any two figures out of the same row or column. The suspect who ends up alone in the room with the victim is the killer."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Is murder sudoku the same as Murdoku?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Not exactly. Murdoku is a popular puzzle-book series that helped drive the murder sudoku trend, similar to how KenKen is one brand of calcudoku. Murder sudoku is the general puzzle type, and several sites and book series publish their own versions of it."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Do the clues in a murder sudoku ever contradict each other?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "No. A well-made case is guaranteed to have exactly one arrangement that satisfies every witness statement, every room rule, and the sudoku row and column rule. If your grid stops working, an earlier placement needs to be reconsidered, not the case itself."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Where can I play murder sudoku online?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Dedicated sites such as Cluedoku publish a new case every day, Murdoku adds new cases weekly, and a wave of printed puzzle books covers the genre too. GridPaw is building its own cat-flavored take on the formula. In the meantime, GridPaw's free browser puzzles, Shikaku and Akari, scratch a similar pure-deduction itch."
+        }
+      }
+    ]
+  }
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/murder-sudoku"
+    type="article"
+    breadcrumbTitle="Murder Sudoku"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --mt-primary: #D47A50;
+      --mt-secondary: #5C6BC0;
+      --mt-bg: #FFF8F0;
+      --mt-cell-border: #D8D0C8;
+      --mt-text: #3D3D3D;
+      --mt-text-light: #9E9590;
+      --mt-shadow-sm: 0 2px 8px rgba(78,64,55,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', -apple-system, sans-serif;
+      background: var(--mt-bg); color: var(--mt-text);
+      min-height: 100vh;
+    }
+    .breadcrumb { font-size: 12px; color: var(--mt-text-light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--mt-text-light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--mt-primary); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; color: var(--mt-text); margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; color: var(--mt-text); margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--mt-primary); }
+    .seo-section h3 { font-size: 1.1rem; color: var(--mt-text); margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--mt-primary); }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: white; border: 1.5px solid var(--mt-cell-border); border-radius: 10px; box-shadow: var(--mt-shadow-sm); }
+    .seo-section details[open] { border-color: var(--mt-primary); }
+    .seo-section summary { cursor: pointer; font-weight: 800; color: var(--mt-text); line-height: 1.5; }
+    .seo-section summary:hover { color: var(--mt-primary); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .seo-section table { border-collapse: collapse; margin: 0.8rem 0; width: 100%; font-size: 0.9rem; background: white; border-radius: 10px; overflow: hidden; box-shadow: var(--mt-shadow-sm); }
+    .seo-section th, .seo-section td { border: 1px solid var(--mt-cell-border); padding: 0.5rem 0.7rem; text-align: left; line-height: 1.5; color: #555; vertical-align: top; }
+    .seo-section th { background: #FFF1E4; color: var(--mt-text); font-weight: 800; }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--mt-text-light); }
+    .seo-footer a { color: var(--mt-text-light); }
+    .seo-footer a:hover { color: var(--mt-primary); }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: white; border: 2px dashed var(--mt-primary); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--mt-text); }
+    .cta-box a { color: var(--mt-primary); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    /* ── case board ── */
+    .case-board { display: grid; grid-template-columns: repeat(4, 74px); grid-auto-rows: 74px; gap: 3px; margin: 1rem auto; width: max-content; background: var(--mt-cell-border); border: 3px solid var(--mt-cell-border); border-radius: 12px; padding: 3px; }
+    .case-cell { border-radius: 8px; position: relative; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.5rem; }
+    .case-cell .room-label { position: absolute; top: 3px; left: 6px; font-size: 0.58rem; font-weight: 800; letter-spacing: 0.03em; color: rgba(61,61,61,0.55); text-transform: uppercase; }
+    .room-kitchen { background: #FFE3C2; }
+    .room-library { background: #FBEEDD; }
+    .room-bedroom { background: #F6DDD2; }
+    .cell-victim { color: #8A6D5C; }
+    .cell-rug { background-image: radial-gradient(rgba(61,61,61,0.18) 1.5px, transparent 1.5px); background-size: 9px 9px; }
+    .cell-suspect { color: #B05C2E; }
+    .cell-killer { box-shadow: inset 0 0 0 3px #C0392B; }
+    .board-caption { text-align: center; font-size: 0.85rem; color: var(--mt-text-light); margin-top: 0.4rem; }
+    .step-tag { display: inline-block; background: var(--mt-primary); color: white; font-weight: 800; font-size: 0.75rem; border-radius: 999px; padding: 0.1rem 0.6rem; margin-right: 0.4rem; vertical-align: middle; }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; Murder Sudoku</nav>
+
+  <main class="seo-section">
+    <h1>How to Play Murder Sudoku: Rules, Clues, and a Solved Case</h1>
+
+    <p>Murder sudoku is what happens when a sudoku grid witnesses a crime. You get a floor plan carved into rooms, a set of named suspects, one very still victim, and a handful of witness statements. Your job is to work out where everyone was standing, using pure deduction, and the person who turns out to be alone in the room with the victim is the killer. No trivia, no dice, no guessing: every case has exactly one solution, and you can prove it.</p>
+
+    <p>This guide covers the complete rules, the five types of witness statements you will meet, and a fully solved 4×4 case that walks through every deduction step by step. Five minutes from now, you will know how to catch a cat culprit yourself.</p>
+
+    <h2>What Is Murder Sudoku?</h2>
+
+    <p>Murder sudoku belongs to the logic grid puzzle family, but it swaps numbers for suspects and boxes for rooms. The genre exploded out of print: a wave of murder mystery puzzle books topped bestseller lists and sold well over a million copies, with series like <em>Murdoku</em> leading the charge. The online versions translate the same idea to the browser, where the grid handles the bookkeeping for you.</p>
+
+    <p>What makes it different from every other grid puzzle is the payoff. In Sudoku you finish a grid, in Shikaku you finish a division, and in murder sudoku you finish an alibi. The final deduction names a culprit, which gives every placement a small narrative weight: you are not just filling cells, you are building the timeline of a crime.</p>
+
+    <div class="cta-box">
+      <p>Love pure deduction? <a href="/">Play Shikaku free →</a> &nbsp;&middot;&nbsp; <a href="/akari/">Play Akari free →</a></p>
+    </div>
+
+    <h2>The Board: Rooms, Walls, and Objects</h2>
+
+    <p>Every case starts on a square grid, from a compact 4×4 beginner case up to a sprawling 10×10 investigation. The grid is not one open floor plan: it is carved into irregular rooms with names like Kitchen, Library, and Bedroom. Almost every witness statement refers back to a room, so your first move in any case is the same: learn the floor plan.</p>
+
+    <p>Some cells hold objects, and they come in three flavors:</p>
+
+    <ul>
+      <li><strong>Blocking objects</strong> (a table, a bookshelf, a piano) fill their cell completely. Nobody can stand there, which quietly shrinks everyone's options.</li>
+      <li><strong>Floor objects</strong> (a rug, a carpet) are decoration. Suspects can stand on them freely, and clue statements like "on a carpet" point straight at them.</li>
+      <li><strong>Furniture</strong> (a chair, a stool) sits on top of a floor object, and a suspect can occupy that cell too. One square can hold a rug, a chair, and a nervous suspect all at once.</li>
+    </ul>
+
+    <h2>The Suspects and the Sudoku Rule</h2>
+
+    <p>Each case has a cast of suspects labeled A, B, C and onward, plus one additional figure: <strong>V, the victim</strong>. Every figure stands on exactly one cell, and here is the sudoku half of the bargain:</p>
+
+    <p><strong>No two figures, victim included, ever share a row or a column.</strong></p>
+
+    <p>That single rule does an enormous amount of work. Place one suspect and you instantly eliminate their entire row and column for everyone else. On a 4×4 grid with four figures, it means each row and each column holds exactly one person, which turns the board into a puzzle about positions rather than numbers.</p>
+
+    <h2>How You Find the Killer</h2>
+
+    <p>The victim was not alone when it happened. The governing rule of every case is this: <strong>the victim shares their room with exactly one other suspect, and that suspect is the killer.</strong></p>
+
+    <p>Every other suspect can share a room with as many people as the clues allow. Only the victim's room is restricted. So the endgame of every case is the same satisfying moment: you finish placing everyone, look at the victim's room, and there is exactly one name standing next to the body. Case closed.</p>
+
+    <h2>Witness Statements: The Five Clue Types</h2>
+
+    <p>Every suspect except the victim comes with one clue, written as a plain witness statement. They fall into five broad types:</p>
+
+    <table>
+      <tr><th>Type</th><th>Example statements</th><th>What it does</th></tr>
+      <tr><td>Location</td><td>"He was in the Kitchen." / "She was NOT in the Gallery."</td><td>Pins a suspect inside one room, or crosses a whole room out for them.</td></tr>
+      <tr><td>Objects</td><td>"He was on a carpet."</td><td>Narrows a suspect to cells with a floor object.</td></tr>
+      <tr><td>Architecture</td><td>"She was beside a table." / "He was at a wall." / "She was in a corner."</td><td>Describes where the suspect stood relative to the room's furniture or walls.</td></tr>
+      <tr><td>Social</td><td>"He was with Diana in the Library." / "She was alone with Boris."</td><td>Ties two suspects to the same room, or demands a room held exactly two people.</td></tr>
+      <tr><td>Case-wide</td><td>"Exactly 3 people were in the Ballroom." / "The Cellar was locked, nobody inside."</td><td>Rules that govern a whole room regardless of who you are reasoning about.</td></tr>
+    </table>
+
+    <p>The social clues are usually the most powerful, because anything true of one suspect instantly constrains the other. The case-wide rules are easy to forget and costly to overlook, so read every statement once before you place anyone.</p>
+
+    <AdSlot />
+
+    <h2>A Solved 4×4 Case: Who Ambushed Old Whiskers?</h2>
+
+    <p>Time to catch a culprit. A small house, three cat suspects, and one victim. Old Whiskers was found in the Kitchen, and the three cats each leave exactly one witness statement:</p>
+
+    <ul>
+      <li><strong>Mochi (M):</strong> "I was in the Kitchen."</li>
+      <li><strong>Tofu (T):</strong> "I was in the Library."</li>
+      <li><strong>Pixel (P):</strong> "I was on the rug."</li>
+    </ul>
+
+    <p>Here is the floor plan. The victim V is already in place in the Kitchen, and the rug in the Bedroom is marked with a dotted texture:</p>
+
+    <div class="case-board" role="img" aria-label="A 4 by 4 case grid. The Kitchen covers the top-left two by two cells and holds the victim V. The Library is L-shaped along the top right. The Bedroom fills the rest. A rug occupies the bedroom cell in the bottom row, third column.">
+      <div class="case-cell room-kitchen"><span class="room-label">Kitchen</span></div>
+      <div class="case-cell room-kitchen cell-victim">V</div>
+      <div class="case-cell room-library"><span class="room-label">Library</span></div>
+      <div class="case-cell room-library"></div>
+      <div class="case-cell room-kitchen"></div>
+      <div class="case-cell room-kitchen"></div>
+      <div class="case-cell room-library"></div>
+      <div class="case-cell room-library"></div>
+      <div class="case-cell room-bedroom"><span class="room-label">Bedroom</span></div>
+      <div class="case-cell room-bedroom"></div>
+      <div class="case-cell room-bedroom"></div>
+      <div class="case-cell room-library"></div>
+      <div class="case-cell room-bedroom"></div>
+      <div class="case-cell room-bedroom"></div>
+      <div class="case-cell room-bedroom cell-rug"></div>
+      <div class="case-cell room-bedroom"></div>
+    </div>
+    <p class="board-caption">The case board: victim V in the Kitchen, three cats unaccounted for.</p>
+
+    <h3>Step 1: Let the Sudoku Rule Do the Heavy Lifting</h3>
+
+    <p><span class="step-tag">1</span>V sits in row 1, column 2, so no suspect can use row 1 or column 2. That confines Mochi, Tofu, and Pixel to rows 2, 3, and 4, in columns 1, 3, and 4. Three suspects, three rows, three columns: the board is already half-solved before you have read a single statement.</p>
+
+    <h3>Step 2: Mochi's Statement Resolves to One Cell</h3>
+
+    <p><span class="step-tag">2</span>Mochi was in the Kitchen. The Kitchen covers the top-left 2×2 block, but row 1 is off limits (the victim's row) and column 2 is off limits (the victim's column). Cross out (r1c1), (r1c2), and (r2c2), and exactly one Kitchen cell survives: <strong>(r2c1)</strong>. Mochi's position is forced, no guessing required.</p>
+
+    <h3>Step 3: Tofu's Statement Resolves to One Cell</h3>
+
+    <p><span class="step-tag">3</span>Tofu was in the Library, the L-shaped room along the top right. Its cells are (r1c3), (r1c4), (r2c3), (r2c4), and (r3c4). Row 1 is taken by the victim, and row 2 is taken by Mochi, so four of the five cells drop away: <strong>(r3c4)</strong> is the only Library cell left. Tofu is forced too.</p>
+
+    <h3>Step 4: Pixel Falls Out of the Grid Itself</h3>
+
+    <p><span class="step-tag">4</span>One row (4) and one column (3) remain, so Pixel must stand at <strong>(r4c3)</strong>. Check the statement: the rug is exactly there, so Pixel's alibi checks out. In easy cases like this one, the last suspect often falls out of the grid automatically, and their clue serves as confirmation rather than elimination.</p>
+
+    <div class="case-board" role="img" aria-label="The solved case grid. Mochi M stands in the kitchen at row 2 column 1, highlighted as the killer. Tofu T stands in the library at row 3 column 4. Pixel P stands on the rug in the bedroom at row 4 column 3. The victim V remains in the kitchen.">
+      <div class="case-cell room-kitchen"><span class="room-label">Kitchen</span></div>
+      <div class="case-cell room-kitchen cell-victim">V</div>
+      <div class="case-cell room-library"><span class="room-label">Library</span></div>
+      <div class="case-cell room-library"></div>
+      <div class="case-cell room-kitchen cell-suspect cell-killer">M</div>
+      <div class="case-cell room-kitchen"></div>
+      <div class="case-cell room-library"></div>
+      <div class="case-cell room-library"></div>
+      <div class="case-cell room-bedroom"><span class="room-label">Bedroom</span></div>
+      <div class="case-cell room-bedroom"></div>
+      <div class="case-cell room-bedroom"></div>
+      <div class="case-cell room-library cell-suspect">T</div>
+      <div class="case-cell room-bedroom"></div>
+      <div class="case-cell room-bedroom"></div>
+      <div class="case-cell room-bedroom cell-rug cell-suspect">P</div>
+      <div class="case-cell room-bedroom"></div>
+    </div>
+    <p class="board-caption">The solved case: M = Mochi (killer), T = Tofu, P = Pixel.</p>
+
+    <h3>Step 5: Look at the Victim's Room</h3>
+
+    <p><span class="step-tag">5</span>The Kitchen holds the victim and exactly one other suspect: Mochi. That is the governing rule of every case, and it names the killer. <strong>Mochi ambushed Old Whiskers.</strong> Every statement checks out, every row and column holds exactly one figure, and because every placement was forced, the solution is provably unique. That is the whole game: rules constrain, clues resolve, and the victim's room accuses.</p>
+
+    <div class="cta-box">
+      <p>Want more pure-logic puzzles while the mystery cases bake? <a href="/">Play Shikaku →</a> &nbsp;&middot;&nbsp; <a href="/akari/">Play Akari →</a></p>
+    </div>
+
+    <h2>Three Habits of a Good Detective</h2>
+
+    <ul>
+      <li><strong>Read every statement before placing anyone.</strong> Case-wide rules like "exactly 3 people in the Ballroom" apply to suspects you have not reasoned about yet, and missing one is the most common way to paint yourself into a corner.</li>
+      <li><strong>Start with the most constrained suspect.</strong> A statement that pins a suspect to a small room next to the victim's row and column can collapse to a single cell immediately. Forced placements cascade, one locked suspect quietly deletes a row and a column for everyone else.</li>
+      <li><strong>Trust the uniqueness guarantee.</strong> A fair case has exactly one solution, so if two placements both seem to work, you have misread a statement. Re-read the witness statements, especially the words "NOT", "alone", and "exactly", before you doubt the puzzle.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <details><summary>What is murder sudoku?</summary><p>Murder sudoku is a hybrid of sudoku and a whodunit mystery. You place named suspects on a grid carved into rooms, guided by witness statements, while a sudoku rule keeps any two figures out of the same row or column. The suspect who ends up alone in the room with the victim is the killer.</p></details>
+
+    <details><summary>Is murder sudoku the same as Murdoku?</summary><p>Not exactly. Murdoku is a popular puzzle-book series that helped drive the murder sudoku trend, similar to how KenKen is one brand of calcudoku. Murder sudoku is the general puzzle type, and several sites and book series publish their own versions of it.</p></details>
+
+    <details><summary>Do the clues in a murder sudoku ever contradict each other?</summary><p>No. A well-made case is guaranteed to have exactly one arrangement that satisfies every witness statement, every room rule, and the sudoku row and column rule. If your grid stops working, an earlier placement needs to be reconsidered, not the case itself.</p></details>
+
+    <details><summary>Where can I play murder sudoku online?</summary><p>Dedicated sites such as Cluedoku publish a new case every day, Murdoku adds new cases weekly, and a wave of printed puzzle books covers the genre too. GridPaw is building its own cat-flavored take on the formula. In the meantime, GridPaw's free browser puzzles, Shikaku and Akari, scratch a similar pure-deduction itch.</p></details>
+  </main>
+
+  <section class="seo-section" style="border-top:2px solid #e7dacf;padding-top:1rem;margin-top:2rem">
+    <h2>Read Next</h2>
+    <ul>
+      <li><a href="/brain-teasers-for-adults/">Brain Teasers for Adults</a> — 25 free logic puzzles and riddles</li>
+      <li><a href="/logic-puzzle-grid/">Logic Puzzle Grid</a> — the complete guide to grid-based puzzles</li>
+      <li><a href="/japanese-logic-puzzles/">Japanese Logic Puzzles</a> — 7 puzzle types from Japan explained</li>
+      <li><a href="/number-grid-puzzle/">Number Grid Puzzles</a> — 8 types from Sudoku to Shikaku</li>
+    </ul>
+  </section>
+
+  <footer class="seo-footer">
+    <p>GridPaw: Free online Japanese logic puzzles with cats.</p>
+    <ExtensionPromo />
+    <p style="margin-top:0.3rem;"><a href="/">GridPaw Shikaku</a> · <a href="/akari/">GridPaw Akari</a> · <a href="/nonogram/">GridPaw Nonogram</a> · <a href="/nurikabe/">GridPaw Nurikabe</a> · <a href="/pictomino/">GridPaw Pictomino</a> · <a href="https://www.pinterest.com/gridpaw/">Pinterest</a> · <a href="/community/">Community</a></p>
+  </footer>
+</body>
+</html>
