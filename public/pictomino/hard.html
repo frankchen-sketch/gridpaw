@@ -249,7 +249,13 @@ footer a{color:var(--muted)}
   </div>
 </div>
 <script>
-document.getElementById('game-frame').addEventListener('load', function(){ track('game_start', {difficulty:'hard'}); });
+// game_start 口径（2026-10-13 Clarity 取证）：页面可见才算开局——后台标签加载不计
+document.getElementById('game-frame').addEventListener('load', function(){
+  var gs = function(){ track('game_start', {difficulty:'hard'}); };
+  if (document.visibilityState === 'visible') { gs(); return; }
+  var onVis = function(){ if (document.visibilityState !== 'visible') return; document.removeEventListener('visibilitychange', onVis); gs(); };
+  document.addEventListener('visibilitychange', onVis);
+});
 window.addEventListener('message', function(ev){
   if(!ev.data) return;
   if(ev.data.type==='pictomino_daily_solved') { track('puzzle_complete', {difficulty:'hard',source:'hard'}); track('level_up', {difficulty:'hard',source:'hard'}); }
