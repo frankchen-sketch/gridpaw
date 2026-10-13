@@ -923,10 +923,21 @@ const description = "Play KenKen (Calcudoku) free online: cat-themed math logic 
 
       var gaFiredOnce = false;
       var goTracked = false;
+      // game_start 口径（2026-10-13 Clarity 取证）：页面可见才算开局——后台标签加载不计，
+      // visibilitychange 转可见时补发；直接关掉后台标签 = 不发
+      function trackGameStartWhenVisible(fire) {
+        if (document.visibilityState === 'visible') { fire(); return; }
+        var onVis = function() {
+          if (document.visibilityState !== 'visible') return;
+          document.removeEventListener('visibilitychange', onVis);
+          fire();
+        };
+        document.addEventListener('visibilitychange', onVis);
+      }
       function fireGameStart() {
         if (gaFiredOnce) return;
         gaFiredOnce = true;
-        track('game_start', { difficulty: DIFFS[state.difficulty].label, source: detectSource() });
+        trackGameStartWhenVisible(function() { track('game_start', { difficulty: DIFFS[state.difficulty].label, source: detectSource() }); });
       }
 
       // ── game_over（盘满但行/列/cage 校验不过 = 首次提交校验失败，每关一次）──

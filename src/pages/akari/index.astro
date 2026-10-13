@@ -1366,7 +1366,17 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
             const p = new URLSearchParams(location.search);
             const src = p.get('embed') ? 'embed' : p.get('daily') ? 'daily' : document.referrer ? 'referral' : 'direct';
             // 延迟到 DOMContentLoaded：gpTrack 由 module 脚本注入，太早调用会漏进 D1（同 index.astro 修复）
-            const fireGS = () => track('game_start', { level: level, difficulty: diff.label, source: src });
+            // game_start 口径（2026-10-13 Clarity 取证）：页面可见才算开局——后台标签加载不计，转可见补发
+            const fireGS = () => {
+              const gs = () => track('game_start', { level: level, difficulty: diff.label, source: src });
+              if (document.visibilityState === 'visible') { gs(); return; }
+              const onVis = () => {
+                if (document.visibilityState !== 'visible') return;
+                document.removeEventListener('visibilitychange', onVis);
+                gs();
+              };
+              document.addEventListener('visibilitychange', onVis);
+            };
             if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', fireGS); } else { fireGS(); }
           }
         } catch(e) { showToast('Failed to generate.', 'error'); }

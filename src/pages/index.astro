@@ -2129,7 +2129,19 @@ const description = "Draw rectangles to match every number and fill the grid —
   // game_start 延迟到 DOMContentLoaded：gpTrack 由 module 脚本注入（解析完才执行），
   // 内联脚本同步调用时 window.gpTrack 还不存在 → D1 漏 game_start（GA4 正常），实测 69 vs 6
   var _fireGameStart = function() { track('game_start', { level: levelNum, source: _source }); };
-  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _fireGameStart); } else { _fireGameStart(); }
+  // game_start 口径（2026-10-13 Clarity 取证）：页面可见才算开局——后台标签加载（00:01 已隐藏 + game_start
+  // 同秒触发，之后 5 分钟零互动，Clarity 10vuizs 实锤）不计，visibilitychange 转可见时补发；
+  // 直接关掉后台标签 = 不发。开局 = 用户真正看到棋盘
+  function _gsWhenVisible(fire) {
+    if (document.visibilityState === 'visible') { fire(); return; }
+    var onVis = function() {
+      if (document.visibilityState !== 'visible') return;
+      document.removeEventListener('visibilitychange', onVis);
+      fire();
+    };
+    document.addEventListener('visibilitychange', onVis);
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', function() { _gsWhenVisible(_fireGameStart); }); } else { _gsWhenVisible(_fireGameStart); }
   window.addEventListener('resize', function() { if (puzzle) render(); });
 
   // ─── Onboarding coach（真棋盘版 2026-09-23）：跟随教学 1-4 关真实棋局演示 ───
