@@ -512,3 +512,19 @@ Clarity 实锤（30min 0 次成功拖拽、徽章狂点 17 次/分）→ 3 步�
 **竞品盘点结论（5 站）**：
 - 功能最全=cluedoku（4×4→10×10+10 证词类型+duels/co-op，但流量最弱 1870/月）；内容最厚=sudokumurder（360 页/6 语言，日期归档+独立 solution 页吃 answer 长尾）；mysteryic 锁死 6×6 且明删昨题；murdersudoku 官网仅 1 页；murdoku 纯品牌+书系变现（其 sitemap 有死链 /play/sitemap.xml 404）
 - **三个品类真空**：①历史题归档+可检索解答页（mysteryic 删昨题/murdersudoku 无归档/murdoku 周更）→ 每日归档 URL 是持续 SEO 红利；②免账号异步挑战（多人仅 cluedoku 有且要账号+实时在线）→ 分享链接同题比时即差异化；③推理链分享/复盘（五站都只能分享用时）→ 契合 TikTok 传播，完全空白
+
+## 2026-10-14（凌晨）arrows 攻略页 100 关真盘浏览器上线（deploy `604ae02c`，commit `38a334d`）
+
+**数据管线（全部 scratch/，apkenv venv）**：
+- L11-L100 关卡身份 = mph 页面内联 SVG 几何 ↔ APK bundle 逐支点集匹配（match_pipeline.py，偏移搜索，86 唯一命中 + 4 包内重复资源去重后全中）。mph 几何与 APK 数据 1:1 一致（关名 07-07 批次），其关卡序号在 L1-10/L50/L200/L500/L900/L11-14 共 19 个采样点全部对上
+- **重要发现：mph 的 data-replay-steps 是自动生成、未经验证的假解序**——L12 第一步就撞它自己数据里 19 格带状箭头（cross_check.py，L11-20 全灭于第一步附近）。其盘面几何真、解序不可信。这坐实了攻略页对比表「auto-generated sites: level numbers dressed up as solutions」
+- 100 关解序 = solve_tip.py 语义（尖端 path[0]、指向首段反向、走廊从尖端扫到出盘、双头双向贪心）批量求解，100/100 全解无回溯，sol 长度=箭头数逐关校验
+- 产物：public/arrows-puzzle/levels.json（301KB，v0.23.1 包 3,983 关中前 100）
+
+**页面（arrows-puzzle-walkthrough）**：
+- 删 L1-3 三个手绘 SVG 板 + L4-10 事实表 → 交互式关卡浏览器（客户端 SVG 渲染 levels.json：格点+彩色折线+尾端编号圆点+双头 marker，100 按钮 picker + prev/next + 键盘左右 + #level-N 深链）
+- GA4：guide_level_view（切关）+ guide_more_levels_click covered '1-100'；CTA 改「Want Levels 101 and up?」
+- FAQ「How many levels」+ JSON-LD 同步更新：v0.23.1 包实测 3,983 关（不再说"无法知道总数"）
+- ego-browser 实测：L1/L37/L90/L100 渲染+切关+双头方向文案（"send it left"）+深链全过；vision 读图验色（暖琥珀纪律 ✓）
+
+**遗留**：murdoku/（untracked 实验目录）和 murder-sudoku 等他人改动仍在工作区，勿 git add -A；101 关以后有关注再扩
