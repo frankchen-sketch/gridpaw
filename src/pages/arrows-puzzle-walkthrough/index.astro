@@ -155,6 +155,13 @@ const faqJsonLd = [
     .lvsteps { margin:0.4rem 0 1.4rem; padding-left:1.4rem; }
     .lvsteps li { margin:0.3rem 0; }
     .lvtag { display:inline-block; background:#42352E; color:#FFFAF5; font-size:0.78rem; font-weight:700; padding:0.15rem 0.6rem; border-radius:10px; margin-right:0.5rem; }
+
+    .ctabox { background:#FBF3EA; border:1px solid #F0DFD2; border-radius:10px; padding:1.2rem 1.4rem; margin:1.4rem 0; }
+    .ctabox h3 { margin:0 0 0.4rem; }
+    .ctabox p { margin:0 0 0.9rem; font-size:0.95rem; }
+    .ctabox button { background:#E87A4F; color:#FFFAF5; border:none; border-radius:8px; padding:0.7rem 1.4rem; font-size:1rem; font-weight:700; cursor:pointer; font-family:inherit; }
+    .ctabox button:disabled { background:#A08D80; cursor:default; }
+    #cta-thanks { display:block; margin-top:0.7rem; font-size:0.9rem; color:#42352E; }
   </style>
 </head>
 <body>
@@ -250,6 +257,49 @@ const faqJsonLd = [
       <li>Takeaway: <b>the longest, most tangled arrow is the one whose blockers you just cleared — save it for last, and pick its blockers as your free moves.</b></li>
     </ol>
     <p class="cmp-note">Boards transcribed from real gameplay footage and cross-checked with an extraction solver; the orders shown clear every level with all three hearts intact. Later levels rotate denser variants of the same logic — the layered method above covers them.</p>
+
+
+    <h2>Levels 4–10: What the Footage Actually Shows</h2>
+    <p>From Level 4 up, arrows overlap into dense maze structures that can't be traced honestly arrow-by-arrow from video — so instead of inventing boards, here is exactly what we verified from real gameplay for every level up to 10.</p>
+    <table class="cmp">
+      <thead><tr><th>Level</th><th>Board</th><th>Arrows</th><th>Verified from footage</th></tr></thead>
+      <tbody>
+        <tr><th>4</th><td>7×9</td><td>5</td><td>Cleared with all 3 hearts intact ("Well done!")</td></tr>
+        <tr><th>5</th><td>11×13</td><td>16</td><td>Cleared with all 3 hearts intact ("Well done!")</td></tr>
+        <tr><th>6</th><td>27×23</td><td>36</td><td>The board is a heart shape. Labeled <b>Hard</b> in-game. Cleared with all 3 hearts ("Nice!")</td></tr>
+        <tr><th>7</th><td>9×12</td><td>12</td><td>Cleared with all 3 hearts intact ("Brilliant!")</td></tr>
+        <tr><th>8</th><td>9×14</td><td>16</td><td>Cleared with all 3 hearts intact ("Nice!")</td></tr>
+        <tr><th>9</th><td>13×17</td><td>24</td><td>Dense board; all 3 hearts intact through mid-solve</td></tr>
+        <tr><th>10</th><td>22×22</td><td>40</td><td>Labeled <b>Hard</b>. Mid-solve frames show collisions costing hearts — the first of the first ten where mistakes really bite</td></tr>
+      </tbody>
+    </table>
+    <p class="cmp-note">Board sizes and arrow counts come from structured level data cross-checked against gameplay footage. Fun fact the videos confirm: the game rotates its praise — "Well done!", "Nice!", "Brilliant!". Level 10's structured data also passed a weaker consistency check than Levels 4–9, which is one more reason we won't draw it as a board.</p>
+    <div class="ctabox">
+      <h3>Want fully-drawn boards for Levels 11 and up?</h3>
+      <p>Each dense board takes hours of frame-by-frame verification to do honestly — that's the standard this page holds itself to. Tap to vote and we'll build the batches with the most demand first.</p>
+      <button id="more-levels-cta" type="button">Yes — bring on Levels 11+</button>
+      <span id="cta-thanks" hidden>Noted — your vote is logged. Batches get prioritized by demand.</span>
+    </div>
+    <script is:inline>
+    (function () {
+      var b = document.getElementById('more-levels-cta');
+      if (!b) return;
+      function track(e, p) {
+        if (typeof window.gtag === 'function') window.gtag('event', e, p || {});
+        if (typeof window.clarity === 'function') window.clarity('event', e);
+        if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(e, Object.assign({ site: 'gridpaw' }, p || {}));
+      }
+      b.addEventListener('click', function () {
+        if (b.dataset.done) return;
+        b.dataset.done = '1';
+        track('guide_more_levels_click', { page: 'arrows-walkthrough', covered: '1-10' });
+        b.textContent = 'Got it — logged ✓';
+        b.disabled = true;
+        var t = document.getElementById('cta-thanks');
+        if (t) t.hidden = false;
+      });
+    })();
+    </script>
 
     <h2>Frequently Asked Questions</h2>
 
