@@ -1,0 +1,61 @@
+# GridPaw 新词台账
+
+cron（job 1329cf1d31a5）去重真源。状态：`reported`（已报告未动工）→ `deployed`（落地页已上线）→ `dropped`（判定放弃，含原因）。
+
+**cron 状态（2026-10-11 用户决策：降频收窄为「窄管」）**：每天 2 轮（早 8 + 晚 8），prompt v3——哥飞服务管搜索侧广度（500+ 词根日扫），cron 管深度和私有情报线：T1 品牌词族监控（核心）+ B 主题根窄扫 + 哥飞结果独立校验（限免期对照实验）。A 层品类根广扫已砍。本表 = 全部新词线索的唯一去重真源。
+
+## 发现层分工（三路互补，产出全部落本表防重复挖）
+
+| 路线 | 覆盖什么 | 节奏 | 入口档案 |
+|---|---|---|---|
+| **哥飞新词发现服务**（web.cafe 数据服务） | 搜索侧：500+ 词根日扫，已判值不值得做（新词/二次爆火老词/长期大词） | 每日（数据方更新） | 兄弟会话维护 webcafe 新词服务记录；限免期评估中 |
+| **移动端品类反推**（供给侧） | 从 Play 品类搜索反推监控开发者 → 新游戏 → 品牌词族（含 help 词），比搜索信号早 1-4 周 | 每周一次人肉 | `DEV-MONITOR.md`（T1/T2/霸主名单 + SOP + 收录标准） |
+| **人工喂词** | 群聊/竞品/突发 | 随时 | 直接进本表 |
+| **cron 雷达（窄管 v3）** | T1 品牌词族 0→非0 监控（核心）+ cat 主题根窄扫 + 哥飞结果独立校验（对照实验定续费） | 每天 2 轮（8 点/20 点） | job `1329cf1d31a5`，25 分/轮 |
+
+两条主线的互补关系：哥飞服务 = 搜索侧需求的"已冒头"信号（覆盖广、滞后于 App 上架）；品类反推 = 供给侧的"会冒头"信号（开发者新品确定、词族可预测、可提前建页）；cron 窄管 = 私有情报线（T1 词族是哥飞不知道我们监控谁的那部分）。同词两路命中 = 最高优先级。
+
+| 日期 | 词 | 月搜(US) | 哥飞KD | 形状判断 | 状态 | 来源 | 备注 |
+|---|---|---|---|---|---|---|---|
+| 2026-10-10 | cat in the hat | 246,000 | 30 | 上升+55%，逐月 135k→550k，疑电影事件需求 | dropped | cron | 商标/IP 词，需绕开官方名，待定替代词（如 cat hat puzzle）再评估 |
+| 2026-10-10 | bengal cat | 450,000 | 38 | +40%，但 furriq 的菜不是 gridpaw | dropped | cron | 赛道错配（品种词 vs 游戏词） |
+| 2026-10-10 | snake arcade game | 550,000 | 37 | +5099% 为 Google Doodle 蛇年脉冲：26/01 冲 500 万后跌回 3 万 | dropped | cron | 一次性脉冲，非稳定需求 |
+| 2026-10-10 | google snake doodle game（及变体×5） | 301,000 | 38-43 | 同上，Doodle 脉冲 | dropped | cron | 脉冲词 |
+| 2026-10-10 | poople（每日单词阶梯游戏） | 449,000 | 35.8 | 真新词：25-09 仅 1300 → 26-06 爆 673k，30 万+/月稳住，上升期 | dropped | 雷达 | 品类=每日词游，非 gridpaw 赛道；用户决策 2026-10-10 先放一放专注 gridpaw 扩量。截流路径已被 pooplegame.com 验证（注册 4 个月 DR 31 排 #2 月拿 3 万搜索流量），数据留档：衍生词 KD 35.8 / 链接预算 35~70 引用域 / DR 26 量级可入场 |
+| 2026-10-10 | arrows puzzle | 5,400 | 40.5 | **12 个月单边爬升**：170→880→4,400→5,400 无回落；competition LOW。驱动源 = Arrows – Puzzle Escape（com.ecffri.arrows，**100M+ 安装**，周更） | deployed | 品类反推 | **雷达首个实战命中**。KD 补测：主词 40.5（预算 40-85 引用域）/ walkthrough **11.6**（预算 10-20，旗舰位）/ hints 20.3。**2026-10-10 上线 5 页内页攻略战**：/arrows-puzzle/ hub + /arrows-puzzle-walkthrough/（KD 11.6 旗舰）+ /block-blast-hints/（KD 20.3，内容位非 solver）+ /meowdoku-guide/（KD 42.2，差异化打 alternative）+ /cross-math-puzzle/（KD 53.8，前 9 全内页无人经营=结构机会）。IndexNow 已提，28 天 GSC 验证窗口至 2026-11-07。**2026-10-12 首次读数（第2-3天）**：5 页全部出曝光（合计 56 imp 2 clk），meowdoku-guide 33imp/2clk 领跑（meowdoku tips pos1.0）、arrows 双页 pos 6.7-6.8、cross-math pos 3.5；GA4 落地 0 会话属窗口早期正常。**复查点 2026-10-17**：若 meowdoku-guide 日曝光 <15 或 arrows 双页停 9 不动 → 考虑给 walkthrough 页加内链权重 |
+| 2026-10-11 | woody block puzzle | 390 | 43 | **12 月爬升 + 7 天飙升**：260→720；但 KD 定性为品牌词（前十平台生态占 6-7 固定位） | dropped | 雷达 | **品牌词坐实，上轮 pending 闭环**：SERP 平台生态（play/apple/facebook/youtube/amazon）垄断，可竞争位仅 3（最弱 woodblockpuzzle.com DR0）；衍生内容链接预算 45-95 引用域不值；wood block 品类 gridpaw 无引擎 → 放弃 |
+| 2026-10-11 | meowdoku hints | 480 | 42.2 | **0→非0 + 爬升**：06 诞生 260 → 08 月 480（Oakever Meowdoku help 词族） | reported | T1监控 | **T1 词级新信号**。品牌词口径 KD 42.2 中等，盘面 meowdoku.org（5 个月 DR39）+ 平台独占，可竞争位仅 1。**挂现有 /meowdoku-guide/ 页变体覆盖**（TDK/内容自然嵌入），零新增成本，不另立页 |
+| 2026-10-11 | cross math puzzles | 4,400 | 未查 | 稳定 2400-5400 周期波动，非新词；Ads 竞争 LOW(19) | reported | 雷达 | **挂现有 /cross-math-puzzle/ 页**的复数变体。该页 10-10 刚上线（KD 53.8），变体词可直接进页面内容/TDK 覆盖，不新建页 |
+| 2026-10-12 | amaze go | 6,600 | 76 | **0→非0 且翻倍**：06 2400 → 07 4400 → 08 6600；Trends 12m 6 月起持续 40-51，同查询高于 arrows puzzle | reported | T1监控 | **T1 高优先级警报**：Oakever 第二台箭头引擎 **Amaze GO!**（com.oakever.arrows，2/2026 上架，**120M 装 / 近 30 天 14M**，4.85★，iOS 同步，#8 US Games）。品牌词 KD76 盘面平台垄断（Play/AppStore/YouTube/下载站 10/10 专门经营）**不直接打**；承接 = 现有 /arrows-puzzle/ 覆盖 + 盯 help 词族（walkthrough/hints 现全 null，按 meowdoku/arrows 先例 1-3 月内成形），help 词 0→非0 或 ≥300/月时镜像 arrows-walkthrough（KD 11.6）打法评估独立页 |
+| 2026-10-12 | amaze go game | 1,300 | 未查 | 0→非0：06 720 → 07 1300 → 08 1000（LOW 23） | reported | T1监控 | amaze go 词族变体同步成词，验证词族成型非单点脉冲；承接同上 |
+| 2026-10-12 | poetry cat game | 未核量 | 未查 | riser +180%（30d） | excluded | 雷达B根 | SERP 定性 = Ereading Games 教育评测型平台游戏（ELA 老师用），开学季季节脉冲非新游戏；品类错配无承接 |
+| 2026-10-12 | halloween cat game | 未核量 | 未查 | riser +40%（30d） | excluded | 雷达B根 | 万圣节季节脉冲，需节日主题游戏承接而 gridpaw 无；建页赶不上今年窗口 |
+
+## 词根轮换记录（防重复烧积分）
+
+| 轮次 | 用过的词根 | 备注 |
+|---|---|---|
+| 2026-10-11 00:20 | logic puzzle / cross math / block puzzle / arrows puzzle / meowdoku | cron 恢复后首轮；下轮避开这 5 个，从 brain teaser / word game / number game / tile match / puzzle game / kitten puzzle / cat puzzle / block bloom / zoodoku / splash buster 里轮换 |
+| 2026-10-11 08:01 | kitten puzzle / cat puzzle（B根，各零信号）+ T1词族 ×9 | T1 词级新信号 meowdoku hints；下轮 B 根换 cat game / pet game，T1 主词族量核继续；woody 闭环 dropped |
+| 2026-10-12 08:00 | cat game / pet game（B根；poetry cat game +180% / halloween cat game +40% 均季节脉冲排除，零有效词）+ T1 词族 ×10 | **T1 高优先级新信号 amaze go 词族 0→非0**（上架源头 Amaze GO! com.oakever.arrows，120M 装）；下轮 B 根换 cat games（已用：kitten/cat puzzle、cat/pet game），T1 续盯 amaze go + help 词族（现全 null）+ meowdoku walkthrough/null 重试 |
+
+## 验证四道闸（标准动作链，每词 ≤15 分）
+
+1. `keyword_volume` → 读「新词？」列 + 逐月曲线（判真词 vs 脉冲，别看曲线猜）
+2. `google_trends` compare（≤5 词同查，90d/12m）→ 出现时间 + 一次性热点判定
+3. `keyword_difficulty` → 品牌词口径 KD + 链接预算 + 前十盘面
+4. 可选：`site_keywords` 拆活证据站出词表（抄作业清单）
+
+## 赛道分叉（判据写死）
+
+| 词的品类 | 归属 | 依据 |
+|---|---|---|
+| 逻辑谜题 / 猫主题 | **gridpaw 内页**（rules/tips/daily/solver 模板已有） | 现有 11 游戏引擎 + game-site-seo-pages skill |
+| 一次性脉冲 / IP 词 / 品种词 | dropped | 台账已有判例（snake doodle / cat in the hat / bengal cat） |
+| 其他品类爆款（每日词游等） | dropped（先放） | 专注 gridpaw 现有游戏扩量；数据留档备查 |
+
+## 口径备注
+
+- 量/KD 来自 webcafe-seo MCP（keyword_ideas 快照库 2026-10-10 查询，快照滞后 1-2 月，最新 2026-08）
+- 快照库查不到 ≠ 没人搜：真空期新词必须换证据（serp 实测 + google_trends 看出现时间）
+- 调价纪律：贵工具（keyword_ideas/site_keywords/site_history）一轮合计 ≤3 次；预计一轮 30 分以上先问用户
