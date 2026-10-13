@@ -1,0 +1,352 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import ExtensionPromo from '../../components/ExtensionPromo.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const title = "Cross Math Puzzles: Rules, Solving Strategies & Printable Tips";
+const description = "The complete cross math puzzle guide: what cross math is, the grid and operator rules explained, 6 solving strategies, cross math vs Kakuro compared, printable tips, and 8 FAQs. Free cross math puzzles online, no download needed.";
+
+const faqJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What is a cross math puzzle?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "A cross math puzzle is a number grid where you fill every empty cell with a digit so that each horizontal run and each vertical run satisfies an arithmetic clue — for example, a run that must add up to a target sum, or multiply to a target product. Runs are separated by black cells that carry the clue. It is the arithmetic cousin of Kakuro and the math-flavored sibling of classic grid logic puzzles."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "How do you solve a cross math puzzle?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Start with runs that have only one valid combination of digits, then use the crossing cells to eliminate options. For addition runs, work out which digit combinations sum to the clue; for multiplication runs, find the factor pairs. Every digit you place removes candidates from the crossing runs, which cascades into new placements. Skilled solvers begin with the shortest runs and the biggest clues."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "What is the difference between cross math and Kakuro?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Kakuro is the classic Japanese cross-sum puzzle: it only uses addition, every run is a sum clue, and each run may never repeat a digit. Cross math is the broader family: it can use addition, subtraction, multiplication, and division, and some variants allow repeated digits. Every Kakuro is a cross math puzzle, but not every cross math puzzle is a Kakuro. If you enjoy Kakuro-style sums, Kakuro itself is the most refined version of the genre."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Can you repeat digits in cross math puzzles?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "It depends on the variant. Classic Kakuro-style cross math forbids repeated digits within a run, which is what makes the deduction crisp. Simpler cross math puzzles aimed at children usually allow repeats. Check the puzzle's rules before starting — if the puzzle never mentions repeats, compare each run's clue against its possible combinations; single-solution puzzles will tell you which convention is in force."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "What is the best way to practice cross math puzzles?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Practice the two foundational skills separately: memorizing the digit combinations that sum to each clue, and practicing the same for factor pairs. Then solve puzzles that mix both. For daily practice with instant feedback, browser-based grid logic games are ideal — GridPaw's free Kakuro, Nonogram, and Shikaku games generate unlimited puzzles that check every move as you make it."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Are cross math puzzles good for kids?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Excellent. Cross math puzzles build number fluency, addition and multiplication recall, and systematic reasoning in a game-like format. Simple variants with small grids and addition-only clues are perfect for early elementary; multiplication and division versions challenge older kids. The format teaches the same 'work step by step, eliminate options' thinking that classic logic puzzles train, with arithmetic as the reward."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "How is cross math different from Sudoku?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Sudoku is about constraints without arithmetic: each row and column contains the digits 1–9 exactly once, and the numbers interact only through position. Cross math puzzles are about arithmetic: digits must satisfy sums or products, and the constraints come from the math, not just the layout. Sudoku tests pattern and memory; cross math tests calculation and combination skills."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Where can I play cross math puzzles online?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "There are several websites and apps offering paper-style cross math puzzles, and daily puzzle services. For the closest polished experience, play Kakuro — the elite form of the cross math genre — free in your browser on GridPaw, with unlimited generated puzzles, tutorial levels, and instant move checking. No download and no signup required."
+        }
+      }
+    ]
+  }
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/cross-math-puzzle"
+    type="article"
+    breadcrumbTitle="Cross Math Puzzle"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --cm-primary: #2E7D5B;
+      --cm-secondary: #E8A03D;
+      --cm-bg: #F4FAF6;
+      --cm-cell-border: #CFE3D6;
+      --cm-text: #2F3D33;
+      --cm-text-light: #8FA396;
+      --cm-shadow-sm: 0 2px 8px rgba(46,125,91,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cm-bg); color: var(--cm-text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--cm-text-light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--cm-text-light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--cm-primary); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; color: var(--cm-text); margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; color: var(--cm-text); margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--cm-primary); }
+    .seo-section h3 { font-size: 1.1rem; color: var(--cm-text); margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--cm-primary); }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: white; border: 1.5px solid var(--cm-cell-border); border-radius: 10px; box-shadow: var(--cm-shadow-sm); }
+    .seo-section details[open] { border-color: var(--cm-primary); }
+    .seo-section summary { cursor: pointer; font-weight: 800; color: var(--cm-text); line-height: 1.5; }
+    .seo-section summary:hover { color: var(--cm-primary); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--cm-text-light); }
+    .seo-footer a { color: var(--cm-text-light); }
+    .seo-footer a:hover { color: var(--cm-primary); }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: white; border: 2px dashed var(--cm-primary); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--cm-text); }
+    .cta-box a { color: var(--cm-primary); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .rule-card { background: white; border: 1.5px solid var(--cm-cell-border); border-radius: 10px; padding: 0.75rem 0.95rem; margin: 0.6rem 0; display: flex; gap: 0.7rem; align-items: flex-start; box-shadow: var(--cm-shadow-sm); }
+    .rule-num { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--cm-primary); color: white; font-weight: 900; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; margin-top: 0.1rem; }
+    .rule-card strong { color: var(--cm-text); display: block; margin-bottom: 0.1rem; }
+    .rule-card p { margin: 0; }
+    .strategy-card { background: white; border: 1.5px solid var(--cm-cell-border); border-left: 4px solid var(--cm-primary); border-radius: 10px; padding: 0.7rem 0.9rem; margin: 0.6rem 0; box-shadow: var(--cm-shadow-sm); }
+    .strategy-card strong { color: var(--cm-text); display: block; margin-bottom: 0.15rem; }
+    .strategy-card p { margin: 0; }
+    .pill { display: inline-block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.12rem 0.5rem; border-radius: 999px; margin-bottom: 0.3rem; }
+    .pill-strategy { background: #DFF3E4; color: #1E7A3C; }
+    .pill-rule { background: #E3E9FF; color: #2E4AC0; }
+    .compare-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; background: white; border-radius: 12px; overflow: hidden; box-shadow: var(--cm-shadow-sm); }
+    .compare-table th, .compare-table td { padding: 0.6rem 0.8rem; text-align: left; border-bottom: 1px solid var(--cm-cell-border); font-size: 0.9rem; }
+    .compare-table th { background: #EAF4ED; color: var(--cm-text); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .compare-table td:first-child { font-weight: 800; color: var(--cm-text); width: 34%; }
+    .compare-table .winner { background: #DDF3E4; border-left: 4px solid var(--cm-primary); }
+    .compare-table .winner td { color: #1E5C38; font-weight: 700; }
+    .print-box { background: white; border: 2px solid var(--cm-cell-border); border-radius: 12px; padding: 0.9rem 1rem; margin: 0.8rem 0; }
+    .print-box h3 { margin-top: 0; }
+    @media (max-width: 480px) {
+      .seo-section h1 { font-size: 1.4rem; }
+      .seo-section h2 { font-size: 1.2rem; }
+      .seo-section { padding: 1.2rem 0.8rem 1rem; }
+      .rule-card { flex-direction: column; gap: 0.4rem; }
+      .compare-table th, .compare-table td { padding: 0.5rem 0.55rem; font-size: 0.8rem; }
+      .compare-table { display: block; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; Cross Math Puzzle</nav>
+
+  <main class="seo-section">
+    <h1>Cross Math Puzzle: Rules, Solving Strategies &amp; Printable Tips</h1>
+
+    <p>Cross math puzzles are number grids with a twist: instead of guessing, you deduce — every digit you place must satisfy the arithmetic clues that surround it. Part logic puzzle, part arithmetic practice, the cross math puzzle family includes everything from simple addition grids for kids to hard multiplication-and-division challenges that would give a Sudoku fan pause. This guide covers what cross math is, the complete rule set with the grid and operator symbols explained, six solving strategies, a full cross math vs Kakuro comparison, printable tips, and answers to the questions players ask most.</p>
+
+    <h2>What Is Cross Math?</h2>
+    <p>A cross math puzzle presents a grid of cells where some cells are filled with clues and the rest are empty. Your task is to fill every empty cell with a digit so that each continuous run of cells — horizontal and vertical — satisfies its clue. A run might need to add up to 15, multiply to 24, or (in advanced variants) satisfy a two-step expression like "sum of 12, difference of 2." Black clue cells separate the runs, exactly like the walls in Kakuro.</p>
+
+    <p>The genre is the arithmetic cousin of Kakuro, the classic Japanese cross-sum puzzle that Nikoli popularized. Where Kakuro restricts itself to addition, cross math opens the door to all four operations. That makes cross math puzzles particularly good training: they build number fluency, combination recall, and the same "eliminate options step by step" reasoning that powers every <a href="/logic-puzzle-grid/">grid-based logic puzzle</a>.</p>
+
+    <h2>Cross Math Puzzle Rules: The Grid and the Operators</h2>
+    <p>The rule set is small, but each rule is load-bearing. Here is the complete breakdown.</p>
+
+    <div class="rule-card">
+      <div class="rule-num">1</div>
+      <div><strong>Fill every empty cell with a single digit.</strong><p>Most puzzles use 1–9, though simple children's variants may allow 1–12 or include 0. The puzzle's instructions tell you the digit range; when in doubt, 1–9 is the default.</p></div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">2</div>
+      <div><strong>Adjacent empty cells form runs.</strong><p>A run is a continuous horizontal or vertical line of empty cells; black clue cells break runs. Each run must satisfy the clue written in the black cell that anchors it.</p></div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">3</div>
+      <div><strong>Addition runs sum to their clue.</strong><p>A run anchored by "12+" must contain digits that add up to exactly 12. This is the Kakuro rule in its purest form — and the most common cross math format.</p></div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">4</div>
+      <div><strong>Multiplication runs multiply to their clue.</strong><p>A run anchored by "24×" must contain digits whose product is exactly 24. Factor-pair knowledge replaces sum knowledge — 2×3×4 and 3×8 are both valid for 24 (when repeats are allowed or the run length fits).</p></div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">5</div>
+      <div><strong>Subtraction and division runs anchor two-cell runs.</strong><p>For "5−" the two digits must differ by 5; for "6÷" the larger divided by the smaller must equal 6. These almost always appear on two-cell runs, where only one relation exists.</p></div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">6</div>
+      <div><strong>Crossing runs share cells and constrain each other.</strong><p>The heart of the puzzle: a digit you place for a horizontal run is simultaneously part of a vertical run. Eliminate candidates for one run and you narrow the crossing run — and vice versa.</p></div>
+    </div>
+
+    <p>Reading the operator symbols is easy once you know the pattern: the number plus its symbol (12+, 24×, 5−, 6÷) tells you what the run must do. Some variants write the clue as a bare number, in which case addition is assumed — the classic Kakuro convention.</p>
+
+    <h2>6 Cross Math Solving Strategies</h2>
+    <p>Cross math puzzles reward systematic play. These six strategies mirror the techniques that make <a href="/kakuro/">Kakuro</a> solvable — the puzzle types share almost all of their reasoning DNA.</p>
+
+    <div class="strategy-card">
+      <span class="pill pill-strategy">Strategy 1</span>
+      <strong>Start with the shortest runs.</strong>
+      <p>A two-cell run has a tiny solution set. For "4+" the only combination is 1+3 (or 1+3 with repeats 2+2); for "12+" it is 3+9, 4+8, 5+7, 6+6. Two-cell runs give you instant candidate lists — build from them.</p>
+    </div>
+    <div class="strategy-card">
+      <span class="pill pill-strategy">Strategy 2</span>
+      <strong>Use the biggest clues first.</strong>
+      <p>Large sums have few combinations (a three-cell "24+" is almost always 7+8+9) and large products have few factor sets. Any run whose clue is near the maximum for its length is nearly solved before you start.</p>
+    </div>
+    <div class="strategy-card">
+      <span class="pill pill-strategy">Strategy 3</span>
+      <strong>Write candidate lists, then strike through.</strong>
+      <p>Like Sudoku pencil marks, keep the possible digits for each cell written small. Every placement deletes candidates from its crossing runs — and a cell with one candidate left is solved. This is the discipline that separates fast solvers from re-doers.</p>
+    </div>
+    <div class="strategy-card">
+      <span class="pill pill-strategy">Strategy 4</span>
+      <strong>Exploit the crossing-cell intersection.</strong>
+      <p>Whenever a horizontal run and a vertical run share a cell, the digit there must appear in both runs' candidate sets. If the horizontal run can only use {1,2,4} at that spot and the vertical can only use {4,9}, the cell is 4. Intersections are where most puzzles crack.</p>
+    </div>
+    <div class="strategy-card">
+      <span class="pill pill-strategy">Strategy 5</span>
+      <strong>Work the uniqueness rule (Kakuro-style).</strong>
+      <p>In no-repeat variants, a three-cell "7+" must be 1+2+4 (only combination). Digits cannot repeat, so sum combinations are strictly limited. Memorize the short-run tables — 3, 4, 5, 6, 7, 8, 9 for two cells and the small three-cell sums — and most of the grid resolves by recall.</p>
+    </div>
+    <div class="strategy-card">
+      <span class="pill pill-strategy">Strategy 6</span>
+      <strong>Verify with both operators before committing.</strong>
+      <p>In mixed-operator puzzles, a run you think is "12+" might actually be a hidden relation. Always confirm the symbol, then confirm the crossing constraints. One misread symbol at the start of a puzzle wastes ten minutes of clean logic.</p>
+    </div>
+
+    <h2>Cross Math vs Kakuro: What's the Difference?</h2>
+    <p>People often use the names interchangeably, but they are not the same thing. Here is the honest comparison:</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr><th>Feature</th><th>Cross Math Puzzle</th><th class="winner">Kakuro</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Operations</td>
+          <td>Addition, subtraction, multiplication, division</td>
+          <td class="winner">Addition only (the purest form)</td>
+        </tr>
+        <tr>
+          <td>Difficulty curve</td>
+          <td>Flat — mixed operators everywhere</td>
+          <td class="winner">Tutorial → 11-level campaign → daily puzzles</td>
+        </tr>
+        <tr>
+          <td>Repeated digits</td>
+          <td>Sometimes allowed</td>
+          <td class="winner">Never — max deduction, no ambiguity</td>
+        </tr>
+        <tr>
+          <td>Online availability</td>
+          <td>Scattered paper-style sites</td>
+          <td class="winner">Play free on GridPaw, unlimited generated boards</td>
+        </tr>
+        <tr>
+          <td>Move checking</td>
+          <td>Manual (paper or basic apps)</td>
+          <td class="winner">Instant per-move validation + hint system</td>
+        </tr>
+        <tr>
+          <td>Best for</td>
+          <td>Kids learning arithmetic, variety seekers</td>
+          <td class="winner">Pure logic fans who want the refined classic</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>If you are new to the genre, start with cross math addition puzzles to learn the rhythm. If you are hooked and want the most polished, most deductively pure version of the genre, Kakuro is the destination — and it happens to be <a href="/kakuro/">free to play online at GridPaw</a>.</p>
+
+    <h2>Printable Cross Math Tips</h2>
+    <p>Whether you are solving on paper or building worksheets, keep these reference notes handy:</p>
+    <div class="print-box">
+      <h3>The Most Useful Number Combinations (No Repeats)</h3>
+      <ul>
+        <li><strong>Two cells, sum 3:</strong> 1+2 only.</li>
+        <li><strong>Two cells, sum 4:</strong> 1+3 only.</li>
+        <li><strong>Two cells, sum 5:</strong> 1+4, 2+3.</li>
+        <li><strong>Two cells, sum 6:</strong> 1+5, 2+4.</li>
+        <li><strong>Two cells, sum 17:</strong> 8+9 only.</li>
+        <li><strong>Two cells, sum 16:</strong> 7+9 only.</li>
+        <li><strong>Two cells, product 6:</strong> 1×6, 2×3.</li>
+        <li><strong>Two cells, product 12:</strong> 2×6, 3×4.</li>
+        <li><strong>Two cells, product 24:</strong> 3×8, 4×6.</li>
+        <li><strong>Three cells, sum 6:</strong> 1+2+3 only.</li>
+        <li><strong>Three cells, sum 7:</strong> 1+2+4 only.</li>
+        <li><strong>Three cells, sum 24:</strong> 7+8+9 only.</li>
+        <li><strong>Three cells, product 36:</strong> 1×4×9, 1×6×6, 2×2×9, 2×3×6, 3×3×4.</li>
+      </ul>
+    </div>
+    <p>Print this section and keep it beside your puzzle book. The recall of these small combinations is the entire game at beginner and intermediate level.</p>
+
+    <div class="cta-box">
+      <p>🐱 Want to try logic puzzles yourself? No download, no signup — play free in your browser: <a href="/kakuro/">Play Free →</a></p>
+    </div>
+
+    <AdSlot />
+
+    <h2>Frequently Asked Questions</h2>
+
+    <details><summary>What is a cross math puzzle?</summary><p>A cross math puzzle is a number grid where you fill every empty cell with a digit so that each horizontal run and each vertical run satisfies an arithmetic clue — for example, a run that must add up to a target sum, or multiply to a target product. Runs are separated by black cells that carry the clue. It is the arithmetic cousin of Kakuro and the math-flavored sibling of classic grid logic puzzles.</p></details>
+
+    <details><summary>How do you solve a cross math puzzle?</summary><p>Start with runs that have only one valid combination of digits, then use the crossing cells to eliminate options. For addition runs, work out which digit combinations sum to the clue; for multiplication runs, find the factor pairs. Every digit you place removes candidates from the crossing runs, which cascades into new placements. Skilled solvers begin with the shortest runs and the biggest clues.</p></details>
+
+    <details><summary>What is the difference between cross math and Kakuro?</summary><p>Kakuro is the classic Japanese cross-sum puzzle: it only uses addition, every run is a sum clue, and each run may never repeat a digit. Cross math is the broader family: it can use addition, subtraction, multiplication, and division, and some variants allow repeated digits. Every Kakuro is a cross math puzzle, but not every cross math puzzle is a Kakuro. If you enjoy Kakuro-style sums, Kakuro itself is the most refined version of the genre.</p></details>
+
+    <details><summary>Can you repeat digits in cross math puzzles?</summary><p>It depends on the variant. Classic Kakuro-style cross math forbids repeated digits within a run, which is what makes the deduction crisp. Simpler cross math puzzles aimed at children usually allow repeats. Check the puzzle's rules before starting — if the puzzle never mentions repeats, compare each run's clue against its possible combinations; single-solution puzzles will tell you which convention is in force.</p></details>
+
+    <details><summary>What is the best way to practice cross math puzzles?</summary><p>Practice the two foundational skills separately: memorizing the digit combinations that sum to each clue, and practicing the same for factor pairs. Then solve puzzles that mix both. For daily practice with instant feedback, browser-based grid logic games are ideal — GridPaw's free Kakuro, Nonogram, and Shikaku games generate unlimited puzzles that check every move as you make it.</p></details>
+
+    <details><summary>Are cross math puzzles good for kids?</summary><p>Excellent. Cross math puzzles build number fluency, addition and multiplication recall, and systematic reasoning in a game-like format. Simple variants with small grids and addition-only clues are perfect for early elementary; multiplication and division versions challenge older kids. The format teaches the same 'work step by step, eliminate options' thinking that classic logic puzzles train, with arithmetic as the reward.</p></details>
+
+    <details><summary>How is cross math different from Sudoku?</summary><p>Sudoku is about constraints without arithmetic: each row and column contains the digits 1–9 exactly once, and the numbers interact only through position. Cross math puzzles are about arithmetic: digits must satisfy sums or products, and the constraints come from the math, not just the layout. Sudoku tests pattern and memory; cross math tests calculation and combination skills.</p></details>
+
+    <details><summary>Where can I play cross math puzzles online?</summary><p>There are several websites and apps offering paper-style cross math puzzles, and daily puzzle services. For the closest polished experience, play Kakuro — the elite form of the cross math genre — free in your browser on GridPaw, with unlimited generated puzzles, tutorial levels, and instant move checking. No download and no signup required.</p></details>
+
+    <h2>Related Puzzle Guides</h2>
+    <ul>
+      <li><a href="/arrows-puzzle/">Arrows Puzzle: How to Play, Full Rules, and Beginner Tips</a> — a very different constraint puzzle that flexes the same deductive muscle.</li>
+      <li><a href="/meowdoku-guide/">Meowdoku Guide: Hints, Strategy &amp; Games Like Meowdoku</a> — Sudoku-style logic for number fans who want the cat-cozy side of grids.</li>
+      <li><a href="/kakuro/">Play Kakuro on GridPaw</a> — the refined king of cross-sum puzzles, free in your browser with unlimited levels.</li>
+    </ul>
+  </main>
+
+  <section class="seo-content" style="border-top:2px solid #e7dacf;padding-top:1rem;margin-top:2rem">
+    <h2>Read Next</h2>
+    <ul>
+      <li><a href="/arrows-puzzle/">Arrows Puzzle</a> — how to play, full rules, and beginner tips</li>
+      <li><a href="/meowdoku-guide/">Meowdoku Guide</a> — hints, strategy &amp; games like Meowdoku</li>
+      <li><a href="/number-grid-puzzle/">Number Grid Puzzles</a> — 8 types from Sudoku to Shikaku</li>
+    </ul>
+  </section>
+
+  <footer class="seo-footer">
+    <p>GridPaw: Free online logic puzzles with cats.</p>
+    <ExtensionPromo />
+    <p style="margin-top:0.3rem;"><a href="/">GridPaw Shikaku</a> · <a href="/akari/">GridPaw Akari</a> · <a href="/nonogram/">GridPaw Nonogram</a> · <a href="/nurikabe/">GridPaw Nurikabe</a> · <a href="/pictomino/">GridPaw Pictomino</a> · <a href="https://www.pinterest.com/gridpaw/">Pinterest</a> · <a href="/community/">Community</a></p>
+    <p style="margin-top:0.3rem;"><a href="/">Home</a> · <a href="/akari/">Akari</a> · <a href="/pictomino/">Pictomino</a></p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,260 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import ExtensionPromo from '../../components/ExtensionPromo.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const title = "Arrows Puzzle: How to Play, Full Rules, and Beginner Tips";
+const description = "Everything about the arrows puzzle: the complete rules broken down step by step, how the sliding-arrow placement mechanic works, five beginner tips, where to play, and answers to the most common questions.";
+
+const faqJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What is an arrows puzzle?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "An arrows puzzle is a logic game where directional arrows must be placed on a grid so that each arrow points at its own target. In the popular mobile version Arrows – Puzzle Escape you slide arrow tiles through empty cells: arrows move like sliding blocks, cannot be lifted off the board, and locked tiles never move. Every level has exactly one arrangement where every arrow points at a target."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "How do you play the arrows puzzle?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "You start with a grid of empty cells, a set of arrow tiles, and a set of targets. Drag any arrow tile into an adjacent empty cell (or slide it along a clear path) until it sits in the cell that gives it a clear line of sight to its target. The level is solved when every arrow points at one target. Locked tiles stay in place, and in color levels each colored arrow must point at a target of the same color."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "What do the colored arrows mean in the arrows puzzle?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Colored arrows are color-locked: a blue arrow must point at a blue target, and a red arrow must point at a red target. Colors turn the puzzle into several smaller sub-puzzles solved in parallel. When both colors share the grid, solve each color's structure separately before re-combining them on the shared board."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Is the arrows puzzle good for your brain?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. Arrows puzzles train spatial planning, sequential reasoning, and working memory — the same cognitive skills exercised by classic Japanese grid puzzles. Each move asks you to hold a mental map of slide paths and targets, which is exactly the kind of planning practice that keeps reasoning sharp. It also has a built-in reward loop: every solved level is a small, earned win."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "What is the difference between the arrows puzzle and Shikaku?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Shikaku (rectangle partition) asks you to divide a grid into rectangles, each containing one number equal to its area, so it is about partitioning space. The arrows puzzle is about placement and direction: every arrow must find a cell from which it can point at its target. Both train spatial logic, but Shikaku is purely about shapes while arrows puzzles are about orientation and movement."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Where can I play the arrows puzzle for free?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "The official Arrows – Puzzle Escape app by Ecffri is free to download on Android and iOS and has over 100 million installs. The web does not have an official browser version of the exact same levels. For a free browser puzzle with the same spatial-reasoning feel, GridPaw's Shikaku game runs entirely online with no download, no signup, and unlimited procedurally generated levels."
+        }
+      }
+    ]
+  }
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/arrows-puzzle"
+    type="article"
+    breadcrumbTitle="Arrows Puzzle"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --ap-primary: #3D6BF0;
+      --ap-secondary: #F2A03D;
+      --ap-bg: #F6F8FF;
+      --ap-cell-border: #D8DFF2;
+      --ap-text: #333A4E;
+      --ap-text-light: #8B93A8;
+      --ap-shadow-sm: 0 2px 8px rgba(61,107,240,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--ap-bg); color: var(--ap-text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--ap-text-light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--ap-text-light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--ap-primary); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; color: var(--ap-text); margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; color: var(--ap-text); margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--ap-primary); }
+    .seo-section h3 { font-size: 1.1rem; color: var(--ap-text); margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--ap-primary); }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: white; border: 1.5px solid var(--ap-cell-border); border-radius: 10px; box-shadow: var(--ap-shadow-sm); }
+    .seo-section details[open] { border-color: var(--ap-primary); }
+    .seo-section summary { cursor: pointer; font-weight: 800; color: var(--ap-text); line-height: 1.5; }
+    .seo-section summary:hover { color: var(--ap-primary); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--ap-text-light); }
+    .seo-footer a { color: var(--ap-text-light); }
+    .seo-footer a:hover { color: var(--ap-primary); }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: white; border: 2px dashed var(--ap-primary); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--ap-text); }
+    .cta-box a { color: var(--ap-primary); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .disclaimer { font-size: 0.82rem; color: var(--ap-text-light); font-style: italic; background: #fff; border: 1px solid var(--ap-cell-border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .rule-card { background: white; border: 1.5px solid var(--ap-cell-border); border-radius: 10px; padding: 0.75rem 0.95rem; margin: 0.6rem 0; display: flex; gap: 0.7rem; align-items: flex-start; box-shadow: var(--ap-shadow-sm); }
+    .rule-num { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--ap-primary); color: white; font-weight: 900; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; margin-top: 0.1rem; }
+    .rule-card strong { color: var(--ap-text); display: block; margin-bottom: 0.1rem; }
+    .rule-card p { margin: 0; }
+    .pill { display: inline-block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.12rem 0.5rem; border-radius: 999px; margin-bottom: 0.3rem; }
+    .pill-beginner { background: #DFF3E4; color: #1E7A3C; }
+    .pill-blue { background: #E3E9FF; color: #2E4AC0; }
+    .tip-card { background: white; border: 1.5px solid var(--ap-cell-border); border-left: 4px solid var(--ap-secondary); border-radius: 10px; padding: 0.7rem 0.9rem; margin: 0.6rem 0; box-shadow: var(--ap-shadow-sm); }
+    .tip-card strong { color: var(--ap-text); display: block; margin-bottom: 0.15rem; }
+    .tip-card p { margin: 0; }
+    @media (max-width: 480px) {
+      .seo-section h1 { font-size: 1.4rem; }
+      .seo-section h2 { font-size: 1.2rem; }
+      .seo-section { padding: 1.2rem 0.8rem 1rem; }
+      .rule-card { flex-direction: column; gap: 0.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; Arrows Puzzle</nav>
+
+  <main class="seo-section">
+    <h1>Arrows Puzzle: How to Play, Full Rules, and Beginner Tips</h1>
+
+    <p>The arrows puzzle is one of the most satisfying logic puzzles on mobile — a sliding-tile placement game where every arrow must point at its target. This guide is the complete hub: what the arrows puzzle is, the full rules broken down step by step, five beginner tips, where to play, and straight answers to the questions players ask most.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Ecffri.</div>
+
+    <h2>What Is the Arrows Puzzle?</h2>
+    <p>An arrows puzzle presents you with a grid of empty cells, a set of arrow tiles, and a set of targets scattered across the board. Your job is to place every arrow so that it points at one target — and because arrows are directional and target slots are limited, this is a pure logic problem rather than a guessing game. The most famous version is <strong>Arrows – Puzzle Escape</strong> by Ecffri, a free mobile game with more than 100 million installs. It turned the basic idea into a full campaign: hundreds of hand-made levels, locked tiles, color constraints, teleporters, and themed packs that keep introducing new twists on the core rule.</p>
+
+    <p>What makes the arrows puzzle special is its <em>movement</em> mechanic. Arrows are not placed freely — they slide. An arrow tile can only move through empty cells, the way a tile in a sliding-block puzzle moves. That one rule transforms the game from "point arrows at targets" into "find a sequence of slides that lands every arrow in a spot from which it can see its target." The spatial planning this demands is closely related to the reasoning used in classic grid puzzles like Shikaku, where you also have to hold shape, position, and constraint in your head at the same time.</p>
+
+    <h2>How to Play Arrows Puzzle: The Rules, Step by Step</h2>
+    <p>The full rule set is small enough to learn in one sitting. Here is every rule you need, in the order you will meet it.</p>
+
+    <div class="rule-card">
+      <div class="rule-num">1</div>
+      <div><strong>Every arrow must point at exactly one target.</strong><p>An arrow is "solved" when its directional arrowhead lines up with a target on the same row or column, with no locked wall in between. Target slots are limited, so each solved arrow consumes one target.</p></div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">2</div>
+      <div><strong>Arrows slide through empty cells; they are never lifted.</strong><p>Drag an arrow into an adjacent empty cell to move it. It can travel along any clear path of empty cells, exactly like a tile in a sliding puzzle. You cannot pick an arrow up and place it somewhere unreachable.</p></div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">3</div>
+      <div><strong>Locked tiles never move.</strong><p>Some levels have tiles that are fixed in place. Locked arrows already point at their target and cannot be disturbed; locked obstacles block slides and line of sight. Treat them as permanent walls.</p></div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">4</div>
+      <div><strong>Colored arrows must point at same-colored targets.</strong><p>Starting in the mid-game, arrows and targets come in colors. A blue arrow can only point at a blue target. Colors split the puzzle into independent sub-puzzles that share one board.</p></div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">5</div>
+      <div><strong>Every arrow on the board must be used.</strong><p>You cannot leave an arrow stranded. The level only completes when every arrow is placed and pointing at its own target — no strays allowed.</p></div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">6</div>
+      <div><strong>The goal: all arrows placed with no target left empty.</strong><p>When the final arrow slides home and every target is pointed at, the level is solved. The game tracks your moves, so efficient solvers get a cleaner finish.</p></div>
+    </div>
+
+    <h2>Rules Deep Dive: What the Board Is Really Asking</h2>
+    <p>Once you know the six rules, the game becomes a reasoning exercise in three layers.</p>
+    <p><strong>Layer 1 — Geometry.</strong> An arrow's position limits its legal directions: a tile in the top row can only point right, left, or down; a corner tile has two options. Counting these constraints is the fastest way to spot a forced move, because an arrow with only one legal position must go there.</p>
+    <p><strong>Layer 2 — Movement.</strong> Because arrows slide, a "correct" final spot is useless if no path reaches it. The order of slides matters: a middle arrow may need to be parked temporarily so a deeper arrow can pass, then returned to its final cell. This is the layer that separates beginners from comfortable solvers.</p>
+    <p><strong>Layer 3 — Ownership.</strong> Every target slot is a resource. If two arrows both have a clear line to the same target, you must deduce which arrow gets that slot and which must be re-routed. Ownership conflicts are where most mid-game deadlocks are born — and where the <a href="/arrows-puzzle-walkthrough/">full walkthrough strategies</a> shine.</p>
+
+    <h2>5 Beginner Tips for the Arrows Puzzle</h2>
+    <div class="tip-card">
+      <span class="pill pill-beginner">Tip 1</span>
+      <strong>Always start with forcing moves.</strong>
+      <p>Scan for any arrow with only one legal landing spot — a cell it can reach and from which it can see a target. Place it first. Every forcing move you bank shrinks the board and reveals more forcing moves. This habit alone will carry you through the first two hundred levels.</p>
+    </div>
+    <div class="tip-card">
+      <span class="pill pill-beginner">Tip 2</span>
+      <strong>Solve edges and corners first.</strong>
+      <p>Board edges are permanent walls, so edge-adjacent targets can only be serviced from a small set of cells. Lock in those arrows early and the messy interior becomes a much smaller, calmer puzzle.</p>
+    </div>
+    <div class="tip-card">
+      <span class="pill pill-beginner">Tip 3</span>
+      <strong>Do not touch an arrow twice.</strong>
+      <p>If you slide the same tile back and forth, you are experimenting, not solving. Undo to a clean state and hunt for the forced move you missed. A well-played level feels like a chain of confident one-way trips.</p>
+    </div>
+    <div class="tip-card">
+      <span class="pill pill-beginner">Tip 4</span>
+      <strong>Respect the colors early.</strong>
+      <p>When colors appear, count arrows and targets per color before moving anything. If blue has three arrows and only two blue targets, you have already read the board wrong. Balanced counts mean everything else can be solved color by color.</p>
+    </div>
+    <div class="tip-card">
+      <span class="pill pill-beginner">Tip 5</span>
+      <strong>Learn from deadlocks instead of resetting mentally.</strong>
+      <p>A deadlock is data: it tells you a chain fired in the wrong order or an ownership conflict was resolved incorrectly. Retrace the last three moves and identify the decision that caused it — then replay with the fix. Players who learn from deadlocks improve twice as fast as players who just undo them.</p>
+    </div>
+
+    <h2>Where to Play the Arrows Puzzle</h2>
+    <p>The official <strong>Arrows – Puzzle Escape</strong> by Ecffri is available free on Google Play and the App Store, with 100M+ installs and a steady stream of new level packs. There is no official browser version of its exact levels, so if you have a preference for playing in a browser — or you want unlimited levels with no install — the best alternative is a web-based logic game with the same spatial reasoning at its core. <a href="/">GridPaw's Shikaku</a> is exactly that: a free, no-download game where you partition a grid into numbered rectangles, exercising the same planning and constraint-tracking muscles the arrows puzzle does.</p>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <details><summary>What is an arrows puzzle?</summary><p>An arrows puzzle is a logic game where directional arrows must be placed on a grid so that each arrow points at its own target. In the popular mobile version Arrows – Puzzle Escape you slide arrow tiles through empty cells: arrows move like sliding blocks, cannot be lifted off the board, and locked tiles never move. Every level has exactly one arrangement where every arrow points at a target.</p></details>
+
+    <details><summary>How do you play the arrows puzzle?</summary><p>You start with a grid of empty cells, a set of arrow tiles, and a set of targets. Drag any arrow tile into an adjacent empty cell (or slide it along a clear path) until it sits in the cell that gives it a clear line of sight to its target. The level is solved when every arrow points at one target. Locked tiles stay in place, and in color levels each colored arrow must point at a target of the same color.</p></details>
+
+    <details><summary>What do the colored arrows mean in the arrows puzzle?</summary><p>Colored arrows are color-locked: a blue arrow must point at a blue target, and a red arrow must point at a red target. Colors turn the puzzle into several smaller sub-puzzles solved in parallel. When both colors share the grid, solve each color's structure separately before re-combining them on the shared board.</p></details>
+
+    <details><summary>Is the arrows puzzle good for your brain?</summary><p>Yes. Arrows puzzles train spatial planning, sequential reasoning, and working memory — the same cognitive skills exercised by classic Japanese grid puzzles. Each move asks you to hold a mental map of slide paths and targets, which is exactly the kind of planning practice that keeps reasoning sharp. It also has a built-in reward loop: every solved level is a small, earned win.</p></details>
+
+    <details><summary>What is the difference between the arrows puzzle and Shikaku?</summary><p>Shikaku (rectangle partition) asks you to divide a grid into rectangles, each containing one number equal to its area, so it is about partitioning space. The arrows puzzle is about placement and direction: every arrow must find a cell from which it can point at its target. Both train spatial logic, but Shikaku is purely about shapes while arrows puzzles are about orientation and movement.</p></details>
+
+    <details><summary>Where can I play the arrows puzzle for free?</summary><p>The official Arrows – Puzzle Escape app by Ecffri is free to download on Android and iOS and has over 100 million installs. The web does not have an official browser version of the exact same levels. For a free browser puzzle with the same spatial-reasoning feel, GridPaw's Shikaku game runs entirely online with no download, no signup, and unlimited procedurally generated levels.</p></details>
+
+    <div class="cta-box">
+      <p>🐱 Want to try logic puzzles yourself? No download, no signup — play free in your browser: <a href="/">Play Free →</a></p>
+    </div>
+
+    <AdSlot />
+
+    <h2>Related Puzzle Guides</h2>
+    <ul>
+      <li><a href="/arrows-puzzle-walkthrough/">Arrows Puzzle Walkthrough: Escape Every Level</a> — the deep-strategy companion with stuck-point fixes and level progression tips.</li>
+      <li><a href="/meowdoku-guide/">Meowdoku Guide</a> — hints, strategy, and games like Meowdoku for Sudoku-adjacent fans.</li>
+      <li><a href="/">Play Shikaku on GridPaw</a> — free online rectangle-partition puzzle, no download required.</li>
+    </ul>
+  </main>
+
+  <section class="seo-content" style="border-top:2px solid #e7dacf;padding-top:1rem;margin-top:2rem">
+    <h2>Read Next</h2>
+    <ul>
+      <li><a href="/arrows-puzzle-walkthrough/">Arrows Puzzle Walkthrough</a> — strategy for early, mid, and late levels</li>
+      <li><a href="/meowdoku-guide/">Meowdoku Guide</a> — hints, strategy &amp; games like Meowdoku</li>
+      <li><a href="/block-blast-hints/">Block Blast Hints</a> — 10+ strategies for higher scores</li>
+    </ul>
+  </section>
+
+  <footer class="seo-footer">
+    <p>GridPaw: Free online logic puzzles with cats.</p>
+    <ExtensionPromo />
+    <p style="margin-top:0.3rem;"><a href="/">GridPaw Shikaku</a> · <a href="/akari/">GridPaw Akari</a> · <a href="/nonogram/">GridPaw Nonogram</a> · <a href="/nurikabe/">GridPaw Nurikabe</a> · <a href="/pictomino/">GridPaw Pictomino</a> · <a href="https://www.pinterest.com/gridpaw/">Pinterest</a> · <a href="/community/">Community</a></p>
+    <p style="margin-top:0.3rem;"><a href="/">Home</a> · <a href="/akari/">Akari</a> · <a href="/pictomino/">Pictomino</a></p>
+  </footer>
+</body>
+</html>
