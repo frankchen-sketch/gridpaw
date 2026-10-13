@@ -19,3 +19,14 @@
 
 - /reset-password/ 仍列在 sitemap-0.xml 但带 noindex（sitemap↔noindex 矛盾信号），待法老决策是否从 sitemap 排除（需站改，本轮未动）。
 - /community/ lastCrawlTime 待下轮复查（提交后是否真正被抓取）。
+
+## 收尾验证（本轮新增）
+
+- 截图：`community-submit-result.png`（2175×1191 PNG，8-bit RGB），已 git 入库并 push 至 origin/main。
+- API 复查（ego-browser 提交后 ~10 min，直查 URL Inspection API）：
+  - `/community/` → `Discovered - currently not indexed`，sitemap 字段 `['https://gridpaw.com/sitemap-0.xml', 'https://gridpaw.com/sitemap.xml']`
+  - `/reset-password/` → `Discovered - currently not indexed`，sitemap 同上
+  - 两 URL 的 `coverageState`+`sitemap` 字段相对预跑脚本整体翻转：仍在对账期飘动（pre-run 脚本报告 /reset-password/「无 sitemap/无sitemap引用」，本轮直查「有sitemap」）——**按 skill 纪律：sitemap 字段联动翻转 = GSC 对新读入 sitemap 逐条对账的字段整理，不当作涨跌信号，无因果归因**。
+  - `/reset-password/` 为 noindex 功能页，Google 收录预期外，本轮确认不改（预留未决：是否从 sitemap 排除，待法老决策）。
+- 0 次撞配额（本轮仅 1 发提交）。
+- 全程 ego-browser 无登录/验证码/2FA。已关闭 task space。
