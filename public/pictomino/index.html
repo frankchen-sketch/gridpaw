@@ -625,6 +625,9 @@ window.addEventListener('message', function(ev){
     if (sb) sb.textContent = ev.data.muted ? '🔇' : '🔊';
   }
   if (ev.data.type === 'pictomino_daily_solved') { track('puzzle_complete', {mode:'daily',source:'index'}); track('level_up', {mode:'daily',source:'index'}); }
+  // iframe 内 first_move/game_over 只进 D1（gpTrack），GA4 侧靠这里转发
+  if (ev.data.type === 'pictomino_first_move' && !window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { level: ev.data.level, source: 'index' }); }
+  if (ev.data.type === 'pictomino_game_over') { track('game_over', { level: ev.data.level, difficulty: ev.data.difficulty, source: 'index' }); }
   // 倒计时同步（每秒推送）
   if (ev.data.type === 'pictomino_timer') {
     const timerEl = document.getElementById('gt-timer');

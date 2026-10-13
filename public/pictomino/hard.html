@@ -259,6 +259,9 @@ document.getElementById('game-frame').addEventListener('load', function(){
 window.addEventListener('message', function(ev){
   if(!ev.data) return;
   if(ev.data.type==='pictomino_daily_solved') { track('puzzle_complete', {difficulty:'hard',source:'hard'}); track('level_up', {difficulty:'hard',source:'hard'}); }
+  // iframe 内 first_move/game_over 只进 D1（gpTrack），GA4 侧靠这里转发
+  if(ev.data.type==='pictomino_first_move' && !window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { level: ev.data.level, difficulty: ev.data.difficulty, source: 'hard' }); }
+  if(ev.data.type==='pictomino_game_over') { track('game_over', { level: ev.data.level, difficulty: ev.data.difficulty, source: 'hard' }); }
   if(ev.data.type==='pictomino_level_up') { track('puzzle_complete', {difficulty:'hard',level:ev.data.level||0,source:'hard'}); track('level_up', {difficulty:'hard',level:ev.data.level||0,source:'hard'}); }
 });
 </script>
