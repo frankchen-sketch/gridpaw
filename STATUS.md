@@ -482,7 +482,7 @@ Clarity 实锤（30min 0 次成功拖拽、徽章狂点 17 次/分）→ 3 步�
 - **页面本身没坏**：w50r9u 在 00:04 能正常点 New Puzzle（渲染完整、无遮罩、无空白）——首屏交互没问题。
 
 **口径修复（11 处加载时触发的 game_start 加可见性门控）**：`document.visibilityState === 'visible'` 才触发；hidden 时挂 visibilitychange 监听转可见补发；直接关掉后台标签 = 不发。开局 = 用户真正看到棋盘：
-- `src/pages/index.astro`（Shikaku 首页，主排名页）`_gsWhenVisible`
+- src/pages/index.astro（Shikaku 首页，主排名页）`_gsWhenVisible`
 - `{binary,hashi,kenken,slitherlink,star-battle}/index.astro` `fireGameStart` 包 `trackGameStartWhenVisible`
 - `akari/index.astro` `fireGS` 同款门控（akari/daily 的 game_start 由 start-btn 点击触发，非加载时，不改）
 - `public/{nurikabe,kakuro,nonogram}/demo.html` + `public/pictomino/hard.html`（iframe load）
@@ -490,3 +490,12 @@ Clarity 实锤（30min 0 次成功拖拽、徽章狂点 17 次/分）→ 3 步�
 **验证**：`pnpm run build` exit 0（159 页）；dist 逐文件 grep 确认 11 处门控全部进产物。
 **待验证（部署后）**：GA4 game_start 总量应下降（后台标签不再计入）、first_move 率应显著回升；2-4 周后重读 US desktop first_move 率对比 14% 基线。
 **Murdoku 品类侦察结论另见**：detective sudoku（KD 31.5）+ murder sudoku（KD 40.3）双词入场、叙事单元 pSEO 内容页先行——调研产物在本会话记录，未落 repo。
+
+## 2026-10-13（晚）埋点缺口补齐 + murder-sudoku 内容页先行上线
+
+**埋点缺口补齐（commit `602464d`）**：
+- kakuro/nonogram/nurikabe demo 补 `first_move`（`__firstMoveTracked` 防重）；kakuro `board_dead` 别名 `game_over`、nurikabe 血尽挂 `game_over`（跨游戏失败漏斗口径对齐）；nonogram 无死亡机制不挂 game_over
+- akari 补 `game_over`（health==0，loseHealth 内）
+- **pictomino 关键发现**：iframe 内 game.html 无 GA4 config（gtag 是 no-op），first_move/game_over 实际只进 D1 没进 GA4——game.html 加 `pictomino_first_move`/`pictomino_game_over` postMessage relay（同 daily_solved 既有模式），index/easy/hard/daily-puzzle 四 wrapper 接收转发 GA4
+
+**murder-sudoku 内容页上线（deploy `869c6ba6`）**：`/murder-sudoku/` 打 murder sudoku 头词（8100/月，KD 40.3），Murdoku 商标词只在正文 educational 提及。规则源=cluedoku.app/how-to-play 逐条核对（杀手机制：V 恰与一名嫌疑人同房间）。4×4 猫主题示例盘（Mochi/Tofu/Pixel + Old Whiskers）**经暴力枚举脚本验证唯一解**（唯一布局 M r2c1/T r3c4/P r4c3(rug)，凶手 M；验证脚本 scratch/verify-murder-sudoku-example.py，第一版盘面实测 3 解打回重造）。FAQ×4 + BreadcrumbList + FAQPage schema，三 CTA 全英文，四内容页 Read Next 回链。验收清单全过（TDK 49/53+158、JSON-LD parse、Murdoku 无主词位、sitemap 收录、线上 200 + IndexNow 202）。**引擎 spike 仍在跑（deepseek-v4-flash，>50min），竞品盘点子 agent 未回收**。
