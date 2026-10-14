@@ -529,3 +529,18 @@ Clarity 实锤（30min 0 次成功拖拽、徽章狂点 17 次/分）→ 3 步�
 - ego-browser 实测：L1/L37/L90/L100 渲染+切关+双头方向文案（"send it left"）+深链全过；vision 读图验色（暖琥珀纪律 ✓）
 
 **遗留**：murdoku/（untracked 实验目录）和 murder-sudoku 等他人改动仍在工作区，勿 git add -A；101 关以后有关注再扩
+
+## 2026-10-14（上午）Murdoku MVP 游戏页上线（deploy `803a535d`，commit `1a5d9f0`）
+
+**按交接单（HANDOFF-MURDOKU-MVP.md，已入 repo）完成第 2 批施工**：
+- `src/pages/murdoku/index.astro`：SEOHead + JSON-LD（WebApplication/FAQPage）+ GameHub + AdSlot/SideAd；title 38 字符（+" | GridPaw"=45 压线）；TDK/H1 用通用词 murder sudoku，Murdoku 仅 legal-note educational 提及；水彩 UI 按 v3 原型（已抢救入 `design/murdoku-preview-v3.html`）
+- GA4 打点全挂：game_start 可见性门控（visibilityState==='visible'，注释口径 2026-10-13 Clarity 取证）、first_move（__firstMoveTracked 防重）、level_up {level:'4x4'|'6x6'}、hint_click、胜利弹窗 share_copy/share_twitter/share_reddit；track() 带 gpTrack 转发；无死亡机制不挂 game_over
+- `public/murdoku/worker.js`：6×6 生成走 Worker（单次 ~470ms+重试 1-2s），4×4 同步；Worker 失败兜底同步生成
+- GameHub 加 Murdoku 卡（NEW 徽章）；图标 `game-icons/murdoku.webp` = biscuit 水彩橘猫重裁 128px/2454B（≤3KB）
+- `/murder-sudoku/` 两处 CTA + FAQ 改「已上线」并链 /murdoku/
+
+**施工中发现并修复 1 个 P0**：页面 .main 72rem 全宽时棋盘右列（cell 3/7/11/15）被右侧 160×600 广告层盖住，真实鼠标点击全部落在广告上（Playwright elementFromPoint 逐格实测，1280/1440/1920 全复现）。修复：`.game-card` 收窄 52.5rem(840px) 居中，符合 SideAd「内容列 ≤840px」设计假设（kenken 棋盘 496-784 即范式）。契约已写入 AGENTS.md 关键约定。
+
+**验收链全过**：pnpm build（161 页）→ dist grep（门控注释/7 类打点/资产路径全中）→ Playwright **17/17**（bundle 浏览器上下文 API、game_start 门控+补发、受害格/冲突红闪、first_move 恰一次、撤猫、hint 报行列、4×4+6×6 hint 全解自动过案、三分享打点、6×6 worker 计数=1、game_start 不重发）→ deploy → 线上 ?cb= 五路 200（页面/引擎/worker/图标/资产）+ 门控注释与 CTA 链接在线上 HTML → IndexNow 200。
+
+**测试基建坑（复用价值）**：① SEOHead 的 module script 会 `window.gpTrack = trackFunnel` 覆盖测试 stub——stub 必须用 getter+空 setter 的 defineProperty 保住；② Playwright evaluate 内模板串在浏览器侧求值，Node 变量不会插值，须先算好传参；③ 页面 `.sel-target` 高亮不排除受害者同行列/已占用格，测试落点须自算合法格。
