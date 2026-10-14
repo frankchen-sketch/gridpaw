@@ -552,3 +552,7 @@ Clarity 实锤（30min 0 次成功拖拽、徽章狂点 17 次/分）→ 3 步�
 **验收（卡上六条全过）**：30 页 dist 断言（12 链接×顺序×active 前缀，子页 /akari/daily/ 自动落栏目）+ computed style 前后逐项一致（13px 字号/10×16 padding/200px 宽/12px 圆角）+ hover 展开截图 vision 前后比对 + Guides switcher（首页，5 链接）与移动端 hamburger 无回归 → 线上 4 页抽查（/、kenken、akari/daily、murdoku）菜单 12 链接全中。
 
 **规范决策**：CSS 取 13 文件主流组值，变量全带 fallback（akari 系页面存在 --ink 等未定义情况）；采纳 murdoku 版 `.game-switcher-menu.open` 全宽生效（触屏笔记本上按钮点击可用，此前部分页面只有 hover 展开）。**遗留**：各页 <style> 里死亡 scoped switcher CSS（约 10 行/页，对新组件不生效）留待下次 neat-freak 清理；首页 Guides switcher 仍内联（5 条目静态，暂无同步需求）。
+
+## 2026-10-14（下午）GSC 收录核查：/murdoku/ 已索引，无需加速
+
+**GSC API 实测**（furriq-daily-brief key，sc-domain:gridpaw.com）：/murdoku/ = `Submitted and indexed`，lastCrawl **2026-10-14T01:43Z**（murdoku 上线部署之后）、verdict PASS；/murder-sudoku/ 同样已 indexed（01:37Z）。sitemap 三条目 0 errors，sitemap-0.xml lastDownloaded 10-12（含新页，81 URLs）。**未做 Request Indexing**（页面已索引，配额 1-2/run 不浪费）。IndexNow 已覆盖 Bing 侧（两次 200）。注：`furriq-daily-brief` SA key 实为 gridpaw GSC 唯一有权限的 key（~/.hermes/scripts/ 无 gridpaw 专属 key 文件）。
