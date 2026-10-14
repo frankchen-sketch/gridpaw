@@ -1,0 +1,49 @@
+---
+// GameSwitcher — 头部 Games 下拉（全站唯一维护点）
+// 2026-10-14 结构债清理：此前 switcher 是每页内联复制（30 份），新游戏要手工同步
+// 全部页面，murdoku/kenken 上线时其余 8+ 页头部长期不同步。
+// 规范值 = 主流 CSS 组（13 文件）+ murdoku 的 .open 全宽生效写法（触屏笔记本友好）；
+// CSS 变量全部带 fallback（akari 系页面存在变量未定义的情况，fallback 取漂移字面量）。
+// 新增游戏时只改这里。active 判定用前缀匹配，子页（/akari/daily/ 等）自动落在栏目上。
+const GAMES = [
+  { href: '/', emoji: '🟧', name: 'Shikaku', desc: 'Rectangle partition puzzle' },
+  { href: '/akari/', emoji: '💡', name: 'Akari', desc: 'Light Up puzzle' },
+  { href: '/kakuro/', emoji: '🔢', name: 'Kakuro', desc: 'Cross-sum puzzle' },
+  { href: '/nonogram/', emoji: '🎨', name: 'Nonogram', desc: 'Picture logic puzzle' },
+  { href: '/nurikabe/', emoji: '🏝️', name: 'Nurikabe', desc: 'Islands and sea puzzle' },
+  { href: '/pictomino/', emoji: '🧩', name: 'Pictomino', desc: 'Spatial reasoning puzzle' },
+  { href: '/kenken/', emoji: '🧮', name: 'KenKen', desc: 'Calcudoku math puzzle' },
+  { href: '/binary/', emoji: '0️⃣1️⃣', name: 'Binary', desc: 'Takuzu 0/1 logic puzzle' },
+  { href: '/star-battle/', emoji: '⭐', name: 'Star Battle', desc: 'Two Not Touch puzzle' },
+  { href: '/hashi/', emoji: '🌉', name: 'Hashi', desc: 'Bridges island puzzle' },
+  { href: '/slitherlink/', emoji: '➰', name: 'Slitherlink', desc: 'Loop logic puzzle' },
+  { href: '/murdoku/', emoji: '🕵️', name: 'Murder Sudoku', desc: 'Cat mystery logic puzzle' },
+];
+const pathname = Astro.url.pathname;
+const isActive = (href) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
+---
+
+<div class="game-switcher">
+  <button class="game-switcher-btn" onclick="this.nextElementSibling.classList.toggle('open')">Games</button>
+  <div class="game-switcher-menu">
+    {GAMES.map((g) => (
+      <a href={g.href} class={isActive(g.href) ? 'active' : ''}>
+        <strong>{g.emoji} {g.name}</strong>
+        <span class="game-desc">{g.desc}</span>
+      </a>
+    ))}
+  </div>
+</div>
+
+<style>
+  .game-switcher { position: relative; }
+  .game-switcher-btn { font-size: 0.875rem; font-weight: 700; color: var(--text, #3D3D3D); background: none; border: none; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 0.375rem; display: flex; align-items: center; gap: 4px; }
+  .game-switcher-btn::after { content: '▾'; font-size: 10px; }
+  .game-switcher-btn:hover { background: var(--hover-bg, #F0EDF5); color: var(--ink, #3D3D3D); }
+  .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid var(--gp-parchment, #E8DDD0); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
+  .game-switcher:hover .game-switcher-menu, .game-switcher-menu.open { display: block; }
+  .game-switcher-menu a { display: flex; flex-direction: column; padding: 10px 16px !important; font-size: 13px !important; gap: 2px; border-radius: 0 !important; }
+  .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: var(--gp-stone, #9E9590); }
+  .game-switcher-menu a:hover { background: var(--gp-cream, #FFF8F0) !important; color: var(--ink, #3D3D3D) !important; }
+  .game-switcher-menu a.active { color: var(--ink, #3D3D3D) !important; background: var(--gp-cream-warm, #FFF5F0) !important; font-weight: 800 !important; }
+</style>
