@@ -34,6 +34,7 @@ pnpm run deploy       # 部署 = wrangler pages deploy + IndexNow 提交（勿�
 - **Astro 内联 script 不被 Vite 打包**——引擎必须用 `<script is:inline src="...">` 加载
 - **trailingSlash: 'always'**——所有 URL 带尾斜杠
 - **首页支持 ?embed=1**——隐藏 header/footer，用于内容页内嵌游戏 iframe
+- **游戏卡内容列 ≤840px（52.5rem）**——SideAd 契约：160×600 侧栏广告盖在 840px 内容列之外，超宽页面（如 .main 72rem 全宽）棋盘右列会被广告层吃掉真实点击（murdoku 2026-10-14 Playwright 逐格实测）；游戏组件必须收窄居中（kenken 棋盘 496-784 即范式）
 - **KD 数据源**：web.cafe 为主（skill `webcafe-kd`），sitedata 不可靠（差 10 倍）
 
 ## 站点结构
