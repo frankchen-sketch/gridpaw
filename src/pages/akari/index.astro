@@ -5,6 +5,7 @@ import GameHub from '../../components/GameHub.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import SideAd from '../../components/SideAd.astro';
 import { comparePairs } from '../../data/compare-pairs';
+import GameSwitcher from '../../components/GameSwitcher.astro';
 const title = "Play Akari Online — Free Light Up Puzzle Game | GridPaw";
 const description = "Play Akari (Light Up) free online: cat-themed logic puzzles in your browser, no download. Learn the rules in a minute and light up every grid.";
 ---
@@ -563,17 +564,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
         </span>
       </a>
       <nav class="nav" aria-label="Main navigation">
-        <div class="game-switcher">
-          <button class="game-switcher-btn" onclick="this.nextElementSibling.classList.toggle('open')">Games</button>
-          <div class="game-switcher-menu">
-            <a href="/"><strong>🟧 Shikaku</strong><span class="game-desc">Rectangle partition puzzle</span></a>
-            <a href="/akari/" class="active"><strong>💡 Akari</strong><span class="game-desc">Light Up puzzle</span></a>
-            <a href="/kakuro/"><strong>🔢 Kakuro</strong><span class="game-desc">Cross-sum puzzle</span></a>
-            <a href="/nonogram/"><strong>🎨 Nonogram</strong><span class="game-desc">Picture logic puzzle</span></a>
-            <a href="/nurikabe/"><strong>🏝️ Nurikabe</strong><span class="game-desc">Islands and sea puzzle</span></a>
-            <a href="/pictomino/"><strong>🧩 Pictomino</strong><span class="game-desc">Spatial reasoning puzzle</span></a>
-          </div>
-        </div>
+        <GameSwitcher />
         <a href="#play">Play</a>
         <a href="#walkthroughs">Walkthroughs</a>
         <a href="/akari/how-to-play/">How to Play</a>

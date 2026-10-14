@@ -1,5 +1,6 @@
 ---
 import SEOHead from '../../components/SEOHead.astro';
+import GameSwitcher from '../../components/GameSwitcher.astro';
 const title = "Hashi Solver - Free Bridges Puzzle Solver Online";
 const description = "Free Hashi solver online: it checks every bridge, catches mistakes, and hints the next move. Learn bridges puzzle rules and play free puzzles.";
 ---
@@ -122,16 +123,7 @@ const description = "Free Hashi solver online: it checks every bridge, catches m
         </span>
       </a>
       <nav class="nav" aria-label="Main navigation">
-        <div class="game-switcher">
-          <button class="game-switcher-btn" onclick="this.parentElement.classList.toggle('open')">Games</button>
-          <div class="game-switcher-menu">
-            <a href="/"><strong>🟧 Shikaku</strong><span class="game-desc">Rectangle partition puzzle</span></a>
-            <a href="/akari/"><strong>💡 Akari</strong><span class="game-desc">Light Up puzzle</span></a>
-            <a href="/kakuro/"><strong>🔢 Kakuro</strong><span class="game-desc">Cross-sum puzzle</span></a>
-            <a href="/hashi/" class="active"><strong>🌉 Hashi</strong><span class="game-desc">Bridges island puzzle</span></a>
-            <a href="/binary/"><strong>0️⃣1️⃣ Binary Puzzle</strong><span class="game-desc">Takuzu 0/1 logic puzzle</span></a>
-          </div>
-        </div>
+        <GameSwitcher />
         <a href="/hashi/">Play</a>
         <a href="/hashi/#how-to-play">How to Play</a>
         <a href="/hashi/#tips">Tips</a>
