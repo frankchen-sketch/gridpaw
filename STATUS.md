@@ -297,6 +297,29 @@ SERP 盘面调研（`research/2026-09-20_要打的词SERP竞品盘面.md`）后�
 - **复查点 2026-10-17**（GSC 滞后消化完 + 满 7 天）：meowdoku-guide 日曝光 <15 或 arrows 双页停 9 不动 → 给 walkthrough 页加内链权重
 - 28 天验证窗口至 **2026-11-07**
 
+### meowdoku-guide 整页重做 + 批量布局修（2026-10-13，deploy `24e9d63f`）
+
+**触发**：法老发现内容错位 + GA4 时长 0。审计实锤三件事：
+1. **内容把游戏写错**：Meowdoku 真身是 LinkedIn Queens 类猫谜题（色区放猫/行列唯一/不接触），原页整篇按 9x9 数独写（规则/技巧/FAQ 全错）→ GA4 30d 7 会话 engagementRate 0.0% 全 bounce，而 GSC pos 9.2 + CTR 4.3% 全站最高 = 标题能骗点击、落地接不住。
+2. **同类硬伤 3 页**：arrows-puzzle + arrows-puzzle-walkthrough 把"点按箭头滑出棋盘避免碰撞"写成"拖箭头指向靶子+颜色配对+传送门"（虚构机制）；block-blast-hints 1 处 FAQ 错（称落子可回改，实际不可移动）。
+3. **布局 bug 8 页**：`class="seo-content"` 本页未定义 → Read Next 贴左（meowdoku/arrows×2/block-blast/cross-math/brain-teasers/japanese/logic-puzzle-grid）。
+
+**meowdoku 重做**（skill `game-guide-page-playbook` 沉淀了全流程）：
+- 框架照 SERP#1 meowdoku.org（EMD 5 个月月 43.4 万访问）：规则 4 条+演示盘 → Controls → 6 策略 → **Level 1-3 真实答案**（竞品图逐格像素采样还原分区图 + 唯一解求解器枚举验证 + 对照官方答案）→ FAQ 6 条 Schema 同步重写
+- TDK 不动（排名/CTR 已验证）；"answers" 意图从劝退文改为真答案+推导示范；随机化盘面免责置顶；猫 sprite/盘面快照落 `public/meowdoku-guide/`
+- Phase 2 挂账：meowdoku answers level N 逐关 pSEO 页（竞品 meowdoku.app 靠该词族月 12.3K 流量，KD 42）
+
+**批量修**：8 页 `seo-content`→`seo-section`（720px 居中）。Playwright 验收：Read Next secLeft=280==mainLeft=280、移动端 0 溢出、棋盘 20 猫 10✕ 分毫不差。
+
+**待办**：arrows 双页虚构机制重写 + block-blast FAQ 修正（同 skill 流程，待法老排期）→ **✅ 已完成（2026-10-13 下午，deploy `da5d6f87`，commit `5022e76`）**：arrows 双页照 meowdoku 骨架重写（官方验证玩法：点按滑出/碰撞扣心/双头箭头/Normal→Nightmare），CSS 箭头演示盘 + 2 官方截图；block-blast FAQ 双落盘修正。验收抓到子 agent 保留旧页冷蓝主题（#3D6BF0）→ 全量换暖琥珀+奶油白后 vision 复读确认。"arrows puzzle walkthrough" SERP 补测：KD 8.1 极易，#2/#7 均为 DR 0 六个月新站 = 全站最容易正面进入的词；竞品 arrowspuzzleguide.com 框架 = Level 1–1000 逐关索引+难度分层+daily，**逐关 pSEO Phase 2 侦察结论（2026-10-13 下午，暂缓立项）**：
+- 竞品真相：arrowspuzzleguide.com 逐关页 = 纯模板文字+YouTube 嵌入（零真数据）；mobilepuzzlehelp.com = 结构化 SVG 盘面+data-replay-steps 解法序，L1 与实机视频吻合，但按 marker 方向建模存在同列相向不可解配置（#1↔#33），按 data-direction+领先点阻挡可解率 93-100% 非全绿——真实性无法完全验证
+- ROI 反证：两个 DR0 竞品全站月访问合计 ~3.6K（含其他游戏），摊到 1000 页 ≈ 每页 1-2 访问/月；逐关词族=低价值词海 + scaled-content 风险
+- 视频管线不成立：YouTube 仅 android 客户端可下（640×360），盘面 <250px，vision 数箭头不可靠
+- 替代方案：做 3-5 个高意图页（how many levels / max level / level 1000），等 10-17 GSC 数据再评估
+- **差异化对比节已上线（2026-10-13 晚，deploy `6dc6b820`，commit `8d41c2e`）**：三 guide 页（arrows/arrows-walkthrough/meowdoku）FAQ 前新增 "How This Guide Compares" 资源类型对比表——本 guide vs 官方商店页 vs 视频攻略 vs 自动生成站；不点名竞品，全部可验证事实；移动端堆叠卡片。此节为 E-E-A-T 差异化标配，后续新 guide 页照抄
+- **Level 1-3 逐关攻略已上线（2026-10-13 深夜，deploy `193d5113`，commit `821d8c0`）**：walkthrough 页新增已验证逐关节（SVG 重绘盘面）。L1/L2 任意顺序（轨道独立），L3 首个顺序敏感关（长S被#1+#4挡，解序 1→4→2→3，求解器+视频4击零掉心吻合）。数据管线：同款短视频逐帧蒙太奇+vision 追踪消失顺序 ↔ 竞品 SVG 几何交叉验证，小关（≤4箭头）可靠；10-17 复查后视 GSC 表现决定是否扩到 L4-L10
+- **Levels 4-10 已验证事实表 + 需求 CTA 已上线（2026-10-13 深夜，deploy `daf87eea`，commit `7f7ae3e`）**：L4 起盘面重叠成迷宫状超视频验证上限（盲读实锤），禁虚构不画盘 → 改发逐关事实：尺寸/箭头数（结构化数据×实拍交叉）+ 实况（L4/5/7/8 零掉心、L6 心形盘+Hard、**L10 Hard+实拍掉心=前10关唯一碰撞实证**；通关语轮换 Well done!/Nice!/Brilliant!）。CTA「Yes — bring on Levels 11+」单击投票 → `guide_more_levels_click`（GA4-only 非 D1 白名单）；Playwright defineProperty 拦截实测事件名/参数逐字命中。**复盘：L4 复原尝试失败是正确止损——单帧问拓扑必幻觉，序列追踪只够验事实不够验几何**。CTA 数据后续在 GA4 查 guide_more_levels_click 计数决定 L11+ 批次立项
+
 ### 外链策略（2026-10-12 拍板：分层，不均摊）
 
 内链全站必做（零成本）；外链只给「有排名机会但差一口气」的页——若 10-17 复查确认 walkthrough 卡住，KD 11.6 对应预算（10-20 引用域）花在它身上。
@@ -450,3 +473,20 @@ Clarity 实锤（30min 0 次成功拖拽、徽章狂点 17 次/分）→ 3 步�
   - **永不**：Popunder、Smartlink（整页跳转，毁回头客）。Adsterra 无激励视频格式（实测仅 Popunder/Native Banner/Banner/Smartlink/Social Bar 五种）。
 - **检查广告的已知结论**：Agent 本地无法看到真实创意（CN IP 空填充/代理 403/云浏览器被识别为 bot 直接重定向 direct link），唯一现成渠道=Clarity 会话录屏（流量小暂无深滚样本，筛选路径已跑通：录制页筛选器→已访问 URL 包含页面 slug）。教训沉淀在 skill `ad-network-monetization`。
 - **全站猫 emoji 清理（09-26 晚，`e6e543e`，随 `7959e4b` 部署上线）**：法老发现导航品牌位是 `🐱 GridPaw`，彻查全站共 61 文件 ~130 处：品牌位（GameNav + pictomino 10 处 brand-logo）换 favicon.svg logo；H1/CTA/toast/教程/分享文本约 115 处删 emoji；**机制图标保留**（akari 灯泡 content:'🐱'、胜利彩蛋粒子池、kakuro 迷雾 🐾 标记——玩法本体）。线上实测：首页 🐱=0、H1/CTA 干净、机制图标 CSS hash 与线上一致。顺带修 `pnpm run deploy` 依赖全局 wrangler 的坑（bare → `npx -y`）。
+
+## 2026-10-13 漏斗诊断（game_start 口径失真）+ 口径修复（可见才计开局）
+
+**依据**：GA4 28 天漏斗（US desktop first_move 率 14% vs mobile 38%）+ Clarity 录屏取证（3 天 54 会话全量扫描，方法见 skill `clarity-session-forensics` 的 gridpaw 实操节）。关键实锤：
+- **10vuizs（US desktop，Pinterest 进首页，5:04，0 点击）事件时间线：00:00 页面访问 → 00:01 页面已隐藏 → 00:01 game_start 同秒触发 → 之后 5 分钟零事件**。后台标签页加载：game_start 在用户从未看到页面的情况下计了一次「开局」。
+- 首页落地 17 会话，**11 个（65%）game_start 触发但 0 点击**；US desktop 首页 3/3 全零点击。game_start=页面加载事件，分母混入后台标签/即走/读者会话 → first_move 率被系统性低估。
+- **页面本身没坏**：w50r9u 在 00:04 能正常点 New Puzzle（渲染完整、无遮罩、无空白）——首屏交互没问题。
+
+**口径修复（11 处加载时触发的 game_start 加可见性门控）**：`document.visibilityState === 'visible'` 才触发；hidden 时挂 visibilitychange 监听转可见补发；直接关掉后台标签 = 不发。开局 = 用户真正看到棋盘：
+- `src/pages/index.astro`（Shikaku 首页，主排名页）`_gsWhenVisible`
+- `{binary,hashi,kenken,slitherlink,star-battle}/index.astro` `fireGameStart` 包 `trackGameStartWhenVisible`
+- `akari/index.astro` `fireGS` 同款门控（akari/daily 的 game_start 由 start-btn 点击触发，非加载时，不改）
+- `public/{nurikabe,kakuro,nonogram}/demo.html` + `public/pictomino/hard.html`（iframe load）
+
+**验证**：`pnpm run build` exit 0（159 页）；dist 逐文件 grep 确认 11 处门控全部进产物。
+**待验证（部署后）**：GA4 game_start 总量应下降（后台标签不再计入）、first_move 率应显著回升；2-4 周后重读 US desktop first_move 率对比 14% 基线。
+**Murdoku 品类侦察结论另见**：detective sudoku（KD 31.5）+ murder sudoku（KD 40.3）双词入场、叙事单元 pSEO 内容页先行——调研产物在本会话记录，未落 repo。
