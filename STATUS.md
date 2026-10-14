@@ -544,3 +544,11 @@ Clarity 实锤（30min 0 次成功拖拽、徽章狂点 17 次/分）→ 3 步�
 **验收链全过**：pnpm build（161 页）→ dist grep（门控注释/7 类打点/资产路径全中）→ Playwright **17/17**（bundle 浏览器上下文 API、game_start 门控+补发、受害格/冲突红闪、first_move 恰一次、撤猫、hint 报行列、4×4+6×6 hint 全解自动过案、三分享打点、6×6 worker 计数=1、game_start 不重发）→ deploy → 线上 ?cb= 五路 200（页面/引擎/worker/图标/资产）+ 门控注释与 CTA 链接在线上 HTML → IndexNow 200。
 
 **测试基建坑（复用价值）**：① SEOHead 的 module script 会 `window.gpTrack = trackFunnel` 覆盖测试 stub——stub 必须用 getter+空 setter 的 defineProperty 保住；② Playwright evaluate 内模板串在浏览器侧求值，Node 变量不会插值，须先算好传参；③ 页面 `.sel-target` 高亮不排除受害者同行列/已占用格，测试落点须自算合法格。
+
+## 2026-10-14（中午）game-switcher 头部下拉组件化（deploy `b423f127`，commit `3d03864`，卡 t_5f189695）
+
+**结构债清偿**：30 个页面内联复制的 Games 下拉 → `src/components/GameSwitcher.astro`（games 数组单一维护点）。存量不同步修复：murdoku/kenken/binary/star-battle/hashi/slitherlink 此前只出现在自家页面，现全站 30 页统一 12 游戏。净 -175 行。
+
+**验收（卡上六条全过）**：30 页 dist 断言（12 链接×顺序×active 前缀，子页 /akari/daily/ 自动落栏目）+ computed style 前后逐项一致（13px 字号/10×16 padding/200px 宽/12px 圆角）+ hover 展开截图 vision 前后比对 + Guides switcher（首页，5 链接）与移动端 hamburger 无回归 → 线上 4 页抽查（/、kenken、akari/daily、murdoku）菜单 12 链接全中。
+
+**规范决策**：CSS 取 13 文件主流组值，变量全带 fallback（akari 系页面存在 --ink 等未定义情况）；采纳 murdoku 版 `.game-switcher-menu.open` 全宽生效（触屏笔记本上按钮点击可用，此前部分页面只有 hover 展开）。**遗留**：各页 <style> 里死亡 scoped switcher CSS（约 10 行/页，对新组件不生效）留待下次 neat-freak 清理；首页 Guides switcher 仍内联（5 条目静态，暂无同步需求）。
