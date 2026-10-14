@@ -16,6 +16,7 @@ const games = [
   { href: '/nurikabe/', icon: '/assets/game-icons/nurikabe.webp', name: 'Nurikabe', desc: 'Islands & sea' },
   { href: '/pictomino/', icon: '/assets/game-icons/pictomino.webp', name: 'Pictomino', desc: 'Spatial' },
   { href: '/kenken/', icon: '/assets/game-icons/kenken.webp', name: 'KenKen', desc: 'Math cages' },
+  { href: '/murdoku/', icon: '/assets/game-icons/murdoku.webp', name: 'Murdoku', desc: 'Cat mystery', isNew: true },
   { href: '/binary/', icon: '/assets/game-icons/binary.webp', name: 'Binary', desc: 'Takuzu logic' },
   { href: '/star-battle/', icon: '/assets/game-icons/starbattle.webp', name: 'Star Battle', desc: 'Two Not Touch' },
   { href: '/hashi/', icon: '/assets/game-icons/hashi.webp', name: 'Hashi', desc: 'Bridges' },
@@ -30,6 +31,7 @@ const tiles = games.filter((g) => g.href !== active);
     {tiles.map((g) => (
       <a href={g.href} class="gp-hub-tile">
         <img src={g.icon} alt="" width="40" height="40" loading="lazy" />
+        {g.isNew && <span class="gp-hub-badge">NEW</span>}
         <b>{g.name}</b>
         <span>{g.desc}</span>
       </a>
@@ -42,12 +44,13 @@ const tiles = games.filter((g) => g.href !== active);
   .gp-hub-title { font-size: 1.15rem; font-weight: 900; text-align: center; margin: 0.7rem 0 0.55rem; color: #3f2d1d; }
   .gp-hub-accent { color: #d97706; }
   .gp-hub-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-  .gp-hub-tile {
+  .gp-hub-tile { position: relative;
     display: flex; flex-direction: column; align-items: center; text-align: center;
     background: #fff; border: 1.5px solid #e7d4b8; border-radius: 12px;
     padding: 10px 4px 8px; text-decoration: none; color: #3f2d1d;
     transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
   }
+  .gp-hub-badge { position: absolute; top: -6px; right: -4px; background: #C0392B; color: #fff; font-size: 8px; font-weight: 900; letter-spacing: .06em; border-radius: 999px; padding: 2px 6px; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
   .gp-hub-tile:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(63,45,29,.12); border-color: #d97706; }
   .gp-hub-tile img { width: 40px; height: 40px; border-radius: 9px; display: block; margin-bottom: 5px; }
   .gp-hub-tile b { font-size: .8rem; font-weight: 800; line-height: 1.2; }
