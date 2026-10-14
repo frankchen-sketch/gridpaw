@@ -571,3 +571,4 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - Devvit 公开审核已提交：meow-block v0.0.6、cat-akari v0.0.10（1-3 工作日，r/Devvit Chat + 邮件）
 - 评论盯守：cron 312d987f526c（每 2h×24，只读+草拟回复+MacBook 横幅通知，发布永远人工）
 - 旗舰策略：meow-block 当大本营日更，cat-akari 第二步；游戏内加「Play all six on gridpaw.com」出口待做
+- 首条评论闭环（10-14 晚）：u/No-Giraffe-3838 指出 onboarding step 3「press the number」误导（数字在矩形中间时照做必报 Area≠number）——实锤后 step 2/3 文案均改 corner-to-corner drag（commit `1b27237`，deploy 验证新文案×2 旧文案×0，IndexNow 200），回复稿用户已人工贴
