@@ -2200,7 +2200,7 @@ const description = "Draw rectangles to match every number and fill the grid —
     phase = 'turn'; clearCoachArt();
     nextBtn.style.display = 'none'; setDots(2);
  stepEl.textContent = 'STEP 3 / 3'; titleEl.textContent = 'Your turn — drag it yourself';
-    textEl.textContent = 'Press the number, drag across cells until the area matches, then release. The board is live now.';
+    textEl.textContent = 'Drag from one corner of the rectangle to the opposite corner, then release. The board is live now.';
     var scheduleIdle = function() { clearTimeout(idleT); idleT = setTimeout(function() { if (phase === 'turn' && !demoFinger && !dragging) { var rr = firstUnplacedRect(); if (rr) playGesture(rr, scheduleIdle); } }, 3000); };
     scheduleIdle();
   }
@@ -2221,7 +2221,7 @@ const description = "Draw rectangles to match every number and fill the grid —
   function watchDemo(rr) {
     phase = 'watch'; setDots(1); nextBtn.style.display = 'none';
  stepEl.textContent = 'STEP 2 / 3'; titleEl.textContent = 'Watch the paw ';
-    textEl.textContent = 'Press on the number, drag across cells until the area matches, then release. (Touch the board any time to take over.)';
+    textEl.textContent = 'Drag from one corner of the rectangle to the opposite corner, then release. (Touch the board any time to take over.)';
     obTrack('onboard_step', { step: 2, level: levelNum });
     var takeover = function() { board.removeEventListener('pointerdown', takeover); killDemo(); clearCoachArt(); yourTurn(); };
     board.addEventListener('pointerdown', takeover);
