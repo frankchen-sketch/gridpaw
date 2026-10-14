@@ -241,33 +241,33 @@ meowtrail.org/puzzle/puzzle-068 -> gridpaw.com/akari/puzzle/puzzle-068/
 meowtrail.org/puzzle/puzzle-069 -> gridpaw.com/akari/puzzle/puzzle-069/
 meowtrail.org/puzzle/puzzle-070 -> gridpaw.com/akari/puzzle/puzzle-070/
 meowtrail.org/tips/elimination -> gridpaw.com/akari/tips/elimination/
-meowtrail.org/tips/number-0 -> gridpaw.com/akari/tips/number-0/
-meowtrail.org/tips/number-1 -> gridpaw.com/akari/tips/number-1/
-meowtrail.org/tips/number-2 -> gridpaw.com/akari/tips/number-2/
-meowtrail.org/tips/number-3 -> gridpaw.com/akari/tips/number-3/
-meowtrail.org/tips/number-4 -> gridpaw.com/akari/tips/number-4/
+meowtrail.org/tips/number-0 -> gridpaw.com/akari/tips/
+meowtrail.org/tips/number-1 -> gridpaw.com/akari/tips/
+meowtrail.org/tips/number-2 -> gridpaw.com/akari/tips/
+meowtrail.org/tips/number-3 -> gridpaw.com/akari/tips/
+meowtrail.org/tips/number-4 -> gridpaw.com/akari/tips/
 meowtrail.org/blog -> gridpaw.com/akari/blog/
 meowtrail.org/blog/akari-puzzle-strategies-beginners -> gridpaw.com/akari/blog/akari-puzzle-strategies-beginners/
 meowtrail.org/blog/best-logic-puzzles-brain-training -> gridpaw.com/akari/blog/best-logic-puzzles-brain-training/
 meowtrail.org/blog/history-of-akari-puzzle -> gridpaw.com/akari/blog/history-of-akari-puzzle/
 meowtrail.org/glossary -> gridpaw.com/akari/glossary/
-meowtrail.org/glossary/number-cell -> gridpaw.com/akari/glossary/number-cell/
-meowtrail.org/glossary/bulb-cat -> gridpaw.com/akari/glossary/bulb-cat/
-meowtrail.org/glossary/light-up-illuminate -> gridpaw.com/akari/glossary/light-up-illuminate/
-meowtrail.org/glossary/x-mark -> gridpaw.com/akari/glossary/x-mark/
-meowtrail.org/glossary/black-wall -> gridpaw.com/akari/glossary/black-wall/
-meowtrail.org/glossary/elimination -> gridpaw.com/akari/glossary/elimination/
-meowtrail.org/glossary/constraint-propagation -> gridpaw.com/akari/glossary/constraint-propagation/
-meowtrail.org/glossary/backtracking -> gridpaw.com/akari/glossary/backtracking/
-meowtrail.org/glossary/akari -> gridpaw.com/akari/glossary/akari/
-meowtrail.org/glossary/light-up-puzzle -> gridpaw.com/akari/glossary/light-up-puzzle/
-meowtrail.org/glossary/nikoli -> gridpaw.com/akari/glossary/nikoli/
-meowtrail.org/glossary/daily-challenge -> gridpaw.com/akari/glossary/daily-challenge/
-meowtrail.org/compare/akari-vs-sudoku -> gridpaw.com/akari/compare/akari-vs-sudoku/
-meowtrail.org/compare/light-up-vs-kakuro -> gridpaw.com/akari/compare/light-up-vs-kakuro/
-meowtrail.org/compare/akari-vs-nonogram -> gridpaw.com/akari/compare/akari-vs-nonogram/
-meowtrail.org/compare/logic-puzzle-vs-sudoku -> gridpaw.com/akari/compare/logic-puzzle-vs-sudoku/
-meowtrail.org/compare/light-up-vs-slitherlink -> gridpaw.com/akari/compare/light-up-vs-slitherlink/
+meowtrail.org/glossary/number-cell -> gridpaw.com/akari/glossary/
+meowtrail.org/glossary/bulb-cat -> gridpaw.com/akari/glossary/
+meowtrail.org/glossary/light-up-illuminate -> gridpaw.com/akari/glossary/
+meowtrail.org/glossary/x-mark -> gridpaw.com/akari/glossary/
+meowtrail.org/glossary/black-wall -> gridpaw.com/akari/glossary/
+meowtrail.org/glossary/elimination -> gridpaw.com/akari/glossary/
+meowtrail.org/glossary/constraint-propagation -> gridpaw.com/akari/glossary/
+meowtrail.org/glossary/backtracking -> gridpaw.com/akari/glossary/
+meowtrail.org/glossary/akari -> gridpaw.com/akari/glossary/
+meowtrail.org/glossary/light-up-puzzle -> gridpaw.com/akari/glossary/
+meowtrail.org/glossary/nikoli -> gridpaw.com/akari/glossary/
+meowtrail.org/glossary/daily-challenge -> gridpaw.com/akari/glossary/
+meowtrail.org/compare/akari-vs-sudoku -> gridpaw.com/akari/compare/
+meowtrail.org/compare/light-up-vs-kakuro -> gridpaw.com/akari/compare/
+meowtrail.org/compare/akari-vs-nonogram -> gridpaw.com/akari/compare/
+meowtrail.org/compare/logic-puzzle-vs-sudoku -> gridpaw.com/akari/compare/
+meowtrail.org/compare/light-up-vs-slitherlink -> gridpaw.com/akari/compare/
 
 # meow-block.com -> gridpaw.com
 # 实现：CF zone meow-block.com → Rules → Redirect Rules（非 _worker.js，仓库无此文件）
@@ -328,3 +328,21 @@ spatialreasoninggame.com/blog/benefits-of-puzzle-games-for-children -> gridpaw.c
 # 已知可接受的小瑕疵：`.html` 遗留入口（/game.html 等）仍 2 跳——
 #   动态表达式原样透传路径，故目标保留 .html，再由 gridpaw 308 一次。
 #   旧站 canonical/sitemap 用无扩展名形式，实际流量不受影响。
+
+# ── gridpaw.com 站内薄页合并 301（2026-10-14 AdSense 低价值内容整改）──────────
+# 实现：CF zone gridpaw.com → Rules → Redirect Rules。✅ 已添加（2026-10-14 经 ego-browser 在 Dashboard UI 建，
+#   规则名：akari-glossary-merge / akari-tips-number-merge / akari-compare-merge，均 活动）
+# 背景：22 个薄子页（<800 词）已从产线删除、内容并入 hub；sitemap 已同步收敛（83→60 URL）。
+# 未加 301 前这些 URL 是 404；STATUS.md 记录 compare 3 页已收录，务必加 301 保权重。
+# 三条动态规则即可覆盖（精确路径已在各自 hub 收敛）：
+#   1. starts_with(http.request.uri.path, "/akari/glossary/")  AND http.request.uri.path != "/akari/glossary/"
+#      -> 301 https://gridpaw.com/akari/glossary/
+#      （覆盖 11 条：number-cell/bulb-cat/light-up-illuminate/x-mark/black-wall/elimination/
+#        constraint-propagation/backtracking/akari/light-up-puzzle/nikoli/daily-challenge）
+#   2. starts_with(http.request.uri.path, "/akari/tips/number-")
+#      -> 301 https://gridpaw.com/akari/tips/
+#      （覆盖 5 条：number-0 ~ number-4）
+#   3. starts_with(http.request.uri.path, "/akari/compare/")  AND http.request.uri.path != "/akari/compare/"
+#      -> 301 https://gridpaw.com/akari/compare/
+#      （覆盖 6 条：akari-vs-sudoku/akari-vs-nonogram/light-up-vs-kakuro/light-up-vs-slitherlink/logic-puzzle-vs-sudoku）
+# 上线实测（2026-10-14）：23/23 旧 URL 301 → 各自 hub ✓；3 hub + /about/ /contact/ /akari/ 均 200 ✓

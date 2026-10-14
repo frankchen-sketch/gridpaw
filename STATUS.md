@@ -7,6 +7,7 @@
 >
 > **最新作战地图：`research/2026-09-24_横向拓展前置验证_GamePix供给侧与DR差距.md`**（0924：横向拓展前置验证通过+供给侧实测补全；P0 待办收敛为 3 条：注册 publisher 账号 / 定游戏页形态 / 外链换质；Game Over 降级已结案）
 >
+> **AdSense 低价值内容整改（2026-10-14，已部署上线 + IndexNow 6 URL 200）**：被拒理由「低价值内容」。adsense_audit 实测（3 积分）：73 项 0 blocker，唯一 fail=About/Contact 缺失（实测 Contact 有但是 JS mailto 爬虫看不见、About 整站不存在）；全站词数对账：115/162 页 <800 词，**sitemap 内 37 薄页**才是主面。处置：22 薄子页合并进 3 hub（glossary 11 子页→hub 408→4,959 词；tips number-0~4→tips hub 加正经 per-number 章节 1,373 词；compare 6 页→新建 hub 1,735 词），sitemap **83→60 URL**、in-sitemap 薄页 37→13；levels/hard + reset-password（14 词）补进 sitemap 排除（**坑：astro.config 顶部 excludedPages 是死代码静默不生效，已删，唯一真源=filter 内 exactExcludes**）；About（574 词）+ Contact（275 词）独立页上线，footer 落链接（首页 JS-mailto 换真页 + privacy + kakuro/nonogram/nurikabe）。**待办**：等 2-4 周再申诉（唯一待办）。3 条 CF 301 已上线（2026-10-14 ego-browser 在 Dashboard UI 建成，23/23 旧 URL 实测 301 → 各自 hub，3 hub + /about/ /contact/ 均 200；规则名 akari-glossary-merge/akari-tips-number-merge/akari-compare-merge，详见 REDIRECTS.md）。部署+验证已全部完成（/about/ /contact/ 3 hub 线上 200）。法老拍板：CMP 先不接；剩余 13 薄页（blog 3 篇/cheats/murdoku/help-shikaku 等 600-700 词）加厚待议。
 > **Kakuro 线（2026-09-25）**：引擎+demo 全功能交付并入库（雾分块/爪窥/付费墙 mock/键盘三态/答案 hint/clue 高亮/死局检测，selftest ALL PASS）；`/kakuro/` 已从跳转页升级为正式 SEO 页（推关 11 关+无限每日关+FAQ/WebApplication schema+内链，进度存 localStorage）。下一步：部署 + GSC 提交收录 + IndexNow。
 
 > **Nonogram 线（2026-09-26）**：第 4 个游戏立项（选型依据：nonogram 43,280/月为唯一真体量候选词，onlinenonograms DR 10 证明行为驱动可上榜；差异化=每关揭猫像素画）。引擎已交付（lineOptions 枚举→lineSolve 纯逻辑传播→回溯计数唯一性；Easy/Medium 生成强制纯逻辑可解；猫 pattern ×4 教学；生成 1-2ms/盘，selftest ALL PASS）。正式页 `/nonogram/` + GameNav 五游戏 + llms.txt 已入库（commit 0543b79）。demo（669 行，子 agent 产出+浏览器实测验收）已部署上线（deployment aef3dcb7，commit 5eda059），线上 /nonogram/、demo、引擎全 200，IndexNow 已推。
@@ -562,3 +563,11 @@ Clarity 实锤（30min 0 次成功拖拽、徽章狂点 17 次/分）→ 3 步�
 ## 2026-10-14（下午）neat-freak：死亡 scoped switcher CSS 清理（deploy `cdf190db`，commit `bc8d276`）
 
 GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不生效（页面 scoped CSS 带 data-astro-cid，组件元素不命中页面 cid）——29 页 345 条死规则全清（含空壳 media query；首页保留 12 条给内联 Guides switcher）。验收：build 过 + 29 页 dist 断言 + computed style 前后逐项一致（13px/10×16/200px）+ 线上 2 页抽查 12 链接。净删约 -350 行。另：10-09 bot 簇取证（Nonogram 55 mistake + Nurikabe 10 集中单日单源）——Nonogram/Nurikabe「低 start」游戏真实参与度=每天 0-2 次操作级，watch item：10-14 /nurikabe/demo US mobile 11 事件同形态待 10-16 cron 拆。
+
+## 2026-10-14 r/WebGames 首帖上线
+
+- 帖子：https://www.reddit.com/r/WebGames/comments/1x5k33f/（u/finn_chen_cat，text post，GridPaw 标题打头合规 P3）
+- 文案：humanizer detect 复查通过（修 3 处破折号后 ~15 分，对照蹭词站 75 分 / daily9 12 分）
+- Devvit 公开审核已提交：meow-block v0.0.6、cat-akari v0.0.10（1-3 工作日，r/Devvit Chat + 邮件）
+- 评论盯守：cron 312d987f526c（每 2h×24，只读+草拟回复+MacBook 横幅通知，发布永远人工）
+- 旗舰策略：meow-block 当大本营日更，cat-akari 第二步；游戏内加「Play all six on gridpaw.com」出口待做

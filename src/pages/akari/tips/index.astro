@@ -4,11 +4,11 @@ import ExtensionPromo from '../../../components/ExtensionPromo.astro';
 const title = "Akari Tips & Strategies — Solve Light Up Puzzles | GridPaw";
 const description = "Akari tips and strategies for every level: how to read number cells, use elimination, spot forced bulbs, and avoid the mistakes that stall a Light Up solve.";
 const tips = [
-  { href: "/akari/tips/number-0/", icon: "0", name: "Number 0 Cells", note: "No adjacent bulbs. Mark all four neighbours as blocked the moment you see a 0." },
-  { href: "/akari/tips/number-1/", icon: "1", name: "Number 1 Cells", note: "Exactly one neighbour gets a bulb. Line-of-sight usually tells you which one." },
-  { href: "/akari/tips/number-2/", icon: "2", name: "Number 2 Cells", note: "Two neighbours light up. Corners and edges narrow the candidates fast." },
-  { href: "/akari/tips/number-3/", icon: "3", name: "Number 3 Cells", note: "Three of four neighbours need bulbs — only one is blocked. Find the odd one out." },
-  { href: "/akari/tips/number-4/", icon: "4", name: "Number 4 Cells", note: "All four neighbours get bulbs. Place them immediately, no thinking required." },
+  { href: "#number-0", icon: "0", name: "Number 0 Cells", note: "No adjacent bulbs. Mark all four neighbours as blocked the moment you see a 0." },
+  { href: "#number-1", icon: "1", name: "Number 1 Cells", note: "Exactly one neighbour gets a bulb. Line-of-sight usually tells you which one." },
+  { href: "#number-2", icon: "2", name: "Number 2 Cells", note: "Two neighbours light up. Corners and edges narrow the candidates fast." },
+  { href: "#number-3", icon: "3", name: "Number 3 Cells", note: "Three of four neighbours need bulbs — only one is blocked. Find the odd one out." },
+  { href: "#number-4", icon: "4", name: "Number 4 Cells", note: "All four neighbours get bulbs. Place them immediately, no thinking required." },
   { href: "/akari/tips/elimination/", icon: "🔍", name: "Elimination Technique", note: "Cross out impossible cells first; what survives is the answer." },
 ];
 ---
@@ -100,8 +100,28 @@ const tips = [
         ))}
       </ul>
 
+      <h2 id="number-0">Number 0 Cells: Block All Four Neighbours</h2>
+      <p>A <strong>number 0 cell</strong> tells you that none of its four adjacent cells (up, down, left, right) can hold a bulb. It is the cheapest information on the board — the moment you see one, mark all four neighbours with X and move on. Every X you place shrinks the candidate space for the numbers around it.</p>
+      <p>Zeroes also matter later in the solve: any bulb placement you are considering must not touch a 0's neighbours. When a region seems to have two possible solutions, check whether one of them lights a cell adjacent to a 0 — if it does, that solution is dead and the other one is forced.</p>
+
+      <h2 id="number-1">Number 1 Cells: Exactly One Neighbour</h2>
+      <p>A <strong>number 1 cell</strong> means exactly one of its four adjacent cells holds a bulb — no more, no less. If three of its neighbours are already blocked (by walls, X marks, or the grid edge), the remaining neighbour <em>must</em> be a bulb. That forced placement is free progress.</p>
+      <p>The harder read is line-of-sight: once you know one specific neighbour is the bulb, the other three are X'd out — and if placing that bulb would illuminate a cell that already holds a bulb, your read is wrong somewhere. Trace back before you place anything else.</p>
+
+      <h2 id="number-2">Number 2 Cells: Corners and Edges First</h2>
+      <p>A <strong>number 2 cell</strong> needs exactly two of its four neighbours lit. Corners and edges are where 2s become powerful: a 2 in a corner has only two available neighbours, so both must be bulbs — a forced placement, no deduction needed. A 2 on an edge with one neighbour blocked has exactly three candidates and usually narrows fast.</p>
+      <p>In the middle of the board a 2 carries less information on its own, but it compounds: every neighbouring cell you X out turns it one step closer to forced. Track 2s alongside their neighbours rather than in isolation.</p>
+
+      <h2 id="number-3">Number 3 Cells: Find the Odd One Out</h2>
+      <p>A <strong>number 3 cell</strong> needs three of its four neighbours lit — only one is blocked. Flip the question around: instead of asking "which three get bulbs?", ask "which one can't?". If any neighbour is proven impossible (it would see another bulb, or it's next to a 0), the other three are all forced placements.</p>
+      <p>Threes are the second-richest read after 4s. On GridPaw boards a 3 squeezed between walls usually cracks open a whole corner of the grid, because its three forced bulbs illuminate two full lines each.</p>
+
+      <h2 id="number-4">Number 4 Cells: Place Immediately</h2>
+      <p>A <strong>number 4 cell</strong> means all four adjacent cells must contain bulbs — there is nothing to deduce. Place all four the moment you spot one, and check the consequences: each of those bulbs illuminates its own row and column, so before making any other move, see which nearby numbers just became forced or blocked.</p>
+      <p>The only thing a 4 can't tell you is where its bulbs' light <em>must</em> stop — that's what the walls decide. After placing a 4's bulbs, re-scan the numbers touching those four lit lines; a 1 next to a newly lit neighbour often becomes a forced X chain.</p>
+
       <h2>Read Every Number Cell Before You Place Anything</h2>
-      <p>The single biggest beginner mistake in Akari is placing bulbs reactively — spotting an obvious one and clicking, then hunting for the next. Instead, do a full sweep of the grid first and read <em>every</em> number. A <a href="/akari/tips/number-0/">number 0 cell</a> instantly tells you four cells are dead. A <a href="/akari/tips/number-4/">number 4 cell</a> hands you four bulbs. Those two reads alone often account for a third of a puzzle's bulbs, and they cost you nothing but a single pass with your eyes.</p>
+      <p>The single biggest beginner mistake in Akari is placing bulbs reactively — spotting an obvious one and clicking, then hunting for the next. Instead, do a full sweep of the grid first and read <em>every</em> number. A <a href="#number-0">number 0 cell</a> instantly tells you four cells are dead. A <a href="#number-4">number 4 cell</a> hands you four bulbs. Those two reads alone often account for a third of a puzzle's bulbs, and they cost you nothing but a single pass with your eyes.</p>
       <p>This is the same discipline a solver automates. When you ask an <a href="/akari/solver/">Akari solver</a> for a hint, what it returns first is almost always one of these forced placements — because forced placements are provable, and provable moves don't need search.</p>
 
       <h2>Understand Line of Sight</h2>
@@ -132,7 +152,7 @@ const tips = [
       <p>If you'd rather see the rules from the top before drilling technique, the <a href="/akari/how-to-play/">How to Play guide</a> covers the basics, and the <a href="/akari/how-to-solve/">solving walkthrough</a> works through a full grid step by step.</p>
     </section>
 
-    <div class="nav-links"><a href="/akari/how-to-play/">← How to Play</a><a href="/akari/tips/number-0/">Number 0 Cells →</a></div>
+    <div class="nav-links"><a href="/akari/how-to-play/">← How to Play</a><a href="/akari/how-to-solve/">Solving Walkthrough →</a></div>
     <a href="/akari/" class="play-cta">🎮 Practise These Tips on a Real Grid</a>
     <ExtensionPromo />
     <footer><p>© 2026 GridPaw. All rights reserved.</p><p style="margin-top:0.3rem"><a href="https://www.pinterest.com/gridpaw/" rel="noopener">GridPaw on Pinterest</a></p>

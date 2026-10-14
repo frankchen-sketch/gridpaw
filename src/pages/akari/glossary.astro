@@ -2,6 +2,7 @@
 import SEOHead from '../../components/SEOHead.astro';
 import ExtensionPromo from '../../components/ExtensionPromo.astro';
 import GameSwitcher from '../../components/GameSwitcher.astro';
+import { glossaryTerms } from '../../data/glossary-terms';
 const title = "Akari Puzzle Glossary — Every Term Explained | GridPaw";
 const description = "Complete glossary of Akari (Light Up) puzzle terms. Learn what number cells, bulbs, X marks, and more mean. Essential reference for puzzle players.";
 ---
@@ -124,6 +125,30 @@ const description = "Complete glossary of Akari (Light Up) puzzle terms. Learn w
 
       <h3>Daily Challenge</h3>
       <p>A <strong>daily challenge</strong> is a new Akari puzzle released every day for players to solve. Daily challenges are a popular feature across puzzle sites because they create a solving habit and give players a shared experience to discuss. On GridPaw, the <a href="/akari/daily/">daily Akari challenge</a> offers a fresh puzzle each day with a balanced difficulty level suitable for most solvers. Come back every day to keep your deduction skills sharp and build your solving streak.</p>
+
+      <h2>Deep Dives: How Each Term Works in Practice</h2>
+      <p>Each term below expands into the full deep dive from our glossary — pros and trade-offs, a step-by-step guide, and the questions players actually ask. Tap any term to unfold it.</p>
+      {glossaryTerms.map((term) => (
+        <details id={`term-${term.slug}`}>
+          <summary>{term.term}</summary>
+          <p><strong>{term.term}</strong> — {term.definition}</p>
+          <h3>How It Works</h3>
+          <p>{term.howItWorks}</p>
+          <h3>Advantages</h3>
+          <ul>{term.pros.map((p) => <li>{p}</li>)}</ul>
+          <h3>Trade-offs</h3>
+          <ul>{term.cons.map((c) => <li>{c}</li>)}</ul>
+          <h3>Step-by-Step Guide</h3>
+          <ol>{term.tutorial.map((s) => <li><strong>{s.title}:</strong> {s.content}</li>)}</ol>
+          <h3>FAQ</h3>
+          {term.faq.map((f) => (
+            <details>
+              <summary>{f.question}</summary>
+              <p>{f.answer}</p>
+            </details>
+          ))}
+        </details>
+      ))}
 
       <h2>Why This Akari Glossary Matters</h2>
       <p>Understanding akari terms is essential for improving your solving speed and accuracy. When you know what constraint propagation means, you can apply it deliberately instead of stumbling into deductions by accident. When you understand backtracking, you know exactly when to stop relying on simple logic and start testing hypotheses. This puzzle glossary is designed to be your quick-reference companion — keep it open in a tab while you play and look up any term you encounter.</p>
