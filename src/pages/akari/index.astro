@@ -5,6 +5,7 @@ import GameHub from '../../components/GameHub.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import SideAd from '../../components/SideAd.astro';
 import { comparePairs } from '../../data/compare-pairs';
+import GameSwitcher from '../../components/GameSwitcher.astro';
 const title = "Play Akari Online — Free Light Up Puzzle Game | GridPaw";
 const description = "Play Akari (Light Up) free online: cat-themed logic puzzles in your browser, no download. Learn the rules in a minute and light up every grid.";
 ---
@@ -179,17 +180,16 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       font-size: 0.875rem; font-weight: 700; color: var(--text);
     }
     .nav a:hover { background: var(--hover-bg); color: var(--ink); }
-    .game-switcher { position: relative; }
-    .game-switcher-btn { font-size: 0.875rem; font-weight: 700; color: var(--text); background: none; border: none; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 0.375rem; display: flex; align-items: center; gap: 4px; }
-    .game-switcher-btn::after { content: '▾'; font-size: 10px; }
-    .game-switcher-btn:hover { background: var(--hover-bg); color: var(--ink); }
-    .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid var(--gp-parchment); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
-    .game-switcher:hover .game-switcher-menu { display: block; }
-    .game-switcher-menu a { display: flex; flex-direction: column; padding: 10px 16px !important; font-size: 13px !important; gap: 2px; border-radius: 0 !important; }
-    .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: var(--gp-stone); }
-    .game-switcher-menu a:hover { background: var(--gp-cream) !important; color: var(--ink) !important; }
-    .game-switcher-menu a.active { color: var(--ink) !important; background: var(--gp-cream-warm) !important; font-weight: 800 !important; }
-    @media (max-width: 480px) { .game-switcher:hover .game-switcher-menu { display: none; } .game-switcher-menu.open { display: block; } }
+
+
+
+
+
+
+
+
+
+
     .nav .hamburger { display: none; font-size: 1.4rem; padding: 0.5rem; cursor: pointer; background: none; border: none; color: var(--text); }
     @media (max-width: 768px) {
       .nav a:not(.hamburger) { display: none; }
@@ -563,17 +563,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
         </span>
       </a>
       <nav class="nav" aria-label="Main navigation">
-        <div class="game-switcher">
-          <button class="game-switcher-btn" onclick="this.nextElementSibling.classList.toggle('open')">Games</button>
-          <div class="game-switcher-menu">
-            <a href="/"><strong>🟧 Shikaku</strong><span class="game-desc">Rectangle partition puzzle</span></a>
-            <a href="/akari/" class="active"><strong>💡 Akari</strong><span class="game-desc">Light Up puzzle</span></a>
-            <a href="/kakuro/"><strong>🔢 Kakuro</strong><span class="game-desc">Cross-sum puzzle</span></a>
-            <a href="/nonogram/"><strong>🎨 Nonogram</strong><span class="game-desc">Picture logic puzzle</span></a>
-            <a href="/nurikabe/"><strong>🏝️ Nurikabe</strong><span class="game-desc">Islands and sea puzzle</span></a>
-            <a href="/pictomino/"><strong>🧩 Pictomino</strong><span class="game-desc">Spatial reasoning puzzle</span></a>
-          </div>
-        </div>
+        <GameSwitcher />
         <a href="#play">Play</a>
         <a href="#walkthroughs">Walkthroughs</a>
         <a href="/akari/how-to-play/">How to Play</a>
@@ -746,11 +736,11 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       <section class="section">
         <h2 class="section-title">Tips &amp; <span class="accent">Techniques</span></h2>
         <div class="tips-grid">
-          <a class="tip-card" href="/akari/tips/number-0/"><div class="tip-icon">0</div><h3>Reading "0" Cells</h3><p>A 0 means no adjacent cats. Mark all 4 neighbors as blocked immediately.</p></a>
-          <a class="tip-card" href="/akari/tips/number-4/"><div class="tip-icon">4</div><h3>Reading "4" Cells</h3><p>A 4 means all 4 neighbors must have cats. Place them all right away.</p></a>
-          <a class="tip-card" href="/akari/tips/number-1/"><div class="tip-icon">1</div><h3>Reading "1" Cells</h3><p>Only one neighbor gets a cat. Use elimination to find which one.</p></a>
-          <a class="tip-card" href="/akari/tips/number-2/"><div class="tip-icon">2</div><h3>Reading "2" Cells</h3><p>Two neighbors need cats. Corner and edge positions narrow the options.</p></a>
-          <a class="tip-card" href="/akari/tips/number-3/"><div class="tip-icon">3</div><h3>Reading "3" Cells</h3><p>Three neighbors need cats. One neighbor is blocked — figure out which.</p></a>
+          <a class="tip-card" href="/akari/tips/#number-0"><div class="tip-icon">0</div><h3>Reading "0" Cells</h3><p>A 0 means no adjacent cats. Mark all 4 neighbors as blocked immediately.</p></a>
+          <a class="tip-card" href="/akari/tips/#number-4"><div class="tip-icon">4</div><h3>Reading "4" Cells</h3><p>A 4 means all 4 neighbors must have cats. Place them all right away.</p></a>
+          <a class="tip-card" href="/akari/tips/#number-1"><div class="tip-icon">1</div><h3>Reading "1" Cells</h3><p>Only one neighbor gets a cat. Use elimination to find which one.</p></a>
+          <a class="tip-card" href="/akari/tips/#number-2"><div class="tip-icon">2</div><h3>Reading "2" Cells</h3><p>Two neighbors need cats. Corner and edge positions narrow the options.</p></a>
+          <a class="tip-card" href="/akari/tips/#number-3"><div class="tip-icon">3</div><h3>Reading "3" Cells</h3><p>Three neighbors need cats. One neighbor is blocked — figure out which.</p></a>
           <a class="tip-card" href="/akari/tips/elimination/"><div class="tip-icon">🔍</div><h3>Elimination Technique</h3><p>Use line-of-sight and number constraints together to narrow down cat positions.</p></a>
         </div>
 
@@ -759,7 +749,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
           <div class="featured-tip-label">📖 Featured Strategy</div>
           <h3>Why "4" Cells Are Your Best Friend</h3>
           <p>A wall cell numbered "4" is the strongest clue in any Akari puzzle — all four adjacent cells must contain a cat, no thinking required. Start every puzzle by scanning for 4s first. Then check if those cats illuminate enough cells to reveal new forced placements. This "cascade from 4s" technique works on every difficulty level and is the single fastest way to speed up your solving.</p>
-          <a href="/akari/tips/number-4/" class="featured-tip-link">Read Full Guide →</a>
+          <a href="/akari/tips/#number-4" class="featured-tip-link">Read Full Guide →</a>
         </div>
 
         <!-- Strategy Guide Blog List -->
@@ -879,23 +869,23 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
             <strong>Akari Solver</strong>
             <span>Stuck? Get the solution for any puzzle instantly</span>
           </a>
-          <a href="/akari/tips/number-0/" class="strategy-grid-item">
+          <a href="/akari/tips/#number-0" class="strategy-grid-item">
             <strong>Number 0 Strategy</strong>
             <span>Why 0-cells are your first move in every puzzle</span>
           </a>
-          <a href="/akari/tips/number-4/" class="strategy-grid-item">
+          <a href="/akari/tips/#number-4" class="strategy-grid-item">
             <strong>Number 4 Strategy</strong>
             <span>The strongest clue — all 4 neighbors must be cats</span>
           </a>
-          <a href="/akari/tips/number-1/" class="strategy-grid-item">
+          <a href="/akari/tips/#number-1" class="strategy-grid-item">
             <strong>Number 1 Strategy</strong>
             <span>Elimination techniques for single-neighbor clues</span>
           </a>
-          <a href="/akari/tips/number-2/" class="strategy-grid-item">
+          <a href="/akari/tips/#number-2" class="strategy-grid-item">
             <strong>Number 2 Strategy</strong>
             <span>Corner and edge tactics for 2-cell constraints</span>
           </a>
-          <a href="/akari/tips/number-3/" class="strategy-grid-item">
+          <a href="/akari/tips/#number-3" class="strategy-grid-item">
             <strong>Number 3 Strategy</strong>
             <span>Figure out which one neighbor is blocked</span>
           </a>
@@ -1030,7 +1020,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     <p style="margin-top:0.75rem">
       <a href="https://gridpaw.com" rel="noopener">GridPaw</a> ·
       <a href="https://furriq.com" rel="noopener">Furriq</a> ·
-      <a href="https://gridpaw.com/pictomino" rel="noopener">Pictomino</a> ·
+      <a href="https://gridpaw.com/pictomino/" rel="noopener">Pictomino</a> ·
       <a href="https://www.pinterest.com/gridpaw/" rel="noopener">Pinterest</a> ·
       <a href="https://chromewebstore.google.com/detail/gridpaw-%E2%80%94-daily-akari-puz/mjdplaoanamjdbbpkgccjnhmlgnpcamj" rel="noopener">Chrome Extension</a> ·
       <a href="https://gridpaw-games.lovable.app" rel="noopener">Lovable</a> ·
@@ -1366,7 +1356,17 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
             const p = new URLSearchParams(location.search);
             const src = p.get('embed') ? 'embed' : p.get('daily') ? 'daily' : document.referrer ? 'referral' : 'direct';
             // 延迟到 DOMContentLoaded：gpTrack 由 module 脚本注入，太早调用会漏进 D1（同 index.astro 修复）
-            const fireGS = () => track('game_start', { level: level, difficulty: diff.label, source: src });
+            // game_start 口径（2026-10-13 Clarity 取证）：页面可见才算开局——后台标签加载不计，转可见补发
+            const fireGS = () => {
+              const gs = () => track('game_start', { level: level, difficulty: diff.label, source: src });
+              if (document.visibilityState === 'visible') { gs(); return; }
+              const onVis = () => {
+                if (document.visibilityState !== 'visible') return;
+                document.removeEventListener('visibilitychange', onVis);
+                gs();
+              };
+              document.addEventListener('visibilitychange', onVis);
+            };
             if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', fireGS); } else { fireGS(); }
           }
         } catch(e) { showToast('Failed to generate.', 'error'); }
@@ -1495,7 +1495,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       if (badgeEl) badgeEl.innerHTML = level + '<span style="color:var(--text-muted)"> / ∞</span>';
     }
     function loseHealth() {
-      if (health > 0) { health--; updateHealth(); if (health === 0) { stopTimer(); showToast('Game Over! Try again.', 'error'); setTimeout(resetPuzzle, 1500); } }
+      if (health > 0) { health--; updateHealth(); if (health === 0) { stopTimer(); track('game_over', { level: level }); showToast('Game Over! Try again.', 'error'); setTimeout(resetPuzzle, 1500); } }
     }
     document.getElementById('hint-btn').addEventListener('click', () => {
       if (!currentPuzzle || won) return;

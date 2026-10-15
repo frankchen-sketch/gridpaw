@@ -30,6 +30,10 @@ cron（job 1329cf1d31a5）去重真源。状态：`reported`（已报告未动�
 | 2026-10-12 | amaze go game | 1,300 | 未查 | 0→非0：06 720 → 07 1300 → 08 1000（LOW 23） | reported | T1监控 | amaze go 词族变体同步成词，验证词族成型非单点脉冲；承接同上 |
 | 2026-10-12 | poetry cat game | 未核量 | 未查 | riser +180%（30d） | excluded | 雷达B根 | SERP 定性 = Ereading Games 教育评测型平台游戏（ELA 老师用），开学季季节脉冲非新游戏；品类错配无承接 |
 | 2026-10-12 | halloween cat game | 未核量 | 未查 | riser +40%（30d） | excluded | 雷达B根 | 万圣节季节脉冲，需节日主题游戏承接而 gridpaw 无；建页赶不上今年窗口 |
+| 2026-10-12 | T1词族复核（10词） | — | — | 无新信号（零信号行） | t1-monitor | T1监控 | amaze go 6600 / amaze go game 1000 维持上轮快照（最新 2026-08）；**amaze go hints/levels/walkthrough 全 null**（help 词族未成形，等待期）；meowdoku 60500 爬升已知、hints 480 平、walkthrough null 重试仍无；arrows puzzle 5400 单边爬升中 |
+| 2026-10-12 | pink cat games login | 未核量 | 未查 | riser +70%（30d） | excluded | 雷达B根 | pinkcatgames.com 教育游戏平台（教师用）品牌导航查询：login = 找登录入口，非游戏内容需求，gridpaw 无承接 |
+| 2026-10-13 | T1词族复核（10词） | — | — | 无新信号（零信号行）；快照最新仍 2026-08 | t1-monitor | T1监控 | amaze go 6600 / amaze go game 1000 / meowdoku 60500 / meowdoku hints 480 / arrows puzzle 5400 全部维持上轮快照，**09 月数据仍未见（第 6 轮盯守）**；amaze go hints/levels/walkthrough 第 6 次 null，help 词族仍未成形；B 根跳过（继续挂起待拍板） |
+| 2026-10-14 | T1词族复核（10词） | — | — | 无新信号（零信号行）；快照最新仍 2026-08 | t1-monitor | T1监控 | amaze go 6600 / amaze go game 1000 / meowdoku 60500 / meowdoku hints 480 / arrows puzzle 5400 全部维持上轮快照，**09 月数据第 7 轮盯守仍未出场**；amaze go hints/levels/walkthrough 第 7 次 null，help 词族仍未成形；B 根跳过（挂起不变）；余额 3383，差额 41 疑他路消耗（持续记 risk） |
 
 ## 词根轮换记录（防重复烧积分）
 
@@ -38,6 +42,10 @@ cron（job 1329cf1d31a5）去重真源。状态：`reported`（已报告未动�
 | 2026-10-11 00:20 | logic puzzle / cross math / block puzzle / arrows puzzle / meowdoku | cron 恢复后首轮；下轮避开这 5 个，从 brain teaser / word game / number game / tile match / puzzle game / kitten puzzle / cat puzzle / block bloom / zoodoku / splash buster 里轮换 |
 | 2026-10-11 08:01 | kitten puzzle / cat puzzle（B根，各零信号）+ T1词族 ×9 | T1 词级新信号 meowdoku hints；下轮 B 根换 cat game / pet game，T1 主词族量核继续；woody 闭环 dropped |
 | 2026-10-12 08:00 | cat game / pet game（B根；poetry cat game +180% / halloween cat game +40% 均季节脉冲排除，零有效词）+ T1 词族 ×10 | **T1 高优先级新信号 amaze go 词族 0→非0**（上架源头 Amaze GO! com.oakever.arrows，120M 装）；下轮 B 根换 cat games（已用：kitten/cat puzzle、cat/pet game），T1 续盯 amaze go + help 词族（现全 null）+ meowdoku walkthrough/null 重试 |
+| 2026-10-12 20:01 | cat games（B根最后 1 根；仅 pink cat games login 品牌导航词排除）+ T1 词族 ×10 复核 | **零信号**：amaze go 词族维持上轮快照，help 词族（hints/levels/walkthrough）全 null 等待期；**B 根 5 根已全轮完一遍（kitten/cat puzzle、cat/pet game、cat games）三轮连扫零有效词**——下轮建议 B 根降频，把积分让给 T1 amaze go help 词族紧盯（窗口期）；T1 续盯 amaze go/meowdoku help 变体 + 等 09/10 月快照 |
+| 2026-10-13 08:01 | B 根跳过（5 根轮完 3 遍零有效词，降频等拍板）+ T1 词族 ×10 复核 | **零信号**：全部 10 词维持上轮快照（最新 2026-08，09 月数据仍未见）；amaze go help 词族第 5 次 null；下轮同（T1 复核 + 快照 09 出场监视），B 根继续挂起直到用户拍板降频节奏 |
+| 2026-10-13 20:01 | B 根跳过（继续挂起）+ T1 词族 ×10 复核 | **零信号**：全部 10 词维持上轮快照（最新 2026-08，09 月数据第 6 轮盯守仍未出场）；amaze go help 词族第 6 次 null；下轮同，B 根挂起不变 |
+| 2026-10-14 08:02 | B 根跳过（挂起不变）+ T1 词族 ×10 复核 | **零信号**：全部 10 词维持上轮快照（最新 2026-08，09 月数据第 7 轮盯守仍未出场）；amaze go help 词族第 7 次 null；余额差额观察：3429−5 预期 3424，实测 3383，差额 41 疑他路消耗（上轮 94/99 → 本轮 41，非单调，兄弟会话间歇使用特征）；下轮同 |
 
 ## 验证四道闸（标准动作链，每词 ≤15 分）
 

@@ -17,7 +17,7 @@ const faqJsonLd = [
         name: "How many levels are in Arrows Puzzle Escape?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Per the official listing, Arrows – Puzzle Escape contains thousands of handcrafted levels. The developer has not published an exact total, and daily challenges keep adding fresh boards, so any specific number you see online is a guess — treat the official 'thousands' as the real answer."
+          text: "The official listing says 'thousands of handcrafted levels,' and that checks out: the v0.23.1 package we inspected ships with 3,983 campaign boards (plus rotating daily challenges on top). The developer keeps extending the count through updates, so any exact figure online is a snapshot — but thousands is real, not marketing."
         }
       },
       {
@@ -121,6 +121,19 @@ const faqJsonLd = [
     .callout { font-size: 0.88rem; padding: 0.55rem 0.75rem; border-radius: 8px; margin: 0.7rem 0; display: flex; gap: 6px; align-items: flex-start; line-height: 1.6; }
     .callout.warn { background: #FFF4E0; color: #92610A; border: 1px dashed #E8B15C; }
     .callout.grn { background: rgba(34,197,94,.1); color: #15803d; }
+    /* ===== level browser ===== */
+    .lv-topbar { display:flex; align-items:center; justify-content:space-between; gap:.6rem; margin:1rem 0 .4rem; }
+    .lv-topbar button { background:#FBF3EA; border:1px solid #F0DFD2; border-radius:8px; padding:.45rem .9rem; font-weight:700; color:#42352E; cursor:pointer; font-family:inherit; }
+    .lv-topbar button:hover { background:#F3E6D8; }
+    .lv-title { font-weight:800; font-size:1.15rem; color:#42352E; }
+    .lv-meta { font-size:.85rem; color:#8A7A6E; margin-bottom:.5rem; }
+    #lv-board { overflow:auto; max-height:440px; text-align:center; background:#FFFDF9; border:1px solid #F0DFD2; border-radius:10px; padding:.6rem; }
+    #lv-board svg { max-height:420px; width:auto; max-width:100%; height:auto; }
+    .lv-steps-wrap h4 { margin:.8rem 0 .3rem; }
+    .lv-picker { display:flex; flex-wrap:wrap; gap:4px; margin-top:1rem; }
+    .lv-picker button { min-width:34px; padding:.3rem 0; background:#FBF3EA; border:1px solid #F0DFD2; border-radius:6px; font-size:.8rem; font-weight:700; color:#42352E; cursor:pointer; font-family:inherit; }
+    .lv-picker button:hover { background:#F3E6D8; }
+    .lv-picker button.lv-on { background:#E87A4F; border-color:#E87A4F; color:#FFFAF5; }
 
     /* ===== strategy list ===== */
     .strat { margin: 6px 0; columns: 2; column-gap: 30px; }
@@ -175,7 +188,7 @@ const faqJsonLd = [
 
     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Lessmore GmbH.</div>
 
-    <div class="callout warn"><span><b>About per-level solutions:</b> this page teaches the universal method and walks Levels 1–3 step by step below. Beyond that, with thousands of handcrafted boards plus rotating daily challenges, no static level list can stay complete. The layered framework below transfers to any board the game deals you — Normal or Nightmare.</span></div>
+    <div class="callout grn"><span><b>Per-level boards are here:</b> Levels 1–100 below are <b>real boards extracted from the game's own package</b> (v0.23.1) — not redrawn from video, not generated. Every one was verified solvable by our solver, with a full tap order you can follow. Use the board browser, or read the method first and apply it there.</span></div>
 
     <h2>How to Use This Walkthrough</h2>
     <p>There is no single solution path through Arrows – Puzzle Escape, but there is a reliable <em>procedure</em> that works on every board:</p>
@@ -220,7 +233,7 @@ const faqJsonLd = [
     <table class="cmp">
       <thead><tr><th>Source</th><th>What you get</th><th>Watch out for</th></tr></thead>
       <tbody>
-        <tr><th>This walkthrough</th><td>A universal layered method that works on any board the game deals you, official difficulty-tier explanations, and an FAQ fact-checked against the store listing and real footage.</td><td>—</td></tr>
+        <tr><th>This walkthrough</th><td><b>Real boards and verified tap orders for Levels 1–100</b>, extracted from the game's own package — plus a universal layered method that works on any board the game deals you, official difficulty-tier explanations, and an FAQ fact-checked against the store listing.</td><td>—</td></tr>
         <tr><th>Video walkthroughs</th><td>The correct move order for one specific board.</td><td>With thousands of levels plus rotating daily challenges, nobody has filmed your exact board — and scrubbing video for a single move is slow.</td></tr>
         <tr><th>Auto-generated level sites</th><td>A dedicated page for every level number.</td><td>Boilerplate tips repeated word-for-word across levels, no real board layouts, and level numbers dressed up as solutions.</td></tr>
       </tbody>
@@ -228,56 +241,30 @@ const faqJsonLd = [
     <p class="cmp-note">The method on this page was checked against the official Google Play listing and actual gameplay — the mechanics described here are the ones the game really runs.</p>
 
 
-    <h2>Arrows Puzzle Escape Level 1–3 Walkthrough, Verified</h2>
-    <p>The first three levels are transcribed from real gameplay footage and re-checked against the solver: follow the tap order shown and you clear each board <b>without losing a single heart</b>. Level 3 is where order starts to matter — it's the first board where tapping the wrong arrow first costs you.</p>
+    <h2>Arrows Puzzle Escape Levels 1–100: Real Boards, Real Solutions</h2>
+    <p>Every board below was extracted from the game's own package (v0.23.1) — these are the actual handcrafted levels, not reconstructions from fuzzy video. Our solver verified each board and computed a complete tap order for it. Pick a level, follow the numbered taps, and clear it without losing a heart.</p>
+    <p class="cmp-note">How to read the boards: each arrow is a track with an <b>arrowhead at its tip</b> and a <b>numbered dot at its tail</b>. The tap order lists arrows by their numbers; when an arrow has two heads, the order tells you which way to send it. Early levels are free-for-alls; from Level 3 on, order matters.</p>
 
-    <h3><span class="lvtag">Level 1</span> Three arrows, any order</h3>
-    <div class="lvboard"><svg viewBox="0 0 140 168" role="img" aria-label="Level 1 board: three vertical arrows pointing up"><defs><marker id="mm1" markerWidth="6" markerHeight="6" refX="4.5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#E87A4F"/></marker></defs><marker id="m12" markerWidth="6" markerHeight="6" refX="4.5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#6B8FE8"/></marker><marker id="m13" markerWidth="6" markerHeight="6" refX="4.5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#C1658A"/></marker><circle cx="14" cy="14" r="2.5" fill="#E8D9CC"/><circle cx="14" cy="42" r="2.5" fill="#E8D9CC"/><circle cx="14" cy="70" r="2.5" fill="#E8D9CC"/><circle cx="14" cy="98" r="2.5" fill="#E8D9CC"/><circle cx="14" cy="126" r="2.5" fill="#E8D9CC"/><circle cx="14" cy="154" r="2.5" fill="#E8D9CC"/><circle cx="42" cy="14" r="2.5" fill="#E8D9CC"/><circle cx="42" cy="42" r="2.5" fill="#E8D9CC"/><circle cx="42" cy="70" r="2.5" fill="#E8D9CC"/><circle cx="42" cy="98" r="2.5" fill="#E8D9CC"/><circle cx="42" cy="126" r="2.5" fill="#E8D9CC"/><circle cx="42" cy="154" r="2.5" fill="#E8D9CC"/><circle cx="70" cy="14" r="2.5" fill="#E8D9CC"/><circle cx="70" cy="42" r="2.5" fill="#E8D9CC"/><circle cx="70" cy="70" r="2.5" fill="#E8D9CC"/><circle cx="70" cy="98" r="2.5" fill="#E8D9CC"/><circle cx="70" cy="126" r="2.5" fill="#E8D9CC"/><circle cx="70" cy="154" r="2.5" fill="#E8D9CC"/><circle cx="98" cy="14" r="2.5" fill="#E8D9CC"/><circle cx="98" cy="42" r="2.5" fill="#E8D9CC"/><circle cx="98" cy="70" r="2.5" fill="#E8D9CC"/><circle cx="98" cy="98" r="2.5" fill="#E8D9CC"/><circle cx="98" cy="126" r="2.5" fill="#E8D9CC"/><circle cx="98" cy="154" r="2.5" fill="#E8D9CC"/><circle cx="126" cy="14" r="2.5" fill="#E8D9CC"/><circle cx="126" cy="42" r="2.5" fill="#E8D9CC"/><circle cx="126" cy="70" r="2.5" fill="#E8D9CC"/><circle cx="126" cy="98" r="2.5" fill="#E8D9CC"/><circle cx="126" cy="126" r="2.5" fill="#E8D9CC"/><circle cx="126" cy="154" r="2.5" fill="#E8D9CC"/><polyline points="14,154 14,14" fill="none" stroke="#E87A4F" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m10)"/><circle cx="14" cy="154" r="9" fill="#42352E"/><text x="14" y="157.5" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFAF5">1</text><polyline points="70,154 70,14" fill="none" stroke="#6B8FE8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m11)"/><circle cx="70" cy="154" r="9" fill="#42352E"/><text x="70" y="157.5" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFAF5">2</text><polyline points="126,154 126,14" fill="none" stroke="#C1658A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m12)"/><circle cx="126" cy="154" r="9" fill="#42352E"/><text x="126" y="157.5" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFAF5">3</text></svg></div>
-    <ol class="lvsteps">
-      <li>All three arrows point up with nothing above them — every exit is already clear.</li>
-      <li>Tap them in any order: middle, left, right, or any sequence you like.</li>
-      <li>Takeaway: <b>a straight arrow with an empty path ahead is always a free move.</b></li>
-    </ol>
+    <div id="lvbrowser">
+      <div class="lv-topbar">
+        <button id="lv-prev" type="button" aria-label="Previous level">‹ Prev</button>
+        <div class="lv-title" id="lv-title">Level 1</div>
+        <button id="lv-next" type="button" aria-label="Next level">Next ›</button>
+      </div>
+      <div class="lv-meta" id="lv-meta"></div>
+      <div class="lvboard" id="lv-board"></div>
+      <div class="lv-steps-wrap">
+        <h4>Tap order</h4>
+        <ol class="lvsteps" id="lv-steps"></ol>
+      </div>
+      <div class="lv-picker" id="lv-picker" role="tablist" aria-label="Choose a level"></div>
+    </div>
+    <p class="cmp-note">Boards rendered from structured data extracted directly from the game package; tap orders computed by a solver that simulates every slide and collision check. The arrow numbers are our extraction's labels — badge on the tail, head at the tip.</p>
 
-    <h3><span class="lvtag">Level 2</span> Bent arrows, still any order</h3>
-    <div class="lvboard"><svg viewBox="0 0 140 140" role="img" aria-label="Level 2 board: three bent arrows"><defs><marker id="m21" markerWidth="6" markerHeight="6" refX="4.5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#E87A4F"/></marker></defs><marker id="m22" markerWidth="6" markerHeight="6" refX="4.5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#6B8FE8"/></marker><marker id="m23" markerWidth="6" markerHeight="6" refX="4.5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#C1658A"/></marker><circle cx="14" cy="14" r="2.5" fill="#E8D9CC"/><circle cx="14" cy="42" r="2.5" fill="#E8D9CC"/><circle cx="14" cy="70" r="2.5" fill="#E8D9CC"/><circle cx="14" cy="98" r="2.5" fill="#E8D9CC"/><circle cx="14" cy="126" r="2.5" fill="#E8D9CC"/><circle cx="42" cy="14" r="2.5" fill="#E8D9CC"/><circle cx="42" cy="42" r="2.5" fill="#E8D9CC"/><circle cx="42" cy="70" r="2.5" fill="#E8D9CC"/><circle cx="42" cy="98" r="2.5" fill="#E8D9CC"/><circle cx="42" cy="126" r="2.5" fill="#E8D9CC"/><circle cx="70" cy="14" r="2.5" fill="#E8D9CC"/><circle cx="70" cy="42" r="2.5" fill="#E8D9CC"/><circle cx="70" cy="70" r="2.5" fill="#E8D9CC"/><circle cx="70" cy="98" r="2.5" fill="#E8D9CC"/><circle cx="70" cy="126" r="2.5" fill="#E8D9CC"/><circle cx="98" cy="14" r="2.5" fill="#E8D9CC"/><circle cx="98" cy="42" r="2.5" fill="#E8D9CC"/><circle cx="98" cy="70" r="2.5" fill="#E8D9CC"/><circle cx="98" cy="98" r="2.5" fill="#E8D9CC"/><circle cx="98" cy="126" r="2.5" fill="#E8D9CC"/><circle cx="126" cy="14" r="2.5" fill="#E8D9CC"/><circle cx="126" cy="42" r="2.5" fill="#E8D9CC"/><circle cx="126" cy="70" r="2.5" fill="#E8D9CC"/><circle cx="126" cy="98" r="2.5" fill="#E8D9CC"/><circle cx="126" cy="126" r="2.5" fill="#E8D9CC"/><polyline points="70,126 70,98 14,98 14,14" fill="none" stroke="#E87A4F" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m21)"/><circle cx="70" cy="126" r="9" fill="#42352E"/><text x="70" y="129.5" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFAF5">1</text><polyline points="42,42 126,42 126,70" fill="none" stroke="#6B8FE8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m22)"/><circle cx="42" cy="42" r="9" fill="#42352E"/><text x="42" y="45.5" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFAF5">2</text><polyline points="42,70 98,70 98,126" fill="none" stroke="#C1658A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m23)"/><circle cx="42" cy="70" r="9" fill="#42352E"/><text x="42" y="73.5" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFAF5">3</text></svg></div>
-    <ol class="lvsteps">
-      <li>Three bent arrows, and none of them share a track — each one's path to the edge is already empty.</li>
-      <li>Tap in any order. The bend looks like a trap; it isn't. An arrow travels along its own track, and bends don't block anything.</li>
-      <li>Takeaway: <b>trace each arrow's full path to the edge before judging it — bent ≠ blocked.</b></li>
-    </ol>
-
-    <h3><span class="lvtag">Level 3</span> Order matters for the first time</h3>
-    <div class="lvboard"><svg viewBox="0 0 112 140" role="img" aria-label="Level 3 board: four arrows where tap order matters"><defs><marker id="m31" markerWidth="6" markerHeight="6" refX="4.5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#E87A4F"/></marker></defs><marker id="m32" markerWidth="6" markerHeight="6" refX="4.5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#6B8FE8"/></marker><marker id="m33" markerWidth="6" markerHeight="6" refX="4.5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#C1658A"/></marker><marker id="m34" markerWidth="6" markerHeight="6" refX="4.5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9179D1"/></marker><circle cx="14" cy="14" r="2.5" fill="#E8D9CC"/><circle cx="14" cy="42" r="2.5" fill="#E8D9CC"/><circle cx="14" cy="70" r="2.5" fill="#E8D9CC"/><circle cx="14" cy="98" r="2.5" fill="#E8D9CC"/><circle cx="14" cy="126" r="2.5" fill="#E8D9CC"/><circle cx="42" cy="14" r="2.5" fill="#E8D9CC"/><circle cx="42" cy="42" r="2.5" fill="#E8D9CC"/><circle cx="42" cy="70" r="2.5" fill="#E8D9CC"/><circle cx="42" cy="98" r="2.5" fill="#E8D9CC"/><circle cx="42" cy="126" r="2.5" fill="#E8D9CC"/><circle cx="70" cy="14" r="2.5" fill="#E8D9CC"/><circle cx="70" cy="42" r="2.5" fill="#E8D9CC"/><circle cx="70" cy="70" r="2.5" fill="#E8D9CC"/><circle cx="70" cy="98" r="2.5" fill="#E8D9CC"/><circle cx="70" cy="126" r="2.5" fill="#E8D9CC"/><circle cx="98" cy="14" r="2.5" fill="#E8D9CC"/><circle cx="98" cy="42" r="2.5" fill="#E8D9CC"/><circle cx="98" cy="70" r="2.5" fill="#E8D9CC"/><circle cx="98" cy="98" r="2.5" fill="#E8D9CC"/><circle cx="98" cy="126" r="2.5" fill="#E8D9CC"/><polyline points="42,126 98,126" fill="none" stroke="#E87A4F" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m31)"/><circle cx="42" cy="126" r="9" fill="#42352E"/><text x="42" y="129.5" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFAF5">1</text><polyline points="14,14 14,98 42,98" fill="none" stroke="#6B8FE8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m32)"/><circle cx="14" cy="14" r="9" fill="#42352E"/><text x="14" y="17.5" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFAF5">2</text><polyline points="42,70 42,14 98,14 98,70" fill="none" stroke="#C1658A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m33)"/><circle cx="42" cy="70" r="9" fill="#42352E"/><text x="42" y="73.5" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFAF5">3</text><polyline points="70,42 70,98 98,98" fill="none" stroke="#9179D1" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m34)"/><circle cx="70" cy="42" r="9" fill="#42352E"/><text x="70" y="45.5" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFAF5">4</text></svg></div>
-    <ol class="lvsteps">
-      <li><b>Tap 1 — bottom row (orange):</b> it points right and sits on the last column, so it exits instantly.</li>
-      <li><b>Tap 2 — the purple hook:</b> its head points right into open space. Clear it early because both remaining arrows need its lane.</li>
-      <li><b>Tap 3 — blue left column:</b> with the hook gone, its path to the right edge is clear.</li>
-      <li><b>Tap 4 — the long rose S:</b> its slide path crosses the bottom row and the hook's lane, both empty now. It leaves clean.</li>
-      <li>Takeaway: <b>the longest, most tangled arrow is the one whose blockers you just cleared — save it for last, and pick its blockers as your free moves.</b></li>
-    </ol>
-    <p class="cmp-note">Boards transcribed from real gameplay footage and cross-checked with an extraction solver; the orders shown clear every level with all three hearts intact. Later levels rotate denser variants of the same logic — the layered method above covers them.</p>
-
-
-    <h2>Levels 4–10: What the Footage Actually Shows</h2>
-    <p>From Level 4 up, arrows overlap into dense maze structures that can't be traced honestly arrow-by-arrow from video — so instead of inventing boards, here is exactly what we verified from real gameplay for every level up to 10.</p>
-    <table class="cmp">
-      <thead><tr><th>Level</th><th>Board</th><th>Arrows</th><th>Verified from footage</th></tr></thead>
-      <tbody>
-        <tr><th>4</th><td>7×9</td><td>5</td><td>Cleared with all 3 hearts intact ("Well done!")</td></tr>
-        <tr><th>5</th><td>11×13</td><td>16</td><td>Cleared with all 3 hearts intact ("Well done!")</td></tr>
-        <tr><th>6</th><td>27×23</td><td>36</td><td>The board is a heart shape. Labeled <b>Hard</b> in-game. Cleared with all 3 hearts ("Nice!")</td></tr>
-        <tr><th>7</th><td>9×12</td><td>12</td><td>Cleared with all 3 hearts intact ("Brilliant!")</td></tr>
-        <tr><th>8</th><td>9×14</td><td>16</td><td>Cleared with all 3 hearts intact ("Nice!")</td></tr>
-        <tr><th>9</th><td>13×17</td><td>24</td><td>Dense board; all 3 hearts intact through mid-solve</td></tr>
-        <tr><th>10</th><td>22×22</td><td>40</td><td>Labeled <b>Hard</b>. Mid-solve frames show collisions costing hearts — the first of the first ten where mistakes really bite</td></tr>
-      </tbody>
-    </table>
-    <p class="cmp-note">Board sizes and arrow counts come from structured level data cross-checked against gameplay footage. Fun fact the videos confirm: the game rotates its praise — "Well done!", "Nice!", "Brilliant!". Level 10's structured data also passed a weaker consistency check than Levels 4–9, which is one more reason we won't draw it as a board.</p>
     <div class="ctabox">
-      <h3>Want fully-drawn boards for Levels 11 and up?</h3>
-      <p>Each dense board takes hours of frame-by-frame verification to do honestly — that's the standard this page holds itself to. Tap to vote and we'll build the batches with the most demand first.</p>
-      <button id="more-levels-cta" type="button">Yes — bring on Levels 11+</button>
+      <h3>Want Levels 101 and up?</h3>
+      <p>The game package holds thousands more boards — we build these batches one verified level at a time. Tap to vote and we'll extend in the order players actually need.</p>
+      <button id="more-levels-cta" type="button">Yes — bring on Levels 101+</button>
       <span id="cta-thanks" hidden>Noted — your vote is logged. Batches get prioritized by demand.</span>
     </div>
     <script is:inline>
@@ -292,7 +279,7 @@ const faqJsonLd = [
       b.addEventListener('click', function () {
         if (b.dataset.done) return;
         b.dataset.done = '1';
-        track('guide_more_levels_click', { page: 'arrows-walkthrough', covered: '1-10' });
+        track('guide_more_levels_click', { page: 'arrows-walkthrough', covered: '1-100' });
         b.textContent = 'Got it — logged ✓';
         b.disabled = true;
         var t = document.getElementById('cta-thanks');
@@ -300,10 +287,82 @@ const faqJsonLd = [
       });
     })();
     </script>
+    <script is:inline>
+    (function () {
+      var PAL = ['#E87A4F', '#6B8FE8', '#C1658A', '#9179D1', '#3FA37C', '#D9A03F', '#8A6FE8', '#5FA8D4', '#B0713F', '#4E9E6B'];
+      var data = null, cur = 1, MAX = 100;
+      function track(e, p) {
+        if (typeof window.gtag === 'function') window.gtag('event', e, p || {});
+        if (typeof window.clarity === 'function') window.clarity('event', e);
+        if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(e, Object.assign({ site: 'gridpaw' }, p || {}));
+      }
+      function render() {
+        var lv = data.levels[String(cur)];
+        var board = document.getElementById('lv-board');
+        if (!lv) { board.innerHTML = '<p>Board data missing for this level.</p>'; return; }
+        var W = lv.x * 28 + 28, H = lv.y * 28 + 28;
+        var s = ['<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Level ' + cur + ' board, ' + lv.x + ' by ' + lv.y + ' grid, ' + lv.arrows.length + ' arrows">'];
+        s.push('<defs>');
+        for (var k = 0; k < PAL.length; k++)
+          s.push('<marker id="lva' + k + '" markerWidth="7" markerHeight="7" refX="4.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="' + PAL[k] + '"/></marker>');
+        s.push('</defs>');
+        for (var c = 0; c < lv.x; c++)
+          for (var r = 0; r < lv.y; r++)
+            s.push('<circle cx="' + (c * 28 + 14) + '" cy="' + (r * 28 + 14) + '" r="2.2" fill="#E8D9CC"/>');
+        lv.arrows.forEach(function (a, i) {
+          var col = PAL[i % PAL.length], mk = 'lva' + (i % PAL.length);
+          var pts = a.p.slice().reverse().map(function (q) { return (q[0] * 28 + 14) + ',' + (q[1] * 28 + 14); }).join(' ');
+          var dbl = (i === lv.special);
+          s.push('<polyline points="' + pts + '" fill="none" stroke="' + col + '" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#' + mk + ')"' + (dbl ? ' marker-start="url(#' + mk + ')"' : '') + '/>');
+          var t = a.p[a.p.length - 1];
+          s.push('<circle cx="' + (t[0] * 28 + 14) + '" cy="' + (t[1] * 28 + 14) + '" r="9" fill="#42352E"/>');
+          s.push('<text x="' + (t[0] * 28 + 14) + '" y="' + (t[1] * 28 + 17.5) + '" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFAF5">' + (i + 1) + '</text>');
+        });
+        s.push('</svg>');
+        board.innerHTML = s.join('');
+        document.getElementById('lv-title').textContent = 'Level ' + cur;
+        document.getElementById('lv-meta').textContent = lv.x + '×' + lv.y + ' grid · ' + lv.arrows.length + ' arrows' + (lv.special >= 0 ? ' · includes a double-headed arrow' : '');
+        document.getElementById('lv-steps').innerHTML = lv.sol.map(function (st, k) {
+          var isDbl = st[0] === lv.special;
+          return '<li><b>Tap ' + (k + 1) + ' — Arrow ' + (st[0] + 1) + '</b>' + (isDbl ? ', send it ' + st[1] : '') + '.</li>';
+        }).join('');
+        document.querySelectorAll('#lv-picker button').forEach(function (btn) {
+          btn.classList.toggle('lv-on', +btn.dataset.lv === cur);
+        });
+        if (location.hash !== '#level-' + cur) history.replaceState(null, '', '#level-' + cur);
+      }
+      function pick(n) {
+        if (n < 1 || n > MAX || !data || !data.levels[String(n)] || n === cur) return;
+        cur = n;
+        render();
+        track('guide_level_view', { page: 'arrows-walkthrough', level: String(cur) });
+      }
+      var pk = document.getElementById('lv-picker'), frag = '';
+      for (var i = 1; i <= MAX; i++) frag += '<button type="button" data-lv="' + i + '">' + i + '</button>';
+      pk.innerHTML = frag;
+      pk.addEventListener('click', function (ev) {
+        var b = ev.target.closest('button[data-lv]');
+        if (b) pick(+b.dataset.lv);
+      });
+      document.getElementById('lv-prev').addEventListener('click', function () { pick(cur - 1); });
+      document.getElementById('lv-next').addEventListener('click', function () { pick(cur + 1); });
+      document.addEventListener('keydown', function (ev) {
+        if (ev.key === 'ArrowLeft') pick(cur - 1);
+        if (ev.key === 'ArrowRight') pick(cur + 1);
+      });
+      fetch('/arrows-puzzle/levels.json').then(function (r) { return r.json(); }).then(function (j) {
+        data = j;
+        var h = parseInt((location.hash || '').replace('#level-', ''), 10);
+        if (h >= 1 && h <= MAX && data.levels[String(h)]) cur = h;
+        render();
+        track('guide_level_view', { page: 'arrows-walkthrough', level: String(cur) });
+      });
+    })();
+    </script>
 
     <h2>Frequently Asked Questions</h2>
 
-    <details><summary>How many levels are in Arrows Puzzle Escape?</summary><p>Per the official listing, Arrows – Puzzle Escape contains thousands of handcrafted levels. The developer has not published an exact total, and daily challenges keep adding fresh boards, so any specific number you see online is a guess — treat the official "thousands" as the real answer.</p></details>
+    <details><summary>How many levels are in Arrows Puzzle Escape?</summary><p>The official listing says "thousands of handcrafted levels," and that checks out: the v0.23.1 package we inspected ships with 3,983 campaign boards (plus rotating daily challenges on top). The developer keeps extending the count through updates, so any exact figure online is a snapshot — but thousands is real, not marketing.</p></details>
 
     <details><summary>What happens when I lose all hearts in Arrows Puzzle Escape?</summary><p>The developer has not published a detailed statement of what happens when your three hearts run out. What is certain: a collision only happens when you tap an arrow whose path is blocked, and levels have no timer, so you are never forced into a risky tap. Keep hearts by reading the board first — the framework on this page is built exactly around that.</p></details>
 

@@ -408,6 +408,7 @@
     if (busy || !puzzle) return;
     var i = parseInt(e.currentTarget.dataset.idx, 10);
     var next = (grid[i] + 1) % 3;
+    if (!window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { level: level }); }
     if (next === CELL_FILLED && puzzle.solution[i] === 0) {
       // educational, never locks: wrong fill → red flash, auto-set to ✕, count it
       mistakes++;
@@ -803,7 +804,18 @@ document.getElementById('nextBtn').addEventListener('click', function () {
   // hide the demo footer inside the production embed
   if (location.search.indexOf('embed=1') >= 0) document.getElementById('foot').style.display = 'none';
 
-  track('game_start', { level: level, trigger: (location.search.indexOf('embed=1') >= 0 ? 'embed' : 'direct') });
+  // game_start 口径（2026-10-13 Clarity 取证）：页面可见才算开局——后台标签加载不计，
+  // visibilitychange 转可见时补发；直接关掉后台标签 = 不发
+  var _gsFire = function() { track('game_start', { level: level, trigger: (location.search.indexOf('embed=1') >= 0 ? 'embed' : 'direct') }); };
+  if (document.visibilityState === 'visible') { _gsFire(); }
+  else {
+    var _gsOnVis = function() {
+      if (document.visibilityState !== 'visible') return;
+      document.removeEventListener('visibilitychange', _gsOnVis);
+      _gsFire();
+    };
+    document.addEventListener('visibilitychange', _gsOnVis);
+  }
   newPuzzle();
 })();
 </script>

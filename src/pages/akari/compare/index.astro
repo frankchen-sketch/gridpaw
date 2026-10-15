@@ -1,0 +1,149 @@
+---
+// Comparison hub — all puzzle comparisons consolidated on one page.
+// Previously 6 thin /compare/{slug} pages (379-468 words each); merged here.
+import SEOHead from '../../../components/SEOHead.astro';
+import ExtensionPromo from '../../../components/ExtensionPromo.astro';
+import { comparePairs } from '../../../data/compare-pairs';
+const title = "Akari vs Other Puzzles — All Comparisons | GridPaw";
+const description = "Akari compared to Sudoku, Kakuro, Nonograms, and Slitherlink: rules, difficulty, skills, and which logic puzzle is right for you — all in one guide.";
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/akari/compare" type="article" />
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:#f8f6ef;color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.6rem;color:#342421;text-align:center;margin:.5rem 0}
+    .seo-content{margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .seo-content p{margin:.5rem 0;line-height:1.7}
+    .seo-content a{color:#E8A888;text-decoration:underline}
+    .comparison-table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.95rem}
+    .comparison-table th{background:#fff4f0;color:#342421;padding:.6rem;text-align:left;border-bottom:2px solid #E8A888}
+    .comparison-table td{padding:.6rem;border-bottom:1px solid #e7dacf}
+    .comparison-table tr:hover{background:#fff8f5}
+    .diff-card{background:#fff;border-radius:12px;padding:1.2rem;margin:1rem 0;box-shadow:0 2px 8px rgba(123,107,138,.08);border:1px solid #e7dacf}
+    .diff-card h3{font-size:1.1rem;color:#342421;margin-bottom:.5rem}
+    .diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:.5rem}
+    .diff-col{padding:.6rem;border-radius:8px;font-size:.9rem;line-height:1.6}
+    .diff-col-a{background:#fff4f0;border:1px solid #f0d8c8}
+    .diff-col-b{background:#f0f4ff;border:1px solid #c8d8f0}
+    .diff-label{font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem}
+    .diff-label-a{color:#E8A888}
+    .diff-label-b{color:#6888C8}
+    details{margin:.5rem 0;padding:.8rem 1rem;background:#fff;border-radius:8px;border:1px solid #e7dacf}
+    summary{cursor:pointer;font-weight:600;color:#E8A888;font-size:.95rem}
+    details p{margin-top:.5rem;line-height:1.7;font-size:.9rem;color:#4a3a35}
+    .pair-nav{display:flex;flex-wrap:wrap;gap:.4rem;margin:1rem 0}
+    .pair-nav a{display:inline-block;margin:0;padding:.3rem .8rem;background:#fff;border-radius:8px;text-decoration:none;color:#E8A888;font-weight:600;font-size:.85rem;border:1px solid #e7dacf}
+    .pair-nav a:hover{background:#E8A888;color:#fff}
+    .cta-btn{display:inline-block;padding:.7rem 2rem;background:#E8A888;color:#fff;border-radius:12px;text-decoration:none;font-weight:600;font-size:1rem;transition:background .2s}
+    .cta-btn:hover{background:#D09070}
+    .cta-row{text-align:center;margin:1.5rem 0}
+    @media(max-width:600px){h1{font-size:1.4rem}.diff-grid{grid-template-columns:1fr}}
+
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/akari/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo.png" alt="GridPaw cat mascot" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Akari Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/akari/">Play</a>
+        <a href="/akari/how-to-play/">How to Play</a>
+        <a href="/akari/tips/">Tips</a>
+        <a href="/akari/daily/">Daily</a>
+        <a href="/akari/solver/">Solver</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>Akari vs Other Logic Puzzles</h1>
+    <p style="text-align:center;color:#6f5651;margin-bottom:1rem;">Every comparison in one place: how Akari (Light Up) stacks up against Sudoku, Kakuro, Nonograms, and Slitherlink.</p>
+
+    <section class="seo-content">
+      <p>Choosing your next logic puzzle is easier when you see the games side by side. Every comparison below covers the core mechanic, the kind of reasoning each puzzle demands, and who each game suits best. Jump straight to the matchup you care about:</p>
+      <div class="pair-nav">
+        {comparePairs.map((pair) => (
+          <a href={`#${pair.slug}`}>{pair.titleA} vs {pair.titleB}</a>
+        ))}
+      </div>
+
+      {comparePairs.map((pair) => (
+        <div id={pair.slug} style="margin-top:2rem;padding-top:1.5rem;border-top:2px solid #e7dacf">
+          <h2 style="font-size:1.3rem;color:#342421;margin-bottom:.5rem">{pair.titleA} vs {pair.titleB}</h2>
+          <p>{pair.description}</p>
+
+          <table class="comparison-table">
+            <thead>
+              <tr><th></th><th>{pair.titleA}</th><th>{pair.titleB}</th></tr>
+            </thead>
+            <tbody>
+              {pair.specs.map(([label, a, b]) => (
+                <tr><td style="font-weight:600">{label}</td><td class="col-a">{a}</td><td>{b}</td></tr>
+              ))}
+            </tbody>
+          </table>
+
+          <h3 style="font-size:1.2rem;color:#342421;margin:1.5rem 0 .5rem">🔍 Key Differences</h3>
+          {pair.differences.map((diff) => (
+            <div class="diff-card">
+              <h3>{diff.topic}</h3>
+              <div class="diff-grid">
+                <div class="diff-col diff-col-a">
+                  <div class="diff-label diff-label-a">{pair.titleA}</div>
+                  {diff.a}
+                </div>
+                <div class="diff-col diff-col-b">
+                  <div class="diff-label diff-label-b">{pair.titleB}</div>
+                  {diff.b}
+                </div>
+              </div>
+            </div>
+          ))}
+
+          <h3 style="font-size:1.2rem;color:#342421;margin:1.5rem 0 .5rem">❓ Frequently Asked Questions</h3>
+          {pair.faq.map((f) => (
+            <details>
+              <summary>{f.question}</summary>
+              <p>{f.answer}</p>
+            </details>
+          ))}
+
+          <div class="cta-row">
+            <a href={pair.slugA} class="cta-btn">Play {pair.titleA} Free</a>
+            {pair.slugB && pair.slugB !== '#' && (
+              <a href={pair.slugB} class="cta-btn" style="background:#d97706;margin-left:.5rem">Play {pair.titleB} Free</a>
+            )}
+          </div>
+        </div>
+      ))}
+
+      <p>Ready to try the game every comparison starts from? <a href="/akari/">Play GridPaw's cat-themed Akari</a> free, or read the <a href="/akari/how-to-play/">How to Play guide</a> first.</p>
+    </section>
+    <ExtensionPromo />
+    <footer><p>GridPaw — Free Akari Puzzle with Cats · <a href="/akari/" style="color:#6f5651">Play More</a></p><p style="margin-top:0.3rem"><a href="https://www.pinterest.com/gridpaw/" rel="noopener">GridPaw on Pinterest</a></p>
+</footer>
+  </div>
+</body>
+</html>

@@ -5,6 +5,7 @@ import GameHub from '../components/GameHub.astro';
 import AdSlot from '../components/AdSlot.astro';
 import SideAd from '../components/SideAd.astro';
 import GamePortal from '../components/GamePortal.astro';
+import GameSwitcher from '../components/GameSwitcher.astro';
 
 const title = "Shikaku Online: Play Free Cat Logic Puzzles | GridPaw";
 const description = "Draw rectangles to match every number and fill the grid — free cat-themed Shikaku puzzles, from easy to hard. No download, no sign-up.";
@@ -615,17 +616,7 @@ const description = "Draw rectangles to match every number and fill the grid —
     </a>
     <nav class="header-nav" aria-label="Main navigation">
       <a href="#play">Play</a>
-      <div class="game-switcher">
-        <button class="game-switcher-btn" onclick="this.nextElementSibling.classList.toggle('open')">Games</button>
-        <div class="game-switcher-menu">
-          <a href="/" class="active"><strong>🟧 Shikaku</strong><span class="game-desc">Rectangle partition puzzle</span></a>
-          <a href="/akari/"><strong>💡 Akari</strong><span class="game-desc">Light Up puzzle</span></a>
-          <a href="/kakuro/"><strong>🔢 Kakuro</strong><span class="game-desc">Cross-sum puzzle</span></a>
-          <a href="/nonogram/"><strong>🎨 Nonogram</strong><span class="game-desc">Picture logic puzzle</span></a>
-          <a href="/nurikabe/"><strong>🏝️ Nurikabe</strong><span class="game-desc">Islands and sea puzzle</span></a>
-          <a href="/pictomino/"><strong>🧩 Pictomino</strong><span class="game-desc">Spatial reasoning puzzle</span></a>
-        </div>
-      </div>
+      <GameSwitcher />
       <div class="game-switcher">
         <button class="game-switcher-btn" onclick="this.nextElementSibling.classList.toggle('open')">Guides</button>
         <div class="game-switcher-menu">
@@ -637,10 +628,10 @@ const description = "Draw rectangles to match every number and fill the grid —
         </div>
       </div>
       <a href="#walkthroughs">Walkthroughs</a>
-      <a href="/how-to-play-shikaku">How to Play</a>
-      <a href="/tips">Tips</a>
+      <a href="/how-to-play-shikaku/">How to Play</a>
+      <a href="/tips/">Tips</a>
       <a href="#play" id="navDaily">Daily</a>
-      <a href="/solver">Solver</a>
+      <a href="/solver/">Solver</a>
     </nav>
     <button class="hamburger" id="mobile-menu-btn" aria-label="Menu">☰</button>
   </div>
@@ -660,11 +651,11 @@ const description = "Draw rectangles to match every number and fill the grid —
     <a href="/nonogram/" style="padding-left:1.5rem">🎨 Nonogram</a>
     <a href="/nurikabe/" style="padding-left:1.5rem">🏝️ Nurikabe</a>
     <a href="/pictomino/" style="padding-left:1.5rem">🧩 Pictomino</a>
-    <a href="/rules">📖 Rules</a>
-    <a href="/tips">💡 Tips</a>
+    <a href="/rules/">📖 Rules</a>
+    <a href="/tips/">💡 Tips</a>
     <a href="/#play">📅 Daily Challenge</a>
-    <a href="/solver">🔍 Solver</a>
-    <a href="/how-to-play-shikaku">📚 How to Play</a>
+    <a href="/solver/">🔍 Solver</a>
+    <a href="/how-to-play-shikaku/">📚 How to Play</a>
     <div style="padding:0.5rem 0;font-size:11px;font-weight:800;color:var(--gp-stone);text-transform:uppercase;letter-spacing:0.08em">Guides</div>
     <a href="/arrows-puzzle-walkthrough/" style="padding-left:1.5rem">📚 Arrows Puzzle Walkthrough</a>
     <a href="/arrows-puzzle/" style="padding-left:1.5rem">📚 Arrows Puzzle</a>
@@ -2129,7 +2120,19 @@ const description = "Draw rectangles to match every number and fill the grid —
   // game_start 延迟到 DOMContentLoaded：gpTrack 由 module 脚本注入（解析完才执行），
   // 内联脚本同步调用时 window.gpTrack 还不存在 → D1 漏 game_start（GA4 正常），实测 69 vs 6
   var _fireGameStart = function() { track('game_start', { level: levelNum, source: _source }); };
-  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _fireGameStart); } else { _fireGameStart(); }
+  // game_start 口径（2026-10-13 Clarity 取证）：页面可见才算开局——后台标签加载（00:01 已隐藏 + game_start
+  // 同秒触发，之后 5 分钟零互动，Clarity 10vuizs 实锤）不计，visibilitychange 转可见时补发；
+  // 直接关掉后台标签 = 不发。开局 = 用户真正看到棋盘
+  function _gsWhenVisible(fire) {
+    if (document.visibilityState === 'visible') { fire(); return; }
+    var onVis = function() {
+      if (document.visibilityState !== 'visible') return;
+      document.removeEventListener('visibilitychange', onVis);
+      fire();
+    };
+    document.addEventListener('visibilitychange', onVis);
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', function() { _gsWhenVisible(_fireGameStart); }); } else { _gsWhenVisible(_fireGameStart); }
   window.addEventListener('resize', function() { if (puzzle) render(); });
 
   // ─── Onboarding coach（真棋盘版 2026-09-23）：跟随教学 1-4 关真实棋局演示 ───
@@ -2197,7 +2200,7 @@ const description = "Draw rectangles to match every number and fill the grid —
     phase = 'turn'; clearCoachArt();
     nextBtn.style.display = 'none'; setDots(2);
  stepEl.textContent = 'STEP 3 / 3'; titleEl.textContent = 'Your turn — drag it yourself';
-    textEl.textContent = 'Press the number, drag across cells until the area matches, then release. The board is live now.';
+    textEl.textContent = 'Drag from one corner of the rectangle to the opposite corner, then release. The board is live now.';
     var scheduleIdle = function() { clearTimeout(idleT); idleT = setTimeout(function() { if (phase === 'turn' && !demoFinger && !dragging) { var rr = firstUnplacedRect(); if (rr) playGesture(rr, scheduleIdle); } }, 3000); };
     scheduleIdle();
   }
@@ -2218,7 +2221,7 @@ const description = "Draw rectangles to match every number and fill the grid —
   function watchDemo(rr) {
     phase = 'watch'; setDots(1); nextBtn.style.display = 'none';
  stepEl.textContent = 'STEP 2 / 3'; titleEl.textContent = 'Watch the paw ';
-    textEl.textContent = 'Press on the number, drag across cells until the area matches, then release. (Touch the board any time to take over.)';
+    textEl.textContent = 'Drag from one corner of the rectangle to the opposite corner, then release. (Touch the board any time to take over.)';
     obTrack('onboard_step', { step: 2, level: levelNum });
     var takeover = function() { board.removeEventListener('pointerdown', takeover); killDemo(); clearCoachArt(); yourTurn(); };
     board.addEventListener('pointerdown', takeover);
@@ -2259,30 +2262,30 @@ const description = "Draw rectangles to match every number and fill the grid —
   <h2 class="section-title">Tips &amp; <span class="accent">Techniques</span></h2>
   <p style="max-width:640px;margin:0 auto .9rem;line-height:1.7;color:var(--gp-brown-600);text-align:center">Start with prime numbers — their 1×N shape is forced — then work from corners and the largest clues. Each rectangle's area must match its number exactly, and forced placements come first.</p>
   <div class="tips-grid">
-    <a class="tip-card" href="/tips">
+    <a class="tip-card" href="/tips/">
       <div class="tip-icon">⭐</div>
       <h3>Prime Numbers</h3>
       <p>2, 3, 5, 7 can only form 1×N rectangles. Place them first — their shape is forced.</p>
     </a>
-    <a class="tip-card" href="/tips">
+    <a class="tip-card" href="/tips/">
       <div class="tip-icon">🔲</div>
       <h3>Rectangle Shapes</h3>
       <p>A "6" can be 1×6, 2×3, 3×2, or 6×1. Learn which shapes fit where.</p>
     </a>
-    <a class="tip-card" href="/tips">
+    <a class="tip-card" href="/tips/">
       <div class="tip-icon">📐</div>
       <h3>Area Rules</h3>
       <p>Each rectangle's area must equal its number. No more, no fewer.</p>
     </a>
   </div>
- <p style="text-align:center;margin:.8rem 0 0"><a href="/tips" class="featured-tip-link">📚 Read all techniques →</a> &nbsp;·&nbsp; <a href="#" id="obReplay" class="featured-tip-link">Replay tutorial</a></p>
+ <p style="text-align:center;margin:.8rem 0 0"><a href="/tips/" class="featured-tip-link">📚 Read all techniques →</a> &nbsp;·&nbsp; <a href="#" id="obReplay" class="featured-tip-link">Replay tutorial</a></p>
 </section>
 
 <!-- Level Guides -->
 <section class="section" id="walkthroughs" aria-label="Level Guides">
   <h2 class="section-title">Level <span class="accent">Guides</span></h2>
   <div class="walkthrough-grid">
-    <a class="walkthrough-card" href="/how-to-play-shikaku">
+    <a class="walkthrough-card" href="/how-to-play-shikaku/">
       <div class="walkthrough-img">
         <img src="/assets/screenshots/level-tutorial.png" alt="GridPaw Tutorial puzzle — 3×3 Shikaku grid" loading="lazy">
       </div>
@@ -2292,7 +2295,7 @@ const description = "Draw rectangles to match every number and fill the grid —
         <p>3×3 grids with guided hints. Learn rectangle placement, area rules, and elimination basics.</p>
       </div>
     </a>
-    <a class="walkthrough-card" href="/how-to-play-shikaku">
+    <a class="walkthrough-card" href="/how-to-play-shikaku/">
       <div class="walkthrough-img">
         <img src="/assets/screenshots/level-easy.png" alt="GridPaw Easy puzzle — 5×5 Shikaku grid" loading="lazy">
       </div>
@@ -2302,7 +2305,7 @@ const description = "Draw rectangles to match every number and fill the grid —
         <p>5×5 grids with simple shapes. Practice prime numbers and corner strategies at your own pace.</p>
       </div>
     </a>
-    <a class="walkthrough-card" href="/tips">
+    <a class="walkthrough-card" href="/tips/">
       <div class="walkthrough-img">
         <img src="/assets/screenshots/level-medium.png" alt="GridPaw Medium puzzle — 5×6 Shikaku grid" loading="lazy">
       </div>
@@ -2312,7 +2315,7 @@ const description = "Draw rectangles to match every number and fill the grid —
         <p>5×6 grids with complex shapes. Master prime numbers, corner strategies, and multi-step deduction.</p>
       </div>
     </a>
-    <a class="walkthrough-card" href="/tips">
+    <a class="walkthrough-card" href="/tips/">
       <div class="walkthrough-img">
         <img src="/assets/screenshots/level-medium.png" alt="GridPaw Medium-Hard puzzle — 6×6 Shikaku grid" loading="lazy">
       </div>
@@ -2322,7 +2325,7 @@ const description = "Draw rectangles to match every number and fill the grid —
         <p>6×6 grids. Combine multiple techniques and plan several moves ahead.</p>
       </div>
     </a>
-    <a class="walkthrough-card" href="/tips">
+    <a class="walkthrough-card" href="/tips/">
       <div class="walkthrough-img">
         <img src="/assets/screenshots/level-hard.png" alt="GridPaw Hard puzzle — 7×8 Shikaku grid" loading="lazy">
       </div>
@@ -2415,20 +2418,20 @@ const description = "Draw rectangles to match every number and fill the grid —
 <section class="seo-section" aria-label="Strategy guide">
   <h2 class="section-title">📚 <span class="accent">Guides</span> &amp; Tools</h2>
   <div class="strategy-grid">
-    <a href="/rules" class="strategy-grid-item">
+    <a href="/rules/" class="strategy-grid-item">
       <strong>Shikaku Rules</strong>
       <span>Complete rule breakdown with examples</span>
     </a>
-    <a href="/how-to-play-shikaku" class="strategy-grid-item">
+    <a href="/how-to-play-shikaku/" class="strategy-grid-item">
       <strong>How to Play</strong>
       <span>Complete beginner's walkthrough</span>
     </a>
-    <a href="/tips" class="strategy-grid-item">
+    <a href="/tips/" class="strategy-grid-item">
       <strong>Tips &amp; Strategy</strong>
       <span>Beginner to advanced techniques</span>
     </a>
 
-    <a href="/solver" class="strategy-grid-item">
+    <a href="/solver/" class="strategy-grid-item">
       <strong>Online Solver</strong>
       <span>Stuck? Get the answer instantly</span>
     </a>
@@ -2457,7 +2460,7 @@ const description = "Draw rectangles to match every number and fill the grid —
   </details>
   <details class="faq-item">
     <summary>Where should beginners start?</summary>
-    <div class="faq-answer">Start with the Tutorial level (3×3 grid) which teaches the rules step by step, then try Easy 5×5 puzzles. Check our <a href="/how-to-play-shikaku">How to Play</a> guide for a complete walkthrough.</div>
+    <div class="faq-answer">Start with the Tutorial level (3×3 grid) which teaches the rules step by step, then try Easy 5×5 puzzles. Check our <a href="/how-to-play-shikaku/">How to Play</a> guide for a complete walkthrough.</div>
   </details>
   <details class="faq-item">
     <summary>Does GridPaw have a daily challenge?</summary>
@@ -2473,7 +2476,7 @@ const description = "Draw rectangles to match every number and fill the grid —
   </details>
   <details class="faq-item">
     <summary>Is there a solver for when I'm stuck?</summary>
-    <div class="faq-answer">Yes! Visit the <a href="/solver">Online Solver</a> page. Enter your puzzle's numbers and the solver will find the unique solution using backtracking.</div>
+    <div class="faq-answer">Yes! Visit the <a href="/solver/">Online Solver</a> page. Enter your puzzle's numbers and the solver will find the unique solution using backtracking.</div>
   </details>
   <details class="faq-item">
     <summary>How many levels are there?</summary>
@@ -2511,9 +2514,9 @@ const description = "Draw rectangles to match every number and fill the grid —
     </a>
   </div>
   <p>GridPaw — Free online Shikaku puzzle with cats.</p>
-  <p style="margin-top:0.3rem;"><a href="/rules">Rules</a> · <a href="/tips">Tips</a> · <a href="/#play">Daily</a> · <a href="/solver">Solver</a> · <a href="/how-to-play-shikaku">How to Play</a> · <a href="/help/">Help</a> · <a href="/changelog">Changelog</a></p>
+  <p style="margin-top:0.3rem;"><a href="/rules/">Rules</a> · <a href="/tips/">Tips</a> · <a href="/#play">Daily</a> · <a href="/solver/">Solver</a> · <a href="/how-to-play-shikaku/">How to Play</a> · <a href="/help/">Help</a> · <a href="/changelog/">Changelog</a></p>
   <p style="margin-top:0.3rem;"><a href="/akari/">GridPaw Akari</a> · <a href="/nonogram/">GridPaw Nonogram</a> · <a href="/nurikabe/">GridPaw Nurikabe</a> · <a href="/pictomino/">GridPaw Pictomino</a> · <a href="https://furriq.com">Furriq</a> · <a href="https://www.pinterest.com/gridpaw/">Pinterest</a> · <a href="https://chromewebstore.google.com/detail/gridpaw-%E2%80%94-daily-akari-puz/mjdplaoanamjdbbpkgccjnhmlgnpcamj">Chrome Extension</a> · <a href="https://gridpaw-games.lovable.app">Lovable</a> · <a href="https://dles.gg/game/gridpaw" rel="noopener">DLES.gg</a> · <a href="/community/">Community</a></p>
-  <p style="margin-top:0.3rem;"><a href="/privacy/">Privacy Policy</a> · <a href="#" data-mail-user="hello" data-mail-domain="gridpaw.com" class="js-mail">Contact</a></p>
+  <p style="margin-top:0.3rem;"><a href="/about/">About</a> · <a href="/contact/">Contact</a> · <a href="/privacy/">Privacy Policy</a></p>
 </footer>
 <script>
   // mailto is assembled in JS: Cloudflare Email Obfuscation rewrites literal mailto:
