@@ -1524,7 +1524,7 @@ const description = "Draw rectangles to match every number and fill the grid —
     colorPool.push(last.color); // return color to pool
     render(); updateStatus();
   });
-  document.getElementById('nextBtn').addEventListener('click', function() { var completedLevel = levelNum; levelNum++; isDailyMode = false; hintUsesLeft = 3; updateHintBadge(); track('level_up', { level: completedLevel }); if ([1,3,5,10,20].indexOf(completedLevel) !== -1) { track('level_complete_' + completedLevel); } newPuzzle(); victory.classList.add('hidden'); var isDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1'; if (!isDev && completedLevel === 5 && !currentUser && !localStorage.getItem('gridpaw-signin-prompted')) { showSignInPrompt(); } });
+  document.getElementById('nextBtn').addEventListener('click', function() { var completedLevel = levelNum; levelNum++; isDailyMode = false; hintUsesLeft = 3; updateHintBadge(); track('level_up', { level: completedLevel }); if ([1,3,5,7,10,12,15,20,23,25,30].indexOf(completedLevel) !== -1) { track('level_complete_' + completedLevel); } newPuzzle(); victory.classList.add('hidden'); var isDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1'; if (!isDev && completedLevel === 5 && !currentUser && !localStorage.getItem('gridpaw-signin-prompted')) { showSignInPrompt(); } });
   document.getElementById('hintBtn').addEventListener('click', function() {
     // 门控：dev 环境无限；每关 3 次；admin 无限；超出后消耗 hint 银行（P0-2：每日首胜 +1）
     var isDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
