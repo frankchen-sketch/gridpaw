@@ -695,15 +695,17 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
       setHint(suspectName(s) + " goes at " + rowCol(target) + " (" + roomName(puzzle.layout.cellRoom[target]) + ").");
     }
 
-    function shareText() {
+    function shareText(src) {
       var k = puzzle ? suspectName(puzzle.placement.killer) : "?";
-      return "I solved a " + N + "×" + N + " murder sudoku case on GridPaw — " + k + " did it! Can you catch the killer? https://gridpaw.com/murdoku/";
+      // 分享出去的链接带 UTM：真实帖子被点开时 GA4/自建漏斗才能归因到 twitter/reddit × murdoku_share
+      var url = "https://gridpaw.com/murdoku/?utm_source=" + (src || "copy") + "&utm_medium=social&utm_campaign=murdoku_share";
+      return "I solved a " + N + "×" + N + " murder sudoku case on GridPaw — " + k + " did it! Can you catch the killer? " + url;
     }
     function bindShare(id, trackName, openFn) {
       document.getElementById(id).addEventListener("click", function () {
         track(trackName, { level: levelTag() });
         if (trackName === "share_copy") {
-          navigator.clipboard.writeText(shareText()).then(function () {
+          navigator.clipboard.writeText(shareText("copy")).then(function () {
             setHint("Copied to clipboard!");
           }).catch(function () {});
         } else {
@@ -713,11 +715,11 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
     }
     bindShare("shCopy", "share_copy", null);
     bindShare("shX", "share_twitter", function () {
-      var url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText());
+      var url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText("twitter"));
       window.open(url, "_blank", "noopener,width=620,height=480");
     });
     bindShare("shReddit", "share_reddit", function () {
-      var url = "https://www.reddit.com/submit?url=" + encodeURIComponent("https://gridpaw.com/murdoku/") + "&title=" + encodeURIComponent("I solved a murder sudoku case on GridPaw!");
+      var url = "https://www.reddit.com/submit?url=" + encodeURIComponent("https://gridpaw.com/murdoku/?utm_source=reddit&utm_medium=social&utm_campaign=murdoku_share") + "&title=" + encodeURIComponent("I solved a murder sudoku case on GridPaw!");
       window.open(url, "_blank", "noopener,width=680,height=520");
     });
 
