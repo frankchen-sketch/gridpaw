@@ -70,7 +70,10 @@
     if (!PROD.test(location.hostname)) return;
     if (FUNNEL_EVENTS.indexOf(eventName) === -1) return;
     var build = (window.GP_BUILD && window.GP_BUILD.id) || '';
-    send({ anonId: getAnonId(), events: [{ eventName: eventName, source: 'web', buildId: build, metadata: metadata || {} }] });
+    // 全事件统一带归因原料（与 src/lib/funnel-track.ts 同构；业务键优先，归因键只兜底）
+    var enriched = { referrerHost: referrerHost(), attribution: buildAttribution(location.search) };
+    if (metadata) for (var k in metadata) enriched[k] = metadata[k];
+    send({ anonId: getAnonId(), events: [{ eventName: eventName, source: 'web', buildId: build, metadata: enriched }] });
   }
   function trackVisit(path) {
     if (!PROD.test(location.hostname)) return;

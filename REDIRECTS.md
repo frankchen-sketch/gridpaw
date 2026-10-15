@@ -1,5 +1,7 @@
 # 301 Redirect Mapping Table
 
+> **站内 /from/* 营销短链不在此表**：那是 `public/_redirects`（CF Pages 302+UTM 附加，随构建部署），非 CF Dashboard 规则。全部 `/from/<tag>` 规则直接看该文件（含 Lemmy 剥 UTM 的注释）；发帖归因约定见 skill `lemmy-posting`。本表只管旧域名 Dashboard 侧规则。
+
 > ## ⚠️ 运行态核对（2026-09-15 实测，务必先读）
 >
 > **本表记录的是「设计意图」，不是「运行现状」。两者目前不一致。**

@@ -78,7 +78,14 @@ export function getAnonId(): string {
 export function trackFunnel(eventName: string, metadata: Record<string, unknown> = {}): void {
   if (!PROD.test(location.hostname)) return;
   if (FUNNEL_EVENTS.indexOf(eventName) === -1) return;
-  send({ anonId: getAnonId(), events: [{ eventName, source: 'web', buildId: APP_BUILD.id, metadata }] });
+  // 全事件统一带归因原料（此前只有 visit 带，share_*/game_start 的 metadata 几乎全空——
+  // 2026-10-15 补：caller 传入的业务键优先，归因键只兜底，不覆盖）
+  const enriched: Record<string, unknown> = {
+    referrerHost: referrerHost(),
+    attribution: buildAttribution(location.search),
+    ...metadata,
+  };
+  send({ anonId: getAnonId(), events: [{ eventName, source: 'web', buildId: APP_BUILD.id, metadata: enriched }] });
 }
 
 // 每页每会话一条 visit；归因原料必须齐（utmSource + referrerHost），
