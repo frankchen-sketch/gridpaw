@@ -9,20 +9,23 @@ interface Props {
 }
 const { active = '/' } = Astro.props;
 const games = [
-  { href: '/', icon: '/assets/game-icons/shikaku.webp', name: 'Shikaku', desc: 'Rectangles' },
+  { href: '/', icon: '/assets/game-icons/shikaku.webp', name: 'Shikaku', desc: 'Rectangles', badgeGame: 'shikaku' },
   { href: '/akari/', icon: '/assets/game-icons/akari.webp', name: 'Akari', desc: 'Light Up' },
   { href: '/kakuro/', icon: '/assets/game-icons/kakuro.webp', name: 'Kakuro', desc: 'Cross-sum' },
   { href: '/nonogram/', icon: '/assets/game-icons/nonogram.webp', name: 'Nonogram', desc: 'Picture logic' },
   { href: '/nurikabe/', icon: '/assets/game-icons/nurikabe.webp', name: 'Nurikabe', desc: 'Islands & sea' },
   { href: '/pictomino/', icon: '/assets/game-icons/pictomino.webp', name: 'Pictomino', desc: 'Spatial' },
   { href: '/kenken/', icon: '/assets/game-icons/kenken.webp', name: 'KenKen', desc: 'Math cages' },
-  { href: '/murdoku/', icon: '/assets/game-icons/murdoku.webp', name: 'Murdoku', desc: 'Cat mystery', isNew: true },
+  { href: '/murdoku/', icon: '/assets/game-icons/murdoku.webp', name: 'Murdoku', desc: 'Cat mystery', isNew: true, badgeGame: 'murdoku' },
   { href: '/binary/', icon: '/assets/game-icons/binary.webp', name: 'Binary', desc: 'Takuzu logic' },
   { href: '/star-battle/', icon: '/assets/game-icons/starbattle.webp', name: 'Star Battle', desc: 'Two Not Touch' },
   { href: '/hashi/', icon: '/assets/game-icons/hashi.webp', name: 'Hashi', desc: 'Bridges' },
   { href: '/slitherlink/', icon: '/assets/game-icons/slitherlink.webp', name: 'Slitherlink', desc: 'Loop drawing' },
 ];
 const tiles = games.filter((g) => g.href !== active);
+// 徽章卡角：只给有徽章组的游戏（shikaku 阶梯 / murdoku 破案档案），图标模板 SSR 自 badge-icons.ts
+const badgeGames = Array.from(new Set(tiles.filter((g) => g.badgeGame).map((g) => g.badgeGame)));
+import { BADGES } from '../lib/badge-icons';
 ---
 
 <nav class="gp-hub" aria-label="More cat puzzle games" data-gp-hub>
@@ -32,11 +35,19 @@ const tiles = games.filter((g) => g.href !== active);
       <a href={g.href} class="gp-hub-tile">
         <img src={g.icon} alt="" width="40" height="40" loading="lazy" />
         {g.isNew && <span class="gp-hub-badge">NEW</span>}
+        {g.badgeGame && <span class="gp-hub-corner" data-gp-corner={g.badgeGame} hidden></span>}
         <b>{g.name}</b>
         <span>{g.desc}</span>
       </a>
     ))}
   </div>
+  {badgeGames.map((game) => (
+    <template data-gp-badge-tpl={game}>
+      {BADGES.filter((b) => b.game === game).map((b) => (
+        <span data-badge-icon={b.id} set:html={b.svg} />
+      ))}
+    </template>
+  ))}
 </nav>
 
 <style>
@@ -51,6 +62,10 @@ const tiles = games.filter((g) => g.href !== active);
     transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
   }
   .gp-hub-badge { position: absolute; top: -6px; right: -4px; background: #C0392B; color: #fff; font-size: 8px; font-weight: 900; letter-spacing: .06em; border-radius: 999px; padding: 2px 6px; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+  .gp-hub-corner { position: absolute; top: -7px; left: -5px; width: 24px; height: 24px; border-radius: 50%;
+    background: #d97706; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+  .gp-hub-corner[hidden] { display: none; }
+  .gp-hub-corner :global(svg) { width: 15px; height: 15px; }
   .gp-hub-tile:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(63,45,29,.12); border-color: #d97706; }
   .gp-hub-tile img { width: 40px; height: 40px; border-radius: 9px; display: block; margin-bottom: 5px; }
   .gp-hub-tile b { font-size: .8rem; font-weight: 800; line-height: 1.2; }
@@ -78,5 +93,25 @@ const tiles = games.filter((g) => g.href !== active);
         t = t.parentNode;
       }
     }, true);
+    // 徽章卡角：gp:badges 事件后取该游戏组内已获得的最高档徽章图标（模板 = badge-icons.ts SSR）
+    document.addEventListener('gp:badges', function (e) {
+      var earned = (((e.detail || {}).badges) || []).map(function (b) { return b.id; });
+      if (!earned.length) return;
+      var corners = document.querySelectorAll('[data-gp-corner]');
+      for (var i = 0; i < corners.length; i++) {
+        var game = corners[i].getAttribute('data-gp-corner');
+        var tpl = document.querySelector('template[data-gp-badge-tpl="' + game + '"]');
+        if (!tpl) continue;
+        var icons = tpl.content.querySelectorAll('[data-badge-icon]');
+        var best = null;
+        for (var j = 0; j < icons.length; j++) {
+          if (earned.indexOf(icons[j].getAttribute('data-badge-icon')) !== -1) best = icons[j];
+        }
+        if (!best) continue;
+        corners[i].innerHTML = best.innerHTML;
+        corners[i].hidden = false;
+      }
+    });
   })();
 </script>
+<script is:inline src="/gp-badges.js"></script>

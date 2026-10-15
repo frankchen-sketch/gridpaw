@@ -2,6 +2,7 @@
 import SEOHead from '../../components/SEOHead.astro';
 import ExtensionPromo from '../../components/ExtensionPromo.astro';
 import GameHub from '../../components/GameHub.astro';
+import BadgeUnlock from '../../components/BadgeUnlock.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import SideAd from '../../components/SideAd.astro';
 import { comparePairs } from '../../data/compare-pairs';
@@ -666,6 +667,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
         <div class="win-text">🎉 Solved!</div>
         <div class="win-sub" id="winGameLevel" style="font-weight:800;color:var(--mt-primary)">GridPaw Akari</div>
         <div class="win-sub">All cells lit, all constraints satisfied!</div>
+        <BadgeUnlock />
         <button class="win-btn" id="win-next">Next Puzzle →</button>
         <div class="share-link-opt"><input type="checkbox" id="share-include-link" checked> Include link (gridpaw.com)</div>
       <div class="win-share-row">
@@ -1478,6 +1480,8 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
           const shareChk = document.getElementById('share-include-link');
           if (shareChk) shareChk.checked = shareDefaultOn();
           document.getElementById('winGameLevel').textContent = 'GridPaw Akari · Level ' + level;
+          // 徽章：胜利时对账（level 徽章在 Next 点击 POST，走 pending 下次弹层补显示）
+          if (window.GPBadges) GPBadges.win();
           if (isNewRecord) {
             document.querySelector('.win-sub').textContent = '🏆 New Best Time: ' + formatTime(timerSeconds) + '!';
           }
@@ -1600,7 +1604,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       if ((e.ctrlKey||e.metaKey) && e.key==='z') { e.preventDefault(); e.shiftKey ? redo() : undo(); }
       if ((e.ctrlKey||e.metaKey) && e.key==='y') { e.preventDefault(); redo(); }
     });
-    document.getElementById('win-next').addEventListener('click', () => { track('level_up', { level: level, difficulty: getDifficulty(level).label }); if ([1,3,5,7,9,10,12,13,15,20,25,30].indexOf(level) !== -1) { track('level_complete_' + level, { difficulty: getDifficulty(level).label }); } winOverlay.classList.remove('show'); newPuzzle(); });
+    document.getElementById('win-next').addEventListener('click', () => { track('level_up', { level: level, difficulty: getDifficulty(level).label }); if ([1,3,5,7,9,10,12,13,15,20,25,30].indexOf(level) !== -1) { track('level_complete_' + level, { difficulty: getDifficulty(level).label }); } winOverlay.classList.remove('show'); if (window.GPBadges) GPBadges.next(); newPuzzle(); });
     async function captureBoardToClipboard() {
       try {
         const boardEl = document.getElementById('puzzle-grid');
