@@ -29,9 +29,12 @@ const sub = game === 'murdoku'
   </div>
 </section>
 
-<style>
+<style is:global>
+  /* is:global（2026-10-15 主会话验收修复）：留言墙行由客户端 JS 渲染，无 data-astro-cid，
+     scoped style 全不匹配 → chip/avatar 样式丢失（实测 computed style bg/radius/padding 全零）。
+     所有 class 均为 gpw- 前缀，全局化无冲突风险。 */
   .gpw { max-width: 52.5rem; margin: 2.5rem auto 0; padding: 1.5rem 1.25rem; background: #FFF9F0; border: 1px solid #F0E2CC; border-radius: 18px; }
-  :global(body.embed-mode) .gpw { display: none !important; }
+  body.embed-mode .gpw { display: none !important; }
   .gpw-title { margin: 0 0 0.25rem; font-size: 1.25rem; font-weight: 900; color: #342421; text-align: center; }
   .gpw-accent { color: #D97706; }
   .gpw-sub { margin: 0 0 1rem; text-align: center; color: #8A7A62; font-size: 0.9rem; }
