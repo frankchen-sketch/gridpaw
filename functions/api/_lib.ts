@@ -17,6 +17,12 @@ export interface Env {
   // 自建漏斗（functions/api/events.ts、funnel.ts）
   FUNNEL_EVENT_INGESTION_ENABLED?: string; // wrangler.toml [vars] 唯一定义，别处（Dashboard）不要重复设同名变量
   FUNNEL_ADMIN_TOKEN?: string;             // 生产 secret（wrangler pages secret put），不进 wrangler.toml
+  // 侦探留言墙（functions/api/comments.ts、functions/admin/comments.ts）——key 一律不进仓库
+  TURNSTILE_SITE_KEY?: string;    // 下发到前端渲染 widget（GET /api/comments 返回）；未配置=墙只读
+  TURNSTILE_SECRET_KEY?: string;  // siteverify 服务端二次校验（fail closed：未配置直接 503）
+  COMMENTS_ADMIN_TOKEN?: string;  // /admin/comments?token= 审核口令（未配置=审核接口 403）
+  COMMENTS_SALT?: string;         // ip_hash 盐；缺省回退 OAUTH_STATE_SECRET
+  COMMENTS_NOTIFY_EMAIL?: string; // 新评论邮件通知收件人；未配置=不发信
 }
 
 export const AUTH_PROVIDERS = ['google', 'microsoft', 'facebook'] as const;

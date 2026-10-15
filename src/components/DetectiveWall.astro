@@ -1,0 +1,64 @@
+---
+// DetectiveWall — 侦探留言墙（设计稿 gridpaw-badges-comments.html ④C）
+// 用法：<DetectiveWall game="murdoku" /> / <DetectiveWall game="shikaku" />
+// 逻辑全在 /gp-comments.js（is:inline 不被 Vite 打包——AGENTS.md 约定）；
+// 评论先审后显 + 三层闸门在 /api/comments；embed 模式整段隐藏。
+interface Props {
+  game: 'murdoku' | 'shikaku';
+}
+const { game } = Astro.props;
+const sub = game === 'murdoku'
+  ? 'Closed a case? Leave a note for the other detectives.'
+  : 'Cleared a level? Leave a note for the other detectives.';
+---
+
+<section class="gpw" aria-label="Detective wall" data-gp-wall={game} data-game={game}>
+  <h2 class="gpw-title">Detective&rsquo;s <span class="gpw-accent">Wall</span></h2>
+  <p class="gpw-sub">{sub}</p>
+  <div class="gpw-list" data-gpw-list></div>
+  <button type="button" class="gpw-open" data-gpw-open>💬 Leave a note</button>
+  <div class="gpw-form" data-gpw-form hidden>
+    <textarea class="gpw-text" data-gpw-text rows="3" maxlength="600"
+      placeholder="Share your best deduction (2–500 characters)…"></textarea>
+    <div class="gpw-form-row">
+      <span class="gpw-count" data-gpw-count>0/500</span>
+      <div class="gpw-captcha" data-gpw-captcha></div>
+      <button type="button" class="gpw-submit" data-gpw-submit>Send for review</button>
+    </div>
+    <p class="gpw-msg" data-gpw-msg hidden></p>
+  </div>
+</section>
+
+<style>
+  .gpw { max-width: 52.5rem; margin: 2.5rem auto 0; padding: 1.5rem 1.25rem; background: #FFF9F0; border: 1px solid #F0E2CC; border-radius: 18px; }
+  :global(body.embed-mode) .gpw { display: none !important; }
+  .gpw-title { margin: 0 0 0.25rem; font-size: 1.25rem; font-weight: 900; color: #342421; text-align: center; }
+  .gpw-accent { color: #D97706; }
+  .gpw-sub { margin: 0 0 1rem; text-align: center; color: #8A7A62; font-size: 0.9rem; }
+  .gpw-list { display: grid; gap: 0.75rem; margin-bottom: 1rem; }
+  .gpw-row { display: flex; gap: 0.75rem; align-items: flex-start; background: #fff; border: 1px solid #F0E2CC; border-radius: 14px; padding: 0.75rem 0.9rem; }
+  .gpw-auto { background: #FDF4E3; border-style: dashed; }
+  .gpw-avatar { flex: 0 0 34px; width: 34px; height: 34px; border-radius: 50%; background: #FBEED8; color: #D97706; font-weight: 900; display: inline-flex; align-items: center; justify-content: center; border: 1.5px solid #EAD3AC; }
+  .gpw-body { min-width: 0; }
+  .gpw-meta { font-size: 0.8rem; color: #8A7A62; display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
+  .gpw-meta b { color: #342421; font-size: 0.85rem; }
+  .gpw-chip { display: inline-flex; align-items: center; background: #FBEED8; color: #B87333; border: 1px solid #EAD3AC; border-radius: 999px; padding: 0.05rem 0.5rem; font-size: 0.68rem; font-weight: 800; }
+  .gpw-autotag { display: inline-flex; background: transparent; color: #B9A98F; border: 1px dashed #D8C6A4; border-radius: 999px; padding: 0.05rem 0.45rem; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+  .gpw-txt { margin-top: 0.15rem; font-size: 0.92rem; color: #4A3B2A; line-height: 1.5; overflow-wrap: anywhere; white-space: pre-wrap; }
+  .gpw-empty { text-align: center; color: #8A7A62; font-size: 0.9rem; padding: 0.75rem 0; }
+  .gpw-open { display: block; margin: 0 auto; background: #D97706; color: #fff; font-weight: 800; border: none; border-radius: 12px; padding: 0.6rem 1.2rem; cursor: pointer; font-size: 0.9rem; }
+  .gpw-open:hover { background: #B8650A; }
+  .gpw-form { margin-top: 0.9rem; }
+  .gpw-text { width: 100%; box-sizing: border-box; border: 1.5px solid #EAD3AC; border-radius: 12px; padding: 0.7rem 0.85rem; font: inherit; font-size: 0.92rem; color: #342421; background: #fff; resize: vertical; }
+  .gpw-text:focus { outline: 2px solid #D97706; outline-offset: 1px; }
+  .gpw-form-row { display: flex; gap: 0.75rem; align-items: center; justify-content: flex-end; margin-top: 0.5rem; flex-wrap: wrap; }
+  .gpw-count { font-size: 0.75rem; color: #B9A98F; }
+  .gpw-count-over { color: #C0392B; font-weight: 800; }
+  .gpw-captcha { min-height: 0; }
+  .gpw-submit { background: #D97706; color: #fff; font-weight: 800; border: none; border-radius: 12px; padding: 0.55rem 1.1rem; cursor: pointer; font-size: 0.88rem; }
+  .gpw-submit:disabled { opacity: 0.55; cursor: wait; }
+  .gpw-msg { margin: 0.6rem 0 0; font-size: 0.85rem; color: #4E7A4E; text-align: center; }
+  .gpw-msg-err { color: #C0392B; }
+</style>
+
+<script is:inline src="/gp-comments.js"></script>

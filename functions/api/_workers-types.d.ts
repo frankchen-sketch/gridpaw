@@ -8,7 +8,7 @@ declare interface D1Database {
 declare interface D1PreparedStatement {
   bind(...values: unknown[]): D1PreparedStatement;
   all(): Promise<{ results: unknown[]; success: boolean; meta: unknown }>;
-  first(): Promise<unknown>;
+  first<T = unknown>(): Promise<T>;
   run(): Promise<D1Result>;
 }
 declare interface D1Result {
@@ -16,4 +16,9 @@ declare interface D1Result {
   success: boolean;
   meta: unknown;
 }
-type PagesFunction<E = unknown> = (context: { request: Request; env: E; params: Record<string, string | string[]> }) => Promise<Response>;
+type PagesFunction<E = unknown> = (context: {
+  request: Request;
+  env: E;
+  params: Record<string, string | string[]>;
+  ctx?: { waitUntil(promise: Promise<unknown>): void };
+}) => Promise<Response>;
