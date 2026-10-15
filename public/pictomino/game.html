@@ -1010,12 +1010,17 @@ function winLevel() {
   sfxWin();
   $('win-stars').innerHTML =
     '★'.repeat(stars) + '<span class="off">' + '★'.repeat(3 - stars) + '</span>';
-  if (typeof gtag === 'function') gtag('event', 'level_up', { difficulty: getDifficulty(), level: state.level, stars: stars });
-  if (window.gpTrack) window.gpTrack('level_up', { level: state.level, difficulty: getDifficulty(), stars: stars });
+  // level=0 bug（2026-10-15 D1 对账）：level_up 必须 1-based（与 first_move :875 / HUD :814 对齐），
+  // 0-based 导致 D1 出现 23 次 level=0（{"level":0,"difficulty":"tutorial 1","stars":3} 指纹）。
+  // daily 模式不在此报 level_up——daily-puzzle.html 包装层已报 {mode:'daily'}，这里再报即双计
+  if (!(typeof IS_DAILY_MODE !== 'undefined' && IS_DAILY_MODE)) {
+    if (typeof gtag === 'function') gtag('event', 'level_up', { difficulty: getDifficulty(), level: state.level + 1, stars: stars });
+    if (window.gpTrack) window.gpTrack('level_up', { level: state.level + 1, difficulty: getDifficulty(), stars: stars });
+  }
   if (typeof window.clarity === 'function') {
     window.clarity('event', 'level_completed');
     window.clarity('set', 'difficulty', String(getDifficulty()));
-    window.clarity('set', 'level', String(state.level));
+    window.clarity('set', 'level', String(state.level + 1));
     window.clarity('set', 'stars', String(stars));
   }
   const catId = LEVELS[state.level].src.split('/').pop().replace('.jpg', '');
@@ -1325,8 +1330,8 @@ async function startLevel(n) {
   await showPreview(); // 完整图预览 2 秒（重开本关也会预览，方便记图）
   state.levelStart = Date.now(); // 预览播完才计时，速度奖励不吃亏
   startRound();
-  if (typeof gtag === 'function') gtag('event', 'game_start', { difficulty: getDifficulty(), level: n });
-  if (window.gpTrack) window.gpTrack('game_start', { level: n, difficulty: getDifficulty() });
+  if (typeof gtag === 'function') gtag('event', 'game_start', { difficulty: getDifficulty(), level: n + 1 });
+  if (window.gpTrack) window.gpTrack('game_start', { level: n + 1, difficulty: getDifficulty() });
   if (typeof window.clarity === 'function') {
     window.clarity('event', 'game_started');
     window.clarity('set', 'difficulty', String(getDifficulty()));
