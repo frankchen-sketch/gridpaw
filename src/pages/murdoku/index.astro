@@ -1,6 +1,7 @@
 ---
 import SEOHead from '../../components/SEOHead.astro';
 import GameHub from '../../components/GameHub.astro';
+import BadgeUnlock from '../../components/BadgeUnlock.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import SideAd from '../../components/SideAd.astro';
 import GameSwitcher from '../../components/GameSwitcher.astro';
@@ -345,6 +346,7 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
         <img class="culprit-img" id="culpritImg" src="" alt="">
         <h2>Case Closed!</h2>
         <p id="winText"></p>
+        <BadgeUnlock />
         <div class="win-share-row">
           <button class="hint-btn" id="shCopy">📋 Copy</button>
           <button class="hint-btn" id="shX">𝕏 Share</button>
@@ -720,6 +722,8 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
           'Solved in ' + secs + 's · ' + hintsUsed + ' hint' + (hintsUsed === 1 ? "" : "s");
         document.getElementById("winOverlay").classList.add("show");
         track('level_up', { level: levelTag() });
+        // 徽章：level_up 刚 POST（弹层出现前），win() 重试对账能当场显示新徽章
+        if (window.GPBadges) GPBadges.win();
         showPromo();
       } else if (!auto) {
         setHint("Not quite — statements or the sudoku rule are violated. Recheck!", true);
