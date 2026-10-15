@@ -1,0 +1,131 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const title = "Logikrätsel & Denkspiele kostenlos online spielen";
+const description = "Kostenlose Logikrätsel direkt im Browser: Shikaku, Akari und weitere Denkspiele mit Katzen-Charme. Regeln in einer Minute verstanden, ohne Download, ohne Anmeldung.";
+
+const faqJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "Sind die Denkspiele auf GridPaw kostenlos?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Ja, alle Rätsel auf GridPaw sind kostenlos und laufen direkt im Browser – ohne Download und ohne Anmeldung. Einfach ein Spiel auswählen und losrätseln."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Welches Logikrätsel passt für Anfänger?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Shikaku ist der freundlichste Einstieg: Die Regel hat einen Satz, die ersten Rätsel lösen sich in wenigen Minuten. Auch Akari (Light Up) erklärt sich schnell, verlangt aber etwas mehr Planung."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Was sind japanische Logikrätsel?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Japanische Logikrätsel sind Gitterrätsel, die sich vollständig durch reines Nachdenken lösen lassen – ohne Wissen und ohne Raten. Die meisten stammen oder wurden popularisiert vom Tokioter Verlag Nikoli, darunter Sudoku, Shikaku und Akari."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Brauche ich ein Konto, um Fortschritt zu speichern?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Nein. Der Spielfortschritt bleibt im Browser gespeichert, eine Registrierung gibt es nicht. Auf dem Smartphone und am Rechner kannst du sofort weiterspielen, wo du aufgehört hast."
+        }
+      }
+    ]
+  }
+];
+---
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/de"
+    type="website"
+    breadcrumbTitle="Start"
+  />
+  <link rel="alternate" hreflang="de" href="https://gridpaw.com/de/" />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/" />
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    body { font-family: 'Nunito', sans-serif; background: #FFF8F0; color: #3D3229; margin: 0; }
+    main { max-width: 52.5rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+    .breadcrumb { max-width: 52.5rem; margin: 0.75rem auto 0; padding: 0 1rem; font-size: 0.85rem; color: #8A7A6A; }
+    .breadcrumb a { color: #D97706; text-decoration: none; }
+    h1 { font-size: 1.9rem; line-height: 1.25; margin: 0.75rem 0 1rem; }
+    h2 { font-size: 1.35rem; margin: 1.8rem 0 0.6rem; }
+    p, li { line-height: 1.65; font-size: 1rem; }
+    .game-links { list-style: none; padding: 0; }
+    .game-links li { background: #FFF; border: 2px solid #F0E4D4; border-radius: 12px; padding: 0.9rem 1.1rem; margin: 0.7rem 0; }
+    .game-links a { color: #D97706; font-weight: 900; font-size: 1.05rem; text-decoration: none; }
+    .cta-box { background: #FFF; border: 2px solid #F0E4D4; border-radius: 12px; padding: 0.9rem 1.1rem; margin: 1.2rem 0; }
+    .cta-box a { color: #D97706; font-weight: 800; text-decoration: none; }
+    details { background: #FFF; border: 1px solid #F0E4D4; border-radius: 10px; padding: 0.7rem 1rem; margin: 0.6rem 0; }
+    summary { font-weight: 800; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Brotkrumen"><a href="/">GridPaw</a> &gt; Deutsch</nav>
+
+  <main>
+    <h1>Logikrätsel kostenlos online spielen</h1>
+
+    <p>Willkommen bei GridPaw – der Ruhepol für alle, die gern knobeln. Hier gibt es japanische Logikrätsel mit einem warmen Katzen-Touch: ein kleines Gitter, eine klare Regel und die Garantie, dass die Lösung gefunden werden will statt erraten. Alles läuft direkt im Browser, kostenlos, ohne Download und ohne Anmeldung. Ideal für die U-Bahn, die Kaffeepause oder den ruhigen Abend auf dem Sofa.</p>
+
+    <h2>Unsere Denkspiele</h2>
+
+    <ul class="game-links">
+      <li><a href="/de/shikaku/">Shikaku – das Rechteck-Rätsel</a><br>Zerlege das Gitter in Rechtecke, bis jede Zahl aufgeht. Der beste Einstieg: in einer Minute verstanden, oben mit einem direkt spielbaren Rätsel.</li>
+      <li><a href="/akari/">Akari (Light Up)</a><br>Platziere Lampen, bis jede Zelle erleuchtet ist – ohne dass zwei Lampen einander sehen. Atmosphärisch, taktisch und herrlich summend (im Kopf).</li>
+      <li><a href="/binary/">Binary Puzzle (Takuzu)</a><br>Nur Nullen und Einsen, dafür mit Tücken: gleiche Zahlen pro Zeile und Spalte, keine Drillinge, keine doppelten Zeilen.</li>
+      <li><a href="/kakuro/">Kakuro</a><br>Das Kreuzworträtsel mit Zahlen: Quersummen bilden, ohne eine Ziffer zu wiederholen. Für Rechenfüchse.</li>
+      <li><a href="/nurikabe/">Nurikabe</a><br>Wachsende Inseln, verbundenes Meer, niemals ein 2×2-Ozean. Geometrie zum Anfassen.</li>
+      <li><a href="/star-battle/">Star Battle (Two Not Touch)</a><br>Setze Sterne in jede Zeile, Spalte und Region – ohne dass sich zwei berühren. Kokett knifflig.</li>
+    </ul>
+
+    <AdSlot />
+
+    <h2>Warum japanische Logikrätsel?</h2>
+
+    <p>Gute Denkspiele versprechen Fairness: Alles, was du brauchst, liegt auf dem Gitter. Keine Fragen aus dem Quizregal, keine Wortspiele, kein Raten. Die meisten Rätsel dieser Art stammen vom Tokioter Verlag Nikoli oder wurden von ihm popularisiert – Sudoku hat von dort aus die Welt erobert, und neben ihm reiht sich eine ganze Familie von Gitterrätseln mit ebenso eleganten Regeln auf: Shikaku, Akari, Kakuro, Nurikabe und viele mehr.</p>
+
+    <p>Der Reiz liegt in der Tiefe aus der Einfachheit: Du kannst Shikaku in einem Satz erklären, und doch gibt es Varianten, an denen Experten eine Stunde feilen. Genau dieses Verhältnis – dreißig Sekunden Lernzeit, wochenlange Beschäftigung – macht Logikrätsel zu den vielleicht beständigsten Denkspielen überhaupt.</p>
+
+    <h2>So startest du am besten</h2>
+
+    <p>Unsere Empfehlung für den ersten Abend: Beginne mit <a href="/de/shikaku/" style="color:#D97706;font-weight:800">Shikaku</a> in der leichten Stufe und bleib eine Weile dort, bis die ersten Rechtecke von der Hand gehen. Danach lohnt sich Akari als Kontrastprogramm, denn dort denkst du in Lichtstrahlen statt in Flächen. Wer Zahlen mag, findet in Kakuro und Binary Puzzle seinen Futterplatz. Und egal, wo du startest: Bleib entspannt. Rätseln ist kein Wettkampf gegen die Uhr, sondern ein kleines Gespräch mit dem Gitter.</p>
+
+    <h2>Häufige Fragen</h2>
+
+    <details><summary>Sind die Denkspiele auf GridPaw kostenlos?</summary><p>Ja, alle Rätsel auf GridPaw sind kostenlos und laufen direkt im Browser – ohne Download und ohne Anmeldung. Einfach ein Spiel auswählen und losrätseln.</p></details>
+
+    <details><summary>Welches Logikrätsel passt für Anfänger?</summary><p>Shikaku ist der freundlichste Einstieg: Die Regel hat einen Satz, die ersten Rätsel lösen sich in wenigen Minuten. Auch Akari (Light Up) erklärt sich schnell, verlangt aber etwas mehr Planung.</p></details>
+
+    <details><summary>Was sind japanische Logikrätsel?</summary><p>Japanische Logikrätsel sind Gitterrätsel, die sich vollständig durch reines Nachdenken lösen lassen – ohne Wissen und ohne Raten. Die meisten stammen oder wurden popularisiert vom Tokioter Verlag Nikoli, darunter Sudoku, Shikaku und Akari.</p></details>
+
+    <details><summary>Brauche ich ein Konto, um Fortschritt zu speichern?</summary><p>Nein. Der Spielfortschritt bleibt im Browser gespeichert, eine Registrierung gibt es nicht. Auf dem Smartphone und am Rechner kannst du sofort weiterspielen, wo du aufgehört hast.</p></details>
+
+    <div class="cta-box">
+      <p>Bereit? <a href="/de/shikaku/">Shikaku direkt hier spielen →</a></p>
+    </div>
+  </main>
+</body>
+</html>
