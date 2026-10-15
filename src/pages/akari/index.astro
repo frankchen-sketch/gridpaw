@@ -276,6 +276,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     }
     .cell:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(123,107,138,0.2); }
     .cell-black { background: linear-gradient(145deg, var(--gp-brown-600), var(--gp-brown-900)); cursor: default; box-shadow: inset 0 3px 6px rgba(0,0,0,0.3), 0 2px 4px rgba(123,107,138,0.2); }
+    .cell-mask { visibility: hidden; cursor: default; }
     .cell-number { font-weight: 800; color: var(--gp-cream-warm); text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
     .cell-satisfied .smile { position: relative; display: block; width: 100%; height: 100%; animation: smilePop .25s ease-out; }
     .cell-satisfied .smile i { position: absolute; top: 26%; width: 13%; height: 19%; border-radius: 50%; background: #FDE68A; }
@@ -1124,13 +1125,15 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       return { id: 'tut' + lv, size: t.size, grid: t.grid.map(row => row.slice()), solution: r.solution, difficulty: 'Tutorial ' + lv };
     }
     function getDifficulty(level) {
+      /* 房间曲线（2026-10-15）：阶梯语义不变，Lv7 起注入异形 mask——
+         Kitchen(方形) → Study(缺角 15-24%) → Attic(重切 28-40%)，与 CG 预览同一生成器 */
       if (level <= 3)  return { label: 'Tutorial',    badge: 'badge-tutorial',    size: 5 };
-      if (level <= 6)  return { label: 'Easy',        badge: 'badge-easy',        size: 6 };
-      if (level <= 9)  return { label: 'Medium',      badge: 'badge-medium',      size: 7 };
-      if (level <= 12) return { label: 'Medium-Hard', badge: 'badge-medium-hard', size: 8 };
-      if (level <= 15) return { label: 'Hard',        badge: 'badge-hard',        size: 9 };
-      if (level <= 18) return { label: 'Expert',      badge: 'badge-expert',      size: 10 };
-      return                  { label: 'Master',      badge: 'badge-expert',      size: 12 };
+      if (level <= 6)  return { label: 'Easy · Kitchen',   badge: 'badge-easy',        size: 6,  room: 'kitchen' };
+      if (level <= 9)  return { label: 'Medium · Study',   badge: 'badge-medium',      size: 7,  room: 'study' };
+      if (level <= 12) return { label: 'Medium-Hard · Study', badge: 'badge-medium-hard', size: 8, room: 'study' };
+      if (level <= 15) return { label: 'Hard · Attic',     badge: 'badge-hard',        size: 9,  room: 'attic' };
+      if (level <= 18) return { label: 'Expert · Attic',   badge: 'badge-expert',      size: 10, room: 'attic' };
+      return                  { label: 'Master · Attic',   badge: 'badge-expert',      size: 12, room: 'attic' };
     }
     let currentPuzzle = null, playerSolution = null, markX = null, won = false;
     let health = 3, level = 0;
@@ -1326,7 +1329,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       progressEl.textContent = '';
       setTimeout(() => {
         try {
-          currentPuzzle = buildTutorialPuzzle(level) || generatePuzzle(s);
+          currentPuzzle = buildTutorialPuzzle(level) || (diff.room ? generateRoomPuzzle(diff.room, s) : generatePuzzle(s));
           playerSolution = Array.from({length:s}, () => Array(s).fill(false));
           markX = Array.from({length:s}, () => Array(s).fill(false));
           renderBoard(); updateProgress(); autoSave();
@@ -1346,7 +1349,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
       progressEl.textContent = '';
       setTimeout(() => {
         try {
-          currentPuzzle = buildTutorialPuzzle(level) || generatePuzzle(s);
+          currentPuzzle = buildTutorialPuzzle(level) || (diff.room ? generateRoomPuzzle(diff.room, s) : generatePuzzle(s));
           playerSolution = Array.from({length:s}, () => Array(s).fill(false));
           markX = Array.from({length:s}, () => Array(s).fill(false));
           renderBoard(); updateProgress();
@@ -1406,6 +1409,12 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
         cell.className = 'cell'; cell.style.width = cs+'px'; cell.style.height = cs+'px';
         cell.dataset.row = r; cell.dataset.col = c;
         const val = g[r][c], key = r+','+c;
+        if (val === -3) {
+          /* 屋外（mask）：占格隐藏，不可点不可照——与生成器/solver 语义一致 */
+          cell.classList.add('cell-mask');
+          gridEl.appendChild(cell);
+          continue;
+        }
         if (val !== 9) {
           cell.classList.add('cell-black');
           if (val >= 0) {
