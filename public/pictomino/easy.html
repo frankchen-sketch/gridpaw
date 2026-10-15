@@ -253,6 +253,9 @@ document.getElementById('game-frame').addEventListener('load', function(){ track
 window.addEventListener('message', function(ev){
   if(!ev.data) return;
   if(ev.data.type==='pictomino_daily_solved') { track('puzzle_complete', {difficulty:'easy',source:'easy'}); track('level_up', {difficulty:'easy',source:'easy'}); }
+  // iframe 内 first_move/game_over 只进 D1（gpTrack），GA4 侧靠这里转发
+  if(ev.data.type==='pictomino_first_move' && !window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { level: ev.data.level, difficulty: ev.data.difficulty, source: 'easy' }); }
+  if(ev.data.type==='pictomino_game_over') { track('game_over', { level: ev.data.level, difficulty: ev.data.difficulty, source: 'easy' }); }
   if(ev.data.type==='pictomino_level_up') { track('puzzle_complete', {difficulty:'easy',level:ev.data.level||0,source:'easy'}); track('level_up', {difficulty:'easy',level:ev.data.level||0,source:'easy'}); }
 });
 </script>
@@ -349,7 +352,7 @@ window.addEventListener('message', function(ev){
 </div>
 
 <footer>
-  <p>© 2026 Pictomino · <a href="https://gridpaw.com/pictomino">gridpaw.com/pictomino</a> · <a href="https://gridpaw.com/help/pictomino/">Help</a> · <a href="https://gridpaw.com/akari/" rel="dofollow noopener">GridPaw Akari</a> · <a href="https://gridpaw.com/" rel="dofollow noopener">GridPaw Shikaku Puzzle</a> · <a href="https://dang.ai" rel="dofollow noopener">Dang AI Directory</a> · <a href="https://gridpaw.com/pictomino/community" onclick="track('community_click',{source:'footer_easy'})">Community</a> · <a href="https://gridpaw.com/pictomino/privacy">Privacy Policy</a> · Made with 🧠 for curious kids</p>
+  <p>© 2026 Pictomino · <a href="https://gridpaw.com/pictomino/">gridpaw.com/pictomino</a> · <a href="https://gridpaw.com/help/pictomino/">Help</a> · <a href="https://gridpaw.com/akari/" rel="dofollow noopener">GridPaw Akari</a> · <a href="https://gridpaw.com/" rel="dofollow noopener">GridPaw Shikaku Puzzle</a> · <a href="https://dang.ai" rel="dofollow noopener">Dang AI Directory</a> · <a href="https://gridpaw.com/pictomino/community" onclick="track('community_click',{source:'footer_easy'})">Community</a> · <a href="https://gridpaw.com/pictomino/privacy">Privacy Policy</a> · Made with 🧠 for curious kids</p>
 </footer>
 
 </body>

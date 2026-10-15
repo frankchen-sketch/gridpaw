@@ -487,6 +487,7 @@
     if (busy || !puzzle) return;
     var i = parseInt(e.currentTarget.dataset.idx, 10);
     if (locked[i]) return;
+    if (!window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { level: level }); }
     var next = (grid[i] + 1) % 3; // 0 UNKNOWN → 1 SEA → 2 ISLAND → 0
     var truth = puzzle.solution[i];
     if (next !== CELL_UNKNOWN && next !== truth) {
@@ -513,6 +514,7 @@
         track('puzzle_mistake', { level: level });
         track('hp_loss', { level: level, hearts: hearts });
         if (hearts <= 0) {
+          track('game_over', { level: level }); // 血尽 = 结构化失败时刻（对齐 zen 页 game_over 口径）
           setTimeout(function () {
             el.classList.remove('err-flash');
             render();
@@ -1026,7 +1028,18 @@ document.getElementById('nextBtn').addEventListener('click', function () {
 
   maybeShowGuide();
 
-  track('game_start', { level: level, trigger: (location.search.indexOf('embed=1') >= 0 ? 'embed' : 'direct') });
+  // game_start 口径（2026-10-13 Clarity 取证）：页面可见才算开局——后台标签加载不计，
+  // visibilitychange 转可见时补发；直接关掉后台标签 = 不发
+  var _gsFire = function() { track('game_start', { level: level, trigger: (location.search.indexOf('embed=1') >= 0 ? 'embed' : 'direct') }); };
+  if (document.visibilityState === 'visible') { _gsFire(); }
+  else {
+    var _gsOnVis = function() {
+      if (document.visibilityState !== 'visible') return;
+      document.removeEventListener('visibilitychange', _gsOnVis);
+      _gsFire();
+    };
+    document.addEventListener('visibilitychange', _gsOnVis);
+  }
   newPuzzle();
 })();
 </script>

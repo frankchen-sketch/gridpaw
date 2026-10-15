@@ -1,0 +1,89 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+
+const title = "Contact GridPaw — Feedback, Bugs & Puzzle Requests";
+const description = "Get in touch with GridPaw: report a bug, suggest a puzzle type, ask about classroom use, or just say hello. Email hello@gridpaw.com — read by a human.";
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/contact" type="article" breadcrumbTitle="Contact" />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://gridpaw.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Contact", "item": "https://gridpaw.com/contact" }
+    ]
+  })} />
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:#f8f6ef;color:#342421;min-height:100vh}
+    .prose{max-width:720px;margin:0 auto;padding:2rem 1.5rem 4rem}
+    .prose h1{font-size:2rem;font-weight:900;color:#342421;margin-bottom:.5rem}
+    .prose h1 .accent{color:#D97706}
+    .prose .lede{font-size:1.05rem;color:#6f5651;margin-bottom:1.5rem;line-height:1.7}
+    .prose h2{font-size:1.35rem;font-weight:800;color:#342421;margin:2rem 0 .75rem;padding-bottom:.5rem;border-bottom:2px solid #f4dfdc}
+    .prose p{margin-bottom:1rem;font-size:1rem;line-height:1.7;color:#6f5651}
+    .prose ul{margin:0 0 1rem 1.5rem}
+    .prose li{margin-bottom:.5rem;font-size:1rem;line-height:1.7;color:#6f5651}
+    .prose strong{color:#342421}
+    .prose a{color:#E8A888;text-decoration:underline}
+    .email-box{background:#fff;border-radius:12px;padding:1.2rem 1.5rem;margin:1.5rem 0;box-shadow:0 2px 8px rgba(123,107,138,.08);border-left:4px solid #E8A888;text-align:center}
+    .email-box .label{font-size:.85rem;color:#6f5651;display:block;margin-bottom:.3rem}
+    .email-box a{font-size:1.15rem;font-weight:800;color:#342421;text-decoration:none}
+    .email-box a:hover{color:#E8A888;text-decoration:underline}
+    .cta-box{text-align:center;margin:2rem 0;padding:1.5rem;background:linear-gradient(145deg,#fff4f0,#f0e8ff);border-radius:12px}
+    .cta-btn{display:inline-block;padding:.7rem 2rem;background:#E8A888;color:#fff;border-radius:12px;text-decoration:none;font-weight:600;font-size:1rem}
+    .cta-btn:hover{background:#D09070}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.85rem;color:#6f5651}
+    footer a{color:#6f5651;text-decoration:none}
+    footer a:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <main class="prose">
+    <h1>Contact <span class="accent">GridPaw</span></h1>
+    <p class="lede">One inbox, one human. Whether it's a bug, a puzzle request, or feedback on the cats — it all lands in the same place.</p>
+
+    <div class="email-box">
+      <span class="label">Email us at</span>
+      <a href="#" data-mail-user="hello" data-mail-domain="gridpaw.com" class="js-mail">hello@gridpaw.com</a>
+    </div>
+
+    <h2>What to Write About</h2>
+    <ul>
+      <li><strong>Bug reports</strong> — a puzzle that looks unsolvable, a button that does nothing, a layout that breaks. A screenshot and the page URL make these much faster to fix.</li>
+      <li><strong>Puzzle feedback</strong> — a difficulty tier that feels off, a generator that keeps giving you the same shapes, a hint that didn't help. This feedback directly shapes the next generator pass.</li>
+      <li><strong>New puzzle types</strong> — the collection grows by request. If there's a Japanese logic puzzle you want to see with cats on it, say so.</li>
+      <li><strong>Classroom &amp; permissions</strong> — using GridPaw puzzles in teaching or print. Describe what you have in mind; classroom use is usually an easy yes.</li>
+      <li><strong>Everything else</strong> — partnerships, corrections to the guides, or just saying hello.</li>
+    </ul>
+
+    <h2>What Happens After You Send It</h2>
+    <p>Every message is read by a human — usually the same person who built the site and drew the cats. There is no ticket queue and no newsletter signup hiding behind the form. You'll get a reply when there's something real to say, which for most bug reports is within a few days.</p>
+
+    <h2>Before You Write — Quick Answers</h2>
+    <p>Several questions come up often enough that the site already answers them:</p>
+    <ul>
+      <li>How a game works → the <a href="/help/">help center</a> covers all games</li>
+      <li>Strategy and technique → the <a href="/akari/tips/">tips hubs</a> and each game's guides</li>
+      <li>What data the site stores → the <a href="/privacy/">privacy policy</a></li>
+      <li>What changed recently → the <a href="/changelog/">changelog</a></li>
+    </ul>
+
+    <div class="cta-box">
+      <a href="/" class="cta-btn">Play GridPaw Free</a>
+    </div>
+  </main>
+  <script>
+    // mailto assembled in JS: CF Email Obfuscation rewrites literal mailto: to a 404 /cdn-cgi link (jev-seo audit 2026-10)
+    document.querySelectorAll('a.js-mail').forEach(function (a) {
+      a.href = 'mailto:' + a.dataset.mailUser + '@' + a.dataset.mailDomain;
+    });
+  </script>
+  <footer>
+    <p><a href="/">Play Shikaku</a> · <a href="/akari/">Play Akari</a> · <a href="/about/">About</a> · <a href="/changelog/">Changelog</a> · <a href="/privacy/">Privacy Policy</a></p>
+  </footer>
+</body>
+</html>

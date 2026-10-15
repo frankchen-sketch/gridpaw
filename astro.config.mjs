@@ -2,16 +2,9 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import path from 'path';
 
-// Pages to exclude from sitemap (noindex or thin content)
-const excludedPages = [
-  '/akari/community/',
-  '/akari/levels/easy/',
-  '/akari/levels/medium/',
-  '/akari/blog/',           // Index page — let sub-pages be indexed individually
-  '/akari/privacy/',
-  '/akari/akari-puzzle-online/',  // Duplicate — redirects to /akari/akari-puzzle/
-  '/privacy/',              // noindex page — must not be in sitemap (jev-seo audit 2026-10)
-];
+// Sitemap exclusions live INSIDE the sitemap() filter below (exactExcludes) —
+// the old top-level `excludedPages` array was dead code and was removed
+// (adsense audit 2026-10: it silently didn't apply, hard/reset-password stayed in sitemap)
 
 export default defineConfig({
   site: 'https://gridpaw.com',
@@ -32,6 +25,8 @@ export default defineConfig({
           'https://gridpaw.com/akari/privacy/',
           'https://gridpaw.com/akari/akari-puzzle-online/',
           'https://gridpaw.com/privacy/',           // noindex page (jev-seo audit 2026-10)
+          'https://gridpaw.com/reset-password/',    // noindex functional page (adsense audit 2026-10)
+          'https://gridpaw.com/akari/levels/hard/', // thin content, same as easy/medium
         ];
         if (exactExcludes.includes(page)) {
           return false;

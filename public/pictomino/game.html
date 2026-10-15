@@ -875,6 +875,8 @@ function onHoleClick(cell, i) {
     if (typeof gtag === 'function') gtag('event', 'first_move', { level: state.level + 1 });
     if (window.gpTrack) window.gpTrack('first_move', { level: state.level + 1 });
     if (typeof window.clarity === 'function') window.clarity('event', 'first_move');
+    // relay 给外层 wrapper 页（iframe 内无 GA4 config，gtag 是 no-op；first_move 进 GA4 靠 wrapper 转发）
+    try { if (window.parent !== window) window.parent.postMessage({ type: 'pictomino_first_move', level: state.level + 1 }, '*'); } catch (e) {}
   }
   if (i === state.targetIdx) {
     onCorrect(cell);
@@ -1067,6 +1069,8 @@ function winLevel() {
 function showLose() {
   stopTimer();
   if (window.gpTrack) window.gpTrack('game_over', { level: state.level + 1, difficulty: getDifficulty() });
+  // relay 给外层 wrapper 页（同 first_move：GA4 侧靠 wrapper 转发）
+  try { if (window.parent !== window) window.parent.postMessage({ type: 'pictomino_game_over', level: state.level + 1, difficulty: getDifficulty() }, '*'); } catch (e) {}
   // 挽留：报今天战绩 + 给「跳过这关」出口（Clarity 实锤：玩家第一次没血就直接走人）
   try {
     const stars = JSON.parse(localStorage.getItem('pictomino_stars') || '{}');
