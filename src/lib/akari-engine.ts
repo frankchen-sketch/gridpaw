@@ -17,6 +17,7 @@ export interface PuzzleData {
   solution: Solution;
   difficulty: 'easy' | 'medium' | 'hard';
   backtrackDepth: number;
+  room?: string;
 }
 
 const DIRS: [number, number][] = [[-1, 0], [1, 0], [0, -1], [0, 1]];
@@ -350,24 +351,28 @@ function shuffle<T>(arr: T[]): T[] {
 
 export function generatePuzzle(size: number): PuzzleData {
   for (let attempt = 0; attempt < 40; attempt++) {
-    const result = _tryGenerate(size);
+    const result = _tryGenerate(size, null);
     if (result) return result;
   }
   return _makeSimplePuzzle(size);
 }
 
-function _tryGenerate(size: number): PuzzleData | null {
-  // Step 1: Random black cell layout
-  const grid = createEmptyGrid(size);
+function _tryGenerate(size: number, mask: Grid | null): PuzzleData | null {
+  // Step 1: Random black cell layout (walls only inside the mask)
+  const grid = mask ? cloneGrid(mask) : createEmptyGrid(size);
   const blackPct = size <= 7 ? 0.22 : size <= 10 ? 0.28 : 0.34;
-  const targetBlack = Math.floor(size * size * blackPct);
+  const inside: [number, number][] = [];
+  for (let r = 0; r < size; r++) {
+    for (let c = 0; c < size; c++) {
+      if (grid[r][c] === 9) inside.push([r, c]);
+    }
+  }
+  const targetBlack = Math.floor(inside.length * blackPct);
 
-  const allCells: [number, number][] = [];
-  for (let r = 0; r < size; r++) for (let c = 0; c < size; c++) allCells.push([r, c]);
-  shuffle(allCells);
+  shuffle(inside);
 
   let blackPlaced = 0;
-  for (const [r, c] of allCells) {
+  for (const [r, c] of inside) {
     if (blackPlaced >= targetBlack) break;
     let adjBlack = 0;
     for (const [dr, dc] of DIRS) {
@@ -471,6 +476,101 @@ function _tryGenerate(size: number): PuzzleData | null {
     id: `cat-puzzle-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
     size, grid, solution: final.solution, difficulty, backtrackDepth: depth,
   };
+}
+
+// =============================================================================
+// Room generator — masks (irregular floor plans) + difficulty tiers
+// Grid encoding addition: -3 = outside the room (mask). The solver already
+// treats any non-9 cell as a light blocker and never requires it lit, so masks
+// flow through solve/propagate unchanged. Walls are only placed inside.
+// =============================================================================
+
+export type Room = 'kitchen' | 'study' | 'attic';
+
+const ROOM_CONFIG: Record<Room, { sizes: number[]; carvePct: [number, number] }> = {
+  kitchen: { sizes: [4, 5, 6], carvePct: [0, 0] },
+  study: { sizes: [6, 7], carvePct: [0.15, 0.24] },
+  attic: { sizes: [7, 8], carvePct: [0.28, 0.40] },
+};
+
+/** Bite an irregular floor plan out of a full grid (-3 = outside).
+ *  Grows the bite from one border cell inward; every bite must keep the
+ *  remaining floor connected, so no orphan islands. */
+export function generateMask(size: number, carvePct: number): Grid {
+  const grid = createEmptyGrid(size);
+  if (carvePct <= 0) return grid;
+  const total = size * size;
+  const toCarve = Math.round(total * carvePct);
+  const masked = new Set<number>();
+
+  const whiteCount = () => total - masked.size;
+  const stillConnected = (): boolean => {
+    let start = -1;
+    for (let i = 0; i < total; i++) if (!masked.has(i)) { start = i; break; }
+    if (start === -1) return false;
+    const seen = new Set<number>([start]);
+    const q = [start];
+    while (q.length) {
+      const i = q.pop()!;
+      const r = Math.floor(i / size), c = i % size;
+      for (const [dr, dc] of DIRS) {
+        const nr = r + dr, nc = c + dc;
+        if (nr < 0 || nr >= size || nc < 0 || nc >= size) continue;
+        const ni = nr * size + nc;
+        if (!masked.has(ni) && !seen.has(ni)) { seen.add(ni); q.push(ni); }
+      }
+    }
+    return seen.size === whiteCount();
+  };
+
+  const border: number[] = [];
+  for (let i = 0; i < total; i++) {
+    const r = Math.floor(i / size), c = i % size;
+    if (r === 0 || c === 0 || r === size - 1 || c === size - 1) border.push(i);
+  }
+  masked.add(border[Math.floor(Math.random() * border.length)]);
+
+  let guard = total * 4;
+  while (masked.size < toCarve && guard-- > 0) {
+    const frontier: number[] = [];
+    for (const i of masked) {
+      const r = Math.floor(i / size), c = i % size;
+      for (const [dr, dc] of DIRS) {
+        const nr = r + dr, nc = c + dc;
+        if (nr < 0 || nr >= size || nc < 0 || nc >= size) continue;
+        const ni = nr * size + nc;
+        if (!masked.has(ni)) frontier.push(ni);
+      }
+    }
+    shuffle(frontier);
+    let carved = false;
+    for (const ni of frontier) {
+      masked.add(ni);
+      if (stillConnected()) { carved = true; break; }
+      masked.delete(ni);
+    }
+    if (!carved) break; // frontier walled in — accept a smaller bite
+  }
+
+  for (const i of masked) grid[Math.floor(i / size)][i % size] = -3;
+  return grid;
+}
+
+/** Generate a puzzle for a room tier: kitchen = square basics,
+ *  study = irregular outlines begin, attic = heavy cutouts. */
+export function generateRoomPuzzle(room: Room, size?: number): PuzzleData {
+  const cfg = ROOM_CONFIG[room];
+  const sz = size ?? cfg.sizes[Math.floor(Math.random() * cfg.sizes.length)];
+  const [lo, hi] = cfg.carvePct;
+  for (let attempt = 0; attempt < 40; attempt++) {
+    const carvePct = lo + Math.random() * (hi - lo);
+    const mask = generateMask(sz, carvePct);
+    const result = _tryGenerate(sz, mask);
+    if (result) { result.room = room; return result; }
+  }
+  const fallback = _makeSimplePuzzle(sz);
+  fallback.room = room;
+  return fallback;
 }
 
 function _makeSimplePuzzle(size: number): PuzzleData {

@@ -286,20 +286,24 @@ function shuffle(arr) {
 }
 function generatePuzzle(size) {
   for (let attempt = 0; attempt < 40; attempt++) {
-    const result = _tryGenerate(size);
+    const result = _tryGenerate(size, null);
     if (result) return result;
   }
   return _makeSimplePuzzle(size);
 }
-function _tryGenerate(size) {
-  const grid = createEmptyGrid(size);
+function _tryGenerate(size, mask) {
+  const grid = mask ? cloneGrid(mask) : createEmptyGrid(size);
   const blackPct = size <= 7 ? 0.22 : size <= 10 ? 0.28 : 0.34;
-  const targetBlack = Math.floor(size * size * blackPct);
-  const allCells = [];
-  for (let r = 0; r < size; r++) for (let c = 0; c < size; c++) allCells.push([r, c]);
-  shuffle(allCells);
+  const inside = [];
+  for (let r = 0; r < size; r++) {
+    for (let c = 0; c < size; c++) {
+      if (grid[r][c] === 9) inside.push([r, c]);
+    }
+  }
+  const targetBlack = Math.floor(inside.length * blackPct);
+  shuffle(inside);
   let blackPlaced = 0;
-  for (const [r, c] of allCells) {
+  for (const [r, c] of inside) {
     if (blackPlaced >= targetBlack) break;
     let adjBlack = 0;
     for (const [dr, dc] of DIRS) {
@@ -388,6 +392,92 @@ function _tryGenerate(size) {
     difficulty,
     backtrackDepth: depth
   };
+}
+const ROOM_CONFIG = {
+  kitchen: { sizes: [4, 5, 6], carvePct: [0, 0] },
+  study: { sizes: [6, 7], carvePct: [0.15, 0.24] },
+  attic: { sizes: [7, 8], carvePct: [0.28, 0.4] }
+};
+function generateMask(size, carvePct) {
+  const grid = createEmptyGrid(size);
+  if (carvePct <= 0) return grid;
+  const total = size * size;
+  const toCarve = Math.round(total * carvePct);
+  const masked = /* @__PURE__ */ new Set();
+  const whiteCount = () => total - masked.size;
+  const stillConnected = () => {
+    let start = -1;
+    for (let i = 0; i < total; i++) if (!masked.has(i)) {
+      start = i;
+      break;
+    }
+    if (start === -1) return false;
+    const seen = /* @__PURE__ */ new Set([start]);
+    const q = [start];
+    while (q.length) {
+      const i = q.pop();
+      const r = Math.floor(i / size), c = i % size;
+      for (const [dr, dc] of DIRS) {
+        const nr = r + dr, nc = c + dc;
+        if (nr < 0 || nr >= size || nc < 0 || nc >= size) continue;
+        const ni = nr * size + nc;
+        if (!masked.has(ni) && !seen.has(ni)) {
+          seen.add(ni);
+          q.push(ni);
+        }
+      }
+    }
+    return seen.size === whiteCount();
+  };
+  const border = [];
+  for (let i = 0; i < total; i++) {
+    const r = Math.floor(i / size), c = i % size;
+    if (r === 0 || c === 0 || r === size - 1 || c === size - 1) border.push(i);
+  }
+  masked.add(border[Math.floor(Math.random() * border.length)]);
+  let guard = total * 4;
+  while (masked.size < toCarve && guard-- > 0) {
+    const frontier = [];
+    for (const i of masked) {
+      const r = Math.floor(i / size), c = i % size;
+      for (const [dr, dc] of DIRS) {
+        const nr = r + dr, nc = c + dc;
+        if (nr < 0 || nr >= size || nc < 0 || nc >= size) continue;
+        const ni = nr * size + nc;
+        if (!masked.has(ni)) frontier.push(ni);
+      }
+    }
+    shuffle(frontier);
+    let carved = false;
+    for (const ni of frontier) {
+      masked.add(ni);
+      if (stillConnected()) {
+        carved = true;
+        break;
+      }
+      masked.delete(ni);
+    }
+    if (!carved) break;
+  }
+  for (const i of masked) grid[Math.floor(i / size)][i % size] = -3;
+  return grid;
+}
+function generateRoomPuzzle(room, size) {
+  const cfg = ROOM_CONFIG[room];
+  const sz = size ?? cfg.sizes[Math.floor(Math.random() * cfg.sizes.length)];
+  const [lo, hi] = cfg.carvePct;
+  for (let attempt = 0; attempt < 40; attempt++) {
+    const carvePct = lo + Math.random() * (hi - lo);
+    const mask = generateMask(sz, carvePct);
+    const result = _tryGenerate(sz, mask);
+    if (result) {
+      result.room = room;
+      return result;
+    }
+  }
+  const fallback = _makeSimplePuzzle(sz);
+  fallback.room = room;
+  return fallback;
 }
 function _makeSimplePuzzle(size) {
   const grid = createEmptyGrid(size);
