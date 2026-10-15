@@ -83,9 +83,12 @@ export function trackFunnel(eventName: string, metadata: Record<string, unknown>
   if (FUNNEL_EVENTS.indexOf(eventName) === -1) return;
   // 全事件统一带归因原料（此前只有 visit 带，share_*/game_start 的 metadata 几乎全空——
   // 2026-10-15 补：caller 传入的业务键优先，归因键只兜底，不覆盖）
+  // 2026-10-15 二补：pagePath = 游戏维度判别键（/api/events 未动，纯 metadata 增量；留言墙
+  // shikaku 自动行等按页面归属的派生数据依赖它；+~25B/条，远低于 MAX_META 4096）
   const enriched: Record<string, unknown> = {
     referrerHost: referrerHost(),
     attribution: buildAttribution(location.search),
+    pagePath: location.pathname,
     ...metadata,
   };
   send({ anonId: getAnonId(), events: [{ eventName, source: 'web', buildId: APP_BUILD.id, metadata: enriched }] });
