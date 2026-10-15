@@ -1089,6 +1089,12 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     const DIRS = [[-1,0],[1,0],[0,-1],[0,1]];
     function track(event, params) {
     if (window.gpTrack) window.gpTrack(event, params || {});
+      if (typeof window.clarity === 'function') {
+        try {
+          window.clarity('event', event);
+          if (params && params.level != null) window.clarity('set', 'level', String(params.level));
+        } catch (e) {}
+      }
       if (typeof window.gtag === 'function') {
         const gtagParams = {};
         Object.keys(params || {}).forEach(k => {

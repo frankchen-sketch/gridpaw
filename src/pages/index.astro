@@ -896,6 +896,12 @@ const description = "Draw rectangles to match every number and fill the grid —
   // GA4 + Clarity + PostHog tracking helper
   function track(event, params) {
     if (window.gpTrack) window.gpTrack(event, params || {});
+    if (typeof window.clarity === 'function') {
+      try {
+        window.clarity('event', event);
+        if (params && params.level != null) window.clarity('set', 'level', String(params.level));
+      } catch (e) {}
+    }
     if (typeof window.gtag === 'function') {
       var gtagParams = {};
       Object.keys(params || {}).forEach(function(k) {
