@@ -236,6 +236,13 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
     .hintbox { margin-top: 10px; font-size: 13.5px; font-weight: 700; color: var(--green); min-height: 20px; }
     .hintbox.err { color: #C0392B; }
     .loading { font-size: 13px; font-weight: 800; color: var(--text-muted); padding: 30px 0; text-align: center; grid-column: 1 / -1; }
+    /* 6×6 生成等待演出：猫爪垫步 + 分阶段文案（2026-10-15 难度平滑） */
+    .loading .paws { display: block; margin-bottom: 10px; }
+    .loading .paws span { display: inline-block; width: 9px; height: 9px; border-radius: 55% 55% 45% 45%; background: currentColor; margin: 0 4px; opacity: .35; animation: padstep 1.3s infinite; }
+    .loading .paws span:nth-child(2) { animation-delay: .18s; }
+    .loading .paws span:nth-child(3) { animation-delay: .36s; }
+    .loading .paws span:nth-child(4) { animation-delay: .54s; }
+    @keyframes padstep { 0%, 100% { transform: translateY(0); opacity: .3; } 45% { transform: translateY(-7px); opacity: 1; } }
 
     /* ── Win Overlay（v3 版：凶手头像 + 三分享按钮）── */
     .win-overlay { position: fixed; inset: 0; background: rgba(61,50,38,.55); display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px; }
@@ -342,6 +349,12 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
           <button class="hint-btn" id="shCopy">📋 Copy</button>
           <button class="hint-btn" id="shX">𝕏 Share</button>
           <button class="hint-btn" id="shReddit">👽 Reddit</button>
+        </div>
+        <div id="promoBlock" style="display:none;margin-top:14px">
+          <p style="font-size:14.5px;margin:0 0 9px;font-weight:700">You've got the basics down — ready for a bigger house?</p>
+          <p style="font-size:13px;margin:0 0 10px;opacity:.8">6×6 adds a fifth suspect and a sixth room. Same rules, deeper mystery.</p>
+          <button class="hint-btn primary" id="nextBig">🔍 Open your first 6×6 case</button>
+          <button class="hint-btn" id="staySmall" style="margin-left:8px">Keep it 4×4</button>
         </div>
         <div style="margin-top:14px"><button class="hint-btn primary" id="againBtn">🔄 New Case</button></div>
       </div>
@@ -559,9 +572,17 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
       document.getElementById("d4").classList.toggle("on", N === 4);
       document.getElementById("d6").classList.toggle("on", N === 6);
       var board = document.getElementById("board");
-      board.innerHTML = '<div class="loading">Generating a fair case…</div>';
+      board.innerHTML = '<div class="loading"><span class="paws"><span></span><span></span><span></span><span></span></span><div class="lt">Calling the detectives in…</div></div>';
       document.getElementById("suspects").innerHTML = "";
-      generateCase(size, function (p) {
+      // 等待演出：分阶段文案（6×6 兜底生成 1-2s；预热命中时这里只闪一瞬）
+      var stages = ["Laying out the house…", "Taking witness statements…", "Hiding the evidence…"];
+      var si = 0, stageTimer = setInterval(function () {
+        si = (si + 1) % stages.length;
+        var el = document.querySelector("#board .loading .lt");
+        if (el) el.textContent = stages[si]; else clearInterval(stageTimer);
+      }, 750);
+      function done(p) {
+        clearInterval(stageTimer);
         if (!p) {
           document.getElementById("board").innerHTML = '<div class="loading">Generation failed — try New Case</div>';
           return;
@@ -571,7 +592,29 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
         window.__firstMoveTracked = false;
         renderAll();
         fireGameStart();
-      });
+        // 4×4 玩到第 2 案起，后台预热一个 6×6 案（Worker 空闲，零成本），点 6×6 秒开
+        if (N === 4) pregenSix();
+      }
+      if (size === 6 && cachedSix) {
+        var p0 = cachedSix; cachedSix = null;
+        done(p0);
+        return;
+      }
+      generateCase(size, done);
+    }
+
+    // ── 6×6 预热：独立后台 Worker，与按需生成互不干扰；失败静默（兜底走 generateCase）──
+    var cachedSix = null, pregenTried = false;
+    function pregenSix() {
+      if (cachedSix || pregenTried || typeof Worker === 'undefined') return;
+      pregenTried = true;
+      try {
+        var w = new Worker('/murdoku/worker.js');
+        var seed = (Date.now() ^ ((Math.random() * 0x7fffffff) | 0)) | 0;
+        w.onmessage = function (e) { cachedSix = e.data.puzzle; w.terminate(); };
+        w.onerror = function () { w.terminate(); };
+        w.postMessage({ N: 6, seed: seed, id: 1 });
+      } catch (e) { /* Worker 不可用 = 走兜底 */ }
     }
     function renderAll() { renderBoard(); renderClues(); }
 
@@ -677,10 +720,30 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
           'Solved in ' + secs + 's · ' + hintsUsed + ' hint' + (hintsUsed === 1 ? "" : "s");
         document.getElementById("winOverlay").classList.add("show");
         track('level_up', { level: levelTag() });
+        showPromo();
       } else if (!auto) {
         setHint("Not quite — statements or the sudoku rule are violated. Recheck!", true);
         placed.forEach(function (c) { if (c >= 0) flashCell(c, "bad-flash"); });
       }
+    }
+
+    // ── 4×4→6×6 难度平滑：第 3 次破 4×4 案时弹晋升（一次性，localStorage 防重）──
+    function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+    function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+    function showPromo() {
+      var promo = document.getElementById("promoBlock");
+      var again = document.getElementById("againBtn");
+      if (N === 4) {
+        var wins = parseInt(lsGet("murdoku_wins4") || "0", 10) + 1;
+        lsSet("murdoku_wins4", String(wins));
+        if (wins >= 3 && lsGet("murdoku_promoted") !== "1") {
+          promo.style.display = "block";
+          again.style.display = "none";
+          return;
+        }
+      }
+      promo.style.display = "none";
+      again.style.display = "";
     }
 
     function doHint() {
@@ -730,6 +793,15 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
     document.getElementById("againBtn").addEventListener("click", function () { caseNo++; closeWin(); newCase(N); });
     document.getElementById("d4").addEventListener("click", function () { closeWin(); newCase(4); });
     document.getElementById("d6").addEventListener("click", function () { closeWin(); newCase(6); });
+    document.getElementById("nextBig").addEventListener("click", function () {
+      lsSet("murdoku_promoted", "1");
+      caseNo++; closeWin(); newCase(6);
+    });
+    document.getElementById("staySmall").addEventListener("click", function () {
+      lsSet("murdoku_promoted", "1");
+      document.getElementById("promoBlock").style.display = "none";
+      document.getElementById("againBtn").style.display = "";
+    });
 
     function closeWin() { document.getElementById("winOverlay").classList.remove("show"); }
 
