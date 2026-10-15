@@ -698,7 +698,7 @@
   function placeDigit(d) {
     if (busy || selected < 0 || !puzzle) return;
     digits[selected] = d;
-    if (!window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { level: level }); }
+    if (!window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { level: level < KAKURO_TUTORIALS.length ? level + 1 : level }); }
     var cell = cellEl(selected);
     var err = getCellError(puzzle, digits, selected);
     if (err) {
@@ -1199,7 +1199,7 @@
   if (savedProgress > KAKURO_TUTORIALS.length && savedProgress < CAMPAIGN_LEN) level = savedProgress;
   // game_start 口径（2026-10-13 Clarity 取证）：页面可见才算开局——后台标签加载不计，
   // visibilitychange 转可见时补发；直接关掉后台标签 = 不发
-  var _gsFire = function() { track('game_start', { level: level, trigger: (location.search.indexOf('embed=1') >= 0 ? 'embed' : 'direct') }); };
+  var _gsFire = function() { track('game_start', { level: level < KAKURO_TUTORIALS.length ? level + 1 : level, trigger: (location.search.indexOf('embed=1') >= 0 ? 'embed' : 'direct') }); };
   if (document.visibilityState === 'visible') { _gsFire(); }
   else {
     var _gsOnVis = function() {
