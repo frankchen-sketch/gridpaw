@@ -18,7 +18,7 @@ export const FUNNEL_EVENTS = [
 
 // 只有生产域上报（与本仓库既有铁律一致：dev/预览域静默，避免污染）
 const PROD = /(^|\.)gridpaw\.com$/;
-const UTM_SAFE = ['reddit', 'twitter', 'x', 'google', 'bing', 'pinterest', 'facebook', 'hn', 'newsletter'];
+const UTM_SAFE = ['reddit', 'twitter', 'x', 'google', 'bing', 'pinterest', 'facebook', 'hn', 'newsletter', 'lemmy'];
 
 export function buildAttribution(search: string): Record<string, string | boolean> {
   const p = new URLSearchParams(search);
@@ -26,6 +26,9 @@ export function buildAttribution(search: string): Record<string, string | boolea
   const src = (p.get('utm_source') || '').trim().toLowerCase();
   if (UTM_SAFE.indexOf(src) !== -1) out.utmSource = src;   // 白名单防注入（furriq 同策略）
   if (p.has('utm_campaign')) out.utmCampaignPresent = true;
+  // 记 campaign 值（ lemmy_murdoku/lemmy_daily 这类分帖归因靠它；白名单字符防注入）
+  const camp = (p.get('utm_campaign') || '').trim().toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 40);
+  if (camp) out.utmCampaign = camp;
   return out;
 }
 
