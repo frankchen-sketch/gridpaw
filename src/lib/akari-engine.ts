@@ -557,14 +557,15 @@ export function generateMask(size: number, carvePct: number): Grid {
 }
 
 /** Generate a puzzle for a room tier: kitchen = square basics,
- *  study = irregular outlines begin, attic = heavy cutouts. */
-export function generateRoomPuzzle(room: Room, size?: number): PuzzleData {
+ *  study = irregular outlines begin, attic = heavy cutouts.
+ *  Optional carvePct overrides the tier's random range (explicit mask). */
+export function generateRoomPuzzle(room: Room, size?: number, carvePct?: number): PuzzleData {
   const cfg = ROOM_CONFIG[room];
   const sz = size ?? cfg.sizes[Math.floor(Math.random() * cfg.sizes.length)];
   const [lo, hi] = cfg.carvePct;
   for (let attempt = 0; attempt < 40; attempt++) {
-    const carvePct = lo + Math.random() * (hi - lo);
-    const mask = generateMask(sz, carvePct);
+    const carve = carvePct ?? (lo + Math.random() * (hi - lo));
+    const mask = generateMask(sz, carve);
     const result = _tryGenerate(sz, mask);
     if (result) { result.room = room; return result; }
   }

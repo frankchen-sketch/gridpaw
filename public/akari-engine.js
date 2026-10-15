@@ -462,13 +462,13 @@ function generateMask(size, carvePct) {
   for (const i of masked) grid[Math.floor(i / size)][i % size] = -3;
   return grid;
 }
-function generateRoomPuzzle(room, size) {
+function generateRoomPuzzle(room, size, carvePct) {
   const cfg = ROOM_CONFIG[room];
   const sz = size ?? cfg.sizes[Math.floor(Math.random() * cfg.sizes.length)];
   const [lo, hi] = cfg.carvePct;
   for (let attempt = 0; attempt < 40; attempt++) {
-    const carvePct = lo + Math.random() * (hi - lo);
-    const mask = generateMask(sz, carvePct);
+    const carve = carvePct ?? lo + Math.random() * (hi - lo);
+    const mask = generateMask(sz, carve);
     const result = _tryGenerate(sz, mask);
     if (result) {
       result.room = room;
