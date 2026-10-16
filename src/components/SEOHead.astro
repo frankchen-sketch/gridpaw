@@ -193,11 +193,26 @@ const articleJsonLd = type === 'article' ? {
   })();
 </script>
 
+<!-- ⚠ gpTrack 先行 stub（2026-10-16 统一标准，事故背景见 game-event-tracking skill）：
+     module 晚于所有内联脚本执行，内联脚本解析期发的事件（如首盘 game_start）会拿不到 gpTrack。
+     此 stub 在 head 解析期就位、把调用缓冲进 __gpq；下方 module 就位后冲洗重放，事件不丢。
+     顺序保证：冲洗在 trackVisit 之前，保持时间线。 -->
+<script is:inline>
+  window.__gpq = window.__gpq || [];
+  if (typeof window.gpTrack !== 'function') {
+    window.gpTrack = function (e, p) { window.__gpq.push([e, p]); };
+  }
+</script>
+
 <!-- 自建漏斗（GRIDPAW-FUNNEL-VERSIONING.md §3.4）：Vite 打包脚本（非 is:inline），
      import 正常走 bundler，build id 从构建期生成文件 src/lib/app-build.generated.ts 读。
      dev/预览域在 trackVisit/trackFunnel 内部静默，与上面 GA4 守卫同口径。 -->
 <script>
   import { trackFunnel, trackVisit } from '../lib/funnel-track';
   window.gpTrack = trackFunnel;
+  if (window.__gpq && window.__gpq.length) {
+    var __q = window.__gpq.splice(0);
+    for (var __i = 0; __i < __q.length; __i++) trackFunnel(__q[__i][0], __q[__i][1] || {});
+  }
   trackVisit(location.pathname);
 </script>

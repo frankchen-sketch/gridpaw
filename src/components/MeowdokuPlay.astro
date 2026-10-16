@@ -106,14 +106,8 @@ const engineSrc = '/star-battle-engine.js';
     function fireGameStart() {
       if (document.visibilityState !== 'visible') { if (boardNum === 1) startPending = true; return; }
       startPending = false;
-      var params = { level: mode === 'level' ? level : boardNum, difficulty: 'easy 6x6' };
-      // gpTrack 由 SEOHead 的 module 延迟赋值（module 晚于本内联脚本执行）——
-      // 直接调用时 gpTrack 尚未就位，首盘 game_start 只进 GA4 不进 D1；挂 load 补发
-      if (typeof window.gpTrack === 'function') { track('game_start', params); return; }
-      window.addEventListener('load', function () {
-        if (document.visibilityState === 'visible') track('game_start', params);
-        else startPending = true;
-      });
+      // gpTrack 时序由 SEOHead 的先行 stub 缓冲兜底（2026-10-16 统一标准），这里直接发即可
+      track('game_start', { level: mode === 'level' ? level : boardNum, difficulty: 'easy 6x6' });
     }
     (function () {
       if (document.visibilityState === 'visible') return;
