@@ -1,5 +1,13 @@
 # 多语言扩展 KDROI 分析 — gridpaw.com（2026-10-16）
 
+> **状态：已上线**（2026-10-16，commit 6ee4a5a）——/pt-br/ 7 页部署完成，线上 7/7 URL 200，
+> hreflang 三连线上实测通过，IndexNow 显式提交 7 条（HTTP 200）。
+>
+> **GSC 提交进度**（2026-10-16）：sitemap 重提交 75 URL/0 错误；Request Indexing 成功
+> shikaku + akari（API 验证已编入，lastCrawlTime 当日），kakuro 已提交待抓取；hub /pt-br/
+> 被 GSC 拒（live test 缓存了部署窗口的 404，需刷新重试）；nonogram/nurikabe/pictomino
+> 未提交（配额节奏）。收尾重试已挂一次性 cron（+2 天）。
+
 ## 结论
 不开整站语言版本。巴西葡语以 /pt-br/ 子目录 7 页试水（KDROI 100，刚踩线）；
 日语零成本观察；西语降级；德语法语砍掉。
@@ -42,7 +50,7 @@ KDROI = KWP 桶低值 / web.cafe KD（桶低值口径，显示值是桶中值）
 - **mar（Nurikabe）✅**：竞品 quietpuzzle.com/pt-br/nurikabe/ 同用 "mar"（"o restante das células forma um mar"）。
 - **jogos de lógica / jogos de raciocínio 双词✅**：Geniol（"jogos de lógica e raciocínio"）、Poki、RachaCuca 并用，双关键词策略成立。
 
-**竞品情报**：quietpuzzle.com 已在做 PT-BR 本地化谜题页（/pt-br/nurikabe/ 等），是我们 /pt-br/ 的直接同赛道玩家，后续监控其出词。
+**竞品情报（2026-10-16 勘误 + MCP domain_overview，2 积分）**：quietpuzzle.com **不是 PT-BR 竞品——是韩国站**（流量 99.999% 来自韩国，DR 0.3，月访 5,635 且 8 月 1.16 万 → 9 月 5,635 腰斩 -51%）。域名 2026-03-03 注册。`/pt-br/` 页只是顺手挂的实验页，实际主力词全是韩语：지뢰찾기（扫雷，月搜 128,820）、노노그램（nonogram，月搜 52,740）、omok 2,830；品牌词 "quiet puzzles" 580/月。**结论：我们的 /pt-br/ 落在近乎空场，此前"直接同赛道玩家"的判断作废**；其 /pt-br/ 页无排名证据（未进 BRA 词表）。附带新情报：巴西 28d 数据里 "takuzu" 87 展示 pos 8.2 是巴西站内第二大 query——takuzu（binairo）品类在巴西有真实需求，可作为第二批候选。
 
 ## 哥飞知识库佐证（2026-10-16 MCP knowledge_ask，8 积分）
 
