@@ -438,11 +438,19 @@
     return true;
   }
 
-  // win = checkNonogramWin AND every cell is known (no blanks left)
+  // win = every picture cell is filled. Blanks on empty cells are fine: ✕
+  // marking is optional now (2026-10-15: Reddit player solved the Heart and
+  // got silence because blanks stayed unmarked). Wrong fills can't exist —
+  // they auto-become ✕ on tap.
+  function pictureComplete() {
+    for (var i = 0; i < grid.length; i++) {
+      if (puzzle.solution[i] === 1 && grid[i] !== CELL_FILLED) return false;
+    }
+    return true;
+  }
   function maybeWin() {
-    if (!allKnown()) return;
-    if (checkNonogramWin(puzzle, grid)) onWin();
-    else setMsg('Every cell is marked, but the picture doesn\u2019t match the clues — some ✕ cells are actually filled. Review and fix!', 'err');
+    if (pictureComplete()) { onWin(); return; }
+    if (allKnown()) setMsg('Every cell is marked, but the picture doesn\u2019t match the clues — some ✕ cells are actually filled. Review and fix!', 'err');
   }
 
 // ── hint (demo tier: direct reveal; 3 per level, unlimited in dev) ──
