@@ -215,6 +215,13 @@ const HEART_5 = pat([
   ".###.",
   "..#.."
 ]);
+const CAT_LOAF_5 = pat([
+  ".#.#.",
+  "#####",
+  "#####",
+  "#####",
+  ".#.#."
+]);
 const CAT_FACE_7 = pat([
   "..#.#..",
   ".#####.",
@@ -240,7 +247,8 @@ const CAT_PATTERNS = [
   { name: "Cat Face", rows: 5, cols: 5, solution: CAT_FACE_5 },
   { name: "Heart", rows: 5, cols: 5, solution: HEART_5 },
   { name: "Cat Whiskers", rows: 7, cols: 7, solution: CAT_FACE_7 },
-  { name: "Big Cat", rows: 10, cols: 10, solution: CAT_10 }
+  { name: "Big Cat", rows: 10, cols: 10, solution: CAT_10 },
+  { name: "Cat Loaf", rows: 5, cols: 5, solution: CAT_LOAF_5 }
 ];
 function fromPattern(pattern) {
   const { rowClues, colClues } = deriveClues(pattern.rows, pattern.cols, pattern.solution);
@@ -298,14 +306,14 @@ const NONOGRAM_TUTORIALS = [
   {
     title: "Clues are run lengths",
     lesson: 'Each number is the length of a filled block in that line, in order. A "3" means 3 filled cells in a row. Try filling a line to match its clue.',
-    pattern: CAT_PATTERNS[1]
-    // Heart 5×5 — symmetric, forgiving
+    pattern: CAT_PATTERNS[0]
+    // Cat Face 5×5 — the page promises a cat every lesson
   },
   {
     title: "Gaps must exist",
     lesson: 'Blocks never touch: "2 2" means a 2-block, at least one empty cell, then another 2-block. Watch the spaces between numbers.',
-    pattern: CAT_PATTERNS[0]
-    // Cat Face 5×5
+    pattern: CAT_PATTERNS[4]
+    // Cat Loaf 5×5 — symmetric, gap concept in rows 1/5
   },
   {
     title: "Edge pinning",
