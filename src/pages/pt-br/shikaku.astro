@@ -1,0 +1,139 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import AdSlot from '../../components/AdSlot.astro';
+// TODO: PT 词表待人工审校
+
+const title = "Shikaku Online Grátis — Jogo de Lógica Japonês | GridPaw";
+const description = "Jogue Shikaku online grátis: divida a grade em retângulos até cada número se encaixar. Com regras, dicas e um puzzle para jogar direto — sem cadastro.";
+
+const faqJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "O que é Shikaku?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Shikaku é um jogo de lógica japonês da Nikoli. Em uma grade com números, você divide o tabuleiro em retângulos de modo que cada retângulo contenha exatamente um número e tenha exatamente a quantidade de células que o número indica. Todas as regras se resolvem com raciocínio puro — nunca é preciso chutar."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Posso jogar Shikaku grátis online?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Sim. No GridPaw você joga Shikaku direto no navegador, grátis, sem download e sem cadastro. O puzzle abaixo nesta página já está pronto para jogar, e a versão completa com todos os níveis está na página inicial."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Qual estratégia funciona no Shikaku?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Comece pelos números maiores, pois eles têm poucas formas possíveis de retângulo. Preste atenção especial aos números nos cantos e nas bordas, porque cabem menos formatos ali. Números ímpares também ajudam: um retângulo com área ímpar precisa ter lados ímpares, como 3×3 ou 3×5."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Shikaku é mais difícil que Sudoku?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Não, a regra é mais simples que a do Sudoku. Grades pequenas se resolvem em minutos; as grandes exigem planejamento de verdade. Shikaku é um ótimo ponto de partida para jogos de lógica japoneses porque as regras se explicam em trinta segundos."
+        }
+      }
+    ]
+  }
+];
+---
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/pt-br/shikaku"
+    type="article"
+    breadcrumbTitle="Shikaku em Português"
+  />
+  <link rel="alternate" hreflang="pt-BR" href="https://gridpaw.com/pt-br/shikaku/" />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/" />
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    body { font-family: 'Nunito', sans-serif; background: #FFF8F0; color: #3D3229; margin: 0; }
+    main { max-width: 52.5rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+    .breadcrumb { max-width: 52.5rem; margin: 0.75rem auto 0; padding: 0 1rem; font-size: 0.85rem; color: #8A7A6A; }
+    .breadcrumb a { color: #D97706; text-decoration: none; }
+    h1 { font-size: 1.9rem; line-height: 1.25; margin: 0.75rem 0 1rem; }
+    h2 { font-size: 1.35rem; margin: 1.8rem 0 0.6rem; }
+    p, li { line-height: 1.65; font-size: 1rem; }
+    .cta-box { background: #FFF; border: 2px solid #F0E4D4; border-radius: 12px; padding: 0.9rem 1.1rem; margin: 1.2rem 0; }
+    .cta-box a { color: #D97706; font-weight: 800; text-decoration: none; }
+    details { background: #FFF; border: 1px solid #F0E4D4; border-radius: 10px; padding: 0.7rem 1rem; margin: 0.6rem 0; }
+    summary { font-weight: 800; cursor: pointer; }
+    iframe { border: 0; border-radius: 12px; max-width: 520px; margin: 0 auto; display: block; }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Trilha de navegação"><a href="/pt-br/">Início</a> &gt; Shikaku online</nav>
+
+  <main>
+    <h1>Shikaku online — o Puzzle dos Retângulos do Japão</h1>
+
+    <p>Shikaku é o jogo de lógica geométrico entre os puzzles japoneses: em uma grade com números, sua missão é dividir o tabuleiro em retângulos. Cada retângulo contém exatamente um número — e exatamente a quantidade de células que esse número indica. Parece simples, e é, principalmente para quem está começando. Abaixo nesta página você pode jogar na hora, sem cadastro e sem download.</p>
+
+    <h2>Jogue Shikaku — direto no navegador</h2>
+
+    <div style="margin:1.5rem 0;text-align:center">
+      <p style="font-weight:700;margin-bottom:0.5rem">Um puzzle Shikaku real, para jogar agora:</p>
+      <iframe src="/?embed=1" title="Jogue Shikaku online grátis" loading="lazy" width="100%" height="640"></iframe>
+      <p style="font-size:0.9rem;margin-top:0.4rem"><a href="/" style="color:#D97706;font-weight:800">Versão completa com todos os níveis de dificuldade →</a></p>
+    </div>
+
+    <p>No GridPaw funciona assim: clique em uma célula inicial, arraste o quadro sobre as células desejadas e solte — o contorno vira um retângulo assim que a forma se encaixa. Se a área bater com o número, o retângulo se preenche; e em algum lugar um gatinho aparece para dar aquela acenada. Se errar, é só clicar no retângulo para removê-lo.</p>
+
+    <h2>As Regras do Shikaku em Três Frases</h2>
+
+    <p>Primeiro: cada número na grade pertence a exatamente um retângulo, e esse retângulo deve ter exatamente a quantidade de células que o número indica. Um 6 precisa de seis células — seja 1×6, 2×3 ou 3×2. Segundo: toda célula da grade pertence a exatamente um retângulo, sobreposições são proibidas. É só isso. Dessa única regra nasce um jogo de raciocínio que vai do passatempo relaxante ao desafio de dar nó na cabeça.</p>
+
+    <p>O nome vem do japonês: 四角 (shikakukei) significa "retângulo". O puzzle foi criado e popularizado pela editora Nikoli, de Tóquio — a mesma casa que deu ao mundo o Sudoku como conhecemos hoje. Quem gosta de Sudoku mas quer algo mais visual vai adorar Shikaku: em vez de colocar números, você fatia área.</p>
+
+    <h2>Dicas e Estratégia para Iniciantes</h2>
+
+    <p>O melhor ponto de partida são os <strong>números grandes</strong>, porque têm poucas formas possíveis de retângulo. Um 7 num grid 5×5 só pode ser 1×7 — se é que cabe. São esses constraints que ancoram os primeiros retângulos, e o resto costuma se encaixar como num quebra-cabeça.</p>
+
+    <p><strong>Cantos e bordas</strong> são ouro puro: um número no canto tem pouquíssimas opções de formato, porque dois lados já são limitados pela borda da grade. <strong>Números ímpares</strong> também ajudam, pois um retângulo com área ímpar precisa ter lados ímpares (3×3, 3×5 e assim por diante) — isso corta metade das possibilidades antes mesmo de você preencher uma célula.</p>
+
+    <p>E uma dica de profissional: marque mentalmente as células que não podem mais ser alcançadas por nenhum número restante. Células que nenhum número consegue "abraçar" revelam muito sobre a vizinhança — porque elas precisam pertencer a um retângulo já começado.</p>
+
+    <h2>Por que Shikaku é o Jogo de Raciocínio Perfeito para qualquer Hora</h2>
+
+    <p>Shikaku não exige conhecimento prévio, vocabulário específico ou matemática além de contagem simples. Uma partida dura entre dois e vinte minutos, dependendo do tamanho da grade, e o puzzle garante que existe exatamente uma solução — encontrada sem chutes. É essa justiça que faz o charme: cada movimento tem uma razão, e a grade completa parece uma pequena prova construída com as próprias mãos.</p>
+
+    <p>Quem joga com frequência treina exatamente os músculos que contam em outros jogos de lógica: varredura sistemática, eliminação, voltar atrás quando uma hipótese leva a um beco sem saída. E como Shikaku pensa visualmente, é a porta de entrada mais bonita para quem acha puzzles numéricos secos demais.</p>
+
+    <AdSlot />
+
+    <h2>Perguntas Frequentes sobre Shikaku</h2>
+
+    <details><summary>O que é Shikaku?</summary><p>Shikaku é um jogo de lógica japonês da Nikoli. Em uma grade com números, você divide o tabuleiro em retângulos de modo que cada retângulo contenha exatamente um número e tenha exatamente a quantidade de células que o número indica. Tudo se resolve com raciocínio puro — sem chutes.</p></details>
+
+    <details><summary>Posso jogar Shikaku grátis online?</summary><p>Sim. No GridPaw você joga Shikaku direto no navegador, grátis, sem download e sem cadastro. O puzzle abaixo está pronto para jogar, e a versão completa está na <a href="/" style="color:#D97706">página inicial</a>.</p></details>
+
+    <details><summary>Qual estratégia funciona no Shikaku?</summary><p>Comece pelos números maiores, pois eles têm poucas formas possíveis. Preste atenção a números em cantos e bordas. Números ímpares também ajudam: um retângulo com área ímpar precisa ter lados ímpares, como 3×3 ou 3×5.</p></details>
+
+    <details><summary>Shikaku é mais difícil que Sudoku?</summary><p>Não, a regra é mais simples. Grades pequenas se resolvem em minutos; as grandes exigem planejamento. Shikaku é um ótimo ponto de partida para jogos de lógica japoneses.</p></details>
+
+    <div class="cta-box">
+      <p>Mais jogos de lógica com gatos: <a href="/pt-br/akari/">Akari (Light Up) →</a> &nbsp;·&nbsp; <a href="/pt-br/kakuro/">Kakuro →</a></p>
+    </div>
+  </main>
+</body>
+</html>

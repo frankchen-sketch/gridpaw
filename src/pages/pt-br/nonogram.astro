@@ -1,0 +1,153 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import AdSlot from '../../components/AdSlot.astro';
+// TODO: PT 词表待人工审校
+
+const title = "Nonogram Online Grátis — Jogo de Lógica de Imagem (Paint-by-Number) | GridPaw";
+const description = "Jogue Nonogram online grátis: um puzzle de lógica onde você pinta células para revelar um desenho oculto, seguindo as pistas numéricas das linhas e colunas. Com tutorial, campanha e desafios diários — sem cadastro.";
+
+const faqJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "O que é Nonogram?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Nonogram — em português também chamado de nonograma —, também conhecido como Picross, Griddler ou paint-by-number, é um jogo de lógica japonês jogado em uma grade. Os números em cada linha e coluna indicam os tamanhos dos blocos preenchidos consecutivos naquela direção. Ao preencher as células certas, uma imagem oculta aparece — como um desenho que se revela com a lógica."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Como jogar Nonogram online grátis?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Toque em uma célula uma vez para preenchê-la, de novo para marcá-la como vazia com um X, e de novo para limpá-la. Comece pelas linhas cujas pistas fixam células imediatamente: uma pista 5 em uma linha de 5 células preenche a linha inteira, e uma pista 4 em uma linha de 5 preenche pelo menos três células. Cruze as informações entre linhas e colunas e a imagem se resolve sozinha."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Nonogram e Picross são a mesma coisa?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Sim — Nonogram, Picross, Griddler, Paint by Numbers e Palavras Cruzadas Japonesas são todos nomes para o mesmo tipo de puzzle. O nome Picross é uma marca registrada da Jupiter Corporation, então sites independentes como o GridPaw usam o nome genérico Nonogram. As regras são idênticas."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "O que ganho ao resolver um Nonogram?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Uma imagem. Cada Nonogram esconde um desenho nas células preenchidas, e os níveis do GridPaw são temáticos: os tutoriais e os primeiros níveis da campanha revelam gatos. Resolver a lógica lhe dá a revelação — é esse momento que faz os jogadores de Nonogram voltarem."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Preciso chutar no Nonogram?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Não. Grades bem construídas são solucionáveis apenas com lógica pura — cada célula é forçada pelas regras. Todo tabuleiro do GridPaw é verificado para ter exatamente uma solução, e quando você trava, o botão de dica revela uma célula verdadeira."
+        }
+      }
+    ]
+  }
+];
+---
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/pt-br/nonogram"
+    type="article"
+    breadcrumbTitle="Nonogram em Português"
+  />
+  <link rel="alternate" hreflang="pt-BR" href="https://gridpaw.com/pt-br/nonogram/" />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/nonogram/" />
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/nonogram/" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    body { font-family: 'Nunito', sans-serif; background: #FFF8F0; color: #3D3229; margin: 0; }
+    main { max-width: 52.5rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+    .breadcrumb { max-width: 52.5rem; margin: 0.75rem auto 0; padding: 0 1rem; font-size: 0.85rem; color: #8A7A6A; }
+    .breadcrumb a { color: #D97706; text-decoration: none; }
+    h1 { font-size: 1.9rem; line-height: 1.25; margin: 0.75rem 0 1rem; }
+    h2 { font-size: 1.35rem; margin: 1.8rem 0 0.6rem; }
+    p, li { line-height: 1.65; font-size: 1rem; }
+    .cta-box { background: #FFF; border: 2px solid #F0E4D4; border-radius: 12px; padding: 0.9rem 1.1rem; margin: 1.2rem 0; }
+    .cta-box a { color: #D97706; font-weight: 800; text-decoration: none; }
+    details { background: #FFF; border: 1px solid #F0E4D4; border-radius: 10px; padding: 0.7rem 1rem; margin: 0.6rem 0; }
+    summary { font-weight: 800; cursor: pointer; }
+    iframe { border: 0; border-radius: 12px; max-width: 520px; margin: 0 auto; display: block; }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Trilha de navegação"><a href="/pt-br/">Início</a> &gt; Nonogram online</nav>
+
+  <main>
+    <h1>Nonogram online — o Paint-by-Number que Revela Imagens</h1>
+
+    <p>Nonogram é o membro artístico da família dos jogos de lógica japoneses: em vez de números ou retângulos, você preenche células seguindo pistas numéricas — e quando acerta, uma imagem aparece. Também conhecido como Picross, Griddler ou simplesmente "paint-by-number", este puzzle começa fácil e termina com gatos. Abaixo você pode jogar direto, sem cadastro e sem download.</p>
+
+    <h2>Jogue Nonogram — direto no navegador</h2>
+
+    <div style="margin:1.5rem 0;text-align:center">
+      <p style="font-weight:700;margin-bottom:0.5rem">Um puzzle Nonogram real, para jogar agora:</p>
+      <iframe src="/nonogram/demo.html?embed=1" title="Jogue Nonogram online grátis" loading="lazy" width="100%" height="640"></iframe>
+      <p style="font-size:0.9rem;margin-top:0.4rem"><a href="/nonogram/" style="color:#D97706;font-weight:800">Versão completa em inglês com todos os níveis de dificuldade →</a></p>
+    </div>
+
+    <p>No GridPaw o Nonogram funciona assim: cada linha e coluna tem números que dizem quantos blocos preenchidos existem e de que tamanhos. Um "3 1" significa: um bloco de 3 células, pelo menos um espaço, e um bloco de 1 célula — nessa ordem exata. Toque uma vez para preencher, de novo para marcar vazio, e de novo para limpar. Quando acertar, o desenho oculto se revela, e em algum lugar um gatinho aparece para celebrar.</p>
+
+    <h2>As Regras do Nonogram em Três Frases</h2>
+
+    <p>Primeiro: os números nas bordas são os tamanhos dos blocos preenchidos naquela linha ou coluna, na ordem em que aparecem. Entre blocos deve haver pelo menos uma célula vazia. Segundo: cruze as informações — cada célula que você preenche em uma linha reduz as opções da coluna correspondente, e vice-versa. Terceiro: a imagem se revela quando todas as linhas e colunas satisfazem suas pistas. Só isso. Dessa regra simples nasce um jogo que vai de passatempo relaxante a desafio cerebral.</p>
+
+    <p>O nome "Nonogram" foi popularizado pela editora Nikoli, de Tóquio — a mesma do Sudoku. Quem gosta de palavras cruzadas mas quer algo mais visual vai adorar Nonogram: em vez de letras, você coloca quadrados pintados que formam figuras.</p>
+
+    <h2>Dicas e Estratégia para Iniciantes</h2>
+
+    <p>O melhor ponto de partida são as <strong>bordas</strong>: uma pista que toca a extremidade da grade força células imediatamente. Um 5 em uma linha de 5 preenche a linha inteira; um 4 em uma linha de 5 preenche pelo menos três células não importa onde o bloco comece. Comece escaneando as bordas — são deduções gratuitas.</p>
+
+    <p><strong>Cruze linhas e colunas</strong> constantemente. Só olhar para uma direção não resolve nada. Cada célula preenchida que você fixa reduz as opções da linha ou coluna que a cruza. Alterne entre horizontal e vertical e a imagem se resolve sem chutes.</p>
+
+    <p><strong>Técnica da sobreposição</strong>: quando uma pista é grande o suficiente para ter apenas duas posições possíveis, o trecho onde ambas as posições coincidem pode ser preenchido com segurança. Por exemplo, um 4 em uma linha de 6 células — quer o bloco comece na célula 1 ou na 2, as células centrais estarão preenchidas de qualquer jeito. Essa técnica resolve metade do tabuleiro antes de você precisar pensar.</p>
+
+    <h2>Cada Nível Revela uma Imagem</h2>
+
+    <p>A maioria dos sites de Nonogram entrega grades anônimas. No GridPaw os níveis são construídos em torno da revelação: as quatro lições do tutorial mostram gatos, a campanha mantém o tema, e a tela de vitória reproduz seu desenho célula por célula. A revelação é o ponto — fizemos questão de que você possa vê-la.</p>
+
+    <p>Cada tabuleiro gerado é verificado para ter exatamente uma solução, e os níveis Fácil e Médio são verificados para serem solucionáveis apenas com lógica de linha pura — sem chutes. Quando você trava, o botão de dica revela uma célula verdadeira e a barra de mensagens mostra onde ela está.</p>
+
+    <h2>Níveis, Progresso e Desafios Diários</h2>
+
+    <p>A campanha tem 4 tutoriais e 11 níveis: três tabuleiros Fácil 5×5, quatro Médio 10×10 e quatro Difícil 15×15. Seu progresso fica salvo no navegador, então você pode sair e voltar quando quiser. Depois da campanha, desafios diários infinitos continuam chegando: um tabuleiro gerado pela data, igual para todos os jogadores no mesmo dia, alternando Médio e Difícil.</p>
+
+    <AdSlot />
+
+    <h2>Perguntas Frequentes sobre Nonogram</h2>
+
+    <details><summary>O que é Nonogram?</summary><p>Nonogram, também conhecido como Picross, Griddler ou paint-by-number, é um jogo de lógica japonês onde os números em cada linha e coluna indicam os blocos preenchidos. Preencha as células certas e uma imagem oculta aparece.</p></details>
+
+    <details><summary>Como jogar Nonogram online grátis?</summary><p>Toque em uma célula para preenchê-la, de novo para marcar vazio, e de novo para limpar. Comece pelas bordas e cruze as informações entre linhas e colunas. Jogue agora no GridPaw — <a href="/nonogram/" style="color:#D97706">versão completa aqui</a>.</p></details>
+
+    <details><summary>Nonogram e Picross são a mesma coisa?</summary><p>Sim — Nonogram, Picross, Griddler e Paint by Numbers são nomes para o mesmo puzzle. Picross é marca registrada da Jupiter Corporation; sites independentes usam Nonogram. As regras são idênticas.</p></details>
+
+    <details><summary>O que ganho ao resolver um Nonogram?</summary><p>Uma imagem. Cada puzzle esconde um desenho, e no GridPaw os tutoriais e a campanha revelam gatos. A revelação é o momento que os jogadores de Nonogram mais esperam.</p></details>
+
+    <details><summary>Preciso chutar no Nonogram?</summary><p>Não. Tabuleiros bem construídos se resolvem apenas com lógica. Todo tabuleiro do GridPaw tem exatamente uma solução, e o botão de dica revela uma célula verdadeira quando você trava.</p></details>
+
+    <div class="cta-box">
+      <p>Mais jogos de lógica com gatos: <a href="/pt-br/shikaku/">Shikaku →</a> &nbsp;·&nbsp; <a href="/pt-br/nurikabe/">Nurikabe →</a> &nbsp;·&nbsp; <a href="/pt-br/pictomino/">Pictomino →</a></p>
+    </div>
+  </main>
+</body>
+</html>

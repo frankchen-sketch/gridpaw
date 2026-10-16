@@ -1,0 +1,153 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import AdSlot from '../../components/AdSlot.astro';
+// TODO: PT 词表待人工审校
+
+const title = "Nurikabe Online Grátis — Jogo de Lógica de Ilhas e Mar | GridPaw";
+const description = "Jogue Nurikabe online grátis: construa ilhas numeradas em um mar conectado, sem permitir um quadrado 2×2 de oceano. Com tutorial, campanha e desafios diários — sem cadastro.";
+
+const faqJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "O que é Nurikabe?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Nurikabe é um jogo de lógica japonês jogado em uma grade. Algumas células contêm números; cada número é o tamanho de uma ilha — um grupo conectado de células brancas — e cada ilha contém exatamente um número. Todas as células restantes são mar (pretas). O mar deve formar uma única área conectada e nunca pode conter um quadrado 2×2. O nome vem de um espírito do folclore japonês que se manifesta como um muro."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Como jogar Nurikabe online grátis?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Toque em uma célula para alternar entre ilha, mar e desconhecido. Comece pelos números: uma pista 1 diz que seus quatro vizinhos são mar, e uma pista 2 em um canto fixa uma ilha inteira imediatamente. Observe também o mar — duas células de mar que formariam um quadrado 2×2 devem ser ilhas, e uma célula que nenhuma ilha pode alcançar deve ser mar."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Quais estratégias resolvem Nurikabe mais rápido?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Três hábitos cobrem a maior parte do tabuleiro. Primeiro, esgote cada ilha: quando uma ilha atinge seu número, toda célula vizinha desconhecida vira mar. Segundo, proteja o mar: qualquer ilha que cortaria o mar em dois ou completaria um quadrado 2×2 preto é impossível. Terceiro, conte o alcance: uma célula que nenhuma ilha inacabada pode alcançar dentro de sua capacidade restante deve ser mar."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Preciso chutar no Nurikabe?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Não. Tabuleiros bem construídos de Nurikabe são solucionáveis apenas com lógica pura — cada célula é determinada pelas três regras. Todo tabuleiro do GridPaw é verificado para ter exatamente uma solução, e o botão de dica revela uma célula verdadeira quando você trava."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Nurikabe é mais difícil que Sudoku?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "São desafios diferentes. Nurikabe tem uma curva de aprendizado mais íngreme por causa da regra do mar conectado — é fácil criar uma parede de ilhas que divide o oceano em duas partes sem perceber. Mas as grades pequenas se resolvem em minutos, e a sensação de ver o tabuleiro se encaixar é única. Nurikabe é um excelente próximo passo para quem já domina Sudoku ou Shikaku."
+        }
+      }
+    ]
+  }
+];
+---
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/pt-br/nurikabe"
+    type="article"
+    breadcrumbTitle="Nurikabe em Português"
+  />
+  <link rel="alternate" hreflang="pt-BR" href="https://gridpaw.com/pt-br/nurikabe/" />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/nurikabe/" />
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/nurikabe/" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    body { font-family: 'Nunito', sans-serif; background: #FFF8F0; color: #3D3229; margin: 0; }
+    main { max-width: 52.5rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+    .breadcrumb { max-width: 52.5rem; margin: 0.75rem auto 0; padding: 0 1rem; font-size: 0.85rem; color: #8A7A6A; }
+    .breadcrumb a { color: #D97706; text-decoration: none; }
+    h1 { font-size: 1.9rem; line-height: 1.25; margin: 0.75rem 0 1rem; }
+    h2 { font-size: 1.35rem; margin: 1.8rem 0 0.6rem; }
+    p, li { line-height: 1.65; font-size: 1rem; }
+    .cta-box { background: #FFF; border: 2px solid #F0E4D4; border-radius: 12px; padding: 0.9rem 1.1rem; margin: 1.2rem 0; }
+    .cta-box a { color: #D97706; font-weight: 800; text-decoration: none; }
+    details { background: #FFF; border: 1px solid #F0E4D4; border-radius: 10px; padding: 0.7rem 1rem; margin: 0.6rem 0; }
+    summary { font-weight: 800; cursor: pointer; }
+    iframe { border: 0; border-radius: 12px; max-width: 520px; margin: 0 auto; display: block; }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Trilha de navegação"><a href="/pt-br/">Início</a> &gt; Nurikabe online</nav>
+
+  <main>
+    <h1>Nurikabe online — o Puzzle de Ilhas e Mar do Japão</h1>
+
+    <p>Nurikabe é o jogo de lógica geográfico entre os puzzles japoneses: em uma grade com números, sua missão é construir ilhas brancas em um mar preto. Cada número é o tamanho exato de sua ilha, o mar todo precisa estar conectado, e quatro células de água em quadrado são proibidas. Abaixo você pode jogar na hora, sem cadastro e sem download.</p>
+
+    <h2>Jogue Nurikabe — direto no navegador</h2>
+
+    <div style="margin:1.5rem 0;text-align:center">
+      <p style="font-weight:700;margin-bottom:0.5rem">Um puzzle Nurikabe real, para jogar agora:</p>
+      <iframe src="/nurikabe/demo.html?embed=1" title="Jogue Nurikabe online grátis" loading="lazy" width="100%" height="640"></iframe>
+      <p style="font-size:0.9rem;margin-top:0.4rem"><a href="/nurikabe/" style="color:#D97706;font-weight:800">Versão completa em inglês com todos os níveis de dificuldade →</a></p>
+    </div>
+
+    <p>No GridPaw o Nurikabe funciona assim: cada número é uma ilha — um grupo de células brancas conectadas. Toque uma vez para pintar de branco (ilha), de novo para preto (mar), e de novo para limpar. Quando as ilhas atingem o tamanho certo, o mar se conecta e o tabuleiro se completa como um mosaico perfeito — e em algum lugar um gatinho aparece para dar aquela acenada.</p>
+
+    <h2>As Regras do Nurikabe em Três Frases</h2>
+
+    <p>Primeiro: cada número na grade é o tamanho exato de sua ilha. Ilhas são grupos de células brancas ortogonalmente conectadas, cada ilha contém exatamente um número, e ilhas nunca se tocam — duas ilhas não compartilham borda. Segundo: todas as células pretas (o mar) devem formar uma única área conectada — um muro de ilhas que divide o oceano em dois é o erro mais comum. Terceiro: quatro células pretas em quadrado são proibidas. É só isso. Dessa única regra nasce um jogo que vai do passatempo relaxante ao desafio estratégico.</p>
+
+    <p>O nome "Nurikabe" vem do folclore japonês: 塗り壁 é um espírito yokai que se manifesta como um muro invisível — exatamente o que as células pretas parecem fazer no tabuleiro. O puzzle foi criado pela Nikoli, a mesma editora que popularizou o Sudoku. Quem gosta de Shikaku mas quer algo com mais profundidade estratégica vai adorar Nurikabe.</p>
+
+    <h2>Dicas e Estratégia para Iniciantes</h2>
+
+    <p>O melhor ponto de partida são os <strong>números pequenos</strong>. Um 1 no tabuleiro é uma mina de ouro: seus quatro vizinhos ortogonais são mar, imediatamente. Um 2 em um canto do tabuleiro só pode ser aquelas duas células — a ilha inteira já está fixa. Essas deduções iniciais ancoram o tabuleiro e o resto costuma se encaixar.</p>
+
+    <p><strong>Proteja o mar</strong> é a segunda regra mais importante. Enquanto você constrói ilhas, fique de olho no mar ao redor. Se uma ilha em crescimento ameaça separar o mar em duas regiões desconectadas, aquela configuração é impossível. É como construir pontes: você precisa garantir que a água de um lado consiga chegar ao outro.</p>
+
+    <p>A <strong>regra do 2×2</strong> resolve mais tabuleiros do que qualquer outra: três células pretas em L ao redor de uma célula desconhecida forçam aquela quarta célula a ser ilha. É a ferramenta mais poderosa do seu arsenal — e muitas vezes é a última peça que falta para destravar um tabuleiro inteiro.</p>
+
+    <h2>Cada Tabuleiro é Verificado Único</h2>
+
+    <p>Grades aleatórias geram péssimos tabuleiros de Nurikabe — a maioria tem soluções múltiplas ou nenhuma. Cada tabuleiro do GridPaw é gerado e depois verificado por um solucionador que prova que existe exatamente uma solução. Os níveis do tutorial guiam você por cada regra com uma lição passo a passo antes da campanha começar.</p>
+
+    <p>Quando você trava, o botão de dica revela uma célula verdadeira — a resposta real para a célula selecionada, não uma sugestão vaga. E um aviso de contradição avisa quando algo que você colocou já quebra as regras.</p>
+
+    <h2>Níveis, Progresso e Desafios Diários</h2>
+
+    <p>A campanha tem 4 tutoriais e 11 níveis: três tabuleiros Fácil 5×5, quatro Médio 7×7 e quatro Difícil 9×9. Seu progresso fica salvo no navegador, então você pode sair e voltar quando quiser. Depois da campanha, desafios diários infinitos continuam chegando: um tabuleiro gerado pela data, igual para todos os jogadores no mesmo dia, alternando Médio e Difícil.</p>
+
+    <AdSlot />
+
+    <h2>Perguntas Frequentes sobre Nurikabe</h2>
+
+    <details><summary>O que é Nurikabe?</summary><p>Nurikabe é um jogo de lógica japonês onde números são ilhas em um mar. Cada ilha tem o tamanho exato do número, o mar deve ser uma área conectada, e quadrados 2×2 de mar são proibidos. O nome vem de um yokai do folclore japonês.</p></details>
+
+    <details><summary>Como jogar Nurikabe online grátis?</summary><p>Toque em uma célula para alternar entre ilha, mar e desconhecido. Comece pelos números e proteja o mar. Jogue agora no GridPaw — <a href="/nurikabe/" style="color:#D97706">versão completa aqui</a>.</p></details>
+
+    <details><summary>Quais estratégias resolvem Nurikabe mais rápido?</summary><p>Três hábitos: esgote cada ilha, proteja o mar de ser dividido ou formar 2×2, e conte o alcance das ilhas inacabadas. Essas três regras resolvem qualquer tabuleiro bem construído.</p></details>
+
+    <details><summary>Preciso chutar no Nurikabe?</summary><p>Não. Tabuleiros bem construídos se resolvem com lógica pura. Todo tabuleiro do GridPaw tem exatamente uma solução, e o botão de dica revela uma célula verdadeira quando você trava.</p></details>
+
+    <details><summary>Nurikabe é mais difícil que Sudoku?</summary><p>São desafios diferentes. Nurikabe tem uma curva mais íngreme pela regra do mar conectado, mas grades pequenas se resolvem em minutos. É um excelente próximo passo para quem já domina Sudoku ou Shikaku.</p></details>
+
+    <div class="cta-box">
+      <p>Mais jogos de lógica com gatos: <a href="/pt-br/nonogram/">Nonogram →</a> &nbsp;·&nbsp; <a href="/pt-br/shikaku/">Shikaku →</a> &nbsp;·&nbsp; <a href="/pt-br/pictomino/">Pictomino →</a></p>
+    </div>
+  </main>
+</body>
+</html>
