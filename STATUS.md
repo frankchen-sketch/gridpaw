@@ -587,6 +587,7 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **r/nonograms 猫图帖上线（10-15 晚）**：https://www.reddit.com/r/nonograms/comments/1x6ejpv/（u/finn_chen_cat，text post，猫显形钩子角度；URL 带 `?utm_source=reddit&utm_medium=post` 绕 Reddit 页面缓存 + GA4 归因）。背景：用户上午测试时 Reddit 已抓过旧 og（缓存旧教学卡图），部署后用新 query 参数强制重抓。sub 选型依据：r/nonograms 近期 10 帖 4 条 solo dev 自荐全活；r/playmygame 模板帖备选未发；r/puzzles 规矩是发谜题不是发站，不碰
 - 评论盯守脚本扩为双帖：`~/.hermes/scripts/webgames-gridpaw-monitor.sh`（cron 312d987f526c 每 2h×48h 复用），新帖 10-15 晚暂 0 评论
 - **新帖首批评论（10-15 晚，回复稿用户已人工贴）**：① u/RobertWesner 问 solvability 验证原理（自述当年 15+ 慢 20 跑不动 + GitHub solver 误判唯一解盘）→ 引擎实测基准（20×20 67ms/attempt，lineSolve 传播 + 数解 cap 2）回复立专业人设；② u/mcfroogle 指控「ads immediately redirect」→ 取证：页面仅 Native+160×600 两单元、代码零 redirect 脚本，判断为 native 落地页链跳，回复要设备/地区并承诺零点击跳转就撤 banner。**升级条件：若确认无点击自动跳 = Adsterra creative 实锤，查 Clarity /nonogram/ 秒退会话，必要时下线该页广告位**
+- **win 静默 bug 修复（10-15 晚，Reddit u/DarkCyborg74 报告，deployment `36ce1665`，回复稿用户已人工贴）**：nonogram `maybeWin()` 原要求所有格子（含空白格标 ✕）才判胜，玩家只涂图案留白即静默无声——实测玩家解对 Heart 5×5 全 16 格无反馈。修复：`pictureComplete()` 图案格全填即胜，✕ 改可选；Playwright e2e 双向验证（16 格零 ✕ 出弹窗 / 少 1 格不误判）。注：填错本就不可能存在（点空格自动转 ✕）。此条 = 10-17「feedback already shipped」第 2 个实锤（教程手势当天修 + 胜利判定当天修）
 
 ## 2026-10-15（下午）murdoku 热度诊断 + 分享归因上线（deployment `7b3eac09`）
 
@@ -599,3 +600,45 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **（同日续）akari 房间生成器上线 + lemmy 归因补全（deployment `af251343`）**：生产含 generateRoomPuzzle（Kitchen/Study/Attic 难度带已在线上 curl 验证）；UTM_SAFE 加 lemmy + buildAttribution 记 utmCampaign 值（分帖归因，5 处同步）；IndexNow 200。**实时漏斗（D1 14:20-15:12）**：murdoku 首位真人通关（first_move×3→level_up×3→share_copy 15:05，lemmy 短链归因特征）；Reddit 安卓 App ×3 进 /nonogram/demo（referrerHost=com.reddit.frontpage，源帖搜不到=评论区链接）；bing 真人 1 分钟通关 L1。**漏斗人数（D1 visitors）**：全期 visit 2543 → game_start 1125(44%) → first_move 275(24%) → level_up 220(80% of movers) → share 9；近 7 天 782→402→70→52→3。**关卡进度**：Shikaku 主线 L1 191 人 → L10 62 → L20 23（每关衰减 ~7%）；murdoku 4x4 破案 6 人 11 次、6x6 无人；登录层极小（6 注册/4 存进度/daily streak 1 人）。疑似小 bug：level=0 的 level_up 23 次 18 人（0 关不存在，待查挂点）
 - **（同日续）Reddit 源帖定位 + Native Banner 暂停（deployment `4c76e69f`）**：r/nonograms 帖 1x6ejpv（finn_chen_cat，14:43 CST）= 英国流量源，帖内 UTM 链接 16:53 首次抓到 reddit 归因 ✓；评论区 mcfroogle 投诉广告跳转 → AdSlot.astro 全站暂停 Native Banner（SideAd iframe 格式保留），HEAD worktree 重建部署防兄弟会话在途改动夹带；评论区 RobertWesner/mcfroogle 已由用户在兄弟会话回帖（草稿未采用）；意外：10-13 chatgpt.com utm 引流 nonogram
 - **（同日续）murdoku 4x4→6x6 难度平滑（deployment `2b7a3a46`，commit `2b32354`）**：断崖真因=6x6 只能手点难度按钮、无递进推力；改动=第 3 次 4x4 破案胜利弹层晋升钩子（localStorage murdoku_wins4/murdoku_promoted 一次性）+ 第 2 案起后台 Worker 预热 6x6（实测点 6x6 48ms 秒开 vs 原 1-2s）+ 生成等待爪印动画分阶段文案。Playwright hint 通道自动破 3 案实测全绿（晋升块出现/6x6 36格5嫌疑人/秒开）。worktree 部署零夹带
+- **（同日续）埋点卡验收通过 + 修复上线（deployment `9a14c83f`）**：t_f751b1bc done（commit `6128d13`：pictomino level 全量 1-based + daily 跳过 level_up 防双计 + demo 三页 tutorial 口径）；worktree 部署，live md5=HEAD 核验一致（注意 /pictomino/game.html 会 308 到 /pictomino/game）。五小游戏无埋点缺口结论采纳——「8% 洼地」系 10-09 前空窗+小样本，待用新窗口重估。徽章卡 t_d4234322 已解锁
+- **（同日续）徽章体系 v1 验收通过 + 上线（deployment `86a7b2ed`，commit `ee7343b`）**：三组 11 枚派生徽章 + GET /api/badges（无 cookie=`{"badges":[],"signedIn":false}` 契约 ✓）+ 三展示位（murdoku/akari/shikaku winOverlay BadgeUnlock+GPBadges.win() 钩子 / GameHub 卡角 / changelog 徽章墙）；gp_event guest_id 索引 migration 0001 已存在无需迁移。worker 自测 4 场景+11 枚阈值逐枚 curl 全过；主会话复核：build 过、live grep 组件/钩子/API 全在。留言墙 t_4423ad7d 解锁。生产=86a7b2ed（含 murdoku 平滑+level 修复+徽章三合一）
+- **（同日续）注册墙降级（deployment `0fc40c3e`，commit `685f9a7`）**：Shikaku L5 阻断式 Sign in 模态框拆除（正卡留存膝盖点），改胜利弹层内被动一行 #saveRow（资产清单一行+下划线链接，只出现一次，sign_in_prompt_shown source=victory_inline）；全站触点对账=Akari 行内面板/changelog 小字行均被动合规，murdoku/pictomino 零触点。⚠️ 事故记录：主会话误把留言墙 worker 未提交的 index.astro 半成品（DetectiveWall import）扫进 commit，reset+重放修正时 --amend 落在 ee7343b（未推送，安全）上——最终 685f9a7=徽章+auth 合一 commit（message 已如实标注），build/部署/线上 grep 全验证。留言墙 worker 改动仍在工作区未提交，勿动
+- **（同日续）留言墙 v1 验收通过 + 上线（deployment `28e0386f`，commit `7521aaa`）**：三红线全绿（Turnstile secret 只走 env/site key 服务端下发不进构建、ip_hash=SHA-256(盐:ip) 不存裸 IP、fail-closed：无 secret 503/siteverify 失败 403）；先审后显 pending+admin 403 实测；**主会话补跑 migration 004（gp_comments 远端建表，worker 按惯例不碰 wrangler）**。线上实测：POST 无闸门直投=not_played ✓、GET 返回 8 条真实破案自动行 ✓。⚠️ 待用户：CF Dashboard 建 Turnstile widget（murdoku/shikaku 域名）→ `wrangler pages secret put TURNSTILE_SITE_KEY / TURNSTILE_SECRET_KEY`（建议顺带 COMMENTS_SALT），配好前评论自动 fail-closed 不影响页面。数据：murdoku 首个 6x6 破案者出现（anon-a3e9853，15:09，早于平滑部署=自发），6x6 零通关改判
+- **（同日续）Turnstile 全链路打通（主会话 API 代建，deployment `dbc18394`）**：wrangler OAuth token 有 Turnstile API 权限，POST /accounts/*/challenges/widgets 建 widget「gridpaw.com comments」（managed，domains=gridpaw.com/www/localhost/127.0.0.1，sitekey 0x4AAAAAAFXiQ7fEWR4kKByr），TURNSTILE_SITE_KEY/TURNSTILE_SECRET_KEY/COMMENTS_SALT 三 secrets 直通上传（temp 文件即毁，值零落库）；重部署后 GET /api/comments 返回 siteKey ✓。⚠️ secret key 只在 CF API 响应出现一次，已直入 wrangler secrets，不入库不入对话——丢失只能 widget rotate。留言墙 worker 另提交 `2f876c7`（样式 is:global 修复，ego 实机验收发现）随包上线
+
+## 2026-10-16 Grow by Mediavine 脚本上线（Journey 前置，commit `28424f8`，deployment `3066d650`）
+
+- **背景**：Mediavine Journey 替代 Adsterra 的前置步骤。门槛=30 天 ≥1,000 premium sessions（US/UK/CA/AU，gridpaw 现 334 / furriq 388，均差 3 倍）+ GA4 绑定 + 品牌安全内容；须先装 Grow 跑满 30 天才进评估，所以现在装=开计时器，申请动作等 premium 流量过线。
+- **账号**：Grow Publisher Portal，Google OAuth a839500525@gmail.com（账号名陈彦帆），一个账号装两站。site id：gridpaw=884b7744-45e8-4317-a497-3e3e69870b36，furriq=6a0a521a-07a1-41db-bffa-03347bd873a2（portal 里 base64 形式）。
+- **注入点**：gridpaw=`src/components/SEOHead.astro`（全站 142 Astro 页，hostname 守卫同 GA4）+ pictomino 12 信息页（有 GA4 就补）；furriq=`src/routes/__root.tsx` head() scripts（appUrl 守卫）。**game.html（play canvas 红线）/404/admin/demo.html 排除**。
+- **Adsterra 不摘**：Journey 过审拿脚本上线前它是唯一进账线；过审后再替换。
+- **坑**：① 注入发生在 build 之后 dist 不更新——先注入再 build 再 deploy，否则线上缺脚本；② CF Pages 自定义域名边缘缓存在新旧部署间抖动几分钟（带 cb curl 读数时好时坏），以部署 URL（3066d650.gridpaw.pages.dev）读数为准；③ Grow 官方 snippet 有 data-grow-initializer 标记属性，gridpaw 版本是功能等价的内联函数，portal 靠 main.js 里的 site id 检测不靠该属性。
+
+## 2026-10-16（cron）Murdoku 漏斗 48h 复查（GA4 pagePath 数据已进齐；10-16 数据未进）
+
+**结论前置：10-14/10-15 两次 pagePath=0 是查询 bug 非数据缺失（andGroup 里 6 个 eventName EXACT 串成 AND 永假返空，orGroup 修正后数据齐）；真实漏斗 = internal 过滤生效后的干净数据，game_start→first_move 断层（1/11）但样本个位数 + 10-16 未进，维持 reading 不下因果。**
+
+| 事件（pagePath EXACT /murdoku/，internal 过滤后） | 10-14 | 10-15 | 10-16 |
+|---|---|---|---|
+| game_start | 3（1 user，France Firefox） | 11（8 users，8 国分散） | 数据未进 |
+| first_move | 0 | 1（1 user） | 数据未进 |
+| level_up | 0 | 1（1 user） | 数据未进 |
+| share_* | 0 | 0 | 数据未进 |
+
+- **自测过滤实证（第三次复核）**：10-14 murdoku game_start=3 全来自 France desktop Firefox 1 user（非法老 fresh Chromium 指纹）→ internal 过滤器 10-14 起生效，任务背景里「10-14 自测 ~5-10 game_start」已被滤掉，无需减法。唯一未决：10-15 China desktop Chrome 3 game_start 1 user——疑似代理出口换节点未进 internal 规则（规则现仅家宽 CIDR 14.19.8.76/32），量级 3 影响小；下次 CN 簇扩大先追加出口 CIDR 再读数
+- **落地会话**：10-14 = 1 sess engaged=1（France Firefox 真人开局玩）；10-15 = 6 sess（desktop 3 + mobile 3）engaged=0——10-15 全站 engaged 处理滞后（见下），game_start 事件在 = 非空转
+- **来源**：10-15 lemmy social 1 sess（lemmy 短链归因通路已验证，真实获客信号）+ direct 1 + (not set) 1 + (data not available) 3
+- **红旗复核**：10-13 engaged=12/29、10-14=16/29 已恢复（此前滞后判读正确）；10-15 全站 51 sess engaged=0 + 大量 (data not available) 行 + 10-16 整天无数据 = 处理滞后非 bot 簇（未命中「单日暴量+落地页集中+单页率>90%」三口径）；此前 (not set) ~20 会话定性改判：10-15 (not set) 32 sess 分散 8+ 国多设备 engaged=0 = 归因滞后，非单一 bot 簇，10-17 复看
+- **转化读数（reading）**：game_start→first_move 10-15 = 1/11（9%）——个位数样本不下强结论；D1 侧 10-15 已见首位真人全漏斗通关（first_move×3→level_up×3→share_copy，见 10-15 续记），GA4 与 D1 不矛盾，首周小量=常态
+- **分享 CTA**：10-12~16 全窗 GA4 share_* = 0（D1 侧 share_copy 已见真人触发）
+- 查询坑已沉淀进 skill ga4-data-access（andGroup 同字段多 EXACT 永假返空 + landingPage/pagePath 尾斜杠极性不同 + orderBys 400）
+
+## 2026-10-16（下午）游戏数据真源切 D1，GA4 过滤判不可靠（法老拍板）
+
+**结论前置：GA4 作 gridpaw 游戏数据源不可靠——gtag 请求走 googletagmanager 域，被广告拦截器整段挡掉，Internal Traffic 过滤器只救「已知 IP 的 gtag 流量」，救不回被拦截器丢掉的真人事件。实证：murdoku 7 天 first_move GA4=1 vs D1 同期=27（差 27 倍，lemmy/Reddit 用户大概率挂 uBlock）。D1 gp_event 是同源 fetch 第一方落库，两个失真源（拦截器丢包、Data API 无 trafficType + 24-48h 延迟）都不沾。**
+
+- **拍板**：日报游戏数据全切 D1。落地：`funnel_daily_snapshot.py` gridpaw 分支吃 `gp_event`（stages=visit→game_start→first_move→level_up→daily_solved，source=D1，bot_check 仅 GA4 站保留）；`gridpaw_games_funnel.py` 重写 D1 版（单查询三窗口 SUM CASE，按 pagePath 前缀聚合，wrangler 借 furriq 仓二进制——gridpaw node_modules 没装）；渲染器漏斗标题跟随 source 字段
+- **口径注意**：① D1 含自测（自测走真浏览器真 UA，无法按 IP 剔，读数时心里有数）；② pagePath 进 metadata 是 10-15 上线（funnel-track.ts 二补），**此前事件无 pagePath，游戏路径聚合只覆盖 10-15 之后**（首日 7 日列偏小是口径不是 bug，约 10-22 起自动齐）；③ furriq D1（cat_breed_event）缺 result_view/pricing_page_view/signup_success 三段（GA4-only 埋点），混源假漏斗，furriq 暂留 GA4 待补埋点再切；hexa 无事件表同留
+- **首日 D1 真数（10-15）**：gridpaw visit 246 / game_start 165 / first_move 56 / level_up 108 / daily_solved 7——全面高于 GA4 口径，符合拦截器丢包预期。murdoku 19 会话 11 动手（58%）10 过案共 25 次，与 GA4「14 进入 1 动手」天壤之别，此前「murdoku 留存崩」的 reading 作废（那是 GA4+自测混合口径）
+- **GA4 侧已做的修补不白做**：Internal Traffic 过滤器（mini 出口 108.181.6.175 等）仍挡自测 game_start 混入，GA4 作为参考口径继续并行
+- **（同日续）murdoku first_move「打点缺失」排查闭环**：线上 HTML 有代码 ✓、track() 实现 ✓、真实玩家全漏斗 ✓——不是 bug，是 GA4 单源失真 + 自测污染的叠加误读
