@@ -652,3 +652,7 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **埋点**：game_start(visibility 门控)/first_move/hint_click/level_up/puzzle_reset，5 个事件全部在 FUNNEL_EVENTS 白名单内（当日核对）→ **D1 真源 + GA4/posthog/clarity 参考口径**（§同日 D1 判定），读数时 D1 含自测心里有数
 - **验收**：Playwright 双端 + vision 复核全绿零控制台错误（本地 dist + 线上两层）；部署后边缘缓存曾供旧部署 HTML（age 2h、引用已删 CSS hash），传播窗口内自愈，未到手动 Purge
 - 明细+开发过程 → `NEWWORD-LEDGER.md` 可玩版节；换肤预览与竞品对比稿在 scratch（未入库）
+
+## 2026-10-16（傍晚）方案 C 一期：/meowdoku/ hub + 10 关卡页 + 星级评价（deploy `9de6af5c`，commit `d5cdb73`）
+
+**用户拍板铺 10 关 + 评分 CTA**：`/meowdoku/` hub（随机盘 + 关卡导航 + FAQ schema）+ `/meowdoku/levels/1..10/` 固定盘页（seed=关卡号，引擎验唯一，答案坐标预计算 `src/data/meowdoku-levels.json` 折叠展示）。可玩模块抽 `MeowdokuPlay.astro` 组件（guide 页同步切组件），`StarRating.astro` 评分组件试点（rate_submit 走 D1 双白名单）。fan-made 注脚全页面保留。验收 Playwright 四端全绿；12 URL IndexNow 200。观察点：rate_submit 量/stars 分布决定是否铺 50-100 关。明细 → `NEWWORD-LEDGER.md` 方案 C 节。
