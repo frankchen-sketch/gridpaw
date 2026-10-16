@@ -2,7 +2,7 @@
 
 cron（job 1329cf1d31a5）去重真源。状态：`reported`（已报告未动工）→ `deployed`（落地页已上线）→ `dropped`（判定放弃，含原因）。
 
-**cron 状态（2026-10-11 用户决策：降频收窄为「窄管」）**：每天 2 轮（早 8 + 晚 8），prompt v3——哥飞服务管搜索侧广度（500+ 词根日扫），cron 管深度和私有情报线：T1 品牌词族监控（核心）+ B 主题根窄扫 + 哥飞结果独立校验（限免期对照实验）。A 层品类根广扫已砍。本表 = 全部新词线索的唯一去重真源。
+**cron 状态（2026-10-16 用户决策：B 根砍掉，收窄为「T1 专用窄管 v4」）**：每天 2 轮（早 8 + 晚 8），prompt v4——哥飞服务管搜索侧广度（500+ 词根日扫），cron 只管 T1 品牌词族监控 + 每周一 Play dev 页新品巡查。v3 的 B 主题根窄扫（cat/game 泛词根 5 根轮完 3 遍零有效词）经用户拍板砍除；A 层品类根广扫 10-11 已砍。本表 = 全部新词线索的唯一去重真源。
 
 ## 发现层分工（三路互补，产出全部落本表防重复挖）
 
@@ -11,7 +11,7 @@ cron（job 1329cf1d31a5）去重真源。状态：`reported`（已报告未动�
 | **哥飞新词发现服务**（web.cafe 数据服务） | 搜索侧：500+ 词根日扫，已判值不值得做（新词/二次爆火老词/长期大词） | 每日（数据方更新） | 兄弟会话维护 webcafe 新词服务记录；限免期评估中 |
 | **移动端品类反推**（供给侧） | 从 Play 品类搜索反推监控开发者 → 新游戏 → 品牌词族（含 help 词），比搜索信号早 1-4 周 | 每周一次人肉 | `DEV-MONITOR.md`（T1/T2/霸主名单 + SOP + 收录标准） |
 | **人工喂词** | 群聊/竞品/突发 | 随时 | 直接进本表 |
-| **cron 雷达（窄管 v3）** | T1 品牌词族 0→非0 监控（核心）+ cat 主题根窄扫 + 哥飞结果独立校验（对照实验定续费） | 每天 2 轮（8 点/20 点） | job `1329cf1d31a5`，25 分/轮 |
+| **cron 雷达（窄管 v4）** | T1 品牌词族 0→非0 监控（核心）+ 每周一 Play dev 页新品巡查 | 每天 2 轮（8 点/20 点） | job `1329cf1d31a5`，25 分/轮 |
 
 两条主线的互补关系：哥飞服务 = 搜索侧需求的"已冒头"信号（覆盖广、滞后于 App 上架）；品类反推 = 供给侧的"会冒头"信号（开发者新品确定、词族可预测、可提前建页）；cron 窄管 = 私有情报线（T1 词族是哥飞不知道我们监控谁的那部分）。同词两路命中 = 最高优先级。
 
@@ -36,7 +36,7 @@ cron（job 1329cf1d31a5）去重真源。状态：`reported`（已报告未动�
 | 2026-10-14 | T1词族复核（10词） | — | — | 无新信号（零信号行）；快照最新仍 2026-08 | t1-monitor | T1监控 | amaze go 6600 / amaze go game 1000 / meowdoku 60500 / meowdoku hints 480 / arrows puzzle 5400 全部维持上轮快照，**09 月数据第 8 轮盯守仍未出场**；amaze go hints/levels/walkthrough 第 8 次 null，help 词族仍未成形；B 根跳过（挂起不变）；余额 3326，差额 52 疑他路消耗（持续记 risk） |
 | 2026-10-15 | T1词族复核（10词） | — | — | 无新信号（零信号行）；快照最新仍 2026-08 | t1-monitor | T1监控 | amaze go 6600 / amaze go game 1000 / meowdoku 60500 / meowdoku hints 480 / arrows puzzle 5400 全部维持上轮快照，**09 月数据第 10 轮盯守仍未出场**；amaze go hints/levels/walkthrough 第 10 次 null，help 词族仍未成形；B 根跳过（挂起不变，已 84h+）；余额 3278，差额 35（上轮 3 → 本轮 35，非单调反弹，兄弟会话间歇消耗特征） |
 | 2026-10-16 | T1词族复核（10词） | — | — | 无新信号（零信号行）；快照最新仍 2026-08 | t1-monitor | T1监控 | amaze go 6600 / amaze go game 1000 / meowdoku 60500 / meowdoku hints 480 / arrows puzzle 5400 全部维持上轮快照，**09 月数据第 11 轮盯守仍未出场**；amaze go hints/levels/walkthrough 第 11 次 null，help 词族仍未成形；B 根跳过（挂起不变，已 96h+）；**余额 3273，差额 0 完全对账**（52→3→35 波动后首次归零，疑计价时点差异非真泄漏） |
-| 2026-10-16 | connect tracks | 规划师 null | 未查 | 词未成形（规划师 3 词全 null：connect tracks / connect tracks puzzle / track puzzle game） | reported | 品类反推补扫 | **Oakever 新品 Connect Tracks: Logic Puzzle（com.oakever.traintrack，2026-08-07 上架，100K+ 下载，10-15 仍周更）**。dev 页补扫发现，台账此前漏记。词族未成形 = meowdoku/arrows 早期同款状态；Oakever 已在 T1，随 T1 词族监控顺带盯 connect tracks 词族 0→非0，成形再走四道闸。**10-16 深查（趋势+Reddit+SERP）**：① Trends 12m 对比（vs arrows/meowdoku）：**非新词**——窗口前就有热度（25-10 起 6-13 平稳，峰 25-12-07=13，早于游戏上架），近 13 周均 4.6 略高于 arrows puzzle（3.8）但处回落期；90d 内 2026-09-20 一次性尖峰（50）后回 6-9 基线，无品牌爬升；② Reddit 品牌热度≈0：pullpush 提交+评论全噪音（Garmin/实体火车轨/嘻哈），唯一真信号 = 10-11 r/beschissene_Werbungen 德语帖抱怨游戏内广告；r/puzzles 两帖「train tracks」求助（25-12-06、26-08-10）指向的是经典 TrainTracks 品类非本作；③ **Solver 位已被占**：puzzlegamemaster.com/connect-tracks-answers-solver/ 已挂 All Levels solver——2017 年注册的老域名改行（WHOIS 2025-10-11 变更），DR 待测；YouTube 已有 Level 80 walkthrough 等多条；④ Bing SERP 被 McGraw Hill/Pearson 教育平台「Connect」污染，词义歧义重。**维持观察不动工**；升级触发 = 词族 0→非0 且 solver 对手仍单薄（现对手是老域名改行，不是 arrows-puzzle.com 那种 fresh EMD，反而更硬） |
+| 2026-10-16 | connect tracks | 规划师 null | 未查 | 词未成形（规划师 3 词全 null：connect tracks / connect tracks puzzle / track puzzle game）；趋势+Reddit+SERP 深查均无热度 | dropped | 品类反推补扫 | **Oakever 新品 Connect Tracks: Logic Puzzle（com.oakever.traintrack，2026-08-07 上架，100K+ 下载）**。深查证据：① Trends 12m 非新词（窗口前已有 6-13 平稳底噪，峰 25-12-07，早于上架），无品牌爬升，90d 内 9-20 一次性尖峰后回落；② Reddit 品牌热度≈0（pullpush 全噪音，唯一真信号 = 10-11 德语广告吐槽帖；r/puzzles 的 train tracks 帖指向经典品类非本作）；③ Solver 位已被 2017 年老域名 puzzlegamemaster.com 改行占住，YouTube 已有 walkthrough；④ Bing SERP 被教育平台「Connect」污染。**2026-10-16 用户拍板放弃**（「先算了」），本轮积分（~20）留档防止重复挖。若 Oakever 对其放量买量使词族 0→非0，需重新走四道闸再议 |
 | 2026-10-16 | tile explorer | 5,400 | 63.4 | 老词稳盘：25-09 至 26-08 维持 4,400-8,100 无爬升；LOW 竞争 | dropped | 品类反推补扫 | Tile Explorer - Triple Match（com.oakever.tiletrip，2024-05 上架，**100M+ 下载**）。品牌词盘面平台生态 6-7 固定位，可竞争位仅 3（最弱 uptodown 内页 DR 83）；衍生内容链接预算 110-230 引用域，远超阈值 → 不值，判例同 woody block puzzle 但更贵。100M 装 ≠ 可承接，反向印证「安装量 ≠ 搜索机会」 |
 
 ## 词根轮换记录（防重复烧积分）
@@ -82,3 +82,4 @@ cron（job 1329cf1d31a5）去重真源。状态：`reported`（已报告未动�
 - **红线**：fan-made disclaimer + not affiliated with Oakever 写进模块；URL 未新增；棋盘 488px 桌面/263px 移动均在 840px 内容列内居中，不碰 SideAd。
 - **验收（Playwright 双端 + vision 复核，全绿零控制台错误）**：36 格渲染、点击循环 ✕→猫→清空、违规闪红扣心、hint 亮绿格报坐标、6 猫触发 win 弹层（锁盘）、Next board 换盘、Reset 清盘；移动端 390px 无横向溢出（board 28.8→361.2px，scrollWidth=390），tap 循环正常；win 弹层导流 /star-battle/ 与首页 Shikaku。
 - **注意**：win 后弹层内 "new board →" 为页内按钮非新 URL；`puzzle_reset` 不在 D1 白名单（仅 GA4/posthog/clarity）。验收脚本 `~/.hermes/cache/scratch/verify-meow-play.py`。
+- **猫图标 C 方案入库（2026-10-16，用户选定）**：`public/meowdoku-guide/cat-icon.png`（256px 透明底 PNG，41KB；1024px master 在 `design/meowdoku-cat-icon-master.png`（design/ 非发布目录））。来源 = Gemini 生成扁平猫脸（琥珀+奶油白，暖色 palette），色度键抠底（55/105 羽化）+ 3% padding 正方形化。`.pc .catp` 与答案演示区 `.cat` 均已切到自有资产，**官方 cat-sprite.png 已全站归零并删除（git rm）——sprite 版权雷清除**。vision 复核：抠图干净无白边、五官完整、32-46px 可读。
