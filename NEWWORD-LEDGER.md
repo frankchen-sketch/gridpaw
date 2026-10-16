@@ -74,9 +74,9 @@ cron（job 1329cf1d31a5）去重真源。状态：`reported`（已报告未动�
 - 快照库查不到 ≠ 没人搜：真空期新词必须换证据（serp 实测 + google_trends 看出现时间）
 - 调价纪律：贵工具（keyword_ideas/site_keywords/site_history）一轮合计 ≤3 次；预计一轮 30 分以上先问用户
 
-## 可玩版：/meowdoku-guide/ 页内嵌 Meowdoku 式棋盘（2026-10-16 上线代码，未部署）
+## 可玩版：/meowdoku-guide/ 页内嵌 Meowdoku 式棋盘（2026-10-16 已部署上线）
 
-- **方案 B 落地**：star-battle 引擎 K=1（`generate(6,1,'easy',seed)`）+ 猫皮肤（复用 `/meowdoku-guide/cat-sprite.png`）+ 3 血机制，嵌在 guide 页 Controls 段之后（首屏第 2 屏）。零新引擎、零新依赖。
+- **方案 B 落地**：star-battle 引擎 K=1（`generate(6,1,'easy',seed)`）+ 自有猫图标 + 3 血机制，嵌在 guide 页 Controls 段之后（首屏第 2 屏）。零新引擎、零新依赖。
 - **对位竞品四缝**：①每盘 `generate` 程序验证唯一解 + 徽章显示（打竞品「随机盘答案对不上」死穴）②Hint 直接亮唯一绿格+报 R行C列 ③违规红闪回退扣心（Nurikabe 双向纠错范式）④无限关生成器。
 - **打点**：game_start（visibility 门控）/ first_move / hint_click / level_up / puzzle_reset，全走 gtag+posthog+clarity+gpTrack 四通道，level=盘号、difficulty='easy 6x6'。
 - **红线**：fan-made disclaimer + not affiliated with Oakever 写进模块；URL 未新增；棋盘 488px 桌面/263px 移动均在 840px 内容列内居中，不碰 SideAd。
