@@ -242,7 +242,7 @@ SERP 盘面调研（`research/2026-09-20_要打的词SERP竞品盘面.md`）后�
 
 ## 四、下一步（按优先级）
 
-0. **10/17 内页攻略战复查**（§八）：meowdoku-guide 日曝光 <15 或 arrows 双页停 9 不动 → 给 walkthrough 加内链权重（外链结构验证已完成，见 §八外链策略）
+0. **11-07 收 28 天验证窗**（§八，5 新页 2026-10-10 上线）：10-16 二次读数已提前通过复查（712 imp/8 clk/CTR 1.1%，meowdoku 日曝光 ~39 > 阈值 15，arrows 双页 6.2 仍在涨，详见 NEWWORD-LEDGER.md）——下一步看 arrows 双页进前 3-5 + 样本 ≥50 再动页面结构；**同窗观察 meowdoku-guide 可玩棋盘（2026-10-16 上线）的 D1 真源转化**：google 来源均时长 11s 短板有没有被可玩盘拉起来
 1. **对账 Pages 报告 27 条「已发现不抓取」URL × sitemap 68 条**（GSC UI 导出，API 不出清单）→ 定性后再决定是否 404，禁止在交集弄清前下架（§二.7）
 2. **10/3 复查 how-to-solve 新 Title CTR**（one-shot cron 已设，读数须剔除 `akari or step back` 工具流量），仍 0 真人点击则上备选文案（§二.7）
 3. 让 cron 继续跑 Request Indexing 至 repeat 用完（9/30 前后），2–4 周后复盘索引与曝光
@@ -642,3 +642,13 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **首日 D1 真数（10-15）**：gridpaw visit 246 / game_start 165 / first_move 56 / level_up 108 / daily_solved 7——全面高于 GA4 口径，符合拦截器丢包预期。murdoku 19 会话 11 动手（58%）10 过案共 25 次，与 GA4「14 进入 1 动手」天壤之别，此前「murdoku 留存崩」的 reading 作废（那是 GA4+自测混合口径）
 - **GA4 侧已做的修补不白做**：Internal Traffic 过滤器（mini 出口 108.181.6.175 等）仍挡自测 game_start 混入，GA4 作为参考口径继续并行
 - **（同日续）murdoku first_move「打点缺失」排查闭环**：线上 HTML 有代码 ✓、track() 实现 ✓、真实玩家全漏斗 ✓——不是 bug，是 GA4 单源失真 + 自测污染的叠加误读
+
+## 2026-10-16（下午）meowdoku-guide 可玩棋盘上线（deployment `99816d0f`，commit `715634e`）
+
+**方案 B 落地**：star-battle 引擎 K=1（`generate(6,1,'easy',seed)`）+ 自有猫图标嵌进 /meowdoku-guide/（Controls 段后首屏第 2 屏），零新引擎。对位竞品四缝：每盘唯一解徽章（打「随机盘答案对不上」死穴）/ Hint 直接亮绿格报行列 / 违规红闪回退扣心 / 无限关生成器。fan-made + not affiliated with Oakever 注脚，URL 未新增，棋盘 488px 守 840px 内容列契约。
+
+- **开发中修的两个 bug**（Playwright 验收抓的 + 用户实机抓的）：①✕ 陷阱——✕ 状态格放猫违规时永远卡死在 ✕ 无法取消，修为违规即回退为空（闪红+扣心不变，任何格 3 下必能清空）；②棋盘未居中——grid 容器盒子占满宽、固定轨道靠左（右侧 185px 死空间），`justify-content:center` 修；教训已沉淀 skill astro-static-site-pitfalls（量容器≠量内容，验收量首末格对称性）
+- **猫图标 C 方案入库**（用户选定，Gemini 扁平猫脸琥珀+奶油白）：`public/meowdoku-guide/cat-icon.png`（256px 透明底）+ master `design/meowdoku-cat-icon-master.png`；`.catp` 与答案演示区 `.cat` 全切自有资产，**官方 cat-sprite.png 全站归零并删除——sprite 版权雷清除**
+- **埋点**：game_start(visibility 门控)/first_move/hint_click/level_up/puzzle_reset，5 个事件全部在 FUNNEL_EVENTS 白名单内（当日核对）→ **D1 真源 + GA4/posthog/clarity 参考口径**（§同日 D1 判定），读数时 D1 含自测心里有数
+- **验收**：Playwright 双端 + vision 复核全绿零控制台错误（本地 dist + 线上两层）；部署后边缘缓存曾供旧部署 HTML（age 2h、引用已删 CSS hash），传播窗口内自愈，未到手动 Purge
+- 明细+开发过程 → `NEWWORD-LEDGER.md` 可玩版节；换肤预览与竞品对比稿在 scratch（未入库）
