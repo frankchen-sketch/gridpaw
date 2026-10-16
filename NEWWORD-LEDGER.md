@@ -92,6 +92,7 @@ cron（job 1329cf1d31a5）去重真源。状态：`reported`（已报告未动�
 - **组件化**：可玩模块抽 `src/components/MeowdokuPlay.astro`（random/level 双模式；样式 is:global + `.mzplay` 命名空间——JS 渲染行 scoped 失配是 AGENTS 已知坑）；guide 页同步切组件（旧内联 ~200 行删除）；`StarRating.astro` 可复用。游戏逻辑与 guide 版一致（✕ 回退/3 心/Hint 绿格）。
 - **打点**：新增 `rate_submit {game, level, stars}`，**funnel-track.ts + functions/api/_funnel-sql.ts 双白名单同加**（只加一侧会 400）；关卡模式 level=关卡号（固定），hub 随机模式 level=盘号。win 导流改为「下一关 → / hub / guide」。
 - **导航**：GameSwitcher（game 页头）与 GameNav（content 页头）双表补 meowdoku——**GameNav 双写债已注释标记**，收敛方向=GameNav 复用 GameSwitcher（未做，控范围）。
+  - **影响面实测（2026-10-16 neat 收尾修正）**：GameNav 被 17 页 import（content/guide/de/help），GameSwitcher 被 33 页 import（游戏页）。**两组件数组不是同一份列表的复制品，按设计就不同**：GameNav 混排游戏+内容页链接（arrows-puzzle/block-blast-hints/cross-math 等，给内容页头部），GameSwitcher 纯游戏列表（binary/hashi/kenken/murdoku/slitherlink/star-battle）。**盲收敛（GameNav 复用 GameSwitcher）会改 17 个内容页的导航语义**（丢内容页链接、混入纯游戏项）——不推荐。真正待决二选一：A. 不动（加游戏时两处改，注释已锚点，游戏频率低，零风险）／B. 数据源化：抽 `src/data/games-nav.ts` 单源，两组件各自引用过滤取字段（加游戏只改一处，导航语义不变，改动 ~4 文件）。待用户拍板。
 - **验收**：Playwright hub/level1/guide 回归/移动端 390px 全绿零错误（轨道 28/28 对称）；schema JSON build 产物逐块解析过；线上 cache-bust 3 URL 200 + L5 答案精确命中。验收脚本 `design/qa/verify-meow-hub.py`（仓库留档）。
 - **索引**：12 URL（hub+10 关+guide）批量 IndexNow HTTP 200；sitemap 自动收录（@astrojs/sitemap）。
 - **后续观察**（11-07 收窗）：rate_submit 量与 stars 分布 = 用户兴趣信号；levels/N 的 GSC 曝光决定是否铺到 50-100 关。
