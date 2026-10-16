@@ -118,6 +118,22 @@ const articleJsonLd = type === 'article' ? {
 <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
 {articleJsonLd && <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />}
 
+<!-- Grow by Mediavine（Journey 前置：须先跑满 30 天才能申请评估）。
+     与 GA4 同口径：非生产域名静默，避免预览/自测污染 Grow 端数据。 -->
+<script is:inline>
+  (function () {
+    if (!/(^|\.)gridpaw\.com$/.test(location.hostname)) return;
+    !(function () {
+      window.growMe || ((window.growMe = function (e) { window.growMe._.push(e); }), (window.growMe._ = []));
+      var e = document.createElement('script');
+      (e.type = 'text/javascript'), (e.src = 'https://faves.grow.me/main.js'), (e.defer = !0);
+      e.setAttribute('data-grow-faves-site-id', 'U2l0ZTo4ODRiNzc0NC00NWU4LTQzMTctYTQ5Ny0zZTNlNjk4NzBiMzY=');
+      var t = document.getElementsByTagName('script')[0];
+      t.parentNode.insertBefore(e, t);
+    })();
+  })();
+</script>
+
 <!-- Analytics (GA4 + Clarity + PostHog) — 只有生产域名上报，dev/预览域静默 -->
 <script define:vars={{ ga4Id, clarityId, posthogKey }}>
   (function () {
