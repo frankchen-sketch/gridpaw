@@ -95,3 +95,4 @@ cron（job 1329cf1d31a5）去重真源。状态：`reported`（已报告未动�
 - **验收**：Playwright hub/level1/guide 回归/移动端 390px 全绿零错误（轨道 28/28 对称）；schema JSON build 产物逐块解析过；线上 cache-bust 3 URL 200 + L5 答案精确命中。验收脚本 `~/.hermes/cache/scratch/verify-meow-hub.py`（临时）。
 - **索引**：12 URL（hub+10 关+guide）批量 IndexNow HTTP 200；sitemap 自动收录（@astrojs/sitemap）。
 - **后续观察**（11-07 收窗）：rate_submit 量与 stars 分布 = 用户兴趣信号；levels/N 的 GSC 曝光决定是否铺到 50-100 关。
+- **game_start 时序 bug（2026-10-16 傍晚修复，deploy `1b4f3b2c`）**：内联脚本解析时立即 newBoard→fireGameStart，而 gpTrack 由 SEOHead module 延迟赋值（module 晚于内联脚本）→ 首盘 game_start 只进 GA4 不进 D1。线上 D1 实证：visit/hint_click/rate_submit 都在、game_start 全缺。修法：gpTrack 未就位时挂 window load 补发。E2E 验证：线上加载 levels/9 → D1 出现 game_start{level:9}。⚠️ murdoku/其他游戏页若有同样「内联脚本立即发 game_start」的模式则同病，排查时按此签名查。教训：本地打点验收用 init-script stub 会掩盖 module 延迟赋值时序，必须线上 D1 端到端验。验收脚本 design/qa/verify-meow-gs-d1.py + verify-meow-rate-d1.py。
