@@ -1,0 +1,160 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import AdSlot from '../../components/AdSlot.astro';
+// TODO: PT 词表待人工审校
+
+const title = "Kakuro Online Grátis — Jogo de Lógica de Somas Cruzadas | GridPaw";
+const description = "Jogue Kakuro online grátis: o palavras-cruzadas com números. Somas que se cruzam, sem repetir dígitos. Com tutorial, 11 níveis e modo névoa exclusivo — sem download.";
+
+const faqJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "O que é Kakuro?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Kakuro, também chamado de Somas Cruzadas (Cross Sums), é um jogo de lógica japonês frequentemente descrito como um palavras-cruzadas matemático. Cada sequência de células brancas deve somar o valor da dica no início, e nenhum dígito pode se repetir dentro da mesma sequência. Kakuro parece Sudoku, mas joga com combinações de soma em vez de regras de posicionamento."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Como jogar Kakuro?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Toque em qualquer célula branca e depois toque em um dígito no teclado numérico. Cada célula pertence a duas sequências: uma horizontal e uma vertical. Ambas devem atingir a soma da dica sem dígitos repetidos. O teclado marca dígitos que seriam repetição (riscados) ou que estourariam a soma restante (em vermelho), então você aprende as regras jogando."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Kakuro é mais difícil que Sudoku?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "É diferente, não necessariamente mais difícil. Sudoku testa eliminação em linhas, colunas e blocos; Kakuro testa combinações de soma. Resolver começa com aritmética de dicas — saber que 17 em duas células só pode ser 8+9. Iniciantes geralmente acham nosso tutorial de 4 passos suficiente para começar a resolver com confiança."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Este jogo de Kakuro é gratuito?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Sim. Todos os níveis, o modo névoa e os puzzles diários são gratuitos no navegador, sem download e sem cadastro. As espiadas na névoa e as dicas vêm com tolerâncias gratuitas por nível."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "O que é o modo névoa?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "O modo névoa é uma inovação do GridPaw para Kakuro que nenhum outro site oferece. A partir do Nível 4, parte do tabuleiro fica oculta sob uma névoa com patinhas de gato. Resolva o bloco visível corretamente e a névoa se levanta. Cada tabuleiro com névoa tem exatamente uma solução garantida."
+        }
+      }
+    ]
+  }
+];
+---
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/pt-br/kakuro"
+    type="article"
+    breadcrumbTitle="Kakuro em Português"
+  />
+  <link rel="alternate" hreflang="pt-BR" href="https://gridpaw.com/pt-br/kakuro/" />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/kakuro/" />
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/kakuro/" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    body { font-family: 'Nunito', sans-serif; background: #FFF8F0; color: #3D3229; margin: 0; }
+    main { max-width: 52.5rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+    .breadcrumb { max-width: 52.5rem; margin: 0.75rem auto 0; padding: 0 1rem; font-size: 0.85rem; color: #8A7A6A; }
+    .breadcrumb a { color: #D97706; text-decoration: none; }
+    h1 { font-size: 1.9rem; line-height: 1.25; margin: 0.75rem 0 1rem; }
+    h2 { font-size: 1.35rem; margin: 1.8rem 0 0.6rem; }
+    p, li { line-height: 1.65; font-size: 1rem; }
+    .cta-box { background: #FFF; border: 2px solid #F0E4D4; border-radius: 12px; padding: 0.9rem 1.1rem; margin: 1.2rem 0; }
+    .cta-box a { color: #D97706; font-weight: 800; text-decoration: none; }
+    details { background: #FFF; border: 1px solid #F0E4D4; border-radius: 10px; padding: 0.7rem 1rem; margin: 0.6rem 0; }
+    summary { font-weight: 800; cursor: pointer; }
+    iframe { border: 0; border-radius: 16px; display: block; background: #fff8ef; }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Trilha de navegação"><a href="/pt-br/">Início</a> &gt; Kakuro online</nav>
+
+  <main>
+    <h1>Kakuro Online Grátis — Somas Cruzadas, o Palavras-Cruzadas dos Números</h1>
+
+    <p>Kakuro é o palavras-cruzadas matemático dos jogos de lógica japoneses: cada sequência de células brancas deve somar exatamente o valor da dica no início da sequência, e nenhum dígito pode se repetir dentro dela. Parece simples — e o conceito realmente é. Mas as combinações possíveis criam uma profundidade estratégica que rivaliza com qualquer puzzle da família Nikoli. Aprenda em quatro lições guiadas, complete uma campanha de 11 níveis e depois enfrente o modo névoa exclusivo do GridPaw. Tudo no navegador, grátis e sem cadastro.</p>
+
+    <h2>Jogue Kakuro — direto no navegador</h2>
+
+    <div style="margin:1.5rem 0;text-align:center">
+      <p style="font-weight:700;margin-bottom:0.5rem">Um puzzle Kakuro para jogar agora:</p>
+      <iframe
+        src="/kakuro/demo.html?embed=1"
+        title="Jogue Kakuro online grátis no GridPaw"
+        width="100%"
+        height="780"
+      ></iframe>
+      <p style="font-size:0.9rem;margin-top:0.4rem"><a href="/kakuro/" style="color:#D97706;font-weight:800">Versão completa com todos os níveis e modo névoa →</a></p>
+    </div>
+
+    <h2>Como Jogar Kakuro em 3 Regras</h2>
+
+    <ol style="line-height:1.65">
+      <li><strong>Sequências devem somar a dica.</strong> Uma dica fica onde a sequência começa: o número abaixo e à direita de uma célula preta pertence à sequência branca à sua direita; o número acima e à esquerda pertence à sequência abaixo. Preencha a sequência de modo que os dígitos somem exatamente aquele valor.</li>
+      <li><strong>Nenhum dígito se repete na mesma sequência.</strong> Uma sequência de três células com 3, 3, 4 está sempre errada, mesmo que a soma bata. No máximo um de cada dígito por sequência.</li>
+      <li><strong>Use lógica de soma, não chutes.</strong> Algumas dicas revelam combinações na hora: 17 em duas células só pode ser 8+9; 3 em duas células só pode ser 1+2. Comece por essas sequências forçadas e o resto do tabuleiro se resolve.</li>
+    </ol>
+
+    <h2>Modo Névoa: Nossa Inovação no Kakuro</h2>
+
+    <p>Sites de Kakuro clássicos te dão uma grade e um cronômetro. O GridPaw vai além: a partir do primeiro nível Médio, o tabuleiro é dividido em blocos, e o bloco distante fica oculto sob uma névoa decorada com patinhas de gato. Resolva o bloco visível corretamente e a névoa se levanta, revelando uma metade fresca do puzzle. Como os blocos nunca compartilham a mesma sequência, cada tabuleiro com névoa é verificado para ter exatamente uma solução — a revelação nunca te deixa preso.</p>
+
+    <p>Cada nível com névoa inclui espiadas gratuitas para iluminar uma célula, e o botão de dica aponta a célula mais inteligente para preencher. O tutorial e os três primeiros níveis Fácil ensinam as regras puras primeiro, para que a névoa pareça uma recompensa, não um obstáculo.</p>
+
+    <h2>Níveis, Progresso e Puzzles Diários</h2>
+
+    <p>A campanha tem 4 lições de tutorial seguidas de 11 níveis: três tabuleiros Fácil 5×5, quatro Médio 6×6 com névoa e quatro Difícil 7×7 com névoa. Seu progresso fica salvo no navegador — você pode sair e voltar quando quiser. Depois da campanha, puzzles diários infinitos continuam chegando: um tabuleiro gerado pela data do dia, igual para todos os jogadores, alternando entre Médio e Difícil.</p>
+
+    <p>Kakuro exige um tipo diferente de raciocínio dos outros jogos de lógica. Enquanto Shikaku trabalha com área e Akari com alcance de luz, Kakuro exige que você conheça combinações de soma — saber que 6 em três células pode ser 1+2+3 ou 1+1+4 (mas sem repetir, então só 1+2+3). Essa camada aritmética faz dele o puzzle perfeito para quem gosta de números e quer algo mais estratégico que Sudoku.</p>
+
+    <h2>Dicas para Iniciantes no Kakuro</h2>
+
+    <p>O segredo do Kakuro está nas <strong>combinações únicas</strong>. Decore as principais: 3 em 2 células = 1+2; 4 em 2 = 1+3; 16 em 2 = 7+9; 17 em 2 = 8+9. Quando uma dica aparece na borda do tabuleiro, essas combinações são ainda mais poderosas porque só há uma direção possível para a sequência.</p>
+
+    <p>Outra técnica fundamental: <strong>eliminação cruzada</strong>. Uma célula participa de duas sequências (horizontal e vertical). Se a horizontal exige {1,2,3} e a vertical exige {3,4,5}, o único dígito possível na interseção é 3. Esse é o motor do Kakuro — encontrar interseções que forçam um dígito específico.</p>
+
+    <p>E por último: <strong>não tenha pressa</strong>. Kakuro não é corrida. Olhe o tabuleiro inteiro antes de colocar o primeiro dígito. Muitas vezes a dica mais óbvia está num canto que você quase ignorou.</p>
+
+    <AdSlot />
+
+    <h2>Perguntas Frequentes sobre Kakuro</h2>
+
+    <details><summary>O que é Kakuro?</summary><p>Kakuro, ou Somas Cruzadas, é um jogo de lógica japonês descrito como palavras-cruzadas matemático. Cada sequência de células brancas soma o valor da dica, sem repetir dígitos. Parece Sudoku mas usa combinações de soma.</p></details>
+
+    <details><summary>Como jogar Kakuro?</summary><p>Toque numa célula branca e depois num dígito. Cada célula pertence a duas sequências: horizontal e vertical. Ambas devem somar a dica sem repetir dígitos. O teclado mostra quais dígitos são inválidos.</p></details>
+
+    <details><summary>Kakuro é mais difícil que Sudoku?</summary><p>É diferente. Sudoku testa eliminação; Kakuro testa combinações de soma. Saber que 17 em duas células só pode ser 8+9 já resolve metade dos tabuleiros iniciantes.</p></details>
+
+    <details><summary>Este Kakuro é gratuito?</summary><p>Sim. Todos os níveis, modo névoa e puzzles diários são gratuitos no navegador, sem download e sem cadastro.</p></details>
+
+    <details><summary>O que é o modo névoa?</summary><p>Uma inovação do GridPaw: parte do tabuleiro fica oculta sob névoa com patinhas de gato. Resolva o bloco visível e a névoa se levanta. Exclusivo do GridPaw.</p></details>
+
+    <div class="cta-box">
+      <p>Mais jogos de lógica: <a href="/pt-br/shikaku/">Shikaku →</a> &nbsp;·&nbsp; <a href="/pt-br/akari/">Akari (Light Up) →</a> &nbsp;·&nbsp; <a href="/kakuro/">English version →</a></p>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,134 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import AdSlot from '../../components/AdSlot.astro';
+// TODO: PT 词表待人工审校
+
+const title = "Jogos de Lógica e Raciocínio Grátis Online — GridPaw";
+const description = "Jogos de lógica grátis direto no navegador: Shikaku, Akari, Kakuro e outros quebra-cabeças com charme de gato. Regras em um minuto, sem download, sem cadastro.";
+
+const faqJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "Os jogos de lógica no GridPaw são gratuitos?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Sim, todos os quebra-cabeças no GridPaw são gratuitos e rodam direto no navegador — sem download e sem cadastro. Basta escolher um jogo e começar a resolver."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Qual jogo de raciocínio é melhor para iniciantes?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Shikaku é a porta de entrada mais amigável: a regra cabe em uma frase e os primeiros puzzles se resolvem em minutos. Akari (Light Up) também se aprende rápido, mas exige um pouco mais de planejamento."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "O que são jogos de lógica japoneses?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "São quebra-cabeças de grade que se resolvem inteiramente com raciocínio puro — sem conhecimentos específicos e sem chutes. A maioria foi criada ou popularizada pela editora Nikoli de Tóquio, incluindo Sudoku, Shikaku e Akari."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Preciso de uma conta para salvar meu progresso?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Não. O progresso fica salvo no próprio navegador, sem necessidade de registro. Você pode continuar de onde parou no celular ou no computador."
+        }
+      }
+    ]
+  }
+];
+---
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/pt-br"
+    type="website"
+    breadcrumbTitle="Início"
+  />
+  <link rel="alternate" hreflang="pt-BR" href="https://gridpaw.com/pt-br/" />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/" />
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    body { font-family: 'Nunito', sans-serif; background: #FFF8F0; color: #3D3229; margin: 0; }
+    main { max-width: 52.5rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+    .breadcrumb { max-width: 52.5rem; margin: 0.75rem auto 0; padding: 0 1rem; font-size: 0.85rem; color: #8A7A6A; }
+    .breadcrumb a { color: #D97706; text-decoration: none; }
+    h1 { font-size: 1.9rem; line-height: 1.25; margin: 0.75rem 0 1rem; }
+    h2 { font-size: 1.35rem; margin: 1.8rem 0 0.6rem; }
+    p, li { line-height: 1.65; font-size: 1rem; }
+    .game-links { list-style: none; padding: 0; }
+    .game-links li { background: #FFF; border: 2px solid #F0E4D4; border-radius: 12px; padding: 0.9rem 1.1rem; margin: 0.7rem 0; }
+    .game-links a { color: #D97706; font-weight: 900; font-size: 1.05rem; text-decoration: none; }
+    .cta-box { background: #FFF; border: 2px solid #F0E4D4; border-radius: 12px; padding: 0.9rem 1.1rem; margin: 1.2rem 0; }
+    .cta-box a { color: #D97706; font-weight: 800; text-decoration: none; }
+    details { background: #FFF; border: 1px solid #F0E4D4; border-radius: 10px; padding: 0.7rem 1rem; margin: 0.6rem 0; }
+    summary { font-weight: 800; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Trilha de navegação"><a href="/">GridPaw</a> &gt; Português (Brasil)</nav>
+
+  <main>
+    <h1>Jogos de Lógica Grátis Online</h1>
+
+    <p>Bem-vindo ao GridPaw — o refúgio para quem adora um bom desafio mental. Aqui você encontra jogos de lógica japoneses com um toque aconchegante de gato: uma grade pequena, uma regra clara e a certeza de que a solução existe e pode ser encontrada com raciocínio puro. Tudo roda direto no navegador, grátis, sem download e sem cadastro. Perfeito para o metrô, a pausa do café ou aquela noite tranquila no sofá.</p>
+
+    <h2>Nossos Jogos de Raciocínio</h2>
+
+    <ul class="game-links">
+      <li><a href="/pt-br/shikaku/">Shikaku — o Puzzle dos Retângulos</a><br>Divida a grade em retângulos até cada número se encaixar. O melhor ponto de partida: entenda em um minuto e jogue direto aqui mesmo.</li>
+      <li><a href="/pt-br/akari/">Akari (Light Up)</a><br>Coloque lâmpadas até que cada célula branca esteja iluminada — sem que duas lâmpadas se enxerguem. Atmosférico, tático e deliciosamente silencioso (na cabeça).</li>
+      <li><a href="/pt-br/kakuro/">Kakuro</a><br>O palavras-cruzadas dos números: somas que se cruzam, sem repetir dígitos. Para quem gosta de contas.</li>
+      <li><a href="/binary/">Binary Puzzle (Takuzu)</a><br>Só zeros e uns, mas cheio de armadilhas: mesma quantidade por linha e coluna, sem três iguais, sem linhas repetidas.</li>
+      <li><a href="/pt-br/nurikabe/">Nurikabe</a><br>Ilhas que crescem, mar que se conecta, nunca um oceano 2×2. Geometria em estado puro.</li>
+      <li><a href="/pt-br/nonogram/">Nonogram</a><br>Revele uma imagem oculta seguindo as pistas numéricas — o clássico pintar por números, com lógica pura.</li>
+      <li><a href="/pt-br/pictomino/">Pictomino</a><br>Monte peças de dominó com fotos de gatos até completar a figura. Raciocínio espacial para todas as idades.</li>
+      <li><a href="/star-battle/">Star Battle (Two Not Touch)</a><br>Coloque estrelas em cada linha, coluna e região — sem que duas se toquem. Desafiador na medida certa.</li>
+    </ul>
+
+    <AdSlot />
+
+    <h2>Por que Jogos de Lógica Japoneses?</h2>
+
+    <p>Bons quebra-cabeças têm uma promessa de justiça: tudo o que você precisa está na grade. Sem perguntas de quiz, sem jogos de palavras, sem chutes. A maioria desses puzzles vem da editora Nikoli, de Tóquio — foi de lá que o Sudoku conquistou o mundo, e ao lado dele uma família inteira de jogos de raciocínio com regras igualmente elegantes: Shikaku, Akari, Kakuro, Nurikabe e muitos outros.</p>
+
+    <p>O encanto está na profundidade que nasce da simplicidade. Você explica Shikaku em uma frase e, ainda assim, existem variações que fazem especialistas pensarem por uma hora. É exatamente essa relação — trinta segundos para aprender, semanas para explorar — que torna os jogos de lógica talvez os passatempos mais duradouros que existem.</p>
+
+    <h2>Como Começar da Melhor Forma</h2>
+
+    <p>Nossa recomendação para a primeira noite: comece com <a href="/pt-br/shikaku/" style="color:#D97706;font-weight:800">Shikaku</a> no nível fácil e fique ali até os primeiros retângulos saírem naturalmente. Depois, Akari é um ótimo contraste — lá você pensa em raios de luz em vez de áreas. Quem gosta de números encontra no Kakuro um prato cheio. E não importa por onde você comece: mantenha a calma. Resolver puzzles não é uma corrida contra o relógio, é uma conversa tranquila com a grade.</p>
+
+    <h2>Perguntas Frequentes</h2>
+
+    <details><summary>Os jogos de lógica no GridPaw são gratuitos?</summary><p>Sim, todos os quebra-cabeças no GridPaw são gratuitos e rodam direto no navegador — sem download e sem cadastro. Basta escolher um jogo e começar.</p></details>
+
+    <details><summary>Qual jogo de raciocínio é melhor para iniciantes?</summary><p>Shikaku é a porta de entrada mais amigável: a regra cabe em uma frase e os primeiros puzzles se resolvem em minutos. Akari (Light Up) também se aprende rápido, mas exige um pouco mais de planejamento.</p></details>
+
+    <details><summary>O que são jogos de lógica japoneses?</summary><p>São quebra-cabeças de grade que se resolvem inteiramente com raciocínio puro — sem conhecimentos específicos e sem chutes. A maioria foi criada ou popularizada pela editora Nikoli de Tóquio, incluindo Sudoku, Shikaku e Akari.</p></details>
+
+    <details><summary>Preciso de uma conta para salvar meu progresso?</summary><p>Não. O progresso fica salvo no próprio navegador, sem necessidade de registro. No celular ou no computador, você continua de onde parou.</p></details>
+
+    <div class="cta-box">
+      <p>Pronto? <a href="/pt-br/shikaku/">Jogue Shikaku agora mesmo →</a></p>
+    </div>
+  </main>
+</body>
+</html>

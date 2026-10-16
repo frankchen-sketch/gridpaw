@@ -1,0 +1,137 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import AdSlot from '../../components/AdSlot.astro';
+// TODO: PT 词表待人工审校
+
+const title = "Akari Online Grátis — Light Up, Jogo de Lógica Japonês | GridPaw";
+const description = "Jogue Akari (Light Up) online grátis: coloque lâmpadas na grade até iluminar cada célula branca. Regras, dicas e puzzle interativo — sem download, sem cadastro.";
+
+const faqJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "O que é Akari (Light Up)?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Akari, também conhecido como Light Up, é um jogo de lógica japonês da Nikoli. Você coloca lâmpadas em células brancas de modo que todas as células brancas fiquem iluminadas, nenhuma lâmpada enxergue outra e os números nas células pretas indiquem quantas lâmpadas devem estar ao lado. Puro raciocínio, sem chutes."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Posso jogar Akari grátis online?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Sim. No GridPaw você joga Akari direto no navegador, grátis, sem download e sem cadastro. O puzzle completo está disponível na página do jogo com vários tamanhos e níveis de dificuldade."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Qual a estratégia básica do Akari?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Comece pelos números altos: um 4 nos quatro lados de uma célula preta significa uma lâmpada em cada direção. Um 0 já resolve aquela vizinhança inteira. Depois, identifique células que só podem ser iluminadas por uma única posição — essas são obrigatórias."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Akari é mais fácil que Shikaku?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "São desafios diferentes. Shikaku é mais visual e direto; Akari exige pensar em alcance de luz e evitar que lâmpadas se enxerguem. Iniciantes costumam achar Shikaku um pouco mais simples, mas Akari recompensa quem gosta de planejar vários movimentos à frente."
+        }
+      }
+    ]
+  }
+];
+---
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/pt-br/akari"
+    type="article"
+    breadcrumbTitle="Akari em Português"
+  />
+  <link rel="alternate" hreflang="pt-BR" href="https://gridpaw.com/pt-br/akari/" />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/akari/" />
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/akari/" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    body { font-family: 'Nunito', sans-serif; background: #FFF8F0; color: #3D3229; margin: 0; }
+    main { max-width: 52.5rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+    .breadcrumb { max-width: 52.5rem; margin: 0.75rem auto 0; padding: 0 1rem; font-size: 0.85rem; color: #8A7A6A; }
+    .breadcrumb a { color: #D97706; text-decoration: none; }
+    h1 { font-size: 1.9rem; line-height: 1.25; margin: 0.75rem 0 1rem; }
+    h2 { font-size: 1.35rem; margin: 1.8rem 0 0.6rem; }
+    p, li { line-height: 1.65; font-size: 1rem; }
+    .cta-box { background: #FFF; border: 2px solid #F0E4D4; border-radius: 12px; padding: 0.9rem 1.1rem; margin: 1.2rem 0; }
+    .cta-box a { color: #D97706; font-weight: 800; text-decoration: none; }
+    details { background: #FFF; border: 1px solid #F0E4D4; border-radius: 10px; padding: 0.7rem 1rem; margin: 0.6rem 0; }
+    summary { font-weight: 800; cursor: pointer; }
+    iframe { border: 0; border-radius: 12px; margin: 0 auto; display: block; }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Trilha de navegação"><a href="/pt-br/">Início</a> &gt; Akari online</nav>
+
+  <main>
+    <h1>Akari online — o Light Up, Jogo de Lógica Japonês</h1>
+
+    <p>Akari — também conhecido como Light Up — é um dos jogos de raciocínio mais atmosféricos da família Nikoli. A premissa é simples: você coloca lâmpadas em células brancas da grade, e cada lâmpada ilumina todas as células à sua frente nas quatro direções até encontrar uma parede preta. O objetivo é que todas as células brancas recebam luz de pelo menos uma lâmpada, sem que duas lâmpadas se enxerguem. Parece zen? É. Mas não se engane: a simplicidade esconde camadas de estratégia que vão fisgando você a cada puzzle.</p>
+
+    <h2>Jogue Akari — direto no navegador</h2>
+
+    <div class="cta-box">
+      <p style="font-weight:800;margin-bottom:0.4rem">Jogue Akari online agora:</p>
+      <p>O Akari abre direto na página do jogo — todos os tamanhos de grade, todos os níveis de dificuldade, sem download e sem cadastro.</p>
+      <p style="margin-top:0.5rem"><a href="/akari/" style="color:#D97706;font-weight:800">Jogar Akari (Light Up) agora →</a></p>
+    </div>
+
+    <h2>As Regras do Akari em Três Pontos</h2>
+
+    <p>Primeiro: você pode colocar uma lâmpada em qualquer célula branca clicando nela. Cada lâmpada ilumina toda a linha e coluna à sua frente — para cima, para baixo, para a esquerda e para a direita — at�� encontrar uma célula preta ou a borda da grade. Segundo: duas lâmpadas nunca podem se enxergar. Se duas lâmpadas estiverem na mesma linha ou coluna sem uma parede preta entre elas, a solução é inválida. Terceiro: células pretas podem conter números de 0 a 4. Um número indica exatamente quantas lâmpadas devem estar nas células vizinhas (acima, abaixo, esquerda e direita). Um 0 significa que nenhuma lâmpada pode estar ao lado daquela célula preta.</p>
+
+    <h2>Dicas e Estratégia para Iniciantes</h2>
+
+    <p>O truque mais poderoso no Akari é começar pelos <strong>números altos</strong>. Um 4 no meio de uma célula preta é um presente: ele exige uma lâmpada em cada um dos quatro lados. Um 3 num canto ou contra uma borda também resolve sozinho — coloque as lâmpadas nos lados disponíveis e pronto. Um 0 é igualmente valioso: marca que todas as células vizinhas estão seguras e podem ser preenchidas com "X" (sem lâmpada).</p>
+
+    <p>Depois de processar os números, procure <strong>células que só podem ser iluminadas por uma única posição</strong>. Se uma célula branca está cercada por paredes e lâmpadas já colocadas, e só sobra um lugar possível para colocar uma lâmpada que a alcance, essa lâmpada é obrigatória. Esse padrão — "unique forced position" — é o motor da maioria das soluções.</p>
+
+    <p>Uma dica avançada: <strong>lâmpadas não podem se enxergar</strong> — então depois de colocar uma lâmpada, trace mentalmente as quatro direções. Qualquer célula nesses raios está automaticamente proibida de receber outra lâmpada. Isso é tão importante quanto as regras dos números.</p>
+
+    <h2>Por que o Akari é um dos Melhores Jogos de Raciocínio</h2>
+
+    <p>Ao contrário de puzzles que testam velocidade ou vocabulário, Akari testa pura capacidade de planejamento. Cada lâmpada que você coloca afeta o alcance de luz de toda a grade, então você precisa pensar em cadeia: "se eu colocar aqui, aquela região ali vai ficar sem luz, e então vou precisar de outra lâmpada lá, mas aí..." — esse encadeamento lógico é o que torna Akari tão viciante.</p>
+
+    <p>O jogo também tem um componente visual delicioso. Cada lâmpada ilumina áreas inteiras de uma vez, e ver a grade se iluminar aos poucos — como acender luzes numa cidade vista do alto — dá uma satisfação que puzzles puramente numéricos não têm. É um jogo de lógica que parece mais um quebra-cabeça de iluminação pública, e a metáfora funciona tão bem que você esquece que está exercitando o cérebro.</p>
+
+    <p>Akari está disponível no GridPaw em vários tamanhos (5×5, 7×7, 9×9 e 12×12) com níveis Fácil, Médio, Difícil e Ultra. Tem também puzzle diário para quem quer um desafio novo a cada dia. Tudo grátis, no navegador, com aquele toque de gato que só o GridPaw tem.</p>
+
+    <AdSlot />
+
+    <h2>Perguntas Frequentes sobre Akari</h2>
+
+    <details><summary>O que é Akari (Light Up)?</summary><p>Akari é um jogo de lógica japonês da Nikoli. Coloque lâmpadas em células brancas para iluminar toda a grade, sem que duas lâmpadas se enxerguem. Números em células pretas indicam quantas lâmpadas devem estar ao lado. Puro raciocínio, sem chutes.</p></details>
+
+    <details><summary>Posso jogar Akari grátis online?</summary><p>Sim. No GridPaw você joga Akari direto no navegador, grátis, sem download e sem cadastro. Escolha tamanho e dificuldade e comece a jogar na <a href="/akari/" style="color:#D97706">página do Akari</a>.</p></details>
+
+    <details><summary>Qual a estratégia básica do Akari?</summary><p>Comece pelos números altos: um 4 exige lâmpadas nos quatro lados. Um 0 já resolve aquela vizinhança. Depois, identifique células que só podem ser iluminadas por uma única posição — essas são obrigatórias.</p></details>
+
+    <details><summary>Akari é mais fácil que Shikaku?</summary><p>São desafios diferentes. Shikaku é mais visual; Akari exige pensar em alcance de luz. Iniciantes costumam achar Shikaku mais simples, mas Akari recompensa quem gosta de planejar.</p></details>
+
+    <div class="cta-box">
+      <p>Mais jogos de lógica: <a href="/pt-br/shikaku/">Shikaku →</a> &nbsp;·&nbsp; <a href="/pt-br/kakuro/">Kakuro →</a> &nbsp;·&nbsp; <a href="/akari/">English version →</a></p>
+    </div>
+  </main>
+</body>
+</html>
