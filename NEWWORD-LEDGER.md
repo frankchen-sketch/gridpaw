@@ -83,3 +83,15 @@ cron（job 1329cf1d31a5）去重真源。状态：`reported`（已报告未动�
 - **验收（Playwright 双端 + vision 复核，全绿零控制台错误）**：36 格渲染、点击循环 ✕→猫→清空、违规闪红扣心、hint 亮绿格报坐标、6 猫触发 win 弹层（锁盘）、Next board 换盘、Reset 清盘；移动端 390px 无横向溢出（board 28.8→361.2px，scrollWidth=390），tap 循环正常；win 弹层导流 /star-battle/ 与首页 Shikaku。
 - **注意**：win 后弹层内 "new board →" 为页内按钮非新 URL。5 个事件（game_start/first_move/hint_click/level_up/puzzle_reset）**全部在 funnel-track.ts 的 FUNNEL_EVENTS 白名单内（2026-10-16 核对）→ 全走 D1 真源 + GA4/posthog/clarity 参考口径**（此前写「puzzle_reset 不在白名单」系核对错误）。验收脚本 `design/qa/verify-meow-play.py`（+center/mobile 两个，仓库留档，不进发布路径）。
 - **猫图标 C 方案入库（2026-10-16，用户选定）**：`public/meowdoku-guide/cat-icon.png`（256px 透明底 PNG，41KB；1024px master 在 `design/meowdoku-cat-icon-master.png`（design/ 非发布目录））。来源 = Gemini 生成扁平猫脸（琥珀+奶油白，暖色 palette），色度键抠底（55/105 羽化）+ 3% padding 正方形化。`.pc .catp` 与答案演示区 `.cat` 均已切到自有资产，**官方 cat-sprite.png 已全站归零并删除（git rm）——sprite 版权雷清除**。vision 复核：抠图干净无白边、五官完整、32-46px 可读。
+
+## 方案 C 一期：/meowdoku/ hub + 10 固定关卡 + 星级评价（2026-10-16 下午上线，deploy `9de6af5c`）
+
+- **拍板**：用户「继续先做吧，铺个 10 关先，加个 CTA 看下用户是否感兴趣、愿意给评价」——不等 11-07 数据，hub + 10 关先验证；评分做低配（5 星 + localStorage 防重，无后端聚合），收行为信号即可。「每个游戏都留星级评价」的想法以 StarRating 组件形态预留，meowdoku 先行试点。
+- **页面**：`/meowdoku/`（hub：随机盘可玩 + 关卡导航 + 规则速览 + FAQ×4 + WebApplication/BreadcrumbList/FAQPage schema）；`/meowdoku/levels/1..10/`（固定盘 + 答案折叠 + 星级 CTA + 前后关导航）。对标竞品 meowdoku.org 的 310 关卡矩阵，先用 10 关探转化。
+- **确定性关卡**：seed=关卡号（1..10），引擎内 countSolutions 验唯一；答案坐标由 `scripts/meowdoku-levels-precompute.cjs` 预计算入 `src/data/meowdoku-levels.json`，页面折叠展示——**我们的关卡有真答案可对，竞品 app 盘面随机对不上**（差异化卖点延续）。Playwright 实测按 JSON 答案逐点可通关。
+- **组件化**：可玩模块抽 `src/components/MeowdokuPlay.astro`（random/level 双模式；样式 is:global + `.mzplay` 命名空间——JS 渲染行 scoped 失配是 AGENTS 已知坑）；guide 页同步切组件（旧内联 ~200 行删除）；`StarRating.astro` 可复用。游戏逻辑与 guide 版一致（✕ 回退/3 心/Hint 绿格）。
+- **打点**：新增 `rate_submit {game, level, stars}`，**funnel-track.ts + functions/api/_funnel-sql.ts 双白名单同加**（只加一侧会 400）；关卡模式 level=关卡号（固定），hub 随机模式 level=盘号。win 导流改为「下一关 → / hub / guide」。
+- **导航**：GameSwitcher（game 页头）与 GameNav（content 页头）双表补 meowdoku——**GameNav 双写债已注释标记**，收敛方向=GameNav 复用 GameSwitcher（未做，控范围）。
+- **验收**：Playwright hub/level1/guide 回归/移动端 390px 全绿零错误（轨道 28/28 对称）；schema JSON build 产物逐块解析过；线上 cache-bust 3 URL 200 + L5 答案精确命中。验收脚本 `~/.hermes/cache/scratch/verify-meow-hub.py`（临时）。
+- **索引**：12 URL（hub+10 关+guide）批量 IndexNow HTTP 200；sitemap 自动收录（@astrojs/sitemap）。
+- **后续观察**（11-07 收窗）：rate_submit 量与 stars 分布 = 用户兴趣信号；levels/N 的 GSC 曝光决定是否铺到 50-100 关。

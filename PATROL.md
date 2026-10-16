@@ -138,6 +138,23 @@ Controls 段后新增 `.playwrap` 可玩模块（star-battle 引擎 K=1 猫皮�
 
 ---
 
+## 页面：/meowdoku/ + /meowdoku/levels/1..10/（hub + 固定关卡）✅ 2026-10-16
+
+### 改动摘要
+hub：随机盘可玩（MeowdokuPlay random 模式）+ 10 关卡卡导航 + 规则速览 + FAQ。关卡页：固定 seed 盘（seed=关卡号）+ 星级评价 CTA + 答案折叠（预计算真实坐标）+ 前后关导航。两页型共用 MeowdokuPlay.astro（is:global + .mzplay 命名空间）+ StarRating.astro。
+
+### 实测记录（Playwright hub/level1/guide 回归/移动端，全绿）
+- hub：36 格、点击循环 ✕→猫→win、hint 链到胜、10 关卡链、评分点击→thanks→localStorage 持久
+- level1：按 JSON 答案逐点（idx 4/6/14/23/27/31）可通关 → win 弹层含 levels/2/ 链；答案折叠精确展示 R1C5 · R2C1 · R3C3 · R4C6 · R5C4 · R6C2
+- 打点：first_move/level_up/rate_submit 全在 gpTrack 触发（rate_submit 双白名单已加，线上 Functions 生效）
+- 移动端 390px：36 格、无横向溢出、轨道 28/28 对称
+- guide 页组件化回归：36 格 + 答案演示板 + 导航正常，零控制台错误
+
+### 遗留
+- GameNav 与 GameSwitcher games 数组双写债（已注释标记）；评分无后端聚合；关卡铺量等 rate_submit 信号
+
+---
+
 ## 巡查提示词（每次 UI 改动后跑）
 
 ```
