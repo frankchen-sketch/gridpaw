@@ -1,0 +1,63 @@
+---
+// StarRating — 星级评价 CTA（试运行：meowdoku hub + 10 关，之后可推广到各游戏页）
+// 事件 rate_submit {game, level, stars} → D1 真源（FUNNEL_EVENTS 白名单）+ GA4/posthog/clarity。
+// localStorage 防重复；无后端评分聚合，先收行为信号（用户是否愿意评）。
+interface Props { game: string; level?: number; label?: string; }
+const { game, level = 0, label = 'Enjoying this puzzle? Rate it:' } = Astro.props;
+const P = `sr-${game}${level ? '-l' + level : ''}`;
+---
+<div class="starrating" id={`${P}-wrap`} role="group" aria-label="Rate this puzzle">
+  <span class="sr-label">{label}</span>
+  <span class="sr-stars" id={`${P}-stars`}>
+    {Array.from({ length: 5 }).map((_, i) => (
+      <button class="sr-star" data-star={i + 1} aria-label={`Rate ${i + 1} star${i ? 's' : ''}`}>★</button>
+    ))}
+  </span>
+  <span class="sr-thanks" id={`${P}-thanks`}></span>
+</div>
+
+<style is:global>
+  .starrating { display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:center; max-width:520px; margin:0.4rem auto 0.8rem; padding:10px 12px; background:#FFF7EF; border:1px solid #F0DEC9; border-radius:12px; }
+  .starrating .sr-label { font-size:0.88rem; font-weight:700; color:#7A5A2E; }
+  .starrating .sr-stars { display:inline-flex; gap:2px; }
+  .starrating .sr-star { background:none; border:0; cursor:pointer; font-size:1.5rem; line-height:1; color:#E4D3BC; padding:2px 3px; transition:transform .1s, color .1s; }
+  .starrating .sr-star:hover { transform:scale(1.15); color:#D97706; }
+  .starrating .sr-star.lit { color:#D97706; }
+  .starrating .sr-thanks { font-size:0.82rem; color:#1E7A3C; font-weight:700; }
+</style>
+
+<script is:inline define:vars={{ game, level, P }}>
+  (function () {
+    var wrap = document.getElementById(P + '-wrap');
+    if (!wrap) return;
+    var key = 'gp_rate_' + game + (level ? '_l' + level : '');
+    var starsEl = document.getElementById(P + '-stars');
+    var thanksEl = document.getElementById(P + '-thanks');
+    function track(event, params) {
+      if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture(event, Object.assign({ site: 'gridpaw' }, params || {}));
+      }
+      if (typeof window.clarity === 'function') window.clarity('event', event);
+      if (window.gpTrack) window.gpTrack(event, params || {});
+    }
+    function lit(n) {
+      var btns = starsEl.querySelectorAll('.sr-star');
+      for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('lit', i < n);
+    }
+    var saved = 0;
+    try { saved = parseInt(localStorage.getItem(key) || '0', 10) || 0; } catch (e) {}
+    if (saved) { lit(saved); thanksEl.textContent = 'Thanks! You rated ' + saved + '★'; }
+    else {
+      starsEl.addEventListener('click', function (e) {
+        var b = e.target.closest('.sr-star');
+        if (!b) return;
+        var n = parseInt(b.getAttribute('data-star'), 10);
+        lit(n);
+        try { localStorage.setItem(key, String(n)); } catch (err) {}
+        thanksEl.textContent = 'Thanks! You rated ' + n + '★';
+        track('rate_submit', { game: game, level: level, stars: n });
+      });
+    }
+  })();
+</script>

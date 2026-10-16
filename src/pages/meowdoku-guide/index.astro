@@ -3,6 +3,7 @@ import SEOHead from '../../components/SEOHead.astro';
 import GameNav from '../../components/GameNav.astro';
 import ExtensionPromo from '../../components/ExtensionPromo.astro';
 import AdSlot from '../../components/AdSlot.astro';
+import MeowdokuPlay from '../../components/MeowdokuPlay.astro';
 
 const title = "Meowdoku Guide: Hints, Strategy & Games Like Meowdoku";
 const description = "A deeper Meowdoku strategy guide: the complete rules recap, 6 no-hint solving techniques, how to derive answers yourself instead of chasing a daily answer list, and the best games like Meowdoku.";
@@ -195,34 +196,6 @@ const faqJsonLd = [
     .cmp tbody th { background:#FBF3EA; font-weight:700; white-space:nowrap; }
     .cmp-note { font-size:0.9rem; color:#A08D80; font-style:italic; }
     @media (max-width:620px){ .cmp thead{display:none;} .cmp tbody tr{display:block; margin:0 0 0.7rem;} .cmp tbody th, .cmp tbody td{display:block; border:none; padding:0.2rem 0.5rem; white-space:normal;} .cmp tbody th{padding-bottom:0.1rem;} }
-
-    /* ===== playable module (star-battle engine K=1, cat skin) ===== */
-    .playwrap { background:#fff; border:2px solid var(--md-primary); border-radius:14px; padding:14px 14px 12px; margin:1rem auto 0.6rem; box-shadow:var(--md-shadow-sm); max-width:520px; }
-    .playhead { display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px; }
-    .playhead h3 { margin:0; font-size:1.05rem; color:var(--md-text); }
-    .playhead .verified { font-size:11px; font-weight:800; color:#1E7A3C; background:#DFF3E4; padding:2px 8px; border-radius:99px; white-space:nowrap; }
-    .pboard { display:grid; grid-template-columns:repeat(6, 46px); grid-auto-rows:46px; gap:3px; padding:4px; border:2px solid #E8D8CA; border-radius:10px; margin:0 auto; justify-content:center; }
-    .pc { border-radius:6px; position:relative; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:transform .08s; touch-action:manipulation; }
-    .pc:active { transform:scale(.94); }
-    .pc .xmark { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:800; color:rgba(66,53,46,.45); }
-    .pc .catp { width:70%; height:70%; background:url('/meowdoku-guide/cat-icon.png') center/contain no-repeat; filter:drop-shadow(0 1px 1px rgba(0,0,0,.25)); }
-    .pc.p0 { background:#F9D8C8; } .pc.p1 { background:#F7E7C3; } .pc.p2 { background:#D9E8CB; }
-    .pc.p3 { background:#C9DFEE; } .pc.p4 { background:#E6D9F0; } .pc.p5 { background:#F5D5DA; }
-    .pc.flash { animation:plflash .5s; }
-    @keyframes plflash { 0%,100%{box-shadow:inset 0 0 0 0 rgba(217,83,79,0)} 35%{box-shadow:inset 0 0 0 3px #d9534f;} }
-    .pc.hintcell { box-shadow:inset 0 0 0 3px #1E7A3C; }
-    .playrow { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:10px; }
-    .hearts { font-size:1.05rem; letter-spacing:2px; white-space:nowrap; }
-    .pbtn { border:0; border-radius:9px; padding:8px 14px; font-weight:800; font-size:0.85rem; cursor:pointer; font-family:inherit; }
-    .pbtn.primary { background:var(--md-primary); color:#fff; }
-    .pbtn.ghost { background:#FFF1E8; color:var(--md-text); }
-    .pmsg { flex:1; min-width:180px; font-size:0.82rem; color:var(--md-text-light); line-height:1.5; }
-    .playwin { display:none; margin-top:10px; background:#DFF3E4; border-radius:10px; padding:10px 12px; font-size:0.85rem; line-height:1.7; color:#235c2e; }
-    .playwin.show { display:block; }
-    .playwin b { color:#1E7A3C; }
-    .playwin a { color:#1E7A3C; font-weight:800; }
-    .playnote { font-size:11px; color:var(--md-text-light); margin-top:8px; font-style:italic; line-height:1.5; }
-    @media (max-width:480px){ .pboard { grid-template-columns:repeat(6, 40px); grid-auto-rows:40px; } }
   </style>
 </head>
 <body>
@@ -254,21 +227,7 @@ const faqJsonLd = [
     <p>Three clicks per cell: the <b>1st</b> click places an X mark (excluded cell), the <b>2nd</b> click places a cat, and the <b>3rd</b> click clears the cell. X marks are the pencil marks of Queens-style puzzles — use them liberally.</p>
 
     <div class="playwrap" id="playwrap">
-      <div class="playhead">
-        <h3>Try It Right Now — Free, No Download</h3>
-        <span class="verified" id="playVerified">Unique solution verified ✓</span>
-      </div>
-      <div class="pboard" id="pboard" aria-label="Playable Meowdoku-style board"></div>
-      <div class="playrow">
-        <span class="hearts" id="playHearts">♥♥♥</span>
-        <button class="pbtn primary" id="playHint">Hint: next forced cat</button>
-        <button class="pbtn ghost" id="playReset">Reset</button>
-      </div>
-      <div class="playrow">
-        <div class="pmsg" id="playMsg">Click cycle: 1st tap marks ✕ (excluded), 2nd tap places the cat, 3rd tap clears. One cat per region, row, and column — never touching, diagonals included.</div>
-      </div>
-      <div class="playwin" id="playWin"></div>
-      <div class="playnote">A fresh board is generated every round — each one programmatically proven to have exactly one solution. A 3-heart mode: an illegal placement flashes red and costs a heart; run out and a new board loads. Unofficial fan-made demo, not affiliated with Oakever.</div>
+      <MeowdokuPlay mode="random" />
     </div>
 
     <h2>6 Solving Strategies</h2>
@@ -454,184 +413,15 @@ const faqJsonLd = [
   </script>
 
   <script is:inline src="/star-battle-engine.js"></script>
-  <script is:inline>
-    // ===== Playable meowdoku-style board: star-battle engine K=1 + cat skin =====
-    function track(event, params) {
-      if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
-      if (window.posthog && typeof window.posthog.capture === 'function') {
-        window.posthog.capture(event, Object.assign({ site: 'gridpaw' }, params || {}));
-      }
-      if (typeof window.clarity === 'function') {
-        window.clarity('event', event);
-        if (params) Object.keys(params).forEach(function (k) { window.clarity('set', k, String(params[k])); });
-      }
-      if (window.gpTrack) window.gpTrack(event, params || {});
-    }
-    (function () {
-      var SB = window.StarBattleEngine;
-      var boardEl = document.getElementById('pboard');
-      if (!SB || !boardEl) return;
-      var N = 6, K = 1;
-      var puzzle = null, state = null;
-      var boardNum = 0, hearts = 3, firstMove = false, solved = false;
-      var msgEl = document.getElementById('playMsg');
-      var heartsEl = document.getElementById('playHearts');
-      var winEl = document.getElementById('playWin');
-
-      function rc(idx) { return [(idx / N) | 0, idx % N]; }
-      function renderCell(d, v) {
-        d.innerHTML = '';
-        d.classList.remove('hintcell');
-        if (v === 2) d.innerHTML = '<span class="catp"></span>';
-        else if (v === 1) d.innerHTML = '<span class="xmark">✕</span>';
-      }
-
-      function render() {
-        for (var i = 0; i < N * N; i++) {
-          var d = boardEl.children[i];
-          renderCell(d, state[i]);
-          d.classList.remove('hintcell');
-        }
-      }
-
-      function updateHearts() {
-        var s = '';
-        for (var i = 0; i < 3; i++) s += '<span style="color:' + (i < hearts ? '#d9534f' : '#e8d8ca') + '">♥</span>';
-        heartsEl.innerHTML = s;
-      }
-
-      function setMsg(html) { msgEl.innerHTML = html; }
-
-      var startPending = false;
-      function fireGameStart() {
-        if (document.visibilityState !== 'visible') { if (boardNum === 1) startPending = true; return; }
-        startPending = false;
-        track('game_start', { level: boardNum, difficulty: 'easy 6x6' });
-      }
-
-      function newBoard() {
-        boardNum++;
-        try {
-          puzzle = SB.generate(N, K, 'easy', (Date.now() ^ (boardNum * 2654435761)) >>> 0);
-        } catch (e) {
-          puzzle = SB.generate(N, K, 'easy');
-        }
-        state = new Array(N * N).fill(0);
-        hearts = 3; firstMove = false; solved = false;
-        winEl.classList.remove('show');
-        document.getElementById('playVerified').textContent = 'Unique solution verified ✓';
-        buildBoardEl();
-        updateHearts();
-        setMsg('Click cycle: 1st tap marks ✕ (excluded), 2nd tap places the cat (an illegal tap clears the mark), 3rd tap clears. One cat per region, row, and column — never touching, diagonals included.');
-        fireGameStart();
-      }
-
-      // game_start 门控：tab 不可见时挂 visibilitychange 补发（全站口径）
-      (function () {
-        if (document.visibilityState === 'visible') return;
-        document.addEventListener('visibilitychange', function once() {
-          if (document.visibilityState === 'visible') {
-            document.removeEventListener('visibilitychange', once);
-            if (startPending) fireGameStart();
-          }
-        });
-      })();
-
-      function violationOf(idx) {
-        var r = (idx / N) | 0, c = idx % N;
-        for (var i = 0; i < N * N; i++) {
-          if (state[i] !== 2) continue;
-          var pr = (i / N) | 0, pc = i % N;
-          if (pr === r || pc === c) return 'row';
-          if (Math.abs(pr - r) <= 1 && Math.abs(pc - c) <= 1) return 'touch';
-          if (puzzle.regionOf[i] === puzzle.regionOf[idx]) return 'region';
-        }
-        return null;
-      }
-
-      function violationText(kind, r, c) {
-        if (kind === 'touch') return '❌ Cats can\'t touch — R' + (r + 1) + 'C' + (c + 1) + ' neighbors an existing cat. −1 ♥';
-        if (kind === 'row') return '❌ Its row/column already has a cat — one per row and column. −1 ♥';
-        return '❌ That region already has a cat — one cat per region. −1 ♥';
-      }
-
-      function countCats() {
-        var n = 0;
-        for (var i = 0; i < N * N; i++) if (state[i] === 2) n++;
-        return n;
-      }
-
-      function onWin() {
-        solved = true;
-        winEl.innerHTML = '<b>Solved! Board #' + boardNum + ' — unique solution verified.</b><br>Next: <a href="#" id="playNext">new board →</a> · <a href="/star-battle/">Star Battle (multi-star)</a> · <a href="/">Shikaku</a>';
-        winEl.classList.add('show');
-        track('level_up', { level: boardNum, difficulty: 'easy 6x6' });
-        var next = document.getElementById('playNext');
-        if (next) next.addEventListener('click', function (e) { e.preventDefault(); newBoard(); boardEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
-      }
-
-      function buildBoardEl() {
-        boardEl.innerHTML = '';
-        for (var i = 0; i < N * N; i++) {
-          (function (idx) {
-            var d = document.createElement('div');
-            d.className = 'pc p' + puzzle.regionOf[idx];
-            d.setAttribute('role', 'gridcell');
-            d.addEventListener('click', function () { cycle(idx, d); });
-            boardEl.appendChild(d);
-          })(i);
-        }
-      }
-
-      function cycle(idx, d) {
-        if (solved) return;
-        var v = state[idx];
-        if (!firstMove) { firstMove = true; track('first_move', { level: boardNum }); }
-        if (v === 2) { state[idx] = 0; renderCell(d, 0); setMsg('Cat removed from R' + (rc(idx)[0] + 1) + 'C' + (rc(idx)[1] + 1) + '.'); return; }
-        if (v === 0) { state[idx] = 1; renderCell(d, 1); return; }
-        // ✕ → 猫（checked placement）；违规则 ✕ 回退为空——任何格最多 3 下必能清空，防 ✕ 陷阱
-        var bad = violationOf(idx);
-        var r = (idx / N) | 0, c = idx % N;
-        if (bad) {
-          state[idx] = 0; renderCell(d, 0);
-          d.classList.remove('flash'); void d.offsetWidth; d.classList.add('flash');
-          setMsg(violationText(bad, r, c));
-          hearts--; updateHearts();
-          if (hearts <= 0) { setMsg('💔 Out of hearts — a fresh board is loading.'); setTimeout(function () { newBoard(); }, 700); }
-          return;
-        }
-        state[idx] = 2;
-        renderCell(d, 2);
-        setMsg('Cat settled at R' + (r + 1) + 'C' + (c + 1) + ' ✓ — re-scan the board (Strategy 6).');
-        if (countCats() === N * K) onWin();
-      }
-
-      document.getElementById('playHint').addEventListener('click', function () {
-        if (solved) return;
-        for (var i = 0; i < N * N; i++) {
-          if (puzzle.solution[i] === 1 && state[i] !== 2) {
-            var d = boardEl.children[i];
-            var r = (i / N) | 0, c = i % N;
-            state[i] = 2; renderCell(d, 2);
-            d.classList.add('hintcell');
-            setMsg('Hint: R' + (r + 1) + 'C' + (c + 1) + ' is forced — this cell is the region\'s only legal home.');
-            track('hint_click', { level: boardNum });
-            if (countCats() === N * K) onWin();
-            return;
-          }
-        }
-        setMsg('No hint left — every solution cat is already placed.');
+  <!-- Playable module moved to components/MeowdokuPlay.astro (shared with /meowdoku/ hub + levels) -->
+  <script>
+    // hint anchor: scroll to the playwrap when "Try it" style CTAs are used
+    document.querySelectorAll('a[href="#playwrap"]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var el = document.getElementById('playwrap');
+        if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
       });
-
-      document.getElementById('playReset').addEventListener('click', function () {
-        if (solved) return;
-        state = new Array(N * N).fill(0);
-        render(); setMsg('Board cleared. X marks and cats reset.');
-        track('puzzle_reset', { level: boardNum, difficulty: 'easy 6x6' });
-      });
-
-      newBoard();
-    })();
+    });
   </script>
 </body>
 </html>

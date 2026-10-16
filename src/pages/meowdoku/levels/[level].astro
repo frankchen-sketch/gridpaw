@@ -1,0 +1,103 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameSwitcher from '../../../components/GameSwitcher.astro';
+import MeowdokuPlay from '../../../components/MeowdokuPlay.astro';
+import StarRating from '../../../components/StarRating.astro';
+import levels from '../../../data/meowdoku-levels.json';
+
+export function getStaticPaths() {
+  return levels.map((lv) => ({ params: { level: String(lv.level) }, props: { lv } }));
+}
+const { lv } = Astro.props;
+const n = lv.level;
+const title = `Meowdoku Level ${n} - Play Free Online Cat Puzzle`;
+const description = `Play Meowdoku Level ${n} free online: a fixed 6×6 cat logic board with exactly one solution, verified by code. Hint included, no download. Fan-made, not affiliated with Oakever.`;
+const prev = n > 1 ? n - 1 : null;
+const next = n < 10 ? n + 1 : null;
+const faqs = [
+  { q: `Is this the same as Level ${n} in the Meowdoku app?`, a: "No. The app randomizes boards based on player progress. This is an unofficial fan-made fixed board with the same rules: one cat per region, row, and column, and cats never touch, diagonals included." },
+  { q: "How many solutions does this board have?", a: "Exactly one. Every board on this site is programmatically checked with a solver before publication, so pure logic always reaches the answer without guessing." },
+  { q: `What is the answer to Level ${n}?`, a: `The cats go on ${lv.answer}. Try solving it first, then use the hidden answer block on this page to check yourself.` },
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <SEOHead title={title} description={description} canonical={`/meowdoku/levels/${n}/`} type="website" />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://gridpaw.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Meowdoku Online", "item": "https://gridpaw.com/meowdoku/" },
+          { "@type": "ListItem", "position": 3, "name": `Level ${n}`, "item": `https://gridpaw.com/meowdoku/levels/${n}/` }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": faqs.map((f) => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a }
+        }))
+      }
+    ]
+  })} />
+  <style>
+    main { max-width:840px; margin:0 auto; padding:0 1rem 2.5rem; }
+    h1 { font-size:1.6rem; margin:0.8rem 0 0.4rem; color:var(--md-text,#3D3D3D); }
+    .disclaimer { font-size:0.78rem; color:#A08D80; background:#FBF6F0; border:1px solid #F0E4D6; border-radius:8px; padding:6px 10px; display:inline-block; margin-bottom:0.8rem; }
+    .lede { font-size:1rem; color:var(--md-text,#3D3D3D); line-height:1.7; margin:0 0 0.6rem; }
+    h2 { font-size:1.2rem; margin:1.5rem 0 0.5rem; color:var(--md-text,#3D3D3D); }
+    .lvnav { display:flex; justify-content:space-between; gap:10px; max-width:520px; margin:1rem auto; flex-wrap:wrap; }
+    .lvnav a { background:#FFF1E8; color:var(--md-text,#3D3D3D); font-weight:800; font-size:0.85rem; padding:8px 14px; border-radius:9px; text-decoration:none; }
+    .lvnav a:hover { background:#FFE7D6; }
+    .faq details { background:#FBF6F0; border-radius:10px; padding:10px 14px; margin:0.5rem 0; }
+    .faq summary { font-weight:700; cursor:pointer; color:var(--md-text,#3D3D3D); }
+    .faq p { line-height:1.65; color:var(--md-text,#3D3D3D); font-size:0.92rem; }
+    .answer { background:#F3F8F1; border:1px solid #DFF3E4; border-radius:10px; padding:10px 14px; font-size:0.92rem; color:#235c2e; }
+    .cta-box { text-align:center; margin:1.2rem 0; }
+    .breadcrumb { font-size:0.8rem; color:#A08D80; padding:0.6rem 1rem 0; }
+    .breadcrumb a { color:#A08D80; }
+  </style>
+</head>
+<body>
+  <GameSwitcher />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/meowdoku/">Meowdoku Online</a> &gt; Level {n}</nav>
+  <main>
+    <h1>Meowdoku Level {n}: Free Online Puzzle</h1>
+    <div class="disclaimer">Unofficial fan-made board. Not affiliated with Oakever.</div>
+    <p class="lede">A fixed 6×6 board: everyone gets the same Level {n}, with exactly one solution proven by code. Place one cat per colored region, row, and column, and never let two cats touch, even diagonally. Need the techniques? <a href="/meowdoku-guide/">Read the strategy guide</a>.</p>
+
+    <MeowdokuPlay mode="level" level={n} heading={`Meowdoku-Style Level ${n} — Free, No Download`} />
+    <StarRating game="meowdoku" level={n} label={`How was Level ${n}? Rate it:`} />
+
+    <h2>Answer for Level {n}</h2>
+    <details class="answer">
+      <summary>Show answer: the six cat positions (spoiler)</summary>
+      <p><b>{lv.answer}</b></p>
+      <p>Solved it differently? Any legal placement that fills all six regions must match this board, because the solution is unique.</p>
+    </details>
+
+    <div class="lvnav">
+      {prev ? <a href={`/meowdoku/levels/${prev}/`}>← Level {prev}</a> : <a href="/meowdoku/">← Level list</a>}
+      {next ? <a href={`/meowdoku/levels/${next}/`}>Level {next} →</a> : <a href="/meowdoku/">All levels →</a>}
+    </div>
+
+    <h2>FAQ</h2>
+    <div class="faq">
+      {faqs.map((f) => (
+        <details><summary>{f.q}</summary><p>{f.a}</p></details>
+      ))}
+    </div>
+
+    <div class="cta-box">
+      <p>🐱 Want more? <a href="/meowdoku/">Endless fresh boards →</a> · <a href="/star-battle/">Star Battle (multi-star) →</a></p>
+    </div>
+  </main>
+</body>
+</html>

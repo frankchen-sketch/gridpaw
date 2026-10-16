@@ -1,0 +1,118 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameSwitcher from '../../components/GameSwitcher.astro';
+import MeowdokuPlay from '../../components/MeowdokuPlay.astro';
+import StarRating from '../../components/StarRating.astro';
+import levels from '../../data/meowdoku-levels.json';
+
+const title = "Meowdoku Online: Play Free Cat Logic Puzzles";
+const description = "Play Meowdoku-style cat logic puzzles free in your browser: 10 fixed levels plus endless unique boards. No download. Fan-made, not affiliated with Oakever.";
+const faqs = [
+  { q: "Is this the real Meowdoku app?", a: "No. Meowdoku is a mobile puzzle by Oakever. This is an unofficial, fan-made web version with the same rules: one cat per region, row, and column, and cats never touch, diagonals included." },
+  { q: "Do I need to download or install anything?", a: "No. Every board plays right in your browser on desktop and mobile. Unlike many puzzle apps, there are no forced interstitial ads between boards." },
+  { q: "Are the boards solvable without guessing?", a: "Yes. Every board, including all 10 fixed levels, is programmatically proven to have exactly one solution before you see it, so pure logic always reaches the answer." },
+  { q: "How is this different from LinkedIn Queens?", a: "The deduction is the same (Queens-style placement). Here every token is a cat, boards are 6×6, and you get a hint that fills in the next forced cat with its row and column." },
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <SEOHead title={title} description={description} canonical="/meowdoku/" type="website" />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://gridpaw.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Meowdoku Online", "item": "https://gridpaw.com/meowdoku/" }
+        ]
+      },
+      {
+        "@type": "WebApplication",
+        "name": "GridPaw Meowdoku-Style Cat Puzzle",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Web Browser",
+        "url": "https://gridpaw.com/meowdoku/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": faqs.map((f) => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a }
+        }))
+      }
+    ]
+  })} />
+  <style>
+    main { max-width:840px; margin:0 auto; padding:0 1rem 2.5rem; }
+    h1 { font-size:1.7rem; margin:0.8rem 0 0.4rem; color:var(--md-text,#3D3D3D); }
+    .lede { font-size:1.02rem; color:var(--md-text,#3D3D3D); line-height:1.7; margin:0 0 0.6rem; }
+    .disclaimer { font-size:0.78rem; color:#A08D80; background:#FBF6F0; border:1px solid #F0E4D6; border-radius:8px; padding:6px 10px; display:inline-block; margin-bottom:0.8rem; }
+    h2 { font-size:1.25rem; margin:1.6rem 0 0.5rem; color:var(--md-text,#3D3D3D); }
+    .rules { background:#FBF6F0; border-radius:12px; padding:14px 18px; }
+    .rules li { margin:0.35rem 0; line-height:1.6; }
+    .lvgrid { display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:10px; max-width:560px; margin:0.8rem auto; }
+    .lvcard { display:block; text-align:center; background:#fff; border:2px solid #E8D8CA; border-radius:12px; padding:12px 6px; text-decoration:none; transition:border-color .12s, transform .12s; }
+    .lvcard:hover { border-color:var(--md-primary,#D97706); transform:translateY(-2px); }
+    .lvcard .n { font-size:1.3rem; font-weight:800; color:var(--md-primary,#D97706); }
+    .lvcard .t { font-size:0.72rem; color:var(--md-text-light,#7A6A5F); }
+    .faq details { background:#FBF6F0; border-radius:10px; padding:10px 14px; margin:0.5rem 0; }
+    .faq summary { font-weight:700; cursor:pointer; color:var(--md-text,#3D3D3D); }
+    .faq p { line-height:1.65; color:var(--md-text,#3D3D3D); font-size:0.92rem; }
+    .cta-box { text-align:center; margin:1.2rem 0; }
+    .breadcrumb { font-size:0.8rem; color:#A08D80; padding:0.6rem 1rem 0; }
+    .breadcrumb a { color:#A08D80; }
+  </style>
+</head>
+<body>
+  <GameSwitcher />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; Meowdoku Online</nav>
+  <main>
+    <h1>Meowdoku Online: Play the Cat Logic Puzzle, Free</h1>
+    <div class="disclaimer">Unofficial fan-made version. Not affiliated with Oakever.</div>
+    <p class="lede">Meowdoku is the cat-themed placement puzzle your phone keeps suggesting. Here it runs right in your browser: pick one of 10 fixed levels below, or play endless freshly generated boards. Every board has exactly one solution, proven by code before you see it.</p>
+
+    <h2>Play Meowdoku Online — No Download</h2>
+    <MeowdokuPlay mode="random" />
+    <StarRating game="meowdoku" />
+    <p class="lede" style="font-size:0.9rem;">New here? The <a href="/meowdoku-guide/">full strategy guide</a> covers the six techniques that solve any board without the hint button.</p>
+
+    <h2>Meowdoku Levels 1–10</h2>
+    <p>Each level is a fixed 6×6 board: the same puzzle for everyone, with exactly one solution and a hidden answer you can check after solving. New to the rules? <a href="/meowdoku-guide/">Read the guide</a> first.</p>
+    <div class="lvgrid">
+      {levels.map((lv) => (
+        <a class="lvcard" href={`/meowdoku/levels/${lv.level}/`}>
+          <div class="n">Level {lv.level}</div>
+          <div class="t">6×6 · Easy · 1 cat</div>
+        </a>
+      ))}
+    </div>
+
+    <h2>Meowdoku Rules in 30 Seconds</h2>
+    <div class="rules">
+      <ol>
+        <li><b>One cat per colored region.</b> Every territory holds exactly one cat.</li>
+        <li><b>One cat per row and column.</b> Cats never share a line of sight.</li>
+        <li><b>Cats never touch, even diagonally.</b> Placing a cat blocks all 8 cells around it.</li>
+        <li><b>Tap cycle:</b> 1st tap marks ✕, 2nd tap places the cat, 3rd tap clears.</li>
+      </ol>
+    </div>
+
+    <h2>FAQ</h2>
+    <div class="faq">
+      {faqs.map((f) => (
+        <details><summary>{f.q}</summary><p>{f.a}</p></details>
+      ))}
+    </div>
+
+    <div class="cta-box">
+      <p>🐱 Done with cats? <a href="/star-battle/">Play Star Battle (multi-star) →</a> · <a href="/">Play Shikaku →</a></p>
+    </div>
+  </main>
+</body>
+</html>
