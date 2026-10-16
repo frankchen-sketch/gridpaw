@@ -36,7 +36,7 @@ pnpm run deploy       # 部署 = wrangler pages deploy + IndexNow 提交（勿�
 - **首页支持 ?embed=1**——隐藏 header/footer，用于内容页内嵌游戏 iframe
 - **游戏卡内容列 ≤840px（52.5rem）**——SideAd 契约：160×600 侧栏广告盖在 840px 内容列之外，超宽页面（如 .main 72rem 全宽）棋盘右列会被广告层吃掉真实点击（murdoku 2026-10-14 Playwright 逐格实测）；游戏组件必须收窄居中（kenken 棋盘 496-784 即范式）
 - **KD 数据源**：web.cafe 为主（skill `webcafe-kd`），sitedata 不可靠（差 10 倍）
-- **头部 Games 下拉 = `src/components/GameSwitcher.astro` 组件**——games 数组唯一维护点，新增游戏只改这里；勿再内联复制（2026-10-14 结构债清偿，此前 30 份内联、新游戏长期不同步）
+- **games 数组两处维护：`src/components/GameSwitcher.astro`（游戏页/头部下拉）+ `src/components/GameNav.astro`（content 页头部，混排内容页链接）**——新增游戏两处都要加；`scripts/check-nav-consistency.mjs` 构建期对账 GameSwitcher⊆GameNav，分叉即红（有意省略写脚本内 EXCEPTIONS）。勿再内联复制第三份（2026-10-14 结构债清偿；GameNav 曾漏 6 游戏致内容页无头部入口，2026-10-16 补）
 
 ## 站点结构
 ```
