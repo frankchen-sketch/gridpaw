@@ -1,0 +1,241 @@
+---
+// MeowdokuPlay — 可玩 Meowdoku 风格棋盘（star-battle 引擎 K=1 + 猫皮肤）
+// mode="random": 无限生成器（guide 页/hub 用）；mode="level": 固定 seed 关卡（levels/N/ 用）
+// 关卡 seed = 关卡号，答案可复算（scripts/meowdoku-levels-precompute.cjs）。
+// 注意：棋子 .pc 由 JS 渲染 → 样式必须 is:global（scoped 不匹配 JS 行，AGENTS 已知坑）。
+// 自带 4 通道 track()（gtag/posthog/clarity/gpTrack），不依赖宿主页脚本。
+interface Props { mode?: 'random' | 'level'; level?: number; heading?: string; }
+const { mode = 'random', level = 0, heading = mode === 'level' ? `Level ${level}` : 'Try It Right Now — Free, No Download' } = Astro.props;
+const P = mode === 'level' ? `mzl${level}` : 'mzr';
+const engineSrc = '/star-battle-engine.js';
+---
+<div class="mzplay playwrap" id={`${P}-wrap`}>
+  <div class="playhead">
+    <h3>{heading}</h3>
+    <span class="verified" id={`${P}-verified`}>Unique solution verified ✓</span>
+  </div>
+  <div class="pboard" id={`${P}-board`} aria-label="Playable Meowdoku-style board"></div>
+  <div class="playrow">
+    <span class="hearts" id={`${P}-hearts`}>♥♥♥</span>
+    <button class="pbtn primary" id={`${P}-hint`}>Hint: next forced cat</button>
+    <button class="pbtn ghost" id={`${P}-reset`}>{mode === 'level' ? 'Restart' : 'Reset'}</button>
+  </div>
+  <div class="playrow">
+    <div class="pmsg" id={`${P}-msg`}>Click cycle: 1st tap marks ✕ (excluded), 2nd tap places the cat, 3rd tap clears. One cat per region, row, and column — never touching, diagonals included.</div>
+  </div>
+  <div class="playwin" id={`${P}-win`}></div>
+  <div class="playnote">{mode === 'level'
+    ? `This board is fixed: Level ${level} always looks the same and has exactly one solution (programmatically proven). Fan-made Meowdoku-style puzzle, not affiliated with Oakever.`
+    : 'A fresh board is generated every round — each one programmatically proven to have exactly one solution. A 3-heart mode: an illegal placement flashes red and costs a heart; run out and a new board loads. Unofficial fan-made demo, not affiliated with Oakever.'}
+  </div>
+</div>
+
+<style is:global>
+  .mzplay { background:#fff; border:2px solid var(--md-primary,#D97706); border-radius:14px; padding:14px 14px 12px; margin:1rem auto 0.6rem; box-shadow:0 1px 4px rgba(63,48,38,.08); max-width:520px; }
+  .mzplay .playhead { display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px; }
+  .mzplay .playhead h3 { margin:0; font-size:1.05rem; color:var(--md-text,#3D3D3D); }
+  .mzplay .verified { font-size:11px; font-weight:800; color:#1E7A3C; background:#DFF3E4; padding:2px 8px; border-radius:99px; white-space:nowrap; }
+  .mzplay .pboard { display:grid; grid-template-columns:repeat(6, 46px); grid-auto-rows:46px; gap:3px; padding:4px; border:2px solid #E8D8CA; border-radius:10px; margin:0 auto; justify-content:center; }
+  .mzplay .pc { border-radius:6px; position:relative; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:transform .08s; touch-action:manipulation; }
+  .mzplay .pc:active { transform:scale(.94); }
+  .mzplay .pc .xmark { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:800; color:rgba(66,53,46,.45); }
+  .mzplay .pc .catp { width:70%; height:70%; background:url('/meowdoku-guide/cat-icon.png') center/contain no-repeat; filter:drop-shadow(0 1px 1px rgba(0,0,0,.25)); }
+  .mzplay .pc.p0 { background:#F9D8C8; } .mzplay .pc.p1 { background:#F7E7C3; } .mzplay .pc.p2 { background:#D9E8CB; }
+  .mzplay .pc.p3 { background:#C9DFEE; } .mzplay .pc.p4 { background:#E6D9F0; } .mzplay .pc.p5 { background:#F5D5DA; }
+  .mzplay .pc.flash { animation:mzflash .5s; }
+  @keyframes mzflash { 0%,100%{box-shadow:inset 0 0 0 0 rgba(217,83,79,0)} 35%{box-shadow:inset 0 0 0 3px #d9534f;} }
+  .mzplay .pc.hintcell { box-shadow:inset 0 0 0 3px #1E7A3C; }
+  .mzplay .playrow { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:10px; }
+  .mzplay .hearts { font-size:1.05rem; letter-spacing:2px; white-space:nowrap; }
+  .mzplay .pbtn { border:0; border-radius:9px; padding:8px 14px; font-weight:800; font-size:0.85rem; cursor:pointer; font-family:inherit; }
+  .mzplay .pbtn.primary { background:var(--md-primary,#D97706); color:#fff; }
+  .mzplay .pbtn.ghost { background:#FFF1E8; color:var(--md-text,#3D3D3D); }
+  .mzplay .pmsg { flex:1; min-width:180px; font-size:0.82rem; color:var(--md-text-light,#7A6A5F); line-height:1.5; }
+  .mzplay .playwin { display:none; margin-top:10px; background:#DFF3E4; border-radius:10px; padding:10px 12px; font-size:0.85rem; line-height:1.7; color:#235c2e; }
+  .mzplay .playwin.show { display:block; }
+  .mzplay .playwin b { color:#1E7A3C; }
+  .mzplay .playwin a { color:#1E7A3C; font-weight:800; }
+  .mzplay .playnote { font-size:11px; color:var(--md-text-light,#7A6A5F); margin-top:8px; font-style:italic; line-height:1.5; }
+  @media (max-width:480px){ .mzplay .pboard { grid-template-columns:repeat(6, 40px); grid-auto-rows:40px; } }
+</style>
+
+<script is:inline src={engineSrc}></script>
+<script is:inline define:vars={{ mode, level, P }}>
+  (function () {
+    var SB = window.StarBattleEngine;
+    var root = document.getElementById(P + '-wrap');
+    var boardEl = document.getElementById(P + '-board');
+    if (!SB || !root || !boardEl) return;
+    var N = 6, K = 1;
+    var puzzle = null, state = null;
+    var boardNum = 0, hearts = 3, firstMove = false, solved = false;
+    var msgEl = document.getElementById(P + '-msg');
+    var heartsEl = document.getElementById(P + '-hearts');
+    var winEl = document.getElementById(P + '-win');
+
+    function track(event, params) {
+      if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture(event, Object.assign({ site: 'gridpaw' }, params || {}));
+      }
+      if (typeof window.clarity === 'function') {
+        window.clarity('event', event);
+        if (params) Object.keys(params).forEach(function (k) { window.clarity('set', k, String(params[k])); });
+      }
+      if (window.gpTrack) window.gpTrack(event, params || {});
+    }
+
+    function rc(idx) { return [(idx / N) | 0, idx % N]; }
+    function renderCell(d, v) {
+      d.innerHTML = '';
+      d.classList.remove('hintcell');
+      if (v === 2) d.innerHTML = '<span class="catp"></span>';
+      else if (v === 1) d.innerHTML = '<span class="xmark">✕</span>';
+    }
+    function render() {
+      for (var i = 0; i < N * N; i++) { renderCell(boardEl.children[i], state[i]); boardEl.children[i].classList.remove('hintcell'); }
+    }
+    function updateHearts() {
+      var s = '';
+      for (var i = 0; i < 3; i++) s += '<span style="color:' + (i < hearts ? '#d9534f' : '#e8d8ca') + '">♥</span>';
+      heartsEl.innerHTML = s;
+    }
+    function setMsg(html) { msgEl.innerHTML = html; }
+
+    var startPending = false;
+    function fireGameStart() {
+      if (document.visibilityState !== 'visible') { if (boardNum === 1) startPending = true; return; }
+      startPending = false;
+      track('game_start', { level: mode === 'level' ? level : boardNum, difficulty: 'easy 6x6' });
+    }
+    (function () {
+      if (document.visibilityState === 'visible') return;
+      document.addEventListener('visibilitychange', function once() {
+        if (document.visibilityState === 'visible') {
+          document.removeEventListener('visibilitychange', once);
+          if (startPending) fireGameStart();
+        }
+      });
+    })();
+
+    function buildBoardEl() {
+      boardEl.innerHTML = '';
+      for (var i = 0; i < N * N; i++) {
+        (function (idx) {
+          var d = document.createElement('div');
+          d.className = 'pc p' + puzzle.regionOf[idx];
+          d.setAttribute('role', 'gridcell');
+          d.addEventListener('click', function () { cycle(idx, d); });
+          boardEl.appendChild(d);
+        })(i);
+      }
+    }
+
+    function newBoard() {
+      boardNum++;
+      var seed;
+      if (mode === 'level') { seed = level; boardNum = level; }
+      else { seed = (Date.now() ^ (boardNum * 2654435761)) >>> 0; }
+      try { puzzle = SB.generate(N, K, 'easy', seed); }
+      catch (e) { puzzle = SB.generate(N, K, 'easy'); }
+      state = new Array(N * N).fill(0);
+      hearts = 3; firstMove = false; solved = false;
+      winEl.classList.remove('show');
+      document.getElementById(P + '-verified').textContent = 'Unique solution verified ✓';
+      buildBoardEl(); updateHearts();
+      setMsg('Click cycle: 1st tap marks ✕ (excluded), 2nd tap places the cat (an illegal tap clears the mark), 3rd tap clears. One cat per region, row, and column — never touching, diagonals included.');
+      fireGameStart();
+    }
+
+    function violationOf(idx) {
+      var r = (idx / N) | 0, c = idx % N;
+      for (var i = 0; i < N * N; i++) {
+        if (state[i] !== 2) continue;
+        var pr = (i / N) | 0, pc = i % N;
+        if (pr === r || pc === c) return 'row';
+        if (Math.abs(pr - r) <= 1 && Math.abs(pc - c) <= 1) return 'touch';
+        if (puzzle.regionOf[i] === puzzle.regionOf[idx]) return 'region';
+      }
+      return null;
+    }
+    function violationText(kind, r, c) {
+      if (kind === 'touch') return '❌ Cats can\'t touch — R' + (r + 1) + 'C' + (c + 1) + ' neighbors an existing cat. −1 ♥';
+      if (kind === 'row') return '❌ Its row/column already has a cat — one per row and column. −1 ♥';
+      return '❌ That region already has a cat — one cat per region. −1 ♥';
+    }
+    function countCats() {
+      var n = 0;
+      for (var i = 0; i < N * N; i++) if (state[i] === 2) n++;
+      return n;
+    }
+
+    function onWin() {
+      solved = true;
+      if (mode === 'level') {
+        var nav = '';
+        if (level < 10) nav += '<a href="/meowdoku/levels/' + (level + 1) + '/">Level ' + (level + 1) + ' →</a> · ';
+        else nav += '<a href="/meowdoku/">All levels cleared — back to hub →</a> · ';
+        nav += '<a href="/meowdoku/">More boards</a> · <a href="/meowdoku-guide/">Strategy guide</a>';
+        winEl.innerHTML = '<b>Solved! Level ' + level + ' — unique solution verified.</b><br>Next: ' + nav + '<br>⭐ Rate this level below — your rating shapes what we build next.';
+        track('level_up', { level: level, difficulty: 'easy 6x6' });
+      } else {
+        winEl.innerHTML = '<b>Solved! Board #' + boardNum + ' — unique solution verified.</b><br>Next: <a href="#" id="' + P + '-next">new board →</a> · <a href="/star-battle/">Star Battle (multi-star)</a> · <a href="/">Shikaku</a>';
+        track('level_up', { level: boardNum, difficulty: 'easy 6x6' });
+        var next = document.getElementById(P + '-next');
+        if (next) next.addEventListener('click', function (e) { e.preventDefault(); newBoard(); boardEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
+      }
+      winEl.classList.add('show');
+    }
+
+    function cycle(idx, d) {
+      if (solved) return;
+      var v = state[idx];
+      if (!firstMove) { firstMove = true; track('first_move', { level: mode === 'level' ? level : boardNum }); }
+      if (v === 2) { state[idx] = 0; renderCell(d, 0); setMsg('Cat removed from R' + (rc(idx)[0] + 1) + 'C' + (rc(idx)[1] + 1) + '.'); return; }
+      if (v === 0) { state[idx] = 1; renderCell(d, 1); return; }
+      var bad = violationOf(idx);
+      var r = (idx / N) | 0, c = idx % N;
+      if (bad) {
+        state[idx] = 0; renderCell(d, 0);
+        d.classList.remove('flash'); void d.offsetWidth; d.classList.add('flash');
+        setMsg(violationText(bad, r, c));
+        hearts--; updateHearts();
+        if (hearts <= 0) {
+          if (mode === 'level') { setMsg('💔 Out of hearts — restarting Level ' + level + '.'); setTimeout(newBoard, 700); }
+          else { setMsg('💔 Out of hearts — a fresh board is loading.'); setTimeout(newBoard, 700); }
+        }
+        return;
+      }
+      state[idx] = 2;
+      renderCell(d, 2);
+      setMsg('Cat settled at R' + (r + 1) + 'C' + (c + 1) + ' ✓ — re-scan the board (Strategy 6).');
+      if (countCats() === N * K) onWin();
+    }
+
+    document.getElementById(P + '-hint').addEventListener('click', function () {
+      if (solved) return;
+      for (var i = 0; i < N * N; i++) {
+        if (puzzle.solution[i] === 1 && state[i] !== 2) {
+          var d = boardEl.children[i];
+          var r = (i / N) | 0, c = i % N;
+          state[i] = 2; renderCell(d, 2);
+          d.classList.add('hintcell');
+          setMsg('Hint: R' + (r + 1) + 'C' + (c + 1) + ' is forced — this cell is the region\'s only legal home.');
+          track('hint_click', { level: mode === 'level' ? level : boardNum });
+          if (countCats() === N * K) onWin();
+          return;
+        }
+      }
+      setMsg('No hint left — every solution cat is already placed.');
+    });
+
+    document.getElementById(P + '-reset').addEventListener('click', function () {
+      if (solved) return;
+      state = new Array(N * N).fill(0);
+      render(); setMsg('Board cleared. X marks and cats reset.');
+      track('puzzle_reset', { level: mode === 'level' ? level : boardNum, difficulty: 'easy 6x6' });
+    });
+
+    newBoard();
+  })();
+</script>
