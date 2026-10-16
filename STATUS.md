@@ -656,3 +656,5 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 ## 2026-10-16（傍晚）方案 C 一期：/meowdoku/ hub + 10 关卡页 + 星级评价（deploy `9de6af5c`，commit `d5cdb73`）
 
 **用户拍板铺 10 关 + 评分 CTA**：`/meowdoku/` hub（随机盘 + 关卡导航 + FAQ schema）+ `/meowdoku/levels/1..10/` 固定盘页（seed=关卡号，引擎验唯一，答案坐标预计算 `src/data/meowdoku-levels.json` 折叠展示）。可玩模块抽 `MeowdokuPlay.astro` 组件（guide 页同步切组件），`StarRating.astro` 评分组件试点（rate_submit 走 D1 双白名单）。fan-made 注脚全页面保留。验收 Playwright 四端全绿；12 URL IndexNow 200。观察点：rate_submit 量/stars 分布决定是否铺 50-100 关。明细 → `NEWWORD-LEDGER.md` 方案 C 节。
+
+**（同日续）game_start 时序统一标准**：线上 D1 对账抓到 MeowdokuPlay 首盘 game_start 不落 D1（gpTrack 由 SEOHead module 延迟赋值，内联脚本解析期调用未就位）；全站对账定案其余页面全安全（Astro module 脚本/同步 gp-track.js 天然免疫）。统一标准收口：SEOHead 头部 is:inline stub 缓冲 `__gpq` + module 冲洗重放（deploy `478ad1e1`），此后内联脚本解析期发事件全站不丢。方法论+陷阱沉淀 skill game-event-tracking。
