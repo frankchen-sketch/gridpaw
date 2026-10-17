@@ -628,8 +628,25 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
       board.style.gridTemplateColumns = "repeat(" + N + ", 1fr)";
       board.innerHTML = "";
       var texIdx = {};
+      // unique (texture, tint) combo per room — 8x6 = 48 combos, shuffled
+      // deterministically per puzzle seed so re-renders are stable; any two
+      // rooms now differ in texture or tint (pfjarschel/Lemmy 2026-10-17:
+      // identical adjacent tiles made puzzles unsolvable without brute force)
+      var texKeys = [];
+      Object.keys(ROOM_TEX).forEach(function (n) {
+        if (texKeys.indexOf(ROOM_TEX[n]) < 0) texKeys.push(ROOM_TEX[n]);
+      });
+      var combos = [];
+      for (var ti = 0; ti < texKeys.length; ti++)
+        for (var ci = 0; ci < TINTS.length; ci++) combos.push([texKeys[ti], TINTS[ci]]);
+      var sh = MurdokuEngine.mulberry32(puzzle.seed ^ (N * 7919));
+      for (var k = combos.length - 1; k > 0; k--) {
+        var jk = (sh() * (k + 1)) | 0;
+        var tmp = combos[k]; combos[k] = combos[jk]; combos[jk] = tmp;
+      }
       lay.rooms.forEach(function (r, i) {
-        texIdx[r.id] = { tex: ASSETS[ROOM_TEX[r.name] || "floor-hardwood"], tint: TINTS[i % TINTS.length] };
+        var combo = combos[i % combos.length];
+        texIdx[r.id] = { tex: ASSETS[combo[0]], tint: combo[1] };
       });
       var seen = {};
       var victimCell = puzzle.placement.personCell[N - 1];

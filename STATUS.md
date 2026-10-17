@@ -705,3 +705,12 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **Lemmy 现状**：73260570 三评论——pfjarschel 3 条反馈（corner 实锤已修；房间不连通 + 地砖区分度进 fix list 未修）、我方回复已发（29457825）、pfjarschel 10-17 鼓励回帖（no rush，无新反馈）
 - **changelog**：+2026-10-17 Fix 条目（corner/wall clues fixed），dateModified + updated-line 同步
 - **待办**：房间连通性约束 + 房间地砖区分度（pfjarschel 反馈 1/2 条，genLayout 级改动，需各自 spike）；修后 Lemmy 回帖报「fixed」+ 监控 cron 三帖
+
+## 2026-10-17（夜）Murdoku 第二轮：房间连通性 + 地砖区分度（pfjarschel fix list 闭环）
+
+**实测根因**：① genLayout L104 长不动的房间跳到任意空闲格 → 4×4 **90%**（54/60）、6×6 **100%**（16/16）谜题带不连通房间；② 24 房间名→8 纹理（同组共用）+ tint 仅 6 种按 i%6 循环 → 6×6（7-11 房间）必然有相邻房间 tex+tint 全同，玩家无法视觉区分。
+
+- **修复 ①**：growable-only 生长（房间只吞相邻空闲格，围死的停止生长）+ 小于 minArea 的并入最小相邻房间 + id 重排（cellsInRoom 按 id 索引，空洞会崩）。原型三次迭代：5/20 → 7/20 → **13/20**（roomArea 3.4/3.0 扫频无增益，按 3 次纪律停手接受 65% vs orig 80%——worker 重试 40 种子，玩家侧全失败概率 ~0.35⁴⁰≈0，期望加载 ~1s）
+- **修复 ②**（页面 texIdx）：每房间唯一 (纹理, tint) 组合（8×6=48 池，mulberry32(puzzle.seed) 确定性洗牌，重渲染稳定）
+- **验收**：audit PASS（4×4 60/60 + 6×6 13/20，矛盾 0 + 不连通 0，checker 新增独立 flood-fill 连通性检查）；build 167 页；浏览器实测 4×4 5 房间/6×6 9 房间 distinctLooks=房间数 全唯一，6×6 worker 6s 内出题
+- **audit 模板升级**：game-pre-launch-testing scripts/engine-audit.cjs 加连通性检查（第二个独立 checker 项）

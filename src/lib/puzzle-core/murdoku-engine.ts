@@ -84,11 +84,27 @@ function genLayout(N, rng, opt = {}) {
   shuffle(all, rng);
   for (let i = 0; i < numRooms; i++) { const c = all[i]; rooms.push({ cells: [c], name: '', id: i }); cellRoom[c] = i; }
 
-  // smallest-room-first growth
+  // smallest-room-first growth, connectivity preserved (Lemmy 2026-10-17,
+  // pfjarschel: disconnected rooms made room-membership clues unplayable —
+  // orig engine shipped disconnected rooms in 90% of 4x4 / 100% of 6x6
+  // puzzles). A room only grows by absorbing an ADJACENT free cell; rooms
+  // that are fully enclosed stop growing instead of teleporting to a far
+  // free cell, then get merged into their smallest neighbor below.
   let remaining = C - numRooms;
   while (remaining > 0) {
-    let ri = 0, minSz = Infinity;
+    const growable = [];
     for (let r = 0; r < rooms.length; r++) {
+      let grow = false;
+      for (const c of rooms[r].cells) {
+        const rr = (c / N) | 0, cc = c % N;
+        if ((rr > 0 && cellRoom[c - N] < 0) || (rr < N - 1 && cellRoom[c + N] < 0) ||
+            (cc > 0 && cellRoom[c - 1] < 0) || (cc < N - 1 && cellRoom[c + 1] < 0)) { grow = true; break; }
+      }
+      if (grow) growable.push(r);
+    }
+    if (!growable.length) return null; // unreachable on a connected grid; safety
+    let ri = growable[0], minSz = rooms[ri].cells.length;
+    for (const r of growable) {
       const sz = rooms[r].cells.length;
       if (sz < minSz) { minSz = sz; ri = r; }
       else if (sz === minSz && rng() < 0.3) ri = r;
@@ -101,10 +117,40 @@ function genLayout(N, rng, opt = {}) {
       if (cc > 0 && cellRoom[c - 1] < 0) cands.push(c - 1);
       if (cc < N - 1 && cellRoom[c + 1] < 0) cands.push(c + 1);
     }
-    if (!cands.length) { for (let i = 0; i < C; i++) if (cellRoom[i] < 0) { cands.push(i); break; } }
     const pick = cands[(rng() * cands.length) | 0];
     rooms[ri].cells.push(pick); cellRoom[pick] = ri; remaining--;
   }
+  // merge any room that ended below minArea into its smallest adjacent room
+  // (enclosed rooms used to trigger a full null-retry, tanking 6x6 success;
+  // merging preserves connectivity and keeps more, smaller rooms, which the
+  // uniqueness ceiling gate depends on)
+  for (let i = 0; i < rooms.length; ) {
+    if (rooms[i].cells.length >= minArea) { i++; continue; }
+    let best = null;
+    for (const cand of rooms) {
+      if (cand.id === rooms[i].id || cand.cells.length < minArea) continue;
+      let adj = false;
+      for (const c of rooms[i].cells) {
+        const r = (c / N) | 0, cc = c % N;
+        for (const [dr, dc] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) {
+          const nr = r + dr, nc = cc + dc;
+          if (nr < 0 || nr >= N || nc < 0 || nc >= N) continue;
+          if (cellRoom[nr * N + nc] === cand.id) { adj = true; break; }
+        }
+        if (adj) break;
+      }
+      if (adj && (!best || cand.cells.length < best.cells.length)) best = cand;
+    }
+    if (!best) return null; // isolated room: no adjacent room to merge into
+    for (const c of rooms[i].cells) { cellRoom[c] = best.id; best.cells.push(c); }
+    rooms.splice(i, 1); // do not advance: array shifted
+  }
+  // compact room ids after merges — cellsInRoom/roomOf are indexed by id
+  // position, so id gaps would corrupt the derived masks
+  rooms.forEach((room, idx) => {
+    if (room.id !== idx) for (const c of room.cells) cellRoom[c] = idx;
+    room.id = idx;
+  });
   for (const room of rooms) if (room.cells.length < minArea) return null;
 
   const namePool = ROOM_NAMES.slice();
