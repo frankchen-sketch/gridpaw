@@ -704,7 +704,7 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **验收链（skill `game-pre-launch-testing` 首用）**：audit 脚本（独立 checker，不 import 引擎 mask）对修复后引擎 PASS（4×4 60/60 0 矛盾 + 6×6 18/20 0 矛盾）；pnpm build 167 页全绿；浏览器冒烟 4×4 生成 0 矛盾 + checkSolution True + corner 格 13→3
 - **Lemmy 现状**：73260570 三评论——pfjarschel 3 条反馈（corner 实锤已修；房间不连通 + 地砖区分度进 fix list 未修）、我方回复已发（29457825）、pfjarschel 10-17 鼓励回帖（no rush，无新反馈）
 - **changelog**：+2026-10-17 Fix 条目（corner/wall clues fixed），dateModified + updated-line 同步
-- **待办**：房间连通性约束 + 房间地砖区分度（pfjarschel 反馈 1/2 条，genLayout 级改动，需各自 spike）；修后 Lemmy 回帖报「fixed」+ 监控 cron 三帖
+- **待办**：~~房间连通性 + 地砖区分度~~ 已闭环（见 2026-10-17 夜条目）；修后 Lemmy 回帖报「fixed」+ 监控 cron 三帖
 
 ## 2026-10-17（夜）Murdoku 第二轮：房间连通性 + 地砖区分度（pfjarschel fix list 闭环）
 
