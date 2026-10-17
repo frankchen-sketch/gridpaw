@@ -192,8 +192,7 @@ var MurdokuEngine = (() => {
           continue;
         }
         const ni = nr * N + nc;
-        if (roomOf[ni] !== roomOf[i]) wallDir++;
-        else if (obj[ni] === 3) tab = true;
+        if (obj[ni] === 3) tab = true;
       }
       if (tab) {
         atTableMask |= bit(i);
@@ -255,8 +254,7 @@ var MurdokuEngine = (() => {
         continue;
       }
       const ni = nr * N + nc;
-      if (lay.roomOf[ni] !== lay.roomOf[cell]) wallDir++;
-      else if (lay.obj[ni] === 3) tab = true;
+      if (lay.obj[ni] === 3) tab = true;
     }
     return {
       rug,

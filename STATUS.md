@@ -695,3 +695,13 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **同款彻查（34 页修正，commit `fbeaca6`）**：SEOHead 兜底 og-default 波及全部 akari 系功能页（含 Reddit 常用直链 /akari/daily/）→ 按规则"页面讲哪个游戏 OG 用哪个游戏的图"修 34 页；线上 4 页抽验过；剩余 33 页为可接受兜底（shikaku 系匹配/纯内容品牌卡/meowdoku 无专属图记 P2）
 - **误报排除**：canonical 尾斜杠由 SEOHead L31 自动补齐，源码无斜杠非问题
 - **规程**：已入 skill `game-launch-audit` 清单第 6 条（OG 图对账+发帖前预览缩略图核对）
+
+## 2026-10-17（傍晚）Murdoku corner 线索 bug 修复（pfjarschel Lemmy 反馈驱动）
+
+**根因**：murdoku-engine.ts 的 wallDir 统计把**房间内部分界线**当墙算（`roomOf[ni] !== roomOf[i]` 计入），`in_corner` = wallDir≥2 → 棋盘中央被两三个房间夹住的普通格被判「角落」；4×4 上 13/16 格被标记，玩家按棋盘可见物推理必然矛盾。同款逻辑三处：mask 计算（L150 区）+ cellFeatures + cellSignature（死代码，已删）。
+
+- **修复（方案 A：墙=棋盘外边界）**：删 seam 计入，wall/corner 只看外边界；原型实测 A 优于 B（边界+木箱）：4×4 60/60、6×6 成功率 11/20→18/20、矛盾 1/60→0、corner 线索可用度 3→22/60
+- **验收链（skill `game-pre-launch-testing` 首用）**：audit 脚本（独立 checker，不 import 引擎 mask）对修复后引擎 PASS（4×4 60/60 0 矛盾 + 6×6 18/20 0 矛盾）；pnpm build 167 页全绿；浏览器冒烟 4×4 生成 0 矛盾 + checkSolution True + corner 格 13→3
+- **Lemmy 现状**：73260570 三评论——pfjarschel 3 条反馈（corner 实锤已修；房间不连通 + 地砖区分度进 fix list 未修）、我方回复已发（29457825）、pfjarschel 10-17 鼓励回帖（no rush，无新反馈）
+- **changelog**：+2026-10-17 Fix 条目（corner/wall clues fixed），dateModified + updated-line 同步
+- **待办**：房间连通性约束 + 房间地砖区分度（pfjarschel 反馈 1/2 条，genLayout 级改动，需各自 spike）；修后 Lemmy 回帖报「fixed」+ 监控 cron 三帖
