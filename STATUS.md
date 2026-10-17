@@ -686,3 +686,11 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **上线验证**：build 167 页 ✓；线上 /nonogram/ 840px ✓、`innerWidth < 1350` ✓、引擎含 Cat Loaf ✓、三页 860px 归零 ✓；IndexNow 200
 - **审计债**：kakuro/nurikabe 与 nonogram 同款 860px 违约是被这次排查连带抓出来的——SideAd 契约此前没有跑过全站扫描，后续新增页面由 skill `game-launch-audit` 清单第 4 条把关
 - **（晚续）信号**：r/nonograms 帖 933 views（用户面板口径，冷启动帖首个破千级窗口）；r/WebGames 帖 No-Giraffe-3838 回帖确认 tutorial 手势修复有效，线程正向收尾（回复带 Akari daily CTA）；r/playmygame Akari 帖收到 Reddit "a better community" 算法建议→定性噪音勿转帖（转帖伤号，决策记录见对话 10-16）
+
+## 2026-10-17 r/LogicPuzzles 发帖准备 + OG 图彻查（commit `94b9a56`~`fbeaca6`）
+
+- **发帖计划**：r/LogicPuzzles × Murdoku（正文稿已拟，内容先行对齐 Pentodoku 先例；若 r/playmygame 当日已发则顺延一天）；用户贴链接预览显示 Shikaku 卡 → 揪出 OG 缺配
+- **OG 图根因**：/murdoku/ 漏配专属图（10-15 批量生成时未上线），兜底 og-default=首页 Shikaku 卡；补 `og-murdoku.png`（右侧=真页面棋盘截图，`scripts/gen-og-murdoku.py`，PIL 边框验收）+ 发帖须换 query 参数强刷 Reddit 抓取
+- **同款彻查（34 页修正，commit `fbeaca6`）**：SEOHead 兜底 og-default 波及全部 akari 系功能页（含 Reddit 常用直链 /akari/daily/）→ 按规则"页面讲哪个游戏 OG 用哪个游戏的图"修 34 页；线上 4 页抽验过；剩余 33 页为可接受兜底（shikaku 系匹配/纯内容品牌卡/meowdoku 无专属图记 P2）
+- **误报排除**：canonical 尾斜杠由 SEOHead L31 自动补齐，源码无斜杠非问题
+- **规程**：已入 skill `game-launch-audit` 清单第 6 条（OG 图对账+发帖前预览缩略图核对）
