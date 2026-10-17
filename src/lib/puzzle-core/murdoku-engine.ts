@@ -152,8 +152,11 @@ function genLayout(N, rng, opt = {}) {
       const nr = r + dr, nc = c + dc;
       if (nr < 0 || nr >= N || nc < 0 || nc >= N) { wallDir++; continue; }
       const ni = nr * N + nc;
-      if (roomOf[ni] !== roomOf[i]) wallDir++;
-      else if (obj[ni] === 3) tab = true;
+      // "at a wall" / "in a corner" mean what the player SEES: only the grid
+      // border is a wall. Interior room seams are drawn as thin partition
+      // lines, not walls (pfjarschel/Lemmy 2026-10-17 bug report — counting
+      // them made mid-grid cells satisfy in_corner, 13/16 cells on 4x4).
+      if (obj[ni] === 3) tab = true;
     }
     if (tab) { atTableMask |= bit(i); atTableCount++; }
     if (wallDir >= 1) { wallMask |= bit(i); wallCount++; }
@@ -172,19 +175,6 @@ function genLayout(N, rng, opt = {}) {
 }
 
 /* ---------------- Placement: constructive Latin + victim rule ---------------- */
-function cellSignature(lay, cell) {
-  const N = lay.N;
-  const r = (cell / N) | 0, c = cell % N;
-  let wallDir = 0, tab = false;
-  for (const [dr, dc] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) {
-    const nr = r + dr, nc = c + dc;
-    if (nr < 0 || nr >= N || nc < 0 || nc >= N) { wallDir++; continue; }
-    const ni = nr * N + nc;
-    if (lay.roomOf[ni] !== lay.roomOf[cell]) wallDir++;
-    else if (lay.obj[ni] === 3) tab = true;
-  }
-  return `${lay.obj[cell]}|${wallDir}|${tab ? 1 : 0}`;
-}
 
 function cellFeatures(lay, cell) {
   const N = lay.N;
@@ -195,8 +185,9 @@ function cellFeatures(lay, cell) {
     const nr = r + dr, nc = c + dc;
     if (nr < 0 || nr >= N || nc < 0 || nc >= N) { wallDir++; continue; }
     const ni = nr * N + nc;
-    if (lay.roomOf[ni] !== lay.roomOf[cell]) wallDir++;
-    else if (lay.obj[ni] === 3) tab = true;
+    // wall = grid border only, mirroring the mask computation in genLayout —
+    // interior room seams are partitions, not walls (Lemmy 2026-10-17)
+    if (lay.obj[ni] === 3) tab = true;
   }
   // presence features only (absence is never assertable)
   return {
