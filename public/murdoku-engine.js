@@ -97,8 +97,21 @@ var MurdokuEngine = (() => {
     }
     let remaining = C - numRooms;
     while (remaining > 0) {
-      let ri = 0, minSz = Infinity;
+      const growable = [];
       for (let r = 0; r < rooms.length; r++) {
+        let grow = false;
+        for (const c of rooms[r].cells) {
+          const rr = c / N | 0, cc = c % N;
+          if (rr > 0 && cellRoom[c - N] < 0 || rr < N - 1 && cellRoom[c + N] < 0 || cc > 0 && cellRoom[c - 1] < 0 || cc < N - 1 && cellRoom[c + 1] < 0) {
+            grow = true;
+            break;
+          }
+        }
+        if (grow) growable.push(r);
+      }
+      if (!growable.length) return null;
+      let ri = growable[0], minSz = rooms[ri].cells.length;
+      for (const r of growable) {
         const sz = rooms[r].cells.length;
         if (sz < minSz) {
           minSz = sz;
@@ -113,17 +126,45 @@ var MurdokuEngine = (() => {
         if (cc > 0 && cellRoom[c - 1] < 0) cands.push(c - 1);
         if (cc < N - 1 && cellRoom[c + 1] < 0) cands.push(c + 1);
       }
-      if (!cands.length) {
-        for (let i = 0; i < C; i++) if (cellRoom[i] < 0) {
-          cands.push(i);
-          break;
-        }
-      }
       const pick = cands[rng() * cands.length | 0];
       rooms[ri].cells.push(pick);
       cellRoom[pick] = ri;
       remaining--;
     }
+    for (let i = 0; i < rooms.length; ) {
+      if (rooms[i].cells.length >= minArea) {
+        i++;
+        continue;
+      }
+      let best = null;
+      for (const cand of rooms) {
+        if (cand.id === rooms[i].id || cand.cells.length < minArea) continue;
+        let adj = false;
+        for (const c of rooms[i].cells) {
+          const r = c / N | 0, cc = c % N;
+          for (const [dr, dc] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) {
+            const nr = r + dr, nc = cc + dc;
+            if (nr < 0 || nr >= N || nc < 0 || nc >= N) continue;
+            if (cellRoom[nr * N + nc] === cand.id) {
+              adj = true;
+              break;
+            }
+          }
+          if (adj) break;
+        }
+        if (adj && (!best || cand.cells.length < best.cells.length)) best = cand;
+      }
+      if (!best) return null;
+      for (const c of rooms[i].cells) {
+        cellRoom[c] = best.id;
+        best.cells.push(c);
+      }
+      rooms.splice(i, 1);
+    }
+    rooms.forEach((room, idx) => {
+      if (room.id !== idx) for (const c of room.cells) cellRoom[c] = idx;
+      room.id = idx;
+    });
     for (const room of rooms) if (room.cells.length < minArea) return null;
     const namePool = ROOM_NAMES.slice();
     shuffle(namePool, rng);
