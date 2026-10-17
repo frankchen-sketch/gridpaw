@@ -689,7 +689,7 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 
 ## 2026-10-17 r/LogicPuzzles 发帖准备 + OG 图彻查（commit `94b9a56`~`fbeaca6`）
 
-- **发帖计划**：r/LogicPuzzles × Murdoku（正文稿已拟，内容先行对齐 Pentodoku 先例；若 r/playmygame 当日已发则顺延一天）；用户贴链接预览显示 Shikaku 卡 → 揪出 OG 缺配
+- **发帖计划**：~~r/LogicPuzzles~~ **被拦改道 r/WebGames**（正文稿已拟；r/LogicPuzzles Rule 2「No self-promotion unless permitted by Mods」被 Reddit AI 预警拦截——选 sub 漏核自推规则原文，教训入 skill reddit-webgames-coldstart）；Murdoku 角度改发 r/WebGames（首帖隔 4 天+新游戏角度，合规）
 - **OG 图根因**：/murdoku/ 漏配专属图（10-15 批量生成时未上线），兜底 og-default=首页 Shikaku 卡；补 `og-murdoku.png`（右侧=真页面棋盘截图，`scripts/gen-og-murdoku.py`，PIL 边框验收）+ 发帖须换 query 参数强刷 Reddit 抓取
 - **同款彻查（34 页修正，commit `fbeaca6`）**：SEOHead 兜底 og-default 波及全部 akari 系功能页（含 Reddit 常用直链 /akari/daily/）→ 按规则"页面讲哪个游戏 OG 用哪个游戏的图"修 34 页；线上 4 页抽验过；剩余 33 页为可接受兜底（shikaku 系匹配/纯内容品牌卡/meowdoku 无专属图记 P2）
 - **误报排除**：canonical 尾斜杠由 SEOHead L31 自动补齐，源码无斜杠非问题
