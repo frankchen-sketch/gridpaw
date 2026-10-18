@@ -1,0 +1,231 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const title = "Brain Puzzle 3 Answers: Level Walkthroughs";
+const description = "Brain Puzzle 3 answers for every tricky level: quick answers, screenshot steps and video timestamps. Find your stuck level and clear it in under a minute.";
+const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is Brain Puzzle 3: Crazy Mind?", "acceptedAnswer": {"@type": "Answer", "text": "Brain Puzzle 3: Crazy Mind is a free-to-play brain teaser game by Joygame with story-driven trick levels: each level is a short scene where you tap, drag or expose the right thing to solve a mini puzzle. It is the third game in the Brain Puzzle series after Tricky Quest and Logic Twist."}}, {"@type": "Question", "name": "How many levels does Brain Puzzle 3 have?", "acceptedAnswer": {"@type": "Answer", "text": "Brain Puzzle 3 launched with well over a hundred story levels and keeps adding more through updates. This guide covers the levels players search for most, and we keep adding new walkthroughs as we clear them."}}, {"@type": "Question", "name": "Is Brain Puzzle 3 free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, Brain Puzzle 3 is free to download and play on iOS and Android. It is ad-supported: you can watch ads for hints if you get stuck, though every walkthrough on this page lets you clear levels without spending a hint."}}]};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/brain-puzzle-3-answers"
+    type="article"
+    breadcrumbTitle="Brain Puzzle 3 Answers"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; max-width: 380px; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 420px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .index-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.5rem; margin: 0.8rem 0; }
+    .index-list a { display: block; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; padding: 0.55rem 0.7rem; text-decoration: none; font-weight: 700; color: var(--text); font-size: 0.9rem; }
+    .index-list a:hover { border-color: var(--amber); color: var(--amber); }
+    .level-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.9rem; margin: 0.8rem 0; }
+    .level-card { display: flex; flex-direction: column; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); text-decoration: none; color: var(--text); transition: transform 0.15s, border-color 0.15s; }
+    .level-card:hover { transform: translateY(-2px); border-color: var(--amber); }
+    .level-card .thumb { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; border-bottom: 1.5px solid var(--border); }
+    .level-card .meta { padding: 0.6rem 0.7rem 0.75rem; }
+    .level-card .lvl { font-size: 0.68rem; font-weight: 900; color: var(--amber); text-transform: uppercase; letter-spacing: 0.06em; display: block; }
+    .level-card .name { font-size: 0.85rem; font-weight: 800; line-height: 1.3; margin-top: 0.15rem; color: var(--text); display: block; }
+    .level-card .goal { font-size: 0.72rem; color: var(--light); font-style: italic; margin-top: 0.3rem; line-height: 1.45; margin-bottom: 0; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--light); }
+    .seo-footer a { color: var(--light); }
+    .seo-footer a:hover { color: var(--amber); }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+</style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; Brain Puzzle 3 Answers</nav>
+
+  <main class="seo-section">
+    <h1>Brain Puzzle 3 Answers: Level Walkthroughs That Actually Clear the Level</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+
+    <p>Brain Puzzle 3: Crazy Mind is the third entry in the Brain Puzzle series, and it trades plain riddles for story scenes: a roller coaster that will not climb, a boyfriend hidden all over the house, a sweetheart wearing one mask too many. Every level has one exact sequence of taps that ends the scene, and this guide gives you that sequence: quick answers up top, screenshot steps with video timestamps below, and honest notes when a step came from a single source.</p>
+
+    <div class="cta-box">
+      <p>Between levels, try a real logic puzzle: <a href="/">Play Shikaku free in your browser →</a></p>
+    </div>
+
+    <h2>Level answers<span class="accent">.</span></h2>
+    <div class="level-grid">
+    <a class="level-card" href="/brain-puzzle-3-level-1/">
+      <img class="thumb" src="/brain-puzzle-3/l1_hero.jpg" alt="Brain Puzzle 3 Level 1 Quick Draw" loading="lazy" />
+      <div class="meta">
+        <span class="lvl">Level 1</span>
+        <strong class="name">Quick Draw</strong>
+        <p class="goal">“Help the protagonist score higher than the rival”</p>
+      </div>
+    </a>
+    <a class="level-card" href="/brain-puzzle-3-level-2/">
+      <img class="thumb" src="/brain-puzzle-3/l2_hero.jpg" alt="Brain Puzzle 3 Level 2 Winter Warmth" loading="lazy" />
+      <div class="meta">
+        <span class="lvl">Level 2</span>
+        <strong class="name">Winter Warmth</strong>
+        <p class="goal">“Help the man warm up”</p>
+      </div>
+    </a>
+    <a class="level-card" href="/brain-puzzle-3-level-3/">
+      <img class="thumb" src="/brain-puzzle-3/l3_hero.jpg" alt="Brain Puzzle 3 Level 3 Fair Lady" loading="lazy" />
+      <div class="meta">
+        <span class="lvl">Level 3</span>
+        <strong class="name">Fair Lady</strong>
+        <p class="goal">“Help her achieve that magazine cover look”</p>
+      </div>
+    </a>
+    <a class="level-card" href="/brain-puzzle-3-level-4/">
+      <img class="thumb" src="/brain-puzzle-3/l4_hero.jpg" alt="Brain Puzzle 3 Level 4 Principal Coming" loading="lazy" />
+      <div class="meta">
+        <span class="lvl">Level 4</span>
+        <strong class="name">Principal Coming</strong>
+        <p class="goal">“Help her clean up the dorm”</p>
+      </div>
+    </a>
+    <a class="level-card" href="/brain-puzzle-3-level-5/">
+      <img class="thumb" src="/brain-puzzle-3/l5_hero.jpg" alt="Brain Puzzle 3 Level 5 Creepy Ferris" loading="lazy" />
+      <div class="meta">
+        <span class="lvl">Level 5</span>
+        <strong class="name">Creepy Ferris</strong>
+        <p class="goal">“Help the girl get out of this creepy place”</p>
+      </div>
+    </a>
+    <a class="level-card" href="/brain-puzzle-3-level-6/">
+      <img class="thumb" src="/brain-puzzle-3/l6_hero.jpg" alt="Brain Puzzle 3 Level 6 Clean Bathroom" loading="lazy" />
+      <div class="meta">
+        <span class="lvl">Level 6</span>
+        <strong class="name">Clean Bathroom</strong>
+        <p class="goal">“Help Husband Restore the Bathroom”</p>
+      </div>
+    </a>
+    <a class="level-card" href="/brain-puzzle-3-level-7/">
+      <img class="thumb" src="/brain-puzzle-3/l7_hero.jpg" alt="Brain Puzzle 3 Level 7 Ghost Wish" loading="lazy" />
+      <div class="meta">
+        <span class="lvl">Level 7</span>
+        <strong class="name">Ghost Wish</strong>
+        <p class="goal">“Fulfill all the ghosts' wishes”</p>
+      </div>
+    </a>
+    <a class="level-card" href="/brain-puzzle-3-level-8/">
+      <img class="thumb" src="/brain-puzzle-3/l8_hero.jpg" alt="Brain Puzzle 3 Level 8 Elevator Arrest" loading="lazy" />
+      <div class="meta">
+        <span class="lvl">Level 8</span>
+        <strong class="name">Elevator Arrest</strong>
+        <p class="goal">“Help him break free from the railing”</p>
+      </div>
+    </a>
+    <a class="level-card" href="/brain-puzzle-3-level-9/">
+      <img class="thumb" src="/brain-puzzle-3/l9_hero.jpg" alt="Brain Puzzle 3 Level 9 Delicious Hotdog" loading="lazy" />
+      <div class="meta">
+        <span class="lvl">Level 9</span>
+        <strong class="name">Delicious Hotdog</strong>
+        <p class="goal">“Let's make some delicious hot dogs!”</p>
+      </div>
+    </a>
+    <a class="level-card" href="/brain-puzzle-3-level-10/">
+      <img class="thumb" src="/brain-puzzle-3/l10_hero.jpg" alt="Brain Puzzle 3 Level 10 Escape Office" loading="lazy" />
+      <div class="meta">
+        <span class="lvl">Level 10</span>
+        <strong class="name">Escape Office</strong>
+        <p class="goal">“Helping employees leave the company”</p>
+      </div>
+    </a>
+    <a class="level-card" href="/brain-puzzle-3-level-19/">
+      <img class="thumb" src="/brain-puzzle-3/l26_hero.jpg" alt="Brain Puzzle 3 Level 19 Find Them All" loading="lazy" />
+      <div class="meta">
+        <span class="lvl">Level 19</span>
+        <strong class="name">Find Them All</strong>
+        <p class="goal">“Find everyone hiding in the house”</p>
+      </div>
+    </a>
+    <a class="level-card" href="/brain-puzzle-3-level-30/">
+      <img class="thumb" src="/brain-puzzle-3/l27_hero.jpg" alt="Brain Puzzle 3 Level 30 Masks Off" loading="lazy" />
+      <div class="meta">
+        <span class="lvl">Level 30</span>
+        <strong class="name">Masks Off</strong>
+        <p class="goal">“Take off all the masks and see Sweetheart's true face”</p>
+      </div>
+    </a>
+    <a class="level-card" href="/brain-puzzle-3-level-31/">
+      <img class="thumb" src="/brain-puzzle-3/l28_hero.jpg" alt="Brain Puzzle 3 Level 31 Subway" loading="lazy" />
+      <div class="meta">
+        <span class="lvl">Level 31</span>
+        <strong class="name">Subway</strong>
+        <p class="goal">“Help her figure out what's strange”</p>
+      </div>
+    </a>
+    <a class="level-card" href="/brain-puzzle-3-level-137/">
+      <img class="thumb" src="/brain-puzzle-3/l25_step1.jpg" alt="Brain Puzzle 3 Level 137 Coaster" loading="lazy" />
+      <div class="meta">
+        <span class="lvl">Level 137</span>
+        <strong class="name">Coaster</strong>
+        <p class="goal">“Why won't this roller coaster go up!”</p>
+      </div>
+    </a>
+    </div>
+    <h2>How these walkthroughs are made<span class="accent">.</span></h2>
+    <p>Every walkthrough here is rebuilt from a real playthrough video, frame by frame: we extract the tap sequence, re-read it at least twice, and only publish steps that survive the double-check. When a level has steps we could only confirm once, the page says so. No invented answers, no hint-item spam.</p>
+
+    <h2>FAQ<span class="accent">.</span></h2>
+   
+    <details><summary>What is Brain Puzzle 3: Crazy Mind?</summary><p>Brain Puzzle 3: Crazy Mind is a free-to-play brain teaser game by Joygame with story-driven trick levels: each level is a short scene where you tap, drag or expose the right thing to solve a mini puzzle. It is the third game in the Brain Puzzle series after Tricky Quest and Logic Twist.</p></details>
+    <details><summary>How many levels does Brain Puzzle 3 have?</summary><p>Brain Puzzle 3 launched with well over a hundred story levels and keeps adding more through updates. This guide covers the levels players search for most, and we keep adding new walkthroughs as we clear them.</p></details>
+    <details><summary>Is Brain Puzzle 3 free?</summary><p>Yes, Brain Puzzle 3 is free to download and play on iOS and Android. It is ad-supported: you can watch ads for hints if you get stuck, though every walkthrough on this page lets you clear levels without spending a hint.</p></details>
+
+    <div class="cta-box">
+      <p><a href="/">Play Shikaku →</a> · <a href="/akari/">Play Akari →</a> · <a href="/japanese-logic-puzzles/">More Japanese logic puzzles →</a></p>
+    </div>
+  </main>
+  <AdSlot />
+  <footer class="seo-footer">
+    <p><a href="/">GridPaw</a></p>
+  </footer>
+</body>
+</html>
