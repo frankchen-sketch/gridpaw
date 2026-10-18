@@ -691,6 +691,7 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 
 - **发帖计划**：~~r/LogicPuzzles~~ **被拦改道 r/WebGames**（正文稿已拟；r/LogicPuzzles Rule 2「No self-promotion unless permitted by Mods」被 Reddit AI 预警拦截——选 sub 漏核自推规则原文，教训入 skill reddit-webgames-coldstart）；Murdoku 角度改发 r/WebGames（首帖隔 4 天+新游戏角度，合规）
 - **发帖落地（10-17）**：r/WebGames murdoku 帖上线 `https://www.reddit.com/r/WebGames/comments/1x85o6j/`；监控 cron 已扩到三帖（帖3=murdoku，新评论触发）；本地改动=webgames-gridpaw-monitor.sh（非仓库文件，不入库）
+- **murdoku 帖首个评论闭环（10-18，commit `3e32310`）**：u/Easy-Race6938 问「at a wall」是棋盘外沿还是房间边（正是预留软肋+措辞债）；查证=引擎语义已对（murdoku-engine.ts L201-208，pfjarschel Lemmy 反馈后修的：wall 只算棋盘外沿，房间隔线是 partition）但页面从未定义；修=how-to 加 house rule + FAQ 新增条目，上线验证过；回复稿交用户贴
 - **OG 图根因**：/murdoku/ 漏配专属图（10-15 批量生成时未上线），兜底 og-default=首页 Shikaku 卡；补 `og-murdoku.png`（右侧=真页面棋盘截图，`scripts/gen-og-murdoku.py`，PIL 边框验收）+ 发帖须换 query 参数强刷 Reddit 抓取
 - **同款彻查（34 页修正，commit `fbeaca6`）**：SEOHead 兜底 og-default 波及全部 akari 系功能页（含 Reddit 常用直链 /akari/daily/）→ 按规则"页面讲哪个游戏 OG 用哪个游戏的图"修 34 页；线上 4 页抽验过；剩余 33 页为可接受兜底（shikaku 系匹配/纯内容品牌卡/meowdoku 无专属图记 P2）
 - **误报排除**：canonical 尾斜杠由 SEOHead L31 自动补齐，源码无斜杠非问题
@@ -723,4 +724,7 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - 2026-10-17 晚：用户反馈「CG label 遮挡左上角」——实锤是 CG 往**封面图**左上角叠自己的标（裁剪弹窗官方原文：Avoid placing the game title or important elements in the top-left area of the game cover），非游戏画面；游戏 60px 安全区已做进 v2 包（cg-akari-bigupdate-v2.zip，sha c3c8589752cf3e0b，防御性保留）但**决定不重传 build**——Upload new version 会回到上传步，可能清掉已传的媒体；封面构图居中/landscape 品牌位在 y≈110 不在角标区，天然安全
 - 视频规格（CG docs）：15-20s（长了自动剪）、≤50MB、横版 1920x1080 必传、**竖版 1080x1620（2:3 1080p）必传**——首版竖版 800x1200 分辨率不达标致上传报错，已重录 akari-portrait-1080.mp4（1080x1620 h264 21.7s）
 - 媒体上传进度：三张封面全✅ + 两条视频全✅（横版被 CG 自动剪至 19.4s、竖版 14.4s，规格全达标）
-- **提交状态：卡在最后一步 Billing**——点 Submit for approval 无效，页面报「Error fetching payment details, please ensure you have completed billing details in the Billing tab」；CG 硬性要求先完成 Billing（Tipalti 合作方，涉及收款/身份资料，须用户本人填）。步骤 1-4 全部走完，就差 Billing → 回 Finalize submission 勾两个框（T&C + PEGI 12）→ Submit for approval
+- **提交状态：✅ 2026-10-18 已提交，AWAITING REVIEW**（Basic Launch，Submission date 18.10.2026，Version status: Submitted）
+- **Billing 已完成**（Tipalti 四步全绿：Address/Payment Method/Tax Forms/Done）——payee 中国 + USD wire + 招行广州琶洲支行（SWIFT CMBCCNBS，地址用总行官方英文地址，电汇按 SWIFT+卡号路由）。**教训：Tipalti 校验 SWIFT 必须属于 payee 国家**（Wise 美国 SWIFT 报「not valid for china」被拒）；Wise USD 虽能收 SWIFT（$6.11/笔）但过不了 Tipalti 的国家校验
+- **决定：v2 包（60px 安全区）不重传**——重传会清已传媒体；v1 build（无安全区）已进审核，v2 留下次更新
+- 待办：CG 审核结果（模板信无个性化反馈）；过审后 gridpaw.com/akari/ 官方页 `pnpm run deploy` 对齐（代码已绪）
