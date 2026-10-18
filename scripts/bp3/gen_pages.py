@@ -421,6 +421,7 @@ def level_page(n, d):
 import SEOHead from '../../components/SEOHead.astro';
 import GameNav from '../../components/GameNav.astro';
 import AdSlot from '../../components/AdSlot.astro';
+import SideAd from '../../components/SideAd.astro';
 
 const title = {json.dumps(d['title'])};
 const description = {json.dumps(d['description'])};
@@ -478,6 +479,30 @@ const faqJsonLd = {json.dumps(faq_json)};
     </div>
   </main>
   <AdSlot />
+  <SideAd />
+  <script is:inline>
+  (function () {{
+    function track(event, params) {{
+      if (typeof window.gtag === 'function') window.gtag('event', event, params || {{}});
+      if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(event, Object.assign({{ site: 'gridpaw' }}, params || {{}}));
+      if (typeof window.clarity === 'function') window.clarity('event', event);
+      if (window.gpTrack) window.gpTrack(event, params || {{}});
+    }}
+    document.addEventListener('click', function (e) {{
+      var a = e.target && e.target.closest ? e.target.closest('a') : null;
+      if (!a) return;
+      var box = a.closest('.cta-box');
+      var grid = a.closest('.level-grid');
+      var list = a.closest('.index-list');
+      if (!box && !grid && !list) return;
+      track('cta_click', {{
+        target: a.getAttribute('href') || '',
+        placement: box ? 'cta-box' : grid ? 'level-grid' : 'index-list',
+        from: location.pathname
+      }});
+    }}, true);
+  }})();
+  </script>
   <footer class="seo-footer">
     <p><a href="/brain-puzzle-3-answers/">All Brain Puzzle 3 answers</a> · <a href="/">GridPaw</a></p>
   </footer>
@@ -520,6 +545,7 @@ def hub_page():
 import SEOHead from '../../components/SEOHead.astro';
 import GameNav from '../../components/GameNav.astro';
 import AdSlot from '../../components/AdSlot.astro';
+import SideAd from '../../components/SideAd.astro';
 
 const title = {json.dumps(HUB['title'])};
 const description = {json.dumps(HUB['description'])};
@@ -570,6 +596,30 @@ const faqJsonLd = {json.dumps(faq_json)};
     </div>
   </main>
   <AdSlot />
+  <SideAd />
+  <script is:inline>
+  (function () {{
+    function track(event, params) {{
+      if (typeof window.gtag === 'function') window.gtag('event', event, params || {{}});
+      if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(event, Object.assign({{ site: 'gridpaw' }}, params || {{}}));
+      if (typeof window.clarity === 'function') window.clarity('event', event);
+      if (window.gpTrack) window.gpTrack(event, params || {{}});
+    }}
+    document.addEventListener('click', function (e) {{
+      var a = e.target && e.target.closest ? e.target.closest('a') : null;
+      if (!a) return;
+      var box = a.closest('.cta-box');
+      var grid = a.closest('.level-grid');
+      var list = a.closest('.index-list');
+      if (!box && !grid && !list) return;
+      track('cta_click', {{
+        target: a.getAttribute('href') || '',
+        placement: box ? 'cta-box' : grid ? 'level-grid' : 'index-list',
+        from: location.pathname
+      }});
+    }}, true);
+  }})();
+  </script>
   <footer class="seo-footer">
     <p><a href="/">GridPaw</a></p>
   </footer>
