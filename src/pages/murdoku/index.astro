@@ -237,6 +237,26 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
     .suss.done { opacity: .45; }
     .hintbox { margin-top: 10px; font-size: 13.5px; font-weight: 700; color: var(--green); min-height: 20px; }
     .hintbox.err { color: #C0392B; }
+
+    /* ── Statement legend（方案A）── */
+    .legend { margin-top: 14px; border: 1.5px solid var(--border); border-radius: 12px; background: #fffdf9; overflow: hidden; }
+    .legend summary { cursor: pointer; padding: 10px 14px; font-size: 13.5px; font-weight: 800; color: var(--ink); list-style: none; display: flex; align-items: center; gap: 8px; }
+    .legend summary::-webkit-details-marker { display: none; }
+    .legend-hint { margin-left: auto; font-size: 11px; font-weight: 700; color: var(--text-muted); }
+    .legend-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 8px; padding: 0 14px 12px; }
+    .legend-item { background: white; border: 1px solid var(--border); border-radius: 9px; padding: 8px 10px; }
+    .legend-item b { display: block; font-size: 12.5px; color: var(--ink); margin-bottom: 2px; }
+    .legend-item span { font-size: 12px; color: var(--text-muted); line-height: 1.45; }
+    .legend-key { border-color: var(--accent); background: #fff8ef; }
+    .legend-key span { color: var(--ink); }
+
+    /* ── Tutorial walkthrough（方案B）── */
+    .tut { border: 1.5px solid var(--accent); border-radius: 12px; background: #fff8ef; padding: 10px 12px; margin-bottom: 10px; }
+    .tut-head { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+    .tut-step { font-size: 11px; font-weight: 800; color: white; background: var(--accent); border-radius: 999px; padding: 2px 8px; }
+    .tut-head b { font-size: 13px; color: var(--ink); }
+    .tut-skip { margin-left: auto; border: none; background: none; font-size: 11.5px; font-weight: 700; color: var(--text-muted); cursor: pointer; text-decoration: underline; font-family: inherit; }
+    .tut-text { font-size: 13px; color: var(--ink); line-height: 1.5; }
     .loading { font-size: 13px; font-weight: 800; color: var(--text-muted); padding: 30px 0; text-align: center; grid-column: 1 / -1; }
     /* 6×6 生成等待演出：猫爪垫步 + 分阶段文案（2026-10-15 难度平滑） */
     .loading .paws { display: block; margin-bottom: 10px; }
@@ -325,6 +345,11 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
       <div class="game-stage">
         <div class="clues">
           <h2>Witness Statements</h2>
+          <!-- Tutorial walkthrough（新手引导·方案B，10-18）：首访自动开，跟随放置进度推进 -->
+          <div class="tut" id="tutBox" style="display:none">
+            <div class="tut-head"><span class="tut-step" id="tutStep">1/4</span><b>First case? Follow along</b><button class="tut-skip" id="tutSkip" aria-label="Skip tutorial">Skip</button></div>
+            <div class="tut-text" id="tutText"></div>
+          </div>
           <div id="clueList"></div>
           <p class="clue-note">No two figures share a row or column. The suspect alone in the victim's room is <b style="color:#C0392B">the killer</b>.</p>
         </div>
@@ -339,6 +364,19 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
           </div>
         </div>
       </div>
+
+      <!-- Statement legend（新手引导·方案A，10-18）：游戏卡内紧贴棋盘区，fold 之上 -->
+      <details class="legend" id="legend" open>
+        <summary>📖 What the statements mean <span class="legend-hint">tap to collapse</span></summary>
+        <div class="legend-grid">
+          <div class="legend-item"><b>In a room / NOT in a room</b><span>That suspect's room is fixed (or excluded). Place them there first.</span></div>
+          <div class="legend-item"><b>On a rug / Beside a table</b><span>What the suspect stands on or next to. Rug and table cells are drawn inside rooms.</span></div>
+          <div class="legend-item legend-key"><b>At a wall</b><span>Only the <u>outside edge of the whole board</u> counts. The thin lines between rooms are partitions, not walls.</span></div>
+          <div class="legend-item legend-key"><b>In a corner</b><span>Only the four corners of the board itself — two outside edges meet there.</span></div>
+          <div class="legend-item"><b>Same room as X / Alone with X</b><span>X is a suspect or the victim. "Alone with" means exactly two figures in that room.</span></div>
+          <div class="legend-item"><b>Exactly K figures / Room locked</b><span>Room counts include the victim. "Locked" means nobody was inside.</span></div>
+        </div>
+      </details>
     </section>
 
     <!-- Win Overlay -->
@@ -598,6 +636,7 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
         window.__firstMoveTracked = false;
         renderAll();
         fireGameStart();
+        tutInit();
         // 4×4 玩到第 2 案起，后台预热一个 6×6 案（Worker 空闲，零成本），点 6×6 秒开
         if (N === 4) pregenSix();
       }
@@ -712,6 +751,7 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
         var conflict = occ.some(function (x) { return Math.floor(x / N) === Math.floor(c / N) || x % N === c % N; });
         if (conflict) { flashCell(c, "bad-flash"); setHint("The sudoku rule: no two figures share a row or column!", true); return; }
         placed[selSuspect] = c;
+        tutAdvance();
         // first_move 首次放猫（__firstMoveTracked 防重，与 akari 同款）
         if (!window.__firstMoveTracked) {
           window.__firstMoveTracked = true;
@@ -771,6 +811,37 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
       again.style.display = "";
     }
 
+    // ── Tutorial walkthrough（新手引导·方案B，10-18）：首访自动开，放置推进；localStorage 防重 ──
+    // 3 步制：4×4 只有 3 个嫌疑人，第 3 步在第二放置后出现（第 3 放置即自动过案，步骤 4 永远看不到）
+    var tutOn = false, tutStepIdx = 0;
+    var TUT_STEPS = [
+      "Every witness statement is true. Start with the room statements — they eliminate the most cells.",
+      "The sudoku rule: no two figures share a row or column, so every placement eliminates an entire row and column.",
+      "Statement words are exact: \u201cat a wall\u201d means only the outside edge of the whole board — the thin lines between rooms are partitions, not walls; \u201cin a corner\u201d means the four corners of the board. The suspect alone with the victim is the killer — when everyone is placed, hit Accuse!"
+    ];
+    function tutInit() {
+      if (tutOn || lsGet("murdoku_tut_done") === "1") return;
+      tutOn = true; tutStepIdx = 0; showTut();
+    }
+    function showTut() {
+      var box = document.getElementById("tutBox");
+      if (!tutOn || tutStepIdx >= TUT_STEPS.length) { if (box) box.style.display = "none"; return; }
+      box.style.display = "block";
+      document.getElementById("tutStep").textContent = (tutStepIdx + 1) + "/" + TUT_STEPS.length;
+      document.getElementById("tutText").textContent = TUT_STEPS[tutStepIdx];
+    }
+    function tutAdvance() {
+      if (!tutOn) return;
+      tutStepIdx++;
+      showTut();
+      if (tutStepIdx >= TUT_STEPS.length) tutFinish("tut_done");
+    }
+    function tutFinish(ev) {
+      if (ev) track(ev, {});
+      tutOn = false; lsSet("murdoku_tut_done", "1");
+      var b = document.getElementById("tutBox"); if (b) b.style.display = "none";
+    }
+
     function doHint() {
       if (!puzzle) return;
       track('hint_click', { level: levelTag() });
@@ -813,6 +884,7 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
 
     document.getElementById("hintBtn").addEventListener("click", doHint);
     document.getElementById("hintBtn2").addEventListener("click", doHint);
+    document.getElementById("tutSkip").addEventListener("click", function () { tutFinish("tut_skip"); });
     document.getElementById("checkBtn").addEventListener("click", function () { checkWin(false); });
     document.getElementById("newBtn").addEventListener("click", function () { caseNo++; closeWin(); newCase(N); });
     document.getElementById("againBtn").addEventListener("click", function () { caseNo++; closeWin(); newCase(N); });
