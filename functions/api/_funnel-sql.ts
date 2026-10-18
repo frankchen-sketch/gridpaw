@@ -9,7 +9,7 @@ export const FUNNEL_EVENT_LIST: string[] = [
   'level_complete_5', 'level_complete_10', 'level_complete_20',
   'hint_click', 'hint_blocked', 'puzzle_reset', 'puzzle_skip', 'game_over',
   'daily_start', 'daily_solved', 'daily_challenge_click',
-  'share_reddit', 'share_copy', 'share_twitter', 'community_click',
+  'share_reddit', 'share_copy', 'share_twitter', 'share_card', 'share_card_copy', 'community_click',
   'sign_in_prompt_shown', 'sign_in_click', 'tool_start', 'tool_action', 'badge_help_click', 'help_click',
   'rate_submit', 'cta_click',
 ];
@@ -52,10 +52,10 @@ export const STAGE_SQL = `
         WHEN event_name = 'first_move' THEN 'move'
         WHEN event_name = 'level_up' THEN 'solve'
         WHEN event_name = 'hint_click' THEN 'hint'
-        WHEN event_name IN ('share_reddit', 'share_copy') THEN 'share'
+        WHEN event_name IN ('share_reddit', 'share_copy', 'share_card') THEN 'share'
       END AS stage
     FROM gp_event
-    WHERE event_name IN ('visit', 'game_start', 'first_move', 'level_up', 'hint_click', 'share_reddit', 'share_copy')
+    WHERE event_name IN ('visit', 'game_start', 'first_move', 'level_up', 'hint_click', 'share_reddit', 'share_copy', 'share_card')
   )
   SELECT a.first_build AS build_id, s.stage AS stage, COUNT(DISTINCT s.visitor) AS n
   FROM stages s JOIN attributed a ON a.visitor = s.visitor
