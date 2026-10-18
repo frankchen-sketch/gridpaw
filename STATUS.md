@@ -727,7 +727,7 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - 视频规格（CG docs）：15-20s（长了自动剪）、≤50MB、横版 1920x1080 必传、**竖版 1080x1620（2:3 1080p）必传**——首版竖版 800x1200 分辨率不达标致上传报错，已重录 akari-portrait-1080.mp4（1080x1620 h264 21.7s）
 - 媒体上传进度：三张封面全✅ + 两条视频全✅（横版被 CG 自动剪至 19.4s、竖版 14.4s，规格全达标）
 - **提交状态：✅ 2026-10-18 已提交，AWAITING REVIEW**（Basic Launch，Submission date 18.10.2026，Version status: Submitted）
-- **Billing 已完成**（Tipalti 四步全绿：Address/Payment Method/Tax Forms/Done）——payee 中国 + USD wire + 招行广州琶洲支行（SWIFT CMBCCNBS，地址用总行官方英文地址，电汇按 SWIFT+卡号路由）。**教训：Tipalti 校验 SWIFT 必须属于 payee 国家**（Wise 美国 SWIFT 报「not valid for china」被拒）；Wise USD 虽能收 SWIFT（$6.11/笔）但过不了 Tipalti 的国家校验
+- **Billing 已完成**（Tipalti 四步全绿：Address/Payment Method/Tax Forms/Done）；CG 已发「payment details updated」确认信到 **a839500525@gmail.com**（Tipalti payee 邮箱，收款通知都在这）——标准回执，无需操作——payee 中国 + USD wire + 招行广州琶洲支行（SWIFT CMBCCNBS，地址用总行官方英文地址，电汇按 SWIFT+卡号路由）。**教训：Tipalti 校验 SWIFT 必须属于 payee 国家**（Wise 美国 SWIFT 报「not valid for china」被拒）；Wise USD 虽能收 SWIFT（$6.11/笔）但过不了 Tipalti 的国家校验
 - **决定：v2 包（60px 安全区）不重传**——重传会清已传媒体；v1 build（无安全区）已进审核，v2 留下次更新
 - **官方页已部署（2026-10-18）**：测试链全绿（build 177 页 + 走查 + 点格亮猫实测）→ `pnpm run deploy` 成功（454 files，IndexNow HTTP 200）→ 线上 curl 验证 /akari/ 新版生效（TUTORIAL 标记在、200）
 - 待办：CG 审核结果（模板信无个性化反馈，几天到一两周）；v2 包（60px 安全区）留下次更新
