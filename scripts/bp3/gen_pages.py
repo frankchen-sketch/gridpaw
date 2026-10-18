@@ -276,20 +276,20 @@ LEVELS = {
         'slug': 'brain-puzzle-3-level-12',
         'title': 'Brain Puzzle 3 Level 12 Answer: Overcrowded Guide',
         'description': 'Brain Puzzle 3 Level 12 (Overcrowded) answer: reduce the elevator weight to 1000KG before it drops. Full step order plus the complete video walkthrough.',
-        'goal': 'Help reduce the elevator&#039;s weight to 1000KG',
+        'goal': 'Help reduce the elevator\'s weight to 1000KG',
         'video_id': 'rsWKWSoIBBU',
         'verified': 'weak',
         'verify_note': 'Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.',
         'hero': 'l12_hero.jpg',
-        'summary': 'Level 12 \u201cOvercrowded\u201d: Help reduce the elevator&#039;s weight to 1000KG. 14 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.',
+        'summary': 'Level 12 \u201cOvercrowded\u201d: Help reduce the elevator\'s weight to 1000KG. 14 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.',
         'steps': [
-            {'what': 'Steps 1–4: Drag the watch on the girl&#039;s hand in the middle of the elevator to outside the elevator', 'why': 'Drag the watch on the girl&#039;s hand in the middle of the elevator to outside the elevator; then Drag the first pair of cotton pants on the child in the upper left corner to outside the elevator; then Drag the second pair of jeans on the child in the upper left corner to outside the elevator; then Drag the third pair of thermal pants on the child in the upper left corner to outside the elevator'},
-            {'what': 'Steps 5–8: Drag the fourth pair of stockings on the child in the upper left corner to outside the elevator', 'why': 'Drag the fourth pair of stockings on the child in the upper left corner to outside the elevator; then Drag the white-shirted man&#039;s hair to outside the elevator; then Drag the sweet potato in the housewife&#039;s shopping basket to the fat man in the lower left corner; then Drag the housewife&#039;s shopping basket to outside the elevator'},
-            {'what': 'Steps 9–11: Drag the blue-shirted man&#039;s glasses to outside the elevator', 'why': 'Drag the blue-shirted man&#039;s glasses to outside the elevator; then Click on the toolbox in the worker&#039;s hand on the right; then Drag the scissors to the cardboard box held by the worker on the left'},
-            {'what': 'Steps 12–14: Drag the stone inside the cardboard box to outside the elevator', 'why': 'Drag the stone inside the cardboard box to outside the elevator; then Drag the crowbar from the toolbox to the woman in the yellow skirt; then Drag the handsome man&#039;s mask to outside the elevator'},
+            {'what': 'Steps 1–4: Drag the watch on the girl\'s hand in the middle of the elevator to outside the elevator', 'why': 'Drag the watch on the girl\'s hand in the middle of the elevator to outside the elevator; then Drag the first pair of cotton pants on the child in the upper left corner to outside the elevator; then Drag the second pair of jeans on the child in the upper left corner to outside the elevator; then Drag the third pair of thermal pants on the child in the upper left corner to outside the elevator'},
+            {'what': 'Steps 5–8: Drag the fourth pair of stockings on the child in the upper left corner to outside the elevator', 'why': 'Drag the fourth pair of stockings on the child in the upper left corner to outside the elevator; then Drag the white-shirted man\'s hair to outside the elevator; then Drag the sweet potato in the housewife\'s shopping basket to the fat man in the lower left corner; then Drag the housewife\'s shopping basket to outside the elevator'},
+            {'what': 'Steps 9–11: Drag the blue-shirted man\'s glasses to outside the elevator', 'why': 'Drag the blue-shirted man\'s glasses to outside the elevator; then Click on the toolbox in the worker\'s hand on the right; then Drag the scissors to the cardboard box held by the worker on the left'},
+            {'what': 'Steps 12–14: Drag the stone inside the cardboard box to outside the elevator', 'why': 'Drag the stone inside the cardboard box to outside the elevator; then Drag the crowbar from the toolbox to the woman in the yellow skirt; then Drag the handsome man\'s mask to outside the elevator'},
         ],
         'faq': [
-            ['What is the answer to Brain Puzzle 3 Level 12?', 'In order: 1) Drag the watch on the girl&#039;s hand in the middle of the elevator to outside the elevator; 2) Drag the first pair of cotton pants on the child in the upper left corner to outside the elevator; 3) Drag the second pair of jeans on the child in the upper left corner to outside the elevator; 4) Drag the third pair of thermal pants on the child in the upper left corner to outside the elevator; 5) Drag the fourth pair of stockings on the child in the upper left corner to outside the elevator; 6) Drag the white-shirted man&#039;s hair to outside the elevator; 7) Drag the sweet potato in the housewife&#039;s shopping basket to the fat man in the lower left corner; 8) Drag the housewife&#039;s shopping basket to outside the elevator; 9) Drag the blue-shirted man&#039;s glasses to outside the elevator; 10) Click on the toolbox in the worker&#039;s hand on the right; 11) Drag the scissors to the cardboard box held by the worker on the left; 12) Drag the stone inside the cardboard box to outside the elevator; 13) Drag the crowbar from the toolbox to the woman in the yellow skirt; 14) Drag the handsome man&#039;s mask to outside the elevator'],
+            ['What is the answer to Brain Puzzle 3 Level 12?', 'In order: 1) Drag the watch on the girl\'s hand in the middle of the elevator to outside the elevator; 2) Drag the first pair of cotton pants on the child in the upper left corner to outside the elevator; 3) Drag the second pair of jeans on the child in the upper left corner to outside the elevator; 4) Drag the third pair of thermal pants on the child in the upper left corner to outside the elevator; 5) Drag the fourth pair of stockings on the child in the upper left corner to outside the elevator; 6) Drag the white-shirted man\'s hair to outside the elevator; 7) Drag the sweet potato in the housewife\'s shopping basket to the fat man in the lower left corner; 8) Drag the housewife\'s shopping basket to outside the elevator; 9) Drag the blue-shirted man\'s glasses to outside the elevator; 10) Click on the toolbox in the worker\'s hand on the right; 11) Drag the scissors to the cardboard box held by the worker on the left; 12) Drag the stone inside the cardboard box to outside the elevator; 13) Drag the crowbar from the toolbox to the woman in the yellow skirt; 14) Drag the handsome man\'s mask to outside the elevator'],
             ['Why does nothing happen when I tap in Level 12?', 'Brain Puzzle 3 mixes taps, drags and swipes freely. If a tap does nothing, try dragging the object onto the person or thing it belongs to — most moves in this game are drags.'],
             ['Is this Level 12 walkthrough up to date?', 'Yes — the step order matches the current version of Brain Puzzle 3: Crazy Mind. Older videos and sites may use different level numbers, because the developer has inserted new levels over time and shifted the numbering.'],
         ],
@@ -327,13 +327,13 @@ LEVELS = {
         'hero': 'l14_hero.jpg',
         'summary': 'Level 14 \u201cSausage Lip SOS\u201d: Make the crab release its claw. 10 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.',
         'steps': [
-            {'what': 'Steps 1–3: Drag the lighter to the male lead', 'why': 'Drag the lighter to the male lead; then Drag the beach shovel to the male lead; then Drag the kid&#039;s water gun to the male lead'},
+            {'what': 'Steps 1–3: Drag the lighter to the male lead', 'why': 'Drag the lighter to the male lead; then Drag the beach shovel to the male lead; then Drag the kid\'s water gun to the male lead'},
             {'what': 'Steps 4–6: Drag the seagull in the sky to the male lead', 'why': 'Drag the seagull in the sky to the male lead; then Drag the lobster from the fishing boat to the male lead; then Drag the girl mocking the male lead to him'},
             {'what': 'Steps 7–8: Drag the crab mold to the sand pile', 'why': 'Drag the crab mold to the sand pile; then Drag the sand crab shape to the male lead'},
-            {'what': 'Steps 9–10: Drag the grilled meat from the BBQ rack onto the water surface', 'why': 'Drag the grilled meat from the BBQ rack onto the water surface; then Drag the shark&#039;s tooth to the male lead'},
+            {'what': 'Steps 9–10: Drag the grilled meat from the BBQ rack onto the water surface', 'why': 'Drag the grilled meat from the BBQ rack onto the water surface; then Drag the shark\'s tooth to the male lead'},
         ],
         'faq': [
-            ['What is the answer to Brain Puzzle 3 Level 14?', 'In order: 1) Drag the lighter to the male lead; 2) Drag the beach shovel to the male lead; 3) Drag the kid&#039;s water gun to the male lead; 4) Drag the seagull in the sky to the male lead; 5) Drag the lobster from the fishing boat to the male lead; 6) Drag the girl mocking the male lead to him; 7) Drag the crab mold to the sand pile; 8) Drag the sand crab shape to the male lead; 9) Drag the grilled meat from the BBQ rack onto the water surface; 10) Drag the shark&#039;s tooth to the male lead'],
+            ['What is the answer to Brain Puzzle 3 Level 14?', 'In order: 1) Drag the lighter to the male lead; 2) Drag the beach shovel to the male lead; 3) Drag the kid\'s water gun to the male lead; 4) Drag the seagull in the sky to the male lead; 5) Drag the lobster from the fishing boat to the male lead; 6) Drag the girl mocking the male lead to him; 7) Drag the crab mold to the sand pile; 8) Drag the sand crab shape to the male lead; 9) Drag the grilled meat from the BBQ rack onto the water surface; 10) Drag the shark\'s tooth to the male lead'],
             ['Why does nothing happen when I tap in Level 14?', 'Brain Puzzle 3 mixes taps, drags and swipes freely. If a tap does nothing, try dragging the object onto the person or thing it belongs to — most moves in this game are drags.'],
             ['Is this Level 14 walkthrough up to date?', 'Yes — the step order matches the current version of Brain Puzzle 3: Crazy Mind. Older videos and sites may use different level numbers, because the developer has inserted new levels over time and shifted the numbering.'],
         ],
@@ -350,12 +350,12 @@ LEVELS = {
         'summary': 'Level 15 \u201cDoorstep Creeper\u201d: Drive away the creep outside the door. 12 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.',
         'steps': [
             {'what': 'Steps 1–3: Drag the bunch of keys to the creep', 'why': 'Drag the bunch of keys to the creep; then Drag the black trash bag to the creep; then Drag the smelly sneakers to the shoe rack by the door'},
-            {'what': 'Steps 4–6: Drag the notes in the room to the creep', 'why': 'Drag the notes in the room to the creep; then Swipe right to open the neighbor&#039;s door; then Click the girl&#039;s crossbody bag'},
-            {'what': 'Steps 7–9: Drag the pepper spray to the creep', 'why': 'Drag the pepper spray to the creep; then Click the girl&#039;s phone; then Click the first recording'},
+            {'what': 'Steps 4–6: Drag the notes in the room to the creep', 'why': 'Drag the notes in the room to the creep; then Swipe right to open the neighbor\'s door; then Click the girl\'s crossbody bag'},
+            {'what': 'Steps 7–9: Drag the pepper spray to the creep', 'why': 'Drag the pepper spray to the creep; then Click the girl\'s phone; then Click the first recording'},
             {'what': 'Steps 10–12: Double-click the light bulb', 'why': 'Double-click the light bulb; then Double-click to open the window; then Drag the dog outside the window to the creep'},
         ],
         'faq': [
-            ['What is the answer to Brain Puzzle 3 Level 15?', 'In order: 1) Drag the bunch of keys to the creep; 2) Drag the black trash bag to the creep; 3) Drag the smelly sneakers to the shoe rack by the door; 4) Drag the notes in the room to the creep; 5) Swipe right to open the neighbor&#039;s door; 6) Click the girl&#039;s crossbody bag; 7) Drag the pepper spray to the creep; 8) Click the girl&#039;s phone; 9) Click the first recording; 10) Double-click the light bulb; 11) Double-click to open the window; 12) Drag the dog outside the window to the creep'],
+            ['What is the answer to Brain Puzzle 3 Level 15?', 'In order: 1) Drag the bunch of keys to the creep; 2) Drag the black trash bag to the creep; 3) Drag the smelly sneakers to the shoe rack by the door; 4) Drag the notes in the room to the creep; 5) Swipe right to open the neighbor\'s door; 6) Click the girl\'s crossbody bag; 7) Drag the pepper spray to the creep; 8) Click the girl\'s phone; 9) Click the first recording; 10) Double-click the light bulb; 11) Double-click to open the window; 12) Drag the dog outside the window to the creep'],
             ['Why does nothing happen when I tap in Level 15?', 'Brain Puzzle 3 mixes taps, drags and swipes freely. If a tap does nothing, try dragging the object onto the person or thing it belongs to — most moves in this game are drags.'],
             ['Is this Level 15 walkthrough up to date?', 'Yes — the step order matches the current version of Brain Puzzle 3: Crazy Mind. Older videos and sites may use different level numbers, because the developer has inserted new levels over time and shifted the numbering.'],
         ],
@@ -393,13 +393,13 @@ LEVELS = {
         'hero': 'l17_hero.jpg',
         'summary': 'Level 17 \u201cGirl Dorm Cool\u201d: Help the bride chase away all her husband’s ex-girlfriends. 13 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.',
         'steps': [
-            {'what': 'Steps 1–4: Drag the bucket to the ex-girlfriend', 'why': 'Drag the bucket to the ex-girlfriend; then Drag the needle to the ex-girlfriend; then Drag down the ex-girlfriend&#039;s clothes; then Drag the scissors to the ex-girlfriend'},
+            {'what': 'Steps 1–4: Drag the bucket to the ex-girlfriend', 'why': 'Drag the bucket to the ex-girlfriend; then Drag the needle to the ex-girlfriend; then Drag down the ex-girlfriend\'s clothes; then Drag the scissors to the ex-girlfriend'},
             {'what': 'Steps 5–7: Drag the beard to the ex-girlfriend', 'why': 'Drag the beard to the ex-girlfriend; then Double-click to open the window; then When the moon is outside the window, drag the moon to your ex-girlfriend'},
             {'what': 'Steps 8–10: Drag the scissors to the wire', 'why': 'Drag the scissors to the wire; then Drag the wire to the ex-girlfriend; then Drag the clock to the window to switch between the sun and the moon'},
             {'what': 'Steps 11–13: When the sun is outside the window, drag the sun to your ex-girlfriend', 'why': 'When the sun is outside the window, drag the sun to your ex-girlfriend; then Drag the speaker to the bride; then Drag the spider to the ex-girlfriend'},
         ],
         'faq': [
-            ['What is the answer to Brain Puzzle 3 Level 17?', 'In order: 1) Drag the bucket to the ex-girlfriend; 2) Drag the needle to the ex-girlfriend; 3) Drag down the ex-girlfriend&#039;s clothes; 4) Drag the scissors to the ex-girlfriend; 5) Drag the beard to the ex-girlfriend; 6) Double-click to open the window; 7) When the moon is outside the window, drag the moon to your ex-girlfriend; 8) Drag the scissors to the wire; 9) Drag the wire to the ex-girlfriend; 10) Drag the clock to the window to switch between the sun and the moon; 11) When the sun is outside the window, drag the sun to your ex-girlfriend; 12) Drag the speaker to the bride; 13) Drag the spider to the ex-girlfriend'],
+            ['What is the answer to Brain Puzzle 3 Level 17?', 'In order: 1) Drag the bucket to the ex-girlfriend; 2) Drag the needle to the ex-girlfriend; 3) Drag down the ex-girlfriend\'s clothes; 4) Drag the scissors to the ex-girlfriend; 5) Drag the beard to the ex-girlfriend; 6) Double-click to open the window; 7) When the moon is outside the window, drag the moon to your ex-girlfriend; 8) Drag the scissors to the wire; 9) Drag the wire to the ex-girlfriend; 10) Drag the clock to the window to switch between the sun and the moon; 11) When the sun is outside the window, drag the sun to your ex-girlfriend; 12) Drag the speaker to the bride; 13) Drag the spider to the ex-girlfriend'],
             ['Why does nothing happen when I tap in Level 17?', 'Brain Puzzle 3 mixes taps, drags and swipes freely. If a tap does nothing, try dragging the object onto the person or thing it belongs to — most moves in this game are drags.'],
             ['Is this Level 17 walkthrough up to date?', 'Yes — the step order matches the current version of Brain Puzzle 3: Crazy Mind. Older videos and sites may use different level numbers, because the developer has inserted new levels over time and shifted the numbering.'],
         ],
@@ -408,20 +408,20 @@ LEVELS = {
         'slug': 'brain-puzzle-3-level-18',
         'title': 'Brain Puzzle 3 Level 18 Answer: Zombie Walk Guide',
         'description': 'Brain Puzzle 3 Level 18 (Zombie Walk) answer: keep the baby quiet before the zombies arrive. Full step order plus the complete video walkthrough.',
-        'goal': 'Don&#039;t let the baby cry, the sound will attract zombies',
+        'goal': 'Don\'t let the baby cry, the sound will attract zombies',
         'video_id': '3aZoyy587H0',
         'verified': 'weak',
         'verify_note': 'Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.',
         'hero': 'l18_hero.jpg',
-        'summary': 'Level 18 \u201cZombie Walk\u201d: Don&#039;t let the baby cry, the sound will attract zombies. 10 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.',
+        'summary': 'Level 18 \u201cZombie Walk\u201d: Don\'t let the baby cry, the sound will attract zombies. 10 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.',
         'steps': [
-            {'what': 'Steps 1–3: Failed to complete within 30s, the baby&#039;s crying attracted zombies&#039; attention', 'why': 'Failed to complete within 30s, the baby&#039;s crying attracted zombies&#039; attention; then When in room view, drag the teddy bear on the floor to the nurse; then When in room view, drag the pacifier on the utility cart to the nurse'},
+            {'what': 'Steps 1–3: Failed to complete within 30s, the baby\'s crying attracted zombies\' attention', 'why': 'Failed to complete within 30s, the baby\'s crying attracted zombies\' attention; then When in room view, drag the teddy bear on the floor to the nurse; then When in room view, drag the pacifier on the utility cart to the nurse'},
             {'what': 'Steps 4–6: When in room view, drag the diaper on the utility cart to the nurse', 'why': 'When in room view, drag the diaper on the utility cart to the nurse; then When in room view, drag the white coat on the wall to the nurse; then When in room view, drag the baby to the incubator by the wall'},
             {'what': 'Steps 7–8: After completing the above, tap the button on the door to switch to hallway view', 'why': 'After completing the above, tap the button on the door to switch to hallway view; then When in hallway view, drag the wind-up key by the bed to the toy monkey'},
             {'what': 'Steps 9–10: When in hallway view, drag the crutch to the person hiding on the surgical bed', 'why': 'When in hallway view, drag the crutch to the person hiding on the surgical bed; then When in hallway view, tap the alarm button on the wall'},
         ],
         'faq': [
-            ['What is the answer to Brain Puzzle 3 Level 18?', 'In order: 1) Failed to complete within 30s, the baby&#039;s crying attracted zombies&#039; attention; 2) When in room view, drag the teddy bear on the floor to the nurse; 3) When in room view, drag the pacifier on the utility cart to the nurse; 4) When in room view, drag the diaper on the utility cart to the nurse; 5) When in room view, drag the white coat on the wall to the nurse; 6) When in room view, drag the baby to the incubator by the wall; 7) After completing the above, tap the button on the door to switch to hallway view; 8) When in hallway view, drag the wind-up key by the bed to the toy monkey; 9) When in hallway view, drag the crutch to the person hiding on the surgical bed; 10) When in hallway view, tap the alarm button on the wall'],
+            ['What is the answer to Brain Puzzle 3 Level 18?', 'In order: 1) Failed to complete within 30s, the baby\'s crying attracted zombies\' attention; 2) When in room view, drag the teddy bear on the floor to the nurse; 3) When in room view, drag the pacifier on the utility cart to the nurse; 4) When in room view, drag the diaper on the utility cart to the nurse; 5) When in room view, drag the white coat on the wall to the nurse; 6) When in room view, drag the baby to the incubator by the wall; 7) After completing the above, tap the button on the door to switch to hallway view; 8) When in hallway view, drag the wind-up key by the bed to the toy monkey; 9) When in hallway view, drag the crutch to the person hiding on the surgical bed; 10) When in hallway view, tap the alarm button on the wall'],
             ['Why does nothing happen when I tap in Level 18?', 'Brain Puzzle 3 mixes taps, drags and swipes freely. If a tap does nothing, try dragging the object onto the person or thing it belongs to — most moves in this game are drags.'],
             ['Is this Level 18 walkthrough up to date?', 'Yes — the step order matches the current version of Brain Puzzle 3: Crazy Mind. Older videos and sites may use different level numbers, because the developer has inserted new levels over time and shifted the numbering.'],
         ],
@@ -460,12 +460,12 @@ LEVELS = {
         'summary': 'Level 21 \u201cCheating Scene\u201d: Help the wife catch cheating. 12 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.',
         'steps': [
             {'what': 'Steps 1–3: Drag the key on the floor to the door', 'why': 'Drag the key on the floor to the door; then Drag the photo frame on the cabinet in the room to the door; then Click on the bag in the room'},
-            {'what': 'Steps 4–6: Drag the lipstick from the bag to the wife outside the door', 'why': 'Drag the lipstick from the bag to the wife outside the door; then Drag the socks on the sofa to the door; then Drag the flame on the wife&#039;s head to the door'},
+            {'what': 'Steps 4–6: Drag the lipstick from the bag to the wife outside the door', 'why': 'Drag the lipstick from the bag to the wife outside the door; then Drag the socks on the sofa to the door; then Drag the flame on the wife\'s head to the door'},
             {'what': 'Steps 7–9: Swipe right on the cabinet door', 'why': 'Swipe right on the cabinet door; then Drag the pen from the cabinet to the poster on the wall; then Drag the poster to the door'},
-            {'what': 'Steps 10–12: Drag the purple bow on the mistress&#039;s head to the dog at the door', 'why': 'Drag the purple bow on the mistress&#039;s head to the dog at the door; then Drag the beautiful dog to the door; then Drag the crying child to the wife outside the door'},
+            {'what': 'Steps 10–12: Drag the purple bow on the mistress\'s head to the dog at the door', 'why': 'Drag the purple bow on the mistress\'s head to the dog at the door; then Drag the beautiful dog to the door; then Drag the crying child to the wife outside the door'},
         ],
         'faq': [
-            ['What is the answer to Brain Puzzle 3 Level 21?', 'In order: 1) Drag the key on the floor to the door; 2) Drag the photo frame on the cabinet in the room to the door; 3) Click on the bag in the room; 4) Drag the lipstick from the bag to the wife outside the door; 5) Drag the socks on the sofa to the door; 6) Drag the flame on the wife&#039;s head to the door; 7) Swipe right on the cabinet door; 8) Drag the pen from the cabinet to the poster on the wall; 9) Drag the poster to the door; 10) Drag the purple bow on the mistress&#039;s head to the dog at the door; 11) Drag the beautiful dog to the door; 12) Drag the crying child to the wife outside the door'],
+            ['What is the answer to Brain Puzzle 3 Level 21?', 'In order: 1) Drag the key on the floor to the door; 2) Drag the photo frame on the cabinet in the room to the door; 3) Click on the bag in the room; 4) Drag the lipstick from the bag to the wife outside the door; 5) Drag the socks on the sofa to the door; 6) Drag the flame on the wife\'s head to the door; 7) Swipe right on the cabinet door; 8) Drag the pen from the cabinet to the poster on the wall; 9) Drag the poster to the door; 10) Drag the purple bow on the mistress\'s head to the dog at the door; 11) Drag the beautiful dog to the door; 12) Drag the crying child to the wife outside the door'],
             ['Why does nothing happen when I tap in Level 21?', 'Brain Puzzle 3 mixes taps, drags and swipes freely. If a tap does nothing, try dragging the object onto the person or thing it belongs to — most moves in this game are drags.'],
             ['Is this Level 21 walkthrough up to date?', 'Yes — the step order matches the current version of Brain Puzzle 3: Crazy Mind. Older videos and sites may use different level numbers, because the developer has inserted new levels over time and shifted the numbering.'],
         ],
@@ -600,12 +600,12 @@ STYLE = """
 """
 
 def esc(s):
-    return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
+    return s.replace('&', '&').replace('<', '<').replace('>', '>').replace('"', '\\"')
 
 def ts_link(video_id, t):
     mm, ss = divmod(int(t), 60)
     label = f'{mm}:{ss:02d}'
-    return f'<a href="https://www.youtube.com/watch?v={video_id}&amp;t={int(t)}s" rel="nofollow noopener" target="_blank">{label}</a>'
+    return f'<a href="https://www.youtube.com/watch?v={video_id}&t={int(t)}s" rel="nofollow noopener" target="_blank">{label}</a>'
 
 def level_page(n, d):
     faq_json = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
@@ -665,7 +665,7 @@ const faqJsonLd = {json.dumps(faq_json)};
 </head>
 <body>
   <GameNav />
-  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/brain-puzzle-3-answers/">Brain Puzzle 3 Answers</a> &gt; Level {n}</nav>
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> > <a href="/brain-puzzle-3-answers/">Brain Puzzle 3 Answers</a> > Level {n}</nav>
 
   <main class="seo-section">
     <h1>Brain Puzzle 3 Level {n} Answer: {esc(d['goal'])}</h1>
@@ -789,7 +789,7 @@ const faqJsonLd = {json.dumps(faq_json)};
 </head>
 <body>
   <GameNav />
-  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; Brain Puzzle 3 Answers</nav>
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> > Brain Puzzle 3 Answers</nav>
 
   <main class="seo-section">
     <h1>Brain Puzzle 3 Answers: Level Walkthroughs That Actually Clear the Level</h1>
