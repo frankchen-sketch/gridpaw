@@ -226,6 +226,9 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
     .cell.bad-flash { animation: badp .7s ease; }
     @keyframes hintp { 0%,70% { box-shadow: inset 0 0 0 3px var(--green); filter: brightness(1.12); } 100% {} }
     @keyframes badp { 0%,60% { box-shadow: inset 0 0 0 3px #C0392B; } 100% {} }
+    /* Tutorial spotlight（v2 跟着做）：高亮当前教学目标，脉冲橙环 */
+    .cell.tut-spot, .suss.tut-spot { box-shadow: inset 0 0 0 2.5px var(--accent); animation: tutp 1.2s ease infinite; }
+    @keyframes tutp { 0%,100% { box-shadow: inset 0 0 0 2.5px var(--accent); } 50% { box-shadow: inset 0 0 0 4px var(--accent); } }
     .suspects { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
     .suss { position: relative; width: 56px; height: 60px; border: 2px solid var(--border); background: var(--card); border-radius: 12px 12px 10px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; font: inherit; padding: 4px 2px 3px; }
     .suss::before, .suss::after { content: ""; position: absolute; top: -7px; width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 9px solid var(--border); }
@@ -345,9 +348,9 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
       <div class="game-stage">
         <div class="clues">
           <h2>Witness Statements</h2>
-          <!-- Tutorial walkthrough（新手引导·方案B，10-18）：首访自动开，跟随放置进度推进 -->
+          <!-- Tutorial walkthrough v2（新手引导·跟着做）：首访自动开，托盘点击/放置推进，spotlight 高亮目标 -->
           <div class="tut" id="tutBox" style="display:none">
-            <div class="tut-head"><span class="tut-step" id="tutStep">1/4</span><b>First case? Follow along</b><button class="tut-skip" id="tutSkip" aria-label="Skip tutorial">Skip</button></div>
+            <div class="tut-head"><span class="tut-step" id="tutStep">1/3</span><b>First case? Do this</b><button class="tut-skip" id="tutSkip" aria-label="Skip tutorial">Skip</button></div>
             <div class="tut-text" id="tutText"></div>
           </div>
           <div id="clueList"></div>
@@ -715,6 +718,7 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
         board.appendChild(div);
       }
       renderSuspects();
+      tutRepaint();
     }
 
     function renderClues() {
@@ -733,9 +737,10 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
       el.innerHTML = "";
       for (var s = 0; s < N - 1; s++) {
         var b = document.createElement("button");
+        b.dataset.si = s;
         b.className = "suss" + (s === selSuspect ? " sel" : "") + (placed[s] >= 0 ? " done" : "");
         b.innerHTML = '<img src="' + ASSETS["cat-" + suspectName(s).toLowerCase()] + '" alt="' + suspectName(s) + '"><span class="sn">' + suspectName(s) + '</span>';
-        b.addEventListener("click", (function (si) { return function () { selSuspect = si; renderBoard(); }; })(s));
+        b.addEventListener("click", (function (si) { return function () { selSuspect = si; renderBoard(); tutSuspectClick(si); }; })(s));
         el.appendChild(b);
       }
     }
@@ -745,7 +750,8 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
       var victimCell = puzzle.placement.personCell[N - 1];
       var cur = placed.indexOf(c);
       if (cur >= 0) { placed[cur] = -1; selSuspect = cur; renderBoard(); return; }
-      if (lay.obj[c] === 1 || c === victimCell) { flashCell(c, "bad-flash"); return; }
+      if (c === victimCell) { flashCell(c, "bad-flash"); setHint("That's the victim — nobody can stand there. Tap an empty floor cell.", true); return; }
+      if (lay.obj[c] === 1) { flashCell(c, "bad-flash"); setHint("That's furniture — suspects can't stand there. Tap an empty floor cell.", true); return; }
       if (selSuspect >= 0 && placed[selSuspect] < 0) {
         var occ = placed.filter(function (x) { return x >= 0; }).concat([victimCell]);
         var conflict = occ.some(function (x) { return Math.floor(x / N) === Math.floor(c / N) || x % N === c % N; });
@@ -811,35 +817,75 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
       again.style.display = "";
     }
 
-    // ── Tutorial walkthrough（新手引导·方案B，10-18）：首访自动开，放置推进；localStorage 防重 ──
-    // 3 步制：4×4 只有 3 个嫌疑人，第 3 步在第二放置后出现（第 3 放置即自动过案，步骤 4 永远看不到）
-    var tutOn = false, tutStepIdx = 0;
-    var TUT_STEPS = [
-      "Every witness statement is true. Start with the room statements — they eliminate the most cells.",
-      "The sudoku rule: no two figures share a row or column, so every placement eliminates an entire row and column.",
-      "Statement words are exact: \u201cat a wall\u201d means only the outside edge of the whole board — the thin lines between rooms are partitions, not walls; \u201cin a corner\u201d means the four corners of the board. The suspect alone with the victim is the killer — when everyone is placed, hit Accuse!"
-    ];
+    // ── Tutorial walkthrough v2（新手引导·跟着做）：step0 点托盘 → step1 点高亮合法格 → step2 规则一句话 ──
+    // 结构修正：方案B推进只挂合法放置，45% 新手完不成首次放置就永远看不到 step 2；v2 托盘点击即推进，
+    // 且直接点地板（默认已选第一嫌疑人）也判会操作，跳到完成提示
+    var tutOn = false, tutStepIdx = 0, tutLastShown = -1;
     function tutInit() {
       if (tutOn || lsGet("murdoku_tut_done") === "1") return;
       tutOn = true; tutStepIdx = 0; showTut();
     }
+    function tutUnspot() {
+      var spots = document.querySelectorAll(".tut-spot");
+      for (var i = 0; i < spots.length; i++) spots[i].classList.remove("tut-spot");
+    }
+    function tutRepaint() {
+      tutUnspot();
+      var el = tutTargetEl();
+      if (el) el.classList.add("tut-spot");
+    }
+    function tutTargetEl() {
+      if (!tutOn || !puzzle) return null;
+      if (tutStepIdx === 0) {
+        var s = placed.findIndex(function (x) { return x < 0; });
+        return s < 0 ? null : document.querySelector('#suspects .suss[data-si="' + s + '"]');
+      }
+      if (tutStepIdx === 1) {
+        var lay = puzzle.layout, victimCell = puzzle.placement.personCell[N - 1];
+        var occ = placed.filter(function (x) { return x >= 0; }).concat([victimCell]);
+        for (var c = 0; c < N * N; c++) {
+          if (lay.obj[c] === 1 || c === victimCell || placed.indexOf(c) >= 0) continue;
+          var conflict = occ.some(function (x) { return Math.floor(x / N) === Math.floor(c / N) || x % N === c % N; });
+          if (!conflict) return document.querySelector('.cell[data-idx="' + c + '"]');
+        }
+      }
+      return null;
+    }
     function showTut() {
       var box = document.getElementById("tutBox");
-      if (!tutOn || tutStepIdx >= TUT_STEPS.length) { if (box) box.style.display = "none"; return; }
+      if (!tutOn || tutStepIdx >= 3) { if (box) box.style.display = "none"; tutUnspot(); return; }
       box.style.display = "block";
-      document.getElementById("tutStep").textContent = (tutStepIdx + 1) + "/" + TUT_STEPS.length;
-      document.getElementById("tutText").textContent = TUT_STEPS[tutStepIdx];
+      document.getElementById("tutStep").textContent = (tutStepIdx + 1) + "/3";
+      var s = placed.findIndex(function (x) { return x < 0; });
+      var t = tutStepIdx === 0 ? "Tap <b>" + suspectName(s < 0 ? 0 : s) + "</b> in the tray below."
+            : tutStepIdx === 1 ? "Now tap the highlighted floor cell."
+            : "Nice! Statements are clues — everyone tells the truth. Place the rest, then hit Accuse!";
+      document.getElementById("tutText").innerHTML = t;
+      tutRepaint();
+      // 步骤切换时把 spotlight 目标滚进视口（移动端托盘在折叠线下；nearest=最小滚动，桌面无滚动不受影响）
+      if (tutLastShown !== tutStepIdx) {
+        var el = tutTargetEl();
+        if (el && el.scrollIntoView) try { el.scrollIntoView({ behavior: "smooth", block: "nearest" }); } catch (err) {}
+      }
+      tutLastShown = tutStepIdx;
+    }
+    function tutSuspectClick(si) {
+      if (!tutOn || tutStepIdx !== 0) return;
+      if (placed[si] >= 0) return;  // 点已放置嫌疑人 = 捡起，不算学会选人
+      tutStepIdx = 1; showTut();
     }
     function tutAdvance() {
       if (!tutOn) return;
-      tutStepIdx++;
+      // 任何一次合法放置都证明操作会了：跳过未完成的教学步骤直接到完成提示
+      tutStepIdx = tutStepIdx < 2 ? 2 : 3;
       showTut();
-      if (tutStepIdx >= TUT_STEPS.length) tutFinish("tut_done");
+      if (tutStepIdx >= 3) tutFinish();
     }
     function tutFinish(ev) {
-      if (ev) track(ev, {});
+      track(ev || "tut_done", {});  // Skip 传 "tut_skip"，完成/放置走默认 tut_done
       tutOn = false; lsSet("murdoku_tut_done", "1");
       var b = document.getElementById("tutBox"); if (b) b.style.display = "none";
+      tutUnspot();
     }
 
     function doHint() {
