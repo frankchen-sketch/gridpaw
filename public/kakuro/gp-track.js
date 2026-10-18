@@ -9,7 +9,7 @@
     'level_complete_5', 'level_complete_10', 'level_complete_20',
     'hint_click', 'hint_blocked', 'puzzle_reset', 'puzzle_skip', 'game_over', 'badge_help_click', 'help_click',
     'daily_start', 'daily_solved', 'daily_challenge_click',
-    'share_reddit', 'share_copy', 'share_twitter', 'community_click',
+    'share_reddit', 'share_copy', 'share_twitter', 'share_card', 'share_card_copy', 'community_click',
     'sign_in_prompt_shown', 'sign_in_click', 'tool_start', 'tool_action'
   ];
   // 只有生产主域上报；pictomino 若被外站 iframe 跨域嵌入，/api/events 会静默失败（catch 掉）
