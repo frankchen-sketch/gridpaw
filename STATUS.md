@@ -693,6 +693,7 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **发帖落地（10-17）**：r/WebGames murdoku 帖上线 `https://www.reddit.com/r/WebGames/comments/1x85o6j/`；监控 cron 已扩到三帖（帖3=murdoku，新评论触发）；本地改动=webgames-gridpaw-monitor.sh（非仓库文件，不入库）
 - **murdoku 帖首个评论闭环（10-18，commit `3e32310`）**：u/Easy-Race6938 问「at a wall」是棋盘外沿还是房间边（正是预留软肋+措辞债）；查证=引擎语义已对（murdoku-engine.ts L201-208，pfjarschel Lemmy 反馈后修的：wall 只算棋盘外沿，房间隔线是 partition）但页面从未定义；修=how-to 加 house rule + FAQ 新增条目，上线验证过；回复稿交用户贴
 - **新手引导补齐（10-18，commit `cd1e05f`）**：用户拍板先A后B同时开干+列必要项沉淀；方案A=棋盘区下 statement 图例（10 类型白话定义，wall/corner 高亮）；方案B=3 步教学面板（首访自动开、放置推进、Skip 可跳、LS 防重、tut_done/tut_skip 打点）；Playwright 实测全绿（首访开/放置推进/Skip 隐藏+LS）；技能沉淀=game-launch-audit 第 7 条「新手引导=必要项」（how-to 在 fold 下不算 onboarding；新概念必须在游戏内有白话定义）
+- **Easy-Race6938 线收尾（10-18）**：用户已贴回复（先答 wall=外沿 + 认账页面没讲 + 修复合集）；台账入 reddit-feedback-audit（✅ 闭环 <1h，先例勘误：引擎早已修对，缺口是页面定义缺失）；若对方回访确认有效即为第三例「反馈→当天修→确认」闭环
 - **OG 图根因**：/murdoku/ 漏配专属图（10-15 批量生成时未上线），兜底 og-default=首页 Shikaku 卡；补 `og-murdoku.png`（右侧=真页面棋盘截图，`scripts/gen-og-murdoku.py`，PIL 边框验收）+ 发帖须换 query 参数强刷 Reddit 抓取
 - **同款彻查（34 页修正，commit `fbeaca6`）**：SEOHead 兜底 og-default 波及全部 akari 系功能页（含 Reddit 常用直链 /akari/daily/）→ 按规则"页面讲哪个游戏 OG 用哪个游戏的图"修 34 页；线上 4 页抽验过；剩余 33 页为可接受兜底（shikaku 系匹配/纯内容品牌卡/meowdoku 无专属图记 P2）
 - **误报排除**：canonical 尾斜杠由 SEOHead L31 自动补齐，源码无斜杠非问题
