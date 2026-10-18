@@ -14,7 +14,7 @@ export const FUNNEL_EVENTS = [
   'daily_start', 'daily_solved', 'daily_challenge_click',
   'share_reddit', 'share_copy', 'share_twitter', 'community_click',
   'sign_in_prompt_shown', 'sign_in_click', 'tool_start', 'tool_action',
-  'rate_submit',
+  'rate_submit', 'cta_click',
 ];
 
 // 只有生产域上报（与本仓库既有铁律一致：dev/预览域静默，避免污染）
