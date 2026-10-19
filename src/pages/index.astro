@@ -8,9 +8,13 @@ import SideAd from '../components/SideAd.astro';
 import GamePortal from '../components/GamePortal.astro';
 import GameSwitcher from '../components/GameSwitcher.astro';
 import DetectiveWall from '../components/DetectiveWall.astro';
+import { latestRecentEntry, formatBannerDate, gameColor } from '../lib/changelog-data';
 
 const title = "Shikaku Online: Play Free Cat Logic Puzzles | GridPaw";
 const description = "Play Shikaku online free: draw rectangles to match every number and fill the grid. Cat-themed puzzles from easy to hard, no download, no sign-up.";
+// 首页 changelog banner：构建期取最近 7 天内最新一条，过期则不渲染（0 DOM）
+const bannerEntry = latestRecentEntry(7);
+const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -456,6 +460,19 @@ const description = "Play Shikaku online free: draw rectangles to match every nu
     .mobile-nav-inner a:last-child { border-bottom: none; }
     @media (max-width: 700px) { .header-nav { display: none; } .hamburger { display: block; } }
     /* Game Card */
+    .changelog-banner { max-width: 500px; margin: 10px auto 0; padding: 10px 12px; display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #FBEEDD, #FDF6EA); border: 1.5px solid #EAD3B0; border-radius: 12px; }
+    .changelog-banner .cb-date { flex-shrink: 0; font-size: 11px; font-weight: 900; color: #fff; background: #D97706; border-radius: 6px; padding: 3px 7px; }
+    .changelog-banner .cb-game { flex-shrink: 0; font-size: 11px; font-weight: 800; color: #fff; border-radius: 6px; padding: 3px 7px; }
+    .changelog-banner .cb-text { flex: 1; min-width: 0; font-size: 12.5px; line-height: 1.45; color: var(--gp-ink, #4E4037); }
+    .changelog-banner .cb-text strong { font-weight: 800; }
+    .changelog-banner .cb-more { color: #D97706; font-weight: 700; white-space: nowrap; text-decoration: none; }
+    .changelog-banner .cb-more:hover { text-decoration: underline; }
+    .changelog-banner .cb-close { flex-shrink: 0; width: 22px; height: 22px; border: none; background: none; color: var(--gp-stone, #8A7D70); font-size: 15px; cursor: pointer; border-radius: 6px; line-height: 1; }
+    .changelog-banner .cb-close:hover { background: rgba(217,119,6,.12); color: #D97706; }
+    @media (max-width: 480px) {
+      .changelog-banner { flex-wrap: wrap; padding: 10px; gap: 8px; }
+      .changelog-banner .cb-text { flex-basis: calc(100% - 34px); order: 3; font-size: 12px; }
+    }
     .game-card { background: white; border-radius: 16px; padding: 12px; box-shadow: 0 2px 12px rgba(78,64,55,0.08); border: 1.5px solid var(--gp-lilac-soft); margin-bottom: 0; }
     .game-topbar { display: flex; align-items: center; justify-content: space-between; padding: 0 0 8px; flex-wrap: wrap; gap: 6px; position: relative; z-index: 20; }
     .game-actions { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; max-width: none; margin-left: auto; }
@@ -487,7 +504,6 @@ const description = "Play Shikaku online free: draw rectangles to match every nu
     }
     @media (prefers-reduced-motion: reduce) { .game-actions .hint-btn.hint-nudge { animation: none; border-width: 3px; } }
     /* 三层改造 ③：game over 弹窗的提示重试为主按钮，换新题降为次要 */
-    .game-over-overlay .next-btn.secondary { background: rgba(255,255,255,0.14); box-shadow: none; font-size: 14px; padding: 10px 26px; }
     /* ── Onboarding coach（真棋盘版，v6 2026-09-23；2026-09-23 修：卡片入文档流放棋盘下方，不再 fixed 盖棋盘；原重复规则 z-index 900/2 打架已合并）── */
     .onboard-coach { width: auto; max-width: 440px; margin: 12px auto 0; background: #fff; border-radius: 14px; padding: 14px; box-shadow: 0 8px 24px rgba(52,40,30,.30); }
     .onboard-coach.hidden { display: none; }
@@ -562,7 +578,7 @@ const description = "Play Shikaku online free: draw rectangles to match every nu
     .section { max-width: 720px; margin: 0 auto; padding: 0.5rem 1rem; }
     @media (max-width: 420px) { .walkthrough-grid { grid-template-columns: 1fr; } .download-box { flex-direction: column; text-align: center; } .download-phone { width: 120px; } }
 
-    /* === New mechanics: lives, irregular grid, X-reveal, shape hints === */
+    /* === Mechanics: irregular grid, X-reveal, shape hints (lives removed 2026-10-19) === */
     .cell-invalid { visibility: hidden; pointer-events: none; }
     .cell-xreveal { background: var(--gp-blush); position: relative; cursor: default; }
     .x-ring {
@@ -578,20 +594,11 @@ const description = "Play Shikaku online free: draw rectangles to match every nu
     .shape-hint-tall { left: 12px; right: 12px; top: 8px; bottom: 8px; border-radius: 3px; }
     .cell-number { position: relative; z-index: 1; }
 
-    .game-over-overlay {
-      position: absolute; inset: 0; background: rgba(0,0,0,0.7); z-index: 700;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 16px; border-radius: 12px;
-    }
-    .game-over-overlay.hidden { display: none; }
-    .game-over-overlay .game-over-title { color: white; font-size: 28px; }
-    .game-over-overlay p { color: rgba(255,255,255,0.8); font-size: 14px; }
     .save-row { display: block; margin: 10px auto 0; font-size: .8rem; color: var(--gp-stone); text-decoration: none; }
     .save-row u { color: #b45309; text-underline-offset: 2px; }
     .save-row:hover u { text-decoration-thickness: 2px; }
-    .hearts { display: flex; gap: 2px; font-size: 18px; align-items: center; }
-    .hearts .heart { transition: transform 0.15s, opacity 0.15s; }
-    .hearts .heart.lost { opacity: 0.2; transform: scale(0.8); }
+    .mistakes { font-size: 13px; font-weight: 800; color: var(--gp-stone); white-space: nowrap; transition: color 0.15s; }
+    .mistakes.has-mistakes { color: var(--mt-error, #C0392B); }
     .tutorial-hint {
       text-align: center; padding: 6px 12px; margin: 0 0 6px;
       font-size: 13px; font-weight: 700; color: var(--mt-secondary);
@@ -664,6 +671,27 @@ const description = "Play Shikaku online free: draw rectangles to match every nu
     <a href="/cross-math-puzzle/" style="padding-left:1.5rem">📚 Cross Math Puzzle</a>
   </div>
 </div>
+{bannerEntry && (
+  <div class="changelog-banner" id="changelogBanner" data-entry-date={bannerEntry.date}>
+    <span class="cb-date">{bannerDate}</span>
+    {bannerEntry.game && <span class="cb-game" style={`background:${gameColor(bannerEntry.game)}`}>{bannerEntry.game}</span>}
+    <span class="cb-text"><strong>{bannerEntry.title}</strong> — {bannerEntry.desc.length > 110 ? bannerEntry.desc.slice(0, 107) + '…' : bannerEntry.desc} <a class="cb-more" href="/changelog/">Full changelog →</a></span>
+    <button class="cb-close" id="changelogClose" aria-label="Dismiss update">✕</button>
+  </div>
+)}
+<script is:inline>
+  (function () {
+    var b = document.getElementById('changelogBanner');
+    if (!b) return;
+    var d = b.getAttribute('data-entry-date');
+    try { if (localStorage.getItem('gp-changelog-seen') === d) { b.remove(); return; } } catch (e) {}
+    var x = document.getElementById('changelogClose');
+    if (x) x.addEventListener('click', function () {
+      try { localStorage.setItem('gp-changelog-seen', d); } catch (e) {}
+      b.remove();
+    });
+  })();
+</script>
 <div class="app" id="app">
   <div id="account-area" style="display:flex;justify-content:center;align-items:center;gap:.5rem;margin:.4rem 0;min-height:2.4rem;flex-wrap:nowrap;white-space:nowrap"></div>
   <div class="daily-status" id="dailyStatus"></div>
@@ -674,7 +702,7 @@ const description = "Play Shikaku online free: draw rectangles to match every nu
       <div class="level-info" style="margin:0;padding:0">
         <div style="display:flex;align-items:center;gap:8px;justify-content:center">
           <div class="level-num" id="levelTitle"></div>
-          <div class="hearts" id="heartsDisplay"><span class="heart">❤️</span><span class="heart">❤️</span><span class="heart">❤️</span></div>
+          <div class="mistakes" id="mistakesDisplay" title="Mistakes this level">Mistakes: 0</div>
         </div>
         <span class="difficulty-badge badge-easy" id="diffBadge"></span>
         <div class="level-sub" id="levelSub"></div>
@@ -741,12 +769,6 @@ const description = "Play Shikaku online free: draw rectangles to match every nu
     </div>
   </div>
 
-  <div class="game-over-overlay hidden" id="gameOver">
-    <div class="game-over-title">💔 Game Over</div>
-    <p>You ran out of lives!</p>
-    <button class="next-btn" id="hintRetryBtn">💡 Retry with a Hint</button>
-    <button class="next-btn secondary" id="retryBtn">Try Again 🔄</button>
-  </div>
 
   <section class="seo-content" id="daily-leaderboard" style="max-width:520px;margin:1.5rem auto;padding:0 1rem">
     <!-- 方案 A：空排行榜位 → Today's Challenge 卡（有真实上榜数据时 JS 自动切回排行榜） -->
@@ -881,7 +903,7 @@ const description = "Play Shikaku online free: draw rectangles to match every nu
   // Load saved level from localStorage
   var savedLevel = localStorage.getItem('gridpaw-level');
   var puzzle = null, occupied = [], cellColors = [], rects = [];
-  var lives = 3, enhancedNumbers = [], validCells = null;
+  var mistakes = 0, enhancedNumbers = [], validCells = null;
   var TUTORIAL_MESSAGES = {
  1: ' Drag horizontally to cover 3 cells →',
  2: ' Drag vertically to cover 3 cells ↓',
@@ -973,7 +995,6 @@ const description = "Play Shikaku online free: draw rectangles to match every nu
 
   var board = document.getElementById('board');
   var victory = document.getElementById('victory');
-  var gameOver = document.getElementById('gameOver');
   var statusEl = document.getElementById('status');
   var levelTitle = document.getElementById('levelTitle');
   // Clarity 录屏实锤：用户把难度徽章当帮助按钮狂点 → 点它滚到 Tips 区
@@ -988,22 +1009,17 @@ const description = "Play Shikaku online free: draw rectangles to match every nu
   });
   gameTimerEl = document.getElementById('gameTimer');
 
-  function updateHearts() {
-    var heartsEl = document.getElementById('heartsDisplay');
-    if (!heartsEl) return;
-    var spans = heartsEl.querySelectorAll('.heart');
-    for (var i = 0; i < spans.length; i++) {
-      spans[i].classList.toggle('lost', i >= lives);
-    }
+  function updateMistakes() {
+    var mEl = document.getElementById('mistakesDisplay');
+    if (!mEl) return;
+    mEl.textContent = 'Mistakes: ' + mistakes;
+    mEl.classList.toggle('has-mistakes', mistakes > 0);
   }
   function newPuzzle() {
-    lives = 3; updateHearts();
+    mistakes = 0; updateMistakes();
     consecErrors = 0; nudgeShownThisLevel = false;
     var hbNew = document.getElementById('hintBtn');
     if (hbNew) hbNew.classList.remove('hint-nudge');
-    gameOver.classList.add('hidden');
-    var bdN = document.getElementById('board');
-    if (bdN) bdN.style.pointerEvents = '';
     var levelIdx = levelNum - 1;
     var levelDef = typeof LEVEL_DEFS !== 'undefined' ? LEVEL_DEFS[levelIdx] : null;
     if (levelDef) {
@@ -1261,19 +1277,6 @@ const description = "Play Shikaku online free: draw rectangles to match every nu
       }
     });
   }
-  function showGameOver() {
-    stopGameTimer();
-    if (typeof SFX !== 'undefined') SFX.error();
-    // 三层改造 ③：没用完的 hint 才给「提示重试」出口（防无限免费重试）
-    var isDevGo = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-    var hr = document.getElementById('hintRetryBtn');
-    if (hr) hr.style.display = (!isDevGo && !isAdmin && hintUsesLeft <= 0) ? 'none' : '';
-    gameOver.classList.remove('hidden');
-    // Clarity 实锤 bug：弹窗开着时拖拽穿透到棋盘，2 秒内连吃 3 次 game_over
-    var bd = document.getElementById('board');
-    if (bd) bd.style.pointerEvents = 'none';
-    track('game_over', { level: levelNum, time: gameElapsed });
-  }
   function onEnd(e) {
     try {
     if (!dragging || !dragStart) return; dragging = false;
@@ -1295,19 +1298,11 @@ const description = "Play Shikaku online free: draw rectangles to match every nu
     if (!result.valid) {
       for (var r = sel.top; r < sel.top + sel.height; r++) for (var c = sel.left; c < sel.left + sel.width; c++) if (r < puzzle.height && c < puzzle.width) { var el = board.children[r * puzzle.width + c]; if (el) { el.classList.add('cell-error'); setTimeout(function(e) { return function() { e.classList.remove('cell-error'); }; }(el), 300); } }
       if (typeof SFX !== 'undefined') SFX.error();
-      lives--;
-      updateHearts();
+      mistakes++;
+      updateMistakes();
       consecErrors++;
-      if (lives <= 0) {
-        statusEl.textContent = 'No lives left!'; statusEl.style.color = 'var(--mt-error)';
-        showGameOver();
-        return;
-      }
-      if (lives === 1) {
-        statusEl.textContent = '⚠️ Last chance!'; statusEl.style.color = 'var(--mt-error)';
-      } else {
-        statusEl.textContent = result.reason || 'Invalid'; statusEl.style.color = 'var(--mt-error)';
-      }
+      // 2026-10-19 撤命：错矩形只红闪+计数，不再扣命/中断（玩家反馈+GA4 22% 致死率）
+      statusEl.textContent = result.reason || 'Invalid'; statusEl.style.color = 'var(--mt-error)';
       // 三层改造 ②：连续 2 次拖错 = 卡关信号，让 hint 按钮跳出来（每关一次）
       if (consecErrors >= 2 && !nudgeShownThisLevel && !isAdmin) {
         nudgeShownThisLevel = true;
@@ -1355,7 +1350,7 @@ const description = "Play Shikaku online free: draw rectangles to match every nu
         for (var c = 0; c < puzzle.width; c++)
           if (occupied[r][c]) filled++;
     }
-    statusEl.textContent = filled + ' / ' + total + ' cells · ' + (puzzle.numbers.length - rects.length) + ' cats left · ❤️ ' + lives;
+    statusEl.textContent = filled + ' / ' + total + ' cells · ' + (puzzle.numbers.length - rects.length) + ' cats left · Mistakes ' + mistakes;
     statusEl.style.color = '';
   }
 
@@ -1421,7 +1416,9 @@ const description = "Play Shikaku online free: draw rectangles to match every nu
       catsDiv.appendChild(div);
     });
     victory.classList.remove('hidden'); spawnConfetti();
-    document.getElementById('victoryTag').textContent = 'GridPaw Shikaku · Level ' + levelNum;
+    var tagEl = document.getElementById('victoryTag');
+    tagEl.textContent = 'GridPaw Shikaku · Level ' + levelNum + (mistakes === 0 ? ' · Flawless ✨' : '');
+    if (mistakes === 0) tagEl.style.color = 'var(--gp-amber, #D97706)'; else tagEl.style.color = '';
     // 注册墙降级（2026-10-15）：阻断式 L5 模态框 → 胜利弹层内一行被动入口，只出现一次，不挡任何按钮
     if (levelNum === 5 && !currentUser && !localStorage.getItem('gridpaw-signin-prompted')) {
       localStorage.setItem('gridpaw-signin-prompted', '1');
@@ -1490,25 +1487,6 @@ const description = "Play Shikaku online free: draw rectangles to match every nu
 
   document.getElementById('victory-close').addEventListener('click', function() {
     victory.classList.add('hidden');
-  });
-  document.getElementById('retryBtn').addEventListener('click', function() {
-    newPuzzle();
-  });
-  // 三层改造 ③：game over 后「用 1 次提示重试」= 同一道题 + 回满血 + 高亮一块正确矩形
-  document.getElementById('hintRetryBtn').addEventListener('click', function() {
-    gameOver.classList.add('hidden');
-    lives = 3; updateHearts();
-    var isDevHr = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-    if (!isDevHr && !isAdmin) hintUsesLeft = Math.max(0, hintUsesLeft - 1);
-    updateHintBadge();
-    var hbUn = document.getElementById('hintBtn');
-    if (hbUn) hbUn.classList.remove('hint-nudge');
-    consecErrors = 0;
-    track('hint_click', { level: levelNum, remaining: isAdmin ? 'admin' : hintUsesLeft, source: 'game_over_retry' });
-    var bdH = document.getElementById('board');
-    if (bdH) bdH.style.pointerEvents = '';
-    startGameTimer();
-    revealHintRect();
   });
 
   document.getElementById('resetBtn').addEventListener('click', function() { track('puzzle_skip', { level: levelNum, reason: 'new_puzzle' }); levelNum++; isDailyMode = false; newPuzzle(); victory.classList.add('hidden'); });
