@@ -7,8 +7,8 @@
 
 | 开发者 | 代表作 | 收录证据 | 收录日 | 监控入口 |
 |---|---|---|---|---|
-| **Ecffri** | Arrows – Puzzle Escape（**100M+ 安装**，周更） | 品类反推发现：`arrows puzzle` 12 个月 170→5,400 单边爬升；100M 体量 = 全名单最大爆款制造机 | 2026-10-10 | 包名 `com.ecffri.*`；Play 搜索 arrows puzzle / arrows escape |
-| **Oakever** | Meowdoku（1800 万装，搜索 60,500/月 仍在涨）➕ **Amaze GO!（同门箭头游戏，2/2026 上架，120M 装/近30天14M，2026-10-12 雷达发现）** | 唯一有「安装→搜索」转化实锤：meowdoku + help 词族 ~1,700/月成词；2026 年上新 10 款（9 月还在密集上：Hidden Fest 9/21、Pics Blast 9/12）；Amaze GO! 证明其在箭头品类复制爆款路径（amaze go 词族 0→6,600/月翻倍爬升中） | 2026-10-10（Amaze GO! 补记 2026-10-12） | AppBrain `/dev/Oakever+Games/`（⚠️ dev?id= 页被 CF 盾，slug 页可用）；包名 `com.oakever.*` |
+| **Ecffri**（**Play dev 账号实证 = Lessmore GmbH**，og:title 2026-10-19 实测；Ecffri 系子品牌） | Arrows – Puzzle Escape（**100M+ 安装**，周更） | 品类反推发现：`arrows puzzle` 12 个月 170→5,400 单边爬升；100M 体量 = 全名单最大爆款制造机 | 2026-10-10（账号归属实证补记 2026-10-19） | 包名 `com.ecffri.*`；Play dev id `8964310704118504564`（该账号现 5 app：Eatventure/We Are Warriors/Forge Master/Arrows/Pocket Chess，2026-10-19 巡查全已知无新品）；Play 搜索 arrows puzzle / arrows escape |
+| **Oakever** | Meowdoku（1800 万装，搜索 60,500/月 仍在涨）➕ **Amaze GO!（同门箭头游戏，2/2026 上架，120M 装/近30天14M，2026-10-12 雷达发现）** | 唯一有「安装→搜索」转化实锤：meowdoku + help 词族 ~1,700/月成词；2026 年上新 10 款（9 月还在密集上：Hidden Fest 9/21、Pics Blast 9/12）；Amaze GO! 证明其在箭头品类复制爆款路径（amaze go 词族 0→6,600/月翻倍爬升中） | 2026-10-10（Amaze GO! 补记 2026-10-12） | AppBrain `/dev/Oakever+Games/`（⚠️ dev?id= 页被 CF 盾，slug 页可用）；包名 `com.oakever.*`。⚠️ **多 dev 账号**（2026-10-19 巡查实证）：主账号（`?id=Oakever Games`）20 app 不含 Hidden Fest；Hidden Fest 存活（Updated 10-14）但挂在第二账号 dev id `9154199097976797965`（og:title 同为 Oakever Games）——巡查新品须两账号都看 |
 
 ## T2 — 观察名单（只看 riser 标记/上新，不进量监控池）
 
