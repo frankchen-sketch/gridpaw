@@ -209,21 +209,6 @@
     border-radius: 10px; padding: 6px 14px;
   }
   .peekbar.show { display: block; }
-  .paywall {
-    display: none; position: fixed; left: 50%; transform: translateX(-50%);
-    bottom: 24px; z-index: 500; width: min(420px, 92vw);
-    background: var(--cream); border: 3px solid var(--amber); border-radius: 14px;
-    padding: 14px; box-shadow: 0 8px 28px rgba(63,45,29,.3);
-  }
-  .paywall.show { display: block; }
-  .paywall .pw-title { font-size: 14px; font-weight: 800; color: var(--amber-dark); text-align: center; margin-bottom: 10px; }
-  .paywall .pw-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-  .paywall button {
-    font-size: 12.5px; font-weight: 700; border-radius: 18px; padding: 8px 14px;
-    border: 2px solid var(--amber); background: #fff; color: var(--amber-dark); cursor: pointer;
-  }
-  .paywall button.gold { background: var(--amber); color: #fff; }
-  .paywall button.plain { border-color: var(--line); color: #8a6d4e; }
 
   .win-share-row { display: flex; gap: .5rem; margin-top: .8rem; justify-content: center; flex-wrap: wrap; }
   .share-btn { padding: .5rem 1rem; border: none; border-radius: 10px; cursor: pointer; font-size: .85rem; font-weight: 600; font-family: inherit; transition: transform .1s; }
@@ -256,15 +241,6 @@
 
   <div class="pad" id="pad"></div>
   <div class="peekbar" id="peekbar"></div>
-
-  <div class="paywall" id="paywall">
- <div class="pw-title">Free peeks used up</div>
-    <div class="pw-row">
-      <button id="pwAd">📺 Watch ad · reveal 1</button>
-      <button id="pwGold" class="gold">🍬 Cat coins ×3 · unlimited</button>
-      <button id="pwX" class="plain">✕</button>
-    </div>
-  </div>
 
   <div class="overlay" id="winOverlay">
     <div class="card">
@@ -323,10 +299,6 @@
   var fogClueCells = [];      // boolean flat: clue-carrying black cells of the far block
   var revealed = [];          // boolean flat: peeked cells (white) — revealed individually
   var revealedClues = [];     // boolean flat: peeked clue cells
-  var freeLeft = 2;           // free peeks per level
-  var goldMode = false;
-  var penaltySeconds = 0;     // demo stand-in for the +5s timer penalty
-  var FREE_PEEKS = 2;
 
   function track(name, params) {
     if (!IS_PROD) return; // 非生产域静默，本机 QA 流量不进 GA4
@@ -380,9 +352,6 @@
     fogUnlocked = false;
     revealed = [];
     revealedClues = [];
-    freeLeft = FREE_PEEKS;
-    goldMode = false;
-    penaltySeconds = 0;
     hintsLeft = FREE_HINTS;
     updateHintBadge();
     hintFocus = null;
@@ -411,20 +380,10 @@
     var bar = document.getElementById('peekbar');
     if (!fogActive) { bar.className = 'peekbar'; return; }
     bar.className = 'peekbar show';
-    bar.textContent = goldMode
-      ? '🍬 Cat coins mode — unlimited peeks this level'
- : ' Free peeks left: ' + freeLeft + ' / ' + FREE_PEEKS + ' — tap the fog to peek';
+    bar.textContent = ' Tap the fog to peek — free & unlimited';
   }
 
   function attemptPeek(i) {
-    if (goldMode) { revealPeek(i, 'gold'); return; }
-    if (freeLeft <= 0) {
-      document.getElementById('paywall').classList.add('show');
-      track('paywall_shown', { level: level });
-      return;
-    }
-    freeLeft--;
-    updatePeekbar();
     revealPeek(i, 'free');
   }
 
@@ -902,7 +861,6 @@
     digits = [];
     selected = -1;
     overlayEl.classList.remove('show');
-    document.getElementById('paywall').classList.remove('show');
     boardEl.classList.remove('unlocked');
 
     if (info.type === 'tutorial') {
@@ -932,7 +890,7 @@
         }
         initFog();
         if (fogActive) {
- setMsg(' Fog mode: solve the visible block first. Tap the fog to peek (' + FREE_PEEKS + ' free).');
+ setMsg(' Fog mode: solve the visible block first. Tap the fog to peek — free & unlimited.');
         } else if (info.type === 'gen' && info.key === 'easy') {
  setMsg('Easy has no fog — Fog mode starts at Medium (use the fog preview buttons below).');
         } else {
@@ -1125,38 +1083,6 @@
   }, 500);
   document.getElementById('hintBtn').addEventListener('click', useHint);
 
-  // ── paywall (demo mock: no real billing — GA4 events record intent) ──
-  function payPeek(method) {
-    var total = puzzle.rows * puzzle.cols;
-    for (var i = 0; i < total; i++) {
-      if (isFogged(i)) { attemptPeekWithMethod(i, method); break; }
-    }
-    document.getElementById('paywall').classList.remove('show');
-  }
-
-  function attemptPeekWithMethod(flatIdx, method) {
-    if (method === 'time') {
-      penaltySeconds += 5;
-      setMsg('⏱ +5s penalty recorded (demo). Total: +' + penaltySeconds + 's.', 'err');
-    }
-    if (method === 'gold') {
-      goldMode = true;
-      updatePeekbar();
-    }
-    revealPeek(flatIdx, method);
-  }
-
-  document.getElementById('pwAd').addEventListener('click', function () {
-    track('paywall_convert', { method: 'ad', level: level });
-    payPeek('ad');
-  });
-  document.getElementById('pwGold').addEventListener('click', function () {
-    track('paywall_convert', { method: 'gold', level: level });
-    payPeek('gold');
-  });
-  document.getElementById('pwX').addEventListener('click', function () {
-    document.getElementById('paywall').classList.remove('show');
-  });
 
   // ── test hooks (demo page is noindex; enables scripted playtest) ──
   window.__kakuroTest = {
@@ -1173,7 +1099,6 @@
       for (var i = 0; i < puzzle.rows * puzzle.cols; i++) if (isFogged(i)) n++;
       return n;
     },
-    freeLeft: function () { return freeLeft; },
     solveVisible: function () {
       if (!puzzle) return;
       for (var i = 0; i < puzzle.white.length; i++) {
