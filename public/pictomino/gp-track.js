@@ -34,6 +34,11 @@
     var ua = navigator.userAgent || '';
     return !ua || /bot|crawl|spider|headless|python|curl|wget|monitor/i.test(ua);
   }
+  // 自测标记（2026-10-19）：站长设备 localStorage.setItem('gp_selftest','1') 后全事件带
+  // metadata.selftest=true，分析查询一律排除。与 src/lib/funnel-track.ts 保持同构。
+  function isSelfTest() {
+    try { return localStorage.getItem('gp_selftest') === '1'; } catch (e) { return false; }
+  }
   function send(payload) {
     try {
       fetch('/api/events', {
@@ -74,6 +79,7 @@
     var build = (window.GP_BUILD && window.GP_BUILD.id) || '';
     // 全事件统一带归因原料（与 src/lib/funnel-track.ts 同构；业务键优先，归因键只兜底）
     var enriched = { referrerHost: referrerHost(), attribution: buildAttribution(location.search) };
+    if (isSelfTest()) enriched.selftest = true;
     if (metadata) for (var k in metadata) enriched[k] = metadata[k];
     send({ anonId: getAnonId(), events: [{ eventName: eventName, source: 'web', buildId: build, metadata: enriched }] });
   }

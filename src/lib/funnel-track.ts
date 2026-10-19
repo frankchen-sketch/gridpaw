@@ -44,6 +44,13 @@ function looksLikeBot(): boolean {
   return !ua || /bot|crawl|spider|headless|python|curl|wget|monitor/i.test(ua);
 }
 
+// 自测标记（2026-10-19）：站长自己的设备在 gridpaw.com 控制台执行
+// localStorage.setItem('gp_selftest','1') 后，所有事件带 metadata.selftest=true，
+// 分析查询一律排除（历史无标记数据靠高频回访人工剔除）。与 gp-track.js 保持同构。
+function isSelfTest(): boolean {
+  try { return localStorage.getItem('gp_selftest') === '1'; } catch { return false; }
+}
+
 function send(payload: unknown): void {
   fetch('/api/events', {
     method: 'POST',
@@ -90,6 +97,7 @@ export function trackFunnel(eventName: string, metadata: Record<string, unknown>
     referrerHost: referrerHost(),
     attribution: buildAttribution(location.search),
     pagePath: location.pathname,
+    ...(isSelfTest() ? { selftest: true } : {}),
     ...metadata,
   };
   send({ anonId: getAnonId(), events: [{ eventName, source: 'web', buildId: APP_BUILD.id, metadata: enriched }] });

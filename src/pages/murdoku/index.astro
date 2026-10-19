@@ -765,6 +765,8 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
         if (conflict) { flashCell(c, "bad-flash"); setHint("The sudoku rule: no two figures share a row or column!", true); return; }
         placed[selSuspect] = c;
         tutAdvance();
+        // gs 先行保证（2026-10-19）：个别加载路径漏 fireGameStart 时 fm 会跑在 gs 前（D1 fm 97 > gs 92 实测）
+        fireGameStart();
         // first_move 首次放猫（__firstMoveTracked 防重，与 akari 同款）
         if (!window.__firstMoveTracked) {
           window.__firstMoveTracked = true;

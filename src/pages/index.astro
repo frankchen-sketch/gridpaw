@@ -1227,6 +1227,9 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
   function onStart(e) {
     var cell = getCell(e);
     if (!cell) return;
+    // first_move 口径（2026-10-19 修正）：棋盘上任何一次有效按下都算首互动。原实现放在
+    // 「开始拖拽」分支尾部，点已放猫块移除 / 原地取消选择两条早退路径全漏 → D1 fm 21 vs lu 97 失真
+    if (!window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { level: levelNum }); }
     // Click on filled cell → remove that cat block
     if (occupied[cell.row][cell.col]) {
       for (var i = rects.length - 1; i >= 0; i--) {
@@ -1497,7 +1500,7 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     colorPool.push(last.color); // return color to pool
     render(); updateStatus();
   });
-  document.getElementById('nextBtn').addEventListener('click', function() { var completedLevel = levelNum; levelNum++; isDailyMode = false; hintUsesLeft = 3; updateHintBadge(); track('level_up', { level: completedLevel }); if ([1,3,5,7,10,12,15,20,23,25,30].indexOf(completedLevel) !== -1) { track('level_complete_' + completedLevel); } newPuzzle(); victory.classList.add('hidden'); if (window.GPBadges) GPBadges.next(); var isDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1'; if (!isDev && completedLevel === 5 && !currentUser) { track('sign_in_prompt_seen', { level: 5, source: 'victory_inline' }); } });
+  document.getElementById('nextBtn').addEventListener('click', function() { var completedLevel = levelNum; levelNum++; isDailyMode = false; hintUsesLeft = 3; updateHintBadge(); track('level_up', { level: completedLevel }); if ([1,3,5,7,10,12,15,20,23,25,30].indexOf(completedLevel) !== -1) { track('level_complete_' + completedLevel); } newPuzzle(); victory.classList.add('hidden'); if (window.GPBadges) GPBadges.next(); });
   document.getElementById('hintBtn').addEventListener('click', function() {
     // 门控：dev 环境无限；每关 3 次；admin 无限；超出后消耗 hint 银行（P0-2：每日首胜 +1）
     var isDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
