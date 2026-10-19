@@ -751,7 +751,11 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     <button class="share-btn" id="shareBtn">📋 Share Result</button>
     <button class="share-btn" id="xBtn" style="background:var(--mt-primary);color:#fff">𝕏 Share</button>
     <button class="reddit-btn" id="redditBtn">🔥 Share on Reddit</button>
-    <a id="saveRow" href="/api/auth/login?next=/" hidden onclick="track('sign_in_click',{source:'victory_inline',level:5})"></a>
+    <div id="saveWrap" hidden style="margin-top:.9rem;display:flex;flex-direction:column;align-items:center;gap:.5rem">
+      <div id="saveRow" style="background:#FFF8E6;border:1px solid #F0DFAE;border-radius:10px;padding:.5rem .9rem;font-size:.85rem;color:#7A6420;text-align:center;max-width:340px"></div>
+      <button id="saveSignInBtn" hidden style="background:var(--gp-amber,#D97706);color:#fff;font-weight:800;font-size:.85rem;border:none;border-radius:10px;padding:.6rem 1.2rem;cursor:pointer;font-family:inherit">Sign in — keep them on every device</button>
+      <div id="savePanel" style="width:100%;display:flex;justify-content:center"></div>
+    </div>
     <button id="victory-close" style="background:none;border:1.5px solid var(--gp-lilac-soft);color:var(--gp-stone);font-family:inherit;font-weight:700;font-size:.85rem;padding:.5rem 1.6rem;border-radius:999px;cursor:pointer">Continue ✓</button>
   </div>
 
@@ -967,6 +971,13 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
         if (localStorage.getItem('gridpaw-streakbreak-logged') !== lastDate) {
           localStorage.setItem('gridpaw-streakbreak-logged', lastDate);
           track('streak_break', { broken_streak: d.streak });
+        }
+        // P1-4 触发面②：断签回访顶部条幅 + Sign in（7 天一次；currentUser 此刻可能未解析，me() 回来后登录态会摘除）
+        var sbKey = 'gridpaw-signin-streakbreak-banner';
+        var sbLast = parseInt(localStorage.getItem(sbKey), 10) || 0;
+        if (Date.now() - sbLast > 7 * 86400000) {
+          localStorage.setItem(sbKey, String(Date.now()));
+          showStreakBreakBanner(d.streak);
         }
       } catch (e) {}
     }
@@ -1409,7 +1420,7 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
           track('level_up', { level: levelNum - 1, tutorial: true });
           newPuzzle();
         } else {
-          console.log('[TIMEOUT] Calling showVictory now'); showVictory(); if (dailyWinState) syncWinToCloud(dailyWinState, gameElapsed);
+          console.log('[TIMEOUT] Calling showVictory now'); showVictory(dailyWinState); if (dailyWinState) syncWinToCloud(dailyWinState, gameElapsed);
         }
       }, 500);
     } else {
@@ -1417,7 +1428,7 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     }
   }
 
-  function showVictory() {
+  function showVictory(dailyWinState) {
     console.log('[VICTORY] showVictory called');
     var catsDiv = document.getElementById('victoryCats'); catsDiv.innerHTML = '';
     var usedColors = [];
@@ -1436,11 +1447,17 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     // 注册墙降级（2026-10-15）：阻断式 L5 模态框 → 胜利弹层内一行被动入口，只出现一次，不挡任何按钮
     if (levelNum === 5 && !currentUser && !localStorage.getItem('gridpaw-signin-prompted')) {
       localStorage.setItem('gridpaw-signin-prompted', '1');
-      var saveRow = document.getElementById('saveRow');
       var stAsset = loadDailyState() || { streak: 0 };
-      saveRow.textContent = '💾 Level ' + levelNum + ' · 🔥 ' + (stAsset.streak || 0) + ' day streak · ' + (3 + getHintBank()) + ' hints — Sign in to keep them on every device';
-      saveRow.hidden = false;
-      track('sign_in_prompt_shown', { level: 5, source: 'victory_inline', variant: 'asset_row' });
+      showSaveSignIn('💾 Level ' + levelNum + ' · 🔥 ' + (stAsset.streak || 0) + ' day streak · ' + (3 + getHintBank()) + ' hints — saved on this device only', 'victory_inline');
+    }
+    // P1-4 触发面①：daily 首胜同套资产行 + Sign in 按钮（7 天一次）
+    if (dailyWinState && !currentUser) {
+      var dlKey = 'gridpaw-signin-daily-prompted';
+      var dlLast = parseInt(localStorage.getItem(dlKey), 10) || 0;
+      if (Date.now() - dlLast > 7 * 86400000) {
+        localStorage.setItem(dlKey, String(Date.now()));
+        showSaveSignIn('🔥 ' + (dailyWinState.streak || 1) + '-day streak · 💡 ' + (3 + getHintBank()) + ' hints — saved on this device only', 'daily_win');
+      }
     }
     // 徽章：胜利时对账 /api/badges（daily_solved 当场 POST，能当场显示；level 徽章在 Next 点击 POST，走 pending 下次弹层补显示）
     if (window.GPBadges) GPBadges.win();
@@ -1816,12 +1833,63 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
       area.appendChild(buildSignInPanel('/'));
     }
   }
-  // ─── 多供应商登录面板：Google/Microsoft/Facebook 三按钮 + 邮箱密码小表单 ───
+  // ─── P1-4 登录 prompt（2026-10-19）：资产行 + Sign in 按钮 + 内联面板（Google + 邮箱） ───
+  // 三个触发面共用：L5 胜利行（victory_inline）/ daily 首胜（daily_win）/ streak_break 顶部条幅
+  function showSaveSignIn(assetText, source) {
+    var wrapEl = document.getElementById('saveWrap');
+    var row = document.getElementById('saveRow');
+    var btn = document.getElementById('saveSignInBtn');
+    if (!wrapEl || !row || !btn) return;
+    row.textContent = assetText;
+    wrapEl.hidden = false;
+    btn.hidden = false;
+    btn.onclick = function () {
+      track('sign_in_click', { source: source });
+      var holder = document.getElementById('savePanel');
+      if (!holder) return;
+      if (holder.childElementCount) { holder.style.display = holder.style.display === 'none' ? 'flex' : 'none'; return; }
+      holder.appendChild(buildSignInPanel('/', true));
+    };
+    track('sign_in_prompt_shown', { source: source, variant: 'asset_row' });
+  }
+
+  function showStreakBreakBanner(brokenStreak) {
+    if (document.getElementById('streakBreakBanner')) return;
+    var el = document.createElement('div');
+    el.id = 'streakBreakBanner';
+    el.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:950;background:#FFF3E0;border-bottom:1.5px dashed #D97706;padding:.6rem 1rem;font-size:.9rem;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;justify-content:center;font-family:inherit;color:#3A2F28';
+    var txt = document.createElement('span');
+    txt.textContent = '🔥 Streak reset — your levels & streak stay on this device only.';
+    var btn = document.createElement('button');
+    btn.textContent = 'Sign in — bank your progress';
+    btn.style.cssText = 'background:#D97706;color:#fff;font-weight:800;font-size:.82rem;border:none;border-radius:10px;padding:.45rem 1rem;cursor:pointer;font-family:inherit';
+    var x = document.createElement('button');
+    x.textContent = '✕';
+    x.setAttribute('aria-label', 'Dismiss');
+    x.style.cssText = 'background:none;border:none;color:#9C8B7B;font-size:.85rem;cursor:pointer;padding:.2rem';
+    var holder = null;
+    btn.addEventListener('click', function () {
+      track('sign_in_click', { source: 'streak_break' });
+      if (!holder) {
+        holder = document.createElement('div');
+        holder.style.cssText = 'flex-basis:100%;display:flex;justify-content:center';
+        holder.appendChild(buildSignInPanel('/', true));
+        el.appendChild(holder);
+      } else {
+        holder.style.display = holder.style.display === 'none' ? 'flex' : 'none';
+      }
+    });
+    x.addEventListener('click', function () { el.remove(); });
+    el.appendChild(txt); el.appendChild(btn); el.appendChild(x);
+    document.body.appendChild(el);
+    track('sign_in_prompt_shown', { source: 'streak_break', broken_streak: brokenStreak });
+  }
+
+  // ─── 登录面板：Google + 邮箱密码小表单（2026-10-19 砍 Microsoft/Facebook——OAuth 未打通，死按钮骗点击） ───
   // 点 pill 展开面板，点外部关闭；登录成功 location.reload，失败静默（不挡游戏）
-  function buildSignInPanel(next) {
+  // noPill=true：不渲染 pill，面板直接展开内联在某容器里（胜利弹层 / streak 条幅复用）
+  function buildSignInPanel(next, noPill) {
     var GOOGLE_SVG = '<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 18.9 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.6 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>';
-    var MS_SVG = '<svg width="16" height="16" viewBox="0 0 23 23"><path fill="#f35325" d="M1 1h10v10H1z"/><path fill="#81bc06" d="M12 1h10v10H12z"/><path fill="#05a6f0" d="M1 12h10v10H1z"/><path fill="#ffba08" d="M12 12h10v10H12z"/></svg>';
-    var FB_SVG = '<svg width="16" height="16" viewBox="0 0 24 24"><path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>';
     var wrap = document.createElement('div');
     wrap.style.cssText = 'position:relative;display:inline-flex;z-index:30';
     // Clarity #1792s36：触控目标保持 Apple HIG 44px 最小标准
@@ -1829,13 +1897,10 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     pill.type = 'button';
     pill.style.cssText = 'display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1.5px solid var(--gp-linen);border-radius:24px;padding:.55rem 1.15rem;min-height:44px;font-size:.85rem;font-weight:700;color:var(--gp-ink);cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.08);position:relative;z-index:5';
     pill.innerHTML = GOOGLE_SVG + 'Sign in';
-    wrap.appendChild(pill);
     var panel = document.createElement('div');
-    panel.style.cssText = 'display:none;position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);z-index:60;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.16);padding:10px;width:224px;text-align:left;white-space:normal';
+    panel.style.cssText = 'display:' + (noPill ? 'block' : 'none') + ';position:' + (noPill ? 'static' : 'absolute') + ';top:calc(100% + 6px);left:50%;transform:' + (noPill ? 'none' : 'translateX(-50%)') + ';z-index:60;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.16);padding:10px;width:224px;text-align:left;white-space:normal';
     var providers = [
-      { prov: 'google', label: 'Sign in with Google', svg: GOOGLE_SVG },
-      { prov: 'microsoft', label: 'Sign in with Microsoft', svg: MS_SVG },
-      { prov: 'facebook', label: 'Sign in with Facebook', svg: FB_SVG }
+      { prov: 'google', label: 'Sign in with Google', svg: GOOGLE_SVG }
     ];
     providers.forEach(function(p) {
       var a = document.createElement('a');
@@ -1914,6 +1979,8 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     });
     panel.appendChild(fpLink); panel.appendChild(fpWrap);
     wrap.appendChild(panel);
+    if (noPill) return wrap;
+    wrap.appendChild(pill);
     pill.addEventListener('click', function() { panel.style.display = panel.style.display === 'none' ? 'block' : 'none'; });
     // 点面板外部关闭
     document.addEventListener('click', function(ev) { if (!wrap.contains(ev.target)) panel.style.display = 'none'; });
@@ -1949,6 +2016,8 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
   function syncCloudOnLoad() {
     fetchWithTimeout('/api/auth/me').then(function(r) { return r.json(); }).then(function(me) {
       currentUser = me && me.user ? me.user : null;
+      // P1-4：登录用户不看出断签条幅（loadDailyState 跑在 me() 之前）
+      if (currentUser) { var sbEl = document.getElementById('streakBreakBanner'); if (sbEl) sbEl.remove(); }
       isAdmin = !!(currentUser && currentUser.googleSub && ADMIN_GOOGLE_SUBS.indexOf(currentUser.googleSub) !== -1);
       if (currentUser && currentUser.googleSub && typeof window.gtag === 'function') {
         window.gtag('set', 'user_id', currentUser.googleSub);
