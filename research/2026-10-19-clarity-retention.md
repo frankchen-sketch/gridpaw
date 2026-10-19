@@ -38,7 +38,7 @@
 ### P0
 1. **BP3 追关体验强化（半天，纯增益）**：每关页固定「← 上一关 / 下一关 →」底部通栏 + answers hub 数字序置顶（已有 level-grid 卡，检查首屏是否可见）。验收指标：cta_click 深度分布右移（现在 11 人点过链，中位 2）；攻略访客 7 日回访率（现在无基准，先埋 returning 已有，直接可读）。
 2. **L1 悬崖诊断（先测量后动手）**：① D1 按 pagePath 拆 LC1 分布（哪些游戏的 L1 在流失）；② Clarity 录屏看 5 个 L1 会话（待 UI 通路恢复/用户 handoff）；③ 若确认难度/引导问题，方案（首胜庆祝/降 L1 难度/教练提前介入）出预览再改。验收：fm→LC1 12% → ≥25%。
-3. **streak 补打点（1 小时）**：P0 功能上线 18 天零埋点，`streak_view`/`streak_break`/`streak_milestone_N` 进白名单。没有这个，roadmap 所有 streak 验收都是盲读。
+3. **streak 补打点（1 小时）**：~~P0 功能上线 18 天零埋点，`streak_view`/`streak_break`/`streak_milestone_N` 进白名单。没有这个，roadmap 所有 streak 验收都是盲读。~~ ✅ **10-19 完成**（commit b854081，deployment 6e784cf8）：`streak_break`（断签回访，guard 跨首页//akari/daily 去重）+ `streak_milestone`（3/7/14/30）上线；`streak_view` 故意不做——游玩天数可由 D1 game_start 按天聚合直接读，header 曝光打点纯噪音。**顺手实锤系统性事件丢失**：23 个事件名 fired-but-not-whitelisted 被 worker 400 静默丢弃（paywall_shown/convert、hunt 漏斗、hint_used 等），已全量补录白名单，10-19 起才有数据。**streak 审计（事件口径）**：全历史 daily_solved 53 次/34 人，每 guest 最长 streak 全部 ≤2 天——🔥≥7 解锁死刑二次确认；真漏斗=daily_start 98 人→solved 34 人（35% 完成率），杠杆在「解题完成」不在「连击维持」。
 
 ### P1
 4. **登录 prompt 触发点重设**：L5 门太高接不到人（LC1 33/7d）。改到 daily_solved 后 + streak 断裂警告时刻（资产损失钩子原设计如此，触发面错了）。验收：click/shown 3.8% → ≥10%。
