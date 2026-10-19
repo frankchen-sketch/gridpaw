@@ -342,6 +342,15 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       if (lastDate === yesterday) {
         return { date: today, streak: d.streak, bestStreak: d.bestStreak, solved: false, bestTime: d.bestTime };
       }
+      // streak_break 打点（2026-10-19）：断签回访上报；guard 共享 key 与首页同状态机去重
+      if ((d.streak || 0) > 0) {
+        try {
+          if (localStorage.getItem('gridpaw-streakbreak-logged') !== lastDate) {
+            localStorage.setItem('gridpaw-streakbreak-logged', lastDate);
+            track('streak_break', { broken_streak: d.streak });
+          }
+        } catch (e) {}
+      }
       return { date: today, streak: 0, bestStreak: d.bestStreak, solved: false, bestTime: d.bestTime };
     }
     function saveState(solved, time, hints, miss) {
@@ -352,6 +361,8 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
         st.bestStreak = Math.max(st.bestStreak, st.streak);
         st.solved = true;
         if (time && time <= 7200 && (!st.bestTime || time < st.bestTime)) st.bestTime = time;
+        // streak_milestone 打点（2026-10-19）：徽章档位到达时上报
+        if ([3, 7, 14, 30].indexOf(st.streak) !== -1) track('streak_milestone', { streak: st.streak });
       }
       st.lastPlayedDate = today;
       st.date = today;
