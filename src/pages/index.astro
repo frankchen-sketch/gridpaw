@@ -961,6 +961,15 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     if (lastDate === getYesterdayD()) {
       return { date: today, streak: d.streak, bestStreak: d.bestStreak, solved: false, bestTime: d.bestTime };
     }
+    // streak_break 打点（2026-10-19）：断签回访上报断掉的 streak；跨页面加载去重（guard 共享 key，首页与 /akari/daily/ 同状态机）
+    if ((d.streak || 0) > 0) {
+      try {
+        if (localStorage.getItem('gridpaw-streakbreak-logged') !== lastDate) {
+          localStorage.setItem('gridpaw-streakbreak-logged', lastDate);
+          track('streak_break', { broken_streak: d.streak });
+        }
+      } catch (e) {}
+    }
     return { date: today, streak: 0, bestStreak: d.bestStreak, solved: false, bestTime: d.bestTime };
   }
   // P0-2 hint 银行：每日首胜 +1（跨天防重复），仅加额外额度，Shikaku 基础 3 次/关不变
@@ -978,6 +987,8 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
       // P0-2：每日首胜 → hint 银行 +1 + 火焰刷新
       setHintBank(getHintBank() + 1);
       track('hint_bank_earn', { streak: st.streak, bank: getHintBank() });
+      // streak_milestone 打点（2026-10-19）：徽章档位到达时上报（streak 补打点，roadmap 验收去盲读）
+      if ([3, 7, 14, 30].indexOf(st.streak) !== -1) track('streak_milestone', { streak: st.streak });
       renderAccountArea();
     }
     st.lastPlayedDate = today;

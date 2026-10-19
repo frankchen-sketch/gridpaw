@@ -12,9 +12,16 @@ export const FUNNEL_EVENTS = [
   'level_complete_5', 'level_complete_10', 'level_complete_20',
   'hint_click', 'hint_blocked', 'puzzle_reset', 'puzzle_skip', 'game_over', 'badge_help_click', 'help_click',
   'daily_start', 'daily_solved', 'daily_challenge_click',
+  'streak_break', 'streak_milestone', 'hint_bank_earn', 'hint_bank_use',
   'share_reddit', 'share_copy', 'share_twitter', 'share_card', 'share_card_copy', 'community_click',
   'sign_in_prompt_shown', 'sign_in_click', 'tool_start', 'tool_action',
   'rate_submit', 'cta_click',
+  // 2026-10-19 全站清扫补录：此前 fired-but-not-whitelisted，一直在被 400 静默丢弃（paywall_shown/hunt 漏斗等）
+  'onboard_start', 'onboard_step', 'rules_overlay_open', 'rules_overlay_close',
+  'hint_used', 'puzzle_mistake', 'puzzle_complete', 'level_fail', 'board_dead', 'hp_loss',
+  'fog_peek', 'fog_block_unlocked', 'guide_shown', 'guide_done',
+  'paywall_shown', 'paywall_convert', 'auth_error', 'share', 'share_image',
+  'hunt_answer', 'hunt_case_solved', 'hunt_completed',
 ];
 
 // 只有生产域上报（与本仓库既有铁律一致：dev/预览域静默，避免污染）
