@@ -189,11 +189,23 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--gp-success)" id="best-time">--:--</div><div style="font-size:.75rem;color:var(--gp-brown-600)">Best Time</div></div>
     </div>
     <div style="text-align:center;margin:.3rem 0"><span id="streak-badge" style="display:none;padding:.3rem .8rem;border-radius:20px;font-size:.85rem;font-weight:700;border:2px solid var(--gp-primary);background:var(--gp-cream)"></span></div>
+    <div id="dailyplus-teaser" style="display:none;background:#fff;border:1.5px solid var(--gp-linen);border-radius:12px;padding:.65rem .9rem;max-width:min(400px,100%);margin:.6rem auto 0">
+      <div style="display:flex;align-items:center;gap:.6rem">
+        <div style="width:34px;height:34px;border-radius:9px;background:var(--gp-linen);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">🔒</div>
+        <div style="text-align:left;min-width:0">
+          <div style="font-size:.9rem;font-weight:800;color:var(--gp-brown-900)">⭐ Daily+ Bonus Round</div>
+          <div id="dp-teaser-text" style="font-size:.78rem;color:var(--gp-brown-600);margin-top:2px;line-height:1.4">7 more days to unlock — an extra puzzle, same day, harder board</div>
+        </div>
+      </div>
+      <div style="height:8px;border-radius:99px;background:var(--gp-linen);margin-top:.6rem;overflow:hidden"><i id="dp-progress-bar" style="display:block;height:100%;background:linear-gradient(90deg,#F59E0B,var(--gp-primary));border-radius:99px;width:0%"></i></div>
+      <div id="dp-progress-label" style="font-size:.72rem;color:var(--gp-brown-600);margin-top:4px;text-align:right;font-weight:700">0 / 7 days</div>
+    </div>
     <div class="controls">
       <button class="btn btn-primary" id="start-btn">▶ Start Challenge</button>
       <button class="btn btn-secondary" id="hint-btn">💡 Hint</button>
       <button class="btn btn-secondary" id="reset-btn">↺ Reset</button>
       <button class="btn btn-secondary" id="settings-btn">⚙ Settings</button>
+      <button class="btn btn-primary" id="dailyplus-btn" style="display:none;background:linear-gradient(135deg,#F59E0B,#B45309);border:none;box-shadow:0 2px 8px rgba(217,119,6,.35)">⭐ Play Daily+</button>
     </div>
     <div class="game-status">
       <div class="health-display" id="health-display">
@@ -209,8 +221,8 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       <div class="win-glow"></div>
       <div id="confetti-container"></div>
       <div class="win-cat"><svg width="160" height="160" viewBox="0 0 120 120"><defs><radialGradient id="wg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#E8A888" stop-opacity="0.6"/><stop offset="100%" stop-color="#E8A888" stop-opacity="0"/></radialGradient></defs><circle cx="60" cy="60" r="58" fill="url(#wg)"/><circle cx="60" cy="65" r="30" fill="#E8A888"/><polygon points="35,42 42,18 52,42" fill="#E8A888"/><polygon points="68,42 78,18 85,42" fill="#E8A888"/><circle cx="48" cy="58" r="4" fill="#342421"/><circle cx="72" cy="58" r="4" fill="#342421"/><ellipse cx="60" cy="68" rx="4" ry="3" fill="#E8A888"/><path d="M56,70 Q60,76 64,70" fill="none" stroke="#342421" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-      <div class="win-text">🎉 Daily Challenge Complete!</div>
-      <div class="win-sub">You solved today's puzzle!</div>
+      <div class="win-text" id="win-text">🎉 Daily Challenge Complete!</div>
+      <div class="win-sub" id="win-sub">You solved today's puzzle!</div>
       <div class="win-stats">
         <div class="stat">
           <div class="stat-value" id="final-time">00:00</div>
@@ -226,6 +238,13 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
         </div>
       </div>
       <div id="win-badge" style="display:none;font-size:1.2rem;font-weight:700;margin:.5rem 0;padding:.4rem 1rem;border-radius:20px;background:var(--gp-cream);border:2px solid var(--gp-primary)"></div>
+      <div id="win-dailyplus-cta" style="display:none;align-items:center;justify-content:space-between;gap:.6rem;background:linear-gradient(135deg,#F59E0B,#B45309);border-radius:12px;padding:.7rem .9rem;margin:.6rem 0;color:#fff;text-align:left">
+        <div style="min-width:0">
+          <div id="dp-cta-title" style="font-size:.9rem;font-weight:800">🌟 Star Cat! Bonus round unlocked</div>
+          <div style="font-size:.72rem;opacity:.9;margin-top:2px">Play today's Daily+ — a harder 12×12 board</div>
+        </div>
+        <button id="win-dailyplus-go" style="background:#fff;color:#B45309;font-size:.82rem;font-weight:800;padding:.5rem .9rem;border-radius:999px;border:none;cursor:pointer;white-space:nowrap">Play Daily+ →</button>
+      </div>
       <div class="share-link-opt"><input type="checkbox" id="share-include-link" checked> Include link (gridpaw.com)</div>
       <div class="win-share-row">
         <button class="share-btn share-reddit" id="share-reddit" style="background:#FF4500;color:#fff">👽 Reddit</button>
@@ -419,6 +438,98 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       }
     }
 
+    // ─── Daily+ Bonus Round（P1-5：🔥≥7 解锁当日加场 12×12；streak 只认主 daily，加场不影响断签判定）───
+    const DP_UNLOCK_STREAK = 7;
+    const DP_KEY = 'gridpaw-dailyplus';
+    let dpActive = false;
+    function dpSolvedToday() {
+      try {
+        const s = JSON.parse(localStorage.getItem(DP_KEY) || 'null');
+        return !!(s && s.date === getToday() && s.solved);
+      } catch (e) { return false; }
+    }
+    function dpMarkSolved(seconds) {
+      let s = null;
+      try { s = JSON.parse(localStorage.getItem(DP_KEY) || 'null'); } catch (e) {}
+      const best = (s && s.bestTime != null) ? Math.min(s.bestTime, seconds) : seconds;
+      try { localStorage.setItem(DP_KEY, JSON.stringify({ date: getToday(), solved: true, bestTime: best })); } catch (e) {}
+    }
+    function updateDailyPlusUI() {
+      const tEl = document.getElementById('dailyplus-teaser');
+      const bEl = document.getElementById('dailyplus-btn');
+      if (!tEl || !bEl) return;
+      const st = loadState();
+      const streak = st ? st.streak : 0;
+      if (streak >= DP_UNLOCK_STREAK) {
+        tEl.style.display = 'none';
+        if (dpSolvedToday()) {
+          bEl.style.display = 'inline-block';
+          bEl.textContent = '✓ Daily+ Solved';
+          bEl.disabled = true;
+          bEl.style.opacity = '.55';
+          bEl.style.cursor = 'default';
+        } else {
+          bEl.style.display = 'inline-block';
+          bEl.textContent = '⭐ Play Daily+';
+          bEl.disabled = false;
+          bEl.style.opacity = '1';
+          bEl.style.cursor = 'pointer';
+        }
+      } else {
+        bEl.style.display = 'none';
+        tEl.style.display = 'block';
+        const remain = DP_UNLOCK_STREAK - streak;
+        document.getElementById('dp-teaser-text').textContent = remain + ' more day' + (remain > 1 ? 's' : '') + ' to unlock — an extra puzzle, same day, harder board';
+        document.getElementById('dp-progress-bar').style.width = Math.min(100, Math.round(streak / DP_UNLOCK_STREAK * 100)) + '%';
+        document.getElementById('dp-progress-label').textContent = streak + ' / ' + DP_UNLOCK_STREAK + ' days';
+      }
+    }
+    function dpSetBoardBadge() {
+      document.getElementById('daily-badge').textContent = '⭐ DAILY+ 12×12';
+      document.getElementById('daily-subtitle').textContent = 'Bonus round — only for 7-day streaks!';
+      const sb = document.getElementById('start-btn');
+      sb.textContent = '🔄 Restart';
+      sb.disabled = false;
+    }
+    function dpRestoreMainBadge() {
+      dpActive = false;
+      const st = loadState();
+      const sb = document.getElementById('start-btn');
+      if (st && st.solved) {
+        sb.textContent = '✅ Solved Today — Nice!';
+        sb.disabled = true;
+      } else {
+        sb.textContent = '▶ Start Challenge';
+        sb.disabled = false;
+        const dow = new Date().getUTCDay();
+        const isWeekend = (dow === 0 || dow === 6);
+        document.getElementById('daily-badge').textContent = isWeekend ? '🔥 WEEKEND SUPER 14×14' : '🔥 HARD 10×10';
+        document.getElementById('daily-subtitle').textContent = isWeekend ? 'Weekend Super Challenge — 14×14, only for the brave!' : 'A fresh puzzle every day — can you solve it?';
+      }
+      updateDailyPlusUI();
+    }
+    function startDailyPlus() {
+      if (dpSolvedToday()) { showToast("Today's Daily+ is already solved — come back tomorrow!", 'success'); dpRestoreMainBadge(); return; }
+      const st = loadState();
+      if (!st || st.streak < DP_UNLOCK_STREAK) { showToast('Unlock Daily+ with a 7-day streak first!', 'error'); return; }
+      dpActive = true;
+      won = false; winOverlay.classList.remove('show');
+      health = 3; hintsUsed = 0; mistakes = 0;
+      updateHealth();
+      gridEl.innerHTML = '<div style="padding:2rem;color:var(--gp-brown-600);font-size:0.9rem;">Generating...</div>';
+      progressEl.textContent = '';
+      dpSetBoardBadge();
+      setTimeout(() => {
+        try {
+          currentPuzzle = generatePuzzle(12);
+          playerSolution = Array.from({length:12}, () => Array(12).fill(false));
+          markX = Array.from({length:12}, () => Array(12).fill(false));
+          renderBoard(); updateProgress(); startTimer();
+          track('dailyplus_start', { size: 12 });
+        } catch(e) { showToast('Failed to generate.', 'error'); }
+      }, 10);
+    }
+
     // Generate daily seed based on date
     function getDailySeed() {
       const today = new Date();
@@ -513,7 +624,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
     function resetPuzzle() {
       if (!currentPuzzle) return; won = false; winOverlay.classList.remove('show');
       hintsUsed = 0; mistakes = 0;
-      track('puzzle_reset', { mode: 'daily', size: currentPuzzle.size });
+      track('puzzle_reset', { mode: dpActive ? 'dailyplus' : 'daily', size: currentPuzzle.size });
       const s = currentPuzzle.size;
       playerSolution = Array.from({length:s}, () => Array(s).fill(false));
       markX = Array.from({length:s}, () => Array(s).fill(false));
@@ -619,14 +730,36 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
         won=true;
         if (typeof SFX !== 'undefined') SFX.win();
         stopTimer();
+        if (dpActive) {
+          // Daily+ 加场胜利：独立存档 + 独立事件，不动主 daily streak / 榜单
+          dpMarkSolved(elapsedTime);
+          track('dailyplus_solved', { seconds: elapsedTime, size: 12 });
+          spawnConfetti();
+          setTimeout(()=>{
+            winOverlay.classList.add('show');
+            document.getElementById('win-text').textContent = '⭐ Daily+ Complete!';
+            document.getElementById('win-sub').textContent = 'Bonus round conquered — see you tomorrow!';
+            document.getElementById('final-time').textContent = timerEl.textContent;
+            document.getElementById('win-hints').textContent = '💡 ' + hintsUsed;
+            document.getElementById('win-mistakes').textContent = mistakes === 0 ? '✅ 0' : '⚠ ' + mistakes;
+            const shareChk = document.getElementById('share-include-link');
+            if (shareChk) shareChk.checked = shareDefaultOn();
+            document.getElementById('win-badge').style.display = 'none';
+            document.getElementById('win-dailyplus-cta').style.display = 'none';
+          },300);
+          return;
+        }
         const state = saveState(true, elapsedTime, hintsUsed, mistakes);
         track('daily_solved', { streak: state.streak, seconds: elapsedTime });
         updateStreakDisplay();
+        updateDailyPlusUI();
         syncToExtension();
         syncWinToCloud(state, elapsedTime);
-        spawnConfetti(); 
+        spawnConfetti();
         setTimeout(()=>{
           winOverlay.classList.add('show');
+          document.getElementById('win-text').textContent = '🎉 Daily Challenge Complete!';
+          document.getElementById('win-sub').textContent = "You solved today's puzzle!";
           document.getElementById('final-time').textContent = timerEl.textContent;
           document.getElementById('win-hints').textContent = '💡 ' + hintsUsed;
           document.getElementById('win-mistakes').textContent = mistakes === 0 ? '✅ 0' : '⚠ ' + mistakes;
@@ -639,7 +772,15 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
           } else {
             document.getElementById('win-badge').style.display = 'none';
           }
-        },300); 
+          // P1-5：主盘打赢且 streak≥7 → 弹窗内直接给 Daily+ 入口（流量最大转化点）
+          const dpCta = document.getElementById('win-dailyplus-cta');
+          if (state.streak >= DP_UNLOCK_STREAK && !dpSolvedToday()) {
+            document.getElementById('dp-cta-title').textContent = state.streak === DP_UNLOCK_STREAK ? '🌟 Star Cat! Bonus round unlocked' : '⭐ Your Daily+ is ready';
+            dpCta.style.display = 'flex';
+          } else {
+            dpCta.style.display = 'none';
+          }
+        },300);
       }
     }
 
@@ -745,7 +886,10 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       return text;
     }
 
-    document.getElementById('start-btn').addEventListener('click', () => { track('daily_start'); startDailyChallenge(); });
+    document.getElementById('start-btn').addEventListener('click', () => {
+      if (dpActive) { startDailyPlus(); return; } // Daily+ 内的 Restart，不打 daily_start
+      track('daily_start'); startDailyChallenge();
+    });
     document.getElementById('hint-btn').addEventListener('click', () => {
       if (!currentPuzzle || won) return;
       track('hint_click');
@@ -832,6 +976,18 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
     });
     document.getElementById('win-close').addEventListener('click', () => {
       winOverlay.classList.remove('show');
+      if (dpActive && dpSolvedToday()) dpRestoreMainBadge();
+    });
+    // ── P1-5：Daily+ 双入口（win overlay CTA + controls 按钮）──
+    document.getElementById('win-dailyplus-go').addEventListener('click', () => {
+      track('cta_click', { placement: 'dailyplus_win_overlay', target: 'akari_dailyplus' });
+      winOverlay.classList.remove('show');
+      startDailyPlus();
+    });
+    document.getElementById('dailyplus-btn').addEventListener('click', () => {
+      if (dpSolvedToday()) return;
+      track('cta_click', { placement: 'dailyplus_controls_btn', target: 'akari_dailyplus' });
+      startDailyPlus();
     });
     document.getElementById('share-copy').addEventListener('click', () => {
       const withLink = document.getElementById('share-include-link').checked;
@@ -848,6 +1004,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
 
     updateHealth();
     updateStreakDisplay();
+    updateDailyPlusUI();
     syncCloudOnLoad();
     renderLeaderboard();
     // Check if already solved today
@@ -857,6 +1014,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       document.getElementById('start-btn').disabled = true;
       // UTC 午夜解锁下一关的倒计时
       const tick = () => {
+        if (dpActive) return; // Daily+ 进行中不动主徽章行
         const now = new Date();
         const next = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
         const left = Math.floor((next - now) / 1000);
@@ -1031,6 +1189,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(st));
       updateStreakDisplay();
+      updateDailyPlusUI();
     }
     async function syncCloudOnLoad() {
       try {
