@@ -1,7 +1,7 @@
 # Clarity × 留存专项 Review（2026-10-19）
 
 > 数据源：Clarity Data Export API（10-17~10-19 三天窗口，URL 维度）+ D1 现拉（留存分布/漏斗/BP3 交叉）+ Clarity 录屏取证（10-12/10-15 存量结论）+ GRIDPAW-RETENTION-ROADMAP.md（10-01 基线）。
-> 口径：D1 visit 真人判定 = isLikelyBot=0 且 UA 非 Googlebot；留存口径 = guest_id 去重活跃天数（10-02 合并修复后干净）。Clarity 录屏级取证本次受阻（本机默认浏览器非 Chromium，local profile 不可用；云端无登录态）——level-9 死点击的录屏验证列为待办。
+> 口径：D1 visit 真人判定 = isLikelyBot=0 且 UA 非 Googlebot；留存口径 = guest_id 去重活跃天数（10-02 合并修复后干净）。~~Clarity 录屏级取证受阻~~ ✅ **10-19 晚 ego space 444 完成首轮取证**（gridpaw 项目 yd0fauosa4，28d 死点击队列 111 会话）。
 
 ## 一句话结论
 
@@ -22,7 +22,7 @@
 | 页面 | 会话 | 信号 | 解读 |
 |---|---|---|---|
 | /brain-puzzle-3-level-11/ | 7 | **人均 5.4 页**、滚动 81% | 攻略用户在连环翻关——追关行为真实存在 |
-| /brain-puzzle-3-level-9/ | 8 | 死点击 6 次（6/8 会话） | ⚠️ 待录屏验证：10-17 该页挂了 SideAd iframe，大概率是已知噪音模式（iframe 误报），动手前必须录屏排雷 |
+| /brain-puzzle-3-level-9/ | 8 | 死点击 6 次（6/8 会话） | ✅ **10-19 录屏取证结案**：会话 1n5xb8c 33s 内 5 次点击全死——H1 标题 2 + hero 头图 2 + 正文 1。**推翻 SideAd iframe 假设**：全是主页面真实 DOM。用户意图=把头图当游戏/视频入口点。已修：hero 包 `<a href="#video">`（commit `fcaf86b`，部署 9f8e180c），H1 死点击不修（标题本就不该可点） |
 | /brain-puzzle-3-level-10/ | 12 | 快速回退 4/12 | 快速回退集中在关卡页——可能是编号重锚后的内容/预期错位，或看完即返搜结果页，待验证 |
 | /（首页） | 15 | 滚动深度仅 19%、active ~9s/会话 | 首屏即全部，下方内容没人看（与 10-15 median 10s 结论一致） |
 | /akari/ | 14 | 死点击 2、rage 0、快退 1 | 健康 |
@@ -48,7 +48,7 @@
 
 ### P2
 8. 首页滚动深度 19%：Today's Challenge/关卡入口若在折叠线下，上移需出预览（ui-change-proposal 流程）；首页流量占比在降，优先级放低。
-9. 录屏通路修复：Clarity UI 取证依赖 a8395 登录态 + Chromium，本机默认浏览器不满足——下次用户在时 handoff 一次，把 level-9 死点击 + L1 流失两组录屏看完。
+9. ~~录屏通路修复~~：✅ 10-19 ego space 444 打通（用户授权 Clarity 登录态）。level-9 死点击已取证结案（见上表）；**剩余**：L1 流失组录屏 + level-10 快退抽样（4/12 中看 2-3 条），下次开 space 时续。
 
 ## 附：关键数据
 
