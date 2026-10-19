@@ -41,10 +41,10 @@
 3. **streak 补打点（1 小时）**：~~P0 功能上线 18 天零埋点，`streak_view`/`streak_break`/`streak_milestone_N` 进白名单。没有这个，roadmap 所有 streak 验收都是盲读。~~ ✅ **10-19 完成**（commit b854081，deployment 6e784cf8）：`streak_break`（断签回访，guard 跨首页//akari/daily 去重）+ `streak_milestone`（3/7/14/30）上线；`streak_view` 故意不做——游玩天数可由 D1 game_start 按天聚合直接读，header 曝光打点纯噪音。**顺手实锤系统性事件丢失**：23 个事件名 fired-but-not-whitelisted 被 worker 400 静默丢弃（paywall_shown/convert、hunt 漏斗、hint_used 等），已全量补录白名单，10-19 起才有数据。**streak 审计（事件口径）**：全历史 daily_solved 53 次/34 人，每 guest 最长 streak 全部 ≤2 天——🔥≥7 解锁死刑二次确认；真漏斗=daily_start 98 人→solved 34 人（35% 完成率），杠杆在「解题完成」不在「连击维持」。
 
 ### P1
-4. **登录 prompt 触发点重设**：L5 门太高接不到人（LC1 33/7d）。改到 daily_solved 后 + streak 断裂警告时刻（资产损失钩子原设计如此，触发面错了）。验收：click/shown 3.8% → ≥10%。
+4. ~~**登录 prompt 触发点重设**~~：✅ **10-19 上线（fad817e0 / cfe439e）**——三触发面（L5 胜利行 / daily 首胜 / streak_break 条幅）× Sign in 按钮 × 内联面板（Google+邮箱，复用现成 register/login-password）；连带砍 MS/FB 死按钮。验收：click/shown 3.8% → ≥10%（下次周报起看）。
 5. **🔥≥7 解锁 Daily 专属关卡（roadmap 挂账未做）**：这是 streak→daily→回访的闭环件，Daily 参与 10/日离 15 目标差的就这一个钩子。
 6. ~~**level-10 快速回退排查**~~：✅ **10-19 排除内容错位**——线上 L10 页 title=Escape Office、FAQ 步骤与 pgm_all panel-10 13 步逐字吻合（编号重锚后无漂移）。4/12 快退最可能是**拿到答案即返搜结果页的正常行为**（攻略页成功形态），残疑问=录屏（与 level-9 死点击同批 handoff）。此项降级为录屏附带入。
-7. **BP3→游戏低位转化试验**：关页页尾放一张同类型谜题卡（Akari/murdoku），不动主内容。2 周看交叉率 1.3% → ?，不显著就撤，别恋战。
+7. ~~**BP3→游戏低位转化试验**~~：✅ **10-19 上线（fad817e0）**——54 张关页页尾加竖版 OG 图谜题卡（og-akari-daily.png 全幅 → /akari/daily/，placement=puzzle-card 可归因）。验收：交叉率 1.3% → ?（2 周判定，不显著就撤）。
 
 ### P2
 8. 首页滚动深度 19%：Today's Challenge/关卡入口若在折叠线下，上移需出预览（ui-change-proposal 流程）；首页流量占比在降，优先级放低。
