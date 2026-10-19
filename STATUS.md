@@ -731,3 +731,15 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **决定：v2 包（60px 安全区）不重传**——重传会清已传媒体；v1 build（无安全区）已进审核，v2 留下次更新
 - **官方页已部署（2026-10-18）**：测试链全绿（build 177 页 + 走查 + 点格亮猫实测）→ `pnpm run deploy` 成功（454 files，IndexNow HTTP 200）→ 线上 curl 验证 /akari/ 新版生效（TUTORIAL 标记在、200）
 - 待办：CG 审核结果（模板信无个性化反馈，几天到一两周）；v2 包（60px 安全区）留下次更新
+
+## 2026-10-19：Shikaku 撤命 + 首页 changelog banner（commit 990b1d5，已部署）
+- **Lemmy tigeruppercut 反馈实锤**（72330272）：GA4 30d 首页 495 game_start / 110 扣命致死 = **22.2%** → 3 命机制全撤：错矩形红闪+计数，不再中断；hearts→Mistakes 计数；零失误通关 victory 标签亮 `Flawless ✨`；game-over 弹层/retry 处理器删除。**注意：GA4 首页 `game_over` 事件自此停发（属预期），读漏斗别误判**
+- **首页 changelog banner 上线**：构建期取 ≤7 天最新条目（过期 0 DOM），✕ 关闭记 localStorage `gp-changelog-seen`；changelog entries 抽到 `src/lib/changelog-data.ts` 单一来源（changelog 页 + banner 共读，勿再内联第三份）
+- 验收：Playwright 双端 20/20 PASS（banner 显隐/dismiss 持久化/撤命计数/无 pageerror）+ 截图 vision 复核 + 线上 cache-bust 实测（banner 在、旧机制 0 残留、/changelog/ 有 10-19 条目）
+- 待办：tigeruppercut 回帖稿已拟待批准发；Akari/Nurikabe hearts 机制统一化留低优先级（30d 致死率 2.9%/1.7%，不急）
+
+## 2026-10-19：BP3 德语攻略簇一期上线（未 commit，改动在 src/pages/de/）
+- **立项依据**：哥飞 trends「brain puzzle 3 lösung」+130% → KWP 德区月度曲线 6 月前 0 → 7 月起飞 → **9 月 590/月**（12 月均值 90 是被零拉低的假象），KD 17.5 极易，德区 SERP 8/8 全 YouTube 零文本页——新词+文本真空；同期 Tenebris Somnia 判 rejected（KWP 30/月泡沫，台账有记录）
+- **上线内容**：`/de/brain-puzzle-3-level-1..10/` 共 10 页（已验证英文页的德语版，事实零改动：视频 ID 10/10 逐关对账），页尾 CTA→英文总索引；关卡网格只内链 1-10 德语版（11+ 防泄漏已删）；hreflang 三连手写在 de 页 head，EN 页零改动
+- **验收**：build 208 页 0 error → dist 双重转义 0 → ego 截图 vision 3/3 PASS（P1 内链泄漏当场修）→ 部署 hash 7eb5137f → IndexNow 显式提交 10 URL → 线上 cache-bust 10/10 全 200
+- **后续**：二期=4 周后 GSC 德语词起量则铺满 35 页+lang toggle；台账/管线详见 NEWWORD-LEDGER（Bot·X 采集腿 10-19 打通，发件人过滤已加 a839500525@gmail.com）
