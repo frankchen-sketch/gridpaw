@@ -2,6 +2,8 @@
 
 > 项目状态的**唯一入口**。主题细节在各主题文档（见下方索引），此处只放现役结论与待决策。
 > 最后核对：2026-09-19（TDK 优化轮部署 + 收录口径对账决策；sitemap / 构建 / 部署 / 内链均已实测）｜ 分支 `main`
+
+> 跨会话指针（原 memory 下沉 2026-10-20）：lemmy 账本=backlink-workspace/records/lemmy-post-status.txt，凭据=~/.hermes/scripts/.lemmy_gridpaw.json；上线前测试链=skill game-pre-launch-testing。
 >
 > 治理依据：`~/workspace/AGENTS.md`「AGENTS.md 内容治理」——状态/进度进本文件，不进 AGENTS.md。
 >
