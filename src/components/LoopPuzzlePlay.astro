@@ -1,0 +1,239 @@
+---
+// LoopPuzzlePlay — 可玩迷你 Slitherlink（loop puzzle 体验版）
+// 用在 /the-loop-puzzle/ 攻略页：打 "loop puzzle game" 泛品类意图，
+// 给 The Loop（Britannica 图片每日谜题）攻略读者一个"真画环"的现场体验。
+// 引擎：public/slitherlink-engine.js（全局 SlitherEngine，5×5 easy 程序生成唯一解）。
+// 交互：点击点阵边画线（单次切换），3 边交汇红闪提示，Hint 补一条正确边，
+//       validate() 通过 = 闭环成立（顶点度数 0|2 + 线索匹配 + 单连通环，与游戏页同一判定）。
+// 样式 is:global：盘面由 JS 渲染，scoped 不匹配 JS 行（AGENTS 已知坑）。
+// 四通道 track()（gtag/posthog/clarity/gpTrack），事件均在 funnel-track 白名单内。
+interface Props { heading?: string; }
+const { heading = 'Try a Loop Puzzle Right Now — Free, No Download' } = Astro.props;
+const P = 'lp';
+const engineSrc = '/slitherlink-engine.js';
+const N = 5; // 5×5 cells → 11×11 dot lattice
+---
+<div class="lpplay playwrap" id={`${P}-wrap`}>
+  <div class="playhead">
+    <h3>{heading}</h3>
+    <span class="verified" id={`${P}-verified`}>Unique solution verified ✓</span>
+  </div>
+  <div class="lattice" id={`${P}-board`} aria-label="Playable Slitherlink board"></div>
+  <div class="playrow">
+    <button class="pbtn primary" id={`${P}-hint`}>Hint: draw one correct edge</button>
+    <button class="pbtn ghost" id={`${P}-reset`}>New board</button>
+  </div>
+  <div class="playrow">
+    <div class="pmsg" id={`${P}-msg`}>Click the gaps between dots to draw the loop. A number tells you how many of that cell's four edges belong to the loop — the line must close on itself, with no branches or crossings.</div>
+  </div>
+  <div class="playwin" id={`${P}-win`}></div>
+  <div class="playnote">A fresh 5×5 board is generated every round — each one programmatically proven to have exactly one loop. This is Slitherlink, the classic loop-drawing logic puzzle and The Loop's namesake cousin. Free fan-made demo.</div>
+</div>
+
+<style is:global>
+  .lpplay { background:#fff; border:2px solid #D97706; border-radius:14px; padding:14px 14px 12px; margin:1rem auto 0.6rem; box-shadow:0 1px 4px rgba(63,48,38,.08); max-width:520px; }
+  .lpplay .playhead { display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px; }
+  .lpplay .playhead h3 { margin:0; font-size:1.05rem; color:#3D3D3D; }
+  .lpplay .verified { font-size:11px; font-weight:800; color:#1E7A3C; background:#DFF3E4; padding:2px 8px; border-radius:99px; white-space:nowrap; }
+  .lpplay .lattice { display:grid; grid-template-columns:repeat(11, 30px); grid-auto-rows:30px; margin:0 auto; justify-content:center; touch-action:manipulation; }
+  .lpplay .ldot { position:relative; }
+  .lpplay .ldot::after { content:''; position:absolute; left:50%; top:50%; width:9px; height:9px; margin:-4.5px 0 0 -4.5px; border-radius:50%; background:#42352E; }
+  .lpplay .lh, .lpplay .lv { cursor:pointer; position:relative; }
+  .lpplay .lh::after, .lpplay .lv::after { content:''; position:absolute; background:transparent; border-radius:4px; transition:background .12s; }
+  .lpplay .lh::after { left:3px; right:3px; top:50%; height:6px; margin-top:-3px; }
+  .lpplay .lv::after { top:3px; bottom:3px; left:50%; width:6px; margin-left:-3px; }
+  .lpplay .lh:hover::after, .lpplay .lv:hover::after { background:#F3D9B8; }
+  .lpplay .lh.on::after, .lpplay .lv.on::after { background:#D97706; }
+  .lpplay .lh.flash::after, .lpplay .lv.flash::after { background:#d9534f; }
+  .lpplay .lh.hinted::after, .lpplay .lv.hinted::after { background:#1E7A3C; }
+  .lpplay .lcell { display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; color:#42352E; font-variant-numeric:tabular-nums; }
+  .lpplay .playrow { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:10px; }
+  .lpplay .pbtn { border:0; border-radius:9px; padding:8px 14px; font-weight:800; font-size:0.85rem; cursor:pointer; font-family:inherit; }
+  .lpplay .pbtn.primary { background:#D97706; color:#fff; }
+  .lpplay .pbtn.ghost { background:#FFF1E8; color:#3D3D3D; }
+  .lpplay .pmsg { flex:1; min-width:180px; font-size:0.82rem; color:#7A6A5F; line-height:1.5; }
+  .lpplay .playwin { display:none; margin-top:10px; background:#DFF3E4; border-radius:10px; padding:10px 12px; font-size:0.85rem; line-height:1.7; color:#235c2e; }
+  .lpplay .playwin.show { display:block; }
+  .lpplay .playwin b { color:#1E7A3C; }
+  .lpplay .playwin a { color:#1E7A3C; font-weight:800; }
+  .lpplay .playnote { font-size:11px; color:#7A6A5F; margin-top:8px; font-style:italic; line-height:1.5; }
+  @media (max-width:480px){ .lpplay .lattice { grid-template-columns:repeat(11, 26px); grid-auto-rows:26px; } }
+</style>
+
+<script is:inline src={engineSrc}></script>
+<script is:inline define:vars={{ P, N }}>
+  (function () {
+    var SE = window.SlitherEngine;
+    var root = document.getElementById(P + '-wrap');
+    var boardEl = document.getElementById(P + '-board');
+    if (!SE || !root || !boardEl) return;
+    var puzzle = null, edges = null, edgeEls = {};
+    var boardNum = 0, firstMove = false, solved = false;
+    var msgEl = document.getElementById(P + '-msg');
+    var winEl = document.getElementById(P + '-win');
+
+    function track(event, params) {
+      if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture(event, Object.assign({ site: 'gridpaw' }, params || {}));
+      }
+      if (typeof window.clarity === 'function') {
+        window.clarity('event', event);
+        if (params) Object.keys(params).forEach(function (k) { window.clarity('set', k, String(params[k])); });
+      }
+      if (window.gpTrack) window.gpTrack(event, params || {});
+    }
+
+    // ── Lattice markup: 11×11 grid = dots (even,even) / h-edges (2r,2c+1) / v-edges (2r+1,2c) / clue cells (odd,odd)
+    function buildLattice() {
+      boardEl.innerHTML = '';
+      edgeEls = {};
+      var L = 2 * N + 1;
+      for (var i = 0; i < L * L; i++) {
+        var lr = (i / L) | 0, lc = i % L;
+        var d = document.createElement('div');
+        if (lr % 2 === 0 && lc % 2 === 0) {
+          d.className = 'ldot';
+        } else if (lr % 2 === 0 && lc % 2 === 1) {
+          var r = lr / 2, c = (lc - 1) / 2, ei = SE.hIdx(N, N, r, c);
+          d.className = 'lh'; d.dataset.ei = ei; d.setAttribute('role', 'button');
+          d.setAttribute('aria-label', 'horizontal edge R' + r + 'C' + c);
+          d.addEventListener('click', function (e) { toggleEdge(+e.currentTarget.dataset.ei, e.currentTarget); });
+          edgeEls[ei] = d;
+        } else if (lr % 2 === 1 && lc % 2 === 0) {
+          var r2 = (lr - 1) / 2, c2 = lc / 2, ei2 = SE.vIdx(N, N, r2, c2);
+          d.className = 'lv'; d.dataset.ei = ei2; d.setAttribute('role', 'button');
+          d.setAttribute('aria-label', 'vertical edge R' + r2 + 'C' + c2);
+          d.addEventListener('click', function (e) { toggleEdge(+e.currentTarget.dataset.ei, e.currentTarget); });
+          edgeEls[ei2] = d;
+        } else {
+          d.className = 'lcell';
+        }
+        boardEl.appendChild(d);
+      }
+    }
+
+    function renderEdge(ei) {
+      var el = edgeEls[ei];
+      if (!el) return;
+      el.classList.remove('hinted', 'flash');
+      if (edges[ei]) el.classList.add('on'); else el.classList.remove('on');
+    }
+
+    function renderClues() {
+      var cells = boardEl.querySelectorAll('.lcell');
+      for (var r = 0; r < N; r++) for (var c = 0; c < N; c++) {
+        var v = puzzle.clues[r * N + c];
+        cells[r * N + c].textContent = v > 0 ? String(v) : '';
+      }
+    }
+
+    // ── Violation: any dot with ≥3 active edges → flash its edges red (no hearts, friendly demo)
+    function checkViolations() {
+      var flashed = false;
+      // edges incident to dot (r,c): left/right = horizontal hIdx(r,·), top/bottom = vertical vIdx(·,c)
+      function incident(r, c) {
+        var out = [];
+        if (c > 0) out.push(SE.hIdx(N, N, r, c - 1));   // left
+        if (c < N) out.push(SE.hIdx(N, N, r, c));       // right
+        if (r > 0) out.push(SE.vIdx(N, N, r - 1, c));   // top
+        if (r < N) out.push(SE.vIdx(N, N, r, c));       // bottom
+        return out;
+      }
+      for (var r = 0; r <= N; r++) for (var c = 0; c <= N; c++) {
+        var inc = incident(r, c), n = 0;
+        for (var k = 0; k < inc.length; k++) if (edges[inc[k]]) n++;
+        if (n >= 3) {
+          flashed = true;
+          for (var k2 = 0; k2 < inc.length; k2++) if (edgeEls[inc[k2]]) {
+            edgeEls[inc[k2]].classList.add('flash');
+            (function (el) { setTimeout(function () { el.classList.remove('flash'); }, 700); })(edgeEls[inc[k2]]);
+          }
+        }
+      }
+      if (flashed) setMsg('❌ Three lines meet at a dot — the loop can\'t branch. Undo one of the red edges.');
+      return flashed;
+    }
+
+    function setMsg(html) { msgEl.innerHTML = html; }
+
+    var startPending = false;
+    function fireGameStart() {
+      if (document.visibilityState !== 'visible') { if (boardNum === 1) startPending = true; return; }
+      startPending = false;
+      track('game_start', { level: boardNum, difficulty: 'easy 5x5' });
+    }
+    (function () {
+      if (document.visibilityState === 'visible') return;
+      document.addEventListener('visibilitychange', function once() {
+        if (document.visibilityState === 'visible') {
+          document.removeEventListener('visibilitychange', once);
+          if (startPending) fireGameStart();
+        }
+      });
+    })();
+
+    function newBoard() {
+      boardNum++;
+      var seed = (Date.now() ^ (boardNum * 2654435761)) >>> 0;
+      try { puzzle = SE.generate(N, N, 'easy', seed); }
+      catch (e) { puzzle = SE.generate(N, N, 'easy'); }
+      edges = new Uint8Array(SE.edgeCount(N, N));
+      firstMove = false; solved = false;
+      winEl.classList.remove('show');
+      document.getElementById(P + '-verified').textContent = 'Unique solution verified ✓';
+      buildLattice(); renderClues();
+      setMsg('Click the gaps between dots to draw the loop. A number tells you how many of that cell\'s four edges belong to the loop — the line must close on itself.');
+      fireGameStart();
+    }
+
+    function toggleEdge(ei, el) {
+      if (solved) return;
+      if (!firstMove) { firstMove = true; track('first_move', { level: boardNum }); }
+      edges[ei] = edges[ei] ? 0 : 1;
+      renderEdge(ei);
+      if (checkViolations()) return;
+      // win check: same judgment as the full game — degree 0|2 + clues match + single connected loop
+      var res = SE.validate(puzzle, edges);
+      if (res.ok) { onWin(); return; }
+      for (var k = 0; k < res.errors.length; k++) {
+        if (/degree/.test(res.errors[k])) { setMsg('The loop isn\'t closed yet — every dot needs exactly 0 or 2 lines.'); return; }
+      }
+    }
+
+    document.getElementById(P + '-hint').addEventListener('click', function () {
+      if (solved) return;
+      track('hint_click', { level: boardNum });
+      for (var ei = 0; ei < edges.length; ei++) {
+        var correct = SE.hintLookup(puzzle, ei);
+        if (edges[ei] !== correct) {
+          edges[ei] = correct; renderEdge(ei);
+          edgeEls[ei].classList.add('hinted');
+          (function (el2) { setTimeout(function () { el2.classList.remove('hinted'); }, 1200); })(edgeEls[ei]);
+          setMsg('Hint: one more correct edge drawn in green.');
+          var res = SE.validate(puzzle, edges);
+          if (res.ok) onWin();
+          return;
+        }
+      }
+      setMsg('Everything drawn so far is already correct — keep going!');
+    });
+
+    document.getElementById(P + '-reset').addEventListener('click', function () {
+      track('puzzle_reset', { level: boardNum });
+      newBoard();
+      boardEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    function onWin() {
+      solved = true;
+      winEl.innerHTML = '<b>Solved! Board #' + boardNum + ' — the loop closes cleanly, every clue satisfied.</b><br>Next: <a href="#" id="' + P + '-next">new board →</a> · <a href="/slitherlink/">Full Slitherlink (5×5 to 10×10)</a> · <a href="/">Shikaku</a>';
+      winEl.classList.add('show');
+      track('level_up', { level: boardNum, difficulty: 'easy 5x5' });
+      var next = document.getElementById(P + '-next');
+      if (next) next.addEventListener('click', function (e) { e.preventDefault(); newBoard(); boardEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
+    }
+
+    newBoard();
+  })();
+</script>
