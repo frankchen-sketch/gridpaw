@@ -44,6 +44,14 @@ const guides = [
               <span class="gp-game-desc">{g.desc}</span>
             </a>
           ))}
+          <a href="/leaderboard/" class="gp-menu-help">
+            <strong>🏆 Leaderboard</strong>
+            <span class="gp-game-desc">Today's fastest cats</span>
+          </a>
+          <a href="/badges/" class="gp-menu-help">
+            <strong>🎖 Badges</strong>
+            <span class="gp-game-desc">Every badge you can earn</span>
+          </a>
           <a href="/help/" class="gp-menu-help">
             <strong>❓ Help Center</strong>
             <span class="gp-game-desc">How to play all 6 games</span>
@@ -61,6 +69,8 @@ const guides = [
           ))}
         </div>
       </div>
+      <a class="gp-nav-lb" href="/leaderboard/" data-nav-extra="lb">🏆 Leaderboard</a>
+      <a class="gp-nav-lb" href="/badges/" data-nav-extra="bd">🎖 Badges</a>
       <slot />
     </div>
   </div>
@@ -89,6 +99,12 @@ const guides = [
   .gp-switcher-menu a.gp-menu-help { margin-top: .35rem; border-top: 1px solid #e7d4b8; }
   .gp-switcher-menu a.gp-menu-help:hover { background: #fdeed3; }
   .gp-game-desc { font-size: .78rem; color: #8a6f55; }
+  .gp-nav-lb {
+    text-decoration: none; font-size: .84rem; font-weight: 700; color: #8a6f55;
+    white-space: nowrap; padding: .25rem .1rem; border-radius: 6px;
+  }
+  .gp-nav-lb:hover { color: #d97706; }
+  @media (max-width: 900px) { .gp-nav-lb { display: none; } }
 </style>
 <script is:inline>
   (function () {

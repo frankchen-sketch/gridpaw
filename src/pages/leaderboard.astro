@@ -1,0 +1,302 @@
+---
+// /leaderboard/ —— 13 游戏双榜页（P2，2026-10-20）
+// 数据全走客户端 fetch（noindex：SSR 空壳对搜索无价值，且榜单每分钟都在变）。
+// Fastest = GET /api/leaderboard?game=X&date=<UTC today>（时间升序 top 20）
+// Best Streak = GET /api/leaderboard?game=X&type=streak（全时最长连胜 top 20）
+import SEOHead from '../components/SEOHead.astro';
+import SideAd from '../components/SideAd.astro';
+
+const title = 'Leaderboard — GridPaw';
+const description =
+  "Today's fastest puzzle times and all-time streak leaders across GridPaw's 13 logic puzzles.";
+
+// 顺序照 GameSwitcher（全站唯一游戏清单口径），key = API 白名单值
+const GAMES = [
+  { key: 'shikaku', emoji: '🟧', name: 'Shikaku' },
+  { key: 'akari', emoji: '💡', name: 'Akari' },
+  { key: 'kakuro', emoji: '🔢', name: 'Kakuro' },
+  { key: 'nonogram', emoji: '🎨', name: 'Nonogram' },
+  { key: 'nurikabe', emoji: '🏝️', name: 'Nurikabe' },
+  { key: 'pictomino', emoji: '🧩', name: 'Pictomino' },
+  { key: 'kenken', emoji: '🧮', name: 'KenKen' },
+  { key: 'binary', emoji: '0️⃣1️⃣', name: 'Binary' },
+  { key: 'star-battle', emoji: '⭐', name: 'Star Battle' },
+  { key: 'hashi', emoji: '🌉', name: 'Hashi' },
+  { key: 'slitherlink', emoji: '➰', name: 'Slitherlink' },
+  { key: 'murdoku', emoji: '🕵️', name: 'Murder Sudoku' },
+  { key: 'meowdoku', emoji: '🧠', name: 'Meowdoku' },
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/leaderboard/" noindex={true} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --gp-amber: #D97706;
+      --gp-amber-strong: #B45309;
+      --gp-cream: #FDF6EC;
+      --gp-cream-warm: #F5E9DC;
+      --gp-linen: #F3E3D3;
+      --gp-blush: #FBEDE7;
+      --gp-parchment: #E8DDD0;
+      --gp-brown-900: #342421;
+      --gp-brown-600: #7A5F52;
+      --gp-brown-400: #A98C7E;
+      --gp-success: #559C68;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--gp-cream);
+      color: var(--gp-brown-900);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+
+    /* ── header（照 index.astro .site-header 模式）── */
+    .site-header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(253, 246, 236, 0.95);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1.5px solid var(--gp-parchment);
+      padding: 0 16px;
+    }
+    .header-inner { max-width: 840px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; gap: 12px; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--gp-brown-900); }
+    .brand-logo { width: 34px; height: 34px; border-radius: 8px; }
+    .brand-name { display: flex; flex-direction: column; line-height: 1.1; }
+    .brand-name .big { font-size: 17px; font-weight: 900; color: var(--gp-amber); }
+    .brand-name .small { font-size: 10px; font-weight: 700; color: var(--gp-brown-400); letter-spacing: 0.02em; }
+    .header-nav { display: flex; align-items: center; gap: 2px; flex-wrap: wrap; justify-content: flex-end; }
+    .header-nav a { font-size: 13px; font-weight: 800; color: var(--gp-brown-600); text-decoration: none; padding: 7px 11px; border-radius: 999px; }
+    .header-nav a:hover { color: var(--gp-amber-strong); background: var(--gp-blush); }
+    .header-nav a.active { color: #fff; background: var(--gp-amber); }
+    @media (max-width: 560px) {
+      .brand-name .small { display: none; }
+      .header-nav a { font-size: 12px; padding: 6px 8px; }
+    }
+
+    /* ── 内容列（SideAd 契约：≤840px，广告只在 840px 之外）── */
+    main { max-width: 840px; margin: 0 auto; padding: 26px 16px 48px; }
+    h1 { font-family: Georgia, 'Times New Roman', serif; font-size: 1.9rem; margin: 0 0 6px; color: var(--gp-brown-900); }
+    .page-sub { margin: 0 0 18px; font-size: 0.92rem; color: var(--gp-brown-600); }
+
+    .gswitch { max-width: 560px; margin: 0 auto 18px; }
+    .gswitch label { display: block; font-size: 0.72rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gp-brown-400); margin-bottom: 5px; }
+    .gswitch select {
+      width: 100%; appearance: none; -webkit-appearance: none;
+      background: #fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="%237A5F52" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg>') no-repeat right 14px center;
+      border: 1.5px solid var(--gp-linen); border-radius: 12px;
+      padding: 0.65rem 2.4rem 0.65rem 1rem; font-size: 0.95rem; font-weight: 800;
+      color: var(--gp-brown-900); cursor: pointer; font-family: inherit;
+      box-shadow: 0 2px 8px rgba(123, 107, 138, 0.12);
+    }
+    .gswitch select:focus { outline: 2px solid var(--gp-amber); outline-offset: 1px; }
+
+    .lb-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+    @media (max-width: 700px) { .lb-grid { grid-template-columns: 1fr; } }
+
+    .card {
+      background: #fff; border: 1.5px solid var(--gp-linen); border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(123, 107, 138, 0.1); padding: 18px 20px 14px;
+    }
+    .card h2 { font-family: Georgia, 'Times New Roman', serif; font-size: 1.12rem; margin: 0 0 2px; color: var(--gp-brown-900); }
+    .card-sub { margin: 0 0 10px; font-size: 0.76rem; font-weight: 700; color: var(--gp-brown-400); }
+
+    .lb-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 8px; border-bottom: 1px solid var(--gp-blush); font-size: 0.9rem; border-radius: 8px; }
+    .lb-row:last-child { border-bottom: none; }
+    .lb-row.you { background: var(--gp-blush); }
+    .lb-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    .lb-rank { width: 20px; text-align: right; font-size: 0.78rem; font-weight: 900; color: var(--gp-brown-400); flex-shrink: 0; }
+    .avatar { display: inline-block; width: 20px; height: 20px; border-radius: 50%; background: var(--gp-linen); text-align: center; line-height: 20px; font-size: 11px; flex-shrink: 0; }
+    .lb-name { font-weight: 800; color: var(--gp-brown-900); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .lb-val { font-weight: 900; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+    .lb-val.time { color: var(--gp-success); }
+    .lb-val.streak { color: var(--gp-amber); }
+
+    .lb-empty { text-align: center; padding: 18px 6px; }
+    .lb-empty .t1 { margin: 0 0 4px; font-size: 0.9rem; font-weight: 800; color: var(--gp-brown-600); }
+    .lb-empty .t2 { margin: 0; font-size: 0.76rem; font-weight: 700; color: var(--gp-brown-400); }
+    .lb-loading { text-align: center; padding: 16px 0; font-size: 0.82rem; font-weight: 700; color: var(--gp-brown-400); }
+
+    .page-note { margin: 20px 0 0; text-align: center; font-size: 0.78rem; color: var(--gp-brown-400); }
+    .page-note a { color: var(--gp-amber-strong); font-weight: 800; text-decoration: none; }
+    .page-note a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="GridPaw home">
+        <img src="/assets/logo.png" alt="GridPaw" class="brand-logo" width="34" height="34">
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Logic Puzzles</span>
+        </span>
+      </a>
+      <nav class="header-nav" aria-label="Main navigation">
+        <a href="/leaderboard/" class="active" aria-current="page">🏆 Leaderboard</a>
+        <a href="/badges/">🎖 Badges</a>
+        <a href="/api/auth/login?next=/leaderboard/">Sign in</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>🏆 Leaderboard</h1>
+    <p class="page-sub">Fastest solves today and all-time streak leaders. Pick a puzzle to see its board.</p>
+
+    <div class="gswitch">
+      <label for="game-select">Puzzle</label>
+      <select id="game-select">
+        {GAMES.map((g) => (
+          <option value={g.key}>{g.emoji} {g.name}</option>
+        ))}
+      </select>
+    </div>
+
+    <div class="lb-grid">
+      <section class="card" aria-labelledby="fastest-title">
+        <h2 id="fastest-title">⚡ Today's Fastest</h2>
+        <p class="card-sub">Resets at UTC midnight</p>
+        <div id="fastest-list"><div class="lb-loading">Loading…</div></div>
+      </section>
+
+      <section class="card" aria-labelledby="streak-title">
+        <h2 id="streak-title">🔥 Best Streak</h2>
+        <p class="card-sub">All-time · never resets</p>
+        <div id="streak-list"><div class="lb-loading">Loading…</div></div>
+      </section>
+    </div>
+
+    <p class="page-note">
+      Only signed-in solves are ranked. <a href="/api/auth/login?next=/leaderboard/">Sign in</a> to appear on the board.
+    </p>
+  </main>
+
+  <SideAd />
+
+  <!-- 游戏清单从 SSR 侧一次性下发（is:inline 脚本里不能写模板表达式） -->
+  <script type="application/json" id="gp-games" set:html={JSON.stringify(GAMES)}></script>
+
+  <script is:inline>
+    (function () {
+      var list = [];
+      try { list = JSON.parse(document.getElementById('gp-games').textContent || '[]'); } catch (e) { list = []; }
+      var GAMES = list.map(function (g) { return g.key; });
+      var NAMES = {};
+      for (var li = 0; li < list.length; li++) NAMES[list[li].key] = list[li].name;
+      var select = document.getElementById('game-select');
+      var fastestEl = document.getElementById('fastest-list');
+      var streakEl = document.getElementById('streak-list');
+      var myName = null;
+      var seq = 0;
+
+      function pad(n) { return (n < 10 ? '0' : '') + n; }
+      function fmtTime(ms) {
+        var total = Math.max(0, Math.round(ms / 1000));
+        var m = Math.floor(total / 60);
+        var s = total % 60;
+        return m + ':' + pad(s);
+      }
+      function today() { return new Date().toISOString().slice(0, 10); }
+      function escapeHtml(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+          return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+        });
+      }
+      function isMe(name) {
+        return !!myName && String(name || '').trim().toLowerCase() === myName;
+      }
+      function row(rank, name, valueHtml, cls) {
+        return '<div class="lb-row' + (isMe(name) ? ' you' : '') + '">' +
+          '<span class="lb-left"><span class="lb-rank">' + rank + '</span>' +
+          '<span class="avatar">' + (isMe(name) ? '🐱' : '🐾') + '</span>' +
+          '<span class="lb-name">' + escapeHtml(name) + '</span></span>' +
+          '<span class="lb-val ' + cls + '">' + valueHtml + '</span></div>';
+      }
+      function emptyState(game, kind) {
+        var label = NAMES[game] || game;
+        var line = kind === 'fastest'
+          ? 'Be the first cat on the ' + escapeHtml(label) + ' leaderboard today! 🐈'
+          : 'No streak on ' + escapeHtml(label) + ' yet — solve two days in a row to start one 🔥';
+        return '<div class="lb-empty"><p class="t1">' + line + '</p>' +
+          '<p class="t2">Scoring coming soon</p></div>';
+      }
+      function medal(i) {
+        return i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : String(i + 1);
+      }
+
+      function fetchJson(url) {
+        return fetch(url, { credentials: 'same-origin', headers: { accept: 'application/json' } })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .catch(function () { return null; });
+      }
+
+      function renderFastest(game, data) {
+        var rows = (data && data.entries) || [];
+        if (!rows.length) { fastestEl.innerHTML = emptyState(game, 'fastest'); return; }
+        fastestEl.innerHTML = rows.map(function (r, i) {
+          return row(medal(i), r.name, fmtTime(r.timeMs), 'time');
+        }).join('');
+      }
+      function renderStreak(game, data) {
+        var rows = (data && data.entries) || [];
+        if (!rows.length) { streakEl.innerHTML = emptyState(game, 'streak'); return; }
+        streakEl.innerHTML = rows.map(function (r, i) {
+          return row(medal(i), r.name, '🔥 ' + r.streak, 'streak');
+        }).join('');
+      }
+
+      function load(game) {
+        var mine = ++seq;
+        fastestEl.innerHTML = '<div class="lb-loading">Loading…</div>';
+        streakEl.innerHTML = '<div class="lb-loading">Loading…</div>';
+        var q = '?game=' + encodeURIComponent(game);
+        Promise.all([
+          fetchJson('/api/leaderboard' + q + '&date=' + today()),
+          fetchJson('/api/leaderboard' + q + '&type=streak')
+        ]).then(function (res) {
+          if (mine !== seq) return; // 快速切换游戏时丢弃过期响应
+          renderFastest(game, res[0]);
+          renderStreak(game, res[1]);
+        });
+      }
+
+      function currentGame() {
+        var g = new URLSearchParams(location.search).get('game');
+        return GAMES.indexOf(g) >= 0 ? g : 'shikaku';
+      }
+
+      var start = currentGame();
+      select.value = start;
+      select.addEventListener('change', function () {
+        var g = select.value;
+        try {
+          var u = new URL(location.href);
+          u.searchParams.set('game', g);
+          history.replaceState(null, '', u.pathname + '?' + u.searchParams.toString());
+        } catch (e) { /* 老浏览器忽略 */ }
+        load(g);
+      });
+
+      // 自己高亮（best-effort）：GET /api/profile 给的是 COALESCE(display_name, name)
+      fetchJson('/api/profile').then(function (d) {
+        if (d && d.displayName) {
+          myName = String(d.displayName).trim().toLowerCase();
+          if (myName) load(select.value);
+        }
+      });
+
+      load(start);
+    })();
+  </script>
+</body>
+</html>

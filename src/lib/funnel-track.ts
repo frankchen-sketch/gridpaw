@@ -23,6 +23,7 @@ export const FUNNEL_EVENTS = [
   'fog_peek', 'fog_block_unlocked', 'guide_shown', 'guide_done',
   'paywall_shown', 'paywall_convert', 'auth_error', 'share', 'share_image',
   'hunt_answer', 'hunt_case_solved', 'hunt_completed',
+  'profile_update',
 ];
 
 // 只有生产域上报（与本仓库既有铁律一致：dev/预览域静默，避免污染）

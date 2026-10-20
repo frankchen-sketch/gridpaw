@@ -1,0 +1,288 @@
+---
+// /badges/ —— 徽章墙（P2，2026-10-20）
+// SSR 出 11 枚真 SVG 目录（src/lib/badge-icons.ts），客户端补「本机已解锁」与稀有度。
+// 特效分级（设计稿 p2-v2-preview）：bronze 静止 / silver 微光呼吸 / gold 金光扫光+光晕 / mythic 额外 conic 流转金环。
+// 解锁信息来自 /api/badges（登录 uid 归并 + 访客 anonId 继承），稀有度来自 /api/badges?stats=1（24h 缓存）。
+import SEOHead from '../components/SEOHead.astro';
+import SideAd from '../components/SideAd.astro';
+import { BADGES } from '../lib/badge-icons';
+
+const title = 'Badges — GridPaw';
+const description =
+  'All 11 GridPaw badges: Shikaku level ladder, Murder Sudoku case files, and daily streak streaks. See how rare each one is.';
+
+const GROUPS = [
+  { game: 'shikaku', emoji: '🧩', label: 'Shikaku Staircase', note: 'Level ladder' },
+  { game: 'murdoku', emoji: '🔍', label: 'Murder Sudoku Cases', note: 'Case ladder' },
+  { game: 'streak', emoji: '🔥', label: 'Daily Streak', note: 'Daily ladder' },
+] as const;
+
+// 组内保持 badge-icons 的档位升序；组顺序 = 设计稿（Shikaku → Murdoku → Streak）
+const grouped = GROUPS.map((g) => ({ ...g, items: BADGES.filter((b) => b.game === g.game) }));
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/badges/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --gp-amber: #D97706;
+      --gp-amber-strong: #B45309;
+      --gp-cream: #FDF6EC;
+      --gp-cream-warm: #F5E9DC;
+      --gp-linen: #F3E3D3;
+      --gp-blush: #FBEDE7;
+      --gp-parchment: #E8DDD0;
+      --gp-brown-900: #342421;
+      --gp-brown-600: #7A5F52;
+      --gp-brown-400: #A98C7E;
+      --gp-mythic: #A3447E;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--gp-cream);
+      color: var(--gp-brown-900);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+
+    /* ── header（与 /leaderboard/ 同款，照 index.astro .site-header）── */
+    .site-header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(253, 246, 236, 0.95);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1.5px solid var(--gp-parchment);
+      padding: 0 16px;
+    }
+    .header-inner { max-width: 840px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; gap: 12px; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--gp-brown-900); }
+    .brand-logo { width: 34px; height: 34px; border-radius: 8px; }
+    .brand-name { display: flex; flex-direction: column; line-height: 1.1; }
+    .brand-name .big { font-size: 17px; font-weight: 900; color: var(--gp-amber); }
+    .brand-name .small { font-size: 10px; font-weight: 700; color: var(--gp-brown-400); letter-spacing: 0.02em; }
+    .header-nav { display: flex; align-items: center; gap: 2px; flex-wrap: wrap; justify-content: flex-end; }
+    .header-nav a { font-size: 13px; font-weight: 800; color: var(--gp-brown-600); text-decoration: none; padding: 7px 11px; border-radius: 999px; }
+    .header-nav a:hover { color: var(--gp-amber-strong); background: var(--gp-blush); }
+    .header-nav a.active { color: #fff; background: var(--gp-amber); }
+    @media (max-width: 560px) {
+      .brand-name .small { display: none; }
+      .header-nav a { font-size: 12px; padding: 6px 8px; }
+    }
+
+    /* ── 内容列 ≤840px（SideAd 契约）── */
+    main { max-width: 840px; margin: 0 auto; padding: 26px 16px 48px; }
+    h1 { font-family: Georgia, 'Times New Roman', serif; font-size: 1.9rem; margin: 0 0 6px; }
+    .page-sub { margin: 0 0 14px; font-size: 0.92rem; color: var(--gp-brown-600); }
+    .page-sub b { color: var(--gp-amber-strong); }
+
+    .rarity-legend {
+      font-size: 0.78rem; font-weight: 700; color: var(--gp-brown-600);
+      background: var(--gp-cream-warm); border-radius: 10px; padding: 8px 12px; margin: 0 0 16px;
+    }
+
+    /* 盘点条：本机有解锁但未登录 */
+    .syncbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      background: var(--gp-cream-warm); border: 1.5px dashed var(--gp-brown-400);
+      border-radius: 12px; padding: 10px 14px; margin: 0 0 16px;
+    }
+    .syncbar[hidden] { display: none; }
+    .syncbar .t1 { font-size: 0.84rem; font-weight: 900; color: var(--gp-brown-900); }
+    .syncbar .t2 { font-size: 0.76rem; font-weight: 600; color: var(--gp-brown-600); margin-top: 2px; }
+    .syncbar a {
+      background: var(--gp-amber); color: #fff; border-radius: 999px;
+      padding: 0.5rem 1rem; font-size: 0.8rem; font-weight: 900; text-decoration: none; white-space: nowrap;
+    }
+
+    .bw-group { margin-bottom: 22px; }
+    .bw-group h2 { font-family: Georgia, 'Times New Roman', serif; font-size: 1.06rem; margin: 0 0 10px; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+    .bw-group h2 .tag { font-family: 'Nunito', sans-serif; font-size: 0.64rem; font-weight: 900; letter-spacing: 0.04em; text-transform: uppercase; color: var(--gp-brown-600); background: var(--gp-blush); border-radius: 99px; padding: 2px 9px; }
+    .bw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 12px; }
+
+    .bw-card {
+      position: relative;
+      background: var(--gp-cream); border: 1.5px solid var(--gp-linen); border-radius: 12px;
+      padding: 12px 8px 10px; text-align: center; transition: opacity 0.2s, filter 0.2s;
+    }
+    .bw-card.locked { opacity: 0.4; filter: grayscale(1); }
+    .bw-art { display: block; }
+    .bw-card svg { width: 58px; height: 58px; display: block; margin: 0 auto; }
+    .bw-card .bn { font-size: 0.76rem; font-weight: 900; color: var(--gp-brown-900); margin-top: 4px; }
+    .bw-card .bh { font-size: 0.68rem; font-weight: 600; color: var(--gp-brown-600); margin-top: 1px; line-height: 1.35; }
+    .bw-card .tier {
+      display: inline-block; font-size: 0.6rem; font-weight: 900; letter-spacing: 0.5px;
+      text-transform: uppercase; border-radius: 99px; padding: 1px 8px; margin-top: 5px;
+    }
+    .t-bronze { background: #F3E3D3; color: #8A5A2B; }
+    .t-silver { background: #EAEEF3; color: #5A6B7D; }
+    .t-gold { background: #FBEED8; color: #A1630A; }
+    .t-mythic { background: #F6E7F0; color: var(--gp-mythic); }
+    .bw-card .rarity { font-size: 0.64rem; font-weight: 800; color: var(--gp-amber); margin-top: 4px; }
+    .bw-card .rarity.ultra { color: var(--gp-mythic); }
+    .bw-card .rarity.muted { color: var(--gp-brown-400); }
+
+    /* ── 特效分级（设计稿 p2-v2-preview 逐字落地）── */
+    @keyframes gp-shine { 0% { transform: translateX(-130%) skewX(-18deg); } 55%, 100% { transform: translateX(230%) skewX(-18deg); } }
+    @keyframes gp-glow { 0%, 100% { box-shadow: 0 0 6px 1px rgba(245, 158, 11, 0.45); } 50% { box-shadow: 0 0 16px 4px rgba(245, 158, 11, 0.75); } }
+    @keyframes gp-glow-soft { 0%, 100% { box-shadow: 0 0 4px 0 rgba(148, 163, 184, 0.35); } 50% { box-shadow: 0 0 10px 2px rgba(148, 163, 184, 0.55); } }
+    @keyframes gp-conic { 0% { transform: rotate(0); } 100% { transform: rotate(360deg); } }
+    /* 🥇 gold：金光扫光 + 光晕脉冲 */
+    .fx-gold { position: relative; overflow: hidden; animation: gp-glow 2.4s ease-in-out infinite; }
+    .fx-gold::after { content: ''; position: absolute; top: 0; bottom: 0; width: 45%; background: linear-gradient(105deg, transparent, rgba(255, 215, 120, 0.55), transparent); animation: gp-shine 2.8s ease-in-out infinite; pointer-events: none; }
+    /* 💎 mythic：金光 + 边缘流转金环 */
+    .fx-mythic { position: relative; overflow: hidden; animation: gp-glow 2.4s ease-in-out infinite; }
+    .fx-mythic::before { content: ''; position: absolute; inset: -2px; border-radius: inherit; padding: 2px; background: conic-gradient(from 0deg, #F5E9DC, #D97706, #FFF3C4, #D97706, #F5E9DC); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; animation: gp-conic 3.5s linear infinite; pointer-events: none; }
+    .fx-mythic::after { content: ''; position: absolute; top: 0; bottom: 0; width: 45%; background: linear-gradient(105deg, transparent, rgba(255, 224, 130, 0.65), transparent); animation: gp-shine 2.4s ease-in-out infinite; pointer-events: none; }
+    /* 🥈 silver：低级微光呼吸 */
+    .fx-silver { animation: gp-glow-soft 3s ease-in-out infinite; }
+    /* 🥉 bronze：无特效（静止） */
+    @media (prefers-reduced-motion: reduce) {
+      .fx-gold, .fx-mythic, .fx-silver, .fx-gold::after, .fx-mythic::before, .fx-mythic::after { animation: none; }
+    }
+
+    .bw-foot { margin: 26px 0 0; text-align: center; font-size: 0.8rem; color: var(--gp-brown-400); }
+    .bw-foot a { color: var(--gp-amber-strong); font-weight: 800; text-decoration: none; }
+    .bw-foot a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="GridPaw home">
+        <img src="/assets/logo.png" alt="GridPaw" class="brand-logo" width="34" height="34">
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Logic Puzzles</span>
+        </span>
+      </a>
+      <nav class="header-nav" aria-label="Main navigation">
+        <a href="/leaderboard/">🏆 Leaderboard</a>
+        <a href="/badges/" class="active" aria-current="page">🎖 Badges</a>
+        <a href="/api/auth/login?next=/badges/">Sign in</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>🎖 Badges</h1>
+    <p class="page-sub">
+      <span id="bw-count">11 badges</span> to collect across Shikaku, Murder Sudoku, and the daily challenge.
+      Play signed in and they stay on your name on every device.
+    </p>
+
+    <div class="syncbar" id="syncbar" hidden>
+      <div>
+        <div class="t1" id="syncbar-title"></div>
+        <div class="t2">Sign in to keep them on your name across devices — everything syncs automatically.</div>
+      </div>
+      <a href="/api/auth/login?next=/badges/">Sign in</a>
+    </div>
+
+    <p class="rarity-legend">
+      📊 Rarity counts real players who unlocked each badge. Under 30 cats we say “only N cats”; past that we show the share of all players.
+    </p>
+
+    {grouped.map((g) => (
+      <section class="bw-group" aria-labelledby={`bw-${g.game}`}>
+        <h2 id={`bw-${g.game}`}>{g.emoji} {g.label} <span class="tag">{g.note}</span></h2>
+        <div class="bw-grid">
+          {g.items.map((b) => (
+            <article class="bw-card locked" data-badge-id={b.id} data-tier={b.tier}>
+              <span class="bw-art" set:html={b.svg} />
+              <div class="bn">{b.name}</div>
+              <div class="bh">{b.how}</div>
+              <span class={`tier t-${b.tier}`}>{b.tier}</span>
+              <div class="rarity muted" data-rarity={b.id}>—</div>
+            </article>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <p class="bw-foot">
+      Badges are derived from your real solves — no purchases, no shortcuts.
+      See where you stand on the <a href="/leaderboard/">leaderboard</a>.
+    </p>
+  </main>
+
+  <SideAd />
+
+  <script is:inline>
+    (function () {
+      var TIER_FX = { silver: 'fx-silver', gold: 'fx-gold', mythic: 'fx-mythic' };
+      var cards = Array.prototype.slice.call(document.querySelectorAll('.bw-card'));
+      var total = cards.length;
+      var countEl = document.getElementById('bw-count');
+      var syncbar = document.getElementById('syncbar');
+      var syncTitle = document.getElementById('syncbar-title');
+
+      // 访客键口径与 public/gp-badges.js 一致：只读 localStorage gp_anon_id，不新建
+      function visitorQuery() {
+        try {
+          var a = localStorage.getItem('gp_anon_id');
+          if (a && /^anon-[0-9a-fA-F-]{6,70}$/.test(a)) return '?anonId=' + encodeURIComponent(a);
+        } catch (e) { /* 存储被拒 → 靠 cookie */ }
+        return '';
+      }
+      function fetchJson(url) {
+        return fetch(url, { credentials: 'same-origin', headers: { accept: 'application/json' } })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .catch(function () { return null; });
+      }
+      function card(id) {
+        for (var i = 0; i < cards.length; i++) if (cards[i].getAttribute('data-badge-id') === id) return cards[i];
+        return null;
+      }
+
+      // ① 本机已解锁：去置灰 + 按档位挂特效
+      fetchJson('/api/badges' + visitorQuery()).then(function (d) {
+        if (!d) return;
+        var unlocked = d.badges || [];
+        for (var i = 0; i < unlocked.length; i++) {
+          var el = card(unlocked[i].id);
+          if (!el || !el.classList.contains('locked')) continue;
+          el.classList.remove('locked');
+          var fx = TIER_FX[el.getAttribute('data-tier')];
+          if (fx) el.classList.add(fx);
+        }
+        if (countEl) countEl.innerHTML = '<b>' + unlocked.length + ' / ' + total + '</b> badges';
+        if (!d.signedIn && unlocked.length > 0 && syncbar) {
+          syncTitle.textContent = '🔐 ' + unlocked.length + (unlocked.length === 1 ? ' badge' : ' badges') + ' only on this device';
+          syncbar.hidden = false;
+        }
+      });
+
+      // ② 稀有度：?stats=1（服务端 24h 缓存，全站派生）
+      fetchJson('/api/badges?stats=1').then(function (d) {
+        if (!d) return;
+        var counts = d.counts || {};
+        var totalKeys = Number(d.totalKeys) || 0;
+        for (var i = 0; i < cards.length; i++) {
+          var id = cards[i].getAttribute('data-badge-id');
+          var el = cards[i].querySelector('.rarity');
+          if (!el) continue;
+          var n = Number(counts[id]) || 0;
+          el.classList.remove('ultra', 'muted');
+          if (!n) {
+            el.textContent = '📊 0 cats yet';
+            el.classList.add('muted');
+          } else if (n < 30) {
+            el.textContent = '⚡ Ultra rare — only ' + n + (n === 1 ? ' cat' : ' cats');
+            el.classList.add('ultra');
+          } else {
+            var pct = totalKeys > 0 ? Math.max(1, Math.round((n / totalKeys) * 100)) : 0;
+            el.textContent = pct > 0 ? '📊 ' + pct + '% of players' : '📊 ' + n + ' cats';
+          }
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

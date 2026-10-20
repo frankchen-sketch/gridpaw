@@ -649,7 +649,7 @@ document.getElementById('gt-sound-btn').addEventListener('click', function(){
 </script>
 <script>
 // 排行榜（pictomino daily 按套计成绩，今日 top 20）
-fetch('/api/leaderboard?date=' + new Date().toISOString().split('T')[0]).then(r=>r.ok?r.json():null).then(data=>{
+fetch('/api/leaderboard?game=pictomino&date=' + new Date().toISOString().split('T')[0]).then(r=>r.ok?r.json():null).then(data=>{
   const list=document.getElementById('lb-list');
   if(!list||!data)return;
   const entries=data.entries||[];

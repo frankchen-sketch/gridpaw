@@ -538,7 +538,7 @@ if (sb2) sb2.addEventListener('click', function(){ const w = frameWin(); if (w) 
 </script>
 <script>
 // 排行榜（daily 主战场：打完今日套题看排名）
-fetch('/api/leaderboard?date=' + new Date().toISOString().split('T')[0]).then(r=>r.ok?r.json():null).then(data=>{
+fetch('/api/leaderboard?game=pictomino&date=' + new Date().toISOString().split('T')[0]).then(r=>r.ok?r.json():null).then(data=>{
   const list=document.getElementById('lb-list');
   if(!list||!data)return;
   const entries=data.entries||[];

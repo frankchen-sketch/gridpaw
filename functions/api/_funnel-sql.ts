@@ -20,6 +20,7 @@ export const FUNNEL_EVENT_LIST: string[] = [
   'fog_peek', 'fog_block_unlocked', 'guide_shown', 'guide_done',
   'paywall_shown', 'paywall_convert', 'auth_error', 'share', 'share_image',
   'hunt_answer', 'hunt_case_solved', 'hunt_completed',
+  'profile_update',
 ];
 
 export function isFunnelEvent(name: string): boolean {

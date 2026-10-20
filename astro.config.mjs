@@ -26,6 +26,7 @@ export default defineConfig({
           'https://gridpaw.com/akari/akari-puzzle-online/',
           'https://gridpaw.com/privacy/',           // noindex page (jev-seo audit 2026-10)
           'https://gridpaw.com/reset-password/',    // noindex functional page (adsense audit 2026-10)
+          'https://gridpaw.com/leaderboard/',       // noindex 全 JS 榜单页（P2）：SSR 空壳，进 sitemap 无价值
           'https://gridpaw.com/akari/levels/hard/', // thin content, same as easy/medium
         ];
         if (exactExcludes.includes(page)) {
