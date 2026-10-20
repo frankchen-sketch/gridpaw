@@ -1,0 +1,221 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import ExtensionPromo from '../../components/ExtensionPromo.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import LoopPuzzlePlay from '../../components/LoopPuzzlePlay.astro';
+import SideAd from '../../components/SideAd.astro';
+
+const title = "The Loop Puzzle: How to Play, Hints & Strategy | GridPaw";
+const description = "How to play The Loop, Britannica's daily picture puzzle: rules, what green, red and orange mean, 6 solving strategies, and a free loop puzzle to play now.";
+
+// FAQ 单一真源：schema 与页面正文共用同一数组，保证逐字一致（game-guide-page-playbook 铁律）
+const faqs = [
+  {
+    q: "What is The Loop puzzle?",
+    a: "The Loop is a free daily picture puzzle from Britannica. Every day you get a set of images that must be arranged in a circle so that each adjacent pair connects — through wordplay, visual similarity, idioms, or cultural references. One image is locked at the top of the ring; you drag the rest into place and check your arrangement within five tries."
+  },
+  {
+    q: "How do the feedback colors work in The Loop?",
+    a: "After you press Check, every image gets a color. Green means the image is in its final correct spot. Red means it connects to neither neighbor correctly. Orange is the subtle one — relatively correct — meaning that image links to its neighbors properly but isn't in its final position yet, so you may need to flip the order of a run of images."
+  },
+  {
+    q: "How many tries do you get in The Loop?",
+    a: "Five checks per daily puzzle. Each press of Check spends one, so it pays to rearrange confidently before confirming. Clicking any image zooms in so you can study small details before committing, and direction is forgiving: a ring arranged clockwise or counterclockwise both count as correct."
+  },
+  {
+    q: "Is The Loop free to play?",
+    a: "Yes. The Loop is playable free on Britannica's games section at britannica.com/games/loop, with a fresh puzzle every day. No download or account is required, and after each puzzle you can view explanations for every connection, win or lose."
+  },
+  {
+    q: "Is The Loop the same as Slitherlink?",
+    a: "No — they only share the word loop. The Loop is a picture-association puzzle: you order images in a circle by meaning. Slitherlink is a number-logic puzzle: you draw one closed line along grid edges so each numbered cell touches exactly that many line segments. If The Loop's name pulled you toward drawing loops, the playable Slitherlink board on this page is the real thing."
+  },
+  {
+    q: "What games are like The Loop?",
+    a: "If you enjoy The Loop's daily-habit format, NYT Connections is the closest cousin — same group-things-by-association muscle. For pure grid logic in the same calm, one-solution spirit, GridPaw offers free browser puzzles: Shikaku (partition the grid into numbered rectangles), Slitherlink (draw one closed loop), Akari, Nurikabe, and Nonogram — all playable instantly with no download."
+  }
+];
+
+const faqJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a }
+    }))
+  }
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/the-loop-puzzle"
+    type="article"
+    breadcrumbTitle="The Loop Puzzle"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --lp-primary: #D97706;
+      --lp-bg: #FFFAF5;
+      --lp-border: #F0DFD2;
+      --lp-text: #42352E;
+      --lp-light: #A08D80;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--lp-bg); color: var(--lp-text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--lp-light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--lp-light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--lp-primary); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; color: var(--lp-text); margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; color: var(--lp-text); margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--lp-primary); }
+    .seo-section h3 { font-size: 1.1rem; color: var(--lp-text); margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--lp-primary); }
+    .lede { font-size: 1rem; color: #4a3d35; line-height: 1.75; margin: 0.5rem 0 0.25rem; }
+    .disclaimer { font-size: 0.82rem; color: var(--lp-light); font-style: italic; background: #fff; border: 1px solid var(--lp-border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--lp-light); }
+    .seo-footer a { color: var(--lp-light); }
+    .seo-footer a:hover { color: var(--lp-primary); }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: white; border: 2px dashed var(--lp-primary); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--lp-text); }
+    .cta-box a { color: var(--lp-primary); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+
+    .rulewrap { display: flex; gap: 1.1rem; align-items: flex-start; flex-wrap: wrap; margin: 0.8rem 0; }
+    .rulewrap ol { flex: 1; min-width: 260px; }
+    .ringdemo { flex: 0 0 200px; margin: 0 auto; }
+
+    .fb { width: 100%; border-collapse: collapse; margin: 1rem 0 0.6rem; font-size: 0.95rem; }
+    .fb th, .fb td { border: 1px solid var(--lp-border); padding: 0.55rem 0.75rem; text-align: left; vertical-align: top; color: var(--lp-text); }
+    .fb thead th { background: #42352E; color: #FFFAF5; font-size: 0.85rem; }
+    .fb tbody th { background: #FBF3EA; font-weight: 700; white-space: nowrap; }
+    .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+    @media (max-width:620px){ .fb thead{display:none;} .fb tbody tr{display:block; margin:0 0 0.7rem;} .fb tbody th, .fb tbody td{display:block; border:none; padding:0.2rem 0.5rem; white-space:normal;} }
+
+    .strat { display: grid; grid-template-columns: 1fr; gap: 0.55rem; margin: 0.8rem 0; }
+    .st { display: flex; gap: 0.7rem; align-items: flex-start; background: #fff; border: 1.5px solid var(--lp-border); border-radius: 10px; padding: 0.65rem 0.8rem; line-height: 1.6; font-size: 0.95rem; color: #555; }
+    .st i { font-style: normal; font-weight: 900; color: var(--lp-primary); font-size: 1.05rem; min-width: 1.3rem; }
+    .st b { color: var(--lp-text); }
+
+    .cmp { width:100%; border-collapse:collapse; margin:1.2rem 0 0.6rem; font-size:0.95rem; }
+    .cmp th, .cmp td { border:1px solid #F0DFD2; padding:0.6rem 0.75rem; text-align:left; vertical-align:top; color:#42352E; }
+    .cmp thead th { background:#42352E; color:#FFFAF5; font-size:0.85rem; }
+    .cmp tbody th { background:#FBF3EA; font-weight:700; white-space:nowrap; }
+    @media (max-width:620px){ .cmp thead{display:none;} .cmp tbody tr{display:block; margin:0 0 0.7rem;} .cmp tbody th, .cmp tbody td{display:block; border:none; padding:0.2rem 0.5rem; white-space:normal;} }
+
+    .likegrid { display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; margin:0.8rem 0; }
+    .likecard { background:#fff; border:1.5px solid var(--lp-border); border-radius:10px; padding:0.7rem 0.85rem; font-size:0.9rem; line-height:1.55; color:#555; }
+    .likecard b { display:block; color:var(--lp-text); margin-bottom:0.15rem; }
+    @media (max-width:560px){ .likegrid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; The Loop Puzzle</nav>
+
+  <main class="seo-section">
+  <SideAd />
+    <h1>The Loop Puzzle: How to Play, Hints &amp; Strategy</h1>
+
+    <p class="lede">Seen today's <b>The Loop</b> on Britannica and want to actually finish it? This guide covers how the daily picture puzzle works — the rules, what green, red and orange mean, six solving techniques — plus a free loop puzzle you can play right here on the page.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Britannica or Playlin. The Loop is a game by Britannica; play the official daily version at britannica.com/games/loop.</div>
+
+    <h2>What Is <span class="accent">The Loop</span>?</h2>
+    <p>The Loop is a free daily picture puzzle by Britannica — the encyclopedia that decided Wordle deserved competition. Each day you get a handful of images that must be arranged <b>in a circle</b> so that every adjacent pair connects: through wordplay, visual similarity, idioms, or cultural references. A pig next to a football? That's <i>pigskin</i>. A ladle beside the Big Dipper? Visual twins. One image is locked at the top of the ring; you drag the rest into place and press Check. A fresh puzzle publishes daily, and most players finish in two to five minutes.</p>
+
+    <h2>The Loop Rules</h2>
+    <div class="rulewrap">
+      <ol>
+        <li><b>Arrange the images in a circle.</b> Each image must connect logically to both neighbors — wordplay, visual resemblance, idioms, or cultural references all count.</li>
+        <li><b>One image is locked.</b> The image at the top of the ring stays put; the loop builds around it.</li>
+        <li><b>Drag to reorder, Check to score.</b> Rearrange freely, then press Check to see how close you are. You have <b>5 checks</b> per day.</li>
+        <li><b>Direction doesn't matter.</b> Clockwise and counterclockwise arrangements both count as correct — a solved ring is a solved ring.</li>
+        <li><b>Zoom before you commit.</b> Click any image to enlarge it and study details; small details often hide the wordplay.</li>
+        <li><b>Explanations after.</b> Win or lose, you can view the reasoning behind every connection once the puzzle ends.</li>
+      </ol>
+    </div>
+
+    <h2>What Green, Red and Orange Mean</h2>
+    <p>The color feedback is The Loop's best idea — orange especially, because it tells you <i>how</i> you're wrong:</p>
+    <table class="fb">
+      <thead><tr><th>Color</th><th>Meaning</th><th>What to do</th></tr></thead>
+      <tbody>
+        <tr><th><span class="dot" style="background:#1E7A3C"></span>Green</th><td>Correct final position — this image links to both neighbors as intended.</td><td>Leave it alone and build around it.</td></tr>
+        <tr><th><span class="dot" style="background:#E8A13D"></span>Orange</th><td><i>Relatively correct</i> — the image connects to its neighbors properly, but it isn't in its final spot yet.</td><td>The run it belongs to needs flipping: reverse the order of that segment of the circle.</td></tr>
+        <tr><th><span class="dot" style="background:#C0392B"></span>Red</th><td>Wrong — this image connects to neither neighbor correctly.</td><td>Re-pair it: find what it actually links to and move it there.</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.9rem;color:#A08D80;font-style:italic;">Colors are revealed only when you press Check — and each press spends one of your five tries, so rearrange first, confirm second.</p>
+
+    <h2>6 Solving Strategies for The Loop</h2>
+    <div class="strat">
+      <div class="st"><i>1</i><span><b>Find the most obvious pair first.</b> One loud connection — a pun, a famous pairing — anchors a whole arc of the circle. Place it and its neighbors fall into line.</span></div>
+      <div class="st"><i>2</i><span><b>Name the link before you place.</b> Don't ask "where does this go?" — ask "what does this connect to?" If you can't say the connection in words, the placement is a guess.</span></div>
+      <div class="st"><i>3</i><span><b>Build around the locked image.</b> The fixed image at the top is free information: whatever it connects to must sit on either side of it, and that often splits the rest of the ring into two runs.</span></div>
+      <div class="st"><i>4</i><span><b>Use orange as a flip signal.</b> Orange images are the right puzzle pieces in the wrong order. Identify the orange run and reverse it — the connections are already working.</span></div>
+      <div class="st"><i>5</i><span><b>Zoom in on ambiguous images.</b> If an image could be two things, it's probably the funnier one. Enlarge it before spending a check on a guess.</span></div>
+      <div class="st"><i>6</i><span><b>Test a full arrangement, not fragments.</b> Five checks is plenty if each one tests a complete ring. A full-circle check gives you green, orange and red positions at once — fragment checks waste tries.</span></div>
+    </div>
+
+    <h2>The Loop vs Slitherlink: Two Puzzles, One Word</h2>
+    <p>Searching for a "loop puzzle game" lands you between two very different games that share a name. If you came for Britannica's picture ring, the table below sorts them out — and if the idea of literally <i>drawing</i> a loop sounds fun, there's a playable Slitherlink board just below.</p>
+    <table class="cmp">
+      <thead><tr><th></th><th>The Loop (Britannica)</th><th>Slitherlink (Nikoli classic)</th></tr></thead>
+      <tbody>
+        <tr><th>What you arrange</th><td>Pictures in a circle by meaning — wordplay, idioms, visual puns</td><td>One closed line along grid edges, guided by number clues</td></tr>
+        <tr><th>Core skill</th><td>Language, trivia, lateral association</td><td>Pure logic — every board solvable by deduction alone</td></tr>
+        <tr><th>Feedback</th><td>Green / orange / red per image, 5 checks</td><td>Self-evident: closed loop that satisfies every number</td></tr>
+        <tr><th>Pace</th><td>One new puzzle daily, 2–5 minutes</td><td>Any time — endless generated boards, easy 5×5 to hard 10×10</td></tr>
+        <tr><th>Where</th><td>britannica.com/games/loop (official)</td><td><a href="/slitherlink/">gridpaw.com/slitherlink</a> — free in browser</td></tr>
+      </tbody>
+    </table>
+
+    <div class="playwrap" id="playwrap">
+      <LoopPuzzlePlay />
+    </div>
+
+    <h2>Games Like The Loop</h2>
+    <div class="likegrid">
+      <div class="likecard"><b>Connections (NYT)</b>Group sixteen words into four hidden sets — the closest cousin to The Loop's association muscle, and the same daily-habit format.</div>
+      <div class="likecard"><b>Shikaku</b>Partition a grid into rectangles around number clues — calm, one-solution logic, playable free on GridPaw's <a href="/">homepage</a>.</div>
+      <div class="likecard"><b>Slitherlink</b>The original loop puzzle: draw one closed line through number clues. <a href="/slitherlink/">Play it here</a> from 5×5 to 10×10.</div>
+      <div class="likecard"><b>Nurikabe &amp; Akari</b>Shade seas around islands or light up a grid — more Nikoli-family logic in the same browser, no download. Try <a href="/nurikabe/">Nurikabe</a> or <a href="/akari/">Akari</a>.</div>
+    </div>
+
+    <div class="cta-box">
+      <p>Enjoyed drawing a real loop?</p>
+      <p><a href="/slitherlink/">Play the full Slitherlink →</a> &nbsp;·&nbsp; <a href="/">Shikaku on the GridPaw homepage →</a></p>
+    </div>
+
+    <h2>Frequently Asked Questions</h2>
+    {faqs.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+
+    <AdSlot />
+  </main>
+
+  <section class="seo-section" style="border-top:2px solid #e7dacf;padding-top:1rem;margin-top:2rem">
+    <ExtensionPromo />
+    <p class="seo-footer">GridPaw · free cat-themed logic puzzles in your browser · <a href="/">Home</a> · <a href="/slitherlink/">Slitherlink</a> · <a href="/tips/">Tips</a></p>
+  </section>
+</body>
+</html>
