@@ -432,14 +432,15 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
 
     /* Sticky Header */
     .site-header { position: sticky; top: 0; z-index: 100; background: rgba(255,248,240,0.95); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1.5px solid var(--gp-parchment); padding: 0 16px; }
-    .header-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+    .header-inner { max-width: 860px; margin: 0 auto; padding: 0 12px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; height: 56px; }
     .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--gp-ink); }
     .brand-logo { width: 36px; height: 36px; border-radius: 8px; }
     .brand-name { display: flex; flex-direction: column; line-height: 1.1; }
     .brand-name .big { font-size: 17px; font-weight: 900; color: var(--gp-primary-strong); }
     .brand-name .small { font-size: 10px; font-weight: 600; color: var(--gp-stone); letter-spacing: 0.02em; }
     .header-nav { display: flex; gap: 0; align-items: center; }
-    .header-nav a { font-size: 13px; font-weight: 700; color: var(--gp-info); text-decoration: none; padding: 8px 14px; transition: color 0.15s; }
+    .header-nav a { font-size: 12.5px; font-weight: 700; color: var(--gp-info); text-decoration: none; padding: 8px 9px; white-space: nowrap; transition: color 0.15s; }
+    .header-nav a[data-nav-extra] { font-size: 12px; padding: 8px 7px; white-space: nowrap; }
     .header-nav a:hover { color: var(--gp-primary-strong); }
     .game-switcher { position: relative; }
     .game-switcher-btn { font-size: 13px; font-weight: 700; color: var(--gp-info); background: none; border: none; cursor: pointer; padding: 8px 14px; display: flex; align-items: center; gap: 4px; }
@@ -458,7 +459,8 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     .mobile-nav-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; color: var(--gp-ink); cursor: pointer; }
     .mobile-nav-inner a { display: block; padding: 0.75rem 0; font-weight: 700; color: var(--gp-ink); text-decoration: none; border-bottom: 1.5px solid var(--gp-lilac-soft); font-size: 14px; }
     .mobile-nav-inner a:last-child { border-bottom: none; }
-    @media (max-width: 700px) { .header-nav { display: none; } .hamburger { display: block; } }
+    /* 两个新入口（Leaderboard/Badges）撑宽导航：<880px 收起为汉堡菜单（overlay 内同链接） */
+    @media (max-width: 920px) { .header-nav { display: none; } .hamburger { display: block; } }
     /* Game Card */
     .changelog-banner { max-width: 500px; margin: 10px auto 0; padding: 10px 12px; display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #FBEEDD, #FDF6EA); border: 1.5px solid #EAD3B0; border-radius: 12px; }
     .changelog-banner .cb-date { flex-shrink: 0; font-size: 11px; font-weight: 900; color: #fff; background: #D97706; border-radius: 6px; padding: 3px 7px; }
@@ -623,6 +625,8 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     </a>
     <nav class="header-nav" aria-label="Main navigation">
       <a href="#play">Play</a>
+      <a href="/leaderboard/" data-nav-extra="lb">🏆 Leaderboard</a>
+      <a href="/badges/" data-nav-extra="bd">🎖 Badges</a>
       <GameSwitcher />
       <div class="game-switcher">
         <button class="game-switcher-btn" onclick="this.nextElementSibling.classList.toggle('open')">Guides</button>
@@ -651,6 +655,8 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
   <div class="mobile-nav-inner">
     <button class="mobile-nav-close" id="mobile-nav-close">×</button>
     <a href="/">🏠 Home</a>
+    <a href="/leaderboard/" data-nav-extra="lb">🏆 Leaderboard</a>
+    <a href="/badges/" data-nav-extra="bd">🎖 Badges</a>
     <div style="padding:0.5rem 0;font-size:11px;font-weight:800;color:var(--gp-stone);text-transform:uppercase;letter-spacing:0.08em">Games</div>
     <a href="/" style="padding-left:1.5rem">🟧 Shikaku</a>
     <a href="/akari/" style="padding-left:1.5rem">💡 Akari</a>
@@ -1790,6 +1796,89 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     var total = Math.round(ms / 1000);
     return Math.floor(total / 60) + ':' + (total % 60 < 10 ? '0' : '') + (total % 60);
   }
+    // ─── Display-name editor（POST /api/profile，2026-10-20）──────────────────
+    // 登录态点名字 → 暖琥珀气泡改名；成功后更新 UI + track('profile_update')
+    var NAME_ERRORS = {
+      display_name_too_short: 'At least 2 characters.',
+      display_name_too_long: 'Max 20 characters.',
+      display_name_invalid_chars: 'Letters, numbers, spaces, . _ - only.',
+      unauthorized: 'Please sign in again.',
+      user_not_found: 'Account not found.'
+    };
+    function buildNameEditor() {
+      var wrap = document.createElement('span');
+      wrap.style.cssText = 'position:relative;display:inline-flex;align-items:center';
+      var name = document.createElement('span');
+      name.textContent = currentUser.name || 'Cat Fan';
+      name.title = 'Click to change your display name';
+      name.style.cssText = 'font-size:.85rem;font-weight:700;color:' + 'var(--gp-ink,#3D3D3D)' + ';cursor:pointer;border-bottom:1px dashed #d97706;padding-bottom:1px';
+      wrap.appendChild(name);
+      var pop = null;
+      function closePop() {
+        if (!pop) return;
+        pop.remove(); pop = null;
+        document.removeEventListener('click', onDoc, true);
+      }
+      function onDoc(e) { if (pop && !pop.contains(e.target) && e.target !== name) closePop(); }
+      function openPop() {
+        if (pop) return;
+        pop = document.createElement('div');
+        pop.style.cssText = 'position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);z-index:70;background:#fff;border:1px solid #e7d4b8;border-radius:14px;box-shadow:0 10px 28px rgba(61,46,31,.18);padding:12px;width:216px;text-align:left;white-space:normal';
+        var head = document.createElement('div');
+        head.style.cssText = 'display:flex;align-items:center;justify-content:space-between;margin-bottom:8px';
+        var lab = document.createElement('span');
+        lab.textContent = 'Display name';
+        lab.style.cssText = 'font-size:11px;font-weight:800;color:#8a7a62;text-transform:uppercase;letter-spacing:.06em';
+        var x = document.createElement('button');
+        x.type = 'button'; x.textContent = '\u00d7'; x.setAttribute('aria-label', 'Close');
+        x.style.cssText = 'background:none;border:none;font-size:16px;line-height:1;color:#8a7a62;cursor:pointer;padding:0 2px';
+        x.addEventListener('click', closePop);
+        head.appendChild(lab); head.appendChild(x);
+        var inp = document.createElement('input');
+        inp.type = 'text'; inp.maxLength = 20; inp.value = currentUser.name || '';
+        inp.setAttribute('aria-label', 'Display name');
+        inp.style.cssText = 'width:100%;box-sizing:border-box;border:1.5px solid #e7d4b8;border-radius:9px;padding:.42rem .55rem;font-size:.85rem;color:#3d2e1f;font-weight:600;outline:none';
+        var msg = document.createElement('div');
+        msg.style.cssText = 'font-size:11px;color:#b4462f;margin-top:6px;min-height:13px;line-height:1.3';
+        var save = document.createElement('button');
+        save.type = 'button'; save.textContent = 'Save';
+        save.style.cssText = 'margin-top:4px;width:100%;background:#d97706;color:#fff;border:none;border-radius:9px;padding:.5rem 0;font-size:.82rem;font-weight:800;cursor:pointer';
+        var release = function () { save.disabled = false; save.style.opacity = '1'; };
+        pop.appendChild(head); pop.appendChild(inp); pop.appendChild(msg); pop.appendChild(save);
+        wrap.appendChild(pop);
+        document.addEventListener('click', onDoc, true);
+        setTimeout(function () { try { inp.focus(); inp.select(); } catch (e) {} }, 0);
+        inp.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') { e.preventDefault(); save.click(); }
+          else if (e.key === 'Escape') closePop();
+        });
+        save.addEventListener('click', function () {
+          var val = inp.value.trim();
+          if (Array.from(val).length < 2) { msg.textContent = NAME_ERRORS.display_name_too_short; return; }
+          save.disabled = true; save.style.opacity = '.7'; msg.textContent = '';
+          fetch('/api/profile', {
+            method: 'POST', credentials: 'same-origin',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ displayName: val })
+          }).then(function (r) {
+            return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, status: r.status, d: d }; });
+          }).then(function (res) {
+            if (res.ok && res.d && res.d.ok) {
+              currentUser.name = res.d.displayName || val;
+              name.textContent = currentUser.name;
+              if (typeof track === 'function') track('profile_update');
+              closePop();
+              return;
+            }
+            var code = res.d && res.d.error;
+            msg.textContent = (code && NAME_ERRORS[code]) || (res.status === 401 ? NAME_ERRORS.unauthorized : 'Could not save — try again.');
+            release();
+          }).catch(function () { msg.textContent = 'Network error — try again.'; release(); });
+        });
+      }
+      name.addEventListener('click', function (e) { e.stopPropagation(); if (pop) closePop(); else openPop(); });
+      return wrap;
+    }
   function renderAccountArea() {
     var area = document.getElementById('account-area');
     if (!area) return;
@@ -1811,10 +1900,9 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
         img.style.cssText = 'width:26px;height:26px;border-radius:50%;vertical-align:middle';
         area.appendChild(img);
       }
-      const name = document.createElement('span');
-      name.textContent = currentUser.name || 'Cat Fan';
-      name.style.cssText = 'font-size:.8rem;font-weight:700;color:var(--gp-ink);max-width:5.5em;overflow:hidden;text-overflow:ellipsis';
-      area.appendChild(name);
+      var ne = buildNameEditor();
+      ne.style.maxWidth = '7em';
+      area.appendChild(ne);
       const dailyBtn = document.createElement('a');
       dailyBtn.href = '#play';
       dailyBtn.textContent = '📅 Play Daily';
@@ -2108,7 +2196,7 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     fetchWithTimeout('/api/leaderboard', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ date: getToday(), timeMs: Math.round(elapsedSeconds * 1000) })
+      body: JSON.stringify({ game: 'shikaku', date: getToday(), timeMs: Math.round(elapsedSeconds * 1000) })
     }).then(function() { renderLeaderboard(); }).catch(function() {});
   }
   function renderLeaderboard() {
@@ -2126,7 +2214,7 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
       if (panel) panel.style.display = '';
     }
     showCard(); // 默认：Challenge 卡（空排行榜不再占黄金位）
-    fetchWithTimeout('/api/leaderboard?date=' + getToday()).then(function(r) {
+    fetchWithTimeout('/api/leaderboard?game=shikaku&date=' + getToday()).then(function(r) {
       if (!r.ok) return null;
       return r.json();
     }).then(function(data) {

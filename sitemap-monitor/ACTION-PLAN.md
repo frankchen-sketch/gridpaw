@@ -51,5 +51,5 @@
 
 - 采集：`~/.hermes/skills/seo/seo-keyword-selection/scripts/sitemap-monitor.py`（init/check/add）
 - 内容爬取：`./crawl_round.py --dir <本目录> [--date] [-n 25]`（通用版，接任意实例目录）
-- 周报：cron（待法老拍板档期，建议错开 hexa 的周一 08:00——如周三 08:30）
+- 周报：cron `d78215faf122`（周三 08:30，错开 hexa 的周一 08:00）
 - 每轮产物：`baseline-<date>/`（check --save 时）、`crawl-<date>/`、digest、本文件状态列更新

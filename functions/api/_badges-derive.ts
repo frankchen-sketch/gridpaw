@@ -96,6 +96,22 @@ export const BADGE_LABELS: Record<string, string> = {
   'night-owl': '14-day streak',
 };
 
+// 全部徽章 id（升序档位；与 src/lib/badge-icons.ts 的 BADGES 一一对应）。
+// 稀有度聚合（/api/badges?stats=1）用它给 0 持有者补行，避免前端缺 key。
+export const ALL_BADGE_IDS = [
+  'rookie-paw',
+  'detective',
+  'chief-detective',
+  'mastermind',
+  'first-case-closed',
+  'serial-solver',
+  'six-six-cracked',
+  'private-eye',
+  'warm-up',
+  'streak-keeper',
+  'night-owl',
+] as const;
+
 const TIER_ORDER: Record<string, number> = { bronze: 0, silver: 1, gold: 2, mythic: 3 };
 
 // 留言墙 chip：取最高档的两枚（设计稿 ④C 每条评论最多 2 个徽章）

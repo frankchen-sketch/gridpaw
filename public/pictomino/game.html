@@ -642,7 +642,7 @@ function ptSyncWin(state, elapsedSeconds) {
   ptFetch('/api/progress', { method: 'POST', headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ date: ptToday(), streak: state.streak || 0, bestStreak: state.bestStreak || 0, bestTime: state.bestTime != null ? state.bestTime * 1000 : null }) }).catch(() => {});
   ptFetch('/api/leaderboard', { method: 'POST', headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ date: ptToday(), timeMs: Math.round(elapsedSeconds * 1000) }) }).catch(() => {});
+    body: JSON.stringify({ game: 'pictomino', date: ptToday(), timeMs: Math.round(elapsedSeconds * 1000) }) }).catch(() => {});
 }
 ptSyncOnLoad();
 
