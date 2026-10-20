@@ -1312,6 +1312,7 @@ import SEOHead from '../../components/SEOHead.astro';
 import GameNav from '../../components/GameNav.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import SideAd from '../../components/SideAd.astro';
+import InContentAd from '../../components/InContentAd.astro';
 
 const title = {json.dumps(d['title'])};
 const description = {json.dumps(d['description'])};
@@ -1352,6 +1353,7 @@ const faqJsonLd = {json.dumps(faq_json)};
     <div class="video-wrap" id="video">
       <iframe src="https://www.youtube-nocookie.com/embed/{d['video_id']}" title="Brain Puzzle 3 Level {n} walkthrough video" allowfullscreen></iframe>
     </div>
+    <InContentAd />
 
     <h2>Level {n} walkthrough: every move in order<span class="accent">.</span></h2>
 {steps_html}
@@ -1449,6 +1451,7 @@ import SEOHead from '../../components/SEOHead.astro';
 import GameNav from '../../components/GameNav.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import SideAd from '../../components/SideAd.astro';
+import InContentAd from '../../components/InContentAd.astro';
 
 const title = {json.dumps(HUB['title'])};
 const description = {json.dumps(HUB['description'])};
@@ -1488,6 +1491,7 @@ const faqJsonLd = {json.dumps(faq_json)};
     <h2>Level answers<span class="accent">.</span></h2>
     <div class="level-grid">
 {cards}    </div>
+    <InContentAd />
     <h2>How these walkthroughs are made<span class="accent">.</span></h2>
     <p>Every walkthrough here is rebuilt from a real playthrough video, frame by frame: we extract the tap sequence, re-read it at least twice, and only publish steps that survive the double-check. When a level has steps we could only confirm once, the page says so. No invented answers, no hint-item spam.</p>
 
