@@ -14,15 +14,23 @@ const invokeHost = 'https://www.highrevenueformat.com';
   if (window.innerWidth < 1350) return;
   var KEY = '309484c05af1066efb6f321317c94311';
   var SRC = 'https://www.highrevenueformat.com/' + KEY + '/invoke.js';
+  // 与 InContentAd（300x250，DOM 更早）共用 __gpAdChain 串行注入：
+  // 每次注入前 set 自己的 atOptions，invoke.js load 后才放行下一个，互不覆盖尺寸
+  window.__gpAdChain = window.__gpAdChain || Promise.resolve();
   function fill(side) {
-    var slot = document.querySelector('.gp-side-ad--' + side);
-    if (!slot || slot.childElementCount > 0) return;
-    // 每侧独立注入一份 atOptions（脚本按全局 atOptions 执行，两份注入必须串行且各自瞬时完成）
-    window.atOptions = { 'key': KEY, 'format': 'iframe', 'height': 600, 'width': 160, 'params': {} };
-    var s = document.createElement('script');
-    s.src = SRC;
-    s.async = false;
-    slot.appendChild(s);
+    window.__gpAdChain = window.__gpAdChain.then(function () {
+      return new Promise(function (resolve) {
+        var slot = document.querySelector('.gp-side-ad--' + side);
+        if (!slot || slot.childElementCount > 0) return resolve();
+        window.atOptions = { 'key': KEY, 'format': 'iframe', 'height': 600, 'width': 160, 'params': {} };
+        var s = document.createElement('script');
+        s.src = SRC;
+        s.async = false;
+        s.addEventListener('load', resolve);
+        s.addEventListener('error', resolve);
+        slot.appendChild(s);
+      });
+    });
   }
   fill('left');
   fill('right');

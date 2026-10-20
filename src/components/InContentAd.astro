@@ -1,0 +1,61 @@
+---
+// InContentAd — 正文内 300x250 Banner（unit 31836413，key c3072bbb…；代码档 .adsterra/banner-300x250.snippet.md）
+// 在流内（非悬浮），桌面+移动端同一位：视频正下方。暖色底固定 250px 高预留：
+// 填充前不闪白、未填充也不出白块，CLS=0。
+// invoke 域按官方 GET CODE（bauval.org/22/<key>，Adsterra 会轮换域名，以 API codes 为准）。
+// ⚠ 同页可能与 SideAd（160x600）并存：两者都走全局 atOptions，必须经 __gpAdChain
+// 串行注入（set atOptions → append invoke.js → 等 load），否则后注入方的尺寸会覆盖先注入方。
+---
+<div class="gp-incontent-ad" aria-hidden="true">
+  <span class="gp-incontent-ad__label">Advertisement</span>
+  <div class="gp-incontent-ad__slot"></div>
+</div>
+<script is:inline>
+(function () {
+  if (new URLSearchParams(location.search).has('embed')) return;
+  var KEY = 'c3072bbbf851bb748d0bc833da23e21e';
+  var SRC = 'https://bauval.org/22/' + KEY;
+  var slot = document.querySelector('.gp-incontent-ad__slot');
+  if (!slot || slot.childElementCount > 0) return;
+  window.__gpAdChain = window.__gpAdChain || Promise.resolve();
+  window.__gpAdChain = window.__gpAdChain.then(function () {
+    return new Promise(function (resolve) {
+      if (!slot.isConnected || slot.childElementCount > 0) return resolve();
+      window.atOptions = { 'key': KEY, 'format': 'iframe', 'height': 250, 'width': 300, 'params': {} };
+      var s = document.createElement('script');
+      s.src = SRC;
+      s.async = false;
+      s.addEventListener('load', resolve);
+      s.addEventListener('error', resolve);
+      slot.appendChild(s);
+    });
+  });
+})();
+</script>
+<style>
+  .gp-incontent-ad {
+    width: 300px;
+    height: 250px;
+    margin: 0.9rem auto;
+    background: #FFF8E6;
+    border: 1.5px dashed #E8D5B5;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .gp-incontent-ad__label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #C9B48F;
+    background: #FBF1DC;
+    padding: 2px 7px;
+    border-radius: 0 0 6px 0;
+    z-index: 1;
+  }
+  .gp-incontent-ad__slot { width: 300px; height: 250px; }
+</style>
