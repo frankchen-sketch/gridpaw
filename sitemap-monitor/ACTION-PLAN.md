@@ -8,7 +8,7 @@
 
 | 站 | URL 数 | 近 30d 新增 | 健康 | 对应作战地图线 | 备注 |
 |---|---|---|---|---|---|
-| hitoriconquest.com | 293 | **71** | 🟢 活跃 | japanese logic puzzles | 新页全是 daily archive 机器页（噪音），盯是否上新游戏线 |
+| hitoriconquest.com | 297 | **71** | 🟢 活跃 | japanese logic puzzles | 新页全是 daily archive 机器页（噪音），盯是否上新游戏线；10-21 周检 +4 仍全 archive（#135-136） |
 | riddlesrush.com | 732 | **167** | 🟡 URL-only | brain teasers for adults | 内容页 403 bot 墙，只能看 URL slug 判形态；slug 本身可读 |
 | logic-puzzles-online.com | 1,074 | — | 🟢 | japanese logic puzzles / solver | 多语言数独矩阵（11 locale），无 lastmod，纯 URL 差集；新增 locale/新游戏族=信号 |
 | shikaku.games | 332 | 0 | 🟡 停更 | shikaku puzzle/online/solver | sitemap lastmod 停在 2026-07-11；dailyArchive 模板铺量页是噪音；恢复更新即盯 |
