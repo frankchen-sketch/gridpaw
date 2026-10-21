@@ -1,0 +1,130 @@
+---
+// /elsewhere/ —— GridPaw 在第三方平台（Medium / Substack）发布的文章汇总。
+// 用途：给站外文章一个可被爬取的引用来源页（citation source），并做 rel="me" 身份关联。
+// 只列真实存在的文章，新增文章时同步补一条即可。
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+
+const title = 'GridPaw Elsewhere: Puzzle Guides on Medium & Substack';
+const description =
+  'GridPaw logic puzzle tutorials published on Medium and Substack: Akari and Shikaku walkthroughs, plus every puzzle playable free at gridpaw.com.';
+
+const mediumProfile = 'https://medium.com/@jameschangzero';
+const substack = 'https://jameschangzero.substack.com';
+
+const articles = [
+  {
+    title: 'Akari (Light Up): The Four Numbers That Solve Half the Puzzle',
+    url: 'https://medium.com/@jameschangzero/akari-light-up-the-four-numbers-that-solve-half-the-puzzle-c7fede3d16ae',
+    date: 'October 2026',
+    note: 'How the 0, 1, 2 and 3 clues decide most of the board before you place a single cat.',
+  },
+  {
+    title: 'Shikaku for Beginners: How to Solve Your First Puzzle',
+    url: 'https://medium.com/@jameschangzero/shikaku-for-beginners-how-to-solve-your-first-puzzle-2be6396ca401',
+    date: 'September 2026',
+    note: 'A first rectangle puzzle solved step by step, from the biggest number to the last cell.',
+  },
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/elsewhere/"
+    type="website"
+    breadcrumbTitle="Elsewhere"
+  />
+  <meta name="robots" content="index,follow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --mt-primary: #D47A50;
+      --mt-bg: #FFF8F0;
+      --mt-cell-border: #D8D0C8;
+      --mt-text: #3D3D3D;
+      --mt-text-light: #9E9590;
+      --mt-shadow-sm: 0 2px 8px rgba(78,64,55,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', -apple-system, sans-serif;
+      background: var(--mt-bg); color: var(--mt-text);
+      min-height: 100vh;
+    }
+    .breadcrumb { font-size: 12px; color: var(--mt-text-light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--mt-text-light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--mt-primary); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; color: var(--mt-text); margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; color: var(--mt-text); margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.5rem; line-height: 1.6; }
+    .seo-section a { color: var(--mt-primary); }
+    .post-list { list-style: none; padding-left: 0; }
+    .post-list li { background: #fff; border: 1.5px solid var(--mt-cell-border); border-radius: 10px; padding: 0.9rem 1rem; box-shadow: var(--mt-shadow-sm); }
+    .post-list .post-date { display: block; font-size: 0.78rem; color: var(--mt-text-light); font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+    .post-list .post-title { display: block; font-size: 1.02rem; font-weight: 800; margin: 0.2rem 0 0.3rem; }
+    .post-list .post-note { display: block; font-size: 0.9rem; color: #666; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: white; border: 2px dashed var(--mt-primary); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--mt-text); }
+    .cta-box a { color: var(--mt-primary); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--mt-text-light); }
+    .seo-footer a { color: var(--mt-text-light); }
+    .seo-footer a:hover { color: var(--mt-primary); }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; Elsewhere</nav>
+
+  <main class="seo-section">
+    <h1>GridPaw guides on other platforms</h1>
+
+    <p>We write puzzle tutorials on Medium. Long ones, with real boards and every step spelled out. They are the same puzzles we build here, written for people who like to read first and play second.</p>
+
+    <p>Two are up so far. Both are for games you can play free on gridpaw.com.</p>
+
+    <h2>Articles on Medium</h2>
+
+    <ul class="post-list">
+      {articles.map((a) => (
+        <li>
+          <span class="post-date">{a.date}</span>
+          <a class="post-title" href={a.url} rel="me noopener" target="_blank">{a.title}</a>
+          <span class="post-note">{a.note}</span>
+        </li>
+      ))}
+    </ul>
+
+    <h2>Find us</h2>
+
+    <ul>
+      <li><a href={mediumProfile} rel="me noopener" target="_blank">Medium: @jameschangzero</a> - where the tutorials land first.</li>
+      <li><a href={substack} rel="me noopener" target="_blank">Substack: jameschangzero.substack.com</a> - a new publication, more coming.</li>
+    </ul>
+
+    <div class="cta-box">
+      <p>Read about the rules and then try them: <a href="/akari/">Play Akari free</a> &nbsp;&middot;&nbsp; <a href="/how-to-play-shikaku/">Shikaku rules</a></p>
+    </div>
+
+    <h2>Play the puzzles</h2>
+
+    <p>The Akari article is about clues you can spot in the first ten seconds. The board is <a href="/akari/">here</a>. The Shikaku article walks through your first grid, and the rules page is <a href="/how-to-play-shikaku/">here</a>. If you would rather start small, the <a href="/help/">help center</a> has a short guide for every game.</p>
+
+    <p>We keep this page short on purpose. It is a list of what exists, nothing more.</p>
+  </main>
+
+  <footer class="seo-footer">
+    <p>GridPaw: Free online Japanese logic puzzles with cats.</p>
+    <p style="margin-top:0.3rem;"><a href="/">GridPaw Shikaku</a> · <a href="/akari/">GridPaw Akari</a> · <a href="/help/">Help Center</a> · <a href="/badges/">Badges</a> · <a href="/community/">Community</a></p>
+  </footer>
+</body>
+</html>
