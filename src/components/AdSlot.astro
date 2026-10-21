@@ -1,7 +1,33 @@
 ---
-// Adsterra Native Banner — ⏸ 已暂停（2026-10-15）
-// 原因：Reddit r/nonograms 帖公开投诉「ads that immediately redirect to a site of ads」，
-// 冷启动期流量 > 广告收入，先全站摘除 Native Banner（invoke.js 创意可跳新标签/重定向）。
-// SideAd（160×600 iframe 格式）未受投诉，保留。
-// 恢复指引：脚本见 .adsterra/native-banner.snippet.md；换 iframe 类展示格式前勿复挂 invoke.js。
+// Adsterra Native Banner — gridpaw.com (Website ID 6063560, Ad Unit 31317669)
+// 恢复（2026-10-21）：仅限 4 个 SEO 内容页正文（brain-teasers-for-adults /
+// logic-puzzle-grid / japanese-logic-puzzles / number-grid-puzzle）。
+// 其余页面的 <AdSlot /> 默认渲染为空（占位不注入脚本）。
+//
+// 跳转定性（2026-10-21 Clarity 实证）：invoke.js 创意=点击触发，非无点击自动跳
+// （219 click 会话无非点击导航；1s/0-click Reddit 会话事件流为空）。
+// 10-15 的 Reddit 投诉（mcfroogle「ads immediately redirect」）判为误点卡片→落地页链跳；
+// 盲区=落地页 back-button 劫持（Clarity 录不到）。再撞零点击跳转指控=当天撤。
+//
+// 监控三件套：Reddit 帖评论区盯守；Clarity「0 点击+<3s+页面已隐藏」指纹占比；
+// Adsterra 后台分 unit CPM 周对账。
+//
+// 红线不变：游戏页/首页/?embed=1 不注入；pictomino/game.html 禁用本组件。
+const { native = false } = Astro.props;
 ---
+{native && (
+  <div class="adsterra-slot" aria-hidden="true" style="margin:1.2rem 0">
+    <div id="container-da224f8ab8a18845cf7b27479830ecfb"></div>
+  </div>
+)}
+{native && (
+  <script is:inline data-cfasync="false">
+  (function () {
+    if (new URLSearchParams(location.search).has('embed')) return;
+    var s = document.createElement('script');
+    s.src = 'https://pl31418168.profitableratecpmnetwork.com/da224f8ab8a18845cf7b27479830ecfb/invoke.js';
+    s.async = true;
+    document.currentScript.parentNode.appendChild(s);
+  })();
+  </script>
+)}
