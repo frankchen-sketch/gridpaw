@@ -930,7 +930,7 @@
     title.textContent = info.type === 'daily' ? 'Daily solved!' : 'Solved!';
     document.getElementById('winGameLevel').textContent = info.type === 'daily'
       ? 'GridPaw Kakuro · Daily'
-      : 'GridPaw Kakuro · Level ' + level;
+      : 'GridPaw Kakuro · Level ' + info.num + '/11';
     text.textContent = info.type === 'daily'
       ? 'Same board, everyone, today. Come back tomorrow for a fresh one.'
       : (nextLevel >= CAMPAIGN_LEN
@@ -950,7 +950,7 @@
     var info = levelInfo(level);
     return info.type === 'daily'
       ? '\u26A1 Daily GridPaw Kakuro: cracked before my coffee went cold \u2615 Same board for everyone \u2014 come lose to me \u2192 gridpaw.com/kakuro/'
-      : '\uD83E\uDDEE Cracked GridPaw Kakuro Level ' + level + ' \u2014 sums, no repeats, no mercy. Your turn \u2192 gridpaw.com/kakuro/';
+      : '\uD83E\uDDEE Cracked GridPaw Kakuro Level ' + info.num + '/11 \u2014 sums, no repeats, no mercy. Your turn \u2192 gridpaw.com/kakuro/';
   }
   document.getElementById('share-copy').addEventListener('click', function () {
     track('share_copy', { level: level });
@@ -975,7 +975,7 @@
 
   function boardTag() {
     var info = levelInfo(level);
-    return info.type === 'daily' ? 'GridPaw Kakuro · Daily' : 'GridPaw Kakuro · Level ' + level;
+    return info.type === 'daily' ? 'GridPaw Kakuro · Daily' : 'GridPaw Kakuro · Level ' + info.num + '/11';
   }
 
   function renderBoardCard() {
@@ -1035,8 +1035,10 @@
   });
   document.getElementById('board-save').addEventListener('click', function () {
     if (!boardCanvas) return;
+    var saveInfo = levelInfo(level);
+    var saveNum = saveInfo.type === 'gen' ? saveInfo.num : level;
     var a = document.createElement('a');
-    a.download = 'gridpaw-kakuro-level' + level + '.png';
+    a.download = 'gridpaw-kakuro-level' + saveNum + '.png';
     a.href = boardCanvas.toDataURL('image/png');
     a.click();
   });
