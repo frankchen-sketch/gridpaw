@@ -7,7 +7,7 @@ import MeowdokuPlay from '../../components/MeowdokuPlay.astro';
 import SideAd from '../../components/SideAd.astro';
 
 const title = "Meowdoku Guide: Hints, Strategy & Games Like Meowdoku";
-const description = "A deeper Meowdoku strategy guide: the complete rules recap, 6 no-hint solving techniques, how to derive answers yourself instead of chasing a daily answer list, and the best games like Meowdoku.";
+const description = "Meowdoku tips, strategy & cheat sheet: 6 solving techniques, verified Level 1–3 answers, hints for stuck players, and free games like Meowdoku.";
 
 const faqJsonLd = [
   {
@@ -52,6 +52,22 @@ const faqJsonLd = [
         acceptedAnswer: {
           "@type": "Answer",
           text: "GridPaw's placement-logic lineup is the closest free browser match: Shikaku (partition the grid into numbered rectangles), Akari (place lights so every cell glows), Nurikabe (islands in a sea of black cells), Nonogram (picture logic from row and column clues), and Kakuro (cross sums). All are free in the browser with no download, and all share the calm single-solution feel."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Is there a Meowdoku cheat sheet?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes — the cheat sheet table in this guide condenses all six strategies into a one-line-each quick reference: single-cell regions first, row and column pressure, the exclusion circle, X-mark elimination, edge-first placement, and a full re-scan after every cat. Keep it open while you play."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Any quick Meowdoku tips for beginners?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Start on 4×4 boards, place every single-cell region immediately, and mark the 8 cells each new cat blocks before choosing the next placement. If you are stuck, hunt for a row or column with exactly one legal cell left — that placement is always safe."
         }
       },
       {
@@ -242,6 +258,20 @@ const faqJsonLd = [
       <div class="st"><i>6</i><span><b>Re-scan after every cat.</b> Each placement cascades — always recheck the whole board.</span></div>
     </div>
 
+    <h2>Meowdoku Cheat Sheet: Quick Reference</h2>
+    <p>Pin this table: every strategy from above, one line each, in the order you should try them. It doubles as a printable cheat sheet — six rows cover every stuck position you will meet on a 4×4 or 5×5 board.</p>
+    <table class="cmp">
+      <thead><tr><th>When you see…</th><th>Do this</th><th>Why it works</th></tr></thead>
+      <tbody>
+        <tr><th>A region with 1 open cell</th><td>Place the cat immediately</td><td>Forced placement, zero risk (Strategy 1)</td></tr>
+        <tr><th>A row or column with 1 legal cell</th><td>Place there</td><td>Locked by elimination, always safe (Strategy 2)</td></tr>
+        <tr><th>Too many candidates</th><td>X-mark every blocked cell</td><td>The last survivor is the answer (Strategy 4)</td></tr>
+        <tr><th>Choosing between two cells</th><td>Prefer the corner or edge</td><td>Edge cells block fewer neighbors (Strategy 5)</td></tr>
+        <tr><th>Two placements look legal</th><td>Count the 8 blocked cells each way</td><td>The freer placement keeps options open (Strategy 3)</td></tr>
+        <tr><th>Just placed a cat</th><td>Re-scan the whole board</td><td>Placements cascade into new forced moves (Strategy 6)</td></tr>
+      </tbody>
+    </table>
+
     <h2>Meowdoku Level Answers: Level 1–3, Verified</h2>
     <div class="callout warn">⚠️ <span>Meowdoku can randomize boards based on player progress — the same level number may look different on your device. If your grid doesn't match the diagrams below, treat this walkthrough as a <b>derivation demo</b>, not coordinates to copy.</span></div>
     <div class="callout grn">✔ <span><b>Programmatically verified unique solutions</b>: all legal placements were enumerated for each board (one cat per row, column, and region; no two cats touching, diagonals included) — each level has exactly one solution, matching the official answers. Answer cells are rendered with the official cat sprite.</span></div>
@@ -318,6 +348,18 @@ const faqJsonLd = [
     </table>
     <p class="cmp-note">Every board answer on this page was verified by proving exactly one solution exists — if a layout can't be proven unique, we don't publish it as an answer.</p>
 
+    <h2>Games Like Meowdoku: Free Browser Alternatives</h2>
+    <p>Meowdoku belongs to the placement-logic family: one piece per row, column, and region, with no two pieces touching. If you like its feel, these free browser games scratch the same itch:</p>
+    <ul>
+      <li><a href="/star-battle/">Star Battle</a> — the closest cousin: the same placement rules with stars instead of cats, and bigger grids to grow into.</li>
+      <li><a href="/">Shikaku</a> — split the grid into numbered rectangles; learnable in thirty seconds, surprisingly deep.</li>
+      <li><a href="/akari/">Akari</a> — light placement logic with the same one-piece-per-row discipline.</li>
+      <li><a href="/nurikabe/">Nurikabe</a> — islands and seas, pure elimination reasoning.</li>
+      <li><a href="/nonogram/">Nonogram</a> — picture logic from row and column clues.</li>
+      <li><a href="/kakuro/">Kakuro</a> — when you want sums in the mix, the closest thing to Sudoku with math.</li>
+    </ul>
+    <p>If you play LinkedIn Queens, you will feel at home fastest: Meowdoku is essentially a cat-themed Queens, and Star Battle is its free, no-app sibling.</p>
+
     <h2>Frequently Asked Questions</h2>
 
     <details><summary>What is Meowdoku?</summary><p>Meowdoku is a free cat-themed placement puzzle by Oakever for iOS and Android. You settle exactly one cat in each colored region of a grid, under three constraints: one cat per row, one per column, and no two cats touching — corners and diagonals included. Boards grow from 4×4 upward and regions get more intricate as levels climb. Its closest cousin is LinkedIn Queens, not Sudoku.</p></details>
@@ -331,6 +373,10 @@ const faqJsonLd = [
     <details><summary>What games are like Meowdoku?</summary><p>GridPaw's placement-logic lineup is the closest free browser match: Shikaku (partition the grid into numbered rectangles), Akari (place lights so every cell glows), Nurikabe (islands in a sea of black cells), Nonogram (picture logic from row and column clues), and Kakuro (cross sums). All are free in the browser with no download, and all share the calm single-solution feel.</p></details>
 
     <details><summary>Is Meowdoku good for your brain?</summary><p>Yes. Meowdoku's deduction core exercises logical reasoning, working memory, and concentration — the same mental muscles behind well-studied puzzle training. Regular play is linked in research to sharper performance on reasoning and memory tasks, and the cozy cat presentation makes the habit easy to keep.</p></details>
+
+    <details><summary>Is there a Meowdoku cheat sheet?</summary><p>Yes — the cheat sheet table above condenses all six strategies into a one-line-each quick reference: single-cell regions first, row and column pressure, the exclusion circle, X-mark elimination, edge-first placement, and a full re-scan after every cat. Keep it open while you play.</p></details>
+
+    <details><summary>Any quick Meowdoku tips for beginners?</summary><p>Start on 4×4 boards, place every single-cell region immediately, and mark the 8 cells each new cat blocks before choosing the next placement. If you are stuck, hunt for a row or column with exactly one legal cell left — that placement is always safe.</p></details>
 
     <div class="cta-box">
       <p>Want to try a placement puzzle right now? No download, no signup — play free in your browser: <a href="/">Play Shikaku Free →</a></p>
