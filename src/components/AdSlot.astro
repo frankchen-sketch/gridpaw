@@ -1,26 +1,37 @@
 ---
-// Adsterra Native Banner — gridpaw.com (Website ID 6063560, Ad Unit 31317669)
+// Adsterra 广告位 — gridpaw.com
+// Desktop: Native Banner（Website ID 6063560, Ad Unit 31317669，invoke.js 点击触发）
+// Mobile:  300×250 iframe Banner（复用 InContentAd 同 unit 31836413，key c3072bbb…）
+//
 // 恢复（2026-10-21）：仅限 4 个 SEO 内容页正文（brain-teasers-for-adults /
-// logic-puzzle-grid / japanese-logic-puzzles / number-grid-puzzle）。
+// logic-puzzle-grid / japanese-logic-puzzles / number-grid-puzzle，<AdSlot native />）。
 // 其余页面的 <AdSlot /> 默认渲染为空（占位不注入脚本）。
 //
-// 跳转定性（2026-10-21 Clarity 实证）：invoke.js 创意=点击触发，非无点击自动跳
-// （219 click 会话无非点击导航；1s/0-click Reddit 会话事件流为空）。
-// 10-15 的 Reddit 投诉（mcfroogle「ads immediately redirect」）判为误点卡片→落地页链跳；
+// 跳转定性（2026-10-21 Clarity 实证）：invoke.js 创意=点击触发，非无点击自动跳。
+// 10-15 Reddit 投诉（mcfroogle「ads immediately redirect」）判为误点卡片→落地页链跳；
 // 盲区=落地页 back-button 劫持（Clarity 录不到）。再撞零点击跳转指控=当天撤。
 //
-// 监控三件套：Reddit 帖评论区盯守；Clarity「0 点击+<3s+页面已隐藏」指纹占比；
-// Adsterra 后台分 unit CPM 周对账。
+// 移动端（≤768px）：Native 2×2 隐藏（法老拍板：卡占 390px 屏过高 + 触屏误点率高 +
+// 创意混杂观感差），改为单条 300×250（A 方案：诚实 IAB 形态 + 标签 + 简介后首屏可视）。
+//
+// 位置（法老拍板 2026-10-21）：H1+简介段之后，与最近 cta-box/可点元素物理隔离。
+// 标签：Advertisement 置顶（误点抗辩 + 合规）。
 //
 // 红线不变：游戏页/首页/?embed=1 不注入；pictomino/game.html 禁用本组件。
-// 移动端（≤768px）display:none 隐藏——Native 移动 CPM $0.64 vs 桌面 $2.28 且
-// 15 天仅 53 imp/$0.17，2×2 卡片占 390px 屏过高 + 触屏误点率高（2026-10-21 法老拍板）。
+// 监控三件套：Reddit 帖评论区盯守；Clarity「0 点击+<3s+页面已隐藏」指纹占比；
+// Adsterra 分 unit CPM 周对账（Native 应 ≥$3 才算位置成立）。
 const { native = false } = Astro.props;
 ---
 {native && (
   <div class="adsterra-slot" aria-hidden="true">
     <div class="adsterra-label">Advertisement</div>
     <div id="container-da224f8ab8a18845cf7b27479830ecfb"></div>
+  </div>
+)}
+{native && (
+  <div class="adsterra-mob" aria-hidden="true">
+    <span class="adsterra-mob__label">Advertisement</span>
+    <div class="adsterra-mob__slot"></div>
   </div>
 )}
 {native && (
@@ -34,11 +45,50 @@ const { native = false } = Astro.props;
   })();
   </script>
 )}
+{native && (
+  <script is:inline>
+  (function () {
+    if (new URLSearchParams(location.search).has('embed')) return;
+    var KEY = 'c3072bbbf851bb748d0bc833da23e21e';
+    var SRC = 'https://bauval.org/22/' + KEY;
+    var slot = document.querySelector('.adsterra-mob__slot');
+    if (!slot || slot.childElementCount > 0) return;
+    // 与 SideAd/InContentAd 共用 __gpAdChain 串行注入（set atOptions → invoke → 等 load）
+    window.__gpAdChain = window.__gpAdChain || Promise.resolve();
+    window.__gpAdChain = window.__gpAdChain.then(function () {
+      return new Promise(function (resolve) {
+        if (!slot.isConnected || slot.childElementCount > 0) return resolve();
+        window.atOptions = { 'key': KEY, 'format': 'iframe', 'height': 250, 'width': 300, 'params': {} };
+        var s = document.createElement('script');
+        s.src = SRC;
+        s.async = false;
+        s.addEventListener('load', resolve);
+        s.addEventListener('error', resolve);
+        slot.appendChild(s);
+      });
+    });
+  })();
+  </script>
+)}
 
 <style>
   .adsterra-slot { margin: 1.5rem 0; }
   .adsterra-label { font-size: 10px; color: #999; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 4px; }
+  .adsterra-mob {
+    width: 300px; height: 250px; margin: 1.5rem auto;
+    background: #FFF8E6; border: 1.5px dashed #E8D5B5; border-radius: 10px;
+    position: relative; overflow: hidden;
+  }
+  .adsterra-mob__label {
+    position: absolute; top: 0; left: 0; z-index: 1;
+    font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #C9B48F; background: #FBF1DC; padding: 2px 7px; border-radius: 0 0 6px 0;
+  }
+  .adsterra-mob__slot { width: 300px; height: 250px; }
   @media (max-width: 768px) {
-    .adsterra-slot { display: none; }
+    .adsterra-slot { display: none; }   /* Native 仅桌面 */
+  }
+  @media (min-width: 769px) {
+    .adsterra-mob { display: none; }    /* 300×250 仅移动 */
   }
 </style>
