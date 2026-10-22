@@ -3,9 +3,12 @@
 // 仅 ≥1350px 渲染（2026-10-16 从 1200 上调：1200-1350 的笔记本 gutter 放不下"离内容 32px"的侧栏，
 // 强塞=贴脸，Reddit 玩家实测误点开新标签）；内容列 ≤840px，两侧缝 32px
 // 单元代码见 .adsterra/banner-160x600.snippet.md；embed 模式下不渲染
+// 2026-10-22 起注入前过 AdGate（geo 黑名单 CN/HK + bot UA，fail-open）
+import AdGate from './AdGate.astro';
 const invokeKey = '309484c05af1066efb6f321317c94311';
 const invokeHost = 'https://www.highrevenueformat.com';
 ---
+<AdGate />
 <div class="gp-side-ad gp-side-ad--left" aria-hidden="true"></div>
 <div class="gp-side-ad gp-side-ad--right" aria-hidden="true"></div>
 <script is:inline>
@@ -32,8 +35,10 @@ const invokeHost = 'https://www.highrevenueformat.com';
       });
     });
   }
-  fill('left');
-  fill('right');
+  // 广告前置闸（AdGate）：geo 黑名单/bot 不注入，两个 slot 一起闸
+  window.__gpGeoGate.then(function (allow) {
+    if (allow) { fill('left'); fill('right'); }
+  });
 })();
 </script>
 <style>
