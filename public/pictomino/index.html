@@ -649,7 +649,7 @@ document.getElementById('gt-sound-btn').addEventListener('click', function(){
 </script>
 <script>
 // 排行榜（pictomino daily 按套计成绩，今日 top 20）
-fetch('/api/leaderboard?game=pictomino&date=' + new Date().toISOString().split('T')[0]).then(r=>r.ok?r.json():null).then(data=>{
+fetch('/api/leaderboard?game=pictomino&date=' + new Date().toISOString().split('T')[0] + '&_=' + Date.now()).then(r=>r.ok?r.json():null).then(data=>{
   const list=document.getElementById('lb-list');
   if(!list||!data)return;
   const entries=data.entries||[];
@@ -658,7 +658,7 @@ fetch('/api/leaderboard?game=pictomino&date=' + new Date().toISOString().split('
  if(!entries.length){list.innerHTML='<p style="text-align:center;font-size:.85rem;color:var(--muted)">Be the first cat today!</p>';return;}
   const medal=r=>r===1?'🥇':r===2?'🥈':r===3?'🥉':'#'+r;
   list.innerHTML=entries.map(e=>{
-    const name=String(e.name||'Anonymous Cat').replace(/[<>&]/g,'');
+    const name=String(e.name||'Anonymous Cat').replace(/[<>&]/g,'')+(e.guest?' · guest':'');
     const t=Math.round(e.timeMs/1000),clock=Math.floor(t/60)+':'+String(t%60).padStart(2,'0');
     return '<div style="display:flex;justify-content:space-between;padding:.45rem .6rem;border-bottom:1px solid var(--peach);font-size:.9rem"><span style="font-weight:800;color:var(--ink)">'+medal(e.rank)+' '+name+'</span><span style="color:var(--pink);font-weight:800">'+clock+'</span></div>';
   }).join('');

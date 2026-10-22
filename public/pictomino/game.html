@@ -637,12 +637,24 @@ function ptSyncOnLoad() {
     }).catch(() => {});
   }).catch(() => {});
 }
+// 游客身份兜底（与 funnel-track 同口径：ls → ss → 内存）
+function ptGetAnonId() {
+  try { var ls = localStorage.getItem('gp_anon_id'); if (ls) return ls; } catch (e) {}
+  try { var ss = sessionStorage.getItem('gp_anon_id'); if (ss) return ss; } catch (e) {}
+  var fresh = 'anon-' + (window.crypto && crypto.randomUUID ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2));
+  try { localStorage.setItem('gp_anon_id', fresh); } catch (e) {
+    try { sessionStorage.setItem('gp_anon_id', fresh); } catch (e2) {}
+  }
+  return fresh;
+}
 function ptSyncWin(state, elapsedSeconds) {
-  if (!currentUser) return;
-  ptFetch('/api/progress', { method: 'POST', headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ date: ptToday(), streak: state.streak || 0, bestStreak: state.bestStreak || 0, bestTime: state.bestTime != null ? state.bestTime * 1000 : null }) }).catch(() => {});
+  if (currentUser) {
+    ptFetch('/api/progress', { method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ date: ptToday(), streak: state.streak || 0, bestStreak: state.bestStreak || 0, bestTime: state.bestTime != null ? state.bestTime * 1000 : null }) }).catch(() => {});
+  }
+  // 榜单：登录 cookie 优先；游客带 anonId 上榜（服务端定性，2026-10-22）
   ptFetch('/api/leaderboard', { method: 'POST', headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ game: 'pictomino', date: ptToday(), timeMs: Math.round(elapsedSeconds * 1000) }) }).catch(() => {});
+    body: JSON.stringify({ game: 'pictomino', date: ptToday(), timeMs: Math.round(elapsedSeconds * 1000), anonId: ptGetAnonId() }) }).catch(() => {});
 }
 ptSyncOnLoad();
 
