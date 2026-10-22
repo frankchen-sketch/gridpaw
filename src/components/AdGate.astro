@@ -1,0 +1,26 @@
+---
+// AdGate — 广告注入前置闸（2026-10-22）：geo 黑名单 + bot UA，fail-open
+// 在被 InContentAd / SideAd / AdSlot(native) 引入，必须放在各广告脚本之前（inline 脚本按文档顺序执行）。
+// 拦什么：CN+HK（10/14-22 后台实测全零收入，HK 133 imp=自测/爬虫污染主源）+ 爬虫 UA。
+// 不拦什么：Iran/Czech/PH 留观察；US/UK/CA/AU premium 永不拦（US 贡献 74% 收入，挡错=自杀）。
+// fail-open：/api/geo 挂了/超时 → 放行（宁多计 imp 不错杀 premium）。
+// window.__gpGeoGate: Promise<boolean>，resolve(true)=放行；幂等，重复引入安全。
+// 名单调整：改这里 BLOCKED 一处即可（三组件共用本闸，别在组件里再写名单）。
+---
+<script is:inline>
+(function () {
+  if (window.__gpGeoGate) return;
+  var BOT = /bot|crawl|spider|headless|python|curl|wget|monitor/i;
+  var BLOCKED = { CN: 1, HK: 1 };
+  window.__gpGeoGate = new Promise(function (resolve) {
+    var done = false;
+    var fin = function (allow) { if (!done) { done = true; resolve(allow); } };
+    setTimeout(function () { fin(true); }, 2000); // fail-open：geo 超时 2s 放行
+    if (BOT.test(navigator.userAgent || '')) return fin(false);
+    fetch('/api/geo', { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (g) { fin(!(g && g.country && BLOCKED[g.country])); })
+      .catch(function () { fin(true); });
+  });
+})();
+</script>

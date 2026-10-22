@@ -20,6 +20,8 @@
 // 红线不变：游戏页/首页/?embed=1 不注入；pictomino/game.html 禁用本组件。
 // 监控三件套：Reddit 帖评论区盯守；Clarity「0 点击+<3s+页面已隐藏」指纹占比；
 // Adsterra 分 unit CPM 周对账（Native 应 ≥$3 才算位置成立）。
+// 2026-10-22 起注入前过 AdGate（geo 黑名单 CN/HK + bot UA，fail-open）。
+import AdGate from './AdGate.astro';
 const { native = false } = Astro.props;
 ---
 {native && (
@@ -34,14 +36,20 @@ const { native = false } = Astro.props;
     <div class="adsterra-mob__slot"></div>
   </div>
 )}
+{native && <AdGate />}
 {native && (
   <script is:inline data-cfasync="false">
   (function () {
     if (new URLSearchParams(location.search).has('embed')) return;
-    var s = document.createElement('script');
-    s.src = 'https://pl31418168.profitableratecpmnetwork.com/da224f8ab8a18845cf7b27479830ecfb/invoke.js';
-    s.async = true;
-    document.currentScript.parentNode.appendChild(s);
+    // 广告前置闸（AdGate）：geo 黑名单/bot 不注入；async 回调里 currentScript 已失效，先存 parentNode
+    var holder = document.currentScript.parentNode;
+    window.__gpGeoGate.then(function (allow) {
+      if (!allow) return;
+      var s = document.createElement('script');
+      s.src = 'https://pl31418168.profitableratecpmnetwork.com/da224f8ab8a18845cf7b27479830ecfb/invoke.js';
+      s.async = true;
+      holder.appendChild(s);
+    });
   })();
   </script>
 )}
@@ -55,18 +63,22 @@ const { native = false } = Astro.props;
     if (!slot || slot.childElementCount > 0) return;
     // 与 SideAd/InContentAd 共用 __gpAdChain 串行注入（set atOptions → invoke → 等 load）
     window.__gpAdChain = window.__gpAdChain || Promise.resolve();
-    window.__gpAdChain = window.__gpAdChain.then(function () {
-      return new Promise(function (resolve) {
-        if (!slot.isConnected || slot.childElementCount > 0) return resolve();
-        window.atOptions = { 'key': KEY, 'format': 'iframe', 'height': 250, 'width': 300, 'params': {} };
-        var s = document.createElement('script');
-        s.src = SRC;
-        s.async = false;
-        s.addEventListener('load', resolve);
-        s.addEventListener('error', resolve);
-        slot.appendChild(s);
+    function chain() {
+      window.__gpAdChain = window.__gpAdChain.then(function () {
+        return new Promise(function (resolve) {
+          if (!slot.isConnected || slot.childElementCount > 0) return resolve();
+          window.atOptions = { 'key': KEY, 'format': 'iframe', 'height': 250, 'width': 300, 'params': {} };
+          var s = document.createElement('script');
+          s.src = SRC;
+          s.async = false;
+          s.addEventListener('load', resolve);
+          s.addEventListener('error', resolve);
+          slot.appendChild(s);
+        });
       });
-    });
+    }
+    // 广告前置闸（AdGate）：geo 黑名单/bot 不注入
+    window.__gpGeoGate.then(function (allow) { if (allow) chain(); });
   })();
   </script>
 )}
