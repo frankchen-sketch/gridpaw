@@ -177,7 +177,7 @@ const GAMES = [
     </div>
 
     <p class="page-note">
-      Only signed-in solves are ranked. <a href="/api/auth/login?next=/leaderboard/">Sign in</a> to appear on the board.
+      Guests are ranked too — you'll appear under a cat name like “Mochi&nbsp;#42”. <a href="/api/auth/login?next=/leaderboard/">Sign in</a> to play under your own name.
     </p>
   </main>
 
@@ -222,13 +222,15 @@ const GAMES = [
           '<span class="lb-name">' + escapeHtml(name) + '</span></span>' +
           '<span class="lb-val ' + cls + '">' + valueHtml + '</span></div>';
       }
+      // 游客行展示名加标记（服务端 guest:true）
+      function dispName(r) { return r.guest ? r.name + ' · guest' : r.name; }
       function emptyState(game, kind) {
         var label = NAMES[game] || game;
         var line = kind === 'fastest'
           ? 'Be the first cat on the ' + escapeHtml(label) + ' leaderboard today! 🐈'
           : 'No streak on ' + escapeHtml(label) + ' yet — solve two days in a row to start one 🔥';
         return '<div class="lb-empty"><p class="t1">' + line + '</p>' +
-          '<p class="t2">Scoring coming soon</p></div>';
+          '<p class="t2">No sign-in needed — solve the puzzle and you\'re on the board</p></div>';
       }
       function medal(i) {
         return i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : String(i + 1);
@@ -244,14 +246,14 @@ const GAMES = [
         var rows = (data && data.entries) || [];
         if (!rows.length) { fastestEl.innerHTML = emptyState(game, 'fastest'); return; }
         fastestEl.innerHTML = rows.map(function (r, i) {
-          return row(medal(i), r.name, fmtTime(r.timeMs), 'time');
+          return row(medal(i), dispName(r), fmtTime(r.timeMs), 'time');
         }).join('');
       }
       function renderStreak(game, data) {
         var rows = (data && data.entries) || [];
         if (!rows.length) { streakEl.innerHTML = emptyState(game, 'streak'); return; }
         streakEl.innerHTML = rows.map(function (r, i) {
-          return row(medal(i), r.name, '🔥 ' + r.streak, 'streak');
+          return row(medal(i), dispName(r), '🔥 ' + r.streak, 'streak');
         }).join('');
       }
 
@@ -260,9 +262,10 @@ const GAMES = [
         fastestEl.innerHTML = '<div class="lb-loading">Loading…</div>';
         streakEl.innerHTML = '<div class="lb-loading">Loading…</div>';
         var q = '?game=' + encodeURIComponent(game);
+        var ts = Date.now(); // 防自定义域边缘缓存旧响应
         Promise.all([
-          fetchJson('/api/leaderboard' + q + '&date=' + today()),
-          fetchJson('/api/leaderboard' + q + '&type=streak')
+          fetchJson('/api/leaderboard' + q + '&date=' + today() + '&_=' + ts),
+          fetchJson('/api/leaderboard' + q + '&type=streak&_=' + ts)
         ]).then(function (res) {
           if (mine !== seq) return; // 快速切换游戏时丢弃过期响应
           renderFastest(game, res[0]);

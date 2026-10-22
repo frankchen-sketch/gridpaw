@@ -2181,22 +2181,34 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     }).catch(function() {});
   }
 
+  // 游客身份兜底（与 funnel-track 同口径：ls → ss → 内存）
+  function getAnonId() {
+    try { var ls = localStorage.getItem('gp_anon_id'); if (ls) return ls; } catch (e) {}
+    try { var ss = sessionStorage.getItem('gp_anon_id'); if (ss) return ss; } catch (e) {}
+    var fresh = 'anon-' + (window.crypto && crypto.randomUUID ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2));
+    try { localStorage.setItem('gp_anon_id', fresh); } catch (e) {
+      try { sessionStorage.setItem('gp_anon_id', fresh); } catch (e2) {}
+    }
+    return fresh;
+  }
   function syncWinToCloud(state, elapsedSeconds) {
-    if (!currentUser) return;
-    fetchWithTimeout('/api/progress', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        date: getToday(),
-        streak: state.streak || 0,
-        bestStreak: state.bestStreak || 0,
-        bestTime: state.bestTime != null ? state.bestTime * 1000 : null
-      })
-    }).catch(function() {});
+    if (currentUser) {
+      fetchWithTimeout('/api/progress', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          date: getToday(),
+          streak: state.streak || 0,
+          bestStreak: state.bestStreak || 0,
+          bestTime: state.bestTime != null ? state.bestTime * 1000 : null
+        })
+      }).catch(function() {});
+    }
+    // 榜单：登录 cookie 优先；游客带 anonId 上榜（服务端定性，2026-10-22）
     fetchWithTimeout('/api/leaderboard', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ game: 'shikaku', date: getToday(), timeMs: Math.round(elapsedSeconds * 1000) })
+      body: JSON.stringify({ game: 'shikaku', date: getToday(), timeMs: Math.round(elapsedSeconds * 1000), anonId: getAnonId() })
     }).then(function() { renderLeaderboard(); }).catch(function() {});
   }
   function renderLeaderboard() {
@@ -2214,7 +2226,7 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
       if (panel) panel.style.display = '';
     }
     showCard(); // 默认：Challenge 卡（空排行榜不再占黄金位）
-    fetchWithTimeout('/api/leaderboard?game=shikaku&date=' + getToday()).then(function(r) {
+    fetchWithTimeout('/api/leaderboard?game=shikaku&date=' + getToday() + '&_=' + Date.now()).then(function(r) {
       if (!r.ok) return null;
       return r.json();
     }).then(function(data) {
@@ -2231,7 +2243,7 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
       for (var i = 0; i < entries.length; i++) {
         var e = entries[i];
         var medal = e.rank === 1 ? '🥇' : e.rank === 2 ? '🥈' : e.rank === 3 ? '🥉' : '#' + e.rank;
-        var safeName = String(e.name || 'Anonymous Cat').replace(/[<>&]/g, '');
+        var safeName = String(e.name || 'Anonymous Cat').replace(/[<>&]/g, '') + (e.guest ? ' · guest' : '');
         html += '<div style="display:flex;justify-content:space-between;padding:.4rem .6rem;border-bottom:1px solid var(--gp-lilac-soft);font-size:.85rem">'
           + '<span style="font-weight:700;color:var(--gp-ink)">' + medal + ' ' + safeName + '</span>'
           + '<span style="color:var(--gp-pink);font-weight:700">' + msToClock(e.timeMs) + '</span></div>';

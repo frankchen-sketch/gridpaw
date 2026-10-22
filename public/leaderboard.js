@@ -1,7 +1,7 @@
 /* GridPaw 全站 leaderboard 客户端（共享）
  * 用法：
  *   <script is:inline src="/leaderboard.js"></script>
- *   胜利时： GPLeaderboard.submit('<game>', timeMs)   — 未登录静默跳过
+ *   胜利时： GPLeaderboard.submit('<game>', timeMs)   — 登录/游客都上报（游客用 anonId，2026-10-22）
  *   面板：   GPLeaderboard.mount('<game>', document.getElementById('gp-lb'))
  */
 (function () {
@@ -9,6 +9,17 @@
   var GAME_RE = /^[a-z-]+$/;
   var GAMES = ['shikaku', 'akari', 'kenken', 'binary', 'hashi', 'slitherlink', 'star-battle', 'kakuro', 'nonogram', 'nurikabe'];
   function validGame(g) { return typeof g === 'string' && GAME_RE.test(g) && GAMES.indexOf(g) !== -1; }
+
+  // 游客身份：与 funnel-track.ts / gp-badges.js 同口径（ls → ss → 内存兜底，anon-<uuid>）
+  function getAnonId() {
+    try { var ls = localStorage.getItem('gp_anon_id'); if (ls) return ls; } catch (e) {}
+    try { var ss = sessionStorage.getItem('gp_anon_id'); if (ss) return ss; } catch (e) {}
+    var fresh = 'anon-' + (window.crypto && crypto.randomUUID ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2));
+    try { localStorage.setItem('gp_anon_id', fresh); } catch (e) {
+      try { sessionStorage.setItem('gp_anon_id', fresh); } catch (e2) {}
+    }
+    return fresh;
+  }
 
   function fetchJSON(url) {
     var ctrl = new AbortController();
@@ -27,18 +38,15 @@
   }
 
   var GPLeaderboard = {
-    /** 胜利上报：未登录（me 无 user）静默跳过；失败静默 — 不挡游戏 */
+    /** 胜利上报：登录 cookie 优先；游客带 anonId 上榜（服务端定性）。失败静默 — 不挡游戏 */
     submit: function (game, timeMs) {
       if (!validGame(game) || !Number.isFinite(timeMs)) return Promise.resolve({ skipped: true });
-      return fetchJSON('/api/auth/me').then(function (me) {
-        if (!me || !me.user) return { skipped: true };
-        return fetch('/api/leaderboard', {
-          method: 'POST',
-          credentials: 'same-origin',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ game: game, timeMs: Math.round(timeMs) })
-        }).then(function (r) { return { ok: r.ok }; }).catch(function () { return { ok: false }; });
-      }).catch(function () { return { skipped: true }; });
+      return fetch('/api/leaderboard', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ game: game, timeMs: Math.round(timeMs), anonId: getAnonId() })
+      }).then(function (r) { return { ok: r.ok }; }).catch(function () { return { ok: false }; });
     },
 
     /** 渲染当日榜到容器。未登录/无数据时给引导文案 */
@@ -46,7 +54,8 @@
       if (!container || !validGame(game)) return Promise.resolve();
       container.innerHTML = '<div style="padding:12px;color:#8b7d6f;font-size:.85rem">Loading leaderboard…</div>';
       var today = new Date().toISOString().slice(0, 10);
-      return fetchJSON('/api/leaderboard?game=' + encodeURIComponent(game) + '&date=' + today).then(function (data) {
+      // &_= 防自定义域边缘缓存旧响应（POST 后立即 GET 会读到陈旧榜，2026-10-22 实测）
+      return fetchJSON('/api/leaderboard?game=' + encodeURIComponent(game) + '&date=' + today + '&_=' + Date.now()).then(function (data) {
         var rows = data.entries || [];
         var html = '<div class="gp-lb-head">🏆 Today\'s ' + game.charAt(0).toUpperCase() + game.slice(1) + ' Leaderboard <span class="gp-lb-date">' + data.date + '</span></div>';
         if (!rows.length) {
@@ -60,9 +69,11 @@
           html += '</ol><div class="gp-lb-foot"><a href="/api/auth/login" class="gp-lb-login">Sign in with Google to compete</a></div>';
         }
         container.innerHTML = html;
-        // DOM API 填名字（skill：不用 innerHTML 拼用户数据）
+        // DOM API 填名字（skill：不用 innerHTML 拼用户数据）；游客行加标记
         var nameSpans = container.querySelectorAll('.gp-lb-name');
-        for (var j = 0; j < nameSpans.length; j++) nameSpans[j].textContent = rows[j].name;
+        for (var j = 0; j < nameSpans.length; j++) {
+          nameSpans[j].textContent = rows[j].name + (rows[j].guest ? ' · guest' : '');
+        }
       }).catch(function () {
         container.innerHTML = '<div class="gp-lb-empty">Leaderboard unavailable right now.</div>';
       });

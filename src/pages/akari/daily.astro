@@ -1320,23 +1320,37 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
         }
       } catch (e) { /* 静默降级：纯本地模式 */ }
     }
+    // 游客身份兜底（与 funnel-track 同口径：ls → ss → 内存）
+    function getAnonId() {
+      try { var ls = localStorage.getItem('gp_anon_id'); if (ls) return ls; } catch (e) {}
+      try { var ss = sessionStorage.getItem('gp_anon_id'); if (ss) return ss; } catch (e) {}
+      var fresh = 'anon-' + (window.crypto && crypto.randomUUID ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2));
+      try { localStorage.setItem('gp_anon_id', fresh); } catch (e) {
+        try { sessionStorage.setItem('gp_anon_id', fresh); } catch (e2) {}
+      }
+      return fresh;
+    }
     async function syncWinToCloud(state, elapsedSeconds) {
-      if (!currentUser) return;
+      if (currentUser) {
+        try {
+          await fetchWithTimeout('/api/progress', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+              date: getToday(),
+              streak: state.streak || 0,
+              bestStreak: state.bestStreak || 0,
+              bestTime: (state.bestTime != null) ? state.bestTime * 1000 : null
+            })
+          });
+        } catch (e) { /* 静默 */ }
+      }
+      // 榜单：登录 cookie 优先；游客带 anonId 上榜（服务端定性，2026-10-22）
       try {
-        await fetchWithTimeout('/api/progress', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({
-            date: getToday(),
-            streak: state.streak || 0,
-            bestStreak: state.bestStreak || 0,
-            bestTime: (state.bestTime != null) ? state.bestTime * 1000 : null
-          })
-        });
         await fetchWithTimeout('/api/leaderboard', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ game: 'akari', date: getToday(), timeMs: Math.round(elapsedSeconds * 1000) })
+          body: JSON.stringify({ game: 'akari', date: getToday(), timeMs: Math.round(elapsedSeconds * 1000), anonId: getAnonId() })
         });
         renderLeaderboard();
       } catch (e) { /* 静默 */ }
@@ -1345,7 +1359,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
       const list = document.getElementById('leaderboard-list');
       if (!list) return;
       try {
-        const res = await fetchWithTimeout('/api/leaderboard?game=akari&date=' + getToday());
+        const res = await fetchWithTimeout('/api/leaderboard?game=akari&date=' + getToday() + '&_=' + Date.now());
         if (!res.ok) return;
         const data = await res.json();
         const entries = data.entries || [];
@@ -1356,7 +1370,7 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
         const medal = r => r === 1 ? '🥇' : r === 2 ? '🥈' : r === 3 ? '🥉' : '#' + r;
         list.innerHTML = entries.map(e =>
           '<div style="display:flex;justify-content:space-between;padding:.4rem .6rem;border-bottom:1px solid var(--gp-blush);font-size:.85rem">'
-          + '<span style="font-weight:700;color:var(--gp-brown-900)">' + medal(e.rank) + ' ' + String(e.name || 'Anonymous Cat').replace(/[<>&]/g, '') + '</span>'
+          + '<span style="font-weight:700;color:var(--gp-brown-900)">' + medal(e.rank) + ' ' + String(e.name || 'Anonymous Cat').replace(/[<>&]/g, '') + (e.guest ? ' · guest' : '') + '</span>'
           + '<span style="color:var(--gp-success);font-weight:700">' + msToClock(e.timeMs) + '</span></div>'
         ).join('');
       } catch (e) { /* 静默 */ }
