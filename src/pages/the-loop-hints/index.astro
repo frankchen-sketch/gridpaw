@@ -1,0 +1,319 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import ExtensionPromo from '../../components/ExtensionPromo.astro';
+
+// ---------- 数据源：research/loop-answers/ 下日期最大的档案 ----------
+// 构建期 cwd = 项目根（import.meta.url 在 dist/chunks 里会指错目录）
+const DATA_DIR = path.resolve(process.cwd(), 'research/loop-answers');
+const dataFiles = fs
+  .readdirSync(DATA_DIR)
+  .filter((f) => /^loop-answers-\d{4}-\d{2}-\d{2}\.json$/.test(f))
+  .sort();
+const dataFile = dataFiles[dataFiles.length - 1];
+const data = JSON.parse(fs.readFileSync(path.join(DATA_DIR, dataFile), 'utf8'));
+
+interface LoopItem { pos?: number; alt: string; connection: string }
+interface ArchiveEntry { id: number; date: string; title: string; difficulty: number; loop: LoopItem[] }
+
+const publishedDate: string = data.publishedDate; // "2026-10-22"
+const theme: string = data.title;
+const difficulty: number = data.difficulty;
+const loop: LoopItem[] = data.loop;
+const archive: ArchiveEntry[] = data.archive || [];
+
+const MONTHS_LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+function partsOf(iso: string): { y: number; m: number; d: number } {
+  const [y, m, d] = iso.split('-').map((n: string) => parseInt(n, 10));
+  return { y, m, d };
+}
+function longDate(iso: string): string {
+  const { y, m, d } = partsOf(iso);
+  return `${MONTHS_LONG[m - 1]} ${d}, ${y}`;
+}
+function shortDate(iso: string): string {
+  const { y, m, d } = partsOf(iso);
+  return `${MONTHS_SHORT[m - 1]} ${d}, ${y}`;
+}
+function shiftIso(iso: string, days: number): string {
+  const { y, m, d } = partsOf(iso);
+  const dt = new Date(Date.UTC(y, m - 1, d + days));
+  const mm = String(dt.getUTCMonth() + 1).padStart(2, '0');
+  const dd = String(dt.getUTCDate()).padStart(2, '0');
+  return `${dt.getUTCFullYear()}-${mm}-${dd}`;
+}
+
+const publishedLong = longDate(publishedDate);
+const publishedShort = shortDate(publishedDate);
+const lockedStart = loop[0].alt;
+
+// 环上每一对：loop[i] -> loop[i+1]（末项回绕到锁定起始图）
+const ringPairs = loop.map((item, i) => {
+  const next = loop[(i + 1) % loop.length];
+  return {
+    from: item.alt,
+    to: next.alt,
+    note: item.connection && item.connection.trim() !== ''
+      ? item.connection
+      : `${item.alt} is the locked image — it stays at the top of the ring, so the puzzle is really about finding which image comes right after it.`,
+    locked: i === 0,
+  };
+});
+
+// 昨日答案：archive 中日期早于今日的最大一条
+const yesterdayIso = shiftIso(publishedDate, -1);
+const past = archive
+  .filter((e) => e.date < publishedDate)
+  .sort((a, b) => (a.date < b.date ? 1 : -1));
+const yesterday = past.find((e) => e.date === yesterdayIso) || past[0];
+
+const title = `The Loop Hints & Answer Today (${publishedShort}) | GridPaw`;
+const description = `Today's The Loop answer (${publishedShort}): ${theme}. Progressive hints for every connection, all past answers, plus how to play Britannica's daily puzzle.`;
+
+const OFFICIAL = 'https://www.britannica.com/games/loop?utm_source=gridpaw';
+
+const tips = [
+  {
+    h: 'Find the most obvious pair before you touch the ring',
+    p: 'One loud connection — a shared word, a famous pairing, a visual pun — anchors an arc of the circle and tells you which images belong together. Five checks disappear fast, so place the pair you can explain out loud first, then build outward from it.',
+  },
+  {
+    h: 'Name the link in words, not with your mouse',
+    p: 'Ask "what does this image connect to?" rather than "where does this one go?". If you cannot say the connection in a sentence, your placement is a guess, and guessing is what burns checks. The locked image gives you one free fact: whatever it links to must sit right next to it.',
+  },
+  {
+    h: 'Read the orange border as a "flip this run" signal',
+    p: 'Orange means relatively correct: the image connects properly to its neighbors, but it is not in its final position. That almost always means a run of images is in reverse order — reverse that segment instead of scattering its pieces.',
+  },
+  {
+    h: 'Direction is free — both ways around the ring count',
+    p: 'Clockwise and counterclockwise arrangements are both accepted, so do not spend a check flipping the whole ring. Spend your checks on which image sits between which two, then let direction sort itself out.',
+  },
+  {
+    h: 'Test a whole arrangement, not fragments',
+    p: 'Checking a complete ring returns green, orange and red for every image at once, which is far more information per check than nudging one piece. With five checks a day, one full arrangement beats four partial ones.',
+  },
+];
+
+const faqs = [
+  {
+    q: 'What is The Loop?',
+    a: 'The Loop is a free daily picture puzzle from Britannica. Each day you get a ring of images that must be arranged in a circle so that every adjacent pair connects — through wordplay, visual similarity, idioms, or cultural references. One image is locked at the top of the ring; you drag the rest into place and check your arrangement up to five times.',
+  },
+  {
+    q: 'How many images are in The Loop each day?',
+    a: `Twelve. Today's ring (${publishedShort}) has 12 images, beginning with ${lockedStart}, and the same count runs across the archive — every puzzle in the past-answers list has exactly 12 images.`,
+  },
+  {
+    q: 'How many checks do you get in The Loop?',
+    a: 'Five per puzzle. Every press of Check spends one, and the colors you get back are the only feedback you receive, so it pays to arrange the whole ring confidently before confirming.',
+  },
+  {
+    q: 'Does The Loop have to be solved clockwise?',
+    a: 'No. A ring arranged clockwise or counterclockwise both count as correct — if the neighbors are right, the direction does not matter. That also means the orange feedback is about order inside a run, not about which way around the circle you started.',
+  },
+  {
+    q: 'What does the orange border mean in The Loop?',
+    a: 'Orange means relatively correct: that image connects to its neighbors properly but is not yet in its final position. In practice it usually means a run of images needs reversing — the connections already work, only the order is flipped.',
+  },
+  {
+    q: 'Is The Loop free to play?',
+    a: 'Yes. The Loop is free on Britannica\'s games section, with a new puzzle each day that resets daily. No download is needed, and once the puzzle ends you can read the explanation behind every connection, win or lose.',
+  },
+];
+
+const faqJsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/the-loop-hints"
+    type="article"
+    breadcrumbTitle="The Loop Hints & Answer"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --lp-primary: #D97706;
+      --lp-bg: #FFFAF5;
+      --lp-border: #F0DFD2;
+      --lp-text: #42352E;
+      --lp-light: #A08D80;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--lp-bg); color: var(--lp-text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--lp-light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--lp-light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--lp-primary); }
+    .seo-section { max-width: 840px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; color: var(--lp-text); margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; color: var(--lp-text); margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--lp-primary); }
+    .seo-section h3 { font-size: 1.1rem; color: var(--lp-text); margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--lp-primary); }
+    .lede { font-size: 1rem; color: #4a3d35; line-height: 1.75; margin: 0.5rem 0 0.25rem; }
+    .today-meta { display: inline-block; font-size: 0.95rem; font-weight: 800; color: var(--lp-text); background: #fff; border: 1.5px solid var(--lp-border); border-radius: 999px; padding: 0.35rem 0.9rem; margin: 0.2rem 0 0.8rem; }
+    .today-meta span { color: var(--lp-primary); }
+    .source-note { font-size: 0.82rem; color: var(--lp-light); font-style: italic; background: #fff; border: 1px solid var(--lp-border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .source-note a { color: var(--lp-primary); font-style: normal; }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--lp-light); }
+    .seo-footer a { color: var(--lp-light); }
+    .seo-footer a:hover { color: var(--lp-primary); }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: white; border: 2px dashed var(--lp-primary); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--lp-text); }
+    .cta-box a { color: var(--lp-primary); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+
+    .hints { counter-reset: hint; list-style: none; padding-left: 0; }
+    .hints li { display: flex; gap: 0.7rem; align-items: flex-start; background: #fff; border: 1.5px solid var(--lp-border); border-radius: 10px; padding: 0.6rem 0.8rem; margin-bottom: 0.5rem; }
+    .hints li::before { counter-increment: hint; content: counter(hint); flex: 0 0 1.7rem; height: 1.7rem; border-radius: 50%; background: #FBF3EA; color: var(--lp-primary); font-weight: 900; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+    .hints b { color: var(--lp-text); }
+    .hints .pair { display: block; font-weight: 800; color: var(--lp-text); }
+    .hints .note { display: block; font-size: 0.93rem; color: #5b4a3f; }
+
+    .answerbox { background: #fff; border: 1.5px solid var(--lp-border); border-radius: 12px; padding: 0.9rem 1.1rem; }
+    .answerbox ol { counter-reset: ring; list-style: none; padding-left: 0; margin: 0.5rem 0 0.2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem 1rem; }
+    .answerbox li { display: flex; gap: 0.5rem; margin: 0; font-size: 0.95rem; }
+    .answerbox li::before { counter-increment: ring; content: counter(ring); color: var(--lp-primary); font-weight: 900; min-width: 1.2rem; }
+    .answerbox li.first { font-weight: 800; color: var(--lp-text); }
+    .spoiler { font-size: 0.85rem; color: var(--lp-light); font-style: italic; }
+    @media (max-width: 560px) { .answerbox ol { grid-template-columns: 1fr; } }
+
+    .yesterday { background: #fff; border: 1.5px solid var(--lp-border); border-radius: 12px; padding: 0.9rem 1.1rem; margin: 0.8rem 0; }
+    .yesterday h3 { margin-top: 0; }
+    .yesterday ol { columns: 2; column-gap: 1.4rem; }
+    @media (max-width: 560px) { .yesterday ol { columns: 1; } }
+
+    .strat { display: grid; grid-template-columns: 1fr; gap: 0.55rem; margin: 0.8rem 0; }
+    .st { background: #fff; border: 1.5px solid var(--lp-border); border-radius: 10px; padding: 0.65rem 0.8rem; line-height: 1.6; font-size: 0.95rem; color: #555; }
+    .st b { color: var(--lp-text); display: block; margin-bottom: 0.15rem; }
+
+    .faq details { background: #fff; border: 1.5px solid var(--lp-border); border-radius: 10px; padding: 0.6rem 0.85rem; margin-bottom: 0.5rem; }
+    .faq summary { cursor: pointer; font-weight: 800; color: var(--lp-text); }
+    .faq details p { margin: 0.45rem 0 0.1rem; }
+
+    .nextgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin: 0.8rem 0; }
+    .nextcard { background: #fff; border: 1.5px solid var(--lp-border); border-radius: 10px; padding: 0.7rem 0.85rem; font-size: 0.9rem; line-height: 1.55; color: #555; }
+    .nextcard b { display: block; color: var(--lp-text); margin-bottom: 0.15rem; }
+    @media (max-width: 560px) { .nextgrid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; The Loop Hints &amp; Answer</nav>
+
+  <main class="seo-section">
+    <h1>The Loop Hints &amp; Answer for Today ({publishedLong})</h1>
+    <p class="today-meta">Today's puzzle starts with: <span>{lockedStart}</span> · Difficulty {difficulty}/5</p>
+
+    <p class="lede">Stuck on today's ring? Below are hints for every pair in The Loop — read them in order and stop wherever you want, because each one gives away a little more than the last. The full answer for today, yesterday's solution, and the whole archive are further down.</p>
+
+    <p class="source-note">Connection notes from <a href={OFFICIAL} rel="noopener">Britannica's official The Loop game</a>. Unofficial fan-made helper page — not affiliated with Britannica.</p>
+
+    <div class="cta-box">
+      <p>Want to solve it yourself first?</p>
+      <p><a href={OFFICIAL} rel="noopener">Play today's puzzle on Britannica →</a></p>
+    </div>
+
+    <h2>Today's Hints, <span class="accent">Pair by Pair</span></h2>
+    <p>Each hint names two images that sit next to each other on the finished ring, with the connection between them. The ring closes back on itself, so the last pair links the final image to the locked one.</p>
+    <ol class="hints">
+      {ringPairs.map((p) => (
+        <li>
+          <span>
+            <span class="pair">{p.from} → {p.to}{p.locked ? ' (locked start)' : ''}</span>
+            <span class="note">{p.note}</span>
+          </span>
+        </li>
+      ))}
+    </ol>
+
+    <h2>Today's Answer: The Full Ring</h2>
+    <p class="spoiler">Spoilers below — the complete {publishedShort} solution, in ring order starting from the locked image.</p>
+    <div class="answerbox">
+      <p><strong>Theme: {theme}</strong> · Difficulty {difficulty}/5 · {loop.length} images</p>
+      <ol>
+        {loop.map((item, i) => (
+          <li class={i === 0 ? 'first' : ''}>{item.alt}{i === 0 ? ' (locked)' : ''}</li>
+        ))}
+      </ol>
+    </div>
+
+    {yesterday && (
+      <section>
+        <h2>Yesterday's Answer ({shortDate(yesterday.date)})</h2>
+        <div class="yesterday">
+          <h3>{yesterday.title}</h3>
+          <p class="spoiler">Difficulty {yesterday.difficulty}/5 · {yesterday.loop.length} images, in ring order.</p>
+          <ol>
+            {yesterday.loop.map((item) => (
+              <li>{item.alt}</li>
+            ))}
+          </ol>
+        </div>
+        <p><a href="/the-loop-past-answers/">See all past answers →</a></p>
+      </section>
+    )}
+
+    <h2>What Is The Loop?</h2>
+    <p>The Loop is Britannica's daily picture puzzle. Every day you get {loop.length} images and a ring to fill: arrange them in a circle so that each image connects to the ones on either side of it. Connections come from wordplay, shared words, visual resemblance, idioms, and cultural references, which is why a ring can look impossible until one pair suddenly clicks.</p>
+    <p>One image is locked at the top of the ring, and you drag the rest into place. Press Check and every image gets a color: green for correct and final, orange for relatively correct (right neighbors, wrong position), red for wrong. You get five checks per puzzle, and a ring built clockwise or counterclockwise both count as correct. The game is free, resets daily, and explains every connection once the puzzle ends.</p>
+
+    <h2>Tips for Solving The Loop</h2>
+    <div class="strat">
+      {tips.map((t) => (
+        <div class="st"><b>{t.h}</b>{t.p}</div>
+      ))}
+    </div>
+
+    <div class="nextgrid">
+      <div class="nextcard"><b>The Loop: how to play</b>Rules, the full color-feedback table, six solving strategies and a free loop puzzle you can play in the browser. <a href="/the-loop-puzzle/">Read the guide</a>.</div>
+      <div class="nextcard"><b>Past answers archive</b>Every previous The Loop puzzle by date, with the full solution chain for each one. <a href="/the-loop-past-answers/">Browse the archive</a>.</div>
+    </div>
+
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq">
+      {faqs.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+
+    <div class="cta-box">
+      <p>Want a loop you can actually draw?</p>
+      <p><a href="/slitherlink/">Play Slitherlink on GridPaw →</a></p>
+      <p style="font-size:0.85rem;font-weight:600;color:#8a7a6f;">Read the full rules in <a href="/the-loop-puzzle/">The Loop guide →</a></p>
+    </div>
+  </main>
+
+  <section class="seo-section" style="border-top:2px solid #e7dacf;padding-top:1rem;margin-top:2rem">
+    <ExtensionPromo />
+    <p class="seo-footer">GridPaw · free cat-themed logic puzzles in your browser · <a href="/">Home</a> · <a href="/the-loop-puzzle/">The Loop guide</a> · <a href="/the-loop-past-answers/">Past answers</a> · <a href="/slitherlink/">Slitherlink</a></p>
+  </section>
+</body>
+</html>

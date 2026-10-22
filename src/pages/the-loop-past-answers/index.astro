@@ -1,0 +1,144 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import ExtensionPromo from '../../components/ExtensionPromo.astro';
+
+// ---------- 数据源：research/loop-answers/ 下日期最大的档案 ----------
+// 构建期 cwd = 项目根（import.meta.url 在 dist/chunks 里会指错目录）
+const DATA_DIR = path.resolve(process.cwd(), 'research/loop-answers');
+const dataFiles = fs
+  .readdirSync(DATA_DIR)
+  .filter((f) => /^loop-answers-\d{4}-\d{2}-\d{2}\.json$/.test(f))
+  .sort();
+const dataFile = dataFiles[dataFiles.length - 1];
+const data = JSON.parse(fs.readFileSync(path.join(DATA_DIR, dataFile), 'utf8'));
+
+interface LoopItem { pos?: number; alt: string; connection: string }
+interface ArchiveEntry { id: number; date: string; title: string; difficulty: number; loop: LoopItem[] }
+
+const publishedDate: string = data.publishedDate;
+const MONTHS_LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+function longDate(iso: string): string {
+  const [y, m, d] = iso.split('-').map((n: string) => parseInt(n, 10));
+  return `${MONTHS_LONG[m - 1]} ${d}, ${y}`;
+}
+function shortDate(iso: string): string {
+  const [y, m, d] = iso.split('-').map((n: string) => parseInt(n, 10));
+  return `${MONTHS_SHORT[m - 1]} ${d}, ${y}`;
+}
+
+// 只发布已过去的谜题：数据档案里含明日一条，构建时按 publishedDate 截断，避免提前泄露
+const archive: ArchiveEntry[] = (data.archive || [])
+  .filter((e: ArchiveEntry) => e.date <= publishedDate)
+  .sort((a: ArchiveEntry, b: ArchiveEntry) => (a.date < b.date ? 1 : -1));
+
+const title = 'The Loop Past Answers & Archive (Updated Daily) | GridPaw';
+const description = 'Every The Loop answer and solution chain, updated daily. Browse past Britannica Loop puzzles by date with all image connections explained.';
+
+const OFFICIAL = 'https://www.britannica.com/games/loop?utm_source=gridpaw';
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/the-loop-past-answers"
+    type="article"
+    breadcrumbTitle="The Loop Past Answers"
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --lp-primary: #D97706;
+      --lp-bg: #FFFAF5;
+      --lp-border: #F0DFD2;
+      --lp-text: #42352E;
+      --lp-light: #A08D80;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--lp-bg); color: var(--lp-text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--lp-light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--lp-light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--lp-primary); }
+    .seo-section { max-width: 840px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; color: var(--lp-text); margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.25rem; color: var(--lp-text); margin: 1.6rem 0 0.4rem; line-height: 1.3; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.3rem; line-height: 1.6; }
+    .seo-section a { color: var(--lp-primary); }
+    .lede { font-size: 1rem; color: #4a3d35; line-height: 1.75; margin: 0.5rem 0 0.25rem; }
+    .source-note { font-size: 0.82rem; color: var(--lp-light); font-style: italic; background: #fff; border: 1px solid var(--lp-border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .source-note a { color: var(--lp-primary); font-style: normal; }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--lp-light); }
+    .seo-footer a { color: var(--lp-light); }
+    .seo-footer a:hover { color: var(--lp-primary); }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: white; border: 2px dashed var(--lp-primary); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--lp-text); }
+    .cta-box a { color: var(--lp-primary); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .toplink { font-size: 0.95rem; font-weight: 800; margin: 0.2rem 0 0.6rem; }
+
+    .entry { background: #fff; border: 1.5px solid var(--lp-border); border-radius: 12px; padding: 0.85rem 1.1rem; margin: 0.7rem 0; }
+    .entry h2 { margin: 0 0 0.15rem; font-size: 1.1rem; }
+    .entry h2 .date { color: var(--lp-light); font-weight: 700; font-size: 0.85rem; display: block; }
+    .entry h2 .theme { color: var(--lp-text); }
+    .entry .meta { font-size: 0.82rem; color: var(--lp-light); margin: 0.1rem 0 0.3rem; }
+    .entry ol { counter-reset: ring; list-style: none; padding-left: 0; margin: 0.3rem 0 0.1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.25rem 1rem; }
+    .entry li { display: flex; gap: 0.5rem; margin: 0; font-size: 0.93rem; }
+    .entry li::before { counter-increment: ring; content: counter(ring); color: var(--lp-primary); font-weight: 900; min-width: 1.2rem; }
+    .entry li.first { font-weight: 800; color: var(--lp-text); }
+    @media (max-width: 560px) { .entry ol { grid-template-columns: 1fr; } }
+    .badge { display: inline-block; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; color: #fff; background: var(--lp-primary); border-radius: 999px; padding: 0.1rem 0.5rem; vertical-align: 2px; margin-left: 0.35rem; }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; The Loop Past Answers</nav>
+
+  <main class="seo-section">
+    <h1>The Loop Past Answers &amp; Archive</h1>
+    <p class="toplink"><a href="/the-loop-hints/">Looking for today's hints and answer? →</a></p>
+
+    <p class="lede">Every The Loop puzzle we have on record, newest first, each with its theme and the full 12-image solution ring in order — starting from the locked image, going around the circle. Handy if you missed a day, want to check yesterday's ring, or are studying how Britannica builds these connections.</p>
+
+    <p class="source-note">Connection notes from <a href={OFFICIAL} rel="noopener">Britannica's official The Loop game</a>. Unofficial fan-made archive — not affiliated with Britannica.</p>
+
+    <p>{archive.length} puzzles on this page, from {shortDate(archive[archive.length - 1].date)} to {shortDate(archive[0].date)}. A new answer is added after each daily reset.</p>
+
+    {archive.map((entry) => (
+      <section class="entry" id={entry.date}>
+        <h2>
+          <span class="date">{longDate(entry.date)}</span>
+          <span class="theme">{entry.title}{entry.date === publishedDate ? <span class="badge">Today</span> : null}</span>
+        </h2>
+        <p class="meta">Difficulty {entry.difficulty}/5 · {entry.loop.length} images · Locked start: {entry.loop[0].alt}</p>
+        <ol>
+          {entry.loop.map((item, i) => (
+            <li class={i === 0 ? 'first' : ''}>{item.alt}</li>
+          ))}
+        </ol>
+      </section>
+    ))}
+
+    <div class="cta-box">
+      <p>Solve the next ring yourself</p>
+      <p><a href={OFFICIAL} rel="noopener">Play today's puzzle on Britannica →</a></p>
+    </div>
+
+    <p>New to the game? <a href="/the-loop-puzzle/">The Loop guide</a> covers the rules, what green, orange and red mean, and six solving strategies. For today's progressive hints, see <a href="/the-loop-hints/">today's hints and answer</a>.</p>
+  </main>
+
+  <section class="seo-section" style="border-top:2px solid #e7dacf;padding-top:1rem;margin-top:2rem">
+    <ExtensionPromo />
+    <p class="seo-footer">GridPaw · free cat-themed logic puzzles in your browser · <a href="/">Home</a> · <a href="/the-loop-puzzle/">The Loop guide</a> · <a href="/the-loop-hints/">Today's hints</a> · <a href="/slitherlink/">Slitherlink</a></p>
+  </section>
+</body>
+</html>
