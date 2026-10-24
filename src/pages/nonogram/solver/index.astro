@@ -1,0 +1,342 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameSwitcher from '../../../components/GameSwitcher.astro';
+const title = "Nonogram Solver — Free Online Puzzle Solver | GridPaw";
+const description = "Enter row and column clues, get the full solution instantly. Free nonogram solver for 5×5 to 25×25 puzzles — flags impossible or multi-solution grids.";
+
+const faqs = [
+  { q: "Is this nonogram solver free?", a: "Yes — completely free, no account, no download. The solver runs entirely in your browser: your clues never leave your device." },
+  { q: "What notation do the clues use?", a: "Type the numbers exactly as they appear beside the puzzle. Each line of the box is one row (or one column), and the numbers are the block lengths in order, separated by spaces or commas. Use 0 or leave the line empty for a row or column with no filled cells — for example 2 1 3, or 0." },
+  { q: "It says no solution — but my puzzle has one. Why?", a: "Almost always a typo or an order slip: a clue typed as 3 1 instead of 1 3, a block written in the wrong row, or a line missed entirely. The solver checks every clue against every other clue, so one wrong number breaks the whole board. Re-read the clues against the original puzzle, top to bottom." },
+  { q: "What does it mean when the solver says there are multiple solutions?", a: "It means the clues you entered describe more than one valid picture. That is a property of the puzzle, not an error — hand-made puzzles in some books and apps are not always uniquely solvable. The solver shows the first solution it finds and warns you so you know a guess may be involved." },
+  { q: "Does it solve colored (multi-color) nonograms?", a: "Not yet. This solver handles classic two-color nonograms — black and white, which is what the vast majority of books and apps use. Colored puzzles, where adjacent blocks of different colors may touch, need a different solver." },
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <SEOHead title={title} description={description} canonical="/nonogram/solver" type="article" image="/og-nonogram.png" breadcrumbTitle="Nonogram Solver" />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } }))
+  })} />
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:linear-gradient(180deg,#f8f6ef,#f8f6ef);color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.8rem;color:#342421;text-align:center;margin:.5rem 0}
+    .sub{ text-align:center;color:#6f5651;margin-bottom:1rem}
+    .seo-content{margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .seo-content p{margin:.5rem 0;line-height:1.7}
+    .seo-content ol,.seo-content ul{padding-left:1.5rem;margin:.5rem 0}
+    .seo-content li{margin-bottom:.4rem}
+    .seo-content a{color:#E8A888;text-decoration:underline}
+    .seo-content h2{font-size:1.3rem;color:#342421;margin:1.5rem 0 .5rem}
+    .seo-content h3{font-size:1.1rem;color:#342421;margin:1rem 0 .3rem}
+    details{margin:.5rem 0;padding:.5rem .8rem;background:#f8f6ef;border-radius:8px}
+    summary{cursor:pointer;font-weight:600;color:#E8A888}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    footer a{color:#6f5651}
+    .play-cta{display:block;text-align:center;margin:2rem 0;padding:1rem;background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;border-radius:12px;text-decoration:none;font-weight:600;font-size:1.1rem}
+    .play-cta:hover{background:linear-gradient(145deg,#E0A888,#D08868)}
+
+    /* ── Solver tool ── */
+    .solver{background:#fff;border:2px solid #e7dacf;border-radius:14px;padding:1rem 1.1rem;margin:1.2rem 0;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+    .size-row{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin-bottom:.8rem}
+    .size-btn{border:1.5px solid #e7dacf;background:#fff;color:#342421;border-radius:8px;padding:.35rem .7rem;font-weight:700;font-size:.85rem;cursor:pointer;font-family:inherit}
+    .size-btn:hover{border-color:#E8A888}
+    .size-btn.active{background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;border-color:#E09878}
+    .custom-size{display:flex;gap:.35rem;align-items:center;font-size:.8rem;color:#6f5651}
+    .custom-size input{width:3.4rem;border:1.5px solid #e7dacf;border-radius:6px;padding:.3rem;font-family:inherit;font-size:.85rem}
+    .clue-boxes{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+    @media (max-width:560px){.clue-boxes{grid-template-columns:1fr}}
+    .clue-group label{display:block;font-weight:700;font-size:.85rem;margin-bottom:.25rem}
+    .clue-group small{color:#6f5651;display:block;margin-top:.2rem;font-size:.72rem}
+    .clue-group textarea{width:100%;height:9.5rem;border:1.5px solid #e7dacf;border-radius:8px;padding:.5rem;font-family:ui-monospace,Menlo,monospace;font-size:.85rem;line-height:1.5;resize:vertical;background:#fffdf9;color:#342421}
+    .clue-group textarea:focus{outline:none;border-color:#E8A888}
+    .tool-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.8rem}
+    .tool-btn{border:0;border-radius:10px;padding:.6rem 1.1rem;font-weight:700;font-size:.95rem;cursor:pointer;font-family:inherit}
+    .tool-btn.primary{background:linear-gradient(145deg,#F0B898,#E09878);color:#fff}
+    .tool-btn.primary:hover{background:linear-gradient(145deg,#E0A888,#D08868)}
+    .tool-btn.secondary{background:#fff;border:1.5px solid #e7dacf;color:#342421}
+    .tool-btn.secondary:hover{border-color:#E8A888}
+    .status{margin-top:.8rem;padding:.6rem .8rem;border-radius:8px;font-size:.9rem;line-height:1.5;display:none}
+    .status.ok{display:block;background:#eef7ee;border:1px solid #bfe0bf;color:#2c5e2c}
+    .status.warn{display:block;background:#fdf3e4;border:1px solid #eeddba;color:#7a5b16}
+    .status.err{display:block;background:#fbeeee;border:1px solid #ecc8c8;color:#7a2e2e}
+    .status ul{margin:.3rem 0 0 1.2rem}
+    .result-wrap{margin-top:.9rem;overflow-x:auto;display:none}
+    .nongrid{display:grid;gap:1px;background:#d8cbbd;border:2px solid #b3a08c;width:max-content}
+    .nongrid div{width:var(--cell);height:var(--cell);background:#fff}
+    .nongrid div.f{background:#3a2f28}
+    .howto-note{font-size:.8rem;color:#6f5651;margin-top:.5rem}
+
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+    @media (max-width: 640px){.header-inner{height:auto;flex-wrap:wrap;padding:.4rem .8rem}.nav{flex-wrap:wrap}.nav a{padding:.4rem .55rem;font-size:.8rem}}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/nonogram/" class="brand" aria-label="GridPaw Nonogram">
+        <span class="brand-logo"><img src="/assets/logo.png" alt="GridPaw cat mascot, Nonogram puzzle game" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Nonogram Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <GameSwitcher />
+        <a href="/nonogram/">Play Nonogram</a>
+        <a href="/nonogram/#nonogram-faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>Nonogram Solver — Enter Clues, Get the Solution</h1>
+    <p class="sub">Free online solver for picture-cross puzzles. Type the row and column clues from any book or app and get the full grid — no download, nothing leaves your browser.</p>
+
+    <section class="solver" aria-label="Nonogram solver tool">
+      <div class="size-row" role="group" aria-label="Board size">
+        <button class="size-btn" data-rw="5" data-cl="5">5×5</button>
+        <button class="size-btn active" data-rw="10" data-cl="10">10×10</button>
+        <button class="size-btn" data-rw="15" data-cl="15">15×15</button>
+        <button class="size-btn" data-rw="20" data-cl="20">20×20</button>
+        <span class="custom-size">
+          Custom
+          <input id="custom-r" type="number" min="2" max="25" value="10" aria-label="Rows"> ×
+          <input id="custom-c" type="number" min="2" max="25" value="10" aria-label="Columns">
+        </span>
+      </div>
+      <div class="clue-boxes">
+        <div class="clue-group">
+          <label for="row-clues">Row clues <small>one line per row, top to bottom</small></label>
+          <textarea id="row-clues" spellcheck="false" placeholder="2 2&#10;8&#10;10&#10;..."></textarea>
+          <small id="row-count">0 / 10 lines</small>
+        </div>
+        <div class="clue-group">
+          <label for="col-clues">Column clues <small>one line per column, left to right</small></label>
+          <textarea id="col-clues" spellcheck="false" placeholder="3&#10;5&#10;7&#10;..."></textarea>
+          <small id="col-count">0 / 10 lines</small>
+        </div>
+      </div>
+      <div class="tool-row">
+        <button class="tool-btn primary" id="solve-btn">Solve</button>
+        <button class="tool-btn secondary" id="example-btn">Load example</button>
+        <button class="tool-btn secondary" id="clear-btn">Clear</button>
+      </div>
+      <div class="status" id="status" role="status"></div>
+      <div class="result-wrap" id="result-wrap"></div>
+      <p class="howto-note">Notation: numbers are the block lengths in order — <b>2 1 3</b> means a block of 2, then 1, then 3, with at least one gap between. Use <b>0</b> (or an empty line) for a row or column with nothing filled.</p>
+    </section>
+
+    <section class="seo-content">
+      <h2>How to Use This Nonogram Solver</h2>
+      <ol>
+        <li><strong>Pick the board size.</strong> Use a preset (5×5 to 20×20) or type a custom size up to 25×25 — it must match the puzzle you are solving.</li>
+        <li><strong>Type the clues.</strong> Row clues go in the left box, one line per row from top to bottom. Column clues go in the right box, one line per column from left to right. Copy the numbers exactly as printed, including their order.</li>
+        <li><strong>Press Solve.</strong> The full grid appears below — filled cells in dark, empty cells in white. If something is off, the solver tells you exactly which line failed and why.</li>
+      </ol>
+      <p>The solver works on <em>any</em> source: newspaper puzzles, puzzle books, apps, printouts. Because the clues describe the puzzle completely, nothing else is needed — no image, no app connection.</p>
+
+      <h2>How the Solver Works</h2>
+      <p>Nonograms are solved by <strong>line logic</strong>. For every row and every column, the solver lists every placement of blocks that is still consistent with what is already known. Any cell that is filled in <em>every</em> remaining placement gets inked; any cell left empty in <em>every</em> placement gets crossed out. Each new mark shrinks the placements of the crossing lines, so the deductions cascade until the grid is complete.</p>
+      <p>That is how the overwhelming majority of published puzzles are meant to be solved — no guessing at any point. When a puzzle is <em>not</em> line-solvable (rare in books, common in hand-made grids), the solver says so honestly: it finishes with a clearly-labeled limited search instead of pretending the answer was forced. And if the clues describe more than one valid picture, it warns you — a solver that stays silent about ambiguity is hiding the most important fact about your puzzle.</p>
+      <p>Everything runs locally in your browser. There is no server round-trip: your clues are yours, and the answer appears in well under a second for typical sizes.</p>
+
+      <h2>When the Solver Can't Help</h2>
+      <h3>"No solution exists for these clues"</h3>
+      <p>The clue set is contradictory — no grid can satisfy it. Nine times out of ten that means a typo: <b>3 1</b> instead of <b>1 3</b>, a 4 typed as a 1, or a clue entered in the wrong row. Check the lines the solver highlights, then re-read every clue against the original.</p>
+      <h3>"More than one solution"</h3>
+      <p>The clues are consistent but not unique — several different pictures fit them. Books sometimes ship ambiguous puzzles by accident. If you are stuck between two candidate cells, the solver's answer tells you which way the puzzle <em>can</em> go; either solution you draw will satisfy the clues.</p>
+      <h3>"Needed search"</h3>
+      <p>Pure line logic stalled, so the solver finished with a small amount of trial-and-error. The answer is still checked against every clue — nothing is invented. Puzzles like this are simply harder than the guessing-free norm.</p>
+
+      <h2>Nonogram Rules (Quick Refresher)</h2>
+      <ul>
+        <li><strong>Numbers are blocks.</strong> Each number is an unbroken run of filled cells; blocks appear in the order listed, separated by at least one empty cell.</li>
+        <li><strong>Order matters.</strong> 1 3 and 3 1 are different clues.</li>
+        <li><strong>Gaps can be longer.</strong> The single empty cell between blocks is a minimum, not an exact count.</li>
+        <li><strong>The picture is the check.</strong> A correctly solved grid forms a recognizable image — that is the fun of it.</li>
+      </ul>
+      <p>New to nonograms? <a href="/nonogram/">Play our free Nonogram game</a> — it generates puzzles with built-in hints that teach line logic as you go, from 5×5 up.</p>
+
+      <h2>Frequently Asked Questions</h2>
+      {faqs.map(f => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </section>
+
+    <a href="/nonogram/" class="play-cta">🎨 Play Nonogram Online Free</a>
+
+    <footer>
+      <p><a href="/">GridPaw Shikaku</a> · <a href="/akari/">GridPaw Akari</a> · <a href="/kakuro/">GridPaw Kakuro</a> · <a href="/pictomino/">GridPaw Pictomino</a></p>
+    </footer>
+  </div>
+
+  <script is:inline src="/nonogram-solver.js"></script>
+  <script is:inline>
+  (function () {
+    'use strict';
+    var R = 10, C = 10;
+    var rowEl = document.getElementById('row-clues');
+    var colEl = document.getElementById('col-clues');
+    var rowCount = document.getElementById('row-count');
+    var colCount = document.getElementById('col-count');
+    var statusEl = document.getElementById('status');
+    var wrapEl = document.getElementById('result-wrap');
+    var crEl = document.getElementById('custom-r');
+    var ccEl = document.getElementById('custom-c');
+    var sizeBtns = document.querySelectorAll('.size-btn');
+
+    function linesOf(text) {
+      var arr = (text || '').split(/\r?\n/);
+      while (arr.length && arr[arr.length - 1].trim() === '') arr.pop();
+      return arr;
+    }
+    function updateCounts() {
+      rowCount.textContent = linesOf(rowEl.value).length + ' / ' + R + ' lines';
+      colCount.textContent = linesOf(colEl.value).length + ' / ' + C + ' lines';
+    }
+    function hideResult() { wrapEl.style.display = 'none'; wrapEl.innerHTML = ''; }
+    function setStatus(kind, html) {
+      statusEl.className = 'status ' + kind;
+      statusEl.innerHTML = html;
+    }
+    function setSize(r, c, keepText) {
+      R = Math.max(2, Math.min(25, parseInt(r, 10) || 10));
+      C = Math.max(2, Math.min(25, parseInt(c, 10) || 10));
+      crEl.value = R; ccEl.value = C;
+      for (var i = 0; i < sizeBtns.length; i++) {
+        var b = sizeBtns[i];
+        var on = parseInt(b.getAttribute('data-rw'), 10) === R && parseInt(b.getAttribute('data-cl'), 10) === C;
+        b.className = on ? 'size-btn active' : 'size-btn';
+      }
+      if (!keepText) { rowEl.value = ''; colEl.value = ''; hideResult(); statusEl.className = 'status'; }
+      updateCounts();
+    }
+
+    function render(grid) {
+      var maxRC = Math.max(R, C);
+      var cell = maxRC <= 10 ? 26 : (maxRC <= 15 ? 20 : (maxRC <= 20 ? 16 : 13));
+      var g = document.createElement('div');
+      g.className = 'nongrid';
+      g.style.setProperty('--cell', cell + 'px');
+      g.style.gridTemplateColumns = 'repeat(' + C + ', ' + cell + 'px)';
+      var frag = document.createDocumentFragment();
+      for (var i = 0; i < grid.length; i++) {
+        for (var j = 0; j < grid[i].length; j++) {
+          var d = document.createElement('div');
+          if (grid[i][j] === 1) d.className = 'f';
+          frag.appendChild(d);
+        }
+      }
+      g.appendChild(frag);
+      wrapEl.innerHTML = '';
+      wrapEl.appendChild(g);
+      wrapEl.style.display = 'block';
+    }
+
+    function parseSide(text, expectedLines, lineLen, sideName) {
+      var arr = linesOf(text);
+      var errors = [];
+      if (arr.length !== expectedLines) {
+        errors.push(sideName + ' clues: expected ' + expectedLines + ' lines (one per ' + sideName.toLowerCase() + '), got ' + arr.length + '.');
+        return { clues: null, errors: errors };
+      }
+      var clues = [];
+      for (var i = 0; i < arr.length; i++) {
+        var parsed = window.NonogramSolver.parseClueLine(arr[i], lineLen);
+        if (parsed.error) { errors.push(sideName + ' ' + (i + 1) + ': "' + arr[i] + '" — ' + parsed.error + '.'); clues.push(null); }
+        else clues.push(parsed.clues);
+      }
+      return { clues: clues, errors: errors };
+    }
+
+    function solve() {
+      var rows = parseSide(rowEl.value, R, C, 'Row');
+      var cols = parseSide(colEl.value, C, R, 'Column');
+      var errors = rows.errors.concat(cols.errors);
+      if (errors.length) {
+        var html = '<b>Check these lines:</b><ul>';
+        for (var e = 0; e < errors.length && e < 6; e++) html += '<li>' + errors[e] + '</li>';
+        if (errors.length > 6) html += '<li>… and ' + (errors.length - 6) + ' more</li>';
+        setStatus('err', html + '</ul>');
+        hideResult();
+        track('error');
+        return;
+      }
+      var t0 = Date.now();
+      var res = window.NonogramSolver.solve(rows.clues, cols.clues);
+      var ms = Date.now() - t0;
+      var size = R + 'x' + C;
+      if (res.status === 'solved') {
+        var how = res.guessed
+          ? 'Solved in ' + ms + ' ms — needed a small amount of search (this puzzle is not pure line-logic).'
+          : 'Solved in ' + ms + ' ms — pure line logic, no guessing.';
+        if (res.multiple) {
+          setStatus('warn', '<b>This clue set has more than one solution</b> — showing the first one found. ' + how);
+        } else {
+          setStatus('ok', '<b>Solved.</b> ' + how);
+        }
+        render(res.grid);
+      } else if (res.status === 'contradiction') {
+        setStatus('err', '<b>No solution exists for these clues.</b> Nine times out of ten it is a typo or an order slip — re-read every clue against the original puzzle, top to bottom, left to right.');
+        hideResult();
+      } else {
+        setStatus('err', '<b>This one took too long to solve (&gt;2.5 s).</b> Extremely ambiguous clue sets can do that. Double-check the clues, or try a smaller board.');
+        hideResult();
+      }
+      track(res.status === 'solved' ? (res.multiple ? 'multi' : 'ok') : res.status, size, ms);
+    }
+
+    function track(result, size, ms) {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'nonogram_solver_solve', { status: result, size: size || (R + 'x' + C), ms: ms || 0 });
+      }
+    }
+
+    var EXAMPLE_ROWS = '2 2\n8\n10\n10\n10\n8\n6\n4\n2\n0';
+    var EXAMPLE_COLS = '3\n5\n7\n8\n8\n8\n8\n7\n5\n3';
+
+    document.getElementById('solve-btn').addEventListener('click', solve);
+    document.getElementById('clear-btn').addEventListener('click', function () { setSize(R, C); });
+    document.getElementById('example-btn').addEventListener('click', function () {
+      setSize(10, 10);
+      rowEl.value = EXAMPLE_ROWS;
+      colEl.value = EXAMPLE_COLS;
+      updateCounts();
+      solve();
+    });
+    for (var i = 0; i < sizeBtns.length; i++) {
+      sizeBtns[i].addEventListener('click', function () {
+        setSize(parseInt(this.getAttribute('data-rw'), 10), parseInt(this.getAttribute('data-cl'), 10));
+      });
+    }
+    crEl.addEventListener('change', function () { setSize(crEl.value, ccEl.value); });
+    ccEl.addEventListener('change', function () { setSize(crEl.value, ccEl.value); });
+    rowEl.addEventListener('input', updateCounts);
+    colEl.addEventListener('input', updateCounts);
+    updateCounts();
+  })();
+  </script>
+</body>
+</html>
