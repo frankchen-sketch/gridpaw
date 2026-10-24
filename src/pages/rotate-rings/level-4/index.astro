@@ -1,0 +1,160 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+
+const title = "Rotate Rings Level 4 Walkthrough — Five Bursts to 2,200";
+const description = "Rotate Rings Level 4 solved frame-by-frame: every burst timed, the firework booster prompt explained, 2,200 points. Verified fan guide.";
+const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do you beat Rotate Rings Level 4?", "acceptedAnswer": {"@type": "Answer", "text": "Keep closing loops around the fixed full-circle anchors — they never turn, so every route bends around them. The verified run landed five-plus bursts between 0:39 and 1:07 for 2,200 points, no boosters needed."}}, {"@type": "Question", "name": "What is the firework booster in Rotate Rings?", "acceptedAnswer": {"@type": "Answer", "text": "At ≈0:37 the game offers a firework booster (“Tap to select Firework!”). It is optional — the verified Level 4 clear never used it. Boosters like the hammer and firework are there for when a board stalls."}}, {"@type": "Question", "name": "What score does Rotate Rings Level 4 give?", "acceptedAnswer": {"@type": "Answer", "text": "2,200 in our run: 0 → 300 → 550 → 850 → 1,100 → 1,400 → 2,200 with the closing Great!"}}]};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rotate-rings/level-4"
+    type="article"
+    breadcrumbTitle="Rotate Rings Level 4"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root { --amber: #D97706; --cream: #FFFBF5; --green: #15803D; --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4; --shadow: 0 2px 8px rgba(217,119,6,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .badge-verified { display: inline-block; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.04em; border-radius: 999px; padding: 0.12rem 0.55rem; margin-left: 0.35rem; vertical-align: middle; background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; }
+    .badge-star { display: inline-block; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.04em; border-radius: 999px; padding: 0.12rem 0.55rem; margin-left: 0.35rem; vertical-align: middle; background: #FFF8E6; color: #B26A00; border: 1px solid #F0DFAE; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 420px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .hero-link { display: block; cursor: pointer; text-decoration: none; }
+    .hero { width: 100%; max-width: 420px; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0 auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .cross-card { margin: 1.2rem 0; background: #fff; border: 2px solid var(--border); border-top: 5px solid var(--amber); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(217,119,6,.08); }
+    .cross-card img { width: 100%; display: block; aspect-ratio: 1200 / 630; object-fit: contain; background: #2D3740; }
+    .cross-card .cross-body { padding: .9rem 1.1rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .cross-card .cross-kicker { font-size: .68rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; color: var(--amber); }
+    .cross-card .cross-ttl { font-weight: 900; font-size: 1.05rem; margin: .1rem 0; }
+    .cross-card .cross-desc { font-size: .85rem; color: #555; margin: 0; }
+    .cross-card .cross-cta { background: var(--amber); color: #fff; font-weight: 800; font-size: .88rem; border-radius: 10px; padding: .5rem 1rem; text-decoration: none; white-space: nowrap; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--light); }
+    .seo-footer a { color: var(--light); }
+    .seo-footer a:hover { color: var(--amber); }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+</style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> > <a href="/rotate-rings/">Rotate Rings Guide</a> > Level 4</nav>
+
+  <main class="seo-section">
+    <h1>Rotate Rings Level 4 Walkthrough: five bursts to 2,200</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Rotate Rings is a mobile game by Nebula Studio; this site is not affiliated with or endorsed by the developer. Timestamps are relative to the walkthrough video below.</div>
+
+    <div class="verify-note">Verified frame-by-frame against the video below at 2-second sampling: bursts, colors and scores are read off the footage, timestamps carry a ±2s tolerance. <b>★</b> badges mark 2s-sampled waves.</div>
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Level 4 runs four colors — purple, green, red and blue — around fixed full-circle anchors. Five-plus bursts from ≈0:39 to ≈1:07 land the score at <b>2,200</b>, closing with a “Great!” on the green loop. A firework booster is offered along the way — this run never needed it.</p>
+    </div>
+
+    <a class="hero-link" href="#video" aria-label="Jump to the Level 4 full solution video">
+      <img class="hero" src="/rotate-rings/l4-board.jpg" alt="Rotate Rings Level 4 board — purple, green, red and blue segments around fixed full-circle anchors" loading="lazy" />
+    </a>
+
+    <h2>Watch the full solution<span class="accent">.</span></h2>
+    <p>This is the source every timestamp below was checked against (Level 4 starts at its timestamp below).</p>
+    <div class="video-wrap" id="video">
+      <iframe src="https://www.youtube-nocookie.com/embed/Nis54Xw26A0" title="Rotate Rings Level 4 walkthrough video" allowfullscreen></iframe>
+    </div>
+    <InContentAd />
+
+    <h2>Level 4 wave map<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Read the board · ≈0:33 <span class="badge-star">★ 2s ±2s</span></span>
+      <strong>Fixed circles anchor the board</strong>
+      <p>Level 4 adds full-circle anchor pieces: closed loops that sit fixed while the C-shaped segments rotate around them. Four colors — purple, green, red, blue — all routing through those anchors. A “Tap to select Firework!” prompt offers a booster at ≈0:37; this clear never used it.</p>
+      <p class="ts">Video: board from 0:33 <a href="https://www.youtube.com/watch?v=Nis54Xw26A0&amp;t=33s" target="_blank" rel="noopener">jump to 0:33 →</a></p>
+    </div>
+    <div class="step-card">
+      <span class="step-num">Waves 1–3 · 0:39–0:51 <span class="badge-star">★ 2s ±2s</span></span>
+      <strong>Opening bursts build the ladder</strong>
+      <p>The score climbs 0 → 300 (≈0:41) → 550 → 850 (≈0:51) — at least three bursts, with the purple loop confirmed popping at ≈0:51. The fixed circles do not turn: routes have to be built around them, which is what makes the early bursts satisfying.</p>
+      <p class="ts">Video: bursts 0:39–0:51 <a href="https://www.youtube.com/watch?v=Nis54Xw26A0&amp;t=41s" target="_blank" rel="noopener">jump to 0:41 →</a></p>
+    </div>
+    <div class="step-card">
+      <span class="step-num">Waves 4–5 · 1:03–1:07 <span class="badge-star">★ 2s ±2s</span></span>
+      <strong>Green loop closes it out — “Great!”</strong>
+      <p>The endgame lands two more bursts: score 1,100 → 1,400 (≈1:05, green loop) → and the closing “Great!” at ≈1:07 takes Level 4 to <b>2,200</b>.</p>
+      <p class="ts">Video: final bursts 1:03–1:07 <a href="https://www.youtube.com/watch?v=Nis54Xw26A0&amp;t=65s" target="_blank" rel="noopener">jump to 1:05 →</a></p>
+    </div>
+
+
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    <details><summary>How do you beat Rotate Rings Level 4?</summary><p>Keep closing loops around the fixed full-circle anchors — they never turn, so every route bends around them. The verified run landed five-plus bursts between 0:39 and 1:07 for 2,200 points, no boosters needed.</p></details>
+    <details><summary>What is the firework booster in Rotate Rings?</summary><p>At ≈0:37 the game offers a firework booster (“Tap to select Firework!”). It is optional — the verified Level 4 clear never used it. Boosters like the hammer and firework are there for when a board stalls.</p></details>
+    <details><summary>What score does Rotate Rings Level 4 give?</summary><p>2,200 in our run: 0 → 300 → 550 → 850 → 1,100 → 1,400 → 2,200 with the closing Great!</p></details>
+
+    <h2>Next level<span class="accent">.</span></h2>
+    <p><a href="/rotate-rings/level-5/">Level 5 walkthrough →</a> — or <a href="/rotate-rings/">back to the Rotate Rings guide</a>.</p>
+
+    <div class="cta-box">
+      <p><a href="/">Play Shikaku →</a> · <a href="/akari/">Play Akari →</a> · <a href="/japanese-logic-puzzles/">More Japanese logic puzzles →</a></p>
+    </div>
+
+    <div class="cross-card">
+      <img src="/og-akari-daily.png" alt="Daily Akari — new grid every midnight" loading="lazy" width="1200" height="630">
+      <div class="cross-body">
+        <div>
+          <span class="cross-kicker">Tonight's Puzzle</span>
+          <p class="cross-ttl">Daily Akari Challenge</p>
+          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
+        </div>
+        <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+      </div>
+    </div>
+  </main>
+  <AdSlot />
+  <SideAd />
+  <footer class="seo-footer">
+    <p><a href="/rotate-rings/">All Rotate Rings walkthroughs</a> · <a href="/">GridPaw</a></p>
+  </footer>
+</body>
+</html>
