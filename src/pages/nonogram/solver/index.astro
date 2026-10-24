@@ -308,18 +308,27 @@ const faqs = [
       track(res.status === 'solved' ? (res.multiple ? 'multi' : 'ok') : res.status, size, ms);
     }
 
+    var trackedStart = false, solveSrc = 'input';
     function track(result, size, ms) {
+      var sizeVal = size || (R + 'x' + C);
       if (typeof window.gtag === 'function') {
-        window.gtag('event', 'nonogram_solver_solve', { status: result, size: size || (R + 'x' + C), ms: ms || 0 });
+        window.gtag('event', 'nonogram_solver_solve', { status: result, size: sizeVal, ms: ms || 0, src: solveSrc });
+      }
+      /* D1 funnel (true source — GA4 is structurally lossy behind ad blockers).
+       * tool_start/tool_action already whitelisted; params mirror akari/create.astro convention. */
+      if (window.gpTrack) {
+        if (!trackedStart) { trackedStart = true; window.gpTrack('tool_start', { tool: 'nonogram-solver' }); }
+        window.gpTrack('tool_action', { tool: 'nonogram-solver', action: 'solve', status: result, size: sizeVal, ms: ms || 0, src: solveSrc });
       }
     }
 
     var EXAMPLE_ROWS = '2 2\n8\n10\n10\n10\n8\n6\n4\n2\n0';
     var EXAMPLE_COLS = '3\n5\n7\n8\n8\n8\n8\n7\n5\n3';
 
-    document.getElementById('solve-btn').addEventListener('click', solve);
+    document.getElementById('solve-btn').addEventListener('click', function () { solveSrc = 'input'; solve(); });
     document.getElementById('clear-btn').addEventListener('click', function () { setSize(R, C); });
     document.getElementById('example-btn').addEventListener('click', function () {
+      solveSrc = 'example';
       setSize(10, 10);
       rowEl.value = EXAMPLE_ROWS;
       colEl.value = EXAMPLE_COLS;
