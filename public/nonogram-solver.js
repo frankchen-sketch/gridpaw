@@ -198,7 +198,79 @@
     };
   }
 
-  var api = { parseClueLine: parseClueLine, deduceLine: deduceLine, solve: solve };
+  /* Step-by-step variant: solve, then REPLAY the derivation from an empty board.
+   * Every recorded step leads to the returned solution (replay never contradicts it:
+   * a forced deduction must hold in any grid consistent with the knowns, and the
+   * solution is such a grid). Search steps carry src:'search'. */
+  function solveSteps(rowClues, colClues) {
+    var res = solve(rowClues, colClues);
+    if (res.status !== 'solved') return res;
+    var solution = res.grid;
+    var R = rowClues.length, C = colClues.length;
+    var g = [], steps = [], r, c;
+    for (r = 0; r < R; r++) { g.push([]); for (c = 0; c < C; c++) g[r].push(-1); }
+
+    function prop(rec) {
+      var guard = true;
+      var i, j, i2, resl, line, cells, q;
+      while (guard) {
+        guard = false;
+        for (i = 0; i < R; i++) {
+          resl = deduceLine(rowClues[i], g[i]);
+          if (!resl) return false;
+          cells = null;
+          for (j = 0; j < C; j++) {
+            if (g[i][j] !== -1) continue;
+            if (!resl.canFill[j] && !resl.canEmpty[j]) return false;
+            if (resl.canEmpty[j] && resl.canFill[j]) continue; /* still ambiguous */
+            if (!cells) cells = [];
+            cells.push([j, resl.canEmpty[j] ? 0 : 1]);
+          }
+          if (cells) {
+            for (q = 0; q < cells.length; q++) g[i][cells[q][0]] = cells[q][1];
+            rec.push({ src: 'row', line: i, cells: cells });
+            guard = true;
+          }
+        }
+        for (j = 0; j < C; j++) {
+          line = [];
+          for (i2 = 0; i2 < R; i2++) line.push(g[i2][j]);
+          resl = deduceLine(colClues[j], line);
+          if (!resl) return false;
+          cells = null;
+          for (i2 = 0; i2 < R; i2++) {
+            if (g[i2][j] !== -1) continue;
+            if (!resl.canFill[i2] && !resl.canEmpty[i2]) return false;
+            if (resl.canEmpty[i2] && resl.canFill[i2]) continue; /* still ambiguous */
+            if (!cells) cells = [];
+            cells.push([i2, resl.canEmpty[i2] ? 0 : 1]);
+          }
+          if (cells) {
+            for (q = 0; q < cells.length; q++) g[cells[q][0]][j] = cells[q][1];
+            rec.push({ src: 'col', line: j, cells: cells });
+            guard = true;
+          }
+        }
+      }
+      return true;
+    }
+
+    if (!prop(steps)) return { status: 'contradiction' };
+    var guard = 0;
+    while (true) {
+      var t = null, i3, j3;
+      for (i3 = 0; i3 < R && !t; i3++) for (j3 = 0; j3 < C; j3++) if (g[i3][j3] === -1) { t = [i3, j3]; break; }
+      if (!t) break;
+      g[t[0]][t[1]] = solution[t[0]][t[1]];
+      steps.push({ src: 'search', row: t[0], cells: [[t[1], solution[t[0]][t[1]]]] });
+      if (!prop(steps)) return { status: 'contradiction' };
+      if (++guard > R * C) break;
+    }
+    res.steps = steps;
+    return res;
+  }
+
+  var api = { parseClueLine: parseClueLine, deduceLine: deduceLine, solve: solve, solveSteps: solveSteps };
   if (typeof window !== 'undefined') window.NonogramSolver = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })();
