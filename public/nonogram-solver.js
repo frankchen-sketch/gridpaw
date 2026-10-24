@@ -1,5 +1,10 @@
 /* GridPaw Nonogram Solver — two-color (black & white) line solver + limited search.
- * Pure client-side. Exposes window.NonogramSolver in the browser, module.exports under Node. */
+ * Pure client-side. Exposes window.NonogramSolver in the browser, module.exports under Node.
+ *
+ * Architecture:
+ *   parseClueLine — clue text -> int[] (validated)
+ *   deduceLine    — placement enumeration for one line (pure; 20k-trial cross-checked)
+ *   solve         — dirty-queue propagation + MRV backtracking, multi-solution detection */
 (function () {
   'use strict';
 
@@ -93,61 +98,89 @@
     var g = [];
     var r, c;
     for (r = 0; r < R; r++) { g.push([]); for (c = 0; c < C; c++) g[r].push(-1); }
-    var nodes = 0, NODE_CAP = 300000;
-    var deadline = Date.now() + 2500; /* wall-clock guard: pathological clue sets stop honestly */
+    var nodes = 0, NODE_CAP = 2000000;
+    var deadline = Date.now() + 5000; /* wall-clock guard: pathological clue sets stop honestly */
     var timedOut = false;
     var sols = [];
+    var rowUnknown = new Array(R), colUnknown = new Array(C);
+    for (r = 0; r < R; r++) rowUnknown[r] = C;
+    for (c = 0; c < C; c++) colUnknown[c] = R;
+    var rowDirty = [], colDirty = [];
+    for (r = 0; r < R; r++) rowDirty.push(true);
+    for (c = 0; c < C; c++) colDirty.push(true);
 
+    function setCell(i, j, v) {
+      g[i][j] = v;
+      rowUnknown[i]--; colUnknown[j]--;
+    }
+
+    /* Dirty-queue propagation: only re-derive lines that (may have) changed.
+     * One full rows+cols sweep per wave; a wave that sets nothing ends the loop. */
     function propagate() {
-      var changed = true, res, i, j, line;
-      while (changed) {
-        changed = false;
+      var guard = true;
+      var i, j, i2, res, line;
+      while (guard) {
+        guard = false;
         for (i = 0; i < R; i++) {
+          if (!rowDirty[i]) continue;
+          rowDirty[i] = false;
           res = deduceLine(rowClues[i], g[i]);
           if (!res) return false;
           for (j = 0; j < C; j++) {
-            if (g[i][j] === -1) {
-              if (!res.canFill[j] && !res.canEmpty[j]) return false;
-              if (!res.canEmpty[j]) { g[i][j] = 1; changed = true; }
-              else if (!res.canFill[j]) { g[i][j] = 0; changed = true; }
-            }
+            if (g[i][j] !== -1) continue;
+            if (!res.canFill[j] && !res.canEmpty[j]) return false;
+            if (!res.canEmpty[j]) { setCell(i, j, 1); colDirty[j] = true; guard = true; }
+            else if (!res.canFill[j]) { setCell(i, j, 0); colDirty[j] = true; guard = true; }
           }
         }
         for (j = 0; j < C; j++) {
+          if (!colDirty[j]) continue;
+          colDirty[j] = false;
           line = [];
-          for (i = 0; i < R; i++) line.push(g[i][j]);
+          for (i2 = 0; i2 < R; i2++) line.push(g[i2][j]);
           res = deduceLine(colClues[j], line);
           if (!res) return false;
-          for (i = 0; i < R; i++) {
-            if (g[i][j] === -1) {
-              if (!res.canFill[i] && !res.canEmpty[i]) return false;
-              if (!res.canEmpty[i]) { g[i][j] = 1; changed = true; }
-              else if (!res.canFill[i]) { g[i][j] = 0; changed = true; }
-            }
+          for (i2 = 0; i2 < R; i2++) {
+            if (g[i2][j] !== -1) continue;
+            if (!res.canFill[i2] && !res.canEmpty[i2]) return false;
+            if (!res.canEmpty[i2]) { setCell(i2, j, 1); rowDirty[i2] = true; guard = true; }
+            else if (!res.canFill[i2]) { setCell(i2, j, 0); rowDirty[i2] = true; guard = true; }
           }
         }
       }
       return true;
     }
 
+    /* MRV-ish: pick the unknown cell whose row+col hold the fewest unknowns together —
+     * the most constrained intersection fails (or forces) fastest. */
     function findUnknown() {
+      var best = null, bestScore = Infinity, score;
       var i, j;
-      for (i = 0; i < R; i++) for (j = 0; j < C; j++) if (g[i][j] === -1) return [i, j];
-      return null;
+      for (i = 0; i < R; i++) {
+        if (rowUnknown[i] === 0) continue;
+        for (j = 0; j < C; j++) {
+          if (g[i][j] !== -1) continue;
+          score = rowUnknown[i] + colUnknown[j];
+          if (score < bestScore) { bestScore = score; best = [i, j]; }
+        }
+      }
+      return best;
     }
 
     function search() {
       if (sols.length >= 2) return;
-      nodes++;
-      if (nodes > NODE_CAP || (nodes & 63) === 0 && Date.now() > deadline) { timedOut = true; return; }
+      if (++nodes > NODE_CAP || ((nodes & 31) === 0 && Date.now() > deadline)) { timedOut = true; return; }
       var t = findUnknown();
       if (!t) { sols.push(g.map(function (row) { return row.slice(); })); return; }
       var v, snap;
       for (v = 1; v >= 0; v--) {
         snap = g.map(function (row) { return row.slice(); });
-        g[t[0]][t[1]] = v;
+        var ru = rowUnknown.slice(), cu = colUnknown.slice();
+        var rd = rowDirty.slice(), cd = colDirty.slice();
+        setCell(t[0], t[1], v);
+        rowDirty[t[0]] = true; colDirty[t[1]] = true;
         if (propagate()) search();
-        g = snap;
+        g = snap; rowUnknown = ru; colUnknown = cu; rowDirty = rd; colDirty = cd;
         if (timedOut || sols.length >= 2) return;
       }
     }
