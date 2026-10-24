@@ -2,7 +2,7 @@
 import SEOHead from '../../../components/SEOHead.astro';
 import GameSwitcher from '../../../components/GameSwitcher.astro';
 const title = "Nonogram Solver — Free Online Puzzle Solver | GridPaw";
-const description = "Enter row and column clues, get the full solution instantly. Free nonogram solver for 5×5 to 25×25 puzzles — flags impossible or multi-solution grids.";
+const description = "Enter clues, get the full solution — with an optional step-by-step deduction log. Free nonogram solver for 5×5 to 25×25; flags impossible or multi-solution grids.";
 
 const faqs = [
   { q: "Is this nonogram solver free?", a: "Yes — completely free, no account, no download. The solver runs entirely in your browser: your clues never leave your device." },
@@ -10,6 +10,8 @@ const faqs = [
   { q: "It says no solution — but my puzzle has one. Why?", a: "Almost always a typo or an order slip: a clue typed as 3 1 instead of 1 3, a block written in the wrong row, or a line missed entirely. The solver checks every clue against every other clue, so one wrong number breaks the whole board. Re-read the clues against the original puzzle, top to bottom." },
   { q: "What does it mean when the solver says there are multiple solutions?", a: "It means the clues you entered describe more than one valid picture. That is a property of the puzzle, not an error — hand-made puzzles in some books and apps are not always uniquely solvable. The solver shows the first solution it finds and warns you so you know a guess may be involved." },
   { q: "Does it solve colored (multi-color) nonograms?", a: "Not yet. This solver handles classic two-color nonograms — black and white, which is what the vast majority of books and apps use. Colored puzzles, where adjacent blocks of different colors may touch, need a different solver." },
+  { q: "Can I see how the solver reached the answer?", a: "Yes — tick \"Step by step\" before pressing Solve. The solver replays its entire deduction one line at a time: which row or column it examined, which cells were forced filled or crossed out, and whether any step needed search. Puzzles solvable by pure line logic — the vast majority — show zero search steps, so you can follow along or verify the answer yourself." },
+  { q: "Can I share the puzzle I entered with someone?", a: "Yes — after a successful solve the clues are saved into the page URL. Press \"Copy link\" and anyone who opens that link sees your exact puzzle, already solved. It is the fastest way to ask for help in a forum or show a friend a puzzle that has you stuck." },
 ];
 ---
 <!DOCTYPE html>
@@ -73,6 +75,13 @@ const faqs = [
     .nongrid div{width:var(--cell);height:var(--cell);background:#fff}
     .nongrid div.f{background:#3a2f28}
     .howto-note{font-size:.8rem;color:#6f5651;margin-top:.5rem}
+    .step-toggle{display:flex;align-items:center;gap:.35rem;font-size:.85rem;font-weight:700;color:#6f5651;cursor:pointer;user-select:none}
+    .step-toggle input{accent-color:#E09878;width:1rem;height:1rem;cursor:pointer}
+    .step-wrap{margin-top:.9rem}
+    .step-nav{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-bottom:.6rem}
+    #step-label{font-weight:700;font-size:.9rem;color:#342421;min-width:7.5rem;text-align:center}
+    #step-grid{overflow-x:auto}
+    .step-wrap .nongrid{margin-bottom:.4rem}
 
     /* ── Header ── */
     .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
@@ -139,9 +148,21 @@ const faqs = [
         <button class="tool-btn primary" id="solve-btn">Solve</button>
         <button class="tool-btn secondary" id="example-btn">Load example</button>
         <button class="tool-btn secondary" id="clear-btn">Clear</button>
+        <button class="tool-btn secondary" id="link-btn" style="display:none" title="Copy a link that contains these clues">🔗 Copy link</button>
+        <label class="step-toggle"><input type="checkbox" id="step-mode"> Step by step</label>
       </div>
       <div class="status" id="status" role="status"></div>
       <div class="result-wrap" id="result-wrap"></div>
+      <div class="step-wrap" id="step-wrap" style="display:none">
+        <div class="step-nav">
+          <button class="tool-btn secondary" id="step-prev">← Prev</button>
+          <span id="step-label"></span>
+          <button class="tool-btn secondary" id="step-next">Next →</button>
+          <button class="tool-btn secondary" id="step-all">Show full solution</button>
+        </div>
+        <div id="step-grid"></div>
+        <p class="howto-note" id="step-text"></p>
+      </div>
       <p class="howto-note">Notation: numbers are the block lengths in order — <b>2 1 3</b> means a block of 2, then 1, then 3, with at least one gap between. Use <b>0</b> (or an empty line) for a row or column with nothing filled.</p>
     </section>
 
@@ -158,6 +179,13 @@ const faqs = [
       <p>Nonograms are solved by <strong>line logic</strong>. For every row and every column, the solver lists every placement of blocks that is still consistent with what is already known. Any cell that is filled in <em>every</em> remaining placement gets inked; any cell left empty in <em>every</em> placement gets crossed out. Each new mark shrinks the placements of the crossing lines, so the deductions cascade until the grid is complete.</p>
       <p>That is how the overwhelming majority of published puzzles are meant to be solved — no guessing at any point. When a puzzle is <em>not</em> line-solvable (rare in books, common in hand-made grids), the solver says so honestly: it finishes with a clearly-labeled limited search instead of pretending the answer was forced. And if the clues describe more than one valid picture, it warns you — a solver that stays silent about ambiguity is hiding the most important fact about your puzzle.</p>
       <p>Everything runs locally in your browser. There is no server round-trip: your clues are yours, and the answer appears in well under a second for typical sizes.</p>
+
+      <h2>Watch It Think: Step-by-Step Mode</h2>
+      <p>Tick <strong>Step by step</strong> above the Solve button and the solver will replay its entire deduction, one move at a time. Each step names the row or column it examined and exactly which cells were forced filled or crossed out — the same moves a skilled human solver makes, in the same order. When a puzzle needs search, those steps are labeled honestly as <em>Search</em> instead of being dressed up as logic. Use <strong>← Prev</strong> / <strong>Next →</strong> to walk through it, or <strong>Show full solution</strong> to jump to the end.</p>
+      <p>This is also the fastest way to <em>learn</em> line logic: load the example, step through it, and watch how a single half-determined row cascades across the whole board.</p>
+
+      <h2>Save and Share Your Puzzle</h2>
+      <p>After every successful solve, the clues are encoded into the page address. Press <strong>🔗 Copy link</strong> and the URL you paste anywhere — a forum reply, a message to a friend, your own notes — reopens this exact puzzle, already sized and solved. Nothing is uploaded anywhere: the clues ride along in the link itself.</p>
 
       <h2>When the Solver Can't Help</h2>
       <h3>"No solution exists for these clues"</h3>
@@ -234,7 +262,7 @@ const faqs = [
       updateCounts();
     }
 
-    function render(grid) {
+    function renderInto(container, grid) {
       var maxRC = Math.max(R, C);
       var cell = maxRC <= 10 ? 26 : (maxRC <= 15 ? 20 : (maxRC <= 20 ? 16 : 13));
       var g = document.createElement('div');
@@ -250,10 +278,10 @@ const faqs = [
         }
       }
       g.appendChild(frag);
-      wrapEl.innerHTML = '';
-      wrapEl.appendChild(g);
-      wrapEl.style.display = 'block';
+      container.innerHTML = '';
+      container.appendChild(g);
     }
+    function render(grid) { renderInto(wrapEl, grid); wrapEl.style.display = 'block'; }
 
     function parseSide(text, expectedLines, lineLen, sideName) {
       var arr = linesOf(text);
@@ -285,7 +313,7 @@ const faqs = [
         return;
       }
       var t0 = Date.now();
-      var res = window.NonogramSolver.solve(rows.clues, cols.clues);
+      var res = window.NonogramSolver.solveSteps(rows.clues, cols.clues);
       var ms = Date.now() - t0;
       var size = R + 'x' + C;
       if (res.status === 'solved') {
@@ -298,12 +326,22 @@ const faqs = [
           setStatus('ok', '<b>Solved.</b> ' + how);
         }
         render(res.grid);
+        savePermalink();
+        if (document.getElementById('step-mode').checked && res.steps && res.steps.length) {
+          startSteps(res);
+        } else {
+          stopSteps();
+        }
       } else if (res.status === 'contradiction') {
         setStatus('err', '<b>No solution exists for these clues.</b> Nine times out of ten it is a typo or an order slip — re-read every clue against the original puzzle, top to bottom, left to right.');
         hideResult();
+        stopSteps();
+        clearPermalink();
       } else {
-        setStatus('err', '<b>This one took too long to solve (&gt;2.5 s).</b> Extremely ambiguous clue sets can do that. Double-check the clues, or try a smaller board.');
+        setStatus('err', '<b>This one took too long to solve (&gt;5 s).</b> Extremely ambiguous clue sets can do that. Double-check the clues, or try a smaller board.');
         hideResult();
+        stopSteps();
+        clearPermalink();
       }
       track(res.status === 'solved' ? (res.multiple ? 'multi' : 'ok') : res.status, size, ms);
     }
@@ -322,11 +360,82 @@ const faqs = [
       }
     }
 
+    /* ── Step-by-step viewer ── */
+    var stepData = null, stepIdx = 0;
+    var stepWrap = document.getElementById('step-wrap');
+    var stepGrid = document.getElementById('step-grid');
+    var stepLabel = document.getElementById('step-label');
+    var stepText = document.getElementById('step-text');
+
+    function gridFromSteps(steps, k) {
+      var gg = [];
+      for (var i = 0; i < R; i++) { gg.push([]); for (var j = 0; j < C; j++) gg[i].push(0); }
+      for (var s = 0; s <= k && s < steps.length; s++) {
+        var st = steps[s];
+        for (var q = 0; q < st.cells.length; q++) {
+          var idx = st.cells[q][0], v = st.cells[q][1];
+          if (st.src === 'row') gg[st.line][idx] = v;
+          else if (st.src === 'col') gg[idx][st.line] = v;
+          else if (st.src === 'search') gg[st.row][idx] = v;
+        }
+      }
+      return gg;
+    }
+    function stepDesc(st) {
+      var filled = 0, empty = 0, q;
+      for (q = 0; q < st.cells.length; q++) { if (st.cells[q][1] === 1) filled++; else empty++; }
+      if (st.src === 'row') return 'Row ' + (st.line + 1) + ' fully determined: ' + filled + ' filled, ' + empty + ' empty.';
+      if (st.src === 'col') return 'Column ' + (st.line + 1) + ' fully determined: ' + filled + ' filled, ' + empty + ' empty.';
+      return 'Search: cell (row ' + (st.row + 1) + ', col ' + (st.cells[0][0] + 1) + ') tried ' + (st.cells[0][1] === 1 ? 'filled' : 'empty') + ' — confirmed by the final check.';
+    }
+    function showStep(k) {
+      stepIdx = Math.max(0, Math.min(k, stepData.steps.length - 1));
+      renderInto(stepGrid, gridFromSteps(stepData.steps, stepIdx));
+      stepLabel.textContent = 'Step ' + (stepIdx + 1) + ' / ' + stepData.steps.length;
+      stepText.textContent = stepDesc(stepData.steps[stepIdx]);
+    }
+    function startSteps(res) {
+      stepData = res;
+      stepWrap.style.display = 'block';
+      showStep(0);
+      if (window.gpTrack) window.gpTrack('tool_action', { tool: 'nonogram-solver', action: 'steps', size: R + 'x' + C, total: res.steps.length });
+    }
+    function stopSteps() { stepData = null; stepWrap.style.display = 'none'; }
+
+    /* ── Permalink: clues live in the URL hash ── */
+    function savePermalink() {
+      try {
+        history.replaceState(null, '', '#p=' + encodeURIComponent(R + 'x' + C) + '&r=' + encodeURIComponent(rowEl.value) + '&c=' + encodeURIComponent(colEl.value));
+        document.getElementById('link-btn').style.display = '';
+      } catch (e) { /* ignore */ }
+    }
+    function clearPermalink() {
+      document.getElementById('link-btn').style.display = 'none';
+      try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* ignore */ }
+    }
+    function loadPermalink() {
+      if (!location.hash || location.hash.indexOf('#p=') !== 0) return false;
+      var parts = {}, kv, arr = location.hash.slice(1).split('&');
+      for (var i = 0; i < arr.length; i++) {
+        kv = arr[i].split('=');
+        parts[kv[0]] = decodeURIComponent(kv.slice(1).join('='));
+      }
+      var m = (parts.p || '').match(/^(\d+)x(\d+)$/);
+      if (!m || typeof parts.r !== 'string' || typeof parts.c !== 'string') return false;
+      solveSrc = 'link';
+      setSize(parseInt(m[1], 10), parseInt(m[2], 10), true);
+      rowEl.value = parts.r;
+      colEl.value = parts.c;
+      updateCounts();
+      solve();
+      return true;
+    }
+
     var EXAMPLE_ROWS = '2 2\n8\n10\n10\n10\n8\n6\n4\n2\n0';
     var EXAMPLE_COLS = '3\n5\n7\n8\n8\n8\n8\n7\n5\n3';
 
     document.getElementById('solve-btn').addEventListener('click', function () { solveSrc = 'input'; solve(); });
-    document.getElementById('clear-btn').addEventListener('click', function () { setSize(R, C); });
+    document.getElementById('clear-btn').addEventListener('click', function () { setSize(R, C); stopSteps(); clearPermalink(); });
     document.getElementById('example-btn').addEventListener('click', function () {
       solveSrc = 'example';
       setSize(10, 10);
@@ -335,16 +444,34 @@ const faqs = [
       updateCounts();
       solve();
     });
+    document.getElementById('link-btn').addEventListener('click', function () {
+      var btn = this;
+      var done = function () {
+        setStatus('ok', '<b>Link copied.</b> It contains the clues and the solved puzzle — anyone who opens it sees exactly this.');
+        if (window.gpTrack) window.gpTrack('tool_action', { tool: 'nonogram-solver', action: 'share-link', size: R + 'x' + C });
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(location.href).then(done, function () {
+          setStatus('warn', '<b>Copy the URL from the address bar</b> — it already contains your puzzle.');
+        });
+      } else {
+        setStatus('warn', '<b>Copy the URL from the address bar</b> — it already contains your puzzle.');
+      }
+    });
+    document.getElementById('step-prev').addEventListener('click', function () { if (stepData) showStep(stepIdx - 1); });
+    document.getElementById('step-next').addEventListener('click', function () { if (stepData) showStep(stepIdx + 1); });
+    document.getElementById('step-all').addEventListener('click', function () { if (stepData) showStep(stepData.steps.length - 1); });
     for (var i = 0; i < sizeBtns.length; i++) {
       sizeBtns[i].addEventListener('click', function () {
         setSize(parseInt(this.getAttribute('data-rw'), 10), parseInt(this.getAttribute('data-cl'), 10));
+        stopSteps(); clearPermalink();
       });
     }
-    crEl.addEventListener('change', function () { setSize(crEl.value, ccEl.value); });
-    ccEl.addEventListener('change', function () { setSize(crEl.value, ccEl.value); });
+    crEl.addEventListener('change', function () { setSize(crEl.value, ccEl.value); stopSteps(); clearPermalink(); });
+    ccEl.addEventListener('change', function () { setSize(crEl.value, ccEl.value); stopSteps(); clearPermalink(); });
     rowEl.addEventListener('input', updateCounts);
     colEl.addEventListener('input', updateCounts);
-    updateCounts();
+    if (!loadPermalink()) updateCounts();
   })();
   </script>
 </body>
