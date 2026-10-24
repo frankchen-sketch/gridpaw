@@ -1,0 +1,197 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import SideAd from '../../components/SideAd.astro';
+import InContentAd from '../../components/InContentAd.astro';
+
+const title = "Rotate Rings Guide — Wave-Verified Level Walkthroughs";
+const description = "Rotate Rings guide: how the ring segments really work, frame-verified level walkthroughs with timestamps, and the levels players search for most.";
+const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is Rotate Rings?", "acceptedAnswer": {"@type": "Answer", "text": "Rotate Rings is a free-to-play rotation puzzle by Nebula Studio for iOS and Android. The board is a network of colored pipe segments — C-shapes, L-shapes, straight pieces and closed circles joined by silver connectors. You spin the loose segments until each color closes a complete loop; every closed loop bursts off the board, and bursts can chain-reaction into neighboring loops."}}, {"@type": "Question", "name": "How many levels does Rotate Rings have?", "acceptedAnswer": {"@type": "Answer", "text": "Full-game walkthrough videos cover levels 1 to 200, and community trackers list up to 260 levels. The game updates weekly, so new levels keep arriving — we add walkthroughs as we verify them."}}, {"@type": "Question", "name": "Is Rotate Rings free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — Rotate Rings is free to download and play on iOS and Android. After each cleared level you land on the Acorn Challenge screen, a leaderboard mini-game built around the acorns you collected during the level."}}, {"@type": "Question", "name": "How are these walkthroughs verified?", "acceptedAnswer": {"@type": "Answer", "text": "Every walkthrough is checked against real gameplay footage frame by frame: burst timestamps, piece colors, scores and the endgame sequence are all read off the video before anything is written. Waves timed at 4 frames per second carry a full-verification badge; waves timed at 1 frame per second carry a star badge and a ±1 second tolerance. Nothing is published that we could not confirm on screen."}}]};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rotate-rings"
+    type="article"
+    breadcrumbTitle="Rotate Rings Guide"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .cross-card { margin: 1.2rem 0; background: #fff; border: 2px solid var(--border); border-top: 5px solid var(--amber); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(217,119,6,.08); }
+    .cross-card img { width: 100%; display: block; aspect-ratio: 1200 / 630; object-fit: contain; background: #2D3740; }
+    .cross-card .cross-body { padding: .9rem 1.1rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .cross-card .cross-kicker { font-size: .68rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; color: var(--amber); }
+    .cross-card .cross-ttl { font-weight: 900; font-size: 1.05rem; margin: .1rem 0; }
+    .cross-card .cross-desc { font-size: .85rem; color: #555; margin: 0; }
+    .cross-card .cross-cta { background: var(--amber); color: #fff; font-weight: 800; font-size: .88rem; border-radius: 10px; padding: .5rem 1rem; text-decoration: none; white-space: nowrap; }
+    .level-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.9rem; margin: 0.8rem 0; }
+    .level-card { display: flex; flex-direction: column; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); text-decoration: none; color: var(--text); transition: transform 0.15s, border-color 0.15s; }
+    .level-card:hover { transform: translateY(-2px); border-color: var(--amber); }
+    .level-card .thumb { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; border-bottom: 1.5px solid var(--border); }
+    .level-card .meta { padding: 0.6rem 0.7rem 0.75rem; }
+    .level-card .lvl { font-size: 0.68rem; font-weight: 900; color: var(--amber); text-transform: uppercase; letter-spacing: 0.06em; display: block; }
+    .level-card .name { font-size: 0.85rem; font-weight: 800; line-height: 1.3; margin-top: 0.15rem; color: var(--text); display: block; }
+    .level-card .goal { font-size: 0.72rem; color: var(--light); font-style: italic; margin-top: 0.3rem; line-height: 1.45; margin-bottom: 0; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--light); }
+    .seo-footer a { color: var(--light); }
+    .seo-footer a:hover { color: var(--amber); }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+</style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> > Rotate Rings Guide</nav>
+
+  <main class="seo-section">
+    <h1>Rotate Rings Guide: every burst timed, nothing made up</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Rotate Rings is a mobile game by Nebula Studio; this site is not affiliated with or endorsed by the developer. Board diagrams are redrawn from video footage and your layout may vary by game version.</div>
+
+    <div class="verify-note">Our walkthroughs are built from footage, not memory: every burst timestamp, score and endgame order is read off real gameplay video frame by frame before it goes on the page. Waves verified at 4 frames per second are marked <b>frame-verified</b>; waves timed at 1 fps are marked <b>★</b> with a ±1s tolerance.</div>
+
+    <h2>What Rotate Rings actually is<span class="accent">.</span></h2>
+    <p>Most descriptions of Rotate Rings get it half right. The board is not a pile of interlocked rings — it is a <b>network of pipe segments</b> in five colors: C-shaped arcs, L-shapes, straight pieces and closed circles, joined end-to-end by silver connectors with a central cross hub where branches meet.</p>
+    <p>You rotate the loose segments until each color's open ends meet and the loop closes. A closed loop bursts off the board with a score pop — and here is the part that makes good players: <b>bursts chain</b>. Removing one loop can free the segments that were holding the next one, so a single correct turn can set off a wave that clears a whole cluster. Levels end with the board empty and a leaderboard mini-game called the Acorn Challenge.</p>
+
+    <h2>How to play<span class="accent">.</span></h2>
+    <ol>
+      <li><b>Find the segments that hold nothing.</b> Pieces whose rotation blocks no other segment are safe to turn — turning them first sets up the opening chain.</li>
+      <li><b>Work inward, color by color.</b> Match open ends of the same color until the loop closes and bursts.</li>
+      <li><b>Watch for chain reactions.</b> When a loop bursts, look at what it released — the next loop is often one turn away.</li>
+      <li><b>Closed circles never turn.</b> The full-circle pieces are fixed; every route has to be built around them.</li>
+      <li><b>Grab the acorns.</b> Golden acorns ride on specific segments and are collected when their loop bursts — they feed the Acorn Challenge leaderboard after the level.</li>
+    </ol>
+
+    <h2>How our walkthroughs are made<span class="accent">.</span></h2>
+    <p>Each level page is checked against real gameplay footage frame by frame. For a typical level we sample the full video at 1 frame per second to map the burst waves, then re-scan the key moments at 4 frames per second to pin down exact timestamps, colors, scores and the endgame sequence. What you will not find here: invented move orders. If a step could not be confirmed on screen, we mark it as approximate or leave it out — a guide you can trust beats a guide that guesses.</p>
+
+    <h2>Level walkthroughs<span class="accent">.</span></h2>
+    <div class="level-grid">
+      <a class="level-card" href="/rotate-rings/level-1/">
+        <img class="thumb" src="/rotate-rings/l1-board.jpg" alt="Rotate Rings Level 1 board" loading="lazy" />
+        <div class="meta">
+          <span class="lvl">Level 1 · frame-verified</span>
+          <span class="name">Level 1 Walkthrough</span>
+          <p class="goal">One turn, one burst — 400 pts.</p>
+        </div>
+      </a>
+      <a class="level-card" href="/rotate-rings/level-2/">
+        <img class="thumb" src="/rotate-rings/l2-board.jpg" alt="Rotate Rings Level 2 board" loading="lazy" />
+        <div class="meta">
+          <span class="lvl">Level 2 · frame-verified</span>
+          <span class="name">Level 2 Walkthrough</span>
+          <p class="goal">Two turns, two bursts — 700 pts.</p>
+        </div>
+      </a>
+      <a class="level-card" href="/rotate-rings/level-3/">
+        <img class="thumb" src="/rotate-rings/l3-board.jpg" alt="Rotate Rings Level 3 board" loading="lazy" />
+        <div class="meta">
+          <span class="lvl">Level 3 · frame-verified</span>
+          <span class="name">Level 3 Walkthrough</span>
+          <p class="goal">Three bursts to 1,000 pts.</p>
+        </div>
+      </a>
+      <a class="level-card" href="/rotate-rings/level-32/">
+        <img class="thumb" src="/rotate-rings/l32-board.jpg" alt="Rotate Rings Level 32 board at the start" loading="lazy" />
+        <div class="meta">
+          <span class="lvl">Level 32 · frame-verified</span>
+          <span class="name">Level 32 Walkthrough</span>
+          <p class="goal">All 10 bursts timed — first chain at 0:03, endgame acorns, 4,200 pts.</p>
+        </div>
+      </a>
+    </div>
+    <p>Levels 4–31 and 33+ are being verified the same way — one level at a time, no shortcuts. More wave maps coming shortly.</p>
+    <InContentAd />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    <details><summary>What is Rotate Rings?</summary><p>Rotate Rings is a free-to-play rotation puzzle by Nebula Studio for iOS and Android. The board is a network of colored pipe segments — C-shapes, L-shapes, straight pieces and closed circles joined by silver connectors. You spin the loose segments until each color closes a complete loop; every closed loop bursts off the board, and bursts can chain-reaction into neighboring loops.</p></details>
+    <details><summary>How many levels does Rotate Rings have?</summary><p>Full-game walkthrough videos cover levels 1 to 200, and community trackers list up to 260 levels. The game updates weekly, so new levels keep arriving — we add walkthroughs as we verify them.</p></details>
+    <details><summary>Is Rotate Rings free?</summary><p>Yes — Rotate Rings is free to download and play on iOS and Android. After each cleared level you land on the Acorn Challenge screen, a leaderboard mini-game built around the acorns you collected during the level.</p></details>
+    <details><summary>How are these walkthroughs verified?</summary><p>Every walkthrough is checked against real gameplay footage frame by frame: burst timestamps, piece colors, scores and the endgame sequence are all read off the video before anything is written. Waves timed at 4 frames per second carry a full-verification badge; waves timed at 1 frame per second carry a star badge and a ±1 second tolerance. Nothing is published that we could not confirm on screen.</p></details>
+
+    <div class="cta-box">
+      <p><a href="/">Play Shikaku →</a> · <a href="/akari/">Play Akari →</a> · <a href="/japanese-logic-puzzles/">More Japanese logic puzzles →</a></p>
+    </div>
+
+    <div class="cross-card">
+      <img src="/og-akari-daily.png" alt="Daily Akari — new grid every midnight" loading="lazy" width="1200" height="630">
+      <div class="cross-body">
+        <div>
+          <span class="cross-kicker">Tonight's Puzzle</span>
+          <p class="cross-ttl">Daily Akari Challenge</p>
+          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
+        </div>
+        <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+      </div>
+    </div>
+  </main>
+  <AdSlot />
+  <SideAd />
+  <script is:inline>
+  (function () {
+    function track(event, params) {
+      if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
+      if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(event, Object.assign({ site: 'gridpaw' }, params || {}));
+      if (typeof window.clarity === 'function') window.clarity('event', event);
+      if (window.gpTrack) window.gpTrack(event, params || {});
+    }
+    document.addEventListener('click', function (e) {
+      var a = e.target && e.target.closest ? e.target.closest('a') : null;
+      if (!a) return;
+      var box = a.closest('.cta-box');
+      var grid = a.closest('.level-grid');
+      var card = a.closest('.cross-card');
+      if (!box && !grid && !card) return;
+      track('cta_click', {
+        target: a.getAttribute('href') || '',
+        placement: box ? 'cta-box' : grid ? 'level-grid' : 'puzzle-card',
+        from: location.pathname
+      });
+    }, true);
+  })();
+  </script>
+  <footer class="seo-footer">
+    <p><a href="/rotate-rings/level-32/">Level 32 walkthrough</a> · <a href="/">GridPaw</a></p>
+  </footer>
+</body>
+</html>

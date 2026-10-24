@@ -1,0 +1,210 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+
+const title = "Rotate Rings Level 32 Walkthrough — Every Burst Timed";
+const description = "Rotate Rings Level 32 solved frame-by-frame: all 10 bursts timed, first chain at 0:03, endgame acorns, board map and full video. Verified fan guide.";
+const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do you beat Rotate Rings Level 32?", "acceptedAnswer": {"@type": "Answer", "text": "One clockwise turn starts it all: the red loop closes at about 0:03 and the outer cluster bursts in a chain reaction. Ten bursts in total — the middle clusters clear between 0:24 and 0:59, then the last three loops pop one at a time (purple about 1:05, green about 1:05.5, red about 1:06.5) and the board empties at 4,200 points."}}, {"@type": "Question", "name": "What are the acorns for in Rotate Rings?", "acceptedAnswer": {"@type": "Answer", "text": "Acorns are collectibles that ride on specific segments. When their loop closes and bursts, the acorn counter climbs — it goes from 0 to 3 during Level 32's endgame. After the board clears they feed straight into the Acorn Challenge leaderboard screen."}}, {"@type": "Question", "name": "What happens after the board clears in Level 32?", "acceptedAnswer": {"@type": "Answer", "text": "The Acorn Challenge screen takes over: a five-player leaderboard with x1 to x10 multiplier tiers, then the squirrel celebration and the final Nice screen showing your score — 4,200 in our run."}}, {"@type": "Question", "name": "Is this Level 32 walkthrough verified?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — every timestamp above was checked against the embedded video frame by frame (4 frames per second on the key waves, 1 fps with a ±1s tolerance on the star-marked waves). It is an unofficial fan-made guide, not affiliated with Nebula Studio."}}]};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rotate-rings/level-32"
+    type="article"
+    breadcrumbTitle="Rotate Rings Level 32"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .badge-verified, .badge-star { display: inline-block; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.04em; border-radius: 999px; padding: 0.12rem 0.55rem; margin-left: 0.35rem; vertical-align: middle; }
+    .badge-verified { background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; }
+    .badge-star { background: #FFF8E6; color: #B26A00; border: 1px solid #F0DFAE; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 420px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .hero-link { display: block; cursor: pointer; text-decoration: none; }
+    .hero { width: 100%; max-width: 420px; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0 auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .cross-card { margin: 1.2rem 0; background: #fff; border: 2px solid var(--border); border-top: 5px solid var(--amber); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(217,119,6,.08); }
+    .cross-card img { width: 100%; display: block; aspect-ratio: 1200 / 630; object-fit: contain; background: #2D3740; }
+    .cross-card .cross-body { padding: .9rem 1.1rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .cross-card .cross-kicker { font-size: .68rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; color: var(--amber); }
+    .cross-card .cross-ttl { font-weight: 900; font-size: 1.05rem; margin: .1rem 0; }
+    .cross-card .cross-desc { font-size: .85rem; color: #555; margin: 0; }
+    .cross-card .cross-cta { background: var(--amber); color: #fff; font-weight: 800; font-size: .88rem; border-radius: 10px; padding: .5rem 1rem; text-decoration: none; white-space: nowrap; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--light); }
+    .seo-footer a { color: var(--light); }
+    .seo-footer a:hover { color: var(--amber); }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+</style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> > <a href="/rotate-rings/">Rotate Rings Guide</a> > Level 32</nav>
+
+  <main class="seo-section">
+    <h1>Rotate Rings Level 32 Walkthrough: wave map &amp; video</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Rotate Rings is a mobile game by Nebula Studio; this site is not affiliated with or endorsed by the developer. Board images are frames from gameplay footage; your layout may vary by game version.</div>
+
+    <div class="verify-note">Verified frame-by-frame against the video below: full-video scan at 1 fps, key waves re-scanned at 4 fps. <b>Frame-verified</b> badges mark waves read at 4 fps; <b>★</b> badges mark waves timed at 1 fps (±1s tolerance). Scores are read off the in-game counter.</div>
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Level 32 clears in about 68 seconds with ten bursts. One clockwise turn starts everything — the red loop closes at ≈0:03 and the outer cluster pops in a chain reaction. Middle clusters clear between 0:24 and 0:59, the endgame drops the last three loops one at a time (purple ≈1:05, green ≈1:05.5, red ≈1:06.5), and the board empties at 4,200 points.</p>
+    </div>
+
+    <a class="hero-link" href="#video" aria-label="Jump to the Level 32 full solution video">
+      <img class="hero" src="/rotate-rings/l32-board.jpg" alt="Rotate Rings Level 32 board at the start — five colors of pipe segments joined by silver connectors, two acorns and a bomb piece on the board" loading="lazy" />
+    </a>
+
+    <h2>Watch the full solution<span class="accent">.</span></h2>
+    <p>The video is the source every timestamp below was checked against. The wave map gives you the story of the level — where the bursts land and in what order — so you always know what you should be setting up next.</p>
+    <div class="video-wrap" id="video">
+      <iframe src="https://www.youtube-nocookie.com/embed/Twdd3-7Pr8o" title="Rotate Rings Level 32 walkthrough video" allowfullscreen></iframe>
+    </div>
+    <InContentAd />
+
+    <h2>Level 32 wave map: all ten bursts in order<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Wave 1 · ≈0:03 <span class="badge-verified">frame-verified</span></span>
+      <strong>The chain opener — one turn, whole outer cluster</strong>
+      <p>The first correct move is a single clockwise turn of the red C-shaped segment in the top-middle column. It closes the red loop — and the burst drags the outer cluster with it in a chain reaction. The score jumps from 0 to 444 within seconds. Lesson: in Rotate Rings, one well-picked rotation can be worth ten.</p>
+      <p class="ts">Video: burst lands between 2.75s and 3.00s <a href="https://www.youtube.com/watch?v=Twdd3-7Pr8o&amp;t=3s" target="_blank" rel="noopener">jump to 0:03 →</a></p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Waves 2–3 · ≈0:24 &amp; ≈0:36 <span class="badge-verified">frame-verified</span></span>
+      <strong>Middle clusters clear in pairs</strong>
+      <p>At ≈0:24 the top-right cluster goes at once — green, yellow and purple loops bursting together with a "Great!" (score 569). At ≈0:36 the mid-right cluster chains the same way: purple, yellow and green gone in one wave (score 1,299). The pattern repeats all level: free the piece, close the loop, let the chain do the rest.</p>
+      <p class="ts">Video: bursts at 23.75–24.00s and 35.75s <a href="https://www.youtube.com/watch?v=Twdd3-7Pr8o&amp;t=24s" target="_blank" rel="noopener">jump to 0:24 →</a></p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Waves 4–7 · 0:39–0:59 <span class="badge-star">★ 1fps ±1s</span></span>
+      <strong>Steady clears around the board</strong>
+      <p>The middle game is a rhythm of smaller waves: yellow and green clear in the upper area (≈0:39), a small green loop pops on the right (≈0:44), a big red-and-yellow wave sweeps the top with a "Great!" (≈0:54), and a blue/purple wave clears the lower left (≈0:59, another "Great!").</p>
+      <p class="ts">Video: 38.4–60.6s window <a href="https://www.youtube.com/watch?v=Twdd3-7Pr8o&amp;t=39s" target="_blank" rel="noopener">jump to 0:39 →</a></p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Waves 8–10 · 1:02–1:07 <span class="badge-verified">frame-verified</span></span>
+      <strong>The endgame — three loops, one at a time</strong>
+      <p>Three closed loops remain: purple, green and red. They come down individually — purple bursts at ≈1:05, green at ≈1:05.5, red at ≈1:06.5 — and each pop bumps the acorn counter: 0 → 1 → 2 → 3. The score climbs 3,200 → 3,469 → 3,600 → 4,200.</p>
+      <p class="ts">Video: bursts at 64.5–66.5s <a href="https://www.youtube.com/watch?v=Twdd3-7Pr8o&amp;t=65s" target="_blank" rel="noopener">jump to 1:05 →</a></p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Clear · ≈1:07.5 <span class="badge-verified">frame-verified</span></span>
+      <strong>Board empty — the Acorn Challenge takes over</strong>
+      <p>The cleared board rolls into the Acorn Challenge: a five-player leaderboard with x1–x10 multiplier tiers, then the squirrel celebration and the final "Nice!" screen showing 4,200 points. The three acorns you collected during the endgame feed this mini-game.</p>
+      <p class="ts">Video: transition at 67.5s <a href="https://www.youtube.com/watch?v=Twdd3-7Pr8o&amp;t=68s" target="_blank" rel="noopener">jump to 1:08 →</a></p>
+    </div>
+
+    <h2>How the Level 32 board works<span class="accent">.</span></h2>
+    <p>Knowing the pieces makes every wave above predictable. The board runs on five colors — red, orange, green, cyan and purple — built from C-shaped arcs, L-shapes, straight pieces and closed circles, all joined by silver connectors with a cross hub at the center where branches meet.</p>
+    <ul>
+      <li><b>Closed circles never turn.</b> The full-circle pieces are fixed; routes have to be built around them.</li>
+      <li><b>Two acorns and a bomb.</b> The golden acorns sit on specific segments and pop when their loop bursts. A bomb piece also appears on the board; in this run it never interacts with anything, so treat it as scenery and don't build your plan around it.</li>
+      <li><b>Bursts chain.</b> Every wave above started from a single rotation — look for the segment whose burst frees the next one.</li>
+    </ul>
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    <details><summary>How do you beat Rotate Rings Level 32?</summary><p>One clockwise turn starts it all: the red loop closes at about 0:03 and the outer cluster bursts in a chain reaction. Ten bursts in total — the middle clusters clear between 0:24 and 0:59, then the last three loops pop one at a time (purple about 1:05, green about 1:05.5, red about 1:06.5) and the board empties at 4,200 points.</p></details>
+    <details><summary>What are the acorns for in Rotate Rings?</summary><p>Acorns are collectibles that ride on specific segments. When their loop closes and bursts, the acorn counter climbs — it goes from 0 to 3 during Level 32's endgame. After the board clears they feed straight into the Acorn Challenge leaderboard screen.</p></details>
+    <details><summary>What happens after the board clears in Level 32?</summary><p>The Acorn Challenge screen takes over: a five-player leaderboard with x1 to x10 multiplier tiers, then the squirrel celebration and the final Nice screen showing your score — 4,200 in our run.</p></details>
+    <details><summary>Is this Level 32 walkthrough verified?</summary><p>Yes — every timestamp above was checked against the embedded video frame by frame (4 frames per second on the key waves, 1 fps with a ±1s tolerance on the star-marked waves). It is an unofficial fan-made guide, not affiliated with Nebula Studio.</p></details>
+
+    <h2>Stuck on another level?<span class="accent">.</span></h2>
+    <p><a href="/rotate-rings/">Back to the Rotate Rings guide</a> — more wave maps are being verified level by level. Levels 1–31 and 33+ are coming shortly, same format: every burst timed, nothing made up.</p>
+
+    <div class="cta-box">
+      <p><a href="/">Play Shikaku →</a> · <a href="/akari/">Play Akari →</a> · <a href="/japanese-logic-puzzles/">More Japanese logic puzzles →</a></p>
+    </div>
+
+    <div class="cross-card">
+      <img src="/og-akari-daily.png" alt="Daily Akari — new grid every midnight" loading="lazy" width="1200" height="630">
+      <div class="cross-body">
+        <div>
+          <span class="cross-kicker">Tonight's Puzzle</span>
+          <p class="cross-ttl">Daily Akari Challenge</p>
+          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
+        </div>
+        <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+      </div>
+    </div>
+  </main>
+  <AdSlot />
+  <SideAd />
+  <script is:inline>
+  (function () {
+    function track(event, params) {
+      if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
+      if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(event, Object.assign({ site: 'gridpaw' }, params || {}));
+      if (typeof window.clarity === 'function') window.clarity('event', event);
+      if (window.gpTrack) window.gpTrack(event, params || {});
+    }
+    document.addEventListener('click', function (e) {
+      var a = e.target && e.target.closest ? e.target.closest('a') : null;
+      if (!a) return;
+      var box = a.closest('.cta-box');
+      var card = a.closest('.cross-card');
+      if (!box && !card) return;
+      track('cta_click', {
+        target: a.getAttribute('href') || '',
+        placement: box ? 'cta-box' : 'puzzle-card',
+        from: location.pathname
+      });
+    }, true);
+  })();
+  </script>
+  <footer class="seo-footer">
+    <p><a href="/rotate-rings/">All Rotate Rings walkthroughs</a> · <a href="/">GridPaw</a></p>
+  </footer>
+</body>
+</html>
