@@ -794,3 +794,10 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **Tier-1**：step-by-step 推导回放（solveSteps 重放式采集，60 例重放对拍 0 bad；search 步诚实标注）+ URL 永链（hash 编码线索，打开自动求解，Copy link）——吃 related 词 "nonogram solver step by step"，寄生论坛求助分享位
 - **打点**：GA4 nonogram_solver_solve（status/size/ms/src=input|example|link）+ D1 通道 tool_start/tool_action（白名单内零后端改动，akari/create 惯例）
 - **⏳ 决策门（cron fa21cada5922，2026-11-01 10:00 自动拉数）**：tier-2「截图→线索提取」开工标准预定死——input-solve ≥15/天且 error<40% → 开工；≥5/天但 error≥40% → 先修输入 UX；<5/天且周展示<500 → 不投入转导流。任务书 ~/.hermes/scripts/nonogram-solver-review-prompt.txt
+
+## 2026-10-25：AdSense 低价值内容整改批次 1+2 上线 + 哥飞复检 ready（commits 181fdd2/a1aff3f，deployment 6ac8cd1a，IndexNow 200）
+- **上线**：/terms/ 新页（noindex）+ 7 处页脚/互链 Terms 链；privacy 加 Cookie 清单表（全真实数据）+ #ads 锚点；BP3 EN 7 页 + BP3 DE 9 页 + Rings 10 页 + Meowdoku 10 页加深。dup（dist 渲染口径）：57.2→24.0 / 50.9→19.7 / 23.1→18.6 / 84.4→31.8%（Meowdoku 主内容面仅 4.7%，残余=契约 chrome ~27% 不注水）
+- **Meowdoku 加料**：mz_gen_regions.cjs 引擎确定性重生成——六区形状导览+区接触图+陷阱段，每陷阱独立回溯求解器断言「放猫后 0 解」（全真数据）；mz_verify ALL_MATCH=true
+- **哥飞复检**（3 积分，req_809ed32bf95a57f9）：decision=**ready**，fail/blockers/highs 全 0；薄页 CONTENT-03 pass（抽样中位 880 词）
+- **遗留**：① CMP 等 snippet（唯一硬前置，等后台操作）② 7 游戏页 SideAd 盖按钮（附录 A：6 页 1152px 盖真实按钮 + meowdoku 872px 超契约）→ 修复=收窄 ≤840px 居中，1:1 预览批次 ③ 42 页 600-800w 中间档按 GSC 点击分批加深（已启动）
+- 详表 → research/2026-10-24-adsense-remediation-plan.md 附录 A/B
