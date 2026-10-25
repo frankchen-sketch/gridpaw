@@ -787,3 +787,10 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **上线内容**：`/de/brain-puzzle-3-level-1..10/` 共 10 页（已验证英文页的德语版，事实零改动：视频 ID 10/10 逐关对账），页尾 CTA→英文总索引；关卡网格只内链 1-10 德语版（11+ 防泄漏已删）；hreflang 三连手写在 de 页 head，EN 页零改动
 - **验收**：build 208 页 0 error → dist 双重转义 0 → ego 截图 vision 3/3 PASS（P1 内链泄漏当场修）→ 部署 hash 7eb5137f → IndexNow 显式提交 10 URL → 线上 cache-bust 10/10 全 200
 - **后续**：二期=4 周后 GSC 德语词起量则铺满 35 页+lang toggle；台账/管线详见 NEWWORD-LEDGER（Bot·X 采集腿 10-19 打通，发件人过滤已加 a839500525@gmail.com）
+
+## 2026-10-25：Nonogram Solver 上线 + 性能重写 + Tier-1 两件套（commits e746a0c/eca1f8c/97e7853，全已部署）
+- **上线**：/nonogram/solver/ 真线索求解器（KWP 2,400/KD33 SERP 实拍：#1/#3 个人页+#9 return.co.de 唯一 beatable 位；#5 logic-puzzles-online DR9/站龄6月=打法可行性证明）
+- **性能**：20×20 高歧义图案生产实测 timeout → 脏线队列+MRV 重写后 19ms（100×+）；100 张高压随机图 0 无效，病态由 5s deadline 诚实兜底
+- **Tier-1**：step-by-step 推导回放（solveSteps 重放式采集，60 例重放对拍 0 bad；search 步诚实标注）+ URL 永链（hash 编码线索，打开自动求解，Copy link）——吃 related 词 "nonogram solver step by step"，寄生论坛求助分享位
+- **打点**：GA4 nonogram_solver_solve（status/size/ms/src=input|example|link）+ D1 通道 tool_start/tool_action（白名单内零后端改动，akari/create 惯例）
+- **⏳ 决策门（cron fa21cada5922，2026-11-01 10:00 自动拉数）**：tier-2「截图→线索提取」开工标准预定死——input-solve ≥15/天且 error<40% → 开工；≥5/天但 error≥40% → 先修输入 UX；<5/天且周展示<500 → 不投入转导流。任务书 ~/.hermes/scripts/nonogram-solver-review-prompt.txt
