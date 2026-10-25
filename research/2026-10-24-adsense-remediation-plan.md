@@ -136,7 +136,14 @@
 | nonogram / nurikabe | 840px | 否 | 无 |
 | murder-sudoku / the-loop / rotate-rings | 720px | 否 | 无 |
 
-**新发现（超出原方案范围）**：7 个游戏页存在 ADS-PUB-10 现行违规——SideAd 层实测盖住交互按钮（elementFromPoint 命中=真实点击被吃）。哥飞工具的交互盲区，本轮全站实测抓出。**修复方向**：按 SideAd 契约把这 7 页游戏组件收窄 ≤840px 居中（kenken 496-784 范式 / murdoku 先例）；属 UI 布局改动，须 1:1 预览确认后单独批次执行，未列入本轮。
+**新发现（超出原方案范围）**：7 个游戏页存在 ADS-PUB-10 现行违规
+
+### 修复执行记录（2026-10-25 晚，法老批准后实施）
+
+- **改动**：6 页 `src/pages/{akari,binary,kenken,star-battle,hashi,slitherlink}/index.astro` 的 `.main` max-width 72rem→52.5rem（commit c85c7bc）；meowdoku 2 页（index + levels/[level]）main 加 `box-sizing:border-box`（840 含 padding；附录 A 的 872px 实为此二页）。murdoku 实测 0 覆盖不动；共 8 文件各 1 行，零 JS/零新 CSS/零结构。
+- **机制洞察**：SideAd 槽位锚定假设=内容列 840px 居中（`calc((100vw-840px)/2-192px)`）——超宽页的空槽 div（z-30 无 pointer-events 豁免）连 CN 访客（geo 闸拦广告、槽空）的点击都吃。
+- **验收（Playwright 1440×900，几何相交判定）**：8 页 live before（main 1152/872、缝 -124/16、覆盖 Restart/Settings/Daily/New/how-to-play）→ after 全绿（main 840、缝 32px=契约值、覆盖 0、棋盘宽度逐页不变 150/432/288/512/300）；移动 390 无溢出；截图 vision 亲读正常；线上 cache-bust 复测 8/8 ALL PASS。
+- **部署插曲（已修复）**：worktree（detached HEAD）deploy 落成 preview 分支（生产未动）→ `--branch main` 重部署；期间兄弟会话叠了 commit 3fa7918（Loop 三页广告位），首笔生产部署将其回滚 → 在 3fa7918 上开 hotfix worktree 重建重部署（deployment 0d97f0b2），线上四查全绿（akari CSS 新 hash + hints native ×2 + archive InContentAd ×2）。教训入 skill ui-change-proposal。——SideAd 层实测盖住交互按钮（elementFromPoint 命中=真实点击被吃）。哥飞工具的交互盲区，本轮全站实测抓出。**修复方向**：按 SideAd 契约把这 7 页游戏组件收窄 ≤840px 居中（kenken 496-784 范式 / murdoku 先例）；属 UI 布局改动，须 1:1 预览确认后单独批次执行，未列入本轮。
 
 ## 附录 B：终验记录（2026-10-25）
 
