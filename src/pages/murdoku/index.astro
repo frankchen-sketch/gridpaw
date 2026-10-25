@@ -510,6 +510,7 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
 
     var puzzle = null, N = 4, placed = [], selSuspect = 0, caseNo = 1, hintsUsed = 0, startTs = 0;
     var gaFiredOnce = false;
+    var gsSent = false; // game_start 真正发出的标记（fm 单调性闸：fm 触发时 gs 还压在 visibility 队里就同步补发，2026-10-25）
     var IS_DEV = /^(localhost|127\.0\.0\.1|\[::1\])/.test(location.hostname);
 
     // ── GA4 track()（与 kenken 同款；gpTrack 转发行是硬性要求）──
@@ -548,10 +549,11 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
     // game_start 口径（2026-10-13 Clarity 取证）：页面可见才算开局——后台标签加载不计，
     // visibilitychange 转可见时补发；直接关掉后台标签 = 不发
     function trackGameStartWhenVisible(fire) {
-      if (document.visibilityState === 'visible') { fire(); return; }
+      if (document.visibilityState === 'visible') { gsSent = true; fire(); return; }
       var onVis = function () {
         if (document.visibilityState !== 'visible') return;
         document.removeEventListener('visibilitychange', onVis);
+        gsSent = true;
         fire();
       };
       document.addEventListener('visibilitychange', onVis);
@@ -562,6 +564,13 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
       trackGameStartWhenVisible(function () {
         track('game_start', { level: levelTag(), difficulty: diffLabel(), source: detectSource() });
       });
+    }
+    // fm 单调性闸（2026-10-25）：fm 触发时 gs 还压在 visibility 队里（后台标签加载后
+    // 直接开玩，visibilitychange 未到）就同步补发，保证 D1 gs ≥ fm 不倒挂
+    function fireGameStartNow() {
+      if (gsSent) return;
+      gsSent = true;
+      track('game_start', { level: levelTag(), difficulty: diffLabel(), source: detectSource() });
     }
 
     // ── 矢量道具命名 ──
@@ -771,6 +780,7 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
         tutAdvance();
         // gs 先行保证（2026-10-19）：个别加载路径漏 fireGameStart 时 fm 会跑在 gs 前（D1 fm 97 > gs 92 实测）
         fireGameStart();
+        fireGameStartNow(); // fm 单调性闸（2026-10-25）：gs 压在 visibility 队里就同步补发
         // first_move 首次放猫（__firstMoveTracked 防重，与 akari 同款）
         if (!window.__firstMoveTracked) {
           window.__firstMoveTracked = true;
