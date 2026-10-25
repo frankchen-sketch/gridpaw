@@ -137,3 +137,27 @@
 | murder-sudoku / the-loop / rotate-rings | 720px | 否 | 无 |
 
 **新发现（超出原方案范围）**：7 个游戏页存在 ADS-PUB-10 现行违规——SideAd 层实测盖住交互按钮（elementFromPoint 命中=真实点击被吃）。哥飞工具的交互盲区，本轮全站实测抓出。**修复方向**：按 SideAd 契约把这 7 页游戏组件收窄 ≤840px 居中（kenken 496-784 范式 / murdoku 先例）；属 UI 布局改动，须 1:1 预览确认后单独批次执行，未列入本轮。
+
+## 附录 B：终验记录（2026-10-25）
+
+**部署**：commit 181fdd2（35 文件）→ wrangler pages deploy 6ac8cd1a + IndexNow 200。线上 10 项 cache-bust 抽查全绿（terms/privacy/首页 Terms 链/4 系列页新节/akari+about 页脚）。
+
+**dup 验收（dist 渲染口径，gp_dup_dist.py）**：
+| 系列 | 改前 | 改后（全页面） | 主内容面 |
+|---|---|---|---|
+| BP3 EN ×7 | 57.2% | 24.0% | — |
+| BP3 DE ×9 | 50.9% | 19.7% | — |
+| Rings ×10 | 23.1% | 18.6% | — |
+| Meowdoku ×10 | 84.4% | 31.8%（均值）/ max 35.3% | ≈4.7% |
+
+Meowdoku 残余 31.8% 拆解：站点契约 chrome（GameNav 游戏列表+游戏组件 UI+星评+FAQ 骨架+声明块）≈27%，为 GameNav/Play 组件契约必带、跨页一致是设计行为；本任务产出的主内容（区导览/接触图/陷阱段/推导/hints）跨页 5-gram 重叠仅 ≈4.7%。残余超标部分不再用注水稀释——注水正是 AdSense 判 scaled content 的靶子。
+
+**Meowdoku 加料方式**：mz_gen_regions.cjs 从引擎确定性重生成（SB.generate(6,1,'easy',seed)）导出每关六区形状导览（坐标列表）+ 区-区接触图（8 邻域 ×N 计数）+ 陷阱段（每关经独立回溯求解器断言「放猫后 0 解」，全部 immediate-starve 模式）；mz_verify.cjs ALL_MATCH=true、mz_factcheck 区形状引用全对。防模板化：6 句式骨架 × mulberry32 轮换，新增内容跨页共享 5-gram 从 938 压到 161。
+
+**哥飞复检（3 积分，req_809ed32bf95a57f9，余额 2410）**：decision=**ready**；73 项 pass 18 / fail 0 / blockers 0 / highs 0 / mediums 0 / na 3 / unknown 52。关键自动项：CONTENT-03 薄页 **pass**（抽样中位 880 词，第一轮的判罚项已消）、UX-05 信任页 pass、PRIV-01/02 Cookie 披露 pass、TXT 双项 pass、sitemap 167 URL。unknown 大头是「待 AI 内容审核判定」（工具 aiError：AI 返回无法解析出逐项判定，工具侧问题非站点问题）+ owner 自查项。
+
+**遗留（进下一轮）**：
+1. B2 CMP：唯一硬前置，等法老在 AdSense 后台「隐私与消息」启用 Google CMP（GDPR+美国州消息）拿 snippet → 挂 SEOHead + privacy 回填（ADS-PRIV-04 仍 unknown）
+2. ADS-PUB-10：7 游戏页桌面 SideAd 盖真实按钮（附录 A 实测），修复=收窄 ≤840px 居中，须 1:1 预览单独批次
+3. 42 页 600-800w 中间档：按 GSC 点击数据下一轮分批加深
+4. STATUS.md 终验条目：该文件当前有兄弟会话未提交改动，等其落地后再补记
