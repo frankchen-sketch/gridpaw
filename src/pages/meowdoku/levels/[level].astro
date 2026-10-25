@@ -16,9 +16,9 @@ const description = `Play Meowdoku Level ${n} free online: a fixed 6×6 cat logi
 const prev = n > 1 ? n - 1 : null;
 const next = n < 10 ? n + 1 : null;
 const faqs = [
-  { q: `Is this the same as Level ${n} in the Meowdoku app?`, a: "No. The app randomizes boards based on player progress. This is an unofficial fan-made fixed board with the same rules: one cat per region, row, and column, and cats never touch, diagonals included." },
-  { q: "How many solutions does this board have?", a: "Exactly one. Every board on this site is programmatically checked with a solver before publication, so pure logic always reaches the answer without guessing." },
-  { q: `What is the answer to Level ${n}?`, a: `The cats go on ${lv.answer}. Try solving it first, then use the hidden answer block on this page to check yourself.` },
+  { q: `Is this the same as Level ${n} in the Meowdoku app?`, a: "No. The app randomizes boards as you progress; this one is fixed and unofficial." },
+  { q: "How many solutions does this board have?", a: "Exactly one — solver-proven." },
+  { q: `What is the answer to Level ${n}?`, a: `The cats go on ${lv.answer}. Check the spoiler above.` },
 ];
 ---
 <!DOCTYPE html>
@@ -54,6 +54,7 @@ const faqs = [
     .disclaimer { font-size:0.78rem; color:#A08D80; background:#FBF6F0; border:1px solid #F0E4D6; border-radius:8px; padding:6px 10px; display:inline-block; margin-bottom:0.8rem; }
     .lede { font-size:1rem; color:var(--md-text,#3D3D3D); line-height:1.7; margin:0 0 0.6rem; }
     h2 { font-size:1.2rem; margin:1.5rem 0 0.5rem; color:var(--md-text,#3D3D3D); }
+    h2 .accent { color:var(--md-primary,#D97706); }
     .lvnav { display:flex; justify-content:space-between; gap:10px; max-width:520px; margin:1rem auto; flex-wrap:wrap; }
     .lvnav a { background:#FFF1E8; color:var(--md-text,#3D3D3D); font-weight:800; font-size:0.85rem; padding:8px 14px; border-radius:9px; text-decoration:none; }
     .lvnav a:hover { background:#FFE7D6; }
@@ -73,16 +74,41 @@ const faqs = [
   <SideAd />
     <h1>Meowdoku Level {n}: Free Online Puzzle</h1>
     <div class="disclaimer">Unofficial fan-made board. Not affiliated with Oakever.</div>
-    <p class="lede">A fixed 6×6 board: everyone gets the same Level {n}, with exactly one solution proven by code. Place one cat per colored region, row, and column, and never let two cats touch, even diagonally. Need the techniques? <a href="/meowdoku-guide/">Read the strategy guide</a>.</p>
+    <p class="lede">A cat in every region, row and column; none touching, corners included. <a href="/meowdoku-guide/">Strategy guide</a>.</p>
 
     <MeowdokuPlay mode="level" level={n} heading={`Meowdoku-Style Level ${n} — Free, No Download`} />
     <StarRating game="meowdoku" level={n} label={`How was Level ${n}? Rate it:`} />
 
+    <h2>Reading <span class="accent">Level {n}</span>'s six regions</h2>
+    {lv.regionsGuide.map((s) => (
+      <p class="lede">{s}</p>
+    ))}
+    {lv.contacts.map((s) => (
+      <p class="lede">{s}</p>
+    ))}
+    <p class="lede">{lv.strategic}</p>
+
+    <h2>How to Solve <span class="accent">Level {n}</span>, Step by Step</h2>
+    <p class="lede">{lv.solve.anchor}</p>
+    {lv.solve.steps.map((s) => (
+      <p class="lede">{s}</p>
+    ))}
+    <p class="lede">{lv.solve.close}</p>
+
+    <h2>Where <span class="accent">Level {n}</span> wants you to slip</h2>
+    <p class="lede">{lv.trap}</p>
+
+    <h2>Hints for <span class="accent">Level {n}</span>: Four Nudges</h2>
+    <ul class="lede">
+      {lv.hints.map((h) => (
+        <li>{h}</li>
+      ))}
+    </ul>
+
     <h2>Answer for Level {n}</h2>
     <details class="answer">
-      <summary>Show answer: the six cat positions (spoiler)</summary>
+      <summary>Show answer</summary>
       <p><b>{lv.answer}</b></p>
-      <p>Solved it differently? Any legal placement that fills all six regions must match this board, because the solution is unique.</p>
     </details>
 
     <div class="lvnav">
