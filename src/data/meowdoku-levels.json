@@ -4,69 +4,418 @@
     "seed": 1,
     "id": "sb-6-1-easy-1-0",
     "answer": "R1C5 · R2C1 · R3C3 · R4C6 · R5C4 · R6C2",
-    "regions": 6
+    "regions": 6,
+    "solve": {
+      "anchor": "Two regions set this board up. Blue is only two cells deep, R3C6 and R4C6, and both sit in column 6 — so column 6's cat is one of that pair, and R1C6, R2C6, R5C6 and R6C6 are gone. Salmon loses two of its three cells to that single fact, leaving R1C5 as the board's first cat, with row 1 and column 5 closing behind it.",
+      "steps": [
+        "Which half of blue? Empty R4C6 and follow the chain: it ends with column 1 needing two cats, which cannot be. So R4C6 holds the blue cat, and row 4 empties — R4C1, R4C2, R4C3 and R4C4 are all out.",
+        "Cream then handles the middle band. A cat on R2C2 would leave cream with no legal cell at all, so it goes. Row 2's remaining cells are R2C1 and R2C3, both cream, so cream's cat belongs to row 2 and R3C1 dies.",
+        "Between those two, empty R2C1 and row 3 starves. R2C1 takes the cream cat, R2C3 drops out, and column 1 closes with R5C1 and R6C1.",
+        "Row 5's open cells, R5C2 to R5C4, all sit inside lilac, so lilac's cat is in row 5 and R6C4 is out. Column 2 then has a single candidate left: R6C2, because emptying it would strip column 2 of every legal cell.",
+        "Look at what those two blue cells bought: four cells in column 6, two more out of salmon, and then all of row 4 once the blue cat was pinned. On a board this size, the smallest region is nearly always the cheapest place to start."
+      ],
+      "close": "The last two come from counting. R5C4 is the only open cell of row 5, R3C3 the only one in column 3. Read the set back — R1C5, R2C1, R3C3, R4C6, R5C4, R6C2 — and every row, column and region carries one cat, none of them touching, corners included. The board is proven unique, so any legal finish lands here."
+    },
+    "hints": [
+      "Start at the right edge. Blue holds only R3C6 and R4C6, and both sit in column 6 — so the column's cat is one of that pair, and R1C6, R2C6, R5C6 and R6C6 are dead before you place anything.",
+      "That same fact breaks salmon: its three cells are R1C5, R1C6 and R2C6, and two of them are in column 6. R1C5 is the only one left, so it takes the cat, and row 1 plus column 5 close behind it.",
+      "Which half of blue? Empty R4C6 and follow the chain: column 1 ends up needing two cats. So R4C6 is the blue cat and row 4 empties. Cream then shifts into row 2, which kills R3C1.",
+      "The tail is counting. R2C2 fails because cream would be left with no cell, R2C1 must be the cream cat, R6C2 must close column 2, and then R5C4 and R3C3 are the last open cells of row 5 and column 3."
+    ],
+    "regionsGuide": [
+      "Pink takes R4C1, R5C1, R6C1, R6C2 and R6C3 — 5 cells.",
+      "Salmon? That's R1C5, R1C6 and R2C6. 3 cells in all.",
+      "Lilac takes R3C2, R4C2, R4C4, R5C2, R5C3, R5C4 and R6C4 — 7 cells.",
+      "Blue takes R3C6 and R4C6 — 2 cells.",
+      "Green = a 14-cell patch, cells R1C2, R1C4, R2C2, R2C4, R2C5, R3C3, R3C4, R3C5, R4C3, R4C5, R5C5, R5C6, R6C5 and R6C6.",
+      "Cream takes R1C1, R1C3, R2C1, R2C3 and R3C1 — 5 cells tucked into the top-left corner."
+    ],
+    "trap": "R2C5 reads as free space but isn't: drop a cat there and R1C5 — where the salmon region cat must live — is dead on arrival.",
+    "contacts": [
+      "Pink touches cream ×1, lilac ×12.",
+      "Salmon touches green ×6, blue ×1.",
+      "Lilac meets cream ×4, green ×19, pink ×12.",
+      "Blue touches green ×7, salmon ×1.",
+      "Green borders cream ×15, salmon ×6, lilac ×19, blue ×7.",
+      "Cream touches green ×15, lilac ×4, pink ×1."
+    ],
+    "strategic": "Every touch above is a live constraint: a cat on one side of a border rules the touching cells on the other side out, corners included."
   },
   {
     "level": 2,
     "seed": 2,
     "id": "sb-6-1-easy-2-0",
     "answer": "R1C4 · R2C2 · R3C5 · R4C3 · R5C6 · R6C1",
-    "regions": 6
+    "regions": 6,
+    "solve": {
+      "anchor": "The pink region hands you a cat for free: it is a single cell, R6C1. That placement closes row 6 at once (R6C3, R6C4, R6C5, R6C6) and column 1 with it (R1C1, R2C1, R3C1, R4C1). Everything after this point is pointing and counting, no guessing anywhere.",
+      "steps": [
+        "Column 2's open cells are R1C2, R2C2, R3C2 and R4C2, and all four belong to cream. Cream's cat is therefore in column 2, which removes R1C3 and R2C3.",
+        "Column 3 has just R3C3 and R4C3 open, both blue, so blue's cat sits in column 3 and R4C4, R4C5 and R5C4 fall away. Lilac's two open cells, R5C5 and R5C6, are both in row 5, so lilac's cat and row 5's cat are the same animal.",
+        "Now the blue pair. Empty R4C3 and the cascade ends with row 1 asking for two cats; R4C3 has to be the cat, and row 4 closes behind it with R4C6.",
+        "Column 4's open cells all sit inside salmon, so salmon's cat is in column 4, and salmon's cells elsewhere are finished: R1C5, R1C6, R2C6, R3C6. Column 6's open cells all sit inside row 5, so row 5's cat is in column 6, and R5C5 — row 5's cell outside that column — is out.",
+        "Add up the work: one free cell, three pointing deductions, one contradiction test, two more pointings, then four cells that need only a count. A dozen marks finish the grid, and not one of them was a guess."
+      ],
+      "close": "Four cells finish it, each with one reason: R3C5 is row 3's only open cell, R5C6 is row 5's, R1C4 is the only open cell left in column 4, R2C2 the only one in row 2. The finished board is R1C4, R2C2, R3C5, R4C3, R5C6, R6C1. Every row, column and region holds one cat, and no two of them touch, diagonals included."
+    },
+    "hints": [
+      "Take the free cat first. Pink is a single cell, R6C1, and that placement closes row 6 (R6C3 to R6C6) and column 1 (R1C1 to R4C1) in one move.",
+      "Now count cells instead of cats. Column 2 is entirely cream, so cream's cat lives in column 2 and R1C3, R2C3 die; column 3 is entirely blue, so blue's cat lives there and R4C4, R4C5, R5C4 die.",
+      "Lilac sits entirely inside row 5, so lilac's cat and row 5's cat are the same animal and R5C3 is out. Then test R4C3: leave it empty and row 1 needs two cats, so R4C3 is blue's.",
+      "Column 4 belongs to salmon, which kills R1C5, R1C6, R2C6, R3C6. Column 6 belongs to row 5, which kills R5C5. Four single cells remain: R3C5, R5C6, R1C4, R2C2."
+    ],
+    "regionsGuide": [
+      "Pink takes R6C1 — 1 cell tucked into the bottom-left corner.",
+      "The blue cells: R3C3, R4C3, R4C4, R4C5, R5C3, R5C4, R6C3, R6C4 and R6C5 (a 9-cell patch).",
+      "Lilac takes R5C5, R5C6 and R6C6 — 3 cells tucked into the bottom-right corner.",
+      "The salmon cells: R1C4, R1C5, R1C6, R2C4, R2C6 and R3C6 (a 6-cell patch).",
+      "Green takes R2C5, R3C4, R3C5 and R4C6 — 4 cells.",
+      "Cream takes R1C1, R1C2, R1C3, R2C1, R2C2, R2C3, R3C1, R3C2, R4C1, R4C2, R5C1, R5C2 and R6C2 — 13 cells."
+    ],
+    "trap": "Resist R2C5. It blocks R1C4, the salmon region's real cat square, and a board missing that cat cannot be finished.",
+    "contacts": [
+      "Pink touches cream ×3.",
+      "Blue touches cream ×12, salmon ×2, green ×7, lilac ×8.",
+      "Lilac meets blue ×8, green ×2.",
+      "Salmon touches cream ×4, green ×11, blue ×2.",
+      "Green borders salmon ×11, cream ×1, blue ×7, lilac ×2.",
+      "Cream touches salmon ×4, blue ×12, green ×1, pink ×3."
+    ],
+    "strategic": "Every touch above is a live constraint: a cat on one side of a border rules the touching cells on the other side out, corners included."
   },
   {
     "level": 3,
     "seed": 3,
     "id": "sb-6-1-easy-3-0",
     "answer": "R1C4 · R2C6 · R3C3 · R4C1 · R5C5 · R6C2",
-    "regions": 6
+    "regions": 6,
+    "solve": {
+      "anchor": "This is the friendliest board of the ten: once the first cat is placed, nothing on it needs a test. Salmon is a single cell, R1C4, so it takes the cat immediately, and row 1 (R1C1, R1C2, R1C6) and column 4 (R3C4, R4C4, R5C4, R6C4) close around it.",
+      "steps": [
+        "Green shrinks to two cells, R2C3 and R3C3, and R2C3 sits diagonally against the cat on R1C4, so green's cat is R3C3. Row 3 empties (R3C1, R3C5, R3C6) and column 3 with it (R5C3, R6C3).",
+        "Blue is down to R3C1 and R4C1 after row 1 closes, both in column 1, and R3C1 leaves with row 3. That makes R4C1 blue's only open cell, so it is the cat; row 4 loses R4C5 and R4C6, column 1 loses R2C1 and R6C1.",
+        "Column 2 has three candidates left and both placements nearby kill two of them: R4C1 takes R5C2 out diagonally, R3C3 takes R2C2 out the same way. R6C2 is the only cell in column 2 that can still hold a cat, and it does.",
+        "Cream is left with R2C5, R2C6, R3C5, R3C6, R4C5 and R4C6. Rows 3 and 4 already have their cats, and R1C4 sits diagonally against R2C5, so R2C6 is cream's only cell. Column 6 closes there.",
+        "It is worth seeing why this level runs so cleanly: each placement shrinks the next region to a single cell, so the board feeds itself. Salmon hands over green, green hands over blue, blue hands over column 2, and column 2 hands over cream. A unit with one cell left can never be wrong."
+      ],
+      "close": "One cell remains: R5C5, the only open cell of column 5, which row 5 has been waiting for since the start. The solution is R1C4, R2C6, R3C3, R4C1, R5C5, R6C2. Six cats, one per row, column and region, none of them in contact — and no step above required you to guess."
+    },
+    "hints": [
+      "Nothing on this board needs a test. Salmon is a single cell, R1C4, and that placement alone closes row 1 (R1C1, R1C2, R1C6) and column 4 (R3C4 to R6C4).",
+      "Watch each region collapse in turn. Green is left with R2C3 and R3C3, and R2C3 touches the cat on R1C4, so R3C3 is green's; that closes row 3 and column 3 as well.",
+      "Blue falls next: row 1 takes R1C1 and R1C2, row 3 takes R3C1, so R4C1 is the only cell left and it is the cat. Column 2 then narrows to R6C2, because R4C1 and R3C3 sit diagonally against its other two candidates.",
+      "Cream is the last region: rows 3 and 4 are spoken for and R1C4 touches R2C5, so R2C6 takes it. Column 5 has only R5C5 left. That is the whole solve, six forced placements and no guesses."
+    ],
+    "regionsGuide": [
+      "Cream takes R1C5, R1C6, R2C5, R2C6, R3C5, R3C6, R4C5 and R4C6 — 8 cells.",
+      "Lilac fills R5C4, R5C5, R5C6, R6C4, R6C5 and R6C6.",
+      "Pink takes R2C1, R2C2, R3C2, R4C2, R4C3, R5C1, R5C2, R5C3, R6C1, R6C2 and R6C3 — 11 cells.",
+      "Blue? That's R1C1, R1C2, R3C1 and R4C1. 4 cells in all.",
+      "Green takes R1C3, R2C3, R2C4, R3C3, R3C4 and R4C4 — 6 cells.",
+      "Salmon takes R1C4 — 1 cell."
+    ],
+    "trap": "Most wrong first moves here start at R1C3. It kills R1C4 outright, and the salmon region never recovers.",
+    "contacts": [
+      "Cream touches salmon ×2, green ×8, lilac ×5.",
+      "Lilac touches pink ×5, green ×2, cream ×5.",
+      "Pink meets blue ×12, green ×10, lilac ×5.",
+      "Blue touches pink ×12, green ×2.",
+      "Green touches blue ×2, salmon ×3, pink ×10, cream ×8, lilac ×2.",
+      "Salmon touches green ×3, cream ×2."
+    ],
+    "strategic": "Every touch above is a live constraint: a cat on one side of a border rules the touching cells on the other side out, corners included."
   },
   {
     "level": 4,
     "seed": 4,
     "id": "sb-6-1-easy-4-0",
     "answer": "R1C5 · R2C1 · R3C3 · R4C6 · R5C4 · R6C2",
-    "regions": 6
+    "regions": 6,
+    "solve": {
+      "anchor": "Pink is a one-cell region, R6C2, which is as good as a free cat. That closes row 6 (R6C4, R6C5, R6C6) and column 2 (R1C2, R2C2, R3C2, R4C2). From there the board is decided by shapes rather than by trials: three of the four deductions below come from a unit's remaining cells sitting inside another unit.",
+      "steps": [
+        "Row 5's open cells, R5C4, R5C5 and R5C6, all sit inside lilac, so lilac's cat is in row 5. Everything of lilac's outside row 5 leaves: R4C1, R4C3, R4C4, R6C4 and R6C5.",
+        "Column 1's open cells are R1C1, R2C1 and R3C1, all cream, so cream's cat is in column 1 and R1C2, R1C3, R2C2 and R2C3 go.",
+        "The interesting one is column 3, which now has a single open cell, R3C3. It belongs to row 3 and to green at the same time, so row 3's cat and green's cat are the same cat, and it can only be R3C3. Row 3 clears (R3C1, R3C2, R3C4, R3C5, R3C6) and green clears its flanks (R2C4, R2C5, R4C2).",
+        "Two candidates are left for cream's cat, and the test settles it: empty R2C1 and the lilac region has no cell left for its own cat. So R2C1 is the cat, row 2 closes at R2C6.",
+        "Notice how lopsided the methods are: two of the steps above were pure geometry, a row's cells sitting inside a region and a column's cells sitting inside another, and geometry costs nothing to check. Only the two placement tests needed a what-if, and each collapsed in one pass."
+      ],
+      "close": "The blue region is the last open question, and the same test answers it: empty R4C6 and row 5 starves, so R4C6 carries the blue cat. Both tests prove a placement the same way — leave the cell empty and a unit starves, lilac first, then row 5. Two counting steps end the board — R5C4, row 5's only open cell, then R1C5, column 5's only one. Cats on R1C5, R2C1, R3C3, R4C6, R5C4, R6C2, one to a row, column and region, none adjacent."
+    },
+    "hints": [
+      "Pink is one cell, R6C2, so start there and let row 6 and column 2 close. The rest of this board is decided by shapes rather than by trials.",
+      "Row 5's cells all sit inside lilac, so lilac's cat is in row 5 and R4C1, R4C3, R4C4, R6C4, R6C5 are out. Column 1's cells all sit inside cream, so cream's cat is in column 1 and R1C2, R1C3, R2C2, R2C3 go.",
+      "Column 3 is the hinge: one open cell, R3C3, and it belongs to row 3 and to green at once. Both take their cat there, which clears the rest of row 3 and green's flanks at R2C4, R2C5, R4C2.",
+      "Two placement tests finish it. Empty R2C1 and lilac starves, so R2C1 is cream's; empty R4C6 and row 5 starves, so R4C6 is blue's. R5C4 and R1C5 are then the last cells of row 5 and column 5."
+    ],
+    "regionsGuide": [
+      "Salmon takes R1C4, R1C5, R1C6, R2C6 and R3C5 — 5 cells.",
+      "Lilac fills R4C1, R4C3, R4C4, R5C1, R5C2, R5C3, R5C4, R5C5, R5C6, R6C1, R6C3, R6C4 and R6C5.",
+      "Pink takes R6C2 — 1 cell tucked into the bottom-left corner.",
+      "Blue takes R3C6, R4C5, R4C6 and R6C6 — 4 cells.",
+      "Green takes R2C4, R2C5, R3C2, R3C3, R3C4 and R4C2 — 6 cells.",
+      "Cream takes R1C1, R1C2, R1C3, R2C1, R2C2, R2C3 and R3C1 — 7 cells, holding the top-left corner."
+    ],
+    "trap": "Try R5C1 first and the pink region is wiped out in one move — every cell it owns aligns with that spot — same line, or one corner over.",
+    "contacts": [
+      "Salmon meets cream ×2, green ×9, blue ×4, lilac ×1.",
+      "Lilac touches cream ×1, green ×11, salmon ×1, blue ×9, pink ×5.",
+      "Pink borders lilac ×5.",
+      "Blue touches green ×2, salmon ×4, lilac ×9.",
+      "Green borders cream ×10, salmon ×9, blue ×2, lilac ×11.",
+      "Cream touches salmon ×2, green ×10, lilac ×1."
+    ],
+    "strategic": "Every touch above is a live constraint: a cat on one side of a border rules the touching cells on the other side out, corners included."
   },
   {
     "level": 5,
     "seed": 5,
     "id": "sb-6-1-easy-5-0",
     "answer": "R1C2 · R2C5 · R3C3 · R4C1 · R5C4 · R6C6",
-    "regions": 6
+    "regions": 6,
+    "solve": {
+      "anchor": "Start with the smallest region and work outward. Blue is two cells, R4C1 and R4C2, both in row 4, so row 4's cat is inside blue and R4C3, R4C4, R4C5 and R4C6 are out on the first move. Green then has only R3C1, R3C2 and R3C3 open, all in row 3, so row 3's cat belongs to green and its other cells — R3C4, R3C5, R3C6 — are gone.",
+      "steps": [
+        "Blue's two cells now decide each other. Empty R4C1 and green has no legal cell left for its cat, so R4C1 is the blue cat, and R4C2 goes with it. Row 3 collapses to R3C3, which takes the green cat; row 3 closes, and columns 1 and 3 close with it (R1C1, R2C1, R6C1 and R1C3, R5C3, R6C3).",
+        "Cream owns row 2: R2C5 and R2C6 are its only open cells there, so cream's cat is on row 2 and R1C5, R1C6 leave.",
+        "R1C2 is next, and it is another one-line test: empty it and row 5 runs out of cells for its cat, so R1C2 holds the salmon cat. R1C4 goes with row 1.",
+        "Row 6's open cells, R6C4, R6C5 and R6C6, all sit in pink, so pink's cat is on row 6 and R5C6 is out. Empty R5C4 and row 6 starves, so R5C4 takes the lilac cat.",
+        "Trace the chain of causes: two cells in blue fixed row 4, row 4 fixed green's shape, green fixed row 3, and row 3 handed over columns 1 and 3. A pair of cells in the right place can carry a third of the board."
+      ],
+      "close": "Only counting is left. R6C6 is row 6's last open cell, R2C5 is column 5's. That gives R1C2, R2C5, R3C3, R4C1, R5C4, R6C6 — one cat per row, column and region, no two touching, corners included. Every step above was either a region with one home left or a single contradiction check, and the board was proven unique before publication."
+    },
+    "hints": [
+      "Blue is R4C1 and R4C2, both in row 4, so row 4's cat is one of them and R4C3, R4C4, R4C5, R4C6 are out on the first move.",
+      "Green is left with R3C1, R3C2, R3C3, all in row 3, so row 3's cat belongs to green and R3C4, R3C5, R3C6 go. Empty R4C1 and green has no legal cell, so R4C1 is the cat.",
+      "That hands row 3 to R3C3 and closes columns 1 and 3. Cream then owns row 2, killing R1C5 and R1C6, and R1C2 must be the salmon cat because emptying it starves row 5.",
+      "Row 6 belongs to pink, so R5C6 is out, and R5C4 must take the lilac cat because emptying it starves row 6. The finish is two counts: R6C6 for row 6, R2C5 for column 5."
+    ],
+    "regionsGuide": [
+      "Pink takes R5C6, R6C4, R6C5 and R6C6 — 4 cells.",
+      "The blue cells: R4C1 and R4C2 (a two-cell strip).",
+      "Lilac takes R4C4, R5C1, R5C2, R5C3, R5C4, R5C5, R6C1, R6C2 and R6C3 — 9 cells.",
+      "Green takes R3C1, R3C2, R3C3 and R4C3 — 4 cells.",
+      "Salmon = a 8-cell patch, cells R1C1, R1C2, R1C3, R1C4, R2C1, R2C2, R2C3 and R2C4.",
+      "Cream takes R1C5, R1C6, R2C5, R2C6, R3C4, R3C5, R3C6, R4C5 and R4C6 — 9 cells."
+    ],
+    "trap": "The quiet mistake is R5C1. One cat there and the blue region has no home left on the whole grid.",
+    "contacts": [
+      "Pink borders cream ×2, lilac ×8.",
+      "Blue touches green ×6, lilac ×5.",
+      "Lilac touches green ×5, cream ×6, blue ×5, pink ×8.",
+      "Green touches salmon ×8, blue ×6, cream ×2, lilac ×5.",
+      "Salmon touches cream ×7, green ×8.",
+      "Cream touches salmon ×7, green ×2, lilac ×6, pink ×2."
+    ],
+    "strategic": "Each contact is a no-touch wall — even the diagonal ones — so a placed cat silences every cell it touches across those borders."
   },
   {
     "level": 6,
     "seed": 6,
     "id": "sb-6-1-easy-6-0",
     "answer": "R1C3 · R2C1 · R3C5 · R4C2 · R5C4 · R6C6",
-    "regions": 6
+    "regions": 6,
+    "solve": {
+      "anchor": "Nothing on this board is forced at the start, so the first pass is a sweep of one-move tests: put a cat on a cell, propagate, and see which unit runs dry. Eleven cells fail that test in the top three rows — R1C4, R1C6, R1C5, R1C1, R2C2, R2C3, R2C4, R2C5, R3C1, R3C2 and R3C4. Their reasons differ; the effect is the same.",
+      "steps": [
+        "Group them by what breaks. Blue is the victim twice: R3C1 and R2C3 each leave the region with no legal cell. Columns account for three more — R3C2 would put two cats in column 1, R1C4 starves column 2, R1C5 empties column 4. Rows account for four: R1C1, R2C4 and R3C4 all leave row 5 with nowhere to go, and R1C6 does the same to row 4. The last two are region kills, R2C2 giving salmon two cats and R2C5 leaving green with none.",
+        "With R3C2 gone, blue's remaining cells are R4C1 and R4C2, both in row 4 — so row 4's cat is blue and R4C3, R4C4, R4C5, R4C6 are out. The salmon region's open cells, R1C3, R3C3 and R5C3, all sit in column 3, so column 3's cat is salmon's and R6C3 goes.",
+        "One choice remains in the lower half: empty R5C4 and column 6 has no cell left for its cat. R5C4 is the lilac cat, and row 5 closes (R5C1, R5C2, R5C6).",
+        "If you are solving this one on paper, do the sweep first and strike all eleven cells before placing anything. It feels slow for a minute, and then the rest of the board has almost no wrong turns left in it."
+      ],
+      "close": "The rest is counting, unit by unit: R3C5 for column 5, R6C6 for column 6, R2C1 for row 2, R4C2 for column 2, R1C3 for column 3. The solution is R1C3, R2C1, R3C5, R4C2, R5C4, R6C6. It is the only arrangement that satisfies all three constraints at once, and the sweep above only ever removed cells that provably could not hold a cat."
+    },
+    "hints": [
+      "No cell is forced at the start, so sweep before you place. Eleven cells in the top three rows fail a one-move test: R1C4, R1C6, R1C5, R1C1, R2C2, R2C3, R2C4, R2C5, R3C1, R3C2, R3C4.",
+      "Their reasons differ. R3C1 and R2C3 leave blue with no cell, R3C2 would put two cats in column 1, R1C4 starves column 2, R1C5 empties column 4, and R1C1, R2C4, R3C4 all leave row 5 short.",
+      "With those gone, blue is down to R4C1 and R4C2, both in row 4, so row 4's cat is blue. Salmon's open cells — R1C3, R3C3, R5C3 — all sit in column 3, so column 3's cat is salmon's and R6C3 is out.",
+      "One decision remains: empty R5C4 and column 6 has no legal cell, so R5C4 is the lilac cat. After that, five single-cell units: R3C5, R6C6, R2C1, R4C2, R1C3."
+    ],
+    "regionsGuide": [
+      "The pink cells: R4C6, R5C6, R6C4, R6C5 and R6C6 (a 5-cell patch).",
+      "Lilac takes R4C4, R5C1, R5C2, R5C4, R5C5, R6C1, R6C2 and R6C3 — 8 cells.",
+      "Cream takes R1C1, R1C2, R2C1 and R3C1 — 4 cells, holding the top-left corner.",
+      "Blue takes R3C2, R4C1 and R4C2 — 3 cells.",
+      "The green cells: R1C4, R2C3, R2C4, R2C6, R3C5, R3C6 and R4C5 (a 7-cell patch).",
+      "Salmon takes R1C3, R1C5, R1C6, R2C2, R2C5, R3C3, R3C4, R4C3 and R5C3 — 9 cells."
+    ],
+    "trap": "Try R5C5 first and the pink region is wiped out in one move — every cell it owns aligns with that spot — same line, or one corner over.",
+    "contacts": [
+      "Pink meets green ×4, lilac ×8, salmon ×1.",
+      "Lilac touches salmon ×10, green ×4, blue ×4, pink ×8.",
+      "Cream borders salmon ×5, green ×1, blue ×4.",
+      "Blue touches cream ×4, salmon ×6, green ×1, lilac ×4.",
+      "Green meets cream ×1, salmon ×19, blue ×1, pink ×4, lilac ×4.",
+      "Salmon touches cream ×5, green ×19, blue ×6, lilac ×10, pink ×1."
+    ],
+    "strategic": "Read the ×N counts as pressure: the higher the number, the more a cat placed in one region squeezes its neighbour."
   },
   {
     "level": 7,
     "seed": 7,
     "id": "sb-6-1-easy-7-0",
     "answer": "R1C4 · R2C2 · R3C5 · R4C1 · R5C3 · R6C6",
-    "regions": 6
+    "regions": 6,
+    "solve": {
+      "anchor": "Pink is a single cell again, R6C6, so the cat goes there and both of its lines close: row 6 loses R6C1 to R6C4, column 6 loses R1C6 to R4C6. Green immediately offers the next deduction, because its only open cells, R3C5 and R4C5, sit in column 5 — column 5's cat is green's, so R1C5 and R2C5 are out.",
+      "steps": [
+        "Two cells in the top left cannot hold cats. Put one on R1C1 and the salmon region is left with nothing; put one on R1C2 and the same thing happens. Both are out.",
+        "Row 1's open cells are then R1C3 and R1C4, both salmon, so salmon's cat is in row 1 and R2C1 is gone. Row 2's open cells (R2C2, R2C3, R2C4) all belong to cream, so cream's cat is in row 2 and R3C3, R3C4, R4C3 are out.",
+        "Column 1's open cells are R3C1, R4C1 and R5C1, all blue, so blue's cat is in column 1 and R3C2, R4C2, R5C2 fall away. Column 2 is down to R2C2 alone, inside row 2, so row 2's cat must be R2C2 and R2C3, R2C4 go.",
+        "That leaves the bottom half easy: R3C5 is row 3's only open cell, R4C1 is row 4's, R5C3 is column 3's, R1C4 is column 4's.",
+        "The technique to carry away is the pointing deduction: when every open cell of a row sits inside one region, that region's cat is on the row, and the rest of the region is dead. Three of the six cats here arrived exactly that way."
+      ],
+      "close": "Read the cats back: R1C4, R2C2, R3C5, R4C1, R5C3, R6C6. Six rows, six columns, six regions, one cat each, and no pair of cats within a single step of another. Two moves needed a contradiction check; the other four came from shapes sitting inside each other, which is what makes this board faster than it looks."
+    },
+    "hints": [
+      "Pink is a single cell, R6C6. Take it and both of its lines close: row 6 loses R6C1 to R6C4, column 6 loses R1C6 to R4C6.",
+      "Green offers the next deduction, because its open cells R3C5 and R4C5 both sit in column 5 — so column 5's cat is green's and R1C5, R2C5 are out.",
+      "Two cells in the top left die on the same test: a cat on R1C1 or R1C2 would leave salmon with nothing. That hands row 1 to salmon, which kills R2C1, and row 2 to cream, which kills R3C3, R3C4, R4C3.",
+      "Column 1 belongs to blue, so R3C2, R4C2, R5C2 go; column 2 belongs to row 2, leaving R2C2 as the cat. Then R3C5, R4C1, R5C3 and R1C4 are the last cells of their units."
+    ],
+    "regionsGuide": [
+      "Pink takes R6C6 — 1 cell tucked into the bottom-right corner.",
+      "The lilac cells: R4C4, R5C3, R5C4, R6C3 and R6C4 (a 5-cell patch).",
+      "Blue takes R3C1, R3C2, R4C1, R4C2, R5C1, R5C2, R6C1 and R6C2 — 8 cells.",
+      "Green = a 9-cell patch, cells R1C6, R2C6, R3C5, R3C6, R4C5, R4C6, R5C5, R5C6 and R6C5.",
+      "Cream takes R1C1, R1C2, R2C2, R2C3, R2C4, R2C5, R3C3, R3C4 and R4C3 — 9 cells.",
+      "Salmon takes R1C3, R1C4, R1C5 and R2C1 — 4 cells."
+    ],
+    "trap": "The quiet mistake is R2C6. One cat there and the pink region has no home left on the whole grid.",
+    "contacts": [
+      "Pink meets green ×3.",
+      "Lilac touches cream ×5, green ×8, blue ×5.",
+      "Blue borders salmon ×2, cream ×8, lilac ×5.",
+      "Green touches salmon ×2, cream ×7, lilac ×8, pink ×3.",
+      "Cream touches salmon ×12, green ×7, blue ×8, lilac ×5.",
+      "Salmon touches cream ×12, green ×2, blue ×2."
+    ],
+    "strategic": "Every touch above is a live constraint: a cat on one side of a border rules the touching cells on the other side out, corners included."
   },
   {
     "level": 8,
     "seed": 8,
     "id": "sb-6-1-easy-8-0",
     "answer": "R1C5 · R2C3 · R3C6 · R4C1 · R5C4 · R6C2",
-    "regions": 6
+    "regions": 6,
+    "solve": {
+      "anchor": "The cream region is the smallest thing on the board, three cells (R1C1, R2C3, R3C1), and it cracks the puzzle. Before that, one cell can be struck at once: a cat on R1C1 would leave column 2 needing two cats, so R1C1 is out. Row 1's open cells, R1C2 to R1C6, all sit in salmon, so salmon's cat is in row 1 and R2C1, R2C2, R2C6 are gone.",
+      "steps": [
+        "Now cream. Empty R2C3 and the blue region has no legal cell left, so R2C3 must be the cat. Row 2 closes at R2C5, column 3 closes at R4C3, R5C3 and R6C3, and cream finishes with R3C1 gone.",
+        "Three pointings follow in a row. Column 1's open cells all sit inside blue, so blue's cat is in column 1 and R4C2 is the blue cell that pays for it. Column 2's open cells all sit inside pink, so pink's cat is in column 2, and R3C5 and R4C4 leave. Column 4's open cells all sit inside lilac, so lilac's cat is in column 4 and its four cells outside that column — R5C5, R5C6, R6C5, R6C6 — are out.",
+        "Those three sweeps empty most of the bottom right. What stays open resolves in order: R3C6 for row 3, R4C1 for row 4, R5C4 for row 5.",
+        "Two columns remain short. Column 2 has only R6C2 open, column 5 only R1C5.",
+        "Two of the pointings did most of the work: column 2 belonged to pink, column 4 belonged to lilac, and between them they cleared nine cells without a single test. That is the cheapest kind of progress available on a board with tall, narrow regions."
+      ],
+      "close": "The finished board reads R1C5, R2C3, R3C6, R4C1, R5C4, R6C2 — one cat per row, column and region, none of them touching, diagonal contacts included. Worth noting what did not happen: after the first test, no cell on this board needed a guess, only the recognition that a unit's cells had all come to sit inside another unit."
+    },
+    "hints": [
+      "Begin with the smallest region. Cream is three cells — R1C1, R2C3, R3C1 — and R1C1 dies at once, because a cat there would leave column 2 needing two cats.",
+      "That pushes everything in row 1 into salmon, so salmon's cat is in row 1 and R2C1, R2C2, R2C6 are out. Now cream: empty R2C3 and blue has no legal cell, so R2C3 is the cat.",
+      "Three pointings follow. Column 1 belongs to blue, which costs R4C2; column 2 belongs to pink, which costs R3C5 and R4C4; column 4 belongs to lilac, which costs R5C5, R5C6, R6C5 and R6C6.",
+      "The tail is single cells: R3C6 for row 3, R4C1 for row 4, R5C4 for row 5, then R6C2 and R1C5 for the two columns that were still short."
+    ],
+    "regionsGuide": [
+      "The pink cells: R3C3, R3C4, R3C5, R4C3, R4C4, R5C2, R5C3, R6C2 and R6C3 (a 9-cell patch).",
+      "Green takes R2C4, R2C5, R3C6, R4C5 and R4C6 — 5 cells.",
+      "Lilac takes R5C4, R5C5, R5C6, R6C4, R6C5 and R6C6 — 6 cells.",
+      "Blue? That's R3C2, R4C1, R4C2, R5C1 and R6C1. 5 cells in all.",
+      "The cream cells: R1C1, R2C3 and R3C1 (a 3-cell patch tucked into the top-left corner).",
+      "Salmon takes R1C2, R1C3, R1C4, R1C5, R1C6, R2C1, R2C2 and R2C6 — 8 cells."
+    ],
+    "trap": "Resist R5C2. It blocks R4C1, the blue region's real cat square, and a board missing that cat cannot be finished.",
+    "contacts": [
+      "Pink touches salmon ×2, cream ×2, green ×10, blue ×11, lilac ×7.",
+      "Green touches salmon ×8, cream ×1, pink ×10, lilac ×5.",
+      "Lilac touches pink ×7, green ×5.",
+      "Blue touches salmon ×2, cream ×4, pink ×11.",
+      "Cream borders salmon ×9, green ×1, pink ×2, blue ×4.",
+      "Salmon touches cream ×9, green ×8, blue ×2, pink ×2."
+    ],
+    "strategic": "Every touch above is a live constraint: a cat on one side of a border rules the touching cells on the other side out, corners included."
   },
   {
     "level": 9,
     "seed": 9,
     "id": "sb-6-1-easy-9-0",
     "answer": "R1C3 · R2C6 · R3C1 · R4C5 · R5C2 · R6C4",
-    "regions": 6
+    "regions": 6,
+    "solve": {
+      "anchor": "The two three-cell regions in the bottom corners do the early work, and the first move is a test rather than a placement. Empty R5C2 and row 4 is left with no cell for its cat, so R5C2 takes the lilac cat. That single placement closes row 5 (R5C4, R5C5, R5C6) and column 2 (R1C2, R2C2, R3C2).",
+      "steps": [
+        "Pink follows immediately: R6C4 is its only open cell, so it is the cat, and row 6 (R6C6) and column 4 (R1C4, R2C4, R3C4, R4C4) close behind it.",
+        "Row 4's open cells are R4C5 and R4C6, both blue, so blue's cat is on row 4 and R3C3, R3C6 are out. Column 1's open cells, R2C1 and R3C1, are both green, so green's cat is in column 1 and R2C3 goes.",
+        "Column 3 is where the board turns. It has one open cell left, R1C3, and that cell belongs to row 1 and to salmon at the same time. So row 1's cat is in column 3 and R1C1, R1C5, R1C6 are out; salmon's cat is in column 3 too, and R2C5 follows them. R1C3 is placed as both at once.",
+        "One test is left. Empty R2C6 and row 4 starves, so R2C6 holds the cream cat and R2C1 is out.",
+        "Note the order in the bottom band: lilac's corner cat came from a test, pink's from geometry, and the two together fixed rows 5 and 6 plus the whole of column 4. Corner regions are usually where a 6×6 board gives first."
+      ],
+      "close": "Two cells finish the grid: R3C1 for row 3, R4C5 for column 5. Cats on R1C3, R2C6, R3C1, R4C5, R5C2, R6C4 — six of them, one to a row, column and region, none within a step of another. The only guesses on this board were two contradiction checks, each one line long, and both were proved impossible rather than assumed."
+    },
+    "hints": [
+      "The bottom corners carry this board. Empty R5C2 and row 4 starves, so R5C2 is the lilac cat, and row 5 (R5C4, R5C5, R5C6) plus column 2 (R1C2, R2C2, R3C2) close with it.",
+      "Pink follows at once: R6C4 is its only open cell, so it takes the cat and column 4 closes with R1C4 to R4C4.",
+      "Row 4 belongs to blue, so R3C3 and R3C6 go; column 1 belongs to green, so R2C3 goes. Column 3 then has one open cell, R1C3, which is in row 1 and in salmon — both take their cat there, and R1C1, R1C5, R1C6, R2C5 leave.",
+      "One test remains: empty R2C6 and row 4 starves, so R2C6 is cream's. R3C1 and R4C5 are then the last cells of row 3 and column 5."
+    ],
+    "regionsGuide": [
+      "Lilac takes R5C2, R6C1 and R6C2 — 3 cells tucked into the bottom-left corner.",
+      "Blue takes R3C3, R3C4, R3C6, R4C4, R4C5, R4C6, R5C4, R5C5, R5C6, R6C5 and R6C6 — 11 cells.",
+      "Pink takes R5C3, R6C3 and R6C4 — 3 cells.",
+      "Green = a 9-cell patch, cells R1C1, R1C2, R2C1, R2C2, R2C3, R3C1, R4C1, R4C2 and R5C1.",
+      "Salmon takes R1C3, R1C4, R1C5, R2C5 and R3C2 — 5 cells.",
+      "Cream? That's R1C6, R2C4, R2C6, R3C5 and R4C3. 5 cells in all."
+    ],
+    "trap": "Resist R5C1. It blocks R5C2, the lilac region's real cat square, and a board missing that cat cannot be finished.",
+    "contacts": [
+      "Lilac meets green ×5, cream ×1, pink ×4.",
+      "Blue touches green ×4, cream ×12, salmon ×3, pink ×6.",
+      "Pink touches green ×1, cream ×1, blue ×6, lilac ×4.",
+      "Green touches salmon ×10, blue ×4, cream ×2, lilac ×5, pink ×1.",
+      "Salmon borders green ×10, cream ×10, blue ×3.",
+      "Cream touches salmon ×10, green ×2, blue ×12, pink ×1, lilac ×1."
+    ],
+    "strategic": "Each contact is a no-touch wall — even the diagonal ones — so a placed cat silences every cell it touches across those borders."
   },
   {
     "level": 10,
     "seed": 10,
     "id": "sb-6-1-easy-10-0",
     "answer": "R1C2 · R2C6 · R3C3 · R4C5 · R5C1 · R6C4",
-    "regions": 6
+    "regions": 6,
+    "solve": {
+      "anchor": "The lilac region is a three-cell corner and the first question on the board: empty R5C1 and column 3 has no cell left for its cat, so R5C1 is the cat. Row 5 closes at once (R5C3, R5C4, R5C5, R5C6) and column 1 closes with it (R1C1, R2C1, R3C1), which is most of the top left settled before any counting.",
+      "steps": [
+        "Salmon's open cells are R1C2 and R2C2, both in column 2, so column 2's cat is salmon's and R3C2 is out. Pink's open cells all sit in row 6, so row 6's cat is pink's, and R6C5 — row 6's cell outside pink — goes with it.",
+        "The cream region is a vertical strip at the right edge, and it gives the next cat through a test: empty R4C5 and cream ends up needing two cats, so R4C5 must hold the blue cat. Column 5 and row 4 are both settled by that one placement.",
+        "From there the grid answers itself: R3C3 is the only open cell of row 3, R1C2 the only one in column 2, R2C6 the only one in row 2, R6C4 the only one in column 4.",
+        "The last of those deserves a note. R6C4 belongs to pink, and pink's cat was already known to be on row 6 — this placement says exactly which cell of row 6 it is.",
+        "That is the shape of most 6×6 boards: one or two tests to break the symmetry, then a run of single-cell units. The tests are the only places a wrong turn was possible, and both were short enough to check by hand."
+      ],
+      "close": "Final set: R1C2, R2C6, R3C3, R4C5, R5C1, R6C4. One cat in every row, every column and every region, none of them adjacent, diagonals included. Two of the moves above were contradiction checks, two were shape deductions, and four were single cells with only one home left — which is about the mix a 6×6 board of this kind gives you."
+    },
+    "hints": [
+      "Lilac is the three-cell corner and the first question: empty R5C1 and column 3 starves, so R5C1 carries the cat, and row 5 plus column 1 close at once.",
+      "Salmon's open cells sit in column 2, so column 2's cat is salmon's and R3C2 is out; pink's open cells sit in row 6, so row 6's cat is pink's and R6C5 goes.",
+      "The cream strip decides the right edge. Empty R4C5 and cream ends up needing two cats, so R4C5 is the blue cat — and that one placement settles row 4 and column 5 together.",
+      "Four single-cell units finish the grid: R3C3 for row 3, R1C2 for column 2, R2C6 for row 2, R6C4 for column 4. The order between them does not matter."
+    ],
+    "regionsGuide": [
+      "Blue takes R3C4, R4C5, R5C3, R5C4, R5C5 and R6C5 — 6 cells.",
+      "Lilac takes R5C1, R6C1 and R6C2 — 3 cells tucked into the bottom-left corner.",
+      "Pink takes R5C6, R6C3, R6C4 and R6C6 — 4 cells.",
+      "The salmon cells: R1C1, R1C2, R2C1, R2C2 and R4C1 (a 5-cell patch).",
+      "Green takes R1C3, R1C4, R2C3, R2C4, R2C5, R3C1, R3C2, R3C3, R3C5, R4C2, R4C3, R4C4 and R5C2 — 13 cells.",
+      "The cream cells: R1C5, R1C6, R2C6, R3C6 and R4C6 (a 5-cell patch)."
+    ],
+    "trap": "Try R5C2 first and the lilac region is wiped out in one move — every cell it owns aligns with that spot — same line, or one corner over.",
+    "contacts": [
+      "Blue touches green ×16, cream ×3, pink ×11, lilac ×1.",
+      "Lilac touches salmon ×1, green ×4, blue ×1, pink ×1.",
+      "Pink touches blue ×11, cream ×1, green ×1, lilac ×1.",
+      "Salmon touches green ×13, lilac ×1.",
+      "Green borders salmon ×13, cream ×9, blue ×16, lilac ×4, pink ×1.",
+      "Cream touches green ×9, blue ×3, pink ×1."
+    ],
+    "strategic": "Each contact is a no-touch wall — even the diagonal ones — so a placed cat silences every cell it touches across those borders."
   }
 ]
