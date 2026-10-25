@@ -1475,7 +1475,10 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     var tl2 = gsap.timeline();
     tl2.from(title, { scale: 0.3, opacity: 0, duration: 0.55, ease: 'back.out(2)' })
        .from(catEls, { y: 26, opacity: 0, scale: 0.6, duration: 0.45, stagger: 0.09, ease: 'back.out(1.8)' }, '-=0.15')
-       .from(btns, { y: 18, opacity: 0, duration: 0.35, stagger: 0.07, ease: 'power2.out' }, '-=0.2');
+       // 2026-10-25 P0：btns 不做 opacity 动画——.share-btn/.reddit-btn 的 transition:all 与
+       // GSAP 抢 opacity，tween 结束停在 from 态（computed opacity=0），按钮不可见不可点，
+       // 真人 share 事件归零一周（10-19 部署引入）。只留 y 位移，可见性回归 CSS 默认 opacity:1
+       .from(btns, { y: 18, duration: 0.35, stagger: 0.07, ease: 'power2.out' }, '-=0.2');
   }
 
   function spawnConfetti() {
