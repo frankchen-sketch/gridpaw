@@ -4,6 +4,7 @@ import path from 'node:path';
 import SEOHead from '../../components/SEOHead.astro';
 import GameNav from '../../components/GameNav.astro';
 import ExtensionPromo from '../../components/ExtensionPromo.astro';
+import InContentAd from '../../components/InContentAd.astro';
 
 // ---------- 数据源：research/loop-answers/ 下日期最大的档案 ----------
 // 构建期 cwd = 项目根（import.meta.url 在 dist/chunks 里会指错目录）
@@ -113,7 +114,25 @@ const OFFICIAL = 'https://www.britannica.com/games/loop?utm_source=gridpaw';
 
     <p>{archive.length} puzzles on this page, from {shortDate(archive[archive.length - 1].date)} to {shortDate(archive[0].date)}. A new answer is added after each daily reset.</p>
 
-    {archive.map((entry) => (
+    {/* 列表对半拆，中点插 InContentAd（300×250）：archive 每日 +1 条，中点自动跟随页深 ~50% */}
+    {archive.slice(0, Math.ceil(archive.length / 2)).map((entry) => (
+      <section class="entry" id={entry.date}>
+        <h2>
+          <span class="date">{longDate(entry.date)}</span>
+          <span class="theme">{entry.title}{entry.date === publishedDate ? <span class="badge">Today</span> : null}</span>
+        </h2>
+        <p class="meta">Difficulty {entry.difficulty}/5 · {entry.loop.length} images · Locked start: {entry.loop[0].alt}</p>
+        <ol>
+          {entry.loop.map((item, i) => (
+            <li class={i === 0 ? 'first' : ''}>{item.alt}</li>
+          ))}
+        </ol>
+      </section>
+    ))}
+
+    <InContentAd />
+
+    {archive.slice(Math.ceil(archive.length / 2)).map((entry) => (
       <section class="entry" id={entry.date}>
         <h2>
           <span class="date">{longDate(entry.date)}</span>
