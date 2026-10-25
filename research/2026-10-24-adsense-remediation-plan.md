@@ -168,3 +168,15 @@ Meowdoku 残余 31.8% 拆解：站点契约 chrome（GameNav 游戏列表+游戏
 2. ADS-PUB-10：7 游戏页桌面 SideAd 盖真实按钮（附录 A 实测），修复=收窄 ≤840px 居中，须 1:1 预览单独批次
 3. 42 页 600-800w 中间档：按 GSC 点击数据下一轮分批加深
 4. STATUS.md 终验条目：该文件当前有兄弟会话未提交改动，等其落地后再补记
+
+## 附录 C：BP3 EN 中间档 40 页批次（2026-10-25 晚，commit 58e9bb5，deployment 67dfe598）
+
+- **范围定案**：dist 词数 600-800w 共 70 页 → 收窄 40 页（BP3-DE 8 页/Rings 10 页刚加深二刷=注水；12 游戏主页=游戏即内容）。排批按 GSC 28d clicks 降序，deleg_03840526 6 路并行（deepseek leaf）。
+- **改法**：每页 +tricky 节（What makes Level N tricky，270-330 词 3 段，断言全部溯源自本页步骤卡）+ 专属 checklist（5-7 条带步骤号）+ 视频导语/FAQ Q2Q3 压专属单句（faqJsonLd 同步）。铁律同批次 1+2。
+- **验收（主 agent 亲测，不采信自报）**：
+  - 源级 gp_dup_local（40 页全组）：40/40 <30%（L5 30.9% 超线 → 加 cards 7/8+唯一 swipe 真数据段 → 28.3%）；words 全 ≥1060
+  - dist gp_dup_dist（组扩成全 54 页）：40 批页全 <30%，均值 29.0%
+  - 事实抽查：L30/L33 逐条对账 ✓；L17 抓出自相矛盾（step13 spider→exGF vs "last two moves leave the ex-girlfriend behind"）→ 已改；L5 扩展段自证 ✓
+  - **先在 bug 发现**：L34-53 共 20 页卡头 `<strong>` 内字面 `\u2013`（原建页代码生成事故），线上用户可见 "Steps 1\u20133" —— 80 处修为真 en-dash，L41 线上验证 ✓（FAQ JSON-LD 内 \uXXXX 合法 JS 转义不碰）
+- **剩余**：EN 全组还剩 7 页从未加深（L4/12/22/44/45/50/53，dup 44-58%，词数 800-950 不在 600-800 窗口被两次排除）→ 下一批候选，同工法
+- **机械扫教训**：步数声明 vs 卡片区间对账必须先解析 range 标号（"Steps A–B" 求和），正则数字词匹配会同时产生假阳（子计数"two presses"）与假阴（措辞变体"eleven cards"）——本轮 26 个假 flag 全部由措辞多样性导致
