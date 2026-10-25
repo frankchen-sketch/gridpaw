@@ -801,3 +801,10 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **哥飞复检**（3 积分，req_809ed32bf95a57f9）：decision=**ready**，fail/blockers/highs 全 0；薄页 CONTENT-03 pass（抽样中位 880 词）
 - **遗留**：① CMP 等 snippet（唯一硬前置，等后台操作）② 7 游戏页 SideAd 盖按钮（附录 A：6 页 1152px 盖真实按钮 + meowdoku 872px 超契约）→ 修复=收窄 ≤840px 居中，1:1 预览批次 ③ 42 页 600-800w 中间档按 GSC 点击分批加深（已启动）
 - 详表 → research/2026-10-24-adsense-remediation-plan.md 附录 A/B
+
+## 2026-10-25（晚）：SideAd 盖按钮修复上线 + BP3 EN 中间档 40 页加深完成（commits c85c7bc/58e9bb5，deployments 0d97f0b2/67dfe598，IndexNow 200）
+- **SideAd 修复**（法老批准）：6 游戏页 .main 72rem→52.5rem + meowdoku 2 页 border-box（872 之谜=840+padding）。Playwright 几何判定 8 页：main 1152/872→840、缝 -124→32px、覆盖按钮→0、棋盘宽度逐页不变；线上 cache-bust 8/8 ALL PASS。插曲：worktree detached deploy 落 preview（--branch main 绕）；首笔生产部署回滚了兄弟 3fa7918 Loop 广告位 → hotfix worktree 重部署恢复（教训入 skill ui-change-proposal）
+- **BP3 EN 40 页**（GSC 28d clicks 降序 6 批并行）：每页 +tricky 节（270-330 词，断言全溯步骤卡）+专属 checklist 5-7 条 +视频导语/FAQ Q2Q3 压专属单句。dup：57-60%→**40/40 全 <30%**（dist 口径 24-29.6%，均值 26.0%）；words 全 ≥1060
+- **验收抓伤 2 处**：L17 tricky 尾段自相矛盾（step13 spider→exGF vs "last two leave behind"，已改）；**L34-53 共 20 页卡头字面 `\u2013` 渲染 bug**（先在，线上可见，80 处已修，L41 线上验证 en-dash 正常）
+- **EN 全组 54 页 dist 均值 29.0%**；**剩余 7 页批外漏网**（L4 54.8/L12 53.9/L22 58.5/L44 44.7/L45 44.1/L50 44.1/L53 51.9%，词数 800-950 不在 600-800 窗口）→ 下一批候选
+- **遗留更新**：① CMP 等用户后台操作 ② ~~SideAd~~ 已完成 ③ ~~40 页~~ 已完成，7 页漏网待批
