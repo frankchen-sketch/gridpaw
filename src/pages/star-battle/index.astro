@@ -1091,11 +1091,9 @@ const description = "Play Two Not Touch (Star Battle) free online: place 2 or 3 
         winDetailEl.textContent = state.puzzle.size + '×' + state.puzzle.size + ' ' + DIFFS[state.difficulty].label + ' solved in ' + fmtTime(state.timerSec) + '!';
         winOverlay.classList.add('show');
         launchConfetti();
-        // leaderboard：上报成绩 + 胜利面板当日榜
+        // leaderboard：胜利面板只读展示当日榜（常规关随机盘不上报，2026-10-26 修复）
         if (window.GPLeaderboard) {
-          GPLeaderboard.submit('star-battle', state.timerSec * 1000).then(function () {
-            return GPLeaderboard.mount('star-battle', document.getElementById('gp-lb-win'));
-          });
+          GPLeaderboard.mount('star-battle', document.getElementById('gp-lb-win'));
         }
         track('level_up', { level: state.puzzle.size, difficulty: DIFFS[state.difficulty].label, size: state.puzzle.size });
       }

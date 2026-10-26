@@ -8,6 +8,11 @@ const GAMES = new Set([
   'pictomino', 'murdoku', 'meowdoku',
 ]);
 
+// 每游戏成绩下限（ms）：低于它必须有 24h 内 daily_start 佐证才入库（2026-10-26 加）。
+// 背景：常规关随机盘的关卡快通曾污染 daily 榜（客户端 bug + 幽灵提交 4.0s/1.0s 上了当日最快）。
+// 10×10 akari 真人不可能 <8s；5×5 shikaku daily 最快 ~5s 留余量；pictomino daily 盘 ≥8s。
+const DAILY_FLOORS: Record<string, number> = { shikaku: 5000, akari: 8000, pictomino: 8000 };
+
 // 双轨兼容：
 //  - 带 game     → 新 game_results，分游戏当日榜（登录用户 + 游客 anonId 都可写，2026-10-22）
 //  - 无 game     → 旧 daily_results（仅登录用户，首页 shikaku / akari daily 现行为，勿破坏）
@@ -45,13 +50,26 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return json({ ok: true });
   }
 
-  // 新表：登录优先；无会话 → 游客 anonId。游客成绩下限 1s（真人不可能更快，防 0ms 刷榜）
+  // 新表：登录优先；无会话 → 游客 anonId（成绩下限见下方 DAILY_FLOORS 防线）
   if (!uid) {
     if (!isValidAnonId(body.anonId)) return json({ error: 'unauthorized' }, 401);
-    if (timeMs < 1_000) return json({ error: 'bad_time' }, 400);
     uid = GUEST_PREFIX + body.anonId;
   }
   const isGuest = isGuestUid(uid);
+
+  // 下限防线：低于真人不可能的每游戏下限 → 必须有 24h 内 daily_start 佐证（daily 页正常流零误伤）。
+  // 常规关快通 / 幽灵提交 / 脚本刷 0.1-4s 全挡。佐证查询对登录用户查 user_id，对游客查 guest_id。
+  const floor = DAILY_FLOORS[game] ?? 5000;
+  if (timeMs < floor) {
+    const gid = isGuest ? uid.slice(GUEST_PREFIX.length) : uid;
+    const evidence = await env.meowtrail_users
+      .prepare(
+        `SELECT 1 FROM gp_event WHERE event_name = 'daily_start' AND created_at >= ?1 AND (guest_id = ?2 OR user_id = ?2) LIMIT 1`
+      )
+      .bind(Date.now() - 86_400_000, gid)
+      .first();
+    if (!evidence) return json({ error: 'bad_time' }, 400);
+  }
 
   // 新表：按 (user, game, date) 唯一，多次完成保留最好
   await env.meowtrail_users
