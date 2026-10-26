@@ -97,3 +97,20 @@ Rotate Rings hub+L1-10（10-24）、Nonogram Solver（10-24）、BP3 EN 40 页�
 - 埋点：gp_track `hof_view`/`hof_cta`/`hof_dismiss`（带 variant），进 D1 gp_event 可分析
 - 验证：本地 wrangler pages dev 四行为全绿（渲染/关闭/记忆/embed）；生产实测 chip+变体+CTA 正确
 - follow-up：pictomino 子站（独立 HTML、iframe 嵌套）未挂，需 top-frame 守卫+子站 QA 后单独排
+
+## Pictomino 去留分析（2026-10-26，起因：用户问「另一套逻辑、没用户、要不要下掉」）
+
+**clean 数据（10-05~26 21天，bot 滤净——⚠️ isLikelyBot 在 metadata JSON 里，裸列名查询会报错；全站 21% visit 行是 bot）**：
+
+| 游戏 | 真人独立 | 多日回访 | 主来源 |
+|---|---|---|---|
+| akari | 373 | 15 | direct+内链 |
+| murdoku | 134 | 6 | direct |
+| meowdoku | 98 | 1 | google 53 |
+| **pictomino** | **86** | **1** | **站内 84/99** |
+| nonogram | 84 | 4 | 站内 |
+| kenken | 17 | 1 | — |
+
+- 「基本没用户」不成立：真人 86（~4/天），12 游戏里第 4，比 7 个游戏高；84% 从主站链接点入（活人，砍=砍主站菜单）
+- 真洞三个：① game_results pictomino **0 行**（3 周零榜单写入，daily 入口移工具栏后链路疑断→榜单空→无回流钩子，回访 1/86 是结果）② GSC 239 imp/0 clicks（SEO blog 4 页零产出）③ 独立代码维护面（banner/防线需单独适配，今日 HOF 未含）
+- **结论：游戏本体不下（砍它=砍中位偏上的真人入口，无替代承载）；SEO blog 页单独 11-2 复查（仍 0 点击→下架 blog 留游戏，损失 239 imp≈全站 0.7%）；优先修 daily→榜单断点**
