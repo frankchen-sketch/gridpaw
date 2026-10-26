@@ -139,3 +139,13 @@ Rotate Rings hub+L1-10（10-24）、Nonogram Solver（10-24）、BP3 EN 40 页�
 2. dup-rate 修复（research/2026-10-24 方案）——变现走 Mediaav Journey（不走 AdSense，2026-10-26 法老定），方案技术动作（减共享 S 增独特 U）不变，但对标改判：Journey 内容质量门槛 + 全站 quality signals，不是 AdSense 过审项；BP3 引擎的内容合规风险依旧唯一，优先于任何新内容
 3. 供给保持：BP3 新关卡沿用已验证 TDK 模板；榜单冷启动（HOF banner 10-30 读数）
 4. 不修清单：meowdoku-guide / daily akari TDK / level 品牌词 0 点击（SERP features 挤压，非我们能控）
+
+## BP3 开线：Crazy Mind 副标题织入（2026-10-26）
+
+**发现**：GSC POST 分层（1,449 词）出现 60 个「brain puzzle 3 **crazy mind**」修饰查询（166 imp、增长中）——Crazy Mind 是 Joygame 对 BP3 的官方副标题（answers hub 已有科普），玩家把「brain puzzle 3 crazy mind answers X」当游戏全名搜。54 个关卡页此前**没有一个**含该短语，全靠语义匹配排 pos 3-6 落流量。
+
+**方案取舍**：FAQ 模板块方案（54 段重复问答）被否——与 dup-rate 修复（Journey 内容质量门槛）反向；改用**方案 C**：织入每页本就唯一的 TDK 行（title/desc 加 "Brain Puzzle 3: Crazy Mind" 前缀，tail "the complete video walkthrough"→"video walkthrough" 抵消长度+顺手减重复）。零新增模板块，与 dedup 同向。
+
+**执行**：48 页批量 + 3 页手补（L19/L30/L137 模板变体）+ L16/L33 原型 = 54 页全覆盖；build 9 页抽查全过、L33 旧尾巴确认消失；部署 + IndexNow 53 URL（HTTP 200）；生产 cache-bust 验证 L16/L137 title 生效、L50 200。
+
+**读数窗口**：crazy mind 簇 CTR/排位 10-30 复查（同 loop CTR 窗口）。
