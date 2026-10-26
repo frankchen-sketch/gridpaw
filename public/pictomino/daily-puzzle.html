@@ -19,6 +19,8 @@
 <link rel="preconnect" href="https://www.clarity.ms">
 
 <script src="/analytics.js"></script>
+<script src="/pictomino/gp-build.js"></script>
+<script src="/pictomino/gp-track.js"></script>
 <script>
 function track(event, params) {
   if (typeof gtag === 'function') gtag('event', event, params || {});
@@ -510,6 +512,8 @@ window.addEventListener('message', function(ev){
   if (ev.data.type === 'pictomino_daily_solved') {
     track('puzzle_complete', {mode:'daily',source:'daily-puzzle'});
     track('level_up', {mode:'daily',source:'daily-puzzle'});
+    // D1 镜像（gp-track 同构管线）：外层包装层自己也记一条，与 iframe 内 daily_solved 事件名不同不双计
+    if (window.gpTrack) window.gpTrack('puzzle_complete', {mode:'daily', source:'daily-puzzle'});
     const lb = document.getElementById('daily-leaderboard');
     if (lb) { lb.style.display = ''; lb.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
   }
@@ -538,7 +542,7 @@ if (sb2) sb2.addEventListener('click', function(){ const w = frameWin(); if (w) 
 </script>
 <script>
 // 排行榜（daily 主战场：打完今日套题看排名）
-fetch('/api/leaderboard?game=pictomino&date=' + new Date().toISOString().split('T')[0]).then(r=>r.ok?r.json():null).then(data=>{
+fetch('/api/leaderboard?game=pictomino&date=' + new Date().toISOString().split('T')[0] + '&_=' + Date.now()).then(r=>r.ok?r.json():null).then(data=>{
   const list=document.getElementById('lb-list');
   if(!list||!data)return;
   const entries=data.entries||[];
