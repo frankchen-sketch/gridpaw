@@ -551,6 +551,7 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
     function trackGameStartWhenVisible(fire) {
       if (document.visibilityState === 'visible') { gsSent = true; fire(); return; }
       var onVis = function () {
+        if (gsSent) { document.removeEventListener('visibilitychange', onVis); return; } // fm 单调性闸已补发过则弃权，防双发 gs（2026-10-25 P3）
         if (document.visibilityState !== 'visible') return;
         document.removeEventListener('visibilitychange', onVis);
         gsSent = true;

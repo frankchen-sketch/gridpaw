@@ -1471,14 +1471,13 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     if (typeof window.gsap === 'undefined' || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
     var title = victory.querySelector('.victory-title');
     var catEls = victory.querySelectorAll('.victory-cats > *');
-    var btns = victory.querySelectorAll('.next-btn, .share-btn, .reddit-btn, #victory-close');
     var tl2 = gsap.timeline();
     tl2.from(title, { scale: 0.3, opacity: 0, duration: 0.55, ease: 'back.out(2)' })
-       .from(catEls, { y: 26, opacity: 0, scale: 0.6, duration: 0.45, stagger: 0.09, ease: 'back.out(1.8)' }, '-=0.15')
-       // 2026-10-25 P0：btns 不做 opacity 动画——.share-btn/.reddit-btn 的 transition:all 与
-       // GSAP 抢 opacity，tween 结束停在 from 态（computed opacity=0），按钮不可见不可点，
-       // 真人 share 事件归零一周（10-19 部署引入）。只留 y 位移，可见性回归 CSS 默认 opacity:1
-       .from(btns, { y: 18, duration: 0.35, stagger: 0.07, ease: 'power2.out' }, '-=0.2');
+       .from(catEls, { y: 26, opacity: 0, scale: 0.6, duration: 0.45, stagger: 0.09, ease: 'back.out(1.8)' }, '-=0.15');
+    // 2026-10-25 P0：btns 完全脱离 GSAP——.share-btn/.reddit-btn 的 transition:all 与 GSAP 抢
+    // 属性，tween 结束冻在 from 态（先 opacity:0 不可见不可点致真人 share 归零一周，10-19
+    // 部署引入；去 opacity 后 y:18 仍冻在 from 态且内联 transform 压死 hover scale，浏览器
+    // 实测 2.5s 后 inline 仍 translate3d(0,18px,0)）。按钮直接随 CSS 默认呈现，无竞态面。
   }
 
   function spawnConfetti() {
