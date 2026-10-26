@@ -114,3 +114,16 @@ Rotate Rings hub+L1-10（10-24）、Nonogram Solver（10-24）、BP3 EN 40 页�
 - 「基本没用户」不成立：真人 86（~4/天），12 游戏里第 4，比 7 个游戏高；84% 从主站链接点入（活人，砍=砍主站菜单）
 - 真洞三个：① game_results pictomino **0 行**（3 周零榜单写入，daily 入口移工具栏后链路疑断→榜单空→无回流钩子，回访 1/86 是结果）② GSC 239 imp/0 clicks（SEO blog 4 页零产出）③ 独立代码维护面（banner/防线需单独适配，今日 HOF 未含）
 - **结论：游戏本体不下（砍它=砍中位偏上的真人入口，无替代承载）；SEO blog 页单独 11-2 复查（仍 0 点击→下架 blog 留游戏，损失 239 imp≈全站 0.7%）；优先修 daily→榜单断点**
+
+### Pictomino daily 链路修复（2026-10-26 实施+验证）
+
+**诊断**：POST 机制本身是通的（iframe ?mode=daily → winLevel → ptSyncWin → POST，实测会发出；elapsed 单位正确）。真断点两个：
+1. **入口无人点**：/pictomino/daily-puzzle 28d 仅 2 会话（hub 68 会话 CTR 3%）→ 无人玩到 win → 0 行榜单
+2. **测量全盲**：gp-track.js 只挂 game.html，hub 和 daily-puzzle 都无 D1 上报（此前 D1 连 daily 页 visit 都看不见）
+
+**修复**（4 处，全部部署+生产自测验证）：
+- hub index.html：挂 gp-build+gp-track；Daily CTA 加 `daily_challenge_click`（placement=hub_hero）+ 微文案
+- daily-puzzle.html：挂 gp-track（visit 遥测）；daily_solved 处理器加 D1 镜像 puzzle_complete；榜单 GET 加 &_= cache-bust（防 POST 后读陈旧榜，同 leaderboard.js 10-22 先例）
+- 生产自测（gp_selftest=1）：visit /pictomino/ → daily_challenge_click(hub_hero) → visit /pictomino/daily-puzzle 三事件全部落 D1 ✓
+
+**已知边界**：真实玩家从开始游戏到 win 的 POST 写入，等首批真人 daily 解出后由 game_results 行数自证（每日看一次即可）；未开始状态触发 winLevel 会产生垃圾 elapsed（服务端下限防线兜住，400，无污染）。
