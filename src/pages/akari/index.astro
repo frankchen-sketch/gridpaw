@@ -1489,11 +1489,10 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
           if (isNewRecord) {
             document.querySelector('.win-sub').textContent = '🏆 New Best Time: ' + formatTime(timerSeconds) + '!';
           }
-          // leaderboard：上报成绩 + 胜利面板当日榜（未登录静默跳过）
+          // leaderboard：胜利面板只读展示当日榜。常规关是随机盘，各人关卡不同质、
+          // 时间不可比——上报会让 L1 快通变成「今日最快」，2026-10-26 污染事故后停报（daily 页仍报）
           if (window.GPLeaderboard) {
-            GPLeaderboard.submit('akari', timerSeconds * 1000).then(function () {
-              return GPLeaderboard.mount('akari', document.getElementById('gp-lb-win'));
-            });
+            GPLeaderboard.mount('akari', document.getElementById('gp-lb-win'));
           }
           // 3s 自动关 → 10s：给 leaderboard 面板渲染+阅读时间；点 Next 仍立即走
           setTimeout(() => { if (won) { winOverlay.classList.remove('show'); newPuzzle(); } }, 10000);
