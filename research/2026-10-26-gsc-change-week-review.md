@@ -127,3 +127,15 @@ Rotate Rings hub+L1-10（10-24）、Nonogram Solver（10-24）、BP3 EN 40 页�
 - 生产自测（gp_selftest=1）：visit /pictomino/ → daily_challenge_click(hub_hero) → visit /pictomino/daily-puzzle 三事件全部落 D1 ✓
 
 **已知边界**：真实玩家从开始游戏到 win 的 POST 写入，等首批真人 daily 解出后由 game_results 行数自证（每日看一次即可）；未开始状态触发 winLevel 会产生垃圾 elapsed（服务端下限防线兜住，400，无污染）。
+
+## 内页 + 新词扫描（2026-10-26，用户问「还要优化什么」）
+
+**内页（POST 10-19~25 vs PRE 10-12~18）**：BP3 爬坡仍是唯一主引擎——L33 1350imp/112clk pos4.3、L16 1011/42、L17 856/63；L34-53（10-19 批）已起量（L50 290/12、L51 260/10）；answers hub 521/14 pos6.0。/the-loop-puzzle 1060imp/12clk（CTR 1.1%）——**TDK 已于 10-24 改版**（当前 title/desc 即颜色语义角度），窗口内大半读数还是旧 TDK，10-30/11-2 验证。回落页：meowdoku-guide 688→529 但**可见词 89→119 反涨**（跌在匿名化词=SERP shuffle，监控不修）、japanese-logic-puzzles -77、arrows-puzzle-walkthrough -90（BP3 挤压同类内容页热度，同上）。
+
+**新词**：可见词 409→1,449（**新词 1,221 个**）。490 个 BP3 题面/关卡词 = 4,076 imp/191 clk（CTR 4.7%）——**BP3 题面文本就是本站新词引擎**（「help the girl reduce her head circumference」203imp/5clk 等），关卡页 TDK 模板已含题面（L16/L50 验证），引擎成立。loop 词簇 ~570imp/~2clk（修复在途）。小词不动：daily akari 50imp pos8.7（title 已精确匹配「Daily Akari」，排名受竞争压制非 TDK 问题）；murder sudoku 30imp pos8.1、meowdoku online 28imp pos20.6（均 page2-3 低量级，churn 不值）。
+
+**优化优先级结论**：
+1. 本周不加新动作——loop CTR（10-30/11-2）与 BP3 L34-53/Rotate Rings/Solver/76页加深（10-30 首判）两个读数窗口就在眼前
+2. AdSense dup-rate 修复（research/2026-10-24 方案）——BP3 引擎的变现依赖 + 唯一可能引发整批降权的合规风险，优先于任何新内容
+3. 供给保持：BP3 新关卡沿用已验证 TDK 模板；榜单冷启动（HOF banner 10-30 读数）
+4. 不修清单：meowdoku-guide / daily akari TDK / level 品牌词 0 点击（SERP features 挤压，非我们能控）
