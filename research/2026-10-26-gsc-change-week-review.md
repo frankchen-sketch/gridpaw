@@ -88,3 +88,12 @@ Rotate Rings hub+L1-10（10-24）、Nonogram Solver（10-24）、BP3 EN 40 页�
 **遗留**：Tommy 10-02 的 15.0s 有 daily_start 佐证按规则保留（当时 daily 盘可能更小）；pictomino 无事件管线，靠 8s 下限兜底。
 
 **Banner v2**（slogan 主导版）待用户选文案后实施；Clarity 录屏：MS 账号身份不明 + Google OAuth 拒自动化浏览器，待用户在 ego 侧登录后补 /leaderboard/ 死点击与 L33 quickback 定性。
+
+## Hall-of-Fame Banner 上线（2026-10-26，用户拍板 v2 slogan 版）
+
+- 形态：slogan 主导（4 条轮换：beat-time/streak-taunt/beginner/paws），champion 只做证据 chip；CTA→/leaderboard/
+- 挂载：`public/hof-banner.js` 经 SEOHead 全站加载；campaign 至 2026-10-30 00:00 CST 自退役；关闭后整个 campaign 不再出；embed/iframe/无头部页（about/community/contact/meowdoku/help）不出
+- 防线联动：只引服务端已验真解（streak≥2 才上 chip——Andrey streak 1 被正确滤掉，今日 chip=Marble #12 2-day）；用户名 chip 全 DOM API 渲染（XSS 防护同 leaderboard.js 先例）
+- 埋点：gp_track `hof_view`/`hof_cta`/`hof_dismiss`（带 variant），进 D1 gp_event 可分析
+- 验证：本地 wrangler pages dev 四行为全绿（渲染/关闭/记忆/embed）；生产实测 chip+变体+CTA 正确
+- follow-up：pictomino 子站（独立 HTML、iframe 嵌套）未挂，需 top-frame 守卫+子站 QA 后单独排
