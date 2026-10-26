@@ -136,6 +136,6 @@ Rotate Rings hub+L1-10（10-24）、Nonogram Solver（10-24）、BP3 EN 40 页�
 
 **优化优先级结论**：
 1. 本周不加新动作——loop CTR（10-30/11-2）与 BP3 L34-53/Rotate Rings/Solver/76页加深（10-30 首判）两个读数窗口就在眼前
-2. AdSense dup-rate 修复（research/2026-10-24 方案）——BP3 引擎的变现依赖 + 唯一可能引发整批降权的合规风险，优先于任何新内容
+2. dup-rate 修复（research/2026-10-24 方案）——变现走 Mediaav Journey（不走 AdSense，2026-10-26 法老定），方案技术动作（减共享 S 增独特 U）不变，但对标改判：Journey 内容质量门槛 + 全站 quality signals，不是 AdSense 过审项；BP3 引擎的内容合规风险依旧唯一，优先于任何新内容
 3. 供给保持：BP3 新关卡沿用已验证 TDK 模板；榜单冷启动（HOF banner 10-30 读数）
 4. 不修清单：meowdoku-guide / daily akari TDK / level 品牌词 0 点击（SERP features 挤压，非我们能控）
