@@ -6,6 +6,24 @@ import AdSlot from '../../components/AdSlot.astro';
 import LoopPuzzlePlay from '../../components/LoopPuzzlePlay.astro';
 import SideAd from '../../components/SideAd.astro';
 
+// 今日答案：research/loop-answers/ 最新档案（每日 14:00 cron 采集+发布链）。
+// 容错解析（档案可能带 ego notice 等非 JSON 前缀）+ 失败整体不渲染，绝不让 build 挂
+import fs from 'node:fs';
+import path from 'node:path';
+let todayAnswer: { date: string; title: string } | null = null;
+try {
+  const lpDir = path.resolve(process.cwd(), 'research/loop-answers');
+  const lpFiles = fs.readdirSync(lpDir).filter((f: string) => /^loop-answers-\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort();
+  const lpRaw = fs.readFileSync(path.join(lpDir, lpFiles[lpFiles.length - 1]), 'utf8');
+  const lp = JSON.parse(lpRaw.slice(lpRaw.indexOf('{'), lpRaw.lastIndexOf('}') + 1));
+  if (lp.publishedDate && lp.title) todayAnswer = { date: lp.publishedDate, title: lp.title };
+} catch {}
+const LP_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+function lpLongDate(iso: string): string {
+  const [y, m, d] = iso.split('-').map((n: string) => parseInt(n, 10));
+  return `${LP_MONTHS[m - 1]} ${d}, ${y}`;
+}
+
 const title = "The Loop Puzzle: How to Play, Hints & Strategy | GridPaw";
 const description = "How to play The Loop, Britannica's daily picture puzzle: rules, what green, red and orange mean, 6 solving strategies, and a free loop puzzle to play now.";
 
@@ -134,6 +152,14 @@ const faqJsonLd = [
     <p class="lede">Seen today's <b>The Loop</b> on Britannica and want to actually finish it? This guide covers how the daily picture puzzle works — the rules, what green, red and orange mean, six solving techniques — plus a free loop puzzle you can play right here on the page.</p>
 
     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Britannica or Playlin. The Loop is a game by Britannica; play the official daily version at britannica.com/games/loop.</div>
+
+    {todayAnswer && (
+      <div class="cta-box" id="todays-answer">
+        <p>Today's answer ({lpLongDate(todayAnswer.date)}): <span style="color:var(--lp-primary)">{todayAnswer.title}</span></p>
+        <p style="font-size:0.9rem;font-weight:600;">See the full connection chain, image by image: <a href="/the-loop-hints/">The Loop hints &amp; answer →</a></p>
+        <p style="font-size:0.9rem;font-weight:600;">Missed a day? <a href="/the-loop-past-answers/">Every past answer in the archive →</a></p>
+      </div>
+    )}
 
     <h2>What Is <span class="accent">The Loop</span>?</h2>
     <p>The Loop is a free daily picture puzzle by Britannica — the encyclopedia that decided Wordle deserved competition. Each day you get a handful of images that must be arranged <b>in a circle</b> so that every adjacent pair connects: through wordplay, visual similarity, idioms, or cultural references. A pig next to a football? That's <i>pigskin</i>. A ladle beside the Big Dipper? Visual twins. One image is locked at the top of the ring; you drag the rest into place and press Check. A fresh puzzle publishes daily, and most players finish in two to five minutes.</p>
