@@ -816,3 +816,11 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **实测（10-28/29 三源）**：① Trends 12m 爆发期——9-06 周起 +263%，峰值 100 在 10-04，最新 86；② Google Ads KWP 四词全 null（报告线以下，390 非 Ads 口径）；③ web.cafe KD 实查 59.5 中等，盘面平台 5 席（Play/AppStore/YouTube×3/yandex）可争 7 席，最弱 DR 46，链接预算中值 130 引用域
 - **修正**：撤回「不铺 L11+」；主词放弃维持（KD 59.5+130 域预算+商店垄断，不划算）；level 长尾矩阵待传导验证——Trends 爆发已实锤，看 GSC 簇曲线（10-24→26: 16→46→60 imp/天）是否跟随，10-30/11-01 复查窗口决定铺 L11+（BP3 引擎模式）或再等；当前月真实量粗推断 600-1200（推断非实测，Ads null 无法锚定）
 - 教训已入 skill seo-keyword-selection「KWP 趋势信号」节
+
+## 2026-10-29 RR：SERP 侦察 + BP3 method C 织入 11 关卡页+hub（deployment `52aa49aa`，IndexNow 200）
+- **竞态实锤**：三家 DR 0 新站抢爆发的 RR 攻略簇——rotate-rings.com（10-03 注册，101 关 ×3 语言，2,118 词/页 + board A-H 变体匹配）拿 hints/answers/guide 三个 #1；rotate-rings.org（10-16 注册，294 关页）；rotaterings.org（101 关，Board Diagrams）。YouTube 占每条 SERP 6-8 席，有机位仅 2-4 个
+- **我们差距**：11 页 vs 100-294；L32 #8（org 们 #5/#6）；hub 零出现、title 不含 answers/hints/all levels；11 页 title 零簇修饰词。独有资产：逐波帧验证时间轴 + 结算画面（竞品均无）
+- **执行（BP3 复刻）**：method C 织入——关卡页 title 加 "Hints &"（web 页赢 hints 词有 com 站实证）、desc 前置 "hints, steps and solution"（7 页超 155 逐页压缩）；hub title→"All Levels Walkthrough, Hints & Answers"、FAQ +1 问且 FAQPage schema 逐字同步（live 5 问验证）；页脚 L1↔…↔L10→L32 兄弟互链
+- **不做**：独立 /answers/ 页（与 hub 内耗）；盲铺 L11+（程序化站已占位+dup 纪律+帧验证成本）
+- **按需扩张规则**：Bot·X 盯 `rotate rings level (\d+)`，关卡号周窗口 ≥10 imp 无页 → 建页（无帧数据只写通用层+标注，不编时间戳）
+- 预期：RR 词族量级为 BP3 的 1/10-1/20，成熟期 30-80 clicks/月；细节+数据表 → `research/2026-10-29-rotate-rings-serp-recon.md`
