@@ -810,3 +810,9 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **修复三处**：① 清洗 10-27/28 毒文件；② pull 脚本写盘前剥离非 JSON 前缀（校验段容错但 mv 落盘没剥离，修根因）；③ the-loop-hints / the-loop-past-answers 解析改容错切片（同类同修）
 - **主页新增 Today's Answer 模块**（/the-loop-puzzle/）：构建期读最新档案显示当日答案标题+日期（诚实日期）+ hints/past-answers CTA；try/catch 失败不渲染。**TDK 未动**（10-24 改版在读数窗口内，11-04 GSC 定案 cron）
 - **BP3 关卡覆盖核查（GSC 28d query×page）**：EN 54 关卡页 = L1-53 + L137 + answers hub；**带关卡号的可见查询全部有页，54+ 零搜索信号**——不预防性铺页（thin content 风险），等 NewWord 管线出需求信号再建
+
+## 2026-10-29：Rotate Rings 判定修正——上升词月均值≠静态天花板（法老纠正+kwp 三源实测）
+- **错误**：10-28 分析拿台账 KWP 月均 390÷30 推「日上限 ~13/0.5 click/天」判「试点验证放弃是对的、不铺 L11+」——390 是 12 个月均值（3月/YoY 双 +84% 摆在台账行里没读），且没先 load seo-keyword-selection skill（brain puzzle 3 lösung 同类教训 10-19 已定规，三犯）
+- **实测（10-28/29 三源）**：① Trends 12m 爆发期——9-06 周起 +263%，峰值 100 在 10-04，最新 86；② Google Ads KWP 四词全 null（报告线以下，390 非 Ads 口径）；③ web.cafe KD 实查 59.5 中等，盘面平台 5 席（Play/AppStore/YouTube×3/yandex）可争 7 席，最弱 DR 46，链接预算中值 130 引用域
+- **修正**：撤回「不铺 L11+」；主词放弃维持（KD 59.5+130 域预算+商店垄断，不划算）；level 长尾矩阵待传导验证——Trends 爆发已实锤，看 GSC 簇曲线（10-24→26: 16→46→60 imp/天）是否跟随，10-30/11-01 复查窗口决定铺 L11+（BP3 引擎模式）或再等；当前月真实量粗推断 600-1200（推断非实测，Ads null 无法锚定）
+- 教训已入 skill seo-keyword-selection「KWP 趋势信号」节
