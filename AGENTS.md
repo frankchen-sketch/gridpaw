@@ -1,7 +1,7 @@
 # GridPaw — Agent Rules
 
 ## 项目定位
-猫主题日式逻辑谜题游戏站。六游戏：Shikaku（矩形分割，首页）+ Akari + Kakuro + Nonogram + Nurikabe（均 `src/lib/*-engine.ts` 编译到 `public/*-engine.js`）+ Pictomino（`public/pictomino/` 纯静态 HTML）。Astro 5.x 静态站 + Cloudflare Pages 部署。
+猫主题日式逻辑谜题游戏站。14 款游戏：11 款引擎游戏（Shikaku 首页 / Akari / Kakuro / Nonogram / Nurikabe / KenKen / Binary / Star Battle / Hashi / Slitherlink / Murder Sudoku，均 `src/lib/*-engine.ts` 编译到 `public/*-engine.js`）+ 3 款纯静态（Pictomino / Meowdoku / Crazy Cleanup，`public/<slug>/`）。Astro 5.x 静态站 + Cloudflare Pages 部署。
 
 ## 怎么跑
 ```bash
@@ -18,6 +18,8 @@ pnpm run deploy       # 部署 = wrangler pages deploy + IndexNow 提交（勿�
                       # mini 不可用再 `npx wrangler login` 重新 OAuth（浏览器点授权，交互式；本机浏览器会被 CF 盾卡死须手动点）
                       # ⚠️ 部署落地瞬间的新 URL 可能被 CF 边缘缓存 404（爬虫先到）——上线后 curl 验证 404 时先
                       # 试 `?cb=随机数` 排除边缘缓存（cache-bust 200 = 内容正常，等缓存过期或 Dashboard 手动 Purge）
+                      # ⚠️ 部署闸（loop-hints-pull.sh）只护 loop cron——手动 wrangler deploy 不过闸：并行 WIP 在飞时
+                      # 部署前 git status 粗查 + 部署后 diff dist 新增物，确认携带的是已验证上线态而非未验收 WIP（2026-10-30 核查流）
 ```
 
 ## 技术栈
@@ -25,10 +27,11 @@ pnpm run deploy       # 部署 = wrangler pages deploy + IndexNow 提交（勿�
 - Shikaku 引擎：`src/lib/puzzle-engine.ts` → `public/puzzle-engine.js`
 - Akari 引擎：`src/lib/akari-engine.ts` → `public/akari-engine.js`
 - Pictomino：纯静态 HTML（`public/pictomino/game.html`）
-- PWA：`public/manifest.webmanifest`（SEOHead 全站挂 link + apple-touch-icon + theme-color）；无 service worker，装桌面/主屏=书签级
+- PWA：`public/sw.js`（network-first HTML + SWR 静态，`stamp-sw.mjs` 构建期版戳，/api 与跨域全旁路）+ `gp-install.js` 安装提示 + `offline.astro` 离线壳；打点 sw_registered/install_* 双管道 GA4+D1
 - 分享：胜利弹窗统一三按钮（📋 Copy / 𝕏 Share / 👽 Reddit），事件 `share_copy/share_twitter/share_reddit`。Akari+Shikaku 在 astro 页内，Kakuro/Nonogram/Nurikabe 在各自 `public/*/demo.html` 的 winOverlay 里
 - SEOHead：`src/components/SEOHead.astro`（从 site-config.ts 读 GA4/Clarity）
 - 搜索：pagefind
+- llms.txt：索引 `public/llms.txt` 手维护；`public/llms-full.txt` = `scripts/gen-llms-full.mjs` 构建期生成（build 链内 astro build 前跑，`public/*.txt` 忽略规则已盖，不入库）
 - IndexNow：`scripts/indexnow-ping.mjs`（key 自动从 `public/<key>.txt` 探测，不硬编码；Bing Webmaster 已注册）
 - 部署：Cloudflare Pages（域名 gridpaw.com）
 
