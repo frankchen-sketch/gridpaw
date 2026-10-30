@@ -1,0 +1,44 @@
+---
+// GridPaw offline fallback — served by sw.js when a navigation fails.
+// Inline-only styles (zero external CSS/JS) so it renders perfectly from the precache with no network.
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Offline — GridPaw</title>
+    <style>
+      :root { --amber: #D97706; --cream: #FFFBF5; --text: #3A2F28; --muted: #9C8B7B; --border: #F2E4D4; }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+      .card { max-width: 460px; background: #fff; border: 2px solid var(--border); border-radius: 16px; padding: 32px 28px; text-align: center; }
+      .paw { font-size: 40px; margin-bottom: 12px; }
+      h1 { font-size: 22px; margin-bottom: 10px; }
+      p { font-size: 14.5px; line-height: 1.6; color: var(--muted); margin-bottom: 18px; }
+      .games { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+      .game { background: var(--cream); border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 4px; font-size: 12.5px; font-weight: 700; }
+      .note { font-size: 12.5px; color: var(--muted); margin-bottom: 18px; }
+      .retry { display: inline-block; background: var(--amber); color: #fff; border: none; border-radius: 10px; padding: 12px 26px; font-size: 14.5px; font-weight: 800; cursor: pointer; }
+      .retry:hover { filter: brightness(0.95); }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="paw">🐾</div>
+      <h1>You're offline</h1>
+      <p>No internet right now — but any puzzle you've already opened keeps working, daily boards included.</p>
+      <div class="games">
+        <div class="game">Shikaku</div>
+        <div class="game">Akari</div>
+        <div class="game">Kakuro</div>
+        <div class="game">Nonogram</div>
+        <div class="game">Nurikabe</div>
+        <div class="game">Pictomino</div>
+      </div>
+      <p class="note">Tip: install GridPaw from your browser for a smoother offline experience.</p>
+      <button class="retry" onclick="location.reload()">Try again</button>
+    </div>
+  </body>
+</html>

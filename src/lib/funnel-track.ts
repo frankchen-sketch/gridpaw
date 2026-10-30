@@ -24,6 +24,8 @@ export const FUNNEL_EVENTS = [
   'paywall_shown', 'paywall_convert', 'auth_error', 'share', 'share_image',
   'hunt_answer', 'hunt_case_solved', 'hunt_completed',
   'profile_update',
+  // 2026-10-29 PWA 安装漏斗（gp-install.js 发；sw_registered=SEOHead 注册成功一次性信号）
+  'sw_registered', 'install_prompt_shown', 'install_clicked', 'install_accepted', 'install_dismissed', 'appinstalled',
 ];
 
 // 只有生产域上报（与本仓库既有铁律一致：dev/预览域静默，避免污染）

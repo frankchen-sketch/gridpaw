@@ -217,3 +217,26 @@ const articleJsonLd = type === 'article' ? {
   trackVisit(location.pathname);
 </script>
 <script is:inline src="/hof-banner.js"></script>
+
+<!-- Service Worker registration (PWA: offline daily + install prompt). Prod-HTTPS only;
+     skips localhost / *.pages.dev / ?embed=1. sw_registered fires once per browser (GA4-only). -->
+<script is:inline>
+  (function () {
+    if (location.protocol !== 'https:' && location.hostname !== 'localhost') return;
+    if (/(^|\.)pages\.dev$/.test(location.hostname)) return;
+    if (location.hostname === '127.0.0.1') return;
+    if (new URLSearchParams(location.search).get('embed')) return;
+    if (!('serviceWorker' in navigator)) return;
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/sw.js').then(function () {
+        try {
+          if (!localStorage.getItem('gp_sw_registered')) {
+            localStorage.setItem('gp_sw_registered', '1');
+            if (typeof window.gtag === 'function') window.gtag('event', 'sw_registered');
+            if (window.gpTrack) window.gpTrack('sw_registered', {});
+          }
+        } catch (e) {}
+      }).catch(function () {});
+    });
+  })();
+</script>
