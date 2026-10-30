@@ -7,10 +7,15 @@
 import AdGate from './AdGate.astro';
 const invokeKey = '309484c05af1066efb6f321317c94311';
 const invokeHost = 'https://www.highrevenueformat.com';
+// 2026-10-29 Adsterra 全线下架：第二次独立零点击跳转投诉（10-15 Reddit mcfroogle + 10-28 DLES.gg 站长移除收录），
+// 触发 STATUS.md 10-21 止损规则「再撞零点击跳转指控=当天撤，不辩护」。变现主线=Mediavine Journey（10-26 拍板）。
+// 下架=本组件整体不渲染（含 AdGate 与 invoke.js 注入）；恢复=置 false。
+const ADSTERRA_OFF = true;
 ---
-<AdGate />
-<div class="gp-side-ad gp-side-ad--left" aria-hidden="true"></div>
-<div class="gp-side-ad gp-side-ad--right" aria-hidden="true"></div>
+{!ADSTERRA_OFF && <AdGate />}
+{!ADSTERRA_OFF && <div class="gp-side-ad gp-side-ad--left" aria-hidden="true"></div>}
+{!ADSTERRA_OFF && <div class="gp-side-ad gp-side-ad--right" aria-hidden="true"></div>}
+{!ADSTERRA_OFF && (
 <script is:inline>
 (function () {
   if (new URLSearchParams(location.search).has('embed')) return;
@@ -41,6 +46,7 @@ const invokeHost = 'https://www.highrevenueformat.com';
   });
 })();
 </script>
+)}
 <style>
   .gp-side-ad {
     display: none;

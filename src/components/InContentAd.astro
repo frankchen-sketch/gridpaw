@@ -7,12 +7,18 @@
 // 串行注入（set atOptions → append invoke.js → 等 load），否则后注入方的尺寸会覆盖先注入方。
 // 2026-10-22 起注入前过 AdGate（geo 黑名单 CN/HK + bot UA，fail-open）。
 import AdGate from './AdGate.astro';
+// 2026-10-29 Adsterra 全线下架：第二次独立零点击跳转投诉触发 STATUS.md 10-21 止损规则。
+// 下架=本组件整体不渲染；恢复=置 false。
+const ADSTERRA_OFF = true;
 ---
-<AdGate />
+{!ADSTERRA_OFF && <AdGate />}
+{!ADSTERRA_OFF && (
 <div class="gp-incontent-ad" aria-hidden="true">
   <span class="gp-incontent-ad__label">Advertisement</span>
   <div class="gp-incontent-ad__slot"></div>
 </div>
+)}
+{!ADSTERRA_OFF && (
 <script is:inline>
 (function () {
   if (new URLSearchParams(location.search).has('embed')) return;
@@ -38,6 +44,7 @@ import AdGate from './AdGate.astro';
   window.__gpGeoGate.then(function (allow) { if (allow) chain(); });
 })();
 </script>
+)}
 <style>
   .gp-incontent-ad {
     width: 300px;
