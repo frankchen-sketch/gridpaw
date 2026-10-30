@@ -11,7 +11,7 @@ import DetectiveWall from '../components/DetectiveWall.astro';
 import { latestRecentEntry, formatBannerDate, gameColor } from '../lib/changelog-data';
 
 const title = "Shikaku Online: Play Free Cat Logic Puzzles | GridPaw";
-const description = "Play Shikaku online free: draw rectangles to match every number and fill the grid. Cat-themed puzzles from easy to hard, no download, no sign-up.";
+const description = "Play Shikaku online free — draw rectangles to match the numbers. Daily challenge, unlimited levels, step-by-step tutorial. No download, no sign-up.";
 // 首页 changelog banner：构建期取最近 7 天内最新一条，过期则不渲染（0 DOM）
 const bannerEntry = latestRecentEntry(7);
 const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
@@ -722,6 +722,7 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
         <button class="hint-btn" id="hintBtn" title="Hint"><span>💡</span><span class="hint-word">Hint</span><span class="hint-badge">3</span></button>
         <button class="icon-btn" id="soundBtn" title="Sound"><span id="soundIcon">🔊</span><span class="tip">Sound</span></button>
         <button class="icon-btn" id="dailyBtn" title="Daily Challenge"><span>📅</span><span class="tip">Daily</span></button>
+        <button class="icon-btn" id="installBtn" title="Install app" data-gp-install data-gp-from="toolbar"><span>📥</span><span class="tip">Install</span></button>
         </div>
       </div>
     </div>
@@ -815,6 +816,7 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
 
 <script is:inline src="/puzzle-engine.js"></script>
 <script is:inline src="/sfx.js"></script>
+<script is:inline src="/gp-install.js" defer></script>
 <script is:inline src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 <script is:inline>
   // Cat color palette (8 unique colors, no repeats per puzzle)
