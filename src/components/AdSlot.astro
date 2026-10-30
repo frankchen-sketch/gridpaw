@@ -22,7 +22,10 @@
 // Adsterra 分 unit CPM 周对账（Native 应 ≥$3 才算位置成立）。
 // 2026-10-22 起注入前过 AdGate（geo 黑名单 CN/HK + bot UA，fail-open）。
 import AdGate from './AdGate.astro';
-const { native = false } = Astro.props;
+// 2026-10-29 Adsterra 全线下架：第二次独立零点击跳转投诉触发 STATUS.md 10-21 止损规则，
+// native 门强制关死（Adsterra RTB 创意池=假验证码/赌场/loader 自带 popunder 机器）。
+// 恢复时还原为 `const { native = false } = Astro.props;`
+const native = false;
 ---
 {native && (
   <div class="adsterra-slot" aria-hidden="true">
