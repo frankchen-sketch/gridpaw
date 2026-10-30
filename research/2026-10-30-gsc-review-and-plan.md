@@ -63,3 +63,15 @@
 - B8 BP3 依赖 66%：对冲动作=已有（meowdoku 二号线 + 内部题面词引擎）；不做预防性铺页
 - B7 10-29 dip：11-01 读数窗确认，暂不动
 - 本轮 GA4/GSC 均含自测+bot 未清洗（口径与 10-26 复盘一致，趋势可比）
+
+## 2026-10-30 晚补：cat sudoku 立项评估与织入（已执行）
+
+**四关数据**：KWP 最新月 ~6K（10 月，1,900→3,600→4,400→5,400→6K 斜率未停；12 月均值 1,300 被早期 0 月拖低勿用）；web.cafe KD 49.9（进前十中值 85 域）；自家 dofollow RD ~43；盘面 #1=meowdoku.app（DR58/域龄 5 个月/518RD/22.2 万月流量，单页双词先例）。**判定：不独立立项（桶低 KDROI 20），单页织入**。拼写变体（cat sodoku/catsudoku/kitty sudoku）KWP 全 null 不做；`meowdoku daily answer` 未成形 → loop playbook 不复制，该线关闭。
+
+**已上线**（89e21ce 织入 + a6959ac 攻略节 + 6a97989 内链）：/meowdoku/ title/desc/H1/lede/FAQ 织入 cat sudoku + 攻略节（How-to 规则 H2 + 六技巧 + hints/answers H3 保险位，Level 1 teaser 对账 meowdoku-levels.json，完整推导留 levels/1 防 dup）；guide→play 2 条内容内链（此前为 0，play 页 pos 18.3 饿死主因）。三页分工防内耗：/meowdoku/=cat sudoku 族 · guide=meowdoku 品牌攻略族 · levels/=meowdoku level N 族。
+
+**触发器（进 11 月监控轮）**：
+- cat sudoku 月量破 10K 或 /meowdoku/ pos ≤15 → 独立 /cat-sudoku/ 页议题重开（先过哥飞）
+- meowdoku hints（170）/answers（210）承接验证归 12-01 窗：看 GSC 两词 imp 是否落 guide 页；`cat sudoku hints/answers` KWP 未进表（<10 真空），H3 已占位等词来
+- meowdoku level-answers 线维持关闭：词族 61 imp/月，零星不预铺
+
