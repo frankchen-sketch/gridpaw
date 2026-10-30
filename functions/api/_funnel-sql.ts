@@ -21,6 +21,8 @@ export const FUNNEL_EVENT_LIST: string[] = [
   'paywall_shown', 'paywall_convert', 'auth_error', 'share', 'share_image',
   'hunt_answer', 'hunt_case_solved', 'hunt_completed',
   'profile_update',
+  // 2026-10-29 PWA 安装漏斗（与 funnel-track.ts 同步；先加白名单再加埋点，顺序错了 400）
+  'sw_registered', 'install_prompt_shown', 'install_clicked', 'install_accepted', 'install_dismissed', 'appinstalled',
 ];
 
 export function isFunnelEvent(name: string): boolean {
