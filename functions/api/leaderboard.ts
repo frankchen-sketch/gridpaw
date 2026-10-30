@@ -6,6 +6,7 @@ const GAMES = new Set([
   // 2026-10-20 P2：补齐 GameSwitcher 全量 13 款。pictomino 此前不在白名单 → POST 落到旧 daily_results、
   // GET ?game=pictomino 退化成全站混合榜；本次起三处上报统一写 game_results（旧表历史数据不混入新榜）。
   'pictomino', 'murdoku', 'meowdoku',
+  'crazy-cleanup', // 2026-10-30 Crazy Cleanup 接入（14 款）
 ]);
 
 // 每游戏成绩下限（ms）：低于它必须有 24h 内 daily_start 佐证才入库（2026-10-26 加）。

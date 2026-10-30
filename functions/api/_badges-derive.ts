@@ -30,6 +30,7 @@ function dayDiff(a: string, b: string): number {
 export function deriveBadges(rows: EventRow[]): Badge[] {
   let maxLevel = 0;
   const caseRows: EventRow[] = [];
+  const ccRooms = new Set<string>(); // Crazy Cleanup：level_up {level:'cc-N'} 命名空间，distinct 关卡数
   let sixBySixAt: number | null = null;
   const dailyFirstTs = new Map<string, number>(); // UTC 日 → 当日首个 daily_solved
   for (const e of rows) {
@@ -41,6 +42,7 @@ export function deriveBadges(rows: EventRow[]): Badge[] {
       try { level = e.metadata ? JSON.parse(e.metadata)?.level : null; } catch { /* 坏 metadata 忽略 */ }
       const num = parseLevel(level);
       if (num !== null && num > maxLevel) maxLevel = num;
+      if (typeof level === 'string' && level.indexOf('cc-') === 0) ccRooms.add(level);
       if (level === '4x4' || level === '6x6') {
         caseRows.push(e);
         if (level === '6x6' && sixBySixAt === null) sixBySixAt = e.created_at;
@@ -78,6 +80,9 @@ export function deriveBadges(rows: EventRow[]): Badge[] {
   add('warm-up', 'bronze', streakEarn[3]);
   add('streak-keeper', 'silver', streakEarn[7]);
   add('night-owl', 'gold', streakEarn[14]);
+  add('cc-first-room', 'bronze', ccRooms.size >= 1);
+  add('cc-twelve-rooms', 'silver', ccRooms.size >= 12);
+  add('cc-all-rooms', 'gold', ccRooms.size >= 20);
   return badges;
 }
 
@@ -94,6 +99,9 @@ export const BADGE_LABELS: Record<string, string> = {
   'warm-up': '3-day streak',
   'streak-keeper': '7-day streak',
   'night-owl': '14-day streak',
+  'cc-first-room': 'First Room Tidied',
+  'cc-twelve-rooms': 'Tidy Dozen',
+  'cc-all-rooms': 'Whole House',
 };
 
 // 全部徽章 id（升序档位；与 src/lib/badge-icons.ts 的 BADGES 一一对应）。
@@ -110,6 +118,9 @@ export const ALL_BADGE_IDS = [
   'warm-up',
   'streak-keeper',
   'night-owl',
+  'cc-first-room',
+  'cc-twelve-rooms',
+  'cc-all-rooms',
 ] as const;
 
 const TIER_ORDER: Record<string, number> = { bronze: 0, silver: 1, gold: 2, mythic: 3 };

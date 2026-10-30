@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crazy Cleanup — Sort the Mess, Relax Your Mind</title>
+<meta name="description" content="Sort messy rooms into buckets in this satisfying organizing puzzle. 20 levels, pixel-perfect picking, hints and pliers.">
+<link rel="stylesheet" href="assets/theme.css">
+<style>
+body{max-width:640px;margin:0 auto;padding-bottom:40px}
+.lv-hero{padding:26px 14px 10px;text-align:center}
+.lv-hero h1{font-size:22px;color:#5c4726;margin-bottom:6px}
+.lv-hero p{font-size:13px;color:#8a6d1f}
+.lv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px 14px}
+.lv-card{border:2px solid #d8c496;border-radius:12px;background:#fffdf6;padding:12px 6px;text-align:center;cursor:pointer;transition:transform .15s}
+.lv-card:hover{transform:translateY(-2px);background:#fdf3d8}
+.lv-card.locked{opacity:.45;cursor:not-allowed}
+.lv-card b{font-size:18px;display:block;color:#5c4726}
+.lv-card .t{font-size:11px;font-weight:700;color:#8a6d1f;margin:2px 0}
+.lv-card .m{font-size:9.5px;color:#a08b5f}
+.lv-card.cur{outline:2.5px solid #e0900a}
+</style>
+</head>
+<body>
+<div id="nav"></div>
+<div class="lv-hero">
+  <h1>🧹 Crazy Cleanup</h1>
+  <p>Every level is a messy room. Sort everything into the right buckets.<br>Watch out — items buried under others can't be picked until you clear the top.</p>
+</div>
+<div class="lv-grid" id="grid"></div>
+<script src="assets/navbar.js"></script>
+<script src="levels.js"></script>
+<script>
+  (function(){
+    const L = window.__LEVELS || [];
+    GameNav.render('#nav', {brand: '🧹 Crazy Cleanup', current: null, levels: L});
+    const unlocked = GameProgress.get();
+    const grid = document.getElementById('grid');
+    L.forEach(lv => {
+      const locked = lv.seq > unlocked;
+      const d = document.createElement('div');
+      d.className = 'lv-card' + (locked ? ' locked' : '') + (lv.seq === unlocked ? ' cur' : '');
+      d.innerHTML = `<b>${locked ? '🔒 ' : ''}Level ${lv.seq}</b><div class="t">${lv.themeEn}</div><div class="m">${lv.items} items · ${lv.buckets} buckets</div>`;
+      d.onclick = () => { if(!locked) location.href = 'game.html?l=' + lv.seq; };
+      grid.appendChild(d);
+    });
+  })();
+</script>
+</body>
+</html>

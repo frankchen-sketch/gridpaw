@@ -1,0 +1,227 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameHub from '../../components/GameHub.astro';
+import GameSwitcher from '../../components/GameSwitcher.astro';
+
+// ── Crazy Cleanup — GridPaw game page (fan-made, Goods Sort–style) ─────────
+// 游戏本体 = public/crazy-cleanup/ 纯静态（照 Pictomino 先例）：packs/level-XX.js
+// + game.html?l=N。本页 = SEO 选关 hub + 指南正文（TDK 织词见 game/SEO-KEYWORDS.md）。
+// 关键词落地：title=sorting games 主词；desc=organizing games + goods sort style +
+// sorting games online；正文织 tidy games / sorting puzzle games / organization games。
+// 内容列 ≤52.5rem（SideAd 契约：160×600 侧栏广告盖在 840px 内容列之外）。
+const title = "Sorting Games Online — Play Crazy Cleanup Free | GridPaw";
+const description = "A Goods Sort–style organizing game: sort 20 messy rooms, dig out buried items, beat the tray. Free sorting games online — no download, no ads.";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <SEOHead title={title} description={description} canonical="/crazy-cleanup/" type="website" />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/crazy-cleanup/">
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/crazy-cleanup/">
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://gridpaw.com/#website",
+        "url": "https://gridpaw.com/",
+        "name": "GridPaw",
+        "publisher": { "@id": "https://gridpaw.com/#organization" }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://gridpaw.com/#organization",
+        "name": "GridPaw",
+        "url": "https://gridpaw.com/"
+      },
+      {
+        "@type": "WebApplication",
+        "name": "Crazy Cleanup — Sorting Game",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Web Browser",
+        "url": "https://gridpaw.com/crazy-cleanup/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question", "name": "How do you play Crazy Cleanup?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Tap items that are not buried under anything to send them to their matching bucket. Items buried at least 15% under other items cannot be picked until you clear what covers them. Open buckets one at a time — only two buckets are open at once — and empty every bucket to finish the room. If your 6-slot tray fills up with unsettled items, the room is lost." }
+          },
+          {
+            "@type": "Question", "name": "Is Crazy Cleanup a Goods Sort clone?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Crazy Cleanup is a free, fan-made game in the same genre as Goods Sort (an organizing and sorting puzzle by Wuhan Huiduo). It is an original build — not affiliated with or endorsed by the original developer — with its own levels, item art handling, and hint economy." }
+          },
+          {
+            "@type": "Question", "name": "Is this sorting game free?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Crazy Cleanup is completely free to play in your browser on GridPaw — no download, no account, and no payment required." }
+          },
+          {
+            "@type": "Question", "name": "Can I play Crazy Cleanup on mobile?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes — the room view, buckets, tray, and hint buttons all work with touch on any phone or tablet browser, and with a mouse on desktop." }
+          }
+        ]
+      }
+    ]
+  })} />
+
+  <style is:global>
+    :root {
+      --gp-amber: #D97706;
+      --gp-amber-strong: #B45309;
+      --gp-cream: #FDF6EC;
+      --gp-parchment: #E8DDD0;
+      --gp-brown-900: #342421;
+      --gp-brown-600: #7A5F52;
+      --gp-linen: #F3E3D3;
+      --gp-blush: #FBEDE7;
+      --gp-success: #559C68;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--gp-cream);
+      color: var(--gp-brown-900);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+  </style>
+  <style>
+    /* 内容列 ≤840px（52.5rem）—— SideAd 契约 */
+    .main { max-width: 52.5rem; margin: 0 auto; padding: 1.2rem 1rem 2.4rem; }
+    .hero { text-align: center; padding: 0.6rem 0 0.4rem; }
+    .hero h1 { font-size: 1.7rem; font-weight: 900; margin: 0 0 0.4rem; }
+    .hero h1 .accent { color: var(--gp-amber); }
+    .hero p { margin: 0 auto; max-width: 40rem; color: var(--gp-brown-600); font-size: 0.95rem; }
+    /* 选关 grid */
+    .lv-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 1.1rem 0 0.4rem; }
+    @media (max-width: 640px) { .lv-grid { grid-template-columns: repeat(3, 1fr); } }
+    .lv-card {
+      position: relative; display: block; background: #fff; border: 1.5px solid var(--gp-parchment);
+      border-radius: 12px; padding: 10px 6px 8px; text-align: center; text-decoration: none;
+      color: var(--gp-brown-900); transition: transform .12s ease, border-color .12s ease;
+    }
+    .lv-card:hover { transform: translateY(-2px); border-color: var(--gp-amber); }
+    .lv-card b { display: block; font-size: 1rem; }
+    .lv-card .t { display: block; font-size: 0.68rem; font-weight: 700; color: var(--gp-amber-strong); margin: 2px 0; }
+    .lv-card .m { display: block; font-size: 0.62rem; color: var(--gp-brown-600); }
+    .lv-card.locked { opacity: .45; }
+    .lv-card.cur { outline: 2.5px solid var(--gp-amber); }
+    .lv-card .done { position: absolute; top: -7px; right: -5px; background: var(--gp-success); color: #fff;
+      font-size: 9px; font-weight: 900; border-radius: 999px; padding: 2px 7px; }
+    .lv-note { text-align: center; font-size: 0.78rem; color: var(--gp-brown-600); margin: 0.4rem 0 1.6rem; }
+    /* 正文段 */
+    .seo-section { max-width: 46rem; margin: 0 auto 1.8rem; }
+    .seo-section h2 { font-size: 1.25rem; font-weight: 900; margin: 0 0 0.6rem; }
+    .seo-section h2 .accent { color: var(--gp-amber); }
+    .seo-section p, .seo-section li { font-size: 0.92rem; color: var(--gp-brown-900); }
+    .seo-section ol, .seo-section ul { margin: 0.4rem 0 0.8rem; padding-left: 1.4rem; }
+    .seo-section li { margin-bottom: 0.45rem; }
+    .seo-section ol li::marker { color: var(--gp-amber); font-weight: 900; }
+    .fan-note { background: var(--gp-blush); border: 1px solid var(--gp-parchment); border-radius: 12px;
+      padding: 0.7rem 0.9rem; font-size: 0.8rem; color: var(--gp-brown-600); margin: 1.4rem auto 0; max-width: 46rem; }
+    details.faq { background: #fff; border: 1.5px solid var(--gp-parchment); border-radius: 12px;
+      padding: 0.75rem 1rem; margin-bottom: 0.6rem; }
+    details.faq summary { font-weight: 800; cursor: pointer; font-size: 0.95rem; }
+    details.faq p { margin: 0.5rem 0 0.2rem; font-size: 0.88rem; color: var(--gp-brown-900); }
+  </style>
+</head>
+<body>
+  <header class="site-header" style="position:sticky;top:0;z-index:100;background:rgba(253,246,236,.95);backdrop-filter:blur(8px);border-bottom:1.5px solid var(--gp-parchment);padding:.45rem 16px;display:flex;justify-content:center;">
+    <GameSwitcher />
+  </header>
+
+  <div class="main">
+    <div class="hero">
+      <h1>🧹 Crazy Cleanup — a Satisfying <span class="accent">Sorting Game</span></h1>
+      <p>Every level is a messy room. Dig out items buried under others, sort everything into the right buckets, and empty the board without jamming your tray — one of the most satisfying <strong>organizing games</strong> you can play in a browser.</p>
+    </div>
+
+    <div class="lv-grid" id="lvgrid"></div>
+    <p class="lv-note" id="lvnote">Finish a room to unlock the next. Your progress is saved on this device.</p>
+
+    <section class="seo-section">
+      <h2>How to <span class="accent">Play</span></h2>
+      <ol>
+        <li><strong>Pick up what's free.</strong> Tap any item that is not covered — buried items (overlapped by ≥15%) can't be picked until you clear what's on top of them.</li>
+        <li><strong>Sort into buckets.</strong> Two buckets are open at a time; each collects one category of items. Tap a matching item to send it home.</li>
+        <li><strong>Watch the tray.</strong> Uncollected items land in a 6-slot tray. It fills up fast — open new buckets and return tray items before it's full.</li>
+        <li><strong>Use the tools.</strong> 💡 Hint (×3) points at a collectible item; 🔧 Pliers (×3) force any buried item out. Neither refills.</li>
+        <li><strong>Empty every bucket</strong> to finish the room and unlock the next of the 20 levels — from a 26-item tutorial study to a 207-item gadget store.</li>
+      </ol>
+    </section>
+
+    <section class="seo-section">
+      <h2>Tips for <span class="accent">Sorting Puzzle Games</span></h2>
+      <ul>
+        <li><strong>Clear the top first.</strong> The fastest way through any room is freeing what buries the most — the pile shrinks faster than your tray fills.</li>
+        <li><strong>Plan around the two open buckets.</strong> If both open categories are buried, that's the moment for pliers — not the moment to hoard tray slots.</li>
+        <li><strong>Hints answer, they don't spend blindly.</strong> If every candidate item is buried, the hint won't be used up — it tells you to dig instead.</li>
+        <li><strong>Tray full means restart.</strong> There's no revive: the 6/6 tray is the only way to lose, so treat every open slot as a resource.</li>
+        <li>Like other <em>tidy games</em> and organization puzzles, the difficulty curve here is about visibility: later rooms hide more under more.</li>
+      </ul>
+    </section>
+
+    <section class="seo-section">
+      <h2>Frequently Asked <span class="accent">Questions</span></h2>
+      <details class="faq">
+        <summary>How do you play Crazy Cleanup?</summary>
+        <p>Tap items that are not buried under anything to send them to their matching bucket. Items buried at least 15% under other items cannot be picked until you clear what covers them. Open buckets one at a time — only two are open at once — and empty every bucket to finish the room. If your 6-slot tray fills up with unsettled items, the room is lost.</p>
+      </details>
+      <details class="faq">
+        <summary>Is Crazy Cleanup a Goods Sort clone?</summary>
+        <p>Crazy Cleanup is a free, fan-made game in the same genre as Goods Sort (an organizing and sorting puzzle by Wuhan Huiduo). It is an original build — not affiliated with or endorsed by the original developer — with its own levels, item art handling, and hint economy.</p>
+      </details>
+      <details class="faq">
+        <summary>Is this sorting game free?</summary>
+        <p>Yes. Crazy Cleanup is completely free to play in your browser on GridPaw — no download, no account, and no payment required.</p>
+      </details>
+      <details class="faq">
+        <summary>Can I play Crazy Cleanup on mobile?</summary>
+        <p>Yes — the room view, buckets, tray, and hint buttons all work with touch on any phone or tablet browser, and with a mouse on desktop.</p>
+      </details>
+    </section>
+
+    <p class="fan-note">Fan-made project. "Goods Sort" is a trademark of its respective owner; Crazy Cleanup is an original fan work in the same organizing-puzzle genre and is not affiliated with or endorsed by the original developer.</p>
+  </div>
+
+  <GameHub active="/crazy-cleanup/" />
+
+  <script is:inline src="/crazy-cleanup/levels.js"></script>
+  <script is:inline>
+    (function () {
+      var L = window.__LEVELS || [];
+      var grid = document.getElementById('lvgrid');
+      var unlocked = 1;
+      try { unlocked = Math.max(1, parseInt(localStorage.getItem('cc_progress')) || 1); } catch (e) {}
+      L.forEach(function (lv) {
+        var locked = lv.seq > unlocked;
+        var a = document.createElement('a');
+        a.className = 'lv-card' + (locked ? ' locked' : '') + (lv.seq === unlocked ? ' cur' : '');
+        if (locked) { a.setAttribute('aria-disabled', 'true'); }
+        else { a.href = '/crazy-cleanup/game?l=' + lv.seq; } // extensionless：CF Pages 归一后直达，免 308 跳
+        a.innerHTML = (lv.seq < unlocked ? '<span class="done">✓</span>' : '') +
+          '<b>' + (locked ? '🔒 ' : '') + 'Level ' + lv.seq + '</b>' +
+          '<span class="t">' + lv.themeEn + '</span>' +
+          '<span class="m">' + lv.items + ' items · ' + lv.buckets + ' buckets</span>';
+        grid.appendChild(a);
+      });
+      if (!L.length) grid.innerHTML = '<p>Levels are loading…</p>';
+      // 游戏侧导航点击打点（与 GameHub/GameNav 同事件）
+      grid.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('.lv-card');
+        if (a && a.href && typeof window.gtag === 'function') {
+          window.gtag('event', 'game_nav_click', { target: '/crazy-cleanup/game', from: 'level-grid' });
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
