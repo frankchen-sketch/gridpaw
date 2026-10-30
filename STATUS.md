@@ -824,3 +824,13 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **不做**：独立 /answers/ 页（与 hub 内耗）；盲铺 L11+（程序化站已占位+dup 纪律+帧验证成本）
 - **按需扩张规则**：Bot·X 盯 `rotate rings level (\d+)`，关卡号周窗口 ≥10 imp 无页 → 建页（无帧数据只写通用层+标注，不编时间戳）
 - 预期：RR 词族量级为 BP3 的 1/10-1/20，成熟期 30-80 clicks/月；细节+数据表 → `research/2026-10-29-rotate-rings-serp-recon.md`
+
+## 2026-10-30：Crazy Cleanup（微信小游戏改）全链上线（commits 4245261/eb97a65/1b69382/0d8d0b7，部署 ddb3a476）
+- **游戏**：/crazy-cleanup/ 20 关（pack 架构 22.8MB、逐像素被压 ≥15%、hint×3 经济、全英 UI）；8 事件打点（game_start/first_move/hint_click/hint_blocked/puzzle_reset/game_over/level_up/share_*）+ win 时成绩 POST（anonId=window.gpAnonId 单一真源，level 命名空间 'cc-N' 不进全局 maxLevel）
+- **SEO hub**：title 织 sorting games 主词（KWP 美国口径 4,400/+23%，ego 双会话验证 10/10 对账零偏差）；FAQPage JSON-LD+fan-note 商标免责（goods sort=注册商标，只写 style/inspired）；answer/hint 层不建（KWP 11/12 null），触发器=GSC `level (\d+)` 周曝光 ≥10 再建
+- **站内 8 触点**：GameSwitcher/GameNav 数组、GameHub tile（NEW 角标+badge 角）、badge-icons 3 枚（First Room/Tidy Dozen/Whole House）、_badges-derive ccRooms Set、leaderboard API 白名单+页面
+- **视觉**：v3 软陶猫 logo（Gemini clay 渲染+IP 猫差异化；品类语言=高饱和 3D 货架场景，6 竞品全无人格猫）+ 专属 OG 卡 1200×630/93KB（v3 图生图延展+PIL 烧字）。OG 首版文字压货架→两行堆叠+textlength 实测全部 ≤484px 修复；vision 整页误报「p 被切」以紧裁 2 倍放大+几何双证裁定——**整页截图边缘误判三犯，文字完整性验证一律用紧裁**（已入 ego-browser skill）
+- **关键词表真源**=`research/fkszw-prototype/game/SEO-KEYWORDS.md`（69 行：KWP 14 词+webcafe 交叉 14/14 一致；组织词合并、无量词清单、品类化实证）
+- **部署一致性核查**：今日 4 次手动 deploy 携带工作树未提交态（SW+ads-off）——核实 SW 已 10-29 深夜正式上线（62c36814，E2E 20/20），今日 precache 21/21 活性复验 ✓，部署=版戳刷新+activate 清旧缓存（设计行为），非事故；loop 闸防 cron 扫未验收工作语义不变，SW 会话 commit 后自动放行
+- **教训（待 PWA 合入后写 AGENTS.md 部署节）**：闸只护 loop cron，手动 wrangler deploy 不过闸——并行 WIP 在飞时手动部署前 `git status` 粗查+部署后 diff dist 新增物，确认携带的是已验证上线态而非未验收 WIP
+- **挂起**：136 精灵原版美术重绘（法老拍板先不换）；AGENTS.md「六游戏」计数漂移（文件被 SW 会话 WIP 占用，合入后对齐）；llms-full 接 build 链同等待
