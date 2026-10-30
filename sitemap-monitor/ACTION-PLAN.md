@@ -8,9 +8,9 @@
 
 | 站 | URL 数 | 近 30d 新增 | 健康 | 对应作战地图线 | 备注 |
 |---|---|---|---|---|---|
-| hitoriconquest.com | 301 | **75** | 🟢 活跃 | japanese logic puzzles | 新页全是 daily archive 机器页（噪音），盯是否上新游戏线；10-24 周检 +4 仍全 archive（#137-138，连续第三轮噪音） |
-| riddlesrush.com | 732 | **167** | 🟡 URL-only | brain teasers for adults | 内容页 403 bot 墙，只能看 URL slug 判形态；slug 本身可读 |
-| logic-puzzles-online.com | 1,114 | +40（10-24 轮） | 🟢 | japanese logic puzzles / solver | **10-24 信号：批量铺 solver 工具页**（akari/hashi/masyu/nurikabe/slitherlink ×6 locale + printable str8ts ×8 locale，40 页/3 天）；DR9 排 kakuro solver #1 → solver 形态真金投票，候选词过 KWP 后定承接 |
+| hitoriconquest.com | 312 | +11（10-28 轮） | 🟢 活跃 | japanese logic puzzles | 新页全是 daily archive 机器页（噪音），盯是否上新游戏线；10-28 周检 +11 仍全 archive（#139-143，连续第四轮噪音） |
+| riddlesrush.com | 795 | +65（10-28 轮） | 🟡 URL-only | brain teasers for adults | 内容页 403 bot 墙，只能看 URL slug 判形态；slug 本身可读。10-28：+50 谜语模板 + **15 /es/ 西语分类页（开建西语线，/blog/acertijos-* 同 slug 迁入）+ /app**——locale 噪音级，无 logic 类 slug，越界未触发 |
+| logic-puzzles-online.com | 1,114 | +40（10-24 轮），10-28 轮 0 | 🟢 | japanese logic puzzles / solver | **10-24 信号：批量铺 solver 工具页**（akari/hashi/masyu/nurikabe/slitherlink ×6 locale + printable str8ts ×8 locale，40 页/3 天）；DR9 排 kakuro solver #1 → solver 形态真金投票，候选词过 KWP 后定承接；10-28 轮零新增（批铺后停手，观察期正常） |
 | shikaku.games | 332 | 0 | 🟡 停更 | shikaku puzzle/online/solver | sitemap lastmod 停在 2026-07-11；dailyArchive 模板铺量页是噪音；恢复更新即盯 |
 | puzzleplayground.com | 264 | 0 | 🟡 停更 | pictomino 侧 | lastmod 全停 2024-08，sitemap 不再更新，差集大概率常年 0——低成本留着 |
 | shikakuofthe.day | 8 | 6 | 🟢 | shikaku puzzle/online | sitemap 只列 8 页，覆盖极窄；盘面定性=外链数据源非搜索标杆 |
