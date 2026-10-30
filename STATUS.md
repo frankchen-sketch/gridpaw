@@ -852,3 +852,10 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **部署一致性核查**：今日 4 次手动 deploy 携带工作树未提交态（SW+ads-off）——核实 SW 已 10-29 深夜正式上线（62c36814，E2E 20/20），今日 precache 21/21 活性复验 ✓，部署=版戳刷新+activate 清旧缓存（设计行为），非事故；loop 闸防 cron 扫未验收工作语义不变，SW 会话 commit 后自动放行
 - **教训（待 PWA 合入后写 AGENTS.md 部署节）**：闸只护 loop cron，手动 wrangler deploy 不过闸——并行 WIP 在飞时手动部署前 `git status` 粗查+部署后 diff dist 新增物，确认携带的是已验证上线态而非未验收 WIP
 - **挂起**：136 精灵原版美术重绘（法老拍板先不换）；AGENTS.md「六游戏」计数漂移（文件被 SW 会话 WIP 占用，合入后对齐）；llms-full 接 build 链同等待
+
+## 2026-10-30 晚：工作区批次合并汇入（PWA/ads-off/llms 三批 + 排队项清账，本会话）
+- **合入**：兄弟会话全部未提交工作分 5 组入库——ad28c22 PWA（sw.js/gp-install/stamp-sw/offline/SEOHead 注册/安装挂点/打点白名单 6 处，E2E 20/20 已在线）、69f9135 广告下线（ADSTERRA_OFF 三组件+披露页+changelog）、bf68084 llms（llms.txt 重写+生成器）、8da9b16 文档数据（STATUS/AGENTS/两台账/sitemap-monitor 10-28 轮/loop-answers/BP3 审计；顺手修 NEWWORD 表格 `||` 断行笔误）、gp-build.js×4 生成文件还原不提交（头注「不要提交」）
+- **接链+上线**：gen-llms-full 进 build 链（8fcce83）——**位置修正**：放 astro build **前**（10-29 计划写的 fix-sitemap 前是潜伏 bug：脚本写 public/，build 后跑永远进不了 dist）；`public/llms-full.txt` 由 `public/*.txt` 忽略规则天然覆盖无需新 gitignore。部署 225c42c3：llms-full.txt 线上 200/118KB、SW 版戳 d9edbed-dirty、cc hub 200、广告六特征 0、IndexNow 200
+- **AGENTS 对齐（d9edbed）**：14 款游戏名册（11 引擎+3 静态）取代漂移的「六游戏」、PWA 行刷新（无 SW→SW 已上线）、llms 管线指针、手动部署不过闸教训（部署前 status 粗查+部署后 diff dist 新增物）
+- **闸自动放行**：SW 7 文件已全部入库，loop cron 14:00 管线恢复自动 build+deploy；llms-full 随每日构建自更新
+- 挂起清账：~~AGENTS 对齐~~ ~~llms 接链~~ 完成；余 136 精灵重绘（先不换）+ GSC `level (\d+)` 触发器监测
