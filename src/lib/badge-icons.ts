@@ -1,6 +1,6 @@
 // 徽章目录 + SVG 图标（设计稿 hermes-mobile/static/previews/gridpaw-badges-comments.html v1 逐字落地）
-// 扁平 SVG 零外部图片依赖（「禁手绘猫 emoji」红线）；三组 11 枚全部派生自 gp_event 已有埋点，零新打点。
-// game = 徽章归属组：'shikaku' 阶梯 / 'murdoku' 破案档案 / 'streak' 每日连击（无游戏卡角）。
+// 扁平 SVG 零外部图片依赖（「禁手绘猫 emoji」红线）；三组 11 枚 + crazy-cleanup 3 枚（2026-10-30）= 14 枚。
+// game = 徽章归属组：'shikaku' 阶梯 / 'murdoku' 破案档案 / 'crazy-cleanup' 收杂物房间 / 'streak' 每日连击（无游戏卡角）。
 // 数组顺序 = 组内档位升序（GameHub 卡角取「组内最后一枚已获得」= 最高档）。
 
 export type BadgeTier = 'bronze' | 'silver' | 'gold' | 'mythic';
@@ -10,7 +10,7 @@ export interface BadgeDef {
   name: string;
   how: string;
   tier: BadgeTier;
-  game: 'shikaku' | 'murdoku' | 'streak';
+  game: 'shikaku' | 'murdoku' | 'streak' | 'crazy-cleanup';
   svg: string;
 }
 
@@ -78,6 +78,30 @@ export const BADGES: BadgeDef[] = [
     tier: 'mythic',
     game: 'murdoku',
     svg: '<svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="33" fill="#F6E7F0"/><circle cx="36" cy="36" r="26" fill="none" stroke="#A3447E" stroke-width="2.5"/><text x="36" y="44" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-size="26" fill="#A3447E">10</text></svg>',
+  },
+  {
+    id: 'cc-first-room',
+    name: 'First Room Tidied',
+    how: 'Clear your first room',
+    tier: 'bronze',
+    game: 'crazy-cleanup',
+    svg: '<svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="33" fill="#F3E3D3"/><circle cx="36" cy="36" r="26" fill="none" stroke="#B87333" stroke-width="2.5"/><g fill="none" stroke="#B87333" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M25 29 H47 L44 52 H28 Z"/><ellipse cx="36" cy="29" rx="11" ry="3.5"/><path d="M31 40 l4 4 l7 -8"/></g></svg>',
+  },
+  {
+    id: 'cc-twelve-rooms',
+    name: 'Tidy Dozen',
+    how: 'Clear 12 different rooms',
+    tier: 'silver',
+    game: 'crazy-cleanup',
+    svg: '<svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="33" fill="#EAEEF3"/><circle cx="36" cy="36" r="26" fill="none" stroke="#94A3B8" stroke-width="2.5"/><text x="36" y="45" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-size="26" fill="#64748B">12</text></svg>',
+  },
+  {
+    id: 'cc-all-rooms',
+    name: 'Whole House',
+    how: 'Clear all 20 rooms',
+    tier: 'gold',
+    game: 'crazy-cleanup',
+    svg: '<svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="33" fill="#FBEED8"/><circle cx="36" cy="36" r="26" fill="none" stroke="#D97706" stroke-width="2.5"/><g fill="none" stroke="#D97706" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M22 34 L36 22 L50 34 V50 H22 Z"/><path d="M31 42 l3.5 3.5 l7 -8"/></g></svg>',
   },
   {
     id: 'warm-up',

@@ -1,0 +1,117 @@
+// Crazy Cleanup 专用漏斗打点（静态页，过不了 Vite，不能 import src/lib/funnel-track.ts）
+// ⚠️ 与 src/lib/funnel-track.ts 保持同构：白名单 / PROD 守卫 / visit 去重逻辑改动要两边同步。
+// build id 由 scripts/gen-build-info.mjs 构建期写入 gp-build.js（window.GP_BUILD）。
+(function () {
+  'use strict';
+  var FUNNEL_EVENTS = [
+    'visit',
+    'game_start', 'first_move', 'level_up', 'level_complete_1', 'level_complete_3',
+    'level_complete_5', 'level_complete_10', 'level_complete_20',
+    'hint_click', 'hint_blocked', 'puzzle_reset', 'puzzle_skip', 'game_over', 'badge_help_click', 'help_click',
+    'daily_start', 'daily_solved', 'daily_challenge_click',
+    'share_reddit', 'share_copy', 'share_twitter', 'share_card', 'share_card_copy', 'community_click',
+    'sign_in_prompt_shown', 'sign_in_click', 'tool_start', 'tool_action'
+  ];
+  // 只有生产主域上报；pictomino 若被外站 iframe 跨域嵌入，/api/events 会静默失败（catch 掉）
+  var PROD = /(^|\.)gridpaw\.com$/;
+  var UTM_SAFE = ['reddit', 'twitter', 'x', 'google', 'bing', 'pinterest', 'facebook', 'hn', 'newsletter', 'lemmy'];
+
+  function buildAttribution(search) {
+    var p = new URLSearchParams(search);
+    var out = {};
+    var src = (p.get('utm_source') || '').trim().toLowerCase();
+    if (UTM_SAFE.indexOf(src) !== -1) out.utmSource = src;
+    if (p.has('utm_campaign')) out.utmCampaignPresent = true;
+    var camp = (p.get('utm_campaign') || '').trim().toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 40);
+    if (camp) out.utmCampaign = camp;
+    return out;
+  }
+  function referrerHost() {
+    if (!document.referrer) return '';
+    try { return new URL(document.referrer).host; } catch (e) { return ''; }
+  }
+  function looksLikeBot() {
+    var ua = navigator.userAgent || '';
+    return !ua || /bot|crawl|spider|headless|python|curl|wget|monitor/i.test(ua);
+  }
+  // 自测标记（2026-10-19）：站长设备 localStorage.setItem('gp_selftest','1') 后全事件带
+  // metadata.selftest=true，分析查询一律排除。与 src/lib/funnel-track.ts 保持同构。
+  function isSelfTest() {
+    try { return localStorage.getItem('gp_selftest') === '1'; } catch (e) { return false; }
+  }
+  function send(payload) {
+    try {
+      fetch('/api/events', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload),
+        keepalive: true
+      }).catch(function () {});
+    } catch (e) {}
+  }
+  // 会话身份：cookie 被拒（embed iframe / 高隐私浏览器）时服务端每请求签发新 guest_id，
+  // visit 和 game_start 会分家。客户端 anon_id 兜底：localStorage 拒 → sessionStorage 拒 → 内存。
+  // 与 src/lib/funnel-track.ts 的 getAnonId 保持同构。
+  var memAnonId = null;
+  function getAnonId() {
+    if (memAnonId) return memAnonId;
+    try {
+      var ls = localStorage.getItem('gp_anon_id');
+      if (ls) { memAnonId = ls; return ls; }
+    } catch (e) {}
+    try {
+      var ss = sessionStorage.getItem('gp_anon_id');
+      if (ss) { memAnonId = ss; return ss; }
+    } catch (e) {}
+    var fresh = 'anon-' + (window.crypto && crypto.randomUUID
+      ? crypto.randomUUID()
+      : Date.now() + '-' + Math.random().toString(36).slice(2));
+    try { localStorage.setItem('gp_anon_id', fresh); }
+    catch (e) {
+      try { sessionStorage.setItem('gp_anon_id', fresh); } catch (e2) {}
+    }
+    memAnonId = fresh;
+    return fresh;
+  }
+  function trackFunnel(eventName, metadata) {
+    if (!PROD.test(location.hostname)) return;
+    if (FUNNEL_EVENTS.indexOf(eventName) === -1) return;
+    var build = (window.GP_BUILD && window.GP_BUILD.id) || '';
+    // 全事件统一带归因原料（与 src/lib/funnel-track.ts 同构；业务键优先，归因键只兜底）
+    var enriched = { referrerHost: referrerHost(), attribution: buildAttribution(location.search), pagePath: location.pathname };
+    if (isSelfTest()) enriched.selftest = true;
+    if (metadata) for (var k in metadata) enriched[k] = metadata[k];
+    send({ anonId: getAnonId(), events: [{ eventName: eventName, source: 'web', buildId: build, metadata: enriched }] });
+  }
+  function trackVisit(path) {
+    if (!PROD.test(location.hostname)) return;
+    var key = 'gp_visit_logged:' + path;
+    try {
+      if (sessionStorage.getItem(key)) return;
+      sessionStorage.setItem(key, '1');
+    } catch (e) { /* 存储被拒：继续上报，靠 anon_id 归并 */ }
+    var firstSeen = null;
+    try { firstSeen = localStorage.getItem('gp_first_visit_at'); } catch (e) {}
+    if (!firstSeen) { try { localStorage.setItem('gp_first_visit_at', new Date().toISOString()); } catch (e) {} }
+    trackFunnel('visit', {
+      path: path,
+      referrerHost: referrerHost(),
+      attribution: buildAttribution(location.search),
+      returning: Boolean(firstSeen),
+      ua: (navigator.userAgent || '').slice(0, 200),
+      isLikelyBot: looksLikeBot(),
+      browserLanguage: navigator.language || '',
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || '',
+      commitMessage: (window.GP_BUILD && window.GP_BUILD.message) || '',
+      committedAt: (window.GP_BUILD && window.GP_BUILD.committedAt) || ''
+    });
+  }
+  window.gpTrack = trackFunnel;
+  window.gpAnonId = getAnonId; // 成绩提交复用同一访客身份（与 funnel-track 同构）
+  // game.html 同源路径（/pictomino/game.html）；DOMContentLoaded 前后都安全
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { trackVisit(location.pathname); });
+  } else {
+    trackVisit(location.pathname);
+  }
+})();

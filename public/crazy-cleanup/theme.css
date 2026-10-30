@@ -1,0 +1,76 @@
+/* Crazy Cleanup — 共享壳样式（游戏页 + 首页导航） */
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#f5ead2;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;color:#3a2c14}
+button{cursor:pointer;font-family:inherit}
+
+/* ---- 顶部导航模板 ---- */
+.gn{display:flex;align-items:center;gap:12px;padding:10px 14px;background:#fffaf0;border-bottom:2px solid #e8d9b8}
+.gn-brand{font-weight:800;font-size:16px;color:#7a5c1a;white-space:nowrap}
+.gn-level{font-size:13px;font-weight:700;color:#8a6d1f;background:#ffe9a8;border:1px solid #e8cf8a;border-radius:8px;padding:4px 10px;white-space:nowrap}
+.gn-spacer{flex:1}
+.gn-btn{border:1.5px solid #d8c496;background:#fffdf6;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;color:#6b5320}
+.gn-btn:hover{background:#fdf3d8}
+.gn-grid{position:absolute;top:54px;left:50%;transform:translateX(-50%);z-index:200;background:#fffaf0;border:2px solid #d8c496;border-radius:12px;padding:12px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;box-shadow:0 8px 30px rgba(60,40,0,.25);max-width:560px;width:92%}
+.gn-cell{border:1.5px solid #d8c496;border-radius:8px;background:#fffdf6;padding:7px 4px;text-align:center;cursor:pointer}
+.gn-cell:hover{background:#fdf3d8}
+.gn-cell.cur{outline:2px solid #e0900a}
+.gn-cell.locked{opacity:.45;cursor:not-allowed}
+.gn-cell b{display:block;font-size:13px}
+.gn-cell small{font-size:9.5px;color:#8a6d1f}
+
+/* ---- 游戏页 ---- */
+#app{width:560px;margin:0 auto}
+#hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 4px 6px}
+#hdr b{font-size:14px;color:#5c4726}
+#prog{font-size:12px;font-weight:700;color:#8a6d1f}
+#topbar{position:relative;background:#f7efdb;border:1px solid #e8dcc8;border-radius:10px 10px 0 0;padding:8px}
+#topbar .row{display:flex;align-items:flex-start;gap:8px}
+.guide{writing-mode:vertical-rl;font-size:9px;font-weight:700;color:#a08b5f;letter-spacing:2px;padding-top:6px}
+#rack{display:flex;gap:9px;flex-wrap:wrap;min-height:104px;flex:1}
+#btns{display:flex;gap:6px;align-items:center}
+.pbtn{border:1.5px solid #d8c496;background:#fffdf6;border-radius:9px;padding:6px 8px;font-size:15px;line-height:1.1;min-width:56px}
+.pbtn small{display:block;font-size:9px;font-weight:700;color:#8a6d1f}
+.pbtn.armed{background:#ffe9a8;border-color:#e0900a;box-shadow:0 0 0 2px #ffd54d inset}
+.pbtn:active{transform:scale(.96)}
+#stashrow{display:flex;gap:7px;margin-top:8px;align-items:center}
+.stitle{font-size:11px;font-weight:700;color:#8a6d1f;line-height:1.35;flex:none;width:56px}
+.stitle small{display:block;font-weight:400;font-size:9.5px;color:#a33;opacity:.85}
+.slot{width:56px;height:56px;border:2px dashed #cdbd93;border-radius:9px;background:#fdf6e4;display:flex;align-items:center;justify-content:center;flex:none}
+.slot img{width:44px;height:44px;object-fit:contain}
+.slot.pulse{animation:pulse .35s ease-in-out 2}
+@keyframes pulse{50%{transform:scale(1.12);border-color:#e0900a}}
+
+.bucket{position:relative;width:80px;height:86px;flex:none;transition:transform .45s,opacity .45s}
+.bucket.open1{outline:2.5px solid #e0900a;outline-offset:2px;border-radius:8px}
+.bucket.open2b{outline:2.5px solid #4a8a3d;outline-offset:2px;border-radius:8px}
+.bucket .bbody{position:absolute;left:7px;top:24px;width:66px;height:48px;background:linear-gradient(#8fa6b8,#5f7889);clip-path:polygon(6% 0,94% 0,82% 100%,18% 100%);border-radius:4px}
+.bucket .brim{position:absolute;left:2px;top:18px;width:76px;height:13px;background:#9fb4c4;border:2px solid #4c6373;border-radius:8px}
+.bucket .cnt{position:absolute;left:50%;top:34px;transform:translateX(-50%);background:rgba(20,30,40,.72);color:#fff;font-size:11px;font-weight:700;padding:1px 8px;border-radius:8px;z-index:3}
+.bucket .bcat{position:absolute;left:50%;top:88px;transform:translateX(-50%);font-size:11px;font-weight:700;color:#5c4726;white-space:nowrap}
+.bucket .ok{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px;opacity:0;transition:opacity .3s;z-index:4}
+.bucket.done{opacity:.25;transform:scale(.9) translateY(-6px);pointer-events:none}
+.bucket.pop{animation:pop .4s}
+@keyframes pop{40%{transform:scale(1.1)}}
+
+#scene{position:relative;width:560px;height:560px;border:1px solid #e8dcc8;border-top:none;overflow:hidden;background:#eee;user-select:none}
+#scene>img.bg{position:absolute;inset:0;width:100%;height:100%}
+.it{position:absolute;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35));pointer-events:none}
+.it.hot{filter:drop-shadow(0 3px 3px rgba(0,0,0,.35)) drop-shadow(0 0 3px rgba(255,220,120,.95))}
+.it.deny{animation:shake .45s;filter:drop-shadow(0 0 5px #ff2d2d) drop-shadow(0 0 10px rgba(255,45,45,.7)) brightness(1.08)}
+@keyframes shake{0%,100%{margin-left:0}20%{margin-left:-7px}40%{margin-left:6px}60%{margin-left:-4px}80%{margin-left:3px}}
+.it.hintGlow{animation:hintPulse .8s ease-in-out 3;filter:drop-shadow(0 0 6px #ffe14d) drop-shadow(0 0 14px rgba(255,214,64,.9)) brightness(1.12)}
+@keyframes hintPulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.08)}}
+#toast{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:rgba(30,24,12,.88);color:#ffe9c2;font-size:12px;font-weight:600;padding:6px 14px;border-radius:8px;opacity:0;transition:opacity .25s;white-space:nowrap;z-index:40;pointer-events:none;max-width:92%;overflow:hidden;text-overflow:ellipsis}
+#tip{font-size:11px;line-height:1.55;color:#7a6845;padding:8px 4px;max-width:560px}
+
+/* ---- 弹层（ending 模板也用） ---- */
+.overlay{position:absolute;inset:0;background:rgba(20,14,6,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:100}
+.overlay h2{margin:0;font-size:30px;color:#fff}
+.overlay .sub{color:#ffe9c2;font-size:13px}
+.overlay button{padding:10px 22px;font-size:15px;border:none;border-radius:10px;background:#ffb020;color:#4a3000;font-weight:800}
+.ov-stats{display:flex;gap:14px;color:#fff;font-size:12px}
+.ov-stats b{display:block;font-size:18px}
+.share-row{display:flex;gap:10px}
+.share-btn{background:#fffdf6 !important;color:#4a3000 !important;font-size:13px !important;padding:8px 14px !important}
+.end-actions{display:flex;gap:10px}
+.end-actions .ghost{background:#e8e0d0 !important;color:#555 !important}

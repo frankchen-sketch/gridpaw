@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crazy Cleanup — Sort &amp; Relax</title>
+<link rel="stylesheet" href="assets/theme.css">
+<script src="/crazy-cleanup/gp-track.js"></script>
+</head>
+<body>
+<div id="nav"></div>
+<div id="app">
+  <div id="hdr"><b>🧹 Loading…</b><span id="prog"></span></div>
+  <div id="topbar">
+    <div class="row">
+      <div id="rack"></div>
+      <div id="btns">
+        <button class="pbtn" id="hintbtn">💡<small id="hcount">×3</small></button>
+        <button class="pbtn" id="pliers">🔧<small id="pcount">×3</small></button>
+        <button class="pbtn" id="reset">↺<small>Reset</small></button>
+      </div>
+    </div>
+    <div id="stashrow">
+      <div class="stitle">TRAY<small>full = lose</small></div>
+    </div>
+  </div>
+  <div id="scene">
+    <img class="bg" alt="">
+    <div id="toast"></div>
+  </div>
+  <div id="tip">💡 Hint shows a collectible item (×3, no refill). If the open buckets' items are all buried, it won't be spent — dig or use 🔧 Pliers (×3) to force any item out. Tray full (6/6) = restart.</div>
+</div>
+<script src="assets/navbar.js"></script>
+<script src="assets/ending.js"></script>
+<script src="assets/engine.js"></script>
+<script src="levels.js"></script>
+<script>
+  const seq = Math.max(1, Math.min(parseInt(new URLSearchParams(location.search).get('l')) || 1, (window.__LEVELS || []).length || 20));
+  const s = document.createElement('script');
+  s.src = 'packs/level-' + String(seq).padStart(2, '0') + '.js';
+  s.onload = () => Engine.init(window.__PACK);
+  s.onerror = () => { document.querySelector('#hdr b').textContent = 'Level pack failed to load'; };
+  document.body.appendChild(s);
+</script>
+</body>
+</html>
