@@ -1,7 +1,7 @@
 # GridPaw — Agent Rules
 
 ## 项目定位
-猫主题日式逻辑谜题游戏站。14 款游戏：11 款引擎游戏（Shikaku 首页 / Akari / Kakuro / Nonogram / Nurikabe / KenKen / Binary / Star Battle / Hashi / Slitherlink / Murder Sudoku，均 `src/lib/*-engine.ts` 编译到 `public/*-engine.js`）+ 3 款纯静态（Pictomino / Meowdoku / Crazy Cleanup，`public/<slug>/`）。Astro 5.x 静态站 + Cloudflare Pages 部署。
+猫主题日式逻辑谜题游戏站。14 款游戏：11 款引擎游戏（Shikaku 首页 / Akari / Kakuro / Nonogram / Nurikabe / KenKen / Binary / Star Battle / Hashi / Slitherlink / Murder Sudoku，引擎在 `src/lib/`，部分在 `puzzle-core/` 子目录，编译到 `public/*-engine.js`）+ 3 款无独立引擎游戏（Pictomino 纯静态 `public/pictomino/`；Crazy Cleanup=静态游戏体 `public/crazy-cleanup/` + Astro hub `src/pages/crazy-cleanup/`；Meowdoku=全 Astro 页 `src/pages/meowdoku/` + `/meowdoku-guide/` + `/meowdoku/levels/`，组件 `MeowdokuPlay.astro` + 数据 `src/data/meowdoku-levels.json`）。Astro 5.x 静态站 + Cloudflare Pages 部署。
 
 ## 怎么跑
 ```bash
@@ -43,6 +43,7 @@ pnpm run deploy       # 部署 = wrangler pages deploy + IndexNow 提交（勿�
 - **广告全线关闭（2026-10-29 终态，取代 10-21 双形态）**——Adsterra 全撤（两周内两起独立零点击跳转投诉→DLES.gg 除名 10-28）：SideAd/InContentAd `ADSTERRA_OFF=true` 整体不渲染、AdSlot `const native = false` 关死；站点零广告（dist 反查六特征应全 0：highrevenueformat/bauval.org/profitableratecpm/container-da224/c3072bbb/309484c0）。**恢复纪律：先 /changelog/ 公告 + 单独邮件 Peter（DLES.gg 站长）才许上线；游戏页/首页/?embed=1 零文内广告红线不变；跳转类格式永不使用；任何一起跳转投诉=当天撤不辩护；新网络=新组件，不重开 Adsterra kill switch**。变现主线=Mediavine Journey（premium 计时中）。细节→STATUS.md 2026-10-29 条目 + skill `ad-network-monetization`
 - **KD 数据源**：web.cafe 为主（skill `webcafe-kd`），sitedata 不可靠（差 10 倍）
 - **games 数组两处维护：`src/components/GameSwitcher.astro`（游戏页/头部下拉）+ `src/components/GameNav.astro`（content 页头部，混排内容页链接）**——新增游戏两处都要加；`scripts/check-nav-consistency.mjs` 构建期对账 GameSwitcher⊆GameNav，分叉即红（有意省略写脚本内 EXCEPTIONS）。勿再内联复制第三份（2026-10-14 结构债清偿；GameNav 曾漏 6 游戏致内容页无头部入口，2026-10-16 补）
+- **Meowdoku 三页分工（2026-10-30 立项判定，防内耗/防抢建）**：`/meowdoku/`=cat sudoku 词族（title/desc/H1/lede/FAQ+攻略节已织入上线）；`/meowdoku-guide/`=meowdoku 品牌攻略族（pos 8.2，FAQ/schema 保护不动）；`/meowdoku/levels/`=`meowdoku level N` 族。**独立 /cat-sudoku/ 页挂触发门**：cat sudoku 月量破 10K 桶或 `/meowdoku/` pos ≤15 才重开议题（先过哥飞）；meowdoku hints/answers 由 guide 承接不新建；daily answer 线已关闭（app 盘面随机化无唯一今日答案）。细节→`research/2026-10-30-gsc-review-and-plan.md` 晚补节
 - **多语言页照既有先例**（`src/pages/de/`、`src/pages/pt-br/`）：扁平 astro 文件 + `<html lang>` + hreflang 三连（本页/en/x-default）+ 游戏专名不翻；shikaku 嵌 `/?embed=1`，**别硬嵌全页游戏（如 /akari/）——双头 + SideAd 吃点击，用 CTA 落地**；术语对目标语言真实用法核验（App Store/竞品页）。决策与状态 → `research/2026-10-16-multilingual-kdroi.md`；TODO 人审标记注释只能用 JS 语法（frontmatter 里 HTML 注释会炸 build）
 
 ## 站点结构

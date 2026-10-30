@@ -859,3 +859,11 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **AGENTS 对齐（d9edbed）**：14 款游戏名册（11 引擎+3 静态）取代漂移的「六游戏」、PWA 行刷新（无 SW→SW 已上线）、llms 管线指针、手动部署不过闸教训（部署前 status 粗查+部署后 diff dist 新增物）
 - **闸自动放行**：SW 7 文件已全部入库，loop cron 14:00 管线恢复自动 build+deploy；llms-full 随每日构建自更新
 - 挂起清账：~~AGENTS 对齐~~ ~~llms 接链~~ 完成；余 136 精灵重绘（先不换）+ GSC `level (\d+)` 触发器监测
+
+## 2026-10-30 晚：meowdoku cat sudoku 评估→织入→攻略节→用户走查（本会话，与 PWA/ads/llms 合入会话并行）
+- **评估**：cat sudoku KWP 最新月 ~6K（1,900→6K 斜率未停）、KD 49.9（进前十中值 85 域）、自家 dofollow ~43 → **不独立立项（桶低 KDROI 20），单页织入**；拼写变体（sodoku/kitty）KWP 全 null 不做；daily answer 线关闭（app 盘面随机化）；meowdoku hints（170）+answers（210）由 guide 承接（12-01 验归属）
+- **上线三连**（全 push + live 验证）：89e21ce /meowdoku/ 织入 cat sudoku（title/desc/H1/lede/FAQ）；a6959ac 攻略节（How-to 规则 H2 + 六技巧 + Hints/Answers H3 保险位）；6a97989 guide→play 2 条内容内链（原为 0 = play pos 18.3 饿死主因）
+- **对账纪律**：Level 1 teaser 逐句核对 `meowdoku-levels.json` 解法叙事（蓝区 R3C6+R4C6 全在 col 6 → R1C5）；hint 文案与 `MeowdokuPlay.astro` 组件行为一致（放下一只强制猫+原因）；FAQPage schema 同步 5 问
+- **用户视角走查（ego-browser 6 轮，live）**：✕→猫→清循环 / hint 单步+解释 / hint 连点通关流（Solved! + Next）/ 猫图标视觉（无缺嘴遮挡毛边）/ 视口契约 1200-1440 main=840px + 390 无溢出 / guide CTA 真点跳转 / levels-1 推导——全绿零 JS 错
+- **触发器（已同步进 AGENTS.md 三页分工条）**：cat sudoku 破 10K 桶或 /meowdoku/ pos ≤15 → 独立 /cat-sudoku/ 议题重开（先过哥飞）；11-06 窗看 pos 18.3→12-15；12-01 窗验证 hints/answers 承接归属。细节→`research/2026-10-30-gsc-review-and-plan.md` 晚补节
+- **洁癖收尾**：AGENTS.md 名册 Meowdoku 归类修正（误标纯静态 public/ → 全 Astro 页）+ 引擎 glob 补 puzzle-core/ 子目录 + 三页分工规则入关键约定
