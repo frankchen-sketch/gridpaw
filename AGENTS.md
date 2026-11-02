@@ -9,6 +9,8 @@ pnpm install
 pnpm run dev          # 本地开发 localhost:4321
 pnpm run build        # 构建（含引擎编译 + pagefind 索引）
 pnpm run deploy       # 部署 = wrangler pages deploy + IndexNow 提交（勿只跑裸 wrangler，会漏 IndexNow）
+                      # ⚠️ deploy script 不含 build！先 `pnpm run build` 再 deploy，否则 wrangler 把旧 dist 重传
+                      #    报 "Uploaded 0 files (N already uploaded)" 静默假成功（2026-11-02 实测：cron 10:10 的旧 dist 被当新部署）
                       # ⚠️ 本机未装全局 wrangler（项目也没进 devDeps）：报 command not found 时用
                       # `npx -y wrangler pages deploy dist --project-name gridpaw --commit-dirty=true`
                       # + `node scripts/indexnow-ping.mjs` 手动等价执行（登录态在 ~/Library/Preferences/.wrangler/config/default.toml）
