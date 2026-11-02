@@ -105,6 +105,14 @@ const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEn
       <span class="label">Quick answer</span>
       <p>Level 39 “Destroy Mummy”: Help the girl drive away the mummy. 16 moves in order — follow the step cards below or copy the embedded video move-for-move.</p>
     </div>
+    <style is:global>
+.answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+.answer-inline p{margin:0;font-size:14px;line-height:1.55;color:#7A6A5C}
+.answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+    </style>
+    <div class="answer-inline">
+      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+    </div>
     <a class="hero-link" href="#video" aria-label="Jump to the level 39 full solution video">
       <img class="hero" src="/brain-puzzle-3/l39_hero.jpg" alt="Brain Puzzle 3 level 39 Destroy Mummy scene" loading="lazy" />
     </a>
@@ -200,10 +208,11 @@ const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEn
       var grid = a.closest('.level-grid');
       var list = a.closest('.index-list');
       var card = a.closest('.cross-card');
-      if (!box && !grid && !list && !card) return;
+      var inl = a.closest('.answer-inline');
+      if (!box && !grid && !list && !card && !inl) return;
       track('cta_click', {
         target: a.getAttribute('href') || '',
-        placement: box ? 'cta-box' : grid ? 'level-grid' : list ? 'index-list' : 'puzzle-card',
+        placement: box ? 'cta-box' : grid ? 'level-grid' : list ? 'index-list' : inl ? 'answer-inline' : 'puzzle-card',
         from: location.pathname
       });
     }, true);
