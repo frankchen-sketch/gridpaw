@@ -1,0 +1,326 @@
+# F 流范围：P2 落地后仍残留的正文 em dash
+
+候选页 80，残留 320 处（渲染口径，已排除 akari/、pt-br/、pictomino/、de/、the-loop-*）。
+定位：P2 占用 32 | 可由 F 处理 60 | 未定位 228。
+排除文件清单见同目录 P2-占用文件.txt，本流一律不改。
+
+- [about/index.html] 'About GridPaw — Free Cat-Themed Logic Puzzles Abou'  → 源码：未定位（可能跨标签/拼接）
+- [admin/funnel/index.html] '（按其首次到访版本，不随回访改变）。 两版本转化率有差异时先看流量构成列——构成明显不同（如一边全 google、一边全 reddit）时差异可'  → 源码：未定位（可能跨标签/拼接）
+- [admin/funnel/index.html] '按其首次到访版本，不随回访改变）。 两版本转化率有差异时先看流量构成列——构成明显不同（如一边全 google、一边全 reddit）时差异可能'  → 源码：未定位（可能跨标签/拼接）
+- [arrows-puzzle-walkthrough/index.html] '-checked against the store listing. — Video walkthroughs The correct mov'  → 源码：未定位（可能跨标签/拼接）
+- [arrows-puzzle-walkthrough/index.html] 'y exact figure online is a snapshot — but thousands is real, not marketi'  → 源码：['src/pages/arrows-puzzle-walkthrough/index.astro']
+- [arrows-puzzle-walkthrough/index.html] 'p hearts by reading the board first — the framework on this page is buil'  → 源码：['src/pages/arrows-puzzle-walkthrough/index.astro']
+- [arrows-puzzle-walkthrough/index.html] 'a timer? No. Every level is untimed — the only pressure is your three he'  → 源码：未定位（可能跨标签/拼接）
+- [arrows-puzzle-walkthrough/index.html] ', then resolve single-blocker pairs — arrows stopped by exactly one othe'  → 源码：['src/pages/arrows-puzzle-walkthrough/index.astro']
+- [arrows-puzzle-walkthrough/index.html] ' stopped by exactly one other arrow — before anything else. No-timer lev'  → 源码：['src/pages/arrows-puzzle-walkthrough/index.astro']
+- [arrows-puzzle-walkthrough/index.html] ' logic puzzles with cats. 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [arrows-puzzle/index.html] 'on hearts, hints, and level counts. — Official store listing The accurat'  → 源码：未定位（可能跨标签/拼接）
+- [arrows-puzzle/index.html] 'Arrows – Puzzle Escape has no timer — the only pressure is your three he'  → 已被 P2 占用：['src/pages/arrows-puzzle/index.astro']（本流不碰）
+- [arrows-puzzle/index.html] 'ailable as an official browser game — the exact levels are mobile-only. '  → 源码：未定位（可能跨标签/拼接）
+- [arrows-puzzle/index.html] ' logic puzzles with cats. 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [badges/index.html] 'Badges — GridPaw GridPaw Logic Puzzles 🏆 Le'  → 源码：未定位（可能跨标签/拼接）
+- [badges/index.html] 'der Rookie Paw Reach level 5 bronze — Detective Reach level 10 silver — '  → 源码：未定位（可能跨标签/拼接）
+- [badges/index.html] 'e — Detective Reach level 10 silver — Chief Detective Reach level 20 gol'  → 源码：未定位（可能跨标签/拼接）
+- [badges/index.html] 'Chief Detective Reach level 20 gold — Mastermind Reach level 35 mythic —'  → 源码：未定位（可能跨标签/拼接）
+- [badges/index.html] ' — Mastermind Reach level 35 mythic — 🔍 Murder Sudoku Cases Case ladder '  → 源码：未定位（可能跨标签/拼接）
+- [badges/index.html] 'Closed Close your first case bronze — Serial Solver Close 3 cases silver'  → 源码：未定位（可能跨标签/拼接）
+- [badges/index.html] ' Serial Solver Close 3 cases silver — 6×6 Cracked Crack a 6×6 case gold '  → 源码：未定位（可能跨标签/拼接）
+- [badges/index.html] '— 6×6 Cracked Crack a 6×6 case gold — 10 Private Eye Close 10 cases myth'  → 源码：未定位（可能跨标签/拼接）
+- [badges/index.html] '0 Private Eye Close 10 cases mythic — 🧹 Crazy Cleanup Rooms Room ladder '  → 源码：未定位（可能跨标签/拼接）
+- [badges/index.html] 'Tidied Clear your first room bronze — 12 Tidy Dozen Clear 12 different r'  → 源码：未定位（可能跨标签/拼接）
+- [badges/index.html] 'zen Clear 12 different rooms silver — Whole House Clear all 20 rooms gol'  → 源码：未定位（可能跨标签/拼接）
+- [badges/index.html] 'Whole House Clear all 20 rooms gold — 🔥 Daily Streak Daily ladder 3 Warm'  → 源码：未定位（可能跨标签/拼接）
+- [badges/index.html] '3 Warm-Up 3-day daily streak bronze — 7 Streak Keeper 7-day daily streak'  → 源码：未定位（可能跨标签/拼接）
+- [badges/index.html] 'ak Keeper 7-day daily streak silver — 14 Night Owl 14-day daily streak g'  → 源码：未定位（可能跨标签/拼接）
+- [badges/index.html] ' Night Owl 14-day daily streak gold — Badges are derived from your real '  → 源码：未定位（可能跨标签/拼接）
+- [binary/index.html] 'kuzu the same as Binary Puzzle? Yes — Takuzu, Binary Puzzle and Binairo '  → 源码：未定位（可能跨标签/拼接）
+- [binary/index.html] 'es. Is this binary puzzle free? Yes — the GridPaw Binary Puzzle is compl'  → 源码：未定位（可能跨标签/拼接）
+- [binary/takuzu/index.html] 's under tight constraints 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [block-blast-hints/index.html] ' logic puzzles with cats. 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [brain-puzzle-3-level-26/index.html] 'two cards in Level 26 are not drags — the swipe left that opens the toil'  → 源码：['src/pages/brain-puzzle-3-level-26/index.astro']
+- [brain-puzzle-3-level-26/index.html] 'and the tap on the bushes at step 9 — so pressing anything else in the s'  → 源码：['src/pages/brain-puzzle-3-level-26/index.astro']
+- [brain-puzzle-3-level-26/index.html] 'evel 26 walkthrough up to date? Yes — thirteen moves in the order the cu'  → 源码：未定位（可能跨标签/拼接）
+- [brain-puzzle-3-level-27/index.html] 'ly two cards in the cell are clicks — the mouse hole at step 4 and the B'  → 源码：['src/pages/brain-puzzle-3-level-27/index.astro']
+- [brain-puzzle-3-level-27/index.html] 'e at step 4 and the Bible at step 7 — and the other seven are drags onto'  → 源码：['src/pages/brain-puzzle-3-level-27/index.astro']
+- [brain-puzzle-3-level-27/index.html] 'evel 27 walkthrough up to date? Yes — nine moves on the current build, a'  → 源码：未定位（可能跨标签/拼接）
+- [brain-puzzle-3-level-31/index.html] 'm drags and swipes rather than taps — the poster travels over the window'  → 源码：['src/pages/brain-puzzle-3-level-31/index.astro']
+- [brain-puzzle-3-level-31/index.html] 'hs and videos may label it level 28 — the game has added levels since, s'  → 源码：['src/pages/brain-puzzle-3-level-31/index.astro']
+- [brain-puzzle-3-level-39/index.html] 'ree cards in Level 39 are not drags — the tap that opens the backpack at'  → 源码：['src/pages/brain-puzzle-3-level-39/index.astro']
+- [brain-puzzle-3-level-39/index.html] 'nward swipe on the stick at step 16 — which is why pressing the mummy do'  → 源码：['src/pages/brain-puzzle-3-level-39/index.astro']
+- [brain-puzzle-3-level-39/index.html] 'evel 39 walkthrough up to date? Yes — all sixteen moves follow the curre'  → 源码：未定位（可能跨标签/拼接）
+- [brain-puzzle-3-level-48/index.html] '? Only two presses land in Level 48 — the phone at step 3 and the double'  → 源码：未定位（可能跨标签/拼接）
+- [brain-puzzle-3-level-48/index.html] ' double-tap on the window at step 8 — while the fridge takes a right swi'  → 源码：['src/pages/brain-puzzle-3-level-48/index.astro']
+- [brain-puzzle-3-level-48/index.html] 'evel 48 walkthrough up to date? Yes — the sixteen moves match the curren'  → 源码：未定位（可能跨标签/拼接）
+- [brain-puzzle-3-level-5/index.html] 'Level 5? Level 5 has no taps at all — the trash can needs an upward swip'  → 源码：未定位（可能跨标签/拼接）
+- [brain-puzzle-3-level-5/index.html] 'Level 5 walkthrough up to date? Yes — eleven moves on the current build,'  → 源码：未定位（可能跨标签/拼接）
+- [brain-puzzle-3-level-9/index.html] 'do all the non-drag work in Level 9 — the faucet at step 9 and the fridg'  → 源码：['src/pages/brain-puzzle-3-level-9/index.astro']
+- [brain-puzzle-3-level-9/index.html] 'tep 9 and the fridge door at step 5 — and the other eleven cards are dra'  → 源码：['src/pages/brain-puzzle-3-level-9/index.astro']
+- [brain-puzzle-3-level-9/index.html] 'Level 9 walkthrough up to date? Yes — the thirteen moves match the curre'  → 源码：未定位（可能跨标签/拼接）
+- [brain-teasers-for-adults/index.html] "ay punchlines are the funniest kind — classics like 'The More You Take' "  → 已被 P2 占用：['src/pages/brain-teasers-for-adults/index.astro']（本流不碰）
+- [brain-teasers-for-adults/index.html] 'ily 10×10 Shikaku puzzle on GridPaw — every adult-level grid puzzle ther'  → 已被 P2 占用：['src/pages/brain-teasers-for-adults/index.astro']（本流不碰）
+- [brain-teasers-for-adults/index.html] 'r a reusable set, bookmark the page — the puzzle list is stable and free'  → 已被 P2 占用：['src/pages/brain-teasers-for-adults/index.astro']（本流不碰）
+- [brain-teasers-for-adults/index.html] 'rated puzzles. Many adults use both — a book by the bed, and a quick onl'  → 已被 P2 占用：['src/pages/brain-teasers-for-adults/index.astro']（本流不碰）
+- [brain-teasers-for-adults/index.html] ' logic puzzles with cats. 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [changelog/index.html] 'GridPaw Changelog — Developer Updates | GridPaw GridPa'  → 源码：未定位（可能跨标签/拼接）
+- [changelog/index.html] 't store, with hint and pliers tools — free, no account, works with touch'  → 源码：['src/lib/changelog-data.ts']
+- [changelog/index.html] ' a full-screen, app-like experience — your browser will offer the instal'  → 源码：['src/lib/changelog-data.ts']
+- [changelog/index.html] '-29 Fix All third-party ads removed — the site is now ad-free Some visit'  → 源码：未定位（可能跨标签/拼接）
+- [changelog/index.html] 'rty ad unit and script the same day — GridPaw is now completely ad-free.'  → 源码：['src/lib/changelog-data.ts']
+- [changelog/index.html] 'sh had silently failed for two days — a stray non-JSON prefix was poison'  → 源码：['src/lib/changelog-data.ts']
+- [changelog/index.html] 'eplays every deduction move by move — including an honest label when it '  → 源码：['src/lib/changelog-data.ts']
+- [changelog/index.html] ' up under a cat name picked for you — the same name every time, so your '  → 源码：['src/lib/changelog-data.ts']
+- [changelog/index.html] ' Eleven badges are now up for grabs — Rookie Paw for your first daily wi'  → 源码：未定位（可能跨标签/拼接）
+- [changelog/index.html] 'er touch your streak or leaderboard — pure extra for the devoted. 2026-1'  → 源码：未定位（可能跨标签/拼接）
+- [changelog/index.html] '026-10-19 Fix Shikaku No more lives — draw freely The 3-lives system is '  → 源码：未定位（可能跨标签/拼接）
+- [changelog/index.html] 'ng rectangles just flash and vanish — the game never interrupts you. A z'  → 源码：['src/lib/changelog-data.ts']
+- [changelog/index.html] 'rail/. Solve each fixed crime scene — two 4×4 warm-ups, then three trick'  → 源码：['src/lib/changelog-data.ts']
+- [changelog/index.html] 'ups, then three trickier 6×6 houses — name the room where the killer was'  → 源码：['src/lib/changelog-data.ts']
+- [changelog/index.html] 'l no longer just explains the rules — it points at the suspect to pick a'  → 源码：['src/lib/changelog-data.ts']
+- [changelog/index.html] 'carry over automatically. 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [community/index.html] 'Community & Links — GridPaw ← Back to GridPaw Communit'  → 源码：未定位（可能跨标签/拼接）
+- [community/index.html] 'DR 92 🎮 GameJolt Free game platform — Akari & Shikaku DR 78 ⭐ Newgrounds'  → 源码：未定位（可能跨标签/拼接）
+- [community/index.html] '⭐ Newgrounds Classic game community — Akari & Shikaku DR 88 🗓️ DLES.gg D'  → 源码：未定位（可能跨标签/拼接）
+- [community/index.html] 'DLES.gg Daily logic games directory — play GridPaw every day 🧩 Chrome Ex'  → 源码：未定位（可能跨标签/拼接）
+- [community/index.html] 'ry day 🧩 Chrome Extension 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [community/index.html] 'Akari · Pictomino · Rules 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [contact/index.html] 'Contact GridPaw — Feedback, Bugs & Puzzle Requests C'  → 源码：未定位（可能跨标签/拼接）
+- [contact/index.html] 'le request, or feedback on the cats — it all lands in the same place. Em'  → 源码：未定位（可能跨标签/拼接）
+- [contact/index.html] 'within a few days. Before You Write — Quick Answers Several questions co'  → 源码：未定位（可能跨标签/拼接）
+- [crazy-cleanup/game.html] 'Crazy Cleanup — Sort & Relax 🧹 Loading… 💡×3 🔧×3 ↺R'  → 源码：未定位（可能跨标签/拼接）
+- [crazy-cleanup/game.html] "s are all buried, it won't be spent — dig or use 🔧 Pliers (×3) to force "  → 源码：['public/crazy-cleanup/game.html']
+- [crazy-cleanup/index.html] 'Sorting Games Online — Play Crazy Cleanup Free | GridPaw '  → 源码：未定位（可能跨标签/拼接）
+- [crazy-cleanup/index.html] ' Tidy & sort puzzle 🧹 Crazy Cleanup — a Satisfying Sorting Game Every le'  → 源码：未定位（可能跨标签/拼接）
+- [crazy-cleanup/index.html] 'rs them. Open buckets one at a time — only two are open at once — and em'  → 已被 P2 占用：['src/pages/crazy-cleanup/index.astro']（本流不碰）
+- [crazy-cleanup/index.html] ' a time — only two are open at once — and empty every bucket to finish t'  → 已被 P2 占用：['src/pages/crazy-cleanup/index.astro']（本流不碰）
+- [crazy-cleanup/index.html] 'an Huiduo). It is an original build — not affiliated with or endorsed by'  → 已被 P2 占用：['src/pages/crazy-cleanup/index.astro']（本流不碰）
+- [crazy-cleanup/index.html] ' endorsed by the original developer — with its own levels, item art hand'  → 已被 P2 占用：['src/pages/crazy-cleanup/index.astro']（本流不碰）
+- [crazy-cleanup/index.html] ' to play in your browser on GridPaw — no download, no account, and no pa'  → 已被 P2 占用：['src/pages/crazy-cleanup/index.astro']（本流不碰）
+- [crazy-cleanup/index.html] 'I play Crazy Cleanup on mobile? Yes — the room view, buckets, tray, and '  → 源码：未定位（可能跨标签/拼接）
+- [cross-math-puzzle/index.html] ' logic puzzles with cats. 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [hashi/index.html] 'to Hashi. Same rules, same gameplay — only the name changes. Are Hashi p'  → 源码：未定位（可能跨标签/拼接）
+- [hashi/index.html] 'out. Is this Hashi puzzle free? Yes — the GridPaw Hashi puzzle is comple'  → 源码：未定位（可能跨标签/拼接）
+- [help/akari/index.html] "I'm stuck. What do I do? Press Hint — it's free and unlimited here. It a"  → 源码：未定位（可能跨标签/拼接）
+- [help/akari/index.html] "bile) toggles it. It's a memory aid — the game doesn't count it as a mov"  → 源码：未定位（可能跨标签/拼接）
+- [help/akari/index.html] 'this the same as classic Akari? Yes — identical rules to the Nikoli puzz'  → 源码：未定位（可能跨标签/拼接）
+- [help/akari/index.html] 'at art. Can I play on my phone? Yes — tap to place/remove, long-press to'  → 源码：未定位（可能跨标签/拼接）
+- [help/index.html] 'aw games? No. All six GridPaw games — Shikaku, Akari, Kakuro, Nonogram, '  → 源码：未定位（可能跨标签/拼接）
+- [help/index.html] 'o, Nonogram, Nurikabe and Pictomino — are fully playable without signing'  → 源码：['src/pages/help/index.astro']
+- [help/index.html] 'all follow the classic Nikoli rules — GridPaw adds cat visuals and unlim'  → 源码：['src/pages/help/index.astro']
+- [help/kakuro/index.html] 'm/kakuro. You start on Tutorial 1/4 — "Clues are sums", a tiny guided bo'  → 源码：未定位（可能跨标签/拼接）
+- [help/kakuro/index.html] 'aight into the campaign. Tutorial 1 — "Clues are sums", with the green T'  → 源码：未定位（可能跨标签/拼接）
+- [help/kakuro/index.html] 'digit, e.g. "Fill 8 in row 2, col 3 — the green key." 3 free hints per l'  → 源码：未定位（可能跨标签/拼接）
+- [help/kakuro/index.html] 'p above the board says Tutorial 1/4 — <lesson>, then Level N/11 — Easy/M'  → 源码：未定位（可能跨标签/拼接）
+- [help/kakuro/index.html] 'ial 1/4 — <lesson>, then Level N/11 — Easy/Medium/Hard — S×S, and Daily '  → 源码：未定位（可能跨标签/拼接）
+- [help/kakuro/index.html] ' then Level N/11 — Easy/Medium/Hard — S×S, and Daily once the campaign i'  → 源码：未定位（可能跨标签/拼接）
+- [help/kakuro/index.html] 'e game never keeps an invalid digit — and if your board becomes impossib'  → 已被 P2 占用：['src/pages/help/kakuro/index.astro']（本流不碰）
+- [help/kakuro/index.html] 'idPaw has no lives and no countdown — you can take as long as you like, '  → 已被 P2 占用：['src/pages/help/kakuro/index.astro']（本流不碰）
+- [help/kakuro/index.html] 'vel is saved. Is fog mode fair? Yes — fog blocks never share a run, and '  → 源码：未定位（可能跨标签/拼接）
+- [help/nonogram/index.html] ') Shows your position: Tutorial 1/4 — <lesson> · Level 4/11 — Medium — 1'  → 源码：未定位（可能跨标签/拼接）
+- [help/nonogram/index.html] 'utorial 1/4 — <lesson> · Level 4/11 — Medium — 10×10 · Daily — Medium 10'  → 源码：未定位（可能跨标签/拼接）
+- [help/nonogram/index.html] '/4 — <lesson> · Level 4/11 — Medium — 10×10 · Daily — Medium 10×10 ↺ Res'  → 源码：未定位（可能跨标签/拼接）
+- [help/nonogram/index.html] 'Level 4/11 — Medium — 10×10 · Daily — Medium 10×10 ↺ Restart Discards th'  → 源码：未定位（可能跨标签/拼接）
+- [help/nonogram/index.html] 'ou where: "💡 Row 3, col 2 is filled — tap it ⬛. (2 hints left)". 3 hints'  → 源码：未定位（可能跨标签/拼接）
+- [help/nonogram/index.html] 'picture in GridPaw Nonogram Level N — zero wrong taps… mostly 😏 Your tur'  → 已被 P2 占用：['src/pages/help/nonogram/index.astro']（本流不碰）
+- [help/nonogram/index.html] '? That cell is empty in the picture — the game auto-marked it ✕ and coun'  → 源码：未定位（可能跨标签/拼接）
+- [help/nonogram/index.html] 'ell each time. You have 3 per level — save them for Hard. Can I play on '  → 源码：未定位（可能跨标签/拼接）
+- [help/nonogram/index.html] 'r Hard. Can I play on my phone? Yes — the whole game is tap-driven, and '  → 源码：未定位（可能跨标签/拼接）
+- [help/nonogram/index.html] 'e same as the classic Nonogram? Yes — identical run-length rules. GridPa'  → 源码：未定位（可能跨标签/拼接）
+- [help/nurikabe/index.html] ' board and the 3 rules; tap "Got it — start with Tutorial 1". You\'re the'  → 源码：未定位（可能跨标签/拼接）
+- [help/nurikabe/index.html] "the islands don't match the numbers — some sea cells are actually island"  → 已被 P2 占用：['src/pages/help/nurikabe/index.astro']（本流不碰）
+- [help/nurikabe/index.html] ') Shows your position: Tutorial 1/4 — <lesson> · Level 4/11 — Medium — 7'  → 源码：未定位（可能跨标签/拼接）
+- [help/nurikabe/index.html] 'utorial 1/4 — <lesson> · Level 4/11 — Medium — 7×7 · Daily — Medium 7×7 '  → 源码：未定位（可能跨标签/拼接）
+- [help/nurikabe/index.html] '/4 — <lesson> · Level 4/11 — Medium — 7×7 · Daily — Medium 7×7 ❤️ hearts'  → 源码：未定位（可能跨标签/拼接）
+- [help/nurikabe/index.html] '· Level 4/11 — Medium — 7×7 · Daily — Medium 7×7 ❤️ hearts chip Your hea'  → 源码：未定位（可能跨标签/拼接）
+- [help/nurikabe/index.html] 'tells you: "💡 Row 3, col 2 is sea ≈ — tap it once. (2 hints left)". 3 hi'  → 源码：未定位（可能跨标签/拼接）
+- [help/nurikabe/index.html] '): "🌊 Sank GridPaw Nurikabe Level N — every island in place, sea stays o'  → 已被 P2 占用：['src/pages/help/nurikabe/index.astro']（本流不碰）
+- [help/nurikabe/index.html] ' hearts overlay: "Three wrong marks — this board got away from you. A fr'  → 源码：未定位（可能跨标签/拼接）
+- [help/nurikabe/index.html] 'eed an account to play Nurikabe? No — playable fully logged out, no acco'  → 源码：未定位（可能跨标签/拼接）
+- [help/nurikabe/index.html] "rrect: clue cells are fixed islands — they can't be changed. It auto-cor"  → 源码：未定位（可能跨标签/拼接）
+- [help/nurikabe/index.html] 'Hard takes a moment to load? Normal — the board is generated in a Web Wo'  → 源码：未定位（可能跨标签/拼接）
+- [help/nurikabe/index.html] 's the same as classic Nurikabe? Yes — identical rules (islands match num'  → 源码：未定位（可能跨标签/拼接）
+- [help/pictomino/index.html] 'n ("No lives left"): "Don\'t give up — your cat believes in you!", plus a'  → 源码：未定位（可能跨标签/拼接）
+- [help/pictomino/index.html] ' "Beat Pictomino Level 3 (easy) ⭐⭐⭐ — can you do better? → gridpaw.com/p'  → 已被 P2 占用：['src/pages/help/pictomino/index.astro']（本流不碰）
+- [help/pictomino/index.html] ' piece? Tap the + spot on the board — you do not need to select the tray'  → 源码：未定位（可能跨标签/拼接）
+- [help/pictomino/index.html] 'rong guesses reveal information too — the piece stays in the tray, so tr'  → 已被 P2 占用：['src/pages/help/pictomino/index.astro']（本流不碰）
+- [help/pictomino/index.html] ' The timer ran out on a timed level — it costs 1 life and resets the cur'  → 源码：未定位（可能跨标签/拼接）
+- [help/pictomino/index.html] 'uzzle. Can my child play alone? Yes — pre-readers can play with no text;'  → 源码：未定位（可能跨标签/拼接）
+- [help/pictomino/index.html] 't once and the piece may be blurred — you deduce from edges and colors i'  → 已被 P2 占用：['src/pages/help/pictomino/index.astro']（本流不碰）
+- [help/pictomino/index.html] 'spot. Are the cats real breeds? Yes — 15 real breeds (pictures under ass'  → 源码：未定位（可能跨标签/拼接）
+- [help/shikaku/index.html] 'd 6×6 Hard 7×8 🔥 badge shown Expert — Legend 8×8 Largest boards Levels a'  → 源码：未定位（可能跨标签/拼接）
+- [help/shikaku/index.html] ". I'm stuck. What do I do? Use Hint — it lights up one rectangle that is"  → 源码：未定位（可能跨标签/拼接）
+- [help/shikaku/index.html] 'he same as the classic Shikaku? Yes — identical rules to the classic Nik'  → 源码：未定位（可能跨标签/拼接）
+- [how-to-play-shikaku/index.html] "How to Play Shikaku — Beginner's Guide | GridPaw GridPaw"  → 源码：未定位（可能跨标签/拼接）
+- [how-to-play-shikaku/index.html] "rboard 🎖 Badges How to Play Shikaku — A Beginner's Guide Learn Shikaku r"  → 源码：未定位（可能跨标签/拼接）
+- [how-to-play-shikaku/index.html] ' Play Shikaku Online Free 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [index.html] 't 𝕏 Share 🔥 Share on Reddit Sign in — keep them on every device Continue'  → 源码：未定位（可能跨标签/拼接）
+- [index.html] 'rm 1×N rectangles. Place them first — their shape is forced. 🔲 Rectangle'  → 源码：未定位（可能跨标签/拼接）
+- [index.html] 'el Guides Beginner Tutorial Puzzles — Getting Started 3×3 grids with gui'  → 源码：未定位（可能跨标签/拼接）
+- [index.html] 'imination basics. Easy Easy Puzzles — Build Confidence 5×5 grids with si'  → 源码：未定位（可能跨标签/拼接）
+- [index.html] 'our own pace. Medium Medium Puzzles — Core Techniques 5×6 grids with com'  → 源码：未定位（可能跨标签/拼接）
+- [index.html] ' deduction. Medium-Hard Medium-Hard — Multi-Step 6×6 grids. Combine mult'  → 源码：未定位（可能跨标签/拼接）
+- [index.html] 'eral moves ahead. Hard Hard Puzzles — Advanced Logic 7×8 grids requiring'  → 源码：未定位（可能跨标签/拼接）
+- [index.html] 'd placements. Daily Daily Challenge — Super Hard 10×10 puzzle seeded by '  → 源码：未定位（可能跨标签/拼接）
+- [index.html] 'eded by date. Same puzzle worldwide — compare your time with friends. Gr'  → 源码：未定位（可能跨标签/拼接）
+- [index.html] 'ferent cat expressions and 8 colors — no two rectangles look the same! I'  → 源码：未定位（可能跨标签/拼接）
+- [index.html] ': AI Cat Breed Identifier 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [index.html] ' your browser. Install Free GridPaw — Free online Shikaku puzzle with ca'  → 源码：未定位（可能跨标签/拼接）
+- [japanese-logic-puzzles/index.html] 'es from Sudoku to Shikaku 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [kakuro/demo.html] 'Kakuro Demo — GridPaw Kakuro GridPaw demo: sums,'  → 源码：未定位（可能跨标签/拼接）
+- [kakuro/index.html] ' FAQ Home›Kakuro Play Kakuro Online — Free Cross-Sum Logic Puzzles Kakur'  → 源码：未定位（可能跨标签/拼接）
+- [kakuro/index.html] 'Puzzles on GridPaw Akari (Light Up) — place lights, light every cell, ob'  → 源码：未定位（可能跨标签/拼接）
+- [kakuro/index.html] ' numbered walls. Light Up vs Kakuro — how the two cousins compare. Japan'  → 源码：未定位（可能跨标签/拼接）
+- [kakuro/index.html] 'ins compare. Japanese logic puzzles — the family Kakuro belongs to. Brai'  → 源码：未定位（可能跨标签/拼接）
+- [kakuro/index.html] 'elongs to. Brain teasers for adults — warm up before the Hard levels. Re'  → 源码：未定位（可能跨标签/拼接）
+- [kakuro/index.html] 'Play Shikaku on GridPaw → 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [kenken/index.html] 'ku. Is this KenKen puzzle free? Yes — GridPaw KenKen is completely free '  → 源码：未定位（可能跨标签/拼接）
+- [kenken/index.html] 'zles solvable without guessing? Yes — every GridPaw KenKen puzzle has ex'  → 源码：未定位（可能跨标签/拼接）
+- [leaderboard/index.html] 'Leaderboard — GridPaw GridPaw Logic Puzzles 🏆 Le'  → 源码：未定位（可能跨标签/拼接）
+- [leaderboard/index.html] "sets Loading… Guests are ranked too — you'll appear under a cat name lik"  → 源码：未定位（可能跨标签/拼接）
+- [logic-puzzle-grid/index.html] 'd the catalog has grown around them — Kakuro, Nonogram, Nurikabe, KenKen'  → 源码：['src/pages/logic-puzzle-grid/index.astro']
+- [logic-puzzle-grid/index.html] 'zzle types. Read Next Murder Sudoku — rules, clue types, and a solved 4×'  → 源码：未定位（可能跨标签/拼接）
+- [logic-puzzle-grid/index.html] 'd 4×4 case Brain Teasers for Adults — 25 free logic puzzles and riddles '  → 源码：未定位（可能跨标签/拼接）
+- [logic-puzzle-grid/index.html] ' and riddles Japanese Logic Puzzles — 7 puzzle types from Japan explaine'  → 源码：未定位（可能跨标签/拼接）
+- [logic-puzzle-grid/index.html] 'Japan explained Number Grid Puzzles — 8 types from Sudoku to Shikaku Gri'  → 源码：未定位（可能跨标签/拼接）
+- [logic-puzzle-grid/index.html] ' logic puzzles with cats. 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku-guide/index.html] 'ttle one cat in each colored region — never two in the same row or colum'  → 源码：['src/pages/meowdoku-guide/index.astro']
+- [meowdoku-guide/index.html] 'se them liberally. Try It Right Now — Free, No Download Unique solution '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku-guide/index.html] 'er, and official board screenshots. — Official store listing Correct bas'  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku-guide/index.html] 'er column, and no two cats touching — corners and diagonals included. Bo'  → 源码：['src/pages/meowdoku-guide/index.astro']
+- [meowdoku-guide/index.html] ' behind every placement. One caveat — Meowdoku can randomize boards base'  → 源码：['src/pages/meowdoku-guide/index.astro']
+- [meowdoku-guide/index.html] 'doku the same as regular Sudoku? No — and it is not a numbers game at al'  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku-guide/index.html] ', working memory, and concentration — the same mental muscles behind wel'  → 源码：['src/pages/meowdoku-guide/index.astro']
+- [meowdoku-guide/index.html] 's there a Meowdoku cheat sheet? Yes — the cheat sheet table above conden'  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku-guide/index.html] 'mn with exactly one legal cell left — that placement is always safe. Wan'  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku-guide/index.html] ' logic puzzles with cats. 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/index.html] 're you see it. Play Meowdoku Online — No Download Try It Right Now — Fre'  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/index.html] 'line — No Download Try It Right Now — Free, No Download Unique solution '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/index.html] 'eowdoku the same as cat sudoku? Yes — cat sudoku is the general name for'  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/1/index.html] 'ategy guide. Meowdoku-Style Level 1 — Free, No Download Unique solution '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/1/index.html] 's does this board have? Exactly one — solver-proven. What is the answer '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/10/index.html] 'tegy guide. Meowdoku-Style Level 10 — Free, No Download Unique solution '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/10/index.html] 's does this board have? Exactly one — solver-proven. What is the answer '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/2/index.html] 'ategy guide. Meowdoku-Style Level 2 — Free, No Download Unique solution '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/2/index.html] 's does this board have? Exactly one — solver-proven. What is the answer '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/3/index.html] 'ategy guide. Meowdoku-Style Level 3 — Free, No Download Unique solution '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/3/index.html] 's does this board have? Exactly one — solver-proven. What is the answer '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/4/index.html] 'ategy guide. Meowdoku-Style Level 4 — Free, No Download Unique solution '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/4/index.html] 's does this board have? Exactly one — solver-proven. What is the answer '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/5/index.html] 'ategy guide. Meowdoku-Style Level 5 — Free, No Download Unique solution '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/5/index.html] 's does this board have? Exactly one — solver-proven. What is the answer '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/6/index.html] 'ategy guide. Meowdoku-Style Level 6 — Free, No Download Unique solution '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/6/index.html] 's does this board have? Exactly one — solver-proven. What is the answer '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/7/index.html] 'ategy guide. Meowdoku-Style Level 7 — Free, No Download Unique solution '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/7/index.html] 's does this board have? Exactly one — solver-proven. What is the answer '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/8/index.html] 'ategy guide. Meowdoku-Style Level 8 — Free, No Download Unique solution '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/8/index.html] 's does this board have? Exactly one — solver-proven. What is the answer '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/9/index.html] 'ategy guide. Meowdoku-Style Level 9 — Free, No Download Unique solution '  → 源码：未定位（可能跨标签/拼接）
+- [meowdoku/levels/9/index.html] 's does this board have? Exactly one — solver-proven. What is the answer '  → 源码：未定位（可能跨标签/拼接）
+- [murder-sudoku/index.html] ' logic puzzles with cats. 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [murdoku/index.html] '×4 🔄 New Case 🕵️New: The Case Trail — 5 linked cases, one Cat Burglar. F'  → 源码：未定位（可能跨标签/拼接）
+- [murdoku/index.html] ' Library" or "The Cellar was locked — nobody inside" eliminate the most '  → 源码：未定位（可能跨标签/拼接）
+- [murdoku/index.html] ' room with the victim is the killer — hit Accuse! to close the case. Is '  → 源码：未定位（可能跨标签/拼接）
+- [murdoku/index.html] 'ing rooms are partitions, not walls — a suspect standing against a parti'  → 已被 P2 占用：['src/pages/murdoku/index.astro']（本流不碰）
+- [murdoku/index.html] 'no account, and no payment required — just open the page and start deduc'  → 已被 P2 占用：['src/pages/murdoku/index.astro']（本流不碰）
+- [murdoku/index.html] 'deducing. Can I play on mobile? Yes — the board, clue list, and suspect '  → 源码：未定位（可能跨标签/拼接）
+- [murdoku/trail/index.html] 'ed to solve the cases in order? Yes — each solved case unlocks the next.'  → 源码：未定位（可能跨标签/拼接）
+- [murdoku/trail/index.html] 'letely free to play in your browser — no download and no account require'  → 已被 P2 占用：['src/pages/murdoku/trail.astro']（本流不碰）
+- [nonogram/demo.html] 'Nonogram Demo — GridPaw Nonogram GridPaw demo: clu'  → 源码：未定位（可能跨标签/拼接）
+- [nonogram/index.html] ' Home›Nonogram Play Nonogram Online — Free Picture Logic Puzzles Nonogra'  → 源码：未定位（可能跨标签/拼接）
+- [nonogram/index.html] 'he same as Picross or Griddler? Yes — Nonogram, Picross, Griddler, Paint'  → 源码：未定位（可能跨标签/拼接）
+- [nonogram/index.html] 'Play Shikaku on GridPaw → 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [nonogram/solver/index.html] 'Nonogram Solver — Free Online Puzzle Solver | GridPa'  → 已被 P2 占用：['src/pages/nonogram/solver/index.astro']（本流不碰）
+- [nonogram/solver/index.html] 'e Play Nonogram FAQ Nonogram Solver — Enter Clues, Get the Solution Free'  → 源码：未定位（可能跨标签/拼接）
+- [nonogram/solver/index.html] 's Is this nonogram solver free? Yes — completely free, no account, no do'  → 源码：未定位（可能跨标签/拼接）
+- [nonogram/solver/index.html] ' row or column with no filled cells — for example 2 1 3, or 0. It says n'  → 源码：未定位（可能跨标签/拼接）
+- [nonogram/solver/index.html] 'le 2 1 3, or 0. It says no solution — but my puzzle has one. Why? Almost'  → 源码：未定位（可能跨标签/拼接）
+- [nonogram/solver/index.html] 'roperty of the puzzle, not an error — hand-made puzzles in some books an'  → 已被 P2 占用：['src/pages/nonogram/solver/index.astro']（本流不碰）
+- [nonogram/solver/index.html] 'handles classic two-color nonograms — black and white, which is what the'  → 已被 P2 占用：['src/pages/nonogram/solver/index.astro']（本流不碰）
+- [nonogram/solver/index.html] ' the solver reached the answer? Yes — tick "Step by step" before pressin'  → 源码：未定位（可能跨标签/拼接）
+- [nonogram/solver/index.html] 'Puzzles solvable by pure line logic — the vast majority — show zero sear'  → 已被 P2 占用：['src/pages/nonogram/solver/index.astro']（本流不碰）
+- [nonogram/solver/index.html] 'pure line logic — the vast majority — show zero search steps, so you can'  → 已被 P2 占用：['src/pages/nonogram/solver/index.astro']（本流不碰）
+- [nonogram/solver/index.html] ' puzzle I entered with someone? Yes — after a successful solve the clues'  → 源码：未定位（可能跨标签/拼接）
+- [number-grid-puzzle/index.html] 'Number Grid Puzzles — Play Free Online: 8 Types | GridPa'  → 源码：未定位（可能跨标签/拼接）
+- [number-grid-puzzle/index.html] ' logic puzzles with cats. 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [nurikabe/demo.html] 'Nurikabe Demo — GridPaw Nurikabe GridPaw demo: eve'  → 源码：未定位（可能跨标签/拼接）
+- [nurikabe/index.html] ' Home›Nurikabe Play Nurikabe Online — Free Island & Sea Logic Puzzles Nu'  → 源码：未定位（可能跨标签/拼接）
+- [nurikabe/index.html] 'ctly one clue each, and never touch — two islands never share an edge, s'  → 源码：未定位（可能跨标签/拼接）
+- [nurikabe/index.html] 'grids make terrible Nurikabe boards — most of them have many valid solut'  → 源码：未定位（可能跨标签/拼接）
+- [nurikabe/index.html] 'e hint button reveals one true cell — the real answer for the cell you s'  → 源码：未定位（可能跨标签/拼接）
+- [nurikabe/index.html] 'ell you selected, not a vague nudge — and a contradiction warning tells '  → 源码：未定位（可能跨标签/拼接）
+- [nurikabe/index.html] 'ach number is the size of an island — a connected group of white cells —'  → 源码：['src/pages/nurikabe/index.astro']
+- [nurikabe/index.html] ' — a connected group of white cells — and every island contains exactly '  → 源码：['src/pages/nurikabe/index.astro']
+- [nurikabe/index.html] 'and immediately. Watch the sea, too — two sea cells that would close off'  → 源码：['src/pages/nurikabe/index.astro']
+- [nurikabe/index.html] 'e boards are solvable by pure logic — every cell is forced by the three '  → 源码：['src/pages/nurikabe/index.astro']
+- [nurikabe/index.html] 'on GridPaw Nonogram (Picture Logic) — paint by numbers, reveal the cat. '  → 源码：未定位（可能跨标签/拼接）
+- [nurikabe/index.html] 'reveal the cat. Kakuro (Cross Sums) — the mathematical crossword cousin.'  → 源码：未定位（可能跨标签/拼接）
+- [nurikabe/index.html] ' crossword cousin. Akari (Light Up) — place lights, light every cell, ob'  → 源码：未定位（可能跨标签/拼接）
+- [nurikabe/index.html] 'bered walls. Japanese logic puzzles — the family Nurikabe belongs to. Re'  → 源码：未定位（可能跨标签/拼接）
+- [nurikabe/index.html] 'Play Shikaku on GridPaw → 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [offline/index.html] "Offline — GridPaw 🐾 You're offline No intern"  → 源码：未定位（可能跨标签/拼接）
+- [offline/index.html] "ou're offline No internet right now — but any puzzle you've already open"  → 源码：未定位（可能跨标签/拼接）
+- [privacy/index.html] 'GridPaw Privacy Policy — How We Handle Your Data GridPaw Ca'  → 源码：未定位（可能跨标签/拼接）
+- [privacy/index.html] "sites, see Google's Privacy & Terms — partner sites. Children's Privacy "  → 源码：未定位（可能跨标签/拼接）
+- [reset-password/index.html] 'Reset Your Password — GridPaw GridPaw Puzzle games for c'  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/index.html] 'Rotate Rings Guide — All Levels Walkthrough, Hints & An'  → 源码：['src/pages/rotate-rings/index.astro']
+- [rotate-rings/index.html] ' a network of colored pipe segments — C-shapes, L-shapes, straight piece'  → 源码：['src/pages/rotate-rings/index.astro']
+- [rotate-rings/index.html] 'weekly, so new levels keep arriving — we add walkthroughs as we verify t'  → 源码：['src/pages/rotate-rings/index.astro']
+- [rotate-rings/index.html] 'ify them. Is Rotate Rings free? Yes — Rotate Rings is free to download a'  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/index.html] 'ion above carries the full solution — the step order, the burst timings '  → 源码：['src/pages/rotate-rings/index.astro']
+- [rotate-rings/index.html] 'e burst timings and the final score — so you can follow the whole run or'  → 源码：['src/pages/rotate-rings/index.astro']
+- [rotate-rings/level-1/index.html] 'e Rings Level 1 Hints & Walkthrough — One Turn, One Burst | GridPaw Grid'  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-1/index.html] ' direction. Is that the whole level — just one loop? Yes. Level 1 is a t'  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-10/index.html] ' Rings Level 10 Hints & Walkthrough — Acorns, Plateaus & the Long Grind '  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-10/index.html] 'd to the post-level Acorn Challenge — the same system Level 32 feeds — n'  → 源码：['src/pages/rotate-rings/level-10/index.astro']
+- [rotate-rings/level-10/index.html] 'ge — the same system Level 32 feeds — not part of the loop puzzle itself'  → 源码：['src/pages/rotate-rings/level-10/index.astro']
+- [rotate-rings/level-10/index.html] 'ormal to get stuck on Level 10? Yes — our verified run had two plateaus '  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-10/index.html] ' the Well Played! screen in our run — with “You performed exceptionally '  → 源码：['src/pages/rotate-rings/level-10/index.astro']
+- [rotate-rings/level-2/index.html] 'e Rings Level 2 Hints & Walkthrough — Two Turns, Two Bursts | GridPaw Gr'  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-2/index.html] 'oses the loop with the orange piece — burst at about 0:12 for 170 points'  → 源码：['src/pages/rotate-rings/level-2/index.astro']
+- [rotate-rings/level-2/index.html] 'lose the loop with the purple piece — second burst at about 0:16 with a '  → 源码：['src/pages/rotate-rings/level-2/index.astro']
+- [rotate-rings/level-2/index.html] 've on. It rewards coming back daily — it has no effect on the level itse'  → 源码：['src/pages/rotate-rings/level-2/index.astro']
+- [rotate-rings/level-3/index.html] 'e Rings Level 3 Hints & Walkthrough — Three Bursts to 1,000 | GridPaw Gr'  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-3/index.html] ', purple and red. No special pieces — the level is a pure speed run of c'  → 源码：['src/pages/rotate-rings/level-3/index.astro']
+- [rotate-rings/level-32/index.html] ' Rings Level 32 Hints & Walkthrough — Every Burst Timed | GridPaw GridPa'  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-32/index.html] 'chain reaction. Ten bursts in total — the middle clusters clear between '  → 源码：['src/pages/rotate-rings/level-32/index.astro']
+- [rotate-rings/level-32/index.html] 'nd bursts, the acorn counter climbs — it goes from 0 to 3 during Level 3'  → 源码：['src/pages/rotate-rings/level-32/index.astro']
+- [rotate-rings/level-32/index.html] 'inal Nice screen showing your score — 4,200 in our run. Is this Level 32'  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-32/index.html] ' Level 32 walkthrough verified? Yes — every timestamp above was checked '  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-4/index.html] 'e Rings Level 4 Hints & Walkthrough — Five Bursts to 2,200 | GridPaw Gri'  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-4/index.html] 'round the fixed full-circle anchors — they never turn, so every route be'  → 源码：['src/pages/rotate-rings/level-4/index.astro']
+- [rotate-rings/level-4/index.html] ' select Firework!”). It is optional — the verified Level 4 clear never u'  → 源码：['src/pages/rotate-rings/level-4/index.astro']
+- [rotate-rings/level-5/index.html] 'e Rings Level 5 Hints & Walkthrough — The Quiet Middle | GridPaw GridPaw'  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-5/index.html] 'ngle loop closes. Nothing is broken — the verified run sat at 700 for ei'  → 源码：['src/pages/rotate-rings/level-5/index.astro']
+- [rotate-rings/level-6/index.html] 'e Rings Level 6 Hints & Walkthrough — Seven Bursts in Eighteen Seconds |'  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-6/index.html] 'ntion meter, not part of the puzzle — clearing levels advances it. What '  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-7/index.html] 'e Rings Level 7 Hints & Walkthrough — Five Bursts in Twelve Seconds | Gr'  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-7/index.html] ' C-shaped segments, no fixed pieces — the fastest clear of the opening s'  → 源码：['src/pages/rotate-rings/level-7/index.astro']
+- [rotate-rings/level-7/index.html] 'ld two loops of the same color? Yes — Level 7 bursts two separate light '  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-8/index.html] 'e Rings Level 8 Hints & Walkthrough — Fixed Rings & the Hammer | GridPaw'  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-8/index.html] 'Rings Level 8? Our verified run did — right at the start (≈2:37), smashi'  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-8/index.html] 'he fixed full rings ever clear? Yes — they burst as part of chain reacti'  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-9/index.html] 'e Rings Level 9 Hints & Walkthrough — Straight Pieces Debut | GridPaw Gr'  → 源码：未定位（可能跨标签/拼接）
+- [rotate-rings/level-9/index.html] 'pipe segments with a cap on one end — they debut here as fixed connectio'  → 源码：['src/pages/rotate-rings/level-9/index.astro']
+- [rotate-rings/level-9/index.html] ' loops can burst in the same moment — Level 9 ends with two triple-burst'  → 源码：['src/pages/rotate-rings/level-9/index.astro']
+- [rules/index.html] 'Shikaku Rules — Complete Guide with Examples | Gri'  → 源码：['src/pages/rules.astro']
+- [rules/index.html] ' Leaderboard 🎖 Badges Shikaku Rules — The Complete Guide Four rules, one'  → 源码：未定位（可能跨标签/拼接）
+- [rules/index.html] 'ther force it. Example: the 3 at D1 — two shapes, one survivor A 3 is pr'  → 源码：未定位（可能跨标签/拼接）
+- [rules/index.html] 'ready claimed. Example: the 6 at B4 — eight shapes to check A 6 can be 2'  → 源码：未定位（可能跨标签/拼接）
+- [rules/index.html] 'n sit anywhere inside its rectangle — a corner, an edge, or the middle. '  → 源码：['src/pages/rules.astro']
+- [rules/index.html] ' Play Shikaku Online Free 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [slitherlink/index.html] ' the loop never crosses or branches — every dot is touched by either zer'  → 已被 P2 占用：['src/pages/slitherlink/index.astro']（本流不碰）
+- [slitherlink/index.html] 'ct same puzzle with identical rules — different publishers in the US, UK'  → 已被 P2 占用：['src/pages/slitherlink/index.astro']（本流不碰）
+- [slitherlink/index.html] 'reason about the whole grid at once — a great workout for structured, st'  → 已被 P2 占用：['src/pages/slitherlink/index.astro']（本流不碰）
+- [slitherlink/index.html] 's this Slitherlink puzzle free? Yes — the GridPaw Slitherlink puzzle is '  → 源码：未定位（可能跨标签/拼接）
+- [slitherlink/index.html] 'zles solvable without guessing? Yes — every GridPaw Slitherlink puzzle h'  → 源码：未定位（可能跨标签/拼接）
+- [solver/index.html] 'Shikaku Solver — Free Online Puzzle Solver | GridPa'  → 源码：['src/pages/solver.astro']
+- [solver/index.html] 'Leaderboard 🎖 Badges Shikaku Solver — Free Online Puzzle Helper One corr'  → 源码：未定位（可能跨标签/拼接）
+- [solver/index.html] 'er responds with "Everything placed — look for mistakes!", every number '  → 源码：未定位（可能跨标签/拼接）
+- [solver/index.html] 'give the whole solution at once? No — by design. Each use reveals one co'  → 源码：未定位（可能跨标签/拼接）
+- [solver/index.html] ' Play Shikaku Online Free 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
+- [star-battle/index.html] ' grids), and no two stars may touch — not even diagonally. GridPaw puzzl'  → 已被 P2 占用：['src/pages/star-battle/index.astro']（本流不碰）
+- [star-battle/index.html] ' puzzle-book name for the same game — it describes the rule that two sta'  → 已被 P2 占用：['src/pages/star-battle/index.astro']（本流不碰）
+- [star-battle/index.html] 'ith no arithmetic and no vocabulary — just the structure of the board. P'  → 已被 P2 占用：['src/pages/star-battle/index.astro']（本流不碰）
+- [star-battle/index.html] 's this Star Battle puzzle free? Yes — the GridPaw Star Battle puzzle is '  → 源码：未定位（可能跨标签/拼接）
+- [star-battle/index.html] 'zles solvable without guessing? Yes — every GridPaw Star Battle puzzle h'  → 源码：未定位（可能跨标签/拼接）
+- [terms/index.html] 'GridPaw Terms of Use — The Rules for Playing Here GridPaw'  → 源码：未定位（可能跨标签/拼接）
+- [tips/index.html] ' Play Shikaku Online Free 🧩 GridPaw — Daily Akari Puzzle Daily challenge'  → 源码：未定位（可能跨标签/拼接）
