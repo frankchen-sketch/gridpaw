@@ -1,0 +1,212 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+
+const title = "GridPaw Privacy Policy — How We Handle Your Data";
+const description = "GridPaw privacy policy. Play anonymously — all game progress stays in your browser. Optional Google sign-in only stores your name, email, and profile picture to sync your progress.";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/privacy" type="article" noindex={true} />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "GridPaw Privacy Policy",
+    "description": description,
+    "url": "https://gridpaw.com/privacy",
+    "author": { "@type": "Organization", "name": "GridPaw" },
+    "publisher": { "@type": "Organization", "name": "GridPaw" }
+  })} />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://gridpaw.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Privacy Policy", "item": "https://gridpaw.com/privacy" }
+    ]
+  })} />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/icon-192.png" alt="GridPaw" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Cat Logic Puzzles</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/">🟧 Shikaku</a>
+        <a href="/akari/">💡 Akari</a>
+        <a href="/pictomino/">🧩 Pictomino</a>
+        <a href="/akari/privacy/">Privacy (Akari)</a>
+      <a href="/leaderboard/" data-nav-extra="lb">🏆 Leaderboard</a>
+      <a href="/badges/" data-nav-extra="bd">🎖 Badges</a>
+      </nav>
+    </div>
+  </header>
+
+  <nav aria-label="Breadcrumb">
+    <a href="/">Home</a> &gt; <span>Privacy Policy</span>
+  </nav>
+
+  <main class="prose">
+    <h1>Privacy <span class="accent">Policy</span></h1>
+    <p><em>Last updated: September 22, 2026. This policy covers all GridPaw games (Shikaku, Akari, and Pictomino) on gridpaw.com.</em></p>
+
+    <h2>Overview</h2>
+    <p>GridPaw is a collection of free logic puzzle games. We are committed to protecting your privacy. This policy explains what data we handle and how.</p>
+
+    <h2>Data We Do NOT Collect</h2>
+    <p>GridPaw does <strong>not</strong> collect, store, transmit, or share any of the following:</p>
+    <ul>
+      <li>Financial or payment information</li>
+      <li>Location data</li>
+      <li>Browsing history</li>
+      <li>Health information</li>
+    </ul>
+
+    <h2>Local Storage (No Account Needed)</h2>
+    <p>By default, all game data is stored <strong>locally in your browser</strong> using <code>localStorage</code>. This includes:</p>
+    <ul>
+      <li>Your current puzzle progress and level</li>
+      <li>Daily challenge streak and best times</li>
+      <li>Game settings (sound preferences)</li>
+    </ul>
+    <p>This data never leaves your device unless you choose to sign in. Clearing your browser data will erase this information.</p>
+
+    <h2>Optional Google Sign-In</h2>
+    <p>Signing in with Google is <strong>entirely optional</strong>. All games are fully playable without an account. If you choose to sign in, we collect and store only what Google shares after you approve:</p>
+    <ul>
+      <li>Your Google account name and profile picture (shown on the leaderboard)</li>
+      <li>Your Google account email (used only to identify your account; never shown publicly)</li>
+      <li>Your Google account ID (a random number Google uses to identify you to websites)</li>
+      <li>Your game progress: current level, daily challenge streak, best streak, best time, and completion dates</li>
+    </ul>
+    <p>We use this data for exactly one purpose: <strong>syncing your puzzle progress across devices and showing the daily leaderboard</strong>. We do not:</p>
+    <ul>
+      <li>Send you marketing emails or newsletters</li>
+      <li>Sell or share your data with advertisers or data brokers</li>
+      <li>Post anything to your Google account</li>
+    </ul>
+    <p>Sign-in uses a secure first-party session cookie (<code>mt_session</code>) that contains no personal information: just a random ID. You can sign out at any time, which clears this cookie. To delete your account and all stored progress, contact us using the link below.</p>
+
+    <h2>Anonymous Usage Analytics</h2>
+    <p>To understand how the games are played and improve them, we record anonymous gameplay events (for example: a level was started, completed, or a hint was used). These events are linked to a random ID stored in a first-party cookie, <strong>not</strong> to your identity. We also use Google Analytics and Microsoft Clarity with the same anonymous approach. If you sign in, gameplay events remain anonymous and are still not linked to your account.</p>
+
+    <h2>Cookies and Local Storage We Use</h2>
+    <p>Here is the complete inventory of what GridPaw itself sets, plus the third-party cookies our analytics and ad partners set. We do not use cookies to advertise on our own behalf. Ad-related cookies come from the networks described in the <a href="#ads">Advertising section</a> below.</p>
+    <table>
+      <thead><tr><th>Name</th><th>Set by</th><th>Purpose</th><th>Lifetime</th></tr></thead>
+      <tbody>
+        <tr><td><code>mt_session</code></td><td>GridPaw (first-party, only if you sign in)</td><td>Keeps you signed in: contains a random ID, no personal information</td><td>Until you sign out</td></tr>
+        <tr><td><code>gp_anon_id</code> (localStorage, not a cookie)</td><td>GridPaw (first-party)</td><td>Links anonymous gameplay events so streaks, badges and leaderboard visits survive a page reload; never linked to your identity</td><td>Until you clear browser data</td></tr>
+        <tr><td><code>_ga</code>, <code>_ga_*</code></td><td>Google Analytics 4 (third-party)</td><td>Anonymous traffic statistics</td><td>Up to 2 years</td></tr>
+        <tr><td><code>_clck</code>, <code>_clsk</code></td><td>Microsoft Clarity (third-party)</td><td>Anonymous, aggregated session analytics</td><td>1 year / 1 day</td></tr>
+        <tr><td>Partner cookies</td><td>Adsterra and its partners (third-party)</td><td>Ad measurement and, where permitted, ad personalization on article pages</td><td>Set by Adsterra: see their policy</td></tr>
+      </tbody>
+    </table>
+    <p>Google sign-in additionally relies on Google's own cookies on accounts.google.com, which are outside our control. A consent management banner will be introduced alongside our advertising setup, and this table will be kept current when it ships.</p>
+
+    <h2>Chrome Extension</h2>
+    <p>The GridPaw Chrome extension uses <code>chrome.storage.local</code> to store streak and puzzle stats locally. The extension:</p>
+    <ul>
+      <li>Does <strong>not</strong> collect any personal data</li>
+      <li>Does <strong>not</strong> transmit data to external servers</li>
+      <li>Does <strong>not</strong> use remotely hosted code</li>
+      <li>Does <strong>not</strong> track your browsing activity</li>
+      <li>Only accesses data on <code>gridpaw.com</code> to sync your puzzle progress</li>
+    </ul>
+
+    <h2>Third-Party Services</h2>
+    <p>GridPaw is hosted on Cloudflare Pages. Cloudflare may collect standard server logs (IP address, browser type) as part of their normal hosting operations. For details, see <a href="https://www.cloudflare.com/privacypolicy/" rel="noopener" target="_blank">Cloudflare's Privacy Policy</a>.</p>
+
+    <h2>Advertising</h2>
+    <p id="ads">GridPaw does not currently display any ads. Some informational pages previously displayed ads served by <strong>Adsterra</strong>, a third-party advertising network; that integration was removed on October 29, 2026, and no ad scripts load anywhere on the site. If ads ever return, this section will be updated first. For reference, <a href="https://adsterra.com/privacy-policy/" rel="noopener" target="_blank">Adsterra's Privacy Policy</a> describes how that network handles data.</p>
+    <p>We also plan to display ads served by <strong>Google AdSense</strong>. Google and its partners use cookies (including the Google ad cookie) to serve ads based on your prior visits to this and other websites. You can opt out of personalized advertising via <a href="https://www.google.com/settings/ads" rel="noopener" target="_blank">Google Ads Settings</a> or <a href="https://www.aboutads.info/" rel="noopener" target="_blank">www.aboutads.info</a>. For details on how Google uses data when you use our partners' sites, see <a href="https://policies.google.com/technologies/partner-sites" rel="noopener" target="_blank">Google's Privacy &amp; Terms — partner sites</a>.</p>
+
+    <h2>Children's Privacy</h2>
+    <p>GridPaw does not knowingly collect any data from children under 13. The games are fully playable without any account, and sign-in is optional and intended for users 13 and older. The games are suitable for all ages.</p>
+
+    <h2>Changes to This Policy</h2>
+    <p>We may update this privacy policy from time to time. Any changes will be posted on this page with an updated date.</p>
+
+    <h2>Contact</h2>
+    <p>If you have questions about this privacy policy, or want to delete your account and stored progress, you can reach us at:</p>
+    <ul>
+      <li>Email: <a href="#" data-mail-user="hello" data-mail-domain="gridpaw.com" class="js-mail">hello@gridpaw.com</a></li>
+      <li>Website: <a href="https://gridpaw.com">gridpaw.com</a></li>
+    </ul>
+
+    <div class="cta-box">
+ <a href="/" class="cta-btn">Play GridPaw Free</a>
+    </div>
+  </main>
+  <script>
+    // mailto assembled in JS: CF Email Obfuscation rewrites literal mailto: to a 404 /cdn-cgi link (jev-seo audit 2026-10)
+    document.querySelectorAll('a.js-mail').forEach(function (a) {
+      a.href = 'mailto:' + a.dataset.mailUser + '@' + a.dataset.mailDomain;
+    });
+  </script>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-links">
+        <a href="/">Play Shikaku</a>
+        <a href="/akari/">Play Akari</a>
+        <a href="/pictomino/">Play Pictomino</a>
+        <a href="/akari/privacy/">Privacy (Akari)</a>
+        <a href="/about/">About</a>
+        <a href="/contact/">Contact</a>
+        <a href="/terms/">Terms of Use</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 GridPaw. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <style is:global>
+    .prose { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    .prose h1 { font-size: 2rem; font-weight: 900; color: #342421; margin-bottom: 0.5rem; }
+    .prose h1 .accent { color: #D97706; }
+    .prose h2 { font-size: 1.35rem; font-weight: 800; color: #342421; margin: 2rem 0 0.75rem; padding-bottom: 0.5rem; border-bottom: 2px solid #f4dfdc; }
+    .prose p { margin-bottom: 1rem; font-size: 1rem; line-height: 1.7; color: #6f5651; }
+    .prose ul { margin: 0 0 1rem 1.5rem; }
+    .prose li { margin-bottom: 0.5rem; font-size: 1rem; line-height: 1.7; color: #6f5651; }
+    .prose strong { color: #342421; }
+    .prose code { background: #f4dfdc; padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-size: 0.9rem; }
+    .prose table { width: 100%; border-collapse: collapse; margin: 0 0 1rem; font-size: 0.88rem; }
+    .prose th, .prose td { border: 1px solid #f4dfdc; padding: 0.5rem 0.6rem; text-align: left; vertical-align: top; line-height: 1.5; color: #6f5651; }
+    .prose th { background: #FBF6F0; color: #342421; font-weight: 800; }
+    .prose table code { white-space: nowrap; }
+    .prose a { color: #D47A50; text-decoration: underline; font-weight: 600; }
+    .prose a:hover { color: #b85f3a; }
+    .cta-box { text-align: center; margin: 3rem 0 1rem; }
+    .cta-btn { display: inline-block; background: linear-gradient(135deg, #E8A888, #D47A50); color: #fff; font-weight: 800; font-size: 1.1rem; padding: 0.9rem 2.5rem; border-radius: 1rem; text-decoration: none; transition: transform 0.15s ease, box-shadow 0.15s ease; box-shadow: 0 4px 16px rgba(232,168,136,0.3); }
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,168,136,0.4); }
+    .site-header { background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid #f4dfdc; position: sticky; top: 0; z-index: 100; }
+    .header-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1.5rem; }
+    .brand { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+    .brand-logo img { border-radius: 0.5rem; }
+    .brand-name .big { display: block; font-weight: 900; font-size: 1.15rem; color: #342421; line-height: 1.1; }
+    .brand-name .small { display: block; font-size: 0.7rem; color: #9b726c; font-weight: 600; }
+    .nav { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+    .nav a { font-size: 0.85rem; font-weight: 700; color: #6f5651; text-decoration: none; transition: color 0.15s; }
+    .nav a:hover { color: #342421; }
+    nav[aria-label="Breadcrumb"] { max-width: 1100px; margin: 0 auto; padding: 1rem 1.5rem 0; font-size: 0.85rem; color: #9b726c; }
+    nav[aria-label="Breadcrumb"] a { color: #9b726c; text-decoration: none; }
+    nav[aria-label="Breadcrumb"] a:hover { color: #342421; }
+    .site-footer { background: #342421; color: #d4c8c0; padding: 2.5rem 1.5rem; margin-top: 2rem; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
+    .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.25rem; margin-bottom: 1rem; }
+    .footer-links a { color: #d4c8c0; text-decoration: none; font-size: 0.85rem; font-weight: 600; }
+    .footer-links a:hover { color: #E8A888; }
+    .footer-copy { font-size: 0.75rem; color: #7a6a62; }
+    @media (max-width: 640px) {
+      .header-inner { flex-direction: column; gap: 0.5rem; }
+      .prose h1 { font-size: 1.5rem; }
+    }
+  </style>
+</body>
+</html>

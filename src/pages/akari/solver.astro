@@ -89,7 +89,7 @@ const description = "Free Akari (Light Up) puzzle solver and strategy guide. Gri
       <p>GridPaw offers a built-in Akari solver that helps you check your work or get past tricky spots in any Light Up puzzle. Here is how to make the most of it:</p>
       <ol>
         <li><strong>Open a puzzle on GridPaw.</strong> Visit the <a href="/akari/">GridPaw homepage</a> and pick any Akari puzzle from our daily challenges or archive.</li>
-        <li><strong>Place light bulbs on the grid.</strong> Click or tap empty cells to place light bulbs. The solver validates your placements in real time — lit cells glow yellow, and conflicts are highlighted instantly.</li>
+        <li><strong>Place light bulbs on the grid.</strong> Click or tap empty cells to place light bulbs. The solver validates your placements in real time: lit cells glow yellow, and conflicts are highlighted instantly.</li>
         <li><strong>Check for errors.</strong> If two light bulbs shine on each other or a numbered wall cell has the wrong count, the solver flags the conflict so you can fix it before moving on.</li>
         <li><strong>Use hints when stuck.</strong> Tap the hint button to reveal one correct light bulb placement. This is a great way to learn without giving away the entire solution.</li>
         <li><strong>Complete the puzzle.</strong> When every white cell is lit and all numbered wall constraints are satisfied, the solver confirms your win with a celebratory animation.</li>
@@ -97,13 +97,13 @@ const description = "Free Akari (Light Up) puzzle solver and strategy guide. Gri
       <p>Unlike standalone Akari solver tools that require you to manually input a grid, GridPaw's solver is integrated directly into the gameplay experience. You solve the puzzle yourself while the tool catches mistakes and offers guidance along the way.</p>
 
       <h2>How Akari Solvers Work</h2>
-      <p>Every Akari solver — whether it runs in your browser or on a server — relies on two core algorithms: <strong>constraint propagation</strong> and <strong>backtracking</strong>.</p>
+      <p>Every Akari solver (whether it runs in your browser or on a server) relies on two core algorithms: <strong>constraint propagation</strong> and <strong>backtracking</strong>.</p>
       <p><strong>Constraint propagation</strong> is the first pass. The solver examines each numbered wall cell and each empty cell to deduce which placements are forced. For example, if a wall cell marked "4" has exactly four open neighbors, all four must contain light bulbs. If a wall cell marked "0" has open neighbors, none of them can hold a bulb. The solver repeats this deduction loop until no more cells can be resolved by logic alone.</p>
       <p><strong>Backtracking</strong> kicks in when logic stalls. The solver picks an undecided cell, tries placing a bulb there, and propagates the consequences. If a contradiction appears (two bulbs see each other, or a wall count is violated), the solver backtracks and tries the opposite choice. This search tree explores all possibilities efficiently, pruning branches as soon as conflicts arise.</p>
-      <p>Together, these two techniques guarantee that a well-implemented Akari solver finds the unique solution to any valid puzzle — usually in milliseconds, even for large grids. The same principles power solvers for Sudoku, Nonograms, and other logic puzzles.</p>
+      <p>Together, these two techniques guarantee that a well-implemented Akari solver finds the unique solution to any valid puzzle, usually in milliseconds, even for large grids. The same principles power solvers for Sudoku, Nonograms, and other logic puzzles.</p>
 
       <h2>Why Use a Solver?</h2>
-      <p>Reaching for an Akari solver is not cheating — it depends on how you use it. Here are two common scenarios:</p>
+      <p>Reaching for an Akari solver is not cheating; it depends on how you use it. Here are two common scenarios:</p>
       <h3>Learning the Game</h3>
       <p>If you are new to Light Up puzzles, a solver can teach you the logic patterns faster than trial and error. Place a few bulbs, check the solver's feedback, and study why certain cells are forced. Over time you will internalize the techniques and need the solver less. Think of it as training wheels that help you build intuition.</p>
       <h3>Getting Unstuck</h3>
@@ -113,7 +113,7 @@ const description = "Free Akari (Light Up) puzzle solver and strategy guide. Gri
       <h2>Akari Solving Techniques</h2>
       <p>Master these four techniques and you will solve most Akari puzzles without any help from a solver tool.</p>
       <h3>1. Forced Placements from Numbered Walls</h3>
-      <p>A wall cell numbered "4" must have light bulbs in all four adjacent cells. A wall cell numbered "0" forbids bulbs in every adjacent cell. Start every puzzle by scanning for 0s and 4s — they resolve the most cells immediately.</p>
+      <p>A wall cell numbered "4" must have light bulbs in all four adjacent cells. A wall cell numbered "0" forbids bulbs in every adjacent cell. Start every puzzle by scanning for 0s and 4s: they resolve the most cells immediately.</p>
       <h3>2. Corner and Edge Logic</h3>
       <p>Cells in corners or along edges have fewer neighbors, which makes them easier to reason about. A corner cell has only two adjacent cells, so if one is blocked by a wall, the other must hold a bulb if the corner cell needs to be lit. Edge cells follow the same principle with three neighbors instead of four.</p>
       <h3>3. Light Ray Elimination</h3>
@@ -126,12 +126,12 @@ const description = "Free Akari (Light Up) puzzle solver and strategy guide. Gri
       <ol>
         <li><strong>Wall counts.</strong> Every numbered cell must end up touching exactly its number of bulbs. The moment a count can no longer be satisfied, you get an instant error.</li>
         <li><strong>Line of sight.</strong> Two bulbs in the same row or column with no wall between them is illegal. The solver flags the pair immediately instead of letting you carry the mistake forward.</li>
-        <li><strong>Full illumination.</strong> When every white cell is lit and every count matches, the solver confirms the win — no manual checking required.</li>
+        <li><strong>Full illumination.</strong> When every white cell is lit and every count matches, the solver confirms the win. No manual checking required.</li>
       </ol>
       <p>The Hint button runs a fresh deduction pass over your current grid and reveals exactly one cell that must be a bulb given what you have already placed. It never suggests a guess, because every GridPaw Akari puzzle is generated to have exactly one solution reachable by pure logic.</p>
 
       <h2>The Solver Behind the Scenes</h2>
-      <p>GridPaw's solver runs entirely in your browser — grid data never leaves your device. It uses the two techniques from the previous section in combination: <strong>constraint propagation</strong> (a "4" wall with four open neighbors forces four bulbs; a "0" wall blocks all of them) and <strong>MRV backtracking</strong>, which always tries the most-constrained cell next and prunes the search as soon as a contradiction appears.</p>
+      <p>GridPaw's solver runs entirely in your browser: grid data never leaves your device. It uses the two techniques from the previous section in combination: <strong>constraint propagation</strong> (a "4" wall with four open neighbors forces four bulbs; a "0" wall blocks all of them) and <strong>MRV backtracking</strong>, which always tries the most-constrained cell next and prunes the search as soon as a contradiction appears.</p>
       <p>That same solver has a second job: before you ever see a puzzle, it verifies the freshly generated grid. The generator places bulbs at random, then removes number clues one at a time, re-running the full solve after each removal and keeping a clue only when the solution stays unique. That is how GridPaw can promise a unique, guess-free solution on every board, every difficulty, every day.</p>
 
       <h2>Frequently Asked Questions</h2>

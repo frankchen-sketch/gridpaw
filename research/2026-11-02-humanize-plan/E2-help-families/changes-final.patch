@@ -1,0 +1,1234 @@
+diff --git a/src/pages/arrows-puzzle/index.astro b/src/pages/arrows-puzzle/index.astro
+index e1bc153..73c795e 100644
+--- a/src/pages/arrows-puzzle/index.astro
++++ b/src/pages/arrows-puzzle/index.astro
+@@ -178,28 +178,28 @@ const faqJsonLd = [
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Lessmore GmbH.</div>
+ 
+     <h2>What Is the Arrows Puzzle?</h2>
+-    <p><strong>Arrows – Puzzle Escape</strong> is a minimalist logic game by <strong>Lessmore GmbH</strong> for Android and iOS, with more than <strong>100 million</strong> downloads and a 4.7-star rating on Google Play. Arrows sit on a grid path, and you tap one to slide it out of the board in the direction it points — the goal is to extract every arrow without a collision. It is a game of reading paths and empty space, not of speed: there is no timer.</p>
++    <p><strong>Arrows – Puzzle Escape</strong> is a minimalist logic game by <strong>Lessmore GmbH</strong> for Android and iOS, with more than <strong>100 million</strong> downloads and a 4.7-star rating on Google Play. Arrows sit on a grid path, and you tap one to slide it out of the board in the direction it points. The goal is to extract every arrow without a collision. It is a game of reading paths and empty space, not of speed: there is no timer.</p>
+ 
+     <h2>How the Arrows Puzzle Works</h2>
+     <div class="rulewrap">
+       <div class="xdemo" id="xdemo"></div>
+       <ol>
+         <li><b>Tap an arrow and it slides out of the board.</b> The arrow moves in the direction it points, along the path, until it leaves the grid.</li>
+-        <li><b>Collisions cost hearts.</b> If another arrow stands in the slide path, the two arrows collide — you lose 1 of your 3 hearts. (In the demo: the green arrow has a clear path to the edge; the red ✕ arrow is blocked.)</li>
+-        <li><b>Double-headed arrows have two exits.</b> Tap them and you can choose which of the two directions they slide out — usually the safer one.</li>
++        <li><b>Collisions cost hearts.</b> If another arrow stands in the slide path, the two arrows collide: you lose 1 of your 3 hearts. (In the demo: the green arrow has a clear path to the edge; the red ✕ arrow is blocked.)</li>
++        <li><b>Double-headed arrows have two exits.</b> Tap them and you can choose which of the two directions they slide out, usually the safer one.</li>
+         <li><b>Clear the grid without losing a single heart.</b> That is the goal of every level. Hints exist for stuck moments; the timer does not.</li>
+       </ol>
+     </div>
+-    <div class="callout grn"><span><b>The whole game in one sentence:</b> never tap an arrow whose slide path still has an arrow on it — find arrows with empty paths and pull them out first.</span></div>
++    <div class="callout grn"><span><b>The whole game in one sentence:</b> never tap an arrow whose slide path still has an arrow on it. Find arrows with empty paths and pull them out first.</span></div>
+ 
+     <h2>6 Arrows Puzzle Strategies</h2>
+     <div class="strat">
+-      <div class="st"><i>1</i><span><b>Slide the arrows whose path is already empty first.</b> Scan every arrow before touching anything; each arrow that can leave without hitting anything is a guaranteed safe move — bank it immediately.</span></div>
++      <div class="st"><i>1</i><span><b>Slide the arrows whose path is already empty first.</b> Scan every arrow before touching anything; each arrow that can leave without hitting anything is a guaranteed safe move: bank it immediately.</span></div>
+       <div class="st"><i>2</i><span><b>Clear from the outside in.</b> Arrows near the edge have short slide paths and few possible blockers. Peel the rim first and the interior becomes far less tangled.</span></div>
+       <div class="st"><i>3</i><span><b>Count the blockers.</b> If an arrow is blocked by exactly one other arrow, that blocker is your next target: slide it out first and the arrow behind it becomes a free tap.</span></div>
+-      <div class="st"><i>4</i><span><b>Favor arrows pointing at an empty edge.</b> When an arrow faces a straight, clear run to the board edge, it is guaranteed to escape — take it before the layout shifts.</span></div>
++      <div class="st"><i>4</i><span><b>Favor arrows pointing at an empty edge.</b> When an arrow faces a straight, clear run to the board edge, it is guaranteed to escape. Take it before the layout shifts.</span></div>
+       <div class="st"><i>5</i><span><b>Treat double-headed arrows as escape doors.</b> When a double arrow is the only thing trapping a neighbor, try both of its exits and pick the direction that frees the most arrows with the least risk.</span></div>
+-      <div class="st"><i>6</i><span><b>Manage hearts, not speed.</b> There is no timer, so uncertainty is never an emergency. A collision costs a heart; re-planning costs a second — think before you tap.</span></div>
++      <div class="st"><i>6</i><span><b>Manage hearts, not speed.</b> There is no timer, so uncertainty is never an emergency. A collision costs a heart; re-planning costs a second. Think before you tap.</span></div>
+     </div>
+ 
+     <h2>Real Boards: Official Screenshots</h2>
+@@ -207,7 +207,7 @@ const faqJsonLd = [
+       <figure><img src="/arrows-puzzle/board-1.jpg" alt="Arrows – Puzzle Escape official screenshot: a knight-shaped arrow path with three hearts at the top of the screen" loading="lazy"><figcaption>Official board · arrow maze</figcaption></figure>
+       <figure><img src="/arrows-puzzle/board-2.jpg" alt="Arrows – Puzzle Escape official screenshot: a dense rounded arrow path with three hearts and no timer visible" loading="lazy"><figcaption>Official board · dense path</figcaption></figure>
+     </div>
+-    <p>Notice what both boards share: arrows packed along a single winding path, three hearts at the top, and no countdown clock. Every level is a variation on that shape — longer paths, more arrows, tighter corners — and the same extraction logic applies throughout.</p>
++    <p>Notice what both boards share: arrows packed along a single winding path, three hearts at the top, and no countdown clock. Every level is a variation on that shape (longer paths, more arrows, tighter corners), and the same extraction logic applies throughout.</p>
+ 
+ 
+     <h2>How This Guide Compares</h2>
+@@ -216,7 +216,7 @@ const faqJsonLd = [
+       <thead><tr><th>Source</th><th>What you get</th><th>Watch out for</th></tr></thead>
+       <tbody>
+         <tr><th>This guide</th><td>Rules verified against the official store listing and real gameplay footage, official board screenshots, a field-tested solving method, and straight answers on hearts, hints, and level counts.</td><td>—</td></tr>
+-        <tr><th>Official store listing</th><td>The accurate feature list, straight from Lessmore GmbH.</td><td>Marketing copy only — no strategy, no board reading.</td></tr>
++        <tr><th>Official store listing</th><td>The accurate feature list, straight from Lessmore GmbH.</td><td>Marketing copy only: no strategy, no board reading.</td></tr>
+         <tr><th>Video walkthroughs</th><td>A real tap-by-tap move order for one specific board.</td><td>Can't be scanned or searched, ad breaks mid-solve, and you have to scrub a timeline to find the move you need.</td></tr>
+         <tr><th>Auto-generated guide sites</th><td>One page per level number, quick to index.</td><td>The same generic tips recycled on every level, no real board data, and sometimes features the game doesn't actually have.</td></tr>
+       </tbody>
+@@ -238,33 +238,33 @@ const faqJsonLd = [
+     <details><summary>Is Arrows Puzzle Escape free?</summary><p>Yes. Arrows – Puzzle Escape is a free-to-play mobile game with ads on Google Play and the App Store, with over 100 million downloads. It is not available as an official browser game — the exact levels are mobile-only.</p></details>
+ 
+     <div class="cta-box">
+-      <p>Want to practice that read-the-board-first discipline right now? No download, no signup — play free in your browser: <a href="/">Play Shikaku Free →</a></p>
++      <p>Want to practice that read-the-board-first discipline right now? No download, no signup. Play free in your browser: <a href="/">Play Shikaku Free →</a></p>
+     </div>
+ 
+     <AdSlot />
+ 
+     <h2>Games Like the Arrows Puzzle</h2>
+-    <p>Arrows is a slide-and-extract game at heart: read the empty space, commit, and let the board collapse cleanly. GridPaw's browser puzzles train the same muscles — free, no download, no signup:</p>
++    <p>Arrows is a slide-and-extract game at heart: read the empty space, commit, and let the board collapse cleanly. GridPaw's browser puzzles train the same muscles, free, no download, no signup:</p>
+     <ul>
+-      <li><a href="/">Shikaku</a> — partition the grid into numbered rectangles; the same "read the whole board before you commit" discipline, and the same calm, one-solution logic.</li>
+-      <li><a href="/akari/">Akari</a> — place lights so every cell glows; line-of-sight reading across rows and columns is exactly the Arrows habit.</li>
+-      <li><a href="/nurikabe/">Nurikabe</a> — build a sea of black cells around islands; spotting a blocked path when you see one is the whole game.</li>
++      <li><a href="/">Shikaku</a>: partition the grid into numbered rectangles; the same "read the whole board before you commit" discipline, and the same calm, one-solution logic.</li>
++      <li><a href="/akari/">Akari</a>: place lights so every cell glows; line-of-sight reading across rows and columns is exactly the Arrows habit.</li>
++      <li><a href="/nurikabe/">Nurikabe</a>: build a sea of black cells around islands; spotting a blocked path when you see one is the whole game.</li>
+     </ul>
+ 
+     <h2>Related Puzzle Guides</h2>
+     <ul>
+-      <li><a href="/arrows-puzzle-walkthrough/">Arrows Puzzle Walkthrough: Escape Every Level</a> — the deep-strategy companion with the difficulty tiers and a universal solving framework.</li>
+-      <li><a href="/meowdoku-guide/">Meowdoku Guide</a> — hints, strategy, and games like Meowdoku for Sudoku-adjacent fans.</li>
+-      <li><a href="/">Play Shikaku on GridPaw</a> — free online rectangle-partition puzzle, no download required.</li>
++      <li><a href="/arrows-puzzle-walkthrough/">Arrows Puzzle Walkthrough: Escape Every Level</a>: the deep-strategy companion with the difficulty tiers and a universal solving framework.</li>
++      <li><a href="/meowdoku-guide/">Meowdoku Guide</a>: hints, strategy, and games like Meowdoku for Sudoku-adjacent fans.</li>
++      <li><a href="/">Play Shikaku on GridPaw</a>: free online rectangle-partition puzzle, no download required.</li>
+     </ul>
+   </main>
+ 
+   <section class="seo-section" style="border-top:2px solid #e7dacf;padding-top:1rem;margin-top:2rem">
+     <h2>Read Next</h2>
+     <ul>
+-      <li><a href="/arrows-puzzle-walkthrough/">Arrows Puzzle Walkthrough</a> — strategy for every difficulty tier, from Normal to Nightmare</li>
+-      <li><a href="/meowdoku-guide/">Meowdoku Guide</a> — hints, strategy &amp; games like Meowdoku</li>
+-      <li><a href="/block-blast-hints/">Block Blast Hints</a> — 10+ strategies for higher scores</li>
++      <li><a href="/arrows-puzzle-walkthrough/">Arrows Puzzle Walkthrough</a>: strategy for every difficulty tier, from Normal to Nightmare</li>
++      <li><a href="/meowdoku-guide/">Meowdoku Guide</a>: hints, strategy &amp; games like Meowdoku</li>
++      <li><a href="/block-blast-hints/">Block Blast Hints</a>: 10+ strategies for higher scores</li>
+     </ul>
+   </section>
+ 
+diff --git a/src/pages/badges.astro b/src/pages/badges.astro
+index 8f37fee..837b4f8 100644
+--- a/src/pages/badges.astro
++++ b/src/pages/badges.astro
+@@ -181,7 +181,7 @@ const grouped = GROUPS.map((g) => ({ ...g, items: BADGES.filter((b) => b.game ==
+     <div class="syncbar" id="syncbar" hidden>
+       <div>
+         <div class="t1" id="syncbar-title"></div>
+-        <div class="t2">Sign in to keep them on your name across devices — everything syncs automatically.</div>
++        <div class="t2">Sign in to keep them on your name across devices. Everything syncs automatically.</div>
+       </div>
+       <a href="/api/auth/login?next=/badges/">Sign in</a>
+     </div>
+@@ -208,7 +208,7 @@ const grouped = GROUPS.map((g) => ({ ...g, items: BADGES.filter((b) => b.game ==
+     ))}
+ 
+     <p class="bw-foot">
+-      Badges are derived from your real solves — no purchases, no shortcuts.
++      Badges are derived from your real solves: no purchases, no shortcuts.
+       See where you stand on the <a href="/leaderboard/">leaderboard</a>.
+     </p>
+   </main>
+diff --git a/src/pages/binary/index.astro b/src/pages/binary/index.astro
+index 9c3d259..cc940ec 100644
+--- a/src/pages/binary/index.astro
++++ b/src/pages/binary/index.astro
+@@ -523,7 +523,7 @@ const description = "Play Binary Puzzle (Takuzu) free online: cat-themed 0/1 log
+ 
+     <!-- ═══════════ Game Card ═══════════ -->
+     <h1 style="font-size:1.5rem;font-weight:900;color:var(--ink);text-align:center;margin-bottom:0.3rem">Binary Puzzle</h1>
+-    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">Play free online — the cat-approved Takuzu 0/1 logic puzzle, no download needed.</p>
++    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">Play free online, the cat-approved Takuzu 0/1 logic puzzle, no download needed.</p>
+ 
+     <section id="play" class="card game-card" aria-label="GridPaw Binary Puzzle game">
+       <div class="game-topbar">
+@@ -588,7 +588,7 @@ const description = "Play Binary Puzzle (Takuzu) free online: cat-themed 0/1 log
+         <h3>How to play Binary Puzzle</h3>
+         <div class="rules-rule"><span class="ic">0️⃣1️⃣</span><span>Fill every empty cell with a <b>0 or a 1</b>.</span></div>
+         <div class="rules-rule"><span class="ic">⚖️</span><span>Every <b>row and column</b> must contain an equal number of 0s and 1s.</span></div>
+-        <div class="rules-rule"><span class="ic">🚫</span><span>Never three identical digits in a row — <b>000</b> and <b>111</b> are illegal.</span></div>
++        <div class="rules-rule"><span class="ic">🚫</span><span>Never three identical digits in a row: <b>000</b> and <b>111</b> are illegal.</span></div>
+         <div class="rules-rule"><span class="ic">🔁</span><span><b>No two rows and no two columns</b> may be identical (the Takuzu rule).</span></div>
+         <button class="rules-ok" id="rules-close">Got it, let me play</button>
+         <div class="rules-note">💡 Tap a cell to cycle it 0 → 1. Stuck? The Hint button fills the selected cell.</div>
+@@ -603,11 +603,11 @@ const description = "Play Binary Puzzle (Takuzu) free online: cat-themed 0/1 log
+     <!-- ═══════════ SEO Content ═══════════ -->
+     <section class="section prose seo-section" id="how-to-play" aria-label="How to play Binary Puzzles">
+       <h2>How to Play Binary Puzzles</h2>
+-      <p>Binary puzzles — also known as <strong>Takuzu</strong> — are the friendliest logic grids on the internet: every cell holds exactly one of two symbols, <strong>0 or 1</strong>. Start from the few given digits and fill the rest of the grid using three simple rules:</p>
++      <p>Binary puzzles, also known as <strong>Takuzu</strong>, are the friendliest logic grids on the internet: every cell holds exactly one of two symbols, <strong>0 or 1</strong>. Start from the few given digits and fill the rest of the grid using three simple rules:</p>
+       <ul>
+         <li><strong>Equal balance.</strong> Every row and every column must contain the same number of 0s and 1s. A 6×6 row finishes with three of each, an 8×8 row with four of each.</li>
+         <li><strong>No triples.</strong> No three identical digits may sit next to each other, horizontally or vertically. Runs like <strong>000</strong> and <strong>111</strong> are always illegal.</li>
+-        <li><strong>Unique rows and columns.</strong> No two rows and no two columns may be identical — the rule that gives Takuzu puzzles their name.</li>
++        <li><strong>Unique rows and columns.</strong> No two rows and no two columns may be identical: the rule that gives Takuzu puzzles their name.</li>
+       </ul>
+       <p>On GridPaw, click any empty cell to cycle it between 0 and 1 (click again to clear it back to empty). Prefer typing? Select a cell and press the <strong>0</strong> or <strong>1</strong> key, <strong>Backspace</strong> clears it, and the arrow keys move you around the board. Cells that break a rule get a red tint as you play, and the Hint button (3 per puzzle) drops in the correct digit whenever you are stuck.</p>
+     </section>
+@@ -615,24 +615,24 @@ const description = "Play Binary Puzzle (Takuzu) free online: cat-themed 0/1 log
+     <section class="section prose seo-section" aria-label="Takuzu vs Binary Puzzle vs Binairo">
+       <h2>What Is Takuzu? Binary Puzzle vs Binairo vs Takuzu</h2>
+       <p>The binary puzzle has travelled under several names, and they all describe the <strong>exact same game</strong>. It was invented in <strong>Belgium in 2009</strong> and quickly caught on across Europe: in the Netherlands it is best known as <strong>Binairo</strong> (from "binary zero"), while most puzzle apps and newspapers elsewhere publish it as <strong>Takuzu</strong>, the Japanese-themed name that suits the puzzle's elegant minimalism.</p>
+-      <p>Add "binary puzzle" and "binario" to the list and you have found every version of the same rules — if you have solved one, you have solved them all. At GridPaw we call the game <strong>Binary Puzzle</strong> because it is the clearest, most searchable name, but you will regularly see the identical grid published elsewhere as Takuzu or Binairo. Same 0s, same 1s, same three rules — just a different sticker on the box.</p>
++      <p>Add "binary puzzle" and "binario" to the list and you have found every version of the same rules. If you have solved one, you have solved them all. At GridPaw we call the game <strong>Binary Puzzle</strong> because it is the clearest, most searchable name, but you will regularly see the identical grid published elsewhere as Takuzu or Binairo. Same 0s, same 1s, same three rules: just a different sticker on the box.</p>
+     </section>
+ 
+     <section class="section prose seo-section" aria-label="Binary Puzzle vs Sudoku">
+       <h2>Binary Puzzle vs Sudoku</h2>
+-      <p><strong>Sudoku</strong> and the <strong>binary puzzle</strong> both belong to the single-solution logic family, but they are almost opposites in flavour. Sudoku works with nine digits and a box rule: each 3×3 region must contain 1 through 9 exactly once, so solving is about uniqueness — every digit appears exactly once in each row, column and box. A binary puzzle collapses everything to <strong>two symbols</strong> and swaps uniqueness for <strong>balance</strong>: each row and column needs an equal count of 0s and 1s, and the only prohibition is three-of-a-kind in a row.</p>
+-      <p>Where Sudoku asks you to cross-hatch candidates across nine digits, a binary puzzle takes the same discipline — scan, spot the pattern, eliminate — and distils it to its bare essence. That minimalism makes it the perfect gateway puzzle: kids grasp it in seconds, adults still find the 10×10 grids properly demanding, and a session fits neatly into a coffee break.</p>
++      <p><strong>Sudoku</strong> and the <strong>binary puzzle</strong> both belong to the single-solution logic family, but they are almost opposites in flavour. Sudoku works with nine digits and a box rule: each 3×3 region must contain 1 through 9 exactly once, so solving is about uniqueness: every digit appears exactly once in each row, column and box. A binary puzzle collapses everything to <strong>two symbols</strong> and swaps uniqueness for <strong>balance</strong>: each row and column needs an equal count of 0s and 1s, and the only prohibition is three-of-a-kind in a row.</p>
++      <p>Where Sudoku asks you to cross-hatch candidates across nine digits, a binary puzzle takes the same discipline (scan, spot the pattern, eliminate) and distils it to its bare essence. That minimalism makes it the perfect gateway puzzle: kids grasp it in seconds, adults still find the 10×10 grids properly demanding, and a session fits neatly into a coffee break.</p>
+     </section>
+ 
+     <section class="section prose seo-section" id="tips" aria-label="Binary puzzle tips and strategy">
+       <h2>Binary Puzzle Tips and Strategy</h2>
+       <p>Three techniques unlock almost every GridPaw binary puzzle:</p>
+       <ol>
+-        <li><strong>The pairs rule.</strong> Two identical digits side by side — <strong>00</strong> or <strong>11</strong> — force the cell on each outside flank to be the opposite digit. The same trick works across one gap: <strong>0_0</strong> forces a 1 into the middle cell.</li>
+-        <li><strong>Count your rows and columns.</strong> In a 6×6 grid every row and column must end with exactly three 0s and three 1s. When a row already contains three of one digit, every remaining empty cell in that row must be the other digit — fill them all confidently, then do the same sweep for columns.</li>
++        <li><strong>The pairs rule.</strong> Two identical digits side by side, <strong>00</strong> or <strong>11</strong>, force the cell on each outside flank to be the opposite digit. The same trick works across one gap: <strong>0_0</strong> forces a 1 into the middle cell.</li>
++        <li><strong>Count your rows and columns.</strong> In a 6×6 grid every row and column must end with exactly three 0s and three 1s. When a row already contains three of one digit, every remaining empty cell in that row must be the other digit. Fill them all confidently, then do the same sweep for columns.</li>
+         <li><strong>The edge start rule.</strong> Study the first cells of any row or column. A line that begins <strong>000</strong> is already illegal, a line beginning <strong>00</strong> forces its third cell to 1, and a line beginning <strong>0_0</strong> forces the middle cell to 1. These forced placements cascade down the whole line.</li>
+       </ol>
+-      <p>Then finish with the <strong>Takuzu rule</strong>: on the larger grids, once most rows are complete, scan for two rows that look identical — they are not allowed, so one digit somewhere in the pair has to flip, and the same logic applies to columns. On a nearly full board that last rule is usually the key that unlocks the final cells. Every GridPaw puzzle is generated with exactly one solution, so pure logic always gets you there — the three Hints are just a safety net.</p>
++      <p>Then finish with the <strong>Takuzu rule</strong>: on the larger grids, once most rows are complete, scan for two rows that look identical. They are not allowed, so one digit somewhere in the pair has to flip, and the same logic applies to columns. On a nearly full board that last rule is usually the key that unlocks the final cells. Every GridPaw puzzle is generated with exactly one solution, so pure logic always gets you there. The three Hints are just a safety net.</p>
+     </section>
+ 
+     <!-- ═══════════ FAQ ═══════════ -->
+diff --git a/src/pages/brain-teasers-for-adults/index.astro b/src/pages/brain-teasers-for-adults/index.astro
+index 9c22224..82f3ea8 100644
+--- a/src/pages/brain-teasers-for-adults/index.astro
++++ b/src/pages/brain-teasers-for-adults/index.astro
+@@ -211,7 +211,7 @@ const faqJsonLd = [
+ 
+     <div class="cta-box">
+  <p>Love logic puzzles? <a href="/">Play Shikaku free right in your browser →</a></p>
+-      <p>In the mood for a mystery instead? <a href="/murdoku/">Play murder sudoku free →</a> — place the cat suspects, catch the killer.</p>
++      <p>In the mood for a mystery instead? <a href="/murdoku/">Play murder sudoku free →</a>: place the cat suspects, catch the killer.</p>
+     </div>
+ 
+ 
+@@ -276,7 +276,7 @@ const faqJsonLd = [
+     <details><summary>Show answer: the rectangle deduction</summary><p>The rectangle over the 6 must cover exactly 6 cells, which means 1 by 6 (impossible on a 5-wide grid), 2 by 3, or 3 by 2. Now think about the edges: the 6 sits close to the grid border, so a 2 by 3 or 3 by 2 orientation is forced by what surrounds it. This is the exact reasoning Shikaku asks for on every move, and it is why the game feels like a visual brain teaser you can solve rather than just stare at.</p></details>
+ 
+     <div style="margin:1.5rem 0;text-align:center">
+- <p style="font-weight:700;margin-bottom:0.5rem">Try it yourself — play a quick Shikaku puzzle:</p>
++ <p style="font-weight:700;margin-bottom:0.5rem">Try it yourself. Play a quick Shikaku puzzle:</p>
+       <iframe src="/?embed=1" title="Play Shikaku mini puzzle" loading="lazy" width="100%" height="420" style="border:0;border-radius:12px;max-width:520px;margin:0 auto;display:block"></iframe>
+       <p style="font-size:0.85rem;margin-top:0.4rem"><a href="/">Play full version →</a></p>
+     </div>
+@@ -291,7 +291,7 @@ const faqJsonLd = [
+     <p>Akari, also known as Light Up, flips the premise. Instead of dividing space, you are lighting it. You place light bulbs on a grid of white and black cells so that every white cell ends up illuminated, while no two bulbs ever see each other in the same row or column unobstructed. Black cells block light and many carry numbers telling you exactly how many bulbs must touch them. Every placement creates ripples across the grid, so the puzzle plays a bit like chess: one bulb placement constrains three or four future decisions at once. Picture a dark grid where each correct bulb throws a warm glowing beam down its row and column, the board brightening cell by cell until the whole puzzle is lit. That is Akari on GridPaw, with a few cat-themed touches along the way.</p>
+ 
+     <div class="cta-box">
+- <p>Ready to stretch your brain? Try both Japanese grid puzzles free — no download, no sign-up:</p>
++ <p>Ready to stretch your brain? Try both Japanese grid puzzles free, no download, no sign-up:</p>
+       <p><a href="/">Play Shikaku →</a> &nbsp;&middot;&nbsp; <a href="/akari/">Play Akari →</a></p>
+     </div>
+     <h2>How to Build a Daily Brain Teaser Habit</h2>
+@@ -336,10 +336,10 @@ const faqJsonLd = [
+   <section class="seo-section" style="border-top:2px solid #e7dacf;padding-top:1rem;margin-top:2rem">
+     <h2>Read Next</h2>
+     <ul>
+-      <li><a href="/murder-sudoku/">Murder Sudoku</a> — rules, clue types, and a solved 4×4 case</li>
+-      <li><a href="/japanese-logic-puzzles/">Japanese Logic Puzzles</a> — 7 puzzle types from Japan explained</li>
+-      <li><a href="/logic-puzzle-grid/">Logic Puzzle Grid</a> — 6 grid puzzles with step-by-step examples</li>
+-      <li><a href="/number-grid-puzzle/">Number Grid Puzzles</a> — 8 types from Sudoku to Shikaku</li>
++      <li><a href="/murder-sudoku/">Murder Sudoku</a>: rules, clue types, and a solved 4×4 case</li>
++      <li><a href="/japanese-logic-puzzles/">Japanese Logic Puzzles</a>: 7 puzzle types from Japan explained</li>
++      <li><a href="/logic-puzzle-grid/">Logic Puzzle Grid</a>: 6 grid puzzles with step-by-step examples</li>
++      <li><a href="/number-grid-puzzle/">Number Grid Puzzles</a>: 8 types from Sudoku to Shikaku</li>
+     </ul>
+   </section>
+ 
+diff --git a/src/pages/changelog.astro b/src/pages/changelog.astro
+index f9021fd..9cf7b69 100644
+--- a/src/pages/changelog.astro
++++ b/src/pages/changelog.astro
+@@ -159,7 +159,7 @@ const gameColors: Record<string, string> = {
+           </div>
+         ))}
+       </div>
+-      <p class="gp-wall-signin" data-gp-signin-line hidden><a href="/api/auth/login?next=/changelog/">Sign in</a> to keep your badges forever — they carry over automatically.</p>
++      <p class="gp-wall-signin" data-gp-signin-line hidden><a href="/api/auth/login?next=/changelog/">Sign in</a> to keep your badges forever. They carry over automatically.</p>
+     </section>
+     <script is:inline src="/gp-badges.js"></script>
+ 
+diff --git a/src/pages/crazy-cleanup/index.astro b/src/pages/crazy-cleanup/index.astro
+index 3d87972..e26c5d4 100644
+--- a/src/pages/crazy-cleanup/index.astro
++++ b/src/pages/crazy-cleanup/index.astro
+@@ -141,7 +141,7 @@ const description = "A Goods Sort–style organizing game: sort 20 messy rooms,
+   <div class="main">
+     <div class="hero">
+       <h1>🧹 Crazy Cleanup — a Satisfying <span class="accent">Sorting Game</span></h1>
+-      <p>Every level is a messy room. Dig out items buried under others, sort everything into the right buckets, and empty the board without jamming your tray — one of the most satisfying <strong>organizing games</strong> you can play in a browser.</p>
++      <p>Every level is a messy room. Dig out items buried under others, sort everything into the right buckets, and empty the board without jamming your tray: one of the most satisfying <strong>organizing games</strong> you can play in a browser.</p>
+     </div>
+ 
+     <div class="lv-grid" id="lvgrid"></div>
+@@ -150,20 +150,20 @@ const description = "A Goods Sort–style organizing game: sort 20 messy rooms,
+     <section class="seo-section">
+       <h2>How to <span class="accent">Play</span></h2>
+       <ol>
+-        <li><strong>Pick up what's free.</strong> Tap any item that is not covered — buried items (overlapped by ≥15%) can't be picked until you clear what's on top of them.</li>
++        <li><strong>Pick up what's free.</strong> Tap any item that is not covered. Buried items (overlapped by ≥15%) can't be picked until you clear what's on top of them.</li>
+         <li><strong>Sort into buckets.</strong> Two buckets are open at a time; each collects one category of items. Tap a matching item to send it home.</li>
+-        <li><strong>Watch the tray.</strong> Uncollected items land in a 6-slot tray. It fills up fast — open new buckets and return tray items before it's full.</li>
++        <li><strong>Watch the tray.</strong> Uncollected items land in a 6-slot tray. It fills up fast: open new buckets and return tray items before it's full.</li>
+         <li><strong>Use the tools.</strong> 💡 Hint (×3) points at a collectible item; 🔧 Pliers (×3) force any buried item out. Neither refills.</li>
+-        <li><strong>Empty every bucket</strong> to finish the room and unlock the next of the 20 levels — from a 26-item tutorial study to a 207-item gadget store.</li>
++        <li><strong>Empty every bucket</strong> to finish the room and unlock the next of the 20 levels, from a 26-item tutorial study to a 207-item gadget store.</li>
+       </ol>
+     </section>
+ 
+     <section class="seo-section">
+       <h2>Tips for <span class="accent">Sorting Puzzle Games</span></h2>
+       <ul>
+-        <li><strong>Clear the top first.</strong> The fastest way through any room is freeing what buries the most — the pile shrinks faster than your tray fills.</li>
+-        <li><strong>Plan around the two open buckets.</strong> If both open categories are buried, that's the moment for pliers — not the moment to hoard tray slots.</li>
+-        <li><strong>Hints answer, they don't spend blindly.</strong> If every candidate item is buried, the hint won't be used up — it tells you to dig instead.</li>
++        <li><strong>Clear the top first.</strong> The fastest way through any room is freeing what buries the most. The pile shrinks faster than your tray fills.</li>
++        <li><strong>Plan around the two open buckets.</strong> If both open categories are buried, that's the moment for pliers, not the moment to hoard tray slots.</li>
++        <li><strong>Hints answer, they don't spend blindly.</strong> If every candidate item is buried, the hint won't be used up. It tells you to dig instead.</li>
+         <li><strong>Tray full means restart.</strong> There's no revive: the 6/6 tray is the only way to lose, so treat every open slot as a resource.</li>
+         <li>Like other <em>tidy games</em> and organization puzzles, the difficulty curve here is about visibility: later rooms hide more under more.</li>
+       </ul>
+diff --git a/src/pages/hashi/index.astro b/src/pages/hashi/index.astro
+index 9d713c8..35aebc1 100644
+--- a/src/pages/hashi/index.astro
++++ b/src/pages/hashi/index.astro
+@@ -534,7 +534,7 @@ const description = "Play Hashi (Bridges) free online: connect every island with
+ 
+     <!-- ═══════════ Game Card ═══════════ -->
+     <h1 style="font-size:1.5rem;font-weight:900;color:var(--ink);text-align:center;margin-bottom:0.3rem">Hashi Puzzle</h1>
+-    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">Play free online — the classic Bridges logic puzzle, cat-approved and no download needed.</p>
++    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">Play free online: the classic Bridges logic puzzle, cat-approved and no download needed.</p>
+ 
+     <section id="play" class="card game-card" aria-label="GridPaw Hashi game">
+       <div class="game-topbar">
+@@ -599,7 +599,7 @@ const description = "Play Hashi (Bridges) free online: connect every island with
+       <div class="rules-card">
+         <h3>How to play Hashi (Bridges)</h3>
+         <div class="rules-rule"><span class="ic">🏝️</span><span>Each <b>numbered island</b> shows exactly how many bridges it needs.</span></div>
+-        <div class="rules-rule"><span class="ic">🌉</span><span>Bridges run <b>horizontally or vertically</b> between neighboring islands — up to <b>2 bridges</b> per pair.</span></div>
++        <div class="rules-rule"><span class="ic">🌉</span><span>Bridges run <b>horizontally or vertically</b> between neighboring islands: up to <b>2 bridges</b> per pair.</span></div>
+         <div class="rules-rule"><span class="ic">🚫</span><span>Bridges <b>never cross</b> and never pass through an island.</span></div>
+         <div class="rules-rule"><span class="ic">🔗</span><span>When all islands have their bridges, the whole network must be <b>connected</b>.</span></div>
+         <button class="rules-ok" id="rules-close">Got it, let me play</button>
+@@ -615,38 +615,38 @@ const description = "Play Hashi (Bridges) free online: connect every island with
+     <!-- ═══════════ SEO Content ═══════════ -->
+     <section class="section prose seo-section" id="how-to-play" aria-label="How to play Hashi (Bridges)">
+       <h2>How to Play Hashi (Bridges)</h2>
+-      <p><strong>Hashi</strong> — also known as <strong>Bridges</strong> or <strong>Hashiwokakero</strong> — is a logic puzzle about drawing. A set of <strong>islands</strong> sits on a grid, each one stamped with a number. Your job is to connect them all by drawing bridges, obeying four simple rules:</p>
++      <p><strong>Hashi</strong> (also known as <strong>Bridges</strong> or <strong>Hashiwokakero</strong>) is a logic puzzle about drawing. A set of <strong>islands</strong> sits on a grid, each one stamped with a number. Your job is to connect them all by drawing bridges, obeying four simple rules:</p>
+       <ul>
+         <li><strong>The number is the total.</strong> An island marked <strong>3</strong> must connect to exactly 3 bridges when the puzzle is finished. Tap an island to see it turn amber as it is satisfied.</li>
+-        <li><strong>Straight lines only.</strong> Bridges run <strong>horizontally or vertically</strong> between two neighboring islands — and only between islands that are closest neighbors in their row or column, with no other island in between.</li>
++        <li><strong>Straight lines only.</strong> Bridges run <strong>horizontally or vertically</strong> between two neighboring islands, and only between islands that are closest neighbors in their row or column, with no other island in between.</li>
+         <li><strong>Up to two per pair.</strong> A single pair of islands can be joined by at most <strong>2 bridges</strong>. Tap the same gap again to cycle 0 → 1 → 2 → 0.</li>
+         <li><strong>No crossing, no passing.</strong> Bridges may never cross one another and never cut through an island. Every bridge travels the empty water in between.</li>
+       </ul>
+-      <p>On GridPaw, easiest way to play: <strong>tap one island, then tap a neighboring island</strong> to place a bridge between them — keep tapping that second island to cycle the pair up to 2 and back to 0. You can also tap the <strong>gap</strong> right between two islands to cycle that bridge directly. Islands turn <strong>red</strong> when their bridge count is wrong, and <strong>amber</strong> when matched. The puzzle is solved when every island is matched <em>and</em> all islands are connected into one network.</p>
++      <p>On GridPaw, easiest way to play: <strong>tap one island, then tap a neighboring island</strong> to place a bridge between them. Keep tapping that second island to cycle the pair up to 2 and back to 0. You can also tap the <strong>gap</strong> right between two islands to cycle that bridge directly. Islands turn <strong>red</strong> when their bridge count is wrong, and <strong>amber</strong> when matched. The puzzle is solved when every island is matched <em>and</em> all islands are connected into one network.</p>
+     </section>
+ 
+     <section class="section prose seo-section" aria-label="What is Hashiwokakero, Hashi vs Bridges vs Hashiwokakero">
+       <h2>What Is Hashiwokakero? Hashi vs Bridges vs Hashiwokakero</h2>
+-      <p><strong>Hashiwokakero</strong> (橋をかけろ) is Japanese for <em>"let's build bridges"</em> — and it is the original name of the puzzle you are playing. It was invented in 1990 and first appeared in <strong>Nikoli puzzle compilations</strong>, the same Japanese publisher that popularized Sudoku, Kakuro and Slitherlink. The name is a mouthful in English, so most publications shorten it to <strong>Hashi</strong> ("bridge") or simply call it <strong>Bridges</strong>.</p>
+-      <p>All three names describe the <strong>exact same game</strong> with identical rules: island numbers, horizontal and vertical bridges, up to two bridges per pair, no crossing, one connected network. If you have solved a "Bridges" puzzle in one app and a "Hashi" puzzle in another, you have solved the same puzzle twice. At GridPaw we use the short, searchable name <strong>Hashi</strong>, but you will see the identical grid published elsewhere as Bridges or Hashiwokakero — same islands, same water, different sticker.</p>
++      <p><strong>Hashiwokakero</strong> (橋をかけろ) is Japanese for <em>"let's build bridges"</em>, and it is the original name of the puzzle you are playing. It was invented in 1990 and first appeared in <strong>Nikoli puzzle compilations</strong>, the same Japanese publisher that popularized Sudoku, Kakuro and Slitherlink. The name is a mouthful in English, so most publications shorten it to <strong>Hashi</strong> ("bridge") or simply call it <strong>Bridges</strong>.</p>
++      <p>All three names describe the <strong>exact same game</strong> with identical rules: island numbers, horizontal and vertical bridges, up to two bridges per pair, no crossing, one connected network. If you have solved a "Bridges" puzzle in one app and a "Hashi" puzzle in another, you have solved the same puzzle twice. At GridPaw we use the short, searchable name <strong>Hashi</strong>, but you will see the identical grid published elsewhere as Bridges or Hashiwokakero: same islands, same water, different sticker.</p>
+     </section>
+ 
+     <section class="section prose seo-section" aria-label="Hashi vs Sudoku">
+       <h2>Hashi vs Sudoku</h2>
+-      <p><strong>Sudoku</strong> is a grid of digits where every row, column and box gets the numbers 1–9 exactly once. <strong>Hashi</strong> is a different breed of logic: it is a <strong>graph puzzle</strong>. There is no grid of numbers to fill — there is a network of islands and bridges, and the numbers are <em>given</em>. The logic lives in counting connections, not placing digits.</p>
+-      <p>That difference changes how you think. Sudoku solving is mostly <strong>elimination</strong>: candidates get crossed out row by row. Hashi solving is <strong>planning</strong>: every bridge you add affects two islands at once, and the final connectivity rule means you must think about the whole archipelago, not just one island in isolation. Many players find Hashi the more relaxing of the two — no arithmetic, no candidate notation, just drawing clean lines until the map clicks together. They are both pure logic, but Hashi exercises a very different part of the brain.</p>
++      <p><strong>Sudoku</strong> is a grid of digits where every row, column and box gets the numbers 1–9 exactly once. <strong>Hashi</strong> is a different breed of logic: it is a <strong>graph puzzle</strong>. There is no grid of numbers to fill. There is a network of islands and bridges, and the numbers are <em>given</em>. The logic lives in counting connections, not placing digits.</p>
++      <p>That difference changes how you think. Sudoku solving is mostly <strong>elimination</strong>: candidates get crossed out row by row. Hashi solving is <strong>planning</strong>: every bridge you add affects two islands at once, and the final connectivity rule means you must think about the whole archipelago, not just one island in isolation. Many players find Hashi the more relaxing of the two: no arithmetic, no candidate notation, just drawing clean lines until the map clicks together. They are both pure logic, but Hashi exercises a very different part of the brain.</p>
+     </section>
+ 
+     <section class="section prose seo-section" id="tips" aria-label="Hashi tips and strategy">
+       <h2>Hashi Tips and Strategy</h2>
+       <p>New to Hashi? These patterns will get you through every GridPaw puzzle:</p>
+       <ol>
+-        <li><strong>Read the degree, not the board.</strong> An island's number is its total edge slots. A <strong>1</strong> island with only one neighbor can only be satisfied by a double bridge to that neighbor — place it and one neighbor is instantly complete.</li>
++        <li><strong>Read the degree, not the board.</strong> An island's number is its total edge slots. A <strong>1</strong> island with only one neighbor can only be satisfied by a double bridge to that neighbor. Place it and one neighbor is instantly complete.</li>
+         <li><strong>Watch the corner islands.</strong> Corner islands have at most two bridge directions, so a corner <strong>3</strong> is already half-solved: it must take both directions and at least one must be a double bridge. Count the remaining slots carefully.</li>
+-        <li><strong>Finish a degree-1 island early.</strong> An island that still needs exactly <strong>1 bridge</strong> can take it from any neighbor — but while it is waiting, its neighbors must treat it as one slot. Lock it the moment its options narrow.</li>
+-        <li><strong>Think connectedness before you finish.</strong> Bridges must not just add up — the finished network has to be <strong>one connected graph</strong>. Before doubling a far-flung pair, check that every island can still reach the rest of the map. Isolated bubbles are the classic endgame trap.</li>
++        <li><strong>Finish a degree-1 island early.</strong> An island that still needs exactly <strong>1 bridge</strong> can take it from any neighbor, but while it is waiting, its neighbors must treat it as one slot. Lock it the moment its options narrow.</li>
++        <li><strong>Think connectedness before you finish.</strong> Bridges must not just add up: the finished network has to be <strong>one connected graph</strong>. Before doubling a far-flung pair, check that every island can still reach the rest of the map. Isolated bubbles are the classic endgame trap.</li>
+         <li><strong>Use two bridges as anchors.</strong> A double bridge is the strongest connection on the board: it consumes two slots on both islands at once and is almost impossible to reroute later. Prefer completing doubles early, while single bridges stay flexible.</li>
+-        <li><strong>Let the red tint guide you.</strong> When an island goes red, its bridges do not add up yet — undo and recount. Land on amber and that island is correct, so move on to the next one.</li>
++        <li><strong>Let the red tint guide you.</strong> When an island goes red, its bridges do not add up yet. Undo and recount. Land on amber and that island is correct, so move on to the next one.</li>
+       </ol>
+     </section>
+ 
+diff --git a/src/pages/help/akari/index.astro b/src/pages/help/akari/index.astro
+index 45c9ddc..72e3046 100644
+--- a/src/pages/help/akari/index.astro
++++ b/src/pages/help/akari/index.astro
+@@ -47,7 +47,7 @@ const faqs = [
+     Akari (also called Light Up) is a Japanese logic puzzle from Nikoli. You place
+     glowing cats (the "lights") on a grid of white cells. Every white cell must be
+     lit by at least one cat, and no two cats may ever face each other along the
+-    same row or column — unless a black wall cell blocks their view. The dark wall
++    same row or column, unless a black wall cell blocks their view. The dark wall
+     cells sometimes carry a number: that number tells you <strong>exactly</strong>
+     how many cats must sit in the four cells directly touching it (0–4). The
+     puzzle is solved when every white cell is lit, every number is satisfied, and
+@@ -57,15 +57,15 @@ const faqs = [
+ 
+   <figure class="shot">
+     <img src="/assets/screenshots/game-beginner.png" alt="An Akari board in progress with cats lighting rows and columns" loading="lazy" />
+-    <figcaption>A board in progress — cats light their whole row and column until a wall blocks the beam.</figcaption>
++    <figcaption>A board in progress: cats light their whole row and column until a wall blocks the beam.</figcaption>
+   </figure>
+ 
+   <h2>Your First Puzzle</h2>
+   <ol>
+     <li><strong>Open the game.</strong> Go to <a href="/akari/">gridpaw.com/akari</a>. Level 1 starts on a small 3×3 board with a <strong>coach popup</strong> that teaches the rules in 3 steps: "Light up the room" → "Watch: right vs wrong" → "Your turn". Levels 1–4 are hand-built tutorial boards, so you can't get stuck on the basics.</li>
+-    <li><strong>Place a cat.</strong> Click or tap any empty white cell — a cat appears and lights its entire row and column until a wall blocks the beam. Click the same cell again to remove it.</li>
++    <li><strong>Place a cat.</strong> Click or tap any empty white cell: a cat appears and lights its entire row and column until a wall blocks the beam. Click the same cell again to remove it.</li>
+     <li><strong>Read the numbered walls.</strong> A black cell with <code>4</code> means all 4 neighbor cells get cats. A <code>0</code> means none of them do. You can ✗-mark a cell you want to exclude: double-click or right-click on desktop, or press-and-hold on touch screens.</li>
+-    <li><strong>Fill until everything is lit.</strong> You win the moment all white cells are lit, every number has its exact neighbor count, and no two cats see each other — the game checks for you and shows the win popup automatically.</li>
++    <li><strong>Fill until everything is lit.</strong> You win the moment all white cells are lit, every number has its exact neighbor count, and no two cats see each other. The game checks for you and shows the win popup automatically.</li>
+   </ol>
+ 
+   <figure class="shot">
+@@ -79,12 +79,12 @@ const faqs = [
+       <tr><th>Button</th><th>What it does</th></tr>
+     </thead>
+     <tbody>
+-      <tr><td>💡 <strong>Hint</strong></td><td>Highlights the next correct cell for 2 seconds and shows "Hint: try row X, col Y". <strong>Unlimited and free</strong> — no counter. If you make 2 wrong moves in a row, the button pulses to get your attention.</td></tr>
++      <tr><td>💡 <strong>Hint</strong></td><td>Highlights the next correct cell for 2 seconds and shows "Hint: try row X, col Y". <strong>Unlimited and free</strong>: no counter. If you make 2 wrong moves in a row, the button pulses to get your attention.</td></tr>
+       <tr><td>↩️ <strong>Undo</strong> (Ctrl+Z / ⌘+Z)</td><td>Undoes your last change.</td></tr>
+       <tr><td>↪️ <strong>Redo</strong> (Ctrl+Y / ⌘+Shift+Z)</td><td>Re-applies a change you just undid.</td></tr>
+       <tr><td>🔄 <strong>New</strong></td><td><strong>Skips ahead</strong>: discards the current puzzle, moves you up one level, refills your 3 lives and generates a fresh board at the next level. It does <em>not</em> regenerate the same level.</td></tr>
+-      <tr><td>🗑️ <strong>Restart</strong></td><td>Clears your cats on the <em>current</em> puzzle, refills your lives and restarts the timer — same level, same layout.</td></tr>
+-      <tr><td>🔇 / 🔊 <strong>Sound</strong></td><td>Toggles game sounds. <strong>Off by default</strong> — click once to turn sounds on.</td></tr>
++      <tr><td>🗑️ <strong>Restart</strong></td><td>Clears your cats on the <em>current</em> puzzle, refills your lives and restarts the timer. Same level, same layout.</td></tr>
++      <tr><td>🔇 / 🔊 <strong>Sound</strong></td><td>Toggles game sounds. <strong>Off by default</strong>: click once to turn sounds on.</td></tr>
+       <tr><td>🔥 <strong>Daily</strong></td><td>Link to the Daily Challenge page (<a href="/akari/daily/">/akari/daily/</a>): one fresh 10×10 puzzle per day, the same for every player, with streaks and a leaderboard. Weekends run a larger 14×14 "Weekend Super" board.</td></tr>
+       <tr><td>📋 Copy Result / 𝕏 Share / 👽 Reddit (after winning)</td><td>Opens the victory flow: copy a text summary, or open the share card with Copy Image / Save / post options.</td></tr>
+     </tbody>
+@@ -97,9 +97,9 @@ const faqs = [
+ 
+   <h2>Your 3 Lives</h2>
+   <p>
+-    The three hearts in the top bar are lives. Placing a cat that violates a rule —
+-    <strong>too many cats around a number</strong> or <strong>two cats facing each
+-    other</strong> — flashes the offending cells, plays an error sound and costs
++    The three hearts in the top bar are lives. Placing a cat that violates a rule
++    (<strong>too many cats around a number</strong> or <strong>two cats facing each
++    other</strong>) flashes the offending cells, plays an error sound and costs
+     you one heart. Lose all three and you get "Game Over! Try again." before the
+     board resets automatically. Lives refill on Restart, on New, and on every
+     level-up.
+@@ -125,7 +125,7 @@ const faqs = [
+   <p>
+     The cat art also changes every 3 levels. The progress line under the board
+     shows how many of the puzzle's cats you've placed (e.g. <code>4 / 7 cats placed</code>),
+-    and a timer tracks your solve time — your best time per difficulty is saved as
++    and a timer tracks your solve time. Your best time per difficulty is saved as
+     a trophy (🏆) in your browser.
+   </p>
+ 
+@@ -137,9 +137,9 @@ const faqs = [
+   <h2>Winning &amp; Sharing</h2>
+   <p>As soon as the board is correct, the "🎉 Solved!" popup appears with confetti and:</p>
+   <ul>
+-    <li><strong>Next Puzzle →</strong> — jump to the next level; also refills your lives. If you don't click it, the game <strong>auto-advances after about 3 seconds</strong>.</li>
+-    <li><strong>📋 Copy Result</strong> — copies a one-line summary of your win to the clipboard.</li>
+-    <li><strong>𝕏 Share / 👽 Reddit</strong> — open a "Your board" share card with your finished grid, where you can <strong>📋 Copy Image</strong>, <strong>⬇️ Save</strong> it as PNG, or post directly to 𝕏 or Reddit.</li>
++    <li><strong>Next Puzzle →</strong>: jump to the next level; also refills your lives. If you don't click it, the game <strong>auto-advances after about 3 seconds</strong>.</li>
++    <li><strong>📋 Copy Result</strong> copies a one-line summary of your win to the clipboard.</li>
++    <li><strong>𝕏 Share / 👽 Reddit</strong>: open a "Your board" share card with your finished grid, where you can <strong>📋 Copy Image</strong>, <strong>⬇️ Save</strong> it as PNG, or post directly to 𝕏 or Reddit.</li>
+   </ul>
+   <p>No sign-in is needed to play or share. If you do sign in on the Daily page, your level syncs across devices automatically.</p>
+ 
+diff --git a/src/pages/help/kakuro/index.astro b/src/pages/help/kakuro/index.astro
+index 09625b5..faaae5b 100644
+--- a/src/pages/help/kakuro/index.astro
++++ b/src/pages/help/kakuro/index.astro
+@@ -52,7 +52,7 @@ const faqs = [
+     a mathematical crossword. Every horizontal or vertical run of white cells must
+     add up to the clue sitting at its start, and <strong>no digit may repeat
+     inside a run</strong>. It looks a bit like Sudoku, but instead of placement
+-    rules you reason with sums and number combinations — e.g. a two-cell run of
++    rules you reason with sums and number combinations, e.g. a two-cell run of
+     <code>17</code> can only be <code>8 + 9</code>. GridPaw Kakuro is free, runs
+     entirely in your browser, and adds two twists: <strong>4 guided tutorial
+     lessons</strong> and a paw-print <strong>fog mode</strong> (from the first
+@@ -62,9 +62,9 @@ const faqs = [
+ 
+   <h2>Your First Puzzle</h2>
+   <ol>
+-    <li><strong>Open the game.</strong> Go to <a href="/kakuro/">gridpaw.com/kakuro</a>. You start on <strong>Tutorial 1/4 — "Clues are sums"</strong>, a tiny guided board. Solve it and the next lesson auto-loads (there is no win popup in the tutorials — just a checkmark message).</li>
+-    <li><strong>Select a white cell.</strong> Click or tap it — it gets an orange outline. The <strong>keypad</strong> below the board (1–9) now shows you which digits are legal in that cell: amber-ringed digits are OK, <strong>struck-through</strong> digits are already used elsewhere in the run, and digits on a pink background would push the run past its clue sum.</li>
+-    <li><strong>Fill the digit.</strong> Tap a key (or press 1–9 on your keyboard). Each cell belongs to two runs — one across and one down — and both must eventually hit their clue sums without repeats. Tap the 🗑-style <strong>⌫ key</strong> (or Backspace / Delete / 0) to clear the selected cell.</li>
++    <li><strong>Open the game.</strong> Go to <a href="/kakuro/">gridpaw.com/kakuro</a>. You start on <strong>Tutorial 1/4 — "Clues are sums"</strong>, a tiny guided board. Solve it and the next lesson auto-loads (there is no win popup in the tutorials, just a checkmark message).</li>
++    <li><strong>Select a white cell.</strong> Click or tap it. It gets an orange outline. The <strong>keypad</strong> below the board (1–9) now shows you which digits are legal in that cell: amber-ringed digits are OK, <strong>struck-through</strong> digits are already used elsewhere in the run, and digits on a pink background would push the run past its clue sum.</li>
++    <li><strong>Fill the digit.</strong> Tap a key (or press 1–9 on your keyboard). Each cell belongs to two runs (one across and one down) and both must eventually hit their clue sums without repeats. Tap the 🗑-style <strong>⌫ key</strong> (or Backspace / Delete / 0) to clear the selected cell.</li>
+     <li><strong>Finish the board.</strong> The moment every white cell is filled correctly, the "Solved!" popup appears. The tutorial lessons teach you the clues; the four lessons cover: sums, no-repeats, extreme clues (17 = 8+9), and a bigger combined board.</li>
+   </ol>
+   <p>Optional: during the tutorials you can press <strong>"Skip tutorial »"</strong> to jump straight into the campaign.</p>
+@@ -81,9 +81,9 @@ const faqs = [
+     </thead>
+     <tbody>
+       <tr><td>↺ <strong>Restart</strong></td><td>Discards the current puzzle and <strong>generates a fresh one at the same level</strong> (same difficulty/fog layout, different board).</td></tr>
+-      <tr><td><strong>Skip tutorial »</strong></td><td>Only visible during the 4 tutorial lessons — jumps straight to Level 1 of the campaign.</td></tr>
++      <tr><td><strong>Skip tutorial »</strong></td><td>Only visible during the 4 tutorial lessons: jumps straight to Level 1 of the campaign.</td></tr>
+       <tr><td>💡 <strong>Hint</strong> (badge shows <code>3</code>)</td><td>Highlights the single best cell to fill next and tells you the digit, e.g. "Fill 8 in row 2, col 3 — the green key." <strong>3 free hints per level</strong>, refills on every new level. Not available during the tutorials.</td></tr>
+-      <tr><td><strong>Medium 6×6 / Hard 7×7</strong></td><td>Quick-jump buttons (shown once past the tutorials) that land you on the first fog level of that difficulty — handy for previewing fog mode.</td></tr>
++      <tr><td><strong>Medium 6×6 / Hard 7×7</strong></td><td>Quick-jump buttons (shown once past the tutorials) that land you on the first fog level of that difficulty. Handy for previewing fog mode.</td></tr>
+       <tr><td>🔢 <strong>Keypad 1–9 + ⌫</strong></td><td>Digit entry for the selected cell; ⌫ clears it.</td></tr>
+       <tr><td><strong>Next level →</strong> (after winning)</td><td>Moves to the next puzzle; past the campaign it starts the endless daily rotation.</td></tr>
+       <tr><td>📋 Copy / 𝕏 Share / 👽 Reddit (after winning)</td><td>Copy a text summary or open the share card with Copy Image / Save / post options.</td></tr>
+@@ -99,9 +99,9 @@ const faqs = [
+   <h2>Fog Mode: The GridPaw Twist</h2>
+   <p>From the first <strong>Medium</strong> level (campaign level 4) the board is split into two blocks and the far block hides under a paw-print fog:</p>
+   <ul>
+-    <li><strong>Solve the visible block first.</strong> Once every run in the visible block sums correctly, the fog lifts ("Fog lifted!") and the far side is revealed. The blocks never share a run, so the reveal can never trap you — every fog board is verified to have exactly one solution.</li>
++    <li><strong>Solve the visible block first.</strong> Once every run in the visible block sums correctly, the fog lifts ("Fog lifted!") and the far side is revealed. The blocks never share a run, so the reveal can never trap you. Every fog board is verified to have exactly one solution.</li>
+     <li><strong>Tap the fog to peek.</strong> Each fog level gives you <strong>2 free peeks</strong>: tapping a fogged cell reveals it (and the clue numbers of its runs). The peek bar below the board shows <code>Free peeks left: N / 2</code>.</li>
+-    <li><strong>Out of peeks?</strong> A small popup offers more (a "Watch ad" option or "Cat coins" mode) — in the current demo build this is a mock-up and nothing is actually charged. Close it with ✕ and keep solving by logic.</li>
++    <li><strong>Out of peeks?</strong> A small popup offers more (a "Watch ad" option or "Cat coins" mode). In the current demo build this is a mock-up and nothing is actually charged. Close it with ✕ and keep solving by logic.</li>
+   </ul>
+   <p>There is no fog in the Easy levels, and the Hard boards use a denser wall layout instead of a bigger grid.</p>
+ 
+@@ -118,24 +118,24 @@ const faqs = [
+     </thead>
+     <tbody>
+       <tr><td>Tutorial 1–4</td><td>Tiny guided boards (3×4 up to 5×5)</td><td>No</td></tr>
+-      <tr><td>Easy: Levels 1–3</td><td>5×5</td><td>No — "Easy has no fog"</td></tr>
+-      <tr><td>Medium: Levels 4–7</td><td>6×6</td><td>Yes — fog starts here</td></tr>
++      <tr><td>Easy: Levels 1–3</td><td>5×5</td><td>No: "Easy has no fog"</td></tr>
++      <tr><td>Medium: Levels 4–7</td><td>6×6</td><td>Yes: fog starts here</td></tr>
+       <tr><td>Hard: Levels 8–11</td><td>7×7</td><td>Yes</td></tr>
+       <tr><td>Daily (after level 11)</td><td>Alternates 6×6 / 7×7</td><td>Yes</td></tr>
+     </tbody>
+   </table>
+   <ul>
+     <li>The chip above the board says <code>Tutorial 1/4 — &lt;lesson&gt;</code>, then <code>Level N/11 — Easy/Medium/Hard — S×S</code>, and <code>Daily</code> once the campaign is done.</li>
+-    <li><strong>Progress saves automatically</strong> in your browser (your current campaign level) — close the tab and come back later; you resume where you left off.</li>
+-    <li><strong>Daily puzzles are endless and the same for everyone on the same day</strong> — the board is seeded by the date and alternates Medium and Hard. Perfect for comparing times with friends.</li>
++    <li><strong>Progress saves automatically</strong> in your browser (your current campaign level). Close the tab and come back later; you resume where you left off.</li>
++    <li><strong>Daily puzzles are endless and the same for everyone on the same day</strong>. The board is seeded by the date and alternates Medium and Hard. Perfect for comparing times with friends.</li>
+   </ul>
+ 
+   <h2>Winning &amp; Sharing</h2>
+   <p>When the board is fully correct the "Solved!" overlay appears (or "Daily solved!" for a daily board). Finishing all 11 campaign levels shows "Campaign complete! Endless daily puzzles unlocked."</p>
+   <ul>
+-    <li><strong>Next level →</strong> — continues the campaign or starts the next daily puzzle.</li>
+-    <li><strong>📋 Copy</strong> — copies a one-line bragging summary.</li>
+-    <li><strong>𝕏 Share / 👽 Reddit</strong> — open a "Your board" share card with your finished grid: <strong>📋 Copy Image</strong>, <strong>⬇️ Save</strong> as PNG, or post directly to 𝕏 / Reddit.</li>
++    <li><strong>Next level →</strong>: continues the campaign or starts the next daily puzzle.</li>
++    <li><strong>📋 Copy</strong> copies a one-line bragging summary.</li>
++    <li><strong>𝕏 Share / 👽 Reddit</strong>: open a "Your board" share card with your finished grid: <strong>📋 Copy Image</strong>, <strong>⬇️ Save</strong> as PNG, or post directly to 𝕏 / Reddit.</li>
+   </ul>
+ 
+   <figure class="shot">
+diff --git a/src/pages/help/nonogram/index.astro b/src/pages/help/nonogram/index.astro
+index 20940d0..f9c212d 100644
+--- a/src/pages/help/nonogram/index.astro
++++ b/src/pages/help/nonogram/index.astro
+@@ -59,27 +59,27 @@ const faqs = [
+     Nonogram (also called Picross or Griddler) is a paint-by-numbers logic puzzle.
+     The grid comes with <strong>row clues on the left</strong> and
+     <strong>column clues on top</strong>. Each clue gives the run-lengths of
+-    filled blocks — e.g. <code>2 2</code> means "a block of 2 filled cells, at
++    filled blocks, e.g. <code>2 2</code> means "a block of 2 filled cells, at
+     least one empty cell, then another block of 2". Fill in every cell so that
+     <em>all</em> rows and <em>all</em> columns match their clues at the same time,
+     and a hidden picture appears. GridPaw Nonogram is the cat version:
+     <strong>4 guided tutorials, an 11-level campaign, then endless date-seeded
+-    daily puzzles</strong> — free, no sign-up. What makes it different from every
+-    other GridPaw game: the solved picture IS the reward — a pixel-art cat flips
++    daily puzzles</strong>. Free, no sign-up. What makes it different from every
++    other GridPaw game: the solved picture IS the reward: a pixel-art cat flips
+     to amber in a ≤1s cascade when you finish.
+   </p>
+   <p>Play at <a href="/nonogram/">gridpaw.com/nonogram/</a>.</p>
+ 
+   <figure class="shot">
+     <img src="/assets/screenshots/help-nonogram-1.png" alt="A Nonogram board in progress with row and column clues, filled and crossed cells" loading="lazy" />
+-    <figcaption>A board in progress — clues on top and left, filled ⬛ and crossed ✕ cells.</figcaption>
++    <figcaption>A board in progress: clues on top and left, filled ⬛ and crossed ✕ cells.</figcaption>
+   </figure>
+ 
+   <h2>Your First Puzzle</h2>
+   <ol>
+     <li><strong>Open the game.</strong> You start on <strong>Tutorial 1/4</strong> (green chip). Four tutorials teach the four core ideas with authored cat pictures: <em>Clues are run lengths</em> (Heart 5×5), <em>Gaps must exist</em> (Cat Face 5×5), <em>Edge pinning</em> (Cat Whiskers 7×7), <em>Cross logic</em> (Big Cat 10×10). Each shows a lesson line under the board; you can't get stuck.</li>
+-    <li><strong>Mark cells with taps.</strong> Tap a cell repeatedly to cycle it: <strong>blank → filled ⬛ → cross ✕ → blank</strong>. Fill a ⬛ tap on a cell that is empty in the solution and the game auto-corrects it to ✕ with a red shake and counts it as a mistake ("mistake №1") — it never locks your input, it just teaches.</li>
+-    <li><strong>Match every clue.</strong> Keep going row by row and column by column. The puzzle auto-solves the moment the <em>last</em> cell is correctly marked — the win overlay shows the hidden picture lighting up.</li>
++    <li><strong>Mark cells with taps.</strong> Tap a cell repeatedly to cycle it: <strong>blank → filled ⬛ → cross ✕ → blank</strong>. Fill a ⬛ tap on a cell that is empty in the solution and the game auto-corrects it to ✕ with a red shake and counts it as a mistake ("mistake №1"). It never locks your input, it just teaches.</li>
++    <li><strong>Match every clue.</strong> Keep going row by row and column by column. The puzzle auto-solves the moment the <em>last</em> cell is correctly marked. The win overlay shows the hidden picture lighting up.</li>
+   </ol>
+ 
+   <figure class="shot">
+@@ -95,13 +95,13 @@ const faqs = [
+     <tbody>
+       <tr><td><strong>Level chip</strong> (amber; green on tutorials)</td><td>Shows your position: <code>Tutorial 1/4 — &lt;lesson&gt;</code> · <code>Level 4/11 — Medium — 10×10</code> · <code>Daily — Medium 10×10</code></td></tr>
+       <tr><td>↺ <strong>Restart</strong></td><td>Discards the current board and generates a fresh puzzle at the same level</td></tr>
+-      <tr><td><strong>Skip tutorial »</strong> (only during the 4 tutorials)</td><td>Skips straight to campaign Level 1 — your first Easy 5×5</td></tr>
+-      <tr><td>💡 <strong>Hint</strong> (badge shows <code>3</code>)</td><td>Reveals exactly one correct cell — prefers a cell that should be filled — and tells you where: "💡 Row 3, col 2 is filled — tap it ⬛. (2 hints left)". <strong>3 hints per level</strong>, refills to 3 on every new level. (Dev builds show ∞.)</td></tr>
++      <tr><td><strong>Skip tutorial »</strong> (only during the 4 tutorials)</td><td>Skips straight to campaign Level 1: your first Easy 5×5</td></tr>
++      <tr><td>💡 <strong>Hint</strong> (badge shows <code>3</code>)</td><td>Reveals exactly one correct cell (prefers a cell that should be filled) and tells you where: "💡 Row 3, col 2 is filled — tap it ⬛. (2 hints left)". <strong>3 hints per level</strong>, refills to 3 on every new level. (Dev builds show ∞.)</td></tr>
+       <tr><td><strong>Practice Medium</strong></td><td>Jumps to the first Medium board: Level 4/11, 10×10</td></tr>
+       <tr><td><strong>Practice Hard</strong></td><td>Jumps to the first Hard board: Level 8/11, 15×15</td></tr>
+     </tbody>
+   </table>
+-  <p>Row/column clues are also <strong>clickable</strong>: tap any clue (row or column) and its whole line highlights amber for 2.6 seconds — a free way to focus your eyes.</p>
++  <p>Row/column clues are also <strong>clickable</strong>: tap any clue (row or column) and its whole line highlights amber for 2.6 seconds. A free way to focus your eyes.</p>
+ 
+   <figure class="shot">
+     <img src="/assets/screenshots/help-nonogram-3.png" alt="The Nonogram toolbar with level chip, Restart, Skip tutorial, Hint badge and practice jumps" loading="lazy" />
+@@ -117,8 +117,8 @@ const faqs = [
+       <tr><td>Tutorial ×4</td><td>5×5 → 7×7 → 10×10</td><td>Authored cat art (Heart, Cat Face, Cat Whiskers, Big Cat); auto-advances ~0.9s after each win</td></tr>
+       <tr><td>Easy ×3</td><td><strong>5×5</strong></td><td>Generator guarantees pure line-logic solvability (no guessing needed)</td></tr>
+       <tr><td>Medium ×4</td><td><strong>10×10</strong></td><td>Same guarantee</td></tr>
+-      <tr><td>Hard ×4</td><td><strong>15×15</strong></td><td>May require light backtracking — hints matter here</td></tr>
+-      <tr><td>Endless Daily</td><td>10×10 / 15×15</td><td>Alternates medium/hard; <strong>date-seeded — same board for every player on the same day</strong>; comes after the 15 boards (4 tutorials + 11 campaign)</td></tr>
++      <tr><td>Hard ×4</td><td><strong>15×15</strong></td><td>May require light backtracking: hints matter here</td></tr>
++      <tr><td>Endless Daily</td><td>10×10 / 15×15</td><td>Alternates medium/hard; <strong>date-seeded: same board for every player on the same day</strong>; comes after the 15 boards (4 tutorials + 11 campaign)</td></tr>
+     </tbody>
+   </table>
+   <p>Campaign order is fixed: 3 Easy → 4 Medium → 4 Hard, shown as <code>Level N/11</code>. Finishing the 11th unlocks the message "Campaign complete! Endless daily puzzles unlocked."</p>
+@@ -131,19 +131,19 @@ const faqs = [
+   <h2>Winning &amp; Sharing</h2>
+   <p>When every cell is marked correctly, the victory popup appears with:</p>
+   <ul>
+-    <li><strong>Win title</strong> — <code>Solved!</code> (campaign) or <code>Daily solved!</code></li>
+-    <li><strong>Pixel-art reveal</strong> — the solved picture's filled cells flip to amber in a ≤1s cascade</li>
+-    <li><strong>Next level →</strong> — moves up one level (tutorials instead auto-advance after ~0.9s with no button)</li>
++    <li><strong>Win title</strong>: <code>Solved!</code> (campaign) or <code>Daily solved!</code></li>
++    <li><strong>Pixel-art reveal</strong>: the solved picture's filled cells flip to amber in a ≤1s cascade</li>
++    <li><strong>Next level →</strong>: moves up one level (tutorials instead auto-advance after ~0.9s with no button)</li>
+     <li><strong>Share row (3 buttons)</strong>:
+       <ul>
+-        <li>📋 <strong>Copy</strong> — copies the Wordle-style share text to your clipboard (turns ✅ Copied, 1.5s): "🎨 Uncovered the hidden picture in GridPaw Nonogram Level N — zero wrong taps… mostly 😏 Your turn → gridpaw.com/nonogram/" (daily variant mentions today's cat)</li>
+-        <li>𝕏 <strong>Share</strong> — opens the <strong>board card</strong> popup first (rendered image of your solved board, 640px, tagged "GridPaw Nonogram · Level N" with the gridpaw.com/nonogram/ footer) ready to post</li>
+-        <li>👽 <strong>Reddit</strong> — same board card, then posts to r/gridpaw with the share text as title</li>
++        <li>📋 <strong>Copy</strong>: copies the Wordle-style share text to your clipboard (turns ✅ Copied, 1.5s): "🎨 Uncovered the hidden picture in GridPaw Nonogram Level N — zero wrong taps… mostly 😏 Your turn → gridpaw.com/nonogram/" (daily variant mentions today's cat)</li>
++        <li>𝕏 <strong>Share</strong> opens the <strong>board card</strong> popup first (rendered image of your solved board, 640px, tagged "GridPaw Nonogram · Level N" with the gridpaw.com/nonogram/ footer) ready to post</li>
++        <li>👽 <strong>Reddit</strong>: same board card, then posts to r/gridpaw with the share text as title</li>
+       </ul>
+     </li>
+   </ul>
+   <p><strong>In the board card:</strong> 📋 Copy Image (PNG to clipboard), ⬇️ Save (downloads <code>gridpaw-nonogram-levelN.png</code>), 𝕏 Post, 👽 Post, ✕ Close.</p>
+-  <p>Your campaign progress is saved automatically in the browser (<code>gridpaw-nonogram-progress</code>) and resumes on your next visit — but never into the tutorial range.</p>
++  <p>Your campaign progress is saved automatically in the browser (<code>gridpaw-nonogram-progress</code>) and resumes on your next visit, but never into the tutorial range.</p>
+ 
+   <figure class="shot">
+     <img src="/assets/screenshots/help-nonogram-5.png" alt="The Nonogram victory popup with the pixel-art reveal, Next button and share buttons" loading="lazy" />
+diff --git a/src/pages/help/nurikabe/index.astro b/src/pages/help/nurikabe/index.astro
+index 9f62d90..008c80e 100644
+--- a/src/pages/help/nurikabe/index.astro
++++ b/src/pages/help/nurikabe/index.astro
+@@ -58,32 +58,32 @@ const faqs = [
+   <p class="lede">
+     Nurikabe ("islands and sea") is a classic Nikoli logic puzzle. Some cells
+     carry a <strong>number clue</strong>: each number is the exact size of an
+-    <em>island</em> — a connected group of white cells holding exactly that one
++    <em>island</em>: a connected group of white cells holding exactly that one
+     number. All other cells are <em>sea</em> (dark), and the solver must obey
+     three rules:
+   </p>
+   <ol>
+-    <li><strong>Islands</strong> — each island is a connected group containing exactly one number, and its size equals that number. Islands never touch each other edge-to-edge.</li>
+-    <li><strong>The sea</strong> — all sea cells form <strong>one single connected mass</strong> (an island may never cut the sea in two).</li>
+-    <li><strong>No 2×2 sea</strong> — four sea cells in a square are forbidden.</li>
++    <li><strong>Islands</strong>: each island is a connected group containing exactly one number, and its size equals that number. Islands never touch each other edge-to-edge.</li>
++    <li><strong>The sea</strong>. All sea cells form <strong>one single connected mass</strong> (an island may never cut the sea in two).</li>
++    <li><strong>No 2×2 sea</strong>: four sea cells in a square are forbidden.</li>
+   </ol>
+   <p>
+     GridPaw Nurikabe is the cat version: skinnier boards than the other GridPaw
+     games (<strong>5×5 → 7×7 → 9×9</strong>), <strong>4 heart-based
+     tutorials</strong>, an <strong>11-level campaign</strong>, then endless
+-    date-seeded daily puzzles — free, no sign-up. Play at
++    date-seeded daily puzzles. Free, no sign-up. Play at
+     <a href="/nurikabe/">gridpaw.com/nurikabe/</a>.
+   </p>
+ 
+   <figure class="shot">
+     <img src="/assets/screenshots/help-nurikabe-1.png" alt="A Nurikabe board in progress with islands, sea, clue cells and the hearts badge" loading="lazy" />
+-    <figcaption>A board in progress — number cells, island and sea marks, and the ❤️ hearts badge.</figcaption>
++    <figcaption>A board in progress: number cells, island and sea marks, and the ❤️ hearts badge.</figcaption>
+   </figure>
+ 
+   <h2>Your First Puzzle</h2>
+   <ol>
+-    <li><strong>Open the game.</strong> A <strong>How to play</strong> card pops up once (first visit) with a mini finished board and the 3 rules; tap <strong>"Got it — start with Tutorial 1"</strong>. You're then on <strong>Tutorial 1/4</strong> — a 2×2 board for rule 1. (Reopen anytime with 📖 <strong>How to play</strong>.)</li>
+-    <li><strong>Cycle cells like traffic lights.</strong> Tap any non-number cell to cycle it: <strong>blank → sea ≈ → island → blank</strong>. Tapping the wrong value <strong>auto-corrects</strong> the cell to its true value, locks it for the level, and costs a heart — mistakes are warned, never left floating. Clue cells (with the little paw/plant icon and number) are fixed and can never be changed.</li>
++    <li><strong>Open the game.</strong> A <strong>How to play</strong> card pops up once (first visit) with a mini finished board and the 3 rules; tap <strong>"Got it — start with Tutorial 1"</strong>. You're then on <strong>Tutorial 1/4</strong>: a 2×2 board for rule 1. (Reopen anytime with 📖 <strong>How to play</strong>.)</li>
++    <li><strong>Cycle cells like traffic lights.</strong> Tap any non-number cell to cycle it: <strong>blank → sea ≈ → island → blank</strong>. Tapping the wrong value <strong>auto-corrects</strong> the cell to its true value, locks it for the level, and costs a heart. Mistakes are warned, never left floating. Clue cells (with the little paw/plant icon and number) are fixed and can never be changed.</li>
+     <li><strong>Satisfy all three rules.</strong> The puzzle checks itself the moment every cell is known: wrong-but-complete boards get the message "Every cell is marked, but the islands don't match the numbers — some sea cells are actually island, or an island has the wrong size. Review and fix!"</li>
+   </ol>
+ 
+@@ -101,8 +101,8 @@ const faqs = [
+       <tr><td><strong>Level chip</strong> (amber; green on tutorials)</td><td>Shows your position: <code>Tutorial 1/4 — &lt;lesson&gt;</code> · <code>Level 4/11 — Medium — 7×7</code> · <code>Daily — Medium 7×7</code></td></tr>
+       <tr><td><strong>❤️ hearts chip</strong></td><td>Your health: 3 hearts (<code>❤️❤️❤️</code>), lost hearts turn <code>🖤</code>. Tutorials show <code>❤ ∞</code> (unlimited).</td></tr>
+       <tr><td>↺ <strong>Restart</strong></td><td>Discards the current board and generates a fresh puzzle at the same level</td></tr>
+-      <tr><td><strong>Skip tutorial »</strong> (only during the 4 tutorials)</td><td>Skips straight to campaign Level 1 — your first Easy 5×5</td></tr>
+-      <tr><td>💡 <strong>Hint</strong> (badge shows <code>3</code>)</td><td>Reveals exactly one correct cell — prefers an island cell — and tells you: "💡 Row 3, col 2 is sea ≈ — tap it once. (2 hints left)". <strong>3 hints per level</strong>, refills on every new level. (Dev builds show ∞.)</td></tr>
++      <tr><td><strong>Skip tutorial »</strong> (only during the 4 tutorials)</td><td>Skips straight to campaign Level 1: your first Easy 5×5</td></tr>
++      <tr><td>💡 <strong>Hint</strong> (badge shows <code>3</code>)</td><td>Reveals exactly one correct cell (prefers an island cell) and tells you: "💡 Row 3, col 2 is sea ≈ — tap it once. (2 hints left)". <strong>3 hints per level</strong>, refills on every new level. (Dev builds show ∞.)</td></tr>
+       <tr><td>📖 <strong>How to play</strong></td><td>Reopens the rules card with the mini-board diagram and tap instructions</td></tr>
+       <tr><td><strong>Practice Medium 7×7</strong></td><td>Jumps to the first Medium board: Level 4/11</td></tr>
+       <tr><td><strong>Practice Hard 9×9</strong></td><td>Jumps to the first Hard board: Level 8/11</td></tr>
+@@ -125,7 +125,7 @@ const faqs = [
+       <tr><td>Easy ×3</td><td><strong>5×5</strong></td><td>Pure constraint-propagation solvable</td></tr>
+       <tr><td>Medium ×4</td><td><strong>7×7</strong></td><td>Pure constraint-propagation solvable</td></tr>
+       <tr><td>Hard ×4</td><td><strong>9×9</strong></td><td>May need light backtracking</td></tr>
+-      <tr><td>Endless Daily</td><td>7×7 / 9×9</td><td>Alternates medium/hard; <strong>date-seeded — same board for every player on the same day</strong>; after the campaign's 15 boards</td></tr>
++      <tr><td>Endless Daily</td><td>7×7 / 9×9</td><td>Alternates medium/hard; <strong>date-seeded: same board for every player on the same day</strong>; after the campaign's 15 boards</td></tr>
+     </tbody>
+   </table>
+   <p>Campaign order is fixed: 3 Easy → 4 Medium → 4 Hard (<code>Level N/11</code>). Finishing the 11th unlocks "Campaign complete! Endless daily puzzles unlocked."</p>
+@@ -138,9 +138,9 @@ const faqs = [
+   <h2>Winning, Losing &amp; Sharing</h2>
+   <p><strong>Winning.</strong> When every cell is correct, the victory popup shows <code>Solved!</code> (or <code>Daily solved!</code>), a pixel-grid reveal where all island cells flip to amber in a ≤1s cascade, and <strong>Next level →</strong> (tutorials auto-advance instead). The win overlay carries the <strong>3 share buttons</strong>:</p>
+   <ul>
+-    <li>📋 <strong>Copy</strong> — copies the share text (✅ Copied, 1.5s): "🌊 Sank GridPaw Nurikabe Level N — every island in place, sea stays one. Don't drown → gridpaw.com/nurikabe/" (daily variant: "no hearts lost")</li>
+-    <li>𝕏 <strong>Share</strong> — opens the <strong>board card</strong> first (rendered image of your solved board, tagged "GridPaw Nurikabe · Level N", footer gridpaw.com/nurikabe/)</li>
+-    <li>👽 <strong>Reddit</strong> — same board card, posts to r/gridpaw</li>
++    <li>📋 <strong>Copy</strong>: copies the share text (✅ Copied, 1.5s): "🌊 Sank GridPaw Nurikabe Level N — every island in place, sea stays one. Don't drown → gridpaw.com/nurikabe/" (daily variant: "no hearts lost")</li>
++    <li>𝕏 <strong>Share</strong> opens the <strong>board card</strong> first (rendered image of your solved board, tagged "GridPaw Nurikabe · Level N", footer gridpaw.com/nurikabe/)</li>
++    <li>👽 <strong>Reddit</strong>: same board card, posts to r/gridpaw</li>
+   </ul>
+   <p><strong>In the board card:</strong> 📋 Copy Image, ⬇️ Save (<code>gridpaw-nurikabe-levelN.png</code>), 𝕏 Post, 👽 Post, ✕ Close.</p>
+ 
+@@ -149,7 +149,7 @@ const faqs = [
+     <figcaption>The victory popup: island cells flip amber, then Next and the share buttons.</figcaption>
+   </figure>
+ 
+-  <p><strong>Losing.</strong> Wrong marks cost a heart per mistake (not in tutorials — they only count mistakes). Losing all 3 hearts opens the 💔 <strong>Out of hearts</strong> overlay: "Three wrong marks — this board got away from you. A fresh one is coming up." Tap <strong>New board ↻</strong> for a fresh puzzle at the same level. Campaign progress is saved automatically (<code>gridpaw-nurikabe-progress</code>) and resumes next visit.</p>
++  <p><strong>Losing.</strong> Wrong marks cost a heart per mistake (not in tutorials, they only count mistakes). Losing all 3 hearts opens the 💔 <strong>Out of hearts</strong> overlay: "Three wrong marks — this board got away from you. A fresh one is coming up." Tap <strong>New board ↻</strong> for a fresh puzzle at the same level. Campaign progress is saved automatically (<code>gridpaw-nurikabe-progress</code>) and resumes next visit.</p>
+ 
+   <figure class="shot">
+     <img src="/assets/screenshots/help-nurikabe-6.png" alt="The Nurikabe Out of hearts overlay with the New board button" loading="lazy" />
+diff --git a/src/pages/help/pictomino/index.astro b/src/pages/help/pictomino/index.astro
+index f98c412..b627d7a 100644
+--- a/src/pages/help/pictomino/index.astro
++++ b/src/pages/help/pictomino/index.astro
+@@ -61,12 +61,12 @@ const faqs = [
+   <p class="lede">
+     Pictomino is GridPaw's <strong>spatial reasoning game for kids</strong>: a
+     real cat photo is cut into grid squares and shuffled; you rebuild the picture
+-    piece by piece using logic — never guessing. It's pure static HTML (no build
++    piece by piece using logic, never guessing. It's pure static HTML (no build
+     step), free, no account needed, and works on phones, tablets, and computers
+     with taps or mouse clicks. Each level shows you the <strong>complete picture
+     for 2 seconds</strong> ("👀 Remember the picture!"), then one piece at a time:
+     find where it snaps into the board by comparing edges, fur color, ears,
+-    whiskers. <strong>5 lives per level</strong> — a wrong tap costs one; lose all
++    whiskers. <strong>5 lives per level</strong>: a wrong tap costs one; lose all
+     5 and the level ends. Finishing a level earns <strong>stars + points</strong>
+     plus a <strong>fun fact about the cat breed</strong> you just rebuilt.
+   </p>
+@@ -79,10 +79,10 @@ const faqs = [
+ 
+   <h2>Your First Puzzle</h2>
+   <ol>
+-    <li><strong>Open the game.</strong> The first time you play, a <strong>How to Play</strong> card explains the loop ("Look at the pieces. Find where they fit. Tap to place.") with a "Auto-show at start" toggle — tap <strong>Got it!</strong>. Then a short <strong>tutorial coach</strong> (STEP 1/2) walks you through one real placement: tap the highlighted piece, then tap the single <code>+</code> spot; a bouncing paw points at each target. Skip it anytime with <strong>Skip ➜</strong>.</li>
++    <li><strong>Open the game.</strong> The first time you play, a <strong>How to Play</strong> card explains the loop ("Look at the pieces. Find where they fit. Tap to place.") with a "Auto-show at start" toggle: tap <strong>Got it!</strong>. Then a short <strong>tutorial coach</strong> (STEP 1/2) walks you through one real placement: tap the highlighted piece, then tap the single <code>+</code> spot; a bouncing paw points at each target. Skip it anytime with <strong>Skip ➜</strong>.</li>
+     <li><strong>Memorize the picture.</strong> Before every round the full photo shows for <strong>2 seconds</strong> with a countdown (also after a retry, and via the Peek button after losing).</li>
+-    <li><strong>Place pieces one at a time.</strong> One candidate piece sits in the tray under the board (<code>👇 Find where this piece belongs, then tap the +!</code>). On the board, some cells are already filled in; empty cells show dashed outlines, and a few glow with a <strong><code>+</code></strong> — those are your candidate spots. Tap the <code>+</code> where the piece belongs. Correct: the piece pops in (+50 points) and a new <code>+</code> appears. Wrong: red flash, the piece shakes, <strong>−1 life</strong>.</li>
+-    <li><strong>Keep going until the photo is whole.</strong> When every <code>+</code> is filled, the level completes — stars, score, and a cat fact card appear.</li>
++    <li><strong>Place pieces one at a time.</strong> One candidate piece sits in the tray under the board (<code>👇 Find where this piece belongs, then tap the +!</code>). On the board, some cells are already filled in; empty cells show dashed outlines, and a few glow with a <strong><code>+</code></strong>: those are your candidate spots. Tap the <code>+</code> where the piece belongs. Correct: the piece pops in (+50 points) and a new <code>+</code> appears. Wrong: red flash, the piece shakes, <strong>−1 life</strong>.</li>
++    <li><strong>Keep going until the photo is whole.</strong> When every <code>+</code> is filled, the level completes: stars, score, and a cat fact card appear.</li>
+   </ol>
+ 
+   <figure class="shot">
+@@ -137,7 +137,7 @@ const faqs = [
+     ("⚠️ Hard level! Watch the piece and find its spot"). A round timeout costs 1
+     life and resets that round's fills (same puzzle, no progress lost beyond the
+     round). The 10 cats: levels 1–2 are fixed (Siamese, American Shorthair),
+-    levels 3–10 shuffle from the remaining pool — a fresh lineup every page load
++    levels 3–10 shuffle from the remaining pool, a fresh lineup every page load
+     (re-shuffled when you hit <strong>Play again 🔁</strong>).
+   </p>
+ 
+@@ -155,11 +155,11 @@ const faqs = [
+     <li><strong>+50 points</strong> per correct placement; running total in the ⭐ pill.</li>
+     <li><strong>Level score</strong> = <code>lives remaining × 100</code> + <code>speed bonus</code> (up to +300, earned by finishing within 60 seconds: +5 per second faster, capped).</li>
+     <li><strong>Stars:</strong> 3★ if you finish with 4–5 lives, 2★ with 2–3, 1★ with 1 (you can never get 0★). Your <strong>best star record per level</strong> is kept in the browser and survives reloads.</li>
+-    <li><strong>Win screen:</strong> "Well Done! 🎉" — star row, "You completed the {'{Breed}'} puzzle!", <code>Level score +N</code> with the breakdown "Lives bonus +N · Speed bonus +N", a <strong>cat-fact card</strong> (breed name + 3 facts), then <strong>Next level ➜</strong> (or <strong>See total 🏆</strong> on level 10), and the share row (<strong>📣 Share on Reddit</strong> / <strong>🔗 Copy link</strong>), plus <strong>Continue ✓</strong> to stay on the finished board.</li>
+-    <li><strong>All 10 done:</strong> 👑 <strong>Puzzle Master!</strong> — "You finished all 10 cat puzzles!" with your <strong>total score</strong>; <strong>Play again 🔁</strong> reshuffles the cats and resets the score.</li>
++    <li><strong>Win screen:</strong> "Well Done! 🎉": star row, "You completed the {'{Breed}'} puzzle!", <code>Level score +N</code> with the breakdown "Lives bonus +N · Speed bonus +N", a <strong>cat-fact card</strong> (breed name + 3 facts), then <strong>Next level ➜</strong> (or <strong>See total 🏆</strong> on level 10), and the share row (<strong>📣 Share on Reddit</strong> / <strong>🔗 Copy link</strong>), plus <strong>Continue ✓</strong> to stay on the finished board.</li>
++    <li><strong>All 10 done:</strong> 👑 <strong>Puzzle Master!</strong>: "You finished all 10 cat puzzles!" with your <strong>total score</strong>; <strong>Play again 🔁</strong> reshuffles the cats and resets the score.</li>
+     <li><strong>Lose screen ("No lives left"):</strong> "Don't give up — your cat believes in you!", plus a nudge showing how many levels you've cleared. Three ways out: <strong>Try again 💪</strong> (restart the level), <strong>👁 Peek at the picture (2s)</strong> (replays the preview, then restarts), or <strong>Skip this puzzle →</strong> (advance with no score).</li>
+     <li><strong>Share:</strong> Reddit opens <code>reddit.com/r/pictomino/submit</code> (title like "Beat Pictomino Level 3 (easy) ⭐⭐⭐ — can you do better? → gridpaw.com/pictomino") and first copies a picture of your board to the clipboard via html2canvas; <strong>Copy link</strong> copies the same text (shows ✅ Copied! 1.6s).</li>
+-    <li><strong>Sound:</strong> synthesized Web Audio chips — rising double-tone on correct, descending buzz on wrong, arpeggio on win. No audio files, muted state persisted.</li>
++    <li><strong>Sound:</strong> synthesized Web Audio chips: rising double-tone on correct, descending buzz on wrong, arpeggio on win. No audio files, muted state persisted.</li>
+   </ul>
+ 
+   <figure class="shot">
+@@ -172,13 +172,13 @@ const faqs = [
+     The <strong>Daily Challenge</strong> (<a href="/pictomino/daily-puzzle">gridpaw.com/pictomino/daily-puzzle</a>)
+     is a separate, harder mode: <strong>one puzzle per day, same for every player
+     worldwide</strong> (date-seeded from UTC). It's a <strong>6×6 grid with 18
+-    holes, 4 candidate spots, 33% blur, 50s per round</strong> — the hardest board
++    holes, 4 candidate spots, 33% blur, 50s per round</strong>. The hardest board
+     in the game.
+   </p>
+   <ul>
+     <li>Your <strong>streak</strong> grows by 1 for each day you solve it (broken if you skip a day), with badges: 💪 Keep it up! (3) → 🔥 Week warrior! (7) → ⭐ Two-week legend! (14) → 🏆 30-day champion! (30).</li>
+     <li>Your <strong>best time</strong> is tracked; finishing the puzzle shows the streak card on the win screen.</li>
+-    <li>Below the game, <strong>🏆 Today's Leaderboard</strong> ranks the day's fastest solvers (🥇🥈🥉 + times). To appear on it you must <strong>Sign in</strong> (Google) — "📅 Sign in and finish today's puzzle to compete!" — otherwise it's purely local. After you win, the page auto-scrolls to the leaderboard.</li>
++    <li>Below the game, <strong>🏆 Today's Leaderboard</strong> ranks the day's fastest solvers (🥇🥈🥉 + times). To appear on it you must <strong>Sign in</strong> (Google), "📅 Sign in and finish today's puzzle to compete!", otherwise it's purely local. After you win, the page auto-scrolls to the leaderboard.</li>
+     <li>The Daily win screen hides "Next level" (there's only one) and its close button reads <strong>Done ✓</strong>.</li>
+   </ul>
+ 
+diff --git a/src/pages/kenken/index.astro b/src/pages/kenken/index.astro
+index 1c07005..179782c 100644
+--- a/src/pages/kenken/index.astro
++++ b/src/pages/kenken/index.astro
+@@ -539,7 +539,7 @@ const description = "Play KenKen (Calcudoku) free online: cat-themed math logic
+ 
+     <!-- ═══════════ Game Card ═══════════ -->
+     <h1 style="font-size:1.5rem;font-weight:900;color:var(--ink);text-align:center;margin-bottom:0.3rem">KenKen Puzzle</h1>
+-    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">Play free online — the cat-approved Calcudoku math logic puzzle, no download needed.</p>
++    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">Play free online: the cat-approved Calcudoku math logic puzzle, no download needed.</p>
+ 
+     <section id="play" class="card game-card" aria-label="GridPaw KenKen game">
+       <div class="game-topbar">
+@@ -599,8 +599,8 @@ const description = "Play KenKen (Calcudoku) free online: cat-themed math logic
+       <div class="rules-card">
+         <h3>How to play KenKen</h3>
+         <div class="rules-rule"><span class="ic">1️⃣</span><span>Fill the grid so every <b>row and column</b> contains 1–N exactly once.</span></div>
+-        <div class="rules-rule"><span class="ic">2️⃣</span><span>Numbers inside a <b>cage</b> (thick outline) combine to its target with the operator — so <b>6+</b> means the digits sum to 6, and <b>2÷</b> means one digit divided by the other equals 2.</span></div>
+-        <div class="rules-rule"><span class="ic">3️⃣</span><span>Digits may repeat <b>inside a cage</b> — only rows and columns forbid repeats.</span></div>
++        <div class="rules-rule"><span class="ic">2️⃣</span><span>Numbers inside a <b>cage</b> (thick outline) combine to its target with the operator. So <b>6+</b> means the digits sum to 6, and <b>2÷</b> means one digit divided by the other equals 2.</span></div>
++        <div class="rules-rule"><span class="ic">3️⃣</span><span>Digits may repeat <b>inside a cage</b>: only rows and columns forbid repeats.</span></div>
+         <button class="rules-ok" id="rules-close">Got it, let me play</button>
+         <div class="rules-note">💡 Select a cell and tap a number. Stuck? The Hint button fills the selected cell.</div>
+       </div>
+@@ -614,42 +614,42 @@ const description = "Play KenKen (Calcudoku) free online: cat-themed math logic
+     <!-- ═══════════ SEO Content ═══════════ -->
+     <section class="section prose seo-section" id="how-to-play" aria-label="How to play KenKen">
+       <h2>How to Play KenKen</h2>
+-      <p>KenKen — also called <strong>Calcudoku</strong> or <strong>Mathdoku</strong> — is a number logic puzzle with two simple rules. Every <strong>row and every column</strong> must contain each number from 1 to N exactly once, where N is the grid size (4, 6 or 9 here). What sets KenKen apart from other Latin-square puzzles is the <strong>cages</strong>: blocks outlined in thick lines, each carrying a small target number and an operator.</p>
++      <p>KenKen (also called <strong>Calcudoku</strong> or <strong>Mathdoku</strong>) is a number logic puzzle with two simple rules. Every <strong>row and every column</strong> must contain each number from 1 to N exactly once, where N is the grid size (4, 6 or 9 here). What sets KenKen apart from other Latin-square puzzles is the <strong>cages</strong>: blocks outlined in thick lines, each carrying a small target number and an operator.</p>
+       <p>The numbers inside a cage must combine to its target using the operator:</p>
+       <ul>
+-        <li><strong>6+</strong> — the digits in the cage must <strong>add up to 6</strong>.</li>
+-        <li><strong>2−</strong> — a two-cell cage where the difference of the two digits is 2.</li>
+-        <li><strong>12×</strong> — the digits must <strong>multiply</strong> to 12.</li>
+-        <li><strong>2÷</strong> — a two-cell cage where one digit divided by the other equals 2.</li>
+-        <li><strong>A plain number with no operator</strong> — a single-cell cage: that cell is already fixed and acts as a clue.</li>
++        <li><strong>6+</strong>: the digits in the cage must <strong>add up to 6</strong>.</li>
++        <li><strong>2−</strong>: a two-cell cage where the difference of the two digits is 2.</li>
++        <li><strong>12×</strong>: the digits must <strong>multiply</strong> to 12.</li>
++        <li><strong>2÷</strong>: a two-cell cage where one digit divided by the other equals 2.</li>
++        <li><strong>A plain number with no operator</strong>: a single-cell cage: that cell is already fixed and acts as a clue.</li>
+       </ul>
+-      <p>Digits <strong>may repeat inside a cage</strong> — the row and column rule is the only thing that forbids repeats. Every GridPaw KenKen puzzle has a unique solution and can be solved with pure logic, no guessing required. Tap a cell, then type a number (or tap the on-screen number pad); tap the same number again to clear it. If you get stuck, the Hint button reveals the correct digit for the selected cell — you get 3 per puzzle.</p>
++      <p>Digits <strong>may repeat inside a cage</strong>: the row and column rule is the only thing that forbids repeats. Every GridPaw KenKen puzzle has a unique solution and can be solved with pure logic, no guessing required. Tap a cell, then type a number (or tap the on-screen number pad); tap the same number again to clear it. If you get stuck, the Hint button reveals the correct digit for the selected cell. You get 3 per puzzle.</p>
+     </section>
+ 
+     <section class="section prose seo-section" aria-label="KenKen vs Calcudoku vs Mathdoku">
+       <h2>What Is Calcudoku? KenKen vs Calcudoku vs Mathdoku</h2>
+-      <p><strong>Calcudoku</strong> (sometimes written "Calcu-doku") is the generic name for the puzzle family most people know as <strong>KenKen</strong>. The puzzle was invented in 2004 by Japanese math teacher <strong>Tetsuya Miyamoto</strong>, who designed it to train his students' arithmetic and logical thinking together — the name loosely means "wisdom squared".</p>
+-      <p>Because <strong>KenKen is a registered trademark of Nextoy LLC</strong>, newspapers, apps and puzzle sites that are not licensed use the identical puzzle under other names: <strong>Calcudoku</strong> and <strong>Mathdoku</strong> are the two most common. The rules are exactly the same — a Latin square with arithmetic cages. If you have solved one, you have solved them all, which is why you will sometimes see a single puzzle published as "KenKen" in one outlet and "Calcudoku" in another.</p>
++      <p><strong>Calcudoku</strong> (sometimes written "Calcu-doku") is the generic name for the puzzle family most people know as <strong>KenKen</strong>. The puzzle was invented in 2004 by Japanese math teacher <strong>Tetsuya Miyamoto</strong>, who designed it to train his students' arithmetic and logical thinking together. The name loosely means "wisdom squared".</p>
++      <p>Because <strong>KenKen is a registered trademark of Nextoy LLC</strong>, newspapers, apps and puzzle sites that are not licensed use the identical puzzle under other names: <strong>Calcudoku</strong> and <strong>Mathdoku</strong> are the two most common. The rules are exactly the same: a Latin square with arithmetic cages. If you have solved one, you have solved them all, which is why you will sometimes see a single puzzle published as "KenKen" in one outlet and "Calcudoku" in another.</p>
+       <p>At GridPaw we call the game KenKen because that is the name players search for, but the footer of this page always credits the trademark so nobody walks away confused about the name game.</p>
+     </section>
+ 
+     <section class="section prose seo-section" aria-label="KenKen vs Sudoku">
+       <h2>KenKen vs Sudoku</h2>
+-      <p><strong>Sudoku</strong> and <strong>KenKen</strong> both use the same backbone rule: every row and every column contains 1–N exactly once. The difference is how the third constraint works. In Sudoku, an inner 3×3 box ties groups of 9 cells together; in KenKen, oddly shaped <strong>cages</strong> — two cells, five cells, anything — carry an arithmetic target instead.</p>
+-      <p>That small change transforms the experience. Sudoku is pure pattern logic: you scan, cross-hatch and eliminate. KenKen mixes <strong>arithmetic into the deduction</strong>, so you keep your mental math sharp while solving — a 6+ cage in a 4×4 grid immediately narrows the possibilities, and a 3÷ cage forces you to think about {1, 3} or {2, 6} before you ever look at the rows. Because cages come in every shape, KenKen boards also <em>look</em> more varied and feel less repetitive than a wall of uniform Sudoku squares.</p>
+-      <p>Difficulty-wise, neither game is inherently harder. A 4×4 KenKen is friendlier for total beginners than most Sudoku grids, and a hard 9×9 KenKen demands the same deep elimination technique as an expert Sudoku — just with multiplication tables attached.</p>
++      <p><strong>Sudoku</strong> and <strong>KenKen</strong> both use the same backbone rule: every row and every column contains 1–N exactly once. The difference is how the third constraint works. In Sudoku, an inner 3×3 box ties groups of 9 cells together; in KenKen, oddly shaped <strong>cages</strong> (two cells, five cells, anything) carry an arithmetic target instead.</p>
++      <p>That small change transforms the experience. Sudoku is pure pattern logic: you scan, cross-hatch and eliminate. KenKen mixes <strong>arithmetic into the deduction</strong>, so you keep your mental math sharp while solving. A 6+ cage in a 4×4 grid immediately narrows the possibilities, and a 3÷ cage forces you to think about {1, 3} or {2, 6} before you ever look at the rows. Because cages come in every shape, KenKen boards also <em>look</em> more varied and feel less repetitive than a wall of uniform Sudoku squares.</p>
++      <p>Difficulty-wise, neither game is inherently harder. A 4×4 KenKen is friendlier for total beginners than most Sudoku grids, and a hard 9×9 KenKen demands the same deep elimination technique as an expert Sudoku, just with multiplication tables attached.</p>
+     </section>
+ 
+     <section class="section prose seo-section" id="tips" aria-label="KenKen tips and strategy">
+       <h2>KenKen Tips and Strategy</h2>
+-      <p>New to KenKen? Start with the <strong>fixed cells</strong> — single-cell cages with no operator are already filled for you. Then hunt the cages that have only one possible combination, especially on small boards:</p>
++      <p>New to KenKen? Start with the <strong>fixed cells</strong>. Single-cell cages with no operator are already filled for you. Then hunt the cages that have only one possible combination, especially on small boards:</p>
+       <ol>
+         <li><strong>Start with the tightest cages.</strong> In a 4×4 puzzle, a two-cell <strong>3+</strong> cage is always {1, 2}, and a two-cell <strong>2÷</strong> cage is {1, 2} in some order. A <strong>7+</strong> in 4×4 is always {3, 4}. Lock those pairs down first.</li>
+-        <li><strong>Use the row-sum trick.</strong> Every row must total N(N+1)/2 — a 4×4 row sums to 10, a 6×6 row to 21, a 9×9 row to 45. When a row is nearly full, the last cell is forced: just subtract what you have.</li>
+-        <li><strong>Read multiplication cages through primes.</strong> A two-cell <strong>5×</strong> cage is {1, 5} in some order; a <strong>3×</strong> in 4×4 is {1, 3}. Bigger targets like <strong>12×</strong> give you {3, 4}, {2, 6}, {2, 2, 3} and friends — then the rows and columns decide.</li>
+-        <li><strong>Test both orders for − and ÷.</strong> A two-cell cage never says which digit goes where. When everything else is eliminated, the row and column constraints pick the order — walk through both placements mentally before writing anything.</li>
++        <li><strong>Use the row-sum trick.</strong> Every row must total N(N+1)/2: a 4×4 row sums to 10, a 6×6 row to 21, a 9×9 row to 45. When a row is nearly full, the last cell is forced: just subtract what you have.</li>
++        <li><strong>Read multiplication cages through primes.</strong> A two-cell <strong>5×</strong> cage is {1, 5} in some order; a <strong>3×</strong> in 4×4 is {1, 3}. Bigger targets like <strong>12×</strong> give you {3, 4}, {2, 6}, {2, 2, 3} and friends. Then the rows and columns decide.</li>
++        <li><strong>Test both orders for − and ÷.</strong> A two-cell cage never says which digit goes where. When everything else is eliminated, the row and column constraints pick the order. Walk through both placements mentally before writing anything.</li>
+         <li><strong>Remember cage repeats are legal.</strong> The most common beginner mistake is banning repeats inside a cage. A two-cell <strong>4+</strong> cage filled with {2, 2} is perfectly legal as long as the rows and columns stay legal.</li>
+-        <li><strong>Eliminate before you commit.</strong> If a digit completes a cage but duplicates a value already in its row or column, cross it out. With 3 hints per puzzle, you will rarely need them — but they are there when a 9×9 gets stubborn.</li>
++        <li><strong>Eliminate before you commit.</strong> If a digit completes a cage but duplicates a value already in its row or column, cross it out. With 3 hints per puzzle, you will rarely need them, but they are there when a 9×9 gets stubborn.</li>
+       </ol>
+     </section>
+ 
+diff --git a/src/pages/murdoku/index.astro b/src/pages/murdoku/index.astro
+index cec01bc..fe27c4b 100644
+--- a/src/pages/murdoku/index.astro
++++ b/src/pages/murdoku/index.astro
+@@ -335,7 +335,7 @@ const description = "Play murder sudoku free online: place cat suspects, follow
+   <main class="main" id="main-content">
+     <!-- ═══════════ Game Card ═══════════ -->
+     <h1 style="font-size:1.5rem;font-weight:900;color:var(--ink);text-align:center;margin-bottom:0.3rem">Murder Sudoku</h1>
+-    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">Play free online — the cat-approved whodunit logic puzzle, no download needed.</p>
++    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">Play free online: the cat-approved whodunit logic puzzle, no download needed.</p>
+ 
+     <section id="play" class="card game-card" aria-label="GridPaw Murder Sudoku game">
+       <div class="game-topbar">
+@@ -383,7 +383,7 @@ const description = "Play murder sudoku free online: place cat suspects, follow
+           <div class="legend-item"><b>In a room / NOT in a room</b><span>That suspect's room is fixed (or excluded). Place them there first.</span></div>
+           <div class="legend-item"><b>On a rug / Beside a table</b><span>What the suspect stands on or next to. Rug and table cells are drawn inside rooms.</span></div>
+           <div class="legend-item legend-key"><b>At a wall</b><span>Only the <u>outside edge of the whole board</u> counts. The thin lines between rooms are partitions, not walls.</span></div>
+-          <div class="legend-item legend-key"><b>In a corner</b><span>Only the four corners of the board itself — two outside edges meet there.</span></div>
++          <div class="legend-item legend-key"><b>In a corner</b><span>Only the four corners of the board itself: two outside edges meet there.</span></div>
+           <div class="legend-item"><b>Same room as X / Alone with X</b><span>X is a suspect or the victim. "Alone with" means exactly two figures in that room.</span></div>
+           <div class="legend-item"><b>Exactly K figures / Room locked</b><span>Room counts include the victim. "Locked" means nobody was inside.</span></div>
+         </div>
+@@ -403,7 +403,7 @@ const description = "Play murder sudoku free online: place cat suspects, follow
+           <button class="hint-btn" id="shReddit">👽 Reddit</button>
+         </div>
+         <div id="promoBlock" style="display:none;margin-top:14px">
+-          <p style="font-size:14.5px;margin:0 0 9px;font-weight:700">You've got the basics down — ready for a bigger house?</p>
++          <p style="font-size:14.5px;margin:0 0 9px;font-weight:700">You've got the basics down. Ready for a bigger house?</p>
+           <p style="font-size:13px;margin:0 0 10px;opacity:.8">6×6 adds a fifth suspect and a sixth room. Same rules, deeper mystery.</p>
+           <button class="hint-btn primary" id="nextBig">🔍 Open your first 6×6 case</button>
+           <button class="hint-btn" id="staySmall" style="margin-left:8px">Keep it 4×4</button>
+@@ -426,10 +426,10 @@ const description = "Play murder sudoku free online: place cat suspects, follow
+     <div class="seo-section prose">
+     <section class="section" id="how-to-play">
+       <h2>How to Play Murder Sudoku</h2>
+-      <p>Murder sudoku is a hybrid of two classics: the row-and-column discipline of sudoku and the deduction of a whodunit. Each case gives you a mansion floor plan carved into named rooms, a cast of suspects, and a set of witness statements. Every statement is true — your job is to work out where each suspect was standing when the body was found.</p>
++      <p>Murder sudoku is a hybrid of two classics: the row-and-column discipline of sudoku and the deduction of a whodunit. Each case gives you a mansion floor plan carved into named rooms, a cast of suspects, and a set of witness statements. Every statement is true. Your job is to work out where each suspect was standing when the body was found.</p>
+       <ul>
+-        <li><strong>Place the suspects.</strong> Select a suspect from the tray, then tap a room cell to place them. No two figures can share a row or a column — the same sudoku rule you already know.</li>
+-        <li><strong>Read the statements.</strong> Each witness gives exactly one testimony: where they were, what they were standing on, who they were with, or which room was empty. All of them are true. One rule of the house: <strong>"at a wall" always means the outside edge of the whole board</strong> — the thin lines between rooms are partitions, not walls.</li>
++        <li><strong>Place the suspects.</strong> Select a suspect from the tray, then tap a room cell to place them. No two figures can share a row or a column: the same sudoku rule you already know.</li>
++        <li><strong>Read the statements.</strong> Each witness gives exactly one testimony: where they were, what they were standing on, who they were with, or which room was empty. All of them are true. One rule of the house: <strong>"at a wall" always means the outside edge of the whole board</strong>: the thin lines between rooms are partitions, not walls.</li>
+         <li><strong>Find the killer.</strong> The suspect who ends up alone in the room with the victim is the murderer. When every suspect is placed, hit <strong>Accuse!</strong> to close the case.</li>
+       </ul>
+       <p>Start with a <strong>4×4 Easy</strong> case to learn the flow of deduction, then move up to <strong>6×6 Tricky</strong> for longer chains of reasoning.</p>
+diff --git a/src/pages/murdoku/trail.astro b/src/pages/murdoku/trail.astro
+index f36b98b..507376d 100644
+--- a/src/pages/murdoku/trail.astro
++++ b/src/pages/murdoku/trail.astro
+@@ -304,7 +304,7 @@ const description = "Five linked murder sudoku cases, one Cat Burglar. Solve eac
+ <div class="shell">
+   <main class="main" id="main-content">
+     <h1 style="font-size:1.5rem;font-weight:900;color:var(--ink);text-align:center;margin-bottom:0.3rem">The Case Trail: Catch the Cat Burglar</h1>
+-    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">Five linked murder sudoku cases. Solve each crime scene — the room where the killer was caught gives you one clue initial. Spell the trail, catch the burglar.</p>
++    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">Five linked murder sudoku cases. Solve each crime scene. The room where the killer was caught gives you one clue initial. Spell the trail, catch the burglar.</p>
+ 
+     <div class="trail-bar" id="trailBar" aria-label="Case Trail progress"></div>
+ 
+@@ -343,7 +343,7 @@ const description = "Five linked murder sudoku cases, one Cat Burglar. Solve eac
+           <div class="legend-item"><b>In a room / NOT in a room</b><span>That suspect's room is fixed (or excluded). Place them there first.</span></div>
+           <div class="legend-item"><b>On a rug / Beside a table</b><span>What the suspect stands on or next to. Rug and table cells are drawn inside rooms.</span></div>
+           <div class="legend-item legend-key"><b>At a wall</b><span>Only the <u>outside edge of the whole board</u> counts. The thin lines between rooms are partitions, not walls.</span></div>
+-          <div class="legend-item legend-key"><b>In a corner</b><span>Only the four corners of the board itself — two outside edges meet there.</span></div>
++          <div class="legend-item legend-key"><b>In a corner</b><span>Only the four corners of the board itself. Two outside edges meet there.</span></div>
+           <div class="legend-item"><b>Same room as X / Alone with X</b><span>X is a suspect or the victim. "Alone with" means exactly two figures in that room.</span></div>
+           <div class="legend-item"><b>Exactly K figures / Room locked</b><span>Room counts include the victim. "Locked" means nobody was inside.</span></div>
+         </div>
+@@ -387,7 +387,7 @@ const description = "Five linked murder sudoku cases, one Cat Burglar. Solve eac
+             <button class="hint-btn" id="shX">𝕏 Share</button>
+             <button class="hint-btn" id="shReddit">👽 Reddit</button>
+           </div>
+-          <p style="font-size:13.5px;margin-top:14px">The burglar is behind bars — but the mansion never sleeps.<br><a href="/murdoku/" style="color:var(--accent);font-weight:800;text-decoration:underline">Play random cases →</a></p>
++          <p style="font-size:13.5px;margin-top:14px">The burglar is behind bars, but the mansion never sleeps.<br><a href="/murdoku/" style="color:var(--accent);font-weight:800;text-decoration:underline">Play random cases →</a></p>
+         </div>
+       </div>
+     </div>
+@@ -406,10 +406,10 @@ const description = "Five linked murder sudoku cases, one Cat Burglar. Solve eac
+       <p>The Case Trail is a five-case murder sudoku story. A Cat Burglar has struck five times, and every crime scene is a logic puzzle in its own right. Each case uses the classic murder sudoku rules: place every suspect on the grid so that no two figures share a row or a column, follow the witness statements, and the suspect left alone in the victim's room is the killer.</p>
+       <ul>
+         <li><strong>Solve the scene.</strong> Cases 1 and 2 are gentle 4×4 mansions; cases 3 to 5 are trickier 6×6 houses with more suspects and rooms.</li>
+-        <li><strong>Point to the room.</strong> After every accusation you must name the room where the killer was caught with the victim. Correct answers unlock the next case — and one clue initial.</li>
++        <li><strong>Point to the room.</strong> After every accusation you must name the room where the killer was caught with the victim. Correct answers unlock the next case, and one clue initial.</li>
+         <li><strong>Crack the trail.</strong> The five initials, read in order, spell what the Cat Burglar was hunting for. Name it to close the case file for good.</li>
+       </ul>
+-      <p>Your progress is saved in your browser, and every case is fixed — the same puzzles for every detective. New to murder sudoku? Warm up with <a href="/murdoku/">random cases</a> first.</p>
++      <p>Your progress is saved in your browser, and every case is fixed: the same puzzles for every detective. New to murder sudoku? Warm up with <a href="/murdoku/">random cases</a> first.</p>
+     </section>
+     <section class="section" id="faq">
+       <h2>Case Trail FAQ</h2>
+diff --git a/src/pages/nonogram/index.astro b/src/pages/nonogram/index.astro
+index d8d85d2..4eff590 100644
+--- a/src/pages/nonogram/index.astro
++++ b/src/pages/nonogram/index.astro
+@@ -79,8 +79,8 @@ const faqs = [
+     <p class="lede">
+       Nonogram is the paint-by-number member of the Japanese logic puzzle family: the
+       clues count the filled blocks in every row and column, and the picture only
+-      appears when every line is true. Learn it in four guided lessons — each one
+-      reveals a cat — then clear an 11-level campaign and keep going with daily
++      appears when every line is true. Learn it in four guided lessons (each one
++      reveals a cat), then clear an 11-level campaign and keep going with daily
+       puzzles. Everything runs in your browser.
+     </p>
+ 
+@@ -106,13 +106,13 @@ const faqs = [
+         <li>
+           <strong>Numbers are block lengths.</strong>
+           A clue like <em>3 1</em> means: a block of 3 filled cells, at least one gap,
+-          then a block of 1 — in that exact order along the line. Blocks never touch.
++          then a block of 1, in that exact order along the line. Blocks never touch.
+         </li>
+         <li>
+           <strong>Edge clues pin cells.</strong>
+           A clue that touches the border forces cells immediately: 5 in a 5-wide line
+           fills the whole line, and a 4 in a 5-wide line pins at least three cells no
+-          matter where it starts. Scan the borders first — they are free deductions.
++          matter where it starts. Scan the borders first. They are free deductions.
+         </li>
+         <li>
+           <strong>Cross the lines.</strong>
+@@ -129,12 +129,12 @@ const faqs = [
+         Most Nonogram sites hand you anonymous grids. GridPaw levels are built around
+         the reveal: the four tutorial lessons each uncover a cat, the campaign keeps
+         the theme going, and the win screen replays your picture cell by cell. The
+-        reveal is the point — we made sure you can see it.
++        reveal is the point: we made sure you can see it.
+       </p>
+       <p>
+         Every generated board is verified to have exactly one solution, and the Easy
+         and Medium levels are additionally verified to be solvable by pure line logic
+-        alone — no guessing required. When you do get stuck, the hint button reveals
++        alone. No guessing required. When you do get stuck, the hint button reveals
+         one true cell and the message bar tells you where it sits.
+       </p>
+     </section>
+@@ -163,10 +163,10 @@ const faqs = [
+     <section class="more">
+       <h2>More Logic Puzzles on GridPaw</h2>
+       <ul class="links">
+-        <li><a href="/kakuro/">Kakuro (Cross Sums)</a> — the mathematical crossword cousin.</li>
+-        <li><a href="/akari/">Akari (Light Up)</a> — place lights, light every cell, obey the numbered walls.</li>
+-        <li><a href="/japanese-logic-puzzles/">Japanese logic puzzles</a> — the family Nonogram belongs to.</li>
+-        <li><a href="/brain-teasers-for-adults/">Brain teasers for adults</a> — warm up before the Hard levels.</li>
++        <li><a href="/kakuro/">Kakuro (Cross Sums)</a>: the mathematical crossword cousin.</li>
++        <li><a href="/akari/">Akari (Light Up)</a>: place lights, light every cell, obey the numbered walls.</li>
++        <li><a href="/japanese-logic-puzzles/">Japanese logic puzzles</a>: the family Nonogram belongs to.</li>
++        <li><a href="/brain-teasers-for-adults/">Brain teasers for adults</a>: warm up before the Hard levels.</li>
+       </ul>
+  <p class="cta-line">Ready to paint? <a href="/">Play Shikaku on GridPaw →</a></p>
+     </section>
+diff --git a/src/pages/nonogram/solver/index.astro b/src/pages/nonogram/solver/index.astro
+index 4194e9a..001f169 100644
+--- a/src/pages/nonogram/solver/index.astro
++++ b/src/pages/nonogram/solver/index.astro
+@@ -118,7 +118,7 @@ const faqs = [
+ 
+   <div class="container">
+     <h1>Nonogram Solver — Enter Clues, Get the Solution</h1>
+-    <p class="sub">Free online solver for picture-cross puzzles. Type the row and column clues from any book or app and get the full grid — no download, nothing leaves your browser.</p>
++    <p class="sub">Free online solver for picture-cross puzzles. Type the row and column clues from any book or app and get the full grid. No download, nothing leaves your browser.</p>
+ 
+     <section class="solver" aria-label="Nonogram solver tool">
+       <div class="size-row" role="group" aria-label="Board size">
+@@ -163,46 +163,46 @@ const faqs = [
+         <div id="step-grid"></div>
+         <p class="howto-note" id="step-text"></p>
+       </div>
+-      <p class="howto-note">Notation: numbers are the block lengths in order — <b>2 1 3</b> means a block of 2, then 1, then 3, with at least one gap between. Use <b>0</b> (or an empty line) for a row or column with nothing filled.</p>
++      <p class="howto-note">Notation: numbers are the block lengths in order: <b>2 1 3</b> means a block of 2, then 1, then 3, with at least one gap between. Use <b>0</b> (or an empty line) for a row or column with nothing filled.</p>
+     </section>
+ 
+     <section class="seo-content">
+       <h2>How to Use This Nonogram Solver</h2>
+       <ol>
+-        <li><strong>Pick the board size.</strong> Use a preset (5×5 to 20×20) or type a custom size up to 25×25 — it must match the puzzle you are solving.</li>
++        <li><strong>Pick the board size.</strong> Use a preset (5×5 to 20×20) or type a custom size up to 25×25. It must match the puzzle you are solving.</li>
+         <li><strong>Type the clues.</strong> Row clues go in the left box, one line per row from top to bottom. Column clues go in the right box, one line per column from left to right. Copy the numbers exactly as printed, including their order.</li>
+-        <li><strong>Press Solve.</strong> The full grid appears below — filled cells in dark, empty cells in white. If something is off, the solver tells you exactly which line failed and why.</li>
++        <li><strong>Press Solve.</strong> The full grid appears below: filled cells in dark, empty cells in white. If something is off, the solver tells you exactly which line failed and why.</li>
+       </ol>
+-      <p>The solver works on <em>any</em> source: newspaper puzzles, puzzle books, apps, printouts. Because the clues describe the puzzle completely, nothing else is needed — no image, no app connection.</p>
++      <p>The solver works on <em>any</em> source: newspaper puzzles, puzzle books, apps, printouts. Because the clues describe the puzzle completely, nothing else is needed, no image, no app connection.</p>
+ 
+       <h2>How the Solver Works</h2>
+       <p>Nonograms are solved by <strong>line logic</strong>. For every row and every column, the solver lists every placement of blocks that is still consistent with what is already known. Any cell that is filled in <em>every</em> remaining placement gets inked; any cell left empty in <em>every</em> placement gets crossed out. Each new mark shrinks the placements of the crossing lines, so the deductions cascade until the grid is complete.</p>
+-      <p>That is how the overwhelming majority of published puzzles are meant to be solved — no guessing at any point. When a puzzle is <em>not</em> line-solvable (rare in books, common in hand-made grids), the solver says so honestly: it finishes with a clearly-labeled limited search instead of pretending the answer was forced. And if the clues describe more than one valid picture, it warns you — a solver that stays silent about ambiguity is hiding the most important fact about your puzzle.</p>
++      <p>That is how the overwhelming majority of published puzzles are meant to be solved. No guessing at any point. When a puzzle is <em>not</em> line-solvable (rare in books, common in hand-made grids), the solver says so honestly: it finishes with a clearly-labeled limited search instead of pretending the answer was forced. And if the clues describe more than one valid picture, it warns you: a solver that stays silent about ambiguity is hiding the most important fact about your puzzle.</p>
+       <p>Everything runs locally in your browser. There is no server round-trip: your clues are yours, and the answer appears in well under a second for typical sizes.</p>
+ 
+       <h2>Watch It Think: Step-by-Step Mode</h2>
+-      <p>Tick <strong>Step by step</strong> above the Solve button and the solver will replay its entire deduction, one move at a time. Each step names the row or column it examined and exactly which cells were forced filled or crossed out — the same moves a skilled human solver makes, in the same order. When a puzzle needs search, those steps are labeled honestly as <em>Search</em> instead of being dressed up as logic. Use <strong>← Prev</strong> / <strong>Next →</strong> to walk through it, or <strong>Show full solution</strong> to jump to the end.</p>
++      <p>Tick <strong>Step by step</strong> above the Solve button and the solver will replay its entire deduction, one move at a time. Each step names the row or column it examined and exactly which cells were forced filled or crossed out: the same moves a skilled human solver makes, in the same order. When a puzzle needs search, those steps are labeled honestly as <em>Search</em> instead of being dressed up as logic. Use <strong>← Prev</strong> / <strong>Next →</strong> to walk through it, or <strong>Show full solution</strong> to jump to the end.</p>
+       <p>This is also the fastest way to <em>learn</em> line logic: load the example, step through it, and watch how a single half-determined row cascades across the whole board.</p>
+ 
+       <h2>Save and Share Your Puzzle</h2>
+-      <p>After every successful solve, the clues are encoded into the page address. Press <strong>🔗 Copy link</strong> and the URL you paste anywhere — a forum reply, a message to a friend, your own notes — reopens this exact puzzle, already sized and solved. Nothing is uploaded anywhere: the clues ride along in the link itself.</p>
++      <p>After every successful solve, the clues are encoded into the page address. Press <strong>🔗 Copy link</strong> and the URL you paste anywhere (a forum reply, a message to a friend, your own notes) reopens this exact puzzle, already sized and solved. Nothing is uploaded anywhere: the clues ride along in the link itself.</p>
+ 
+       <h2>When the Solver Can't Help</h2>
+       <h3>"No solution exists for these clues"</h3>
+-      <p>The clue set is contradictory — no grid can satisfy it. Nine times out of ten that means a typo: <b>3 1</b> instead of <b>1 3</b>, a 4 typed as a 1, or a clue entered in the wrong row. Check the lines the solver highlights, then re-read every clue against the original.</p>
++      <p>The clue set is contradictory. No grid can satisfy it. Nine times out of ten that means a typo: <b>3 1</b> instead of <b>1 3</b>, a 4 typed as a 1, or a clue entered in the wrong row. Check the lines the solver highlights, then re-read every clue against the original.</p>
+       <h3>"More than one solution"</h3>
+-      <p>The clues are consistent but not unique — several different pictures fit them. Books sometimes ship ambiguous puzzles by accident. If you are stuck between two candidate cells, the solver's answer tells you which way the puzzle <em>can</em> go; either solution you draw will satisfy the clues.</p>
++      <p>The clues are consistent but not unique: several different pictures fit them. Books sometimes ship ambiguous puzzles by accident. If you are stuck between two candidate cells, the solver's answer tells you which way the puzzle <em>can</em> go; either solution you draw will satisfy the clues.</p>
+       <h3>"Needed search"</h3>
+-      <p>Pure line logic stalled, so the solver finished with a small amount of trial-and-error. The answer is still checked against every clue — nothing is invented. Puzzles like this are simply harder than the guessing-free norm.</p>
++      <p>Pure line logic stalled, so the solver finished with a small amount of trial-and-error. The answer is still checked against every clue. Nothing is invented. Puzzles like this are simply harder than the guessing-free norm.</p>
+ 
+       <h2>Nonogram Rules (Quick Refresher)</h2>
+       <ul>
+         <li><strong>Numbers are blocks.</strong> Each number is an unbroken run of filled cells; blocks appear in the order listed, separated by at least one empty cell.</li>
+         <li><strong>Order matters.</strong> 1 3 and 3 1 are different clues.</li>
+         <li><strong>Gaps can be longer.</strong> The single empty cell between blocks is a minimum, not an exact count.</li>
+-        <li><strong>The picture is the check.</strong> A correctly solved grid forms a recognizable image — that is the fun of it.</li>
++        <li><strong>The picture is the check.</strong> A correctly solved grid forms a recognizable image: that is the fun of it.</li>
+       </ul>
+-      <p>New to nonograms? <a href="/nonogram/">Play our free Nonogram game</a> — it generates puzzles with built-in hints that teach line logic as you go, from 5×5 up.</p>
++      <p>New to nonograms? <a href="/nonogram/">Play our free Nonogram game</a>. It generates puzzles with built-in hints that teach line logic as you go, from 5×5 up.</p>
+ 
+       <h2>Frequently Asked Questions</h2>
+       {faqs.map(f => (
+diff --git a/src/pages/slitherlink/index.astro b/src/pages/slitherlink/index.astro
+index e8c2686..315a302 100644
+--- a/src/pages/slitherlink/index.astro
++++ b/src/pages/slitherlink/index.astro
+@@ -560,7 +560,7 @@ const description = "Play Slitherlink free online: draw one closed loop through
+ 
+     <!-- ═══════════ Game Card ═══════════ -->
+     <h1 style="font-size:1.5rem;font-weight:900;color:var(--ink);text-align:center;margin-bottom:0.3rem">Slitherlink Puzzle</h1>
+-    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">Play free online — draw one closed loop through the numbered cells. The classic Nikoli logic puzzle, no download needed.</p>
++    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">Play free online: draw one closed loop through the numbered cells. The classic Nikoli logic puzzle, no download needed.</p>
+ 
+     <section id="play" class="card game-card" aria-label="GridPaw Slitherlink game">
+       <div class="game-topbar">
+@@ -633,9 +633,9 @@ const description = "Play Slitherlink free online: draw one closed loop through
+     <div class="win-overlay" id="rules-overlay">
+       <div class="rules-card">
+         <h3>How to play Slitherlink</h3>
+-        <div class="rules-rule"><span class="ic">➰</span><span>Draw a <b>single closed loop</b> along the grid lines between dots — the finished loop is one connected ring.</span></div>
++        <div class="rules-rule"><span class="ic">➰</span><span>Draw a <b>single closed loop</b> along the grid lines between dots. The finished loop is one connected ring.</span></div>
+         <div class="rules-rule"><span class="ic">🔢</span><span>A <b>number in a cell</b> tells you exactly how many of that cell's 4 edges are part of the loop.</span></div>
+-        <div class="rules-rule"><span class="ic">🚫</span><span>The loop <b>never crosses itself or branches</b> — every dot is touched by 0 or 2 line segments.</span></div>
++        <div class="rules-rule"><span class="ic">🚫</span><span>The loop <b>never crosses itself or branches</b>: every dot is touched by 0 or 2 line segments.</span></div>
+         <div class="rules-rule"><span class="ic">0️⃣</span><span>A <b>0</b> means none of its four edges are used; a blank cell means the number of edges is up to you.</span></div>
+         <button class="rules-ok" id="rules-close">Got it, let me play</button>
+         <div class="rules-note">💡 Click a line segment to draw it, click again to erase. Stuck? Hover any edge and press Hint.</div>
+@@ -650,40 +650,40 @@ const description = "Play Slitherlink free online: draw one closed loop through
+     <!-- ═══════════ SEO Content ═══════════ -->
+     <section class="section prose seo-section" id="how-to-play" aria-label="How to play Slitherlink">
+       <h2>How to Play Slitherlink</h2>
+-      <p>Slitherlink is a drawing puzzle with one goal: <strong>draw a single closed loop</strong> along the grid lines that run between the dots. The loop can wander anywhere it likes, but it must obey two iron rules — it <strong>never crosses itself</strong>, and it <strong>never branches</strong>: every dot on the board is touched by either zero or two line segments. When the loop is finished, one continuous ring connects the whole puzzle.</p>
++      <p>Slitherlink is a drawing puzzle with one goal: <strong>draw a single closed loop</strong> along the grid lines that run between the dots. The loop can wander anywhere it likes, but it must obey two iron rules. It <strong>never crosses itself</strong>, and it <strong>never branches</strong>: every dot on the board is touched by either zero or two line segments. When the loop is finished, one continuous ring connects the whole puzzle.</p>
+       <p>The numbers steer you. <strong>A number in a cell tells you exactly how many of that cell's four edges are part of the loop</strong>:</p>
+       <ul>
+         <li>A <strong>3</strong> cell has exactly three of its four sides drawn.</li>
+-        <li>A <strong>2</strong> cell has exactly two of its sides drawn — any two.</li>
++        <li>A <strong>2</strong> cell has exactly two of its sides drawn, any two.</li>
+         <li>A <strong>1</strong> cell has exactly one side drawn.</li>
+-        <li>A <strong>0</strong> cell has none of its sides drawn — all four stay empty.</li>
++        <li>A <strong>0</strong> cell has none of its sides drawn: all four stay empty.</li>
+       </ul>
+       <p>On GridPaw, simply <strong>click a line segment</strong> between two dots to draw it in amber, and click it again to erase. The clue numbers do the rest: once you place enough segments, the loop almost draws itself. Every puzzle here has exactly one valid solution, and you have <strong>3 hints</strong> if you ever paint yourself into a corner.</p>
+     </section>
+ 
+     <section class="section prose seo-section" aria-label="Slitherlink history and names">
+       <h2>What Is Slitherlink? Loop Puzzle Family</h2>
+-      <p><strong>Slitherlink</strong> belongs to the family of loop-drawing puzzles that blossomed in Japan in the 1980s. It was invented by puzzle designer <strong>Naoki Inaba</strong> and first published by <strong>Nikoli</strong> — the same publisher that named Sudoku — in its magazine in <strong>1989</strong>. Nikoli's founders wanted a puzzle about drawing one continuous line, and Slitherlink became one of their flagship titles, beloved for how a handful of small numbers can force a surprisingly elegant closed ring.</p>
+-      <p>Like many Nikoli puzzles, Slitherlink travels under several names depending on the publisher and region. You will meet it as <strong>Slither Link</strong>, <strong>Loop the Loop</strong>, <strong>Fences</strong>, and in Japan as <strong>Suria no Kirinai</strong> — the name translates roughly to "the loop without dead ends", which is a wonderful description of the end state. The rules are identical under every name: one closed loop, numbers count their cell's edges, no crossings, no branches. Its closest cousins in the family are <strong>Masyu</strong> (black-and-white pearl clues) and <strong>Corral</strong>, but Slitherlink's elegant numeric clues make it the most approachable entry point. (Not to be confused with <a href="/the-loop-puzzle/">The Loop</a>, Britannica's daily picture-association puzzle — same word, completely different game; our guide explains both.)</p>
++      <p><strong>Slitherlink</strong> belongs to the family of loop-drawing puzzles that blossomed in Japan in the 1980s. It was invented by puzzle designer <strong>Naoki Inaba</strong> and first published by <strong>Nikoli</strong> (the same publisher that named Sudoku) in its magazine in <strong>1989</strong>. Nikoli's founders wanted a puzzle about drawing one continuous line, and Slitherlink became one of their flagship titles, beloved for how a handful of small numbers can force a surprisingly elegant closed ring.</p>
++      <p>Like many Nikoli puzzles, Slitherlink travels under several names depending on the publisher and region. You will meet it as <strong>Slither Link</strong>, <strong>Loop the Loop</strong>, <strong>Fences</strong>, and in Japan as <strong>Suria no Kirinai</strong>. The name translates roughly to "the loop without dead ends", which is a wonderful description of the end state. The rules are identical under every name: one closed loop, numbers count their cell's edges, no crossings, no branches. Its closest cousins in the family are <strong>Masyu</strong> (black-and-white pearl clues) and <strong>Corral</strong>, but Slitherlink's elegant numeric clues make it the most approachable entry point. (Not to be confused with <a href="/the-loop-puzzle/">The Loop</a>, Britannica's daily picture-association puzzle: same word, completely different game; our guide explains both.)</p>
+     </section>
+ 
+     <section class="section prose seo-section" aria-label="Slitherlink vs Sudoku">
+       <h2>Slitherlink vs Sudoku</h2>
+-      <p><strong>Sudoku</strong> fills a grid with digits; <strong>Slitherlink</strong> draws a line — but the two puzzle families share a deeper DNA. Both are pure logic puzzles with a single valid solution, both reward systematic scanning over brute force, and both were popularized by Nikoli. The big difference is <em>what</em> you deduce.</p>
+-      <p>In Sudoku every constraint is local and symmetric: each row, column and box must contain 1–9 exactly once. In Slitherlink the clues are local too — a 3 only governs its own cell — but the <strong>solution is one global object</strong>: a single loop. You cannot satisfy each number independently and hope the board works out; the loop has to close on itself, which forces you to reason about corners, dead ends and connectivity across the whole grid. Where Sudoku is bookkeeping with nine digits, Slitherlink is geometry with a pencil.</p>
+-      <p>That difference makes the two puzzles perfect training partners. Sudoku sharpens categorical memory and candidate elimination; Slitherlink sharpens <strong>spatial reasoning and step-by-step deduction</strong> — staring at two adjacent 3s and knowing, with total certainty, which edge must be drawn.</p>
++      <p><strong>Sudoku</strong> fills a grid with digits; <strong>Slitherlink</strong> draws a line, but the two puzzle families share a deeper DNA. Both are pure logic puzzles with a single valid solution, both reward systematic scanning over brute force, and both were popularized by Nikoli. The big difference is <em>what</em> you deduce.</p>
++      <p>In Sudoku every constraint is local and symmetric: each row, column and box must contain 1–9 exactly once. In Slitherlink the clues are local too (a 3 only governs its own cell), but the <strong>solution is one global object</strong>: a single loop. You cannot satisfy each number independently and hope the board works out; the loop has to close on itself, which forces you to reason about corners, dead ends and connectivity across the whole grid. Where Sudoku is bookkeeping with nine digits, Slitherlink is geometry with a pencil.</p>
++      <p>That difference makes the two puzzles perfect training partners. Sudoku sharpens categorical memory and candidate elimination; Slitherlink sharpens <strong>spatial reasoning and step-by-step deduction</strong>: staring at two adjacent 3s and knowing, with total certainty, which edge must be drawn.</p>
+     </section>
+ 
+     <section class="section prose seo-section" id="tips" aria-label="Slitherlink tips and strategy">
+       <h2>Slitherlink Tips and Strategy</h2>
+       <p>New to loop puzzles? These four techniques get you through almost any Slitherlink grid, from a 5×5 warm-up to a stubborn 10×10:</p>
+       <ol>
+-        <li><strong>The 0-corner rule.</strong> A <strong>0</strong> clue is a gift: all four of its edges must stay empty. Erase them mentally (or tick them off) and watch the neighbouring numbers tighten up. Empty cells print nothing — but a 0 always prints, so it is easy to spot.</li>
+-        <li><strong>Adjacent 3s.</strong> Two <strong>3</strong> cells sharing an edge force that shared edge to be drawn — with four remaining sides between them needing five segments, every other edge of both cells is drawn too. It is one of the fastest deductions in the game.</li>
+-        <li><strong>Diagonal 3s.</strong> Two 3s touching at a corner lock the two edges that meet in the corner between them, and force the far corners' outer edges. If you see a diagonal pair of 3s, solve it before anything else — it usually unlocks a whole region.</li>
++        <li><strong>The 0-corner rule.</strong> A <strong>0</strong> clue is a gift: all four of its edges must stay empty. Erase them mentally (or tick them off) and watch the neighbouring numbers tighten up. Empty cells print nothing, but a 0 always prints, so it is easy to spot.</li>
++        <li><strong>Adjacent 3s.</strong> Two <strong>3</strong> cells sharing an edge force that shared edge to be drawn. With four remaining sides between them needing five segments, every other edge of both cells is drawn too. It is one of the fastest deductions in the game.</li>
++        <li><strong>Diagonal 3s.</strong> Two 3s touching at a corner lock the two edges that meet in the corner between them, and force the far corners' outer edges. If you see a diagonal pair of 3s, solve it before anything else: it usually unlocks a whole region.</li>
+         <li><strong>Count edges at every dot.</strong> Every dot must end with exactly <strong>0 or 2</strong> segments. If two segments already meet at a dot, every other segment touching that dot must stay off; if a dot already has one segment, its neighbours decide the second. GridPaw helps here: <strong>any dot that would reach degree 3 turns red instantly</strong>, so you can never accidentally branch.</li>
+       </ol>
+-      <p>Finish with <strong>edge counting</strong>: the loop is one ring, so segments form chains that must bend back and connect. When a chain runs toward a blocked corner, the next edge is forced. Rarely get stuck? The <strong>Hint</strong> button lights up the correct state of one edge — 3 per puzzle — and a new puzzle restocks them.</p>
++      <p>Finish with <strong>edge counting</strong>: the loop is one ring, so segments form chains that must bend back and connect. When a chain runs toward a blocked corner, the next edge is forced. Rarely get stuck? The <strong>Hint</strong> button lights up the correct state of one edge, 3 per puzzle, and a new puzzle restocks them.</p>
+     </section>
+ 
+     <!-- ═══════════ FAQ ═══════════ -->
+diff --git a/src/pages/star-battle/index.astro b/src/pages/star-battle/index.astro
+index d315d2e..a21a919 100644
+--- a/src/pages/star-battle/index.astro
++++ b/src/pages/star-battle/index.astro
+@@ -559,7 +559,7 @@ const description = "Play Two Not Touch (Star Battle) free online: place 2 or 3
+ 
+     <!-- ═══════════ Game Card ═══════════ -->
+     <h1 style="font-size:1.5rem;font-weight:900;color:var(--ink);text-align:center;margin-bottom:0.3rem">Star Battle Puzzle</h1>
+-    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">Play free online — the cat-approved Two Not Touch logic puzzle, no download needed. ⭐</p>
++    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">Play free online: the cat-approved Two Not Touch logic puzzle, no download needed. ⭐</p>
+ 
+     <section id="play" class="card game-card" aria-label="GridPaw Star Battle game">
+       <div class="game-topbar">
+@@ -622,10 +622,10 @@ const description = "Play Two Not Touch (Star Battle) free online: place 2 or 3
+       <div class="rules-card">
+         <h3>How to play Star Battle</h3>
+         <div class="rules-rule"><span class="ic">1️⃣</span><span>Place exactly <b>2 stars</b> in every row, every column and every region (3 on Hard grids).</span></div>
+-        <div class="rules-rule"><span class="ic">2️⃣</span><span>Stars never touch — <b>not even diagonally</b>. A cell glows red while it breaks a rule.</span></div>
++        <div class="rules-rule"><span class="ic">2️⃣</span><span>Stars never touch: <b>not even diagonally</b>. A cell glows red while it breaks a rule.</span></div>
+         <div class="rules-rule"><span class="ic">3️⃣</span><span>Tap a cell to place or remove a star. Drag on desktop, or use Arrow keys + Enter/Space.</span></div>
+         <button class="rules-ok" id="rules-close">Got it, let me play</button>
+-        <div class="rules-note">💡 Stuck? The Hint button reveals the selected cell — star or empty (3 per puzzle).</div>
++        <div class="rules-note">💡 Stuck? The Hint button reveals the selected cell: star or empty (3 per puzzle).</div>
+       </div>
+     </div>
+ 
+@@ -637,32 +637,32 @@ const description = "Play Two Not Touch (Star Battle) free online: place 2 or 3
+     <!-- ═══════════ SEO Content ═══════════ -->
+     <section class="section prose seo-section" id="how-to-play" aria-label="How to play Star Battle">
+       <h2>How to Play Star Battle</h2>
+-      <p>Star Battle is a clean, spatial logic puzzle with just two rules. Every <strong>row</strong>, every <strong>column</strong> and every <strong>shaded region</strong> must contain exactly <strong>2 stars</strong> (or 3 stars on Hard grids). And no two stars may touch — <strong>not even diagonally</strong>. That's the whole game: fill the board correctly and you win.</p>
+-      <p>Every GridPaw Star Battle puzzle has exactly one solution, reachable through logic alone — no guessing required. Tap a cell to place a star (it renders as a little paw print) and tap it again to remove it. On a computer you can <strong>click and drag</strong> across the board to mark several cells in one sweep, or use the <strong>arrow keys</strong> with <strong>Enter/Space</strong> to toggle. Any cell that breaks the no-touch or count rules glows <strong>red</strong>, so you always know where to look. Stuck? The Hint button reveals the true value of the selected cell — star or empty — and you get <strong>3 hints per puzzle</strong>. On phones and tablets everything works with simple taps, and the grid scales to your screen.</p>
++      <p>Star Battle is a clean, spatial logic puzzle with just two rules. Every <strong>row</strong>, every <strong>column</strong> and every <strong>shaded region</strong> must contain exactly <strong>2 stars</strong> (or 3 stars on Hard grids). And no two stars may touch, <strong>not even diagonally</strong>. That's the whole game: fill the board correctly and you win.</p>
++      <p>Every GridPaw Star Battle puzzle has exactly one solution, reachable through logic alone. No guessing required. Tap a cell to place a star (it renders as a little paw print) and tap it again to remove it. On a computer you can <strong>click and drag</strong> across the board to mark several cells in one sweep, or use the <strong>arrow keys</strong> with <strong>Enter/Space</strong> to toggle. Any cell that breaks the no-touch or count rules glows <strong>red</strong>, so you always know where to look. Stuck? The Hint button reveals the true value of the selected cell (star or empty) and you get <strong>3 hints per puzzle</strong>. On phones and tablets everything works with simple taps, and the grid scales to your screen.</p>
+     </section>
+ 
+     <section class="section prose seo-section" aria-label="Star Battle vs Two Not Touch">
+       <h2>What Is Two Not Touch? Star Battle vs Two Not Touch</h2>
+-      <p><strong>Star Battle</strong> and <strong>Two Not Touch</strong> are the exact same puzzle under two names. "Two Not Touch" is the classic American title used in puzzle books and magazines — it spells out the heart of the rules in three words: two stars may <em>not touch</em>. "Star Battle" is the modern name popularized by mobile apps and online puzzle sites, and it's what most players search for today.</p>
+-      <p>Same grid, same shaded regions, same rules: exactly N stars in every row, column and region, with no two stars touching, even diagonally. The only real difference is branding — if you've solved one, you've solved the other, which is why the same layout sometimes appears as "Two Not Touch" in a print magazine and "Star Battle" in an app. Here at GridPaw we call the game Star Battle because that's the name players know, and the footer of this page always credits the Two Not Touch name so nobody walks away confused. (Our resident cats, for the record, prefer the star version — paws are better at pointing at screens than at flipping tiny book pages.)</p>
++      <p><strong>Star Battle</strong> and <strong>Two Not Touch</strong> are the exact same puzzle under two names. "Two Not Touch" is the classic American title used in puzzle books and magazines: it spells out the heart of the rules in three words: two stars may <em>not touch</em>. "Star Battle" is the modern name popularized by mobile apps and online puzzle sites, and it's what most players search for today.</p>
++      <p>Same grid, same shaded regions, same rules: exactly N stars in every row, column and region, with no two stars touching, even diagonally. The only real difference is branding. If you've solved one, you've solved the other, which is why the same layout sometimes appears as "Two Not Touch" in a print magazine and "Star Battle" in an app. Here at GridPaw we call the game Star Battle because that's the name players know, and the footer of this page always credits the Two Not Touch name so nobody walks away confused. (Our resident cats, for the record, prefer the star version, paws are better at pointing at screens than at flipping tiny book pages.)</p>
+     </section>
+ 
+     <section class="section prose seo-section" aria-label="Star Battle vs Sudoku">
+       <h2>Star Battle vs Sudoku</h2>
+-      <p><strong>Sudoku</strong> and <strong>Star Battle</strong> share the same backbone: organise symbols across rows and columns so the board obeys a set of placement rules. Sudoku places the digits 1–9 so nothing repeats in any row, column or 3×3 box. Star Battle replaces the digits with identical stars, replaces the fixed 3×3 boxes with oddly shaped regions, and swaps the no-repeat rule for an exact-count rule — exactly 2 stars per line (3 on Hard) — plus the <strong>no-touch ban</strong>, which extends to diagonal neighbours.</p>
+-      <p>That one change transforms the feel of the game. Because stars are interchangeable, you can't lean on digit patterns — every deduction is about <strong>geometry</strong>: where a region is shaped, how many cells a star's neighbourhood eats, which lines are already full. Sudoku is arithmetic-adjacent pattern logic; Star Battle is closer to a packing problem, and it's a wonderful warm-up for visual reasoning. Neither game is inherently harder — a small 8×8 Star Battle is friendlier to a beginner than most Sudoku grids, while a 14×14 with three stars per line demands the same sustained focus as an expert Sudoku.</p>
++      <p><strong>Sudoku</strong> and <strong>Star Battle</strong> share the same backbone: organise symbols across rows and columns so the board obeys a set of placement rules. Sudoku places the digits 1–9 so nothing repeats in any row, column or 3×3 box. Star Battle replaces the digits with identical stars, replaces the fixed 3×3 boxes with oddly shaped regions, and swaps the no-repeat rule for an exact-count rule (exactly 2 stars per line, 3 on Hard) plus the <strong>no-touch ban</strong>, which extends to diagonal neighbours.</p>
++      <p>That one change transforms the feel of the game. Because stars are interchangeable, you can't lean on digit patterns: every deduction is about <strong>geometry</strong>: where a region is shaped, how many cells a star's neighbourhood eats, which lines are already full. Sudoku is arithmetic-adjacent pattern logic; Star Battle is closer to a packing problem, and it's a wonderful warm-up for visual reasoning. Neither game is inherently harder. A small 8×8 Star Battle is friendlier to a beginner than most Sudoku grids, while a 14×14 with three stars per line demands the same sustained focus as an expert Sudoku.</p>
+     </section>
+ 
+     <section class="section prose seo-section" id="tips" aria-label="Star Battle tips and strategy">
+       <h2>Star Battle Tips and Strategy</h2>
+-      <p>New to Star Battle? These habits will carry you through most grids — including the 14×14 Hard ones:</p>
++      <p>New to Star Battle? These habits will carry you through most grids, including the 14×14 Hard ones:</p>
+       <ol>
+         <li><strong>Start with the smallest regions.</strong> A region with five cells needs 2 stars, and those stars must not touch each other: that combination usually has only a handful of legal layouts. Lock them in and the neighbouring regions get squeezed.</li>
+-        <li><strong>Every star deletes 8 neighbours.</strong> The moment you place a star, mentally cross out its whole 3×3 neighbourhood — none of those cells can ever hold another star. Regions that look big shrink fast once their first star lands.</li>
++        <li><strong>Every star deletes 8 neighbours.</strong> The moment you place a star, mentally cross out its whole 3×3 neighbourhood. None of those cells can ever hold another star. Regions that look big shrink fast once their first star lands.</li>
+         <li><strong>Count rows and columns as they fill.</strong> When a row has its 2 stars, every remaining cell in that row is guaranteed empty; same for columns and regions. Treat them as blank until the end rather than hoping for a second star there.</li>
+         <li><strong>Exploit edges and corners.</strong> A star on the border touches fewer cells than a star in the middle, so boundary cells are the easiest to place and the most informative when they're forced.</li>
+-        <li><strong>Read region floors.</strong> If a region still needs 2 stars but only 3 candidate cells survive, the remaining choices are tiny — test them against the rows and columns. When candidates collapse to the exact number needed, the region is solved.</li>
+-        <li><strong>Spend hints on the last stubborn region.</strong> With 3 hints per puzzle you can afford to reveal one or two cells on the hard tail — a single revealed star or empty often unlocks the whole board.</li>
++        <li><strong>Read region floors.</strong> If a region still needs 2 stars but only 3 candidate cells survive, the remaining choices are tiny. Test them against the rows and columns. When candidates collapse to the exact number needed, the region is solved.</li>
++        <li><strong>Spend hints on the last stubborn region.</strong> With 3 hints per puzzle you can afford to reveal one or two cells on the hard tail: a single revealed star or empty often unlocks the whole board.</li>
+       </ol>
+     </section>
+ 

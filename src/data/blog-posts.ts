@@ -19,7 +19,7 @@ export const blogPosts: BlogPost[] = [
     readTime: '6 min read',
     tags: ['strategy', 'beginner', 'tutorial'],
     content: `
-<p>Staring at an Akari puzzle and not sure where to start? These five strategies will take you from confused to confident. Each technique builds on the last — master them in order and you will be solving Medium puzzles in no time.</p>
+<p>Staring at an Akari puzzle and not sure where to start? These five strategies will take you from confused to confident. Each technique builds on the last, so master them in order and you will be solving Medium puzzles in no time.</p>
 
 <h2>Strategy 1: Start with Extremes</h2>
 <p>Scan the grid for "0" and "4" cells first. These give the most information with zero effort:</p>
@@ -30,7 +30,7 @@ export const blogPosts: BlogPost[] = [
 <p>After handling extremes, check "3" cells with one neighbor already blocked, and "1" cells with three neighbors blocked. These are nearly as informative.</p>
 
 <h2>Strategy 2: Propagate Before You Think</h2>
-<p>After every placement, immediately check what it triggers. A newly placed bulb illuminates its entire row and column — which means:</p>
+<p>After every placement, immediately check what it triggers. A newly placed bulb illuminates its entire row and column, which means:</p>
 <ul>
   <li>No other bulb can go in the same unobstructed line (conflict rule)</li>
   <li>Numbered cells adjacent to the new bulb may now be satisfied</li>
@@ -43,15 +43,15 @@ export const blogPosts: BlogPost[] = [
 <ul>
   <li><strong>One source:</strong> A bulb must go there. Place it.</li>
   <li><strong>Two sources:</strong> You need more information before deciding.</li>
-  <li><strong>Zero sources:</strong> You made an error somewhere — backtrack.</li>
+  <li><strong>Zero sources:</strong> You made an error somewhere. Backtrack.</li>
 </ul>
 <p>This "last remaining option" technique is the most common way to break through a stuck position.</p>
 
 <h2>Strategy 4: Use X Marks Liberally</h2>
-<p>X marks are not cheating — they are thinking tools. Right-click (or long-press on mobile) to mark cells where no bulb can go. Benefits:</p>
+<p>X marks are not cheating: they are thinking tools. Right-click (or long-press on mobile) to mark cells where no bulb can go. Benefits:</p>
 <ul>
-  <li>Reduces cognitive load — you do not need to remember eliminations</li>
-  <li>Makes forced moves obvious — when all but one neighbor is X, the remaining cell is forced</li>
+  <li>Reduces cognitive load: you do not need to remember eliminations</li>
+  <li>Makes forced moves obvious. When all but one neighbor is X, the remaining cell is forced</li>
   <li>Prevents accidental bulb placement in eliminated positions</li>
 </ul>
 
@@ -60,8 +60,8 @@ export const blogPosts: BlogPost[] = [
 <p>This systematic approach prevents you from overlooking subtle deductions on larger grids (12×12 and above).</p>
 
 <h2>Practice These Strategies</h2>
-<p>Theory is nothing without practice. Start with GridPaw's Easy 7×7 puzzles to build muscle memory, then graduate to Medium and Hard. Use the Hint button when stuck — it shows you which cell to focus on, helping you learn which strategy applies.</p>
-<p>For the full technique library, the <a href="/akari/tips/">Akari tips hub</a> breaks down every number read in detail — start with the <a href="/akari/tips/#number-0">number 0</a> and <a href="/akari/tips/#number-4">number 4</a> cells from Strategy 1 above. Prefer to see a solve from start to finish? The <a href="/akari/how-to-solve/">step-by-step solving guide</a> walks a complete grid.</p>
+<p>Theory is nothing without practice. Start with GridPaw's Easy 7×7 puzzles to build muscle memory, then graduate to Medium and Hard. Use the Hint button when stuck: it shows you which cell to focus on, helping you learn which strategy applies.</p>
+<p>For the full technique library, the <a href="/akari/tips/">Akari tips hub</a> breaks down every number read in detail. Start with the <a href="/akari/tips/#number-0">number 0</a> and <a href="/akari/tips/#number-4">number 4</a> cells from Strategy 1 above. Prefer to see a solve from start to finish? The <a href="/akari/how-to-solve/">step-by-step solving guide</a> walks a complete grid.</p>
     `,
   },
   {
@@ -72,7 +72,7 @@ export const blogPosts: BlogPost[] = [
     readTime: '7 min read',
     tags: ['brain-training', 'logic-puzzles', 'comparison'],
     content: `
-<p>Logic puzzles are one of the best ways to keep your mind sharp. They exercise deduction, spatial reasoning, working memory, and pattern recognition — all without feeling like "work." Here are the 7 best logic puzzles for brain training, ranked from easiest to hardest.</p>
+<p>Logic puzzles are one of the best ways to keep your mind sharp. They exercise deduction, spatial reasoning, working memory, and pattern recognition, all without feeling like "work." Here are the 7 best logic puzzles for brain training, ranked from easiest to hardest.</p>
 
 <h2>1. Akari (Light Up) — Difficulty: ★★☆☆☆</h2>
 <p>Akari is a spatial logic puzzle where you place light bulbs on a grid to illuminate every cell. Numbered clues tell you how many bulbs surround each wall. The rules are intuitive, the visual feedback is satisfying, and Easy puzzles can be solved in 5 minutes.</p>
@@ -98,12 +98,12 @@ export const blogPosts: BlogPost[] = [
 <h2>5. Slitherlink — Difficulty: ★★★★☆</h2>
 <p>Draw a single continuous loop on a grid. Numbered cells tell you how many of their edges the loop passes through. Topological reasoning at its finest.</p>
 <p><strong>Brain skills:</strong> Spatial reasoning, topology, systematic deduction.</p>
-<p><strong>Why it is great:</strong> Unique among logic puzzles — the loop-drawing mechanic exercises different cognitive pathways.</p>
+<p><strong>Why it is great:</strong> Unique among logic puzzles: the loop-drawing mechanic exercises different cognitive pathways.</p>
 
 <h2>6. Hashiwokakero (Bridges) — Difficulty: ★★★★☆</h2>
 <p>Connect islands with bridges (1 or 2 per connection) so every island has the correct number of bridges and all islands are connected. Graph theory meets logic.</p>
 <p><strong>Brain skills:</strong> Graph reasoning, connectivity, planning.</p>
-<p><strong>Why it is great:</strong> Exercises planning and global reasoning — you need to think about the whole network, not just local constraints.</p>
+<p><strong>Why it is great:</strong> Exercises planning and global reasoning: you need to think about the whole network, not just local constraints.</p>
 
 <h2>7. Nurikabe — Difficulty: ★★★★★</h2>
 <p>Paint cells to create a continuous "sea" of black cells with numbered "islands" of white cells. The sea must be connected and cannot contain 2×2 blocks. Deceptively difficult.</p>
@@ -148,22 +148,22 @@ export const blogPosts: BlogPost[] = [
 </ul>
 
 <h2>The Digital Era</h2>
-<p>As puzzle sites and apps proliferated in the 2010s, Akari found a new audience online. The visual nature of the puzzle — watching light spread across a grid — translates beautifully to screens. Real-time feedback that was impossible on paper becomes a core feature of digital Akari.</p>
+<p>As puzzle sites and apps proliferated in the 2010s, Akari found a new audience online. The visual nature of the puzzle (watching light spread across a grid) translates beautifully to screens. Real-time feedback that was impossible on paper becomes a core feature of digital Akari.</p>
 <p>GridPaw continues this evolution by adding a cat theme to the classic puzzle. The warm, cozy aesthetic lowers the intimidation barrier and makes Akari accessible to players who might never have tried a "logic puzzle."</p>
 
 <h2>Nikoli's Legacy</h2>
 <p>Beyond Akari and Sudoku, Nikoli's catalog includes:</p>
 <ul>
-  <li><strong>Kakuro</strong> — cross-sum puzzles (1966)</li>
-  <li><strong>Slitherlink</strong> — loop-drawing puzzles (1989)</li>
-  <li><strong>Nonograms</strong> — pixel art by numbers (published by Nikoli, invented by Non Ishida in 1987)</li>
-  <li><strong>Nurikabe</strong> — island and sea puzzles</li>
-  <li><strong>Hashiwokakero</strong> — bridge-building puzzles</li>
+  <li><strong>Kakuro</strong>: cross-sum puzzles (1966)</li>
+  <li><strong>Slitherlink</strong>. Loop-drawing puzzles (1989)</li>
+  <li><strong>Nonograms</strong>: pixel art by numbers (published by Nikoli, invented by Non Ishida in 1987)</li>
+  <li><strong>Nurikabe</strong>. Island and sea puzzles</li>
+  <li><strong>Hashiwokakero</strong>: bridge-building puzzles</li>
 </ul>
 <p>Each puzzle type exercises different cognitive skills, but all share Nikoli's core promise: unique solution, pure logic, no guessing.</p>
 
 <h2>Try Akari Today</h2>
-<p>The best way to appreciate Akari's elegant design is to play it. Start with GridPaw's Easy 7×7 puzzles — they take about 5 minutes and teach you the rules through play, not instruction manuals.</p>
+<p>The best way to appreciate Akari's elegant design is to play it. Start with GridPaw's Easy 7×7 puzzles: they take about 5 minutes and teach you the rules through play, not instruction manuals.</p>
     `,
   },
 ];

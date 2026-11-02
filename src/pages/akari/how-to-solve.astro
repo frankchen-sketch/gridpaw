@@ -85,13 +85,13 @@ const description = "Learn how to solve Akari (Light Up) puzzles step by step: c
     <p style="text-align:center;color:#6f5651;margin-bottom:1rem;">Master Light Up (Akari) puzzles with step-by-step techniques.</p>
     
     <section class="seo-content">
-      <p>Whether you are brand new to the <strong>light up puzzle</strong> (also known as <strong>Akari</strong>) or you have been solving them for years, this guide walks you through every technique you need. Just learning the rules? Start with our <a href="/akari/how-to-play/">beginner's How to Play guide</a> first, then come back for the solving techniques. By the end, you will know how to solve even the trickiest grids with confidence — and you can <a href="/akari/">practice free on GridPaw</a> to sharpen your skills.</p>
+      <p>Whether you are brand new to the <strong>light up puzzle</strong> (also known as <strong>Akari</strong>) or you have been solving them for years, this guide walks you through every technique you need. Just learning the rules? Start with our <a href="/akari/how-to-play/">beginner's How to Play guide</a> first, then come back for the solving techniques. By the end, you will know how to solve even the trickiest grids with confidence, and you can <a href="/akari/">practice free on GridPaw</a> to sharpen your skills.</p>
 
       <h2>Understanding the Basics</h2>
  <p>A <strong>light up puzzle</strong> is played on a rectangular grid of white and black cells. Your goal is to place light bulbs (we call them cats on GridPaw) on white cells so that:</p>
       <ol>
         <li><strong>Every white cell is illuminated.</strong> A cat lights up all white cells in its row and column until a black cell or the grid edge blocks the beam.</li>
-        <li><strong>No two cats see each other.</strong> Two cats cannot be placed in the same row or column with only white cells between them — their beams would clash.</li>
+        <li><strong>No two cats see each other.</strong> Two cats cannot be placed in the same row or column with only white cells between them; their beams would clash.</li>
         <li><strong>Numbered black cells are satisfied.</strong> A black cell showing a number (0–4) must have exactly that many cats in its orthogonally adjacent white neighbors.</li>
         <li><strong>Unnumbered black cells have no constraint.</strong> You can place any number of cats next to them.</li>
       </ol>
@@ -99,14 +99,14 @@ const description = "Learn how to solve Akari (Light Up) puzzles step by step: c
 
       <h2>Step 1: Start with Number 4 Cells</h2>
       <p>When you first look at a <strong>light up puzzle</strong>, scan for any black cell marked <strong>4</strong>. This is the most powerful starting point because the deduction is immediate and absolute.</p>
-      <p>A cell with the number 4 has exactly four orthogonal neighbors (up, down, left, right). Since it requires exactly 4 adjacent cats, <strong>every single white neighbor must contain a cat</strong>. Place them all right away — no thinking required.</p>
+      <p>A cell with the number 4 has exactly four orthogonal neighbors (up, down, left, right). Since it requires exactly 4 adjacent cats, <strong>every single white neighbor must contain a cat</strong>. Place them all right away. No thinking required.</p>
       <p>After placing those cats, mark the cells they illuminate. Each cat lights its entire row and column until blocked by a black cell. This single step often illuminates a large portion of the grid and gives you a strong foothold for the rest of the solve.</p>
-      <p><strong>Pro tip:</strong> Even if you do not see a 4, look for cells close to corners or edges. A corner cell only has 2 neighbors, so a "2" in a corner is just as decisive — both neighbors must be cats.</p>
+      <p><strong>Pro tip:</strong> Even if you do not see a 4, look for cells close to corners or edges. A corner cell only has 2 neighbors, so a "2" in a corner is just as decisive: both neighbors must be cats.</p>
 
       <h2>Step 2: Handle Number 0 Cells</h2>
       <p>The opposite extreme is equally useful. A black cell marked <strong>0</strong> means none of its adjacent white cells can hold a cat. Mark all of those neighbors with an X (or a dot on GridPaw) to indicate "no cat here."</p>
       <p>Why does this matter? Because every X you place reduces the number of candidate positions for cats. In a tight <strong>light up puzzle</strong>, eliminating even one cell can cascade into forced placements elsewhere. The grid shrinks mentally, and the solution path becomes clearer.</p>
-      <p>After handling 0-cells, check whether any remaining numbered cells now have most of their neighbors eliminated. If a "3" cell has three X-marked neighbors and only three open spots left, all three open spots must be cats — the same logic as the number-4 trick, just triggered by elimination rather than the grid edge.</p>
+      <p>After handling 0-cells, check whether any remaining numbered cells now have most of their neighbors eliminated. If a "3" cell has three X-marked neighbors and only three open spots left, all three open spots must be cats, the same logic as the number-4 trick, just triggered by elimination rather than the grid edge.</p>
 
       <h2>Step 3: Use Line-of-Sight</h2>
       <p>Line-of-sight is the core mechanic that makes <strong>Akari</strong> unique among logic puzzles. Once you place a cat, it illuminates every white cell in its row and column until a black wall blocks the beam. This has two critical consequences:</p>
@@ -115,7 +115,7 @@ const description = "Learn how to solve Akari (Light Up) puzzles step by step: c
         <li><strong>Dark cells must be lit somehow.</strong> If a white cell is not yet illuminated, at least one cat must eventually be placed in its row or column (within line-of-sight). Track these "must-light" obligations.</li>
       </ul>
       <p>The <strong>strategy</strong> here is iterative: place a cat → mark its illumination → check which cells are still dark → find cells that can only be lit from one direction → place more cats. Each pass through this loop resolves more of the grid.</p>
-      <p>Pay special attention to cells near black walls. A dark cell sandwiched between two black cells in its row can only be lit vertically — that is a forced placement waiting to be discovered.</p>
+      <p>Pay special attention to cells near black walls. A dark cell sandwiched between two black cells in its row can only be lit vertically. That is a forced placement waiting to be discovered.</p>
 
       <h2>Step 4: Find Forced Placements</h2>
       <p>A forced placement happens when a white cell can only be illuminated from exactly one direction. This is the bread-and-butter <strong>strategy</strong> for solving a <strong>light up puzzle</strong> after the obvious number-cell deductions are done.</p>
@@ -125,29 +125,29 @@ const description = "Learn how to solve Akari (Light Up) puzzles step by step: c
         <li><strong>Check each of its four directions.</strong> For each direction, ask: "Is there a valid cat position that could light this cell from that side?" A position is invalid if it is already illuminated (would create a clash), marked X, occupied by a black cell, or off the grid.</li>
         <li><strong>If only one valid direction remains,</strong> the cat must go in that spot. Place it.</li>
       </ol>
-      <p>Sometimes you will find a cell that can be lit from two directions, but one of those directions would leave another cell permanently dark. That is a deeper form of forced placement — it requires looking one step ahead. As you practice on GridPaw, you will develop an intuition for these patterns.</p>
+      <p>Sometimes you will find a cell that can be lit from two directions, but one of those directions would leave another cell permanently dark. That is a deeper form of forced placement: it requires looking one step ahead. As you practice on GridPaw, you will develop an intuition for these patterns.</p>
       <p>Another powerful variant: if two dark cells share the same single remaining light source, that source is doubly forced. Look for clusters of dark cells that funnel down to one cat position.</p>
 
       <h2>Step 5: Elimination Technique</h2>
-      <p>Sometimes the direct techniques above are not enough, especially on harder <strong>Akari</strong> puzzles. That is when you use elimination — a form of proof by contradiction.</p>
+      <p>Sometimes the direct techniques above are not enough, especially on harder <strong>Akari</strong> puzzles. That is when you use elimination, a form of proof by contradiction.</p>
       <p>The idea is simple:</p>
       <ol>
         <li><strong>Pick a cell with exactly two possibilities.</strong> It could be a cat or not a cat.</li>
-        <li><strong>Assume it IS a cat.</strong> Follow the chain of consequences: mark illumination, check numbered cells, look for forced placements. If you reach a contradiction (a numbered cell gets too many cats, or a cell becomes impossible to illuminate), then the assumption was wrong — mark it X.</li>
+        <li><strong>Assume it IS a cat.</strong> Follow the chain of consequences: mark illumination, check numbered cells, look for forced placements. If you reach a contradiction (a numbered cell gets too many cats, or a cell becomes impossible to illuminate), then the assumption was wrong, so mark it X.</li>
         <li><strong>If no contradiction appears,</strong> try the other assumption (it is NOT a cat). If that leads to a contradiction, then it must be a cat.</li>
       </ol>
-      <p>This technique is also called " bifurcation" or "guess-and-check" by puzzle enthusiasts. While purists prefer to avoid it, it is a legitimate and sometimes necessary <strong>strategy</strong> for the hardest grids. The key is to choose cells where the consequences propagate quickly — a cell adjacent to a numbered wall is ideal because the number constraint immediately tells you if something is wrong.</p>
+      <p>This technique is also called " bifurcation" or "guess-and-check" by puzzle enthusiasts. While purists prefer to avoid it, it is a legitimate and sometimes necessary <strong>strategy</strong> for the hardest grids. The key is to choose cells where the consequences propagate quickly: a cell adjacent to a numbered wall is ideal because the number constraint immediately tells you if something is wrong.</p>
       <p><strong>Tip:</strong> Always check the easier techniques first. In well-designed puzzles (like those on GridPaw), elimination is rarely needed until the final stages.</p>
 
       <h2>Solving Today's Daily Akari</h2>
-      <p>The <a href="/akari/daily/">Daily Akari challenge</a> is where these five steps get their real test: a fresh 10×10 grid every day, solvable with exactly the techniques above. Start with the same routine every morning — sweep for 4s and 0s first, then 3s on edges and corners, then let line-of-sight resolve the middle of the board. Most daily grids crack in under ten minutes once that scan order is a habit.</p>
-      <p>If today's grid stalls near the end, do not guess: jump to the <a href="/akari/tips/">Akari tips hub</a> for the elimination reads, or check the walkthrough's step 5 above. Every daily puzzle is verified to have one unique solution reachable by pure logic, so the move you're hunting for is always provable — the goal is finding which constraint you haven't applied yet.</p>
+      <p>The <a href="/akari/daily/">Daily Akari challenge</a> is where these five steps get their real test: a fresh 10×10 grid every day, solvable with exactly the techniques above. Start with the same routine every morning: sweep for 4s and 0s first, then 3s on edges and corners, then let line-of-sight resolve the middle of the board. Most daily grids crack in under ten minutes once that scan order is a habit.</p>
+      <p>If today's grid stalls near the end, do not guess: jump to the <a href="/akari/tips/">Akari tips hub</a> for the elimination reads, or check the walkthrough's step 5 above. Every daily puzzle is verified to have one unique solution reachable by pure logic, so the move you're hunting for is always provable; the goal is finding which constraint you haven't applied yet.</p>
 
       <h2>Common Mistakes to Avoid</h2>
       <p>Even experienced solvers fall into these traps. Watch out for them as you work through any <strong>light up puzzle</strong>:</p>
       <ul>
         <li><strong>Forgetting corner illumination.</strong> A cat in a corner lights fewer cells, so it is easy to overlook. Always trace the full beam in both directions.</li>
-        <li><strong>Ignoring numbered cell constraints early.</strong> Do not just focus on illumination — the number on each black cell is a hard constraint. A "1" with three X-marked neighbors means the last neighbor is forced, even if it does not seem obvious.</li>
+        <li><strong>Ignoring numbered cell constraints early.</strong> Do not just focus on illumination: the number on each black cell is a hard constraint. A "1" with three X-marked neighbors means the last neighbor is forced, even if it does not seem obvious.</li>
         <li><strong>Placing cats without checking line-of-sight.</strong> Before you commit to a cat placement, verify that no existing cat in the same row or column can see it. Clashes are the most common error.</li>
         <li><strong>Assuming symmetry.</strong> Some grids look symmetrical, but the solution may not be. Always solve based on logic, not visual pattern-matching.</li>
         <li><strong>Not re-evaluating after each placement.</strong> Every cat you place changes the landscape. After each placement, re-scan numbered cells and dark cells for new forced moves.</li>

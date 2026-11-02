@@ -93,26 +93,26 @@ const description = "Learn how to play Akari (Light Up) puzzle with this step-by
 
       <h2>What Is Akari?</h2>
       <p>Akari (明かり) is a logic puzzle originally published by <a href="https://www.nikoli.co.jp/en/puzzles/light_up/" target="_blank" rel="noopener">Nikoli</a>, the same Japanese company behind Sudoku and Kakuro. The name means "light" or "illumination" in Japanese, and the puzzle is also known as <strong>Light Up</strong> in English. If you've ever wondered <em>how to play Akari</em>, the concept is simple: you place light bulbs on a grid so that every empty cell is illuminated.</p>
-      <p>The puzzle uses a rectangular grid of white and black cells. Some black cells contain numbers from 0 to 4. Your job is to figure out where to place light bulbs so that the entire grid is lit up, following a small set of elegant constraints. Despite its simplicity, Akari produces surprisingly deep logic — making it a favorite among puzzle enthusiasts who enjoy Sudoku, Nonograms, and other number-free logic challenges.</p>
+      <p>The puzzle uses a rectangular grid of white and black cells. Some black cells contain numbers from 0 to 4. Your job is to figure out where to place light bulbs so that the entire grid is lit up, following a small set of elegant constraints. Despite its simplicity, Akari produces surprisingly deep logic, making it a favorite among puzzle enthusiasts who enjoy Sudoku, Nonograms, and other number-free logic challenges.</p>
       <p>Akari first appeared in Nikoli's puzzle magazine in 2001 and has since become a staple of online puzzle sites worldwide. Today you can <a href="/akari/">play Akari online</a> for free on GridPaw, with puzzles ranging from beginner-friendly 5×5 grids to challenging 20×20 boards.</p>
 
       <h2>The Goal of the Game</h2>
       <p>When you learn how to play Akari, the objective is straightforward:</p>
       <ul>
         <li><strong>Light up every white cell</strong> on the grid by placing light bulbs in the correct positions.</li>
-        <li><strong>Obey the numbered clues</strong> — each numbered black cell tells you exactly how many bulbs must touch it orthogonally (up, down, left, right).</li>
-        <li><strong>No two bulbs may shine on each other</strong> — a bulb's beam travels in a straight line until it hits a black cell or the grid edge, and no beam may reach another bulb.</li>
+        <li><strong>Obey the numbered clues</strong>: each numbered black cell tells you exactly how many bulbs must touch it orthogonally (up, down, left, right).</li>
+        <li><strong>No two bulbs may shine on each other</strong>. A bulb's beam travels in a straight line until it hits a black cell or the grid edge, and no beam may reach another bulb.</li>
       </ul>
-      <p>A correct solution means every white cell is illuminated by at least one bulb, all numbered black cells have the exact count of adjacent bulbs, and no bulb's light beam hits another bulb. The puzzle is solved purely through deduction — no guessing is required.</p>
+      <p>A correct solution means every white cell is illuminated by at least one bulb, all numbered black cells have the exact count of adjacent bulbs, and no bulb's light beam hits another bulb. The puzzle is solved purely through deduction. No guessing is required.</p>
 
       <h2>Akari Rules Explained</h2>
       <p>There are four core <strong>Akari rules</strong> you need to remember. Once you internalize them, you can tackle any puzzle with confidence.</p>
 
       <h3>Rule 1: Place Light Bulbs on White Cells</h3>
-      <p>Light bulbs can only be placed on white (empty) cells — never on black cells. Each bulb shines a beam of light in four directions: up, down, left, and right. The beam continues until it hits a black cell or the edge of the grid. Black cells block light, which is what makes the puzzle interesting.</p>
+      <p>Light bulbs can only be placed on white (empty) cells, never on black cells. Each bulb shines a beam of light in four directions: up, down, left, and right. The beam continues until it hits a black cell or the edge of the grid. Black cells block light, which is what makes the puzzle interesting.</p>
 
       <h3>Rule 2: Numbered Black Cells Are Exact Clues</h3>
-      <p>When a black cell contains a number (0, 1, 2, 3, or 4), that number tells you exactly how many of its four orthogonally adjacent cells contain a light bulb. For example, a "2" means exactly two of the cells directly above, below, left, and right of it must hold bulbs. A "0" means none of its neighbors can have a bulb — and this is often the easiest starting point when you first learn how to play Akari.</p>
+      <p>When a black cell contains a number (0, 1, 2, 3, or 4), that number tells you exactly how many of its four orthogonally adjacent cells contain a light bulb. For example, a "2" means exactly two of the cells directly above, below, left, and right of it must hold bulbs. A "0" means none of its neighbors can have a bulb, and this is often the easiest starting point when you first learn how to play Akari.</p>
 
       <h3>Rule 3: Light Travels in Straight Lines</h3>
       <p>Each bulb illuminates all white cells in its row and column until the beam reaches a black cell or the grid boundary. Light does <em>not</em> pass through black cells. This means a single bulb can light up a long corridor of white cells, but a black wall stops the beam cold. Understanding light propagation is key to solving any light up puzzle efficiently.</p>
@@ -123,24 +123,24 @@ const description = "Learn how to play Akari (Light Up) puzzle with this step-by
       <h2>How to Play Light Up: Your First Puzzle</h2>
       <p>Ready to solve your first Akari puzzle? Here's a step-by-step walkthrough of the thought process. Follow along as you learn how to play Akari for the first time.</p>
       <ol>
-        <li><strong>Start with 0-clues.</strong> Any black cell marked "0" means all four of its neighbors must be empty (no bulb). Mark those adjacent cells with an X — they can never hold a bulb. This is the fastest way to eliminate possibilities early.</li>
+        <li><strong>Start with 0-clues.</strong> Any black cell marked "0" means all four of its neighbors must be empty (no bulb). Mark those adjacent cells with an X: they can never hold a bulb. This is the fastest way to eliminate possibilities early.</li>
         <li><strong>Look for forced bulb placements.</strong> If a numbered cell has exactly as many remaining empty neighbors as its number demands, every one of those neighbors must be a bulb. For example, a "3" with three unmarked neighbors means all three get bulbs immediately.</li>
         <li><strong>Trace light beams.</strong> After placing each bulb, trace its beams in all four directions. Every cell the beam reaches is now illuminated and cannot hold another bulb (Rule 4). Mark cells that are fully determined.</li>
         <li><strong>Use illuminated cells as clues.</strong> If a white cell is already lit by an existing bulb, you know it doesn't need its own bulb. This reduces the number of candidates for adjacent numbered cells.</li>
-        <li><strong>Find dark cells.</strong> Scan the grid for white cells that are <em>not</em> yet illuminated. These cells <strong>must</strong> have a bulb — otherwise the puzzle is unsolvable. Place a bulb there and repeat the beam-tracing process.</li>
+        <li><strong>Find dark cells.</strong> Scan the grid for white cells that are <em>not</em> yet illuminated. These cells <strong>must</strong> have a bulb, otherwise the puzzle is unsolvable. Place a bulb there and repeat the beam-tracing process.</li>
         <li><strong>Iterate until complete.</strong> Alternate between forced placements (steps 2–3) and dark-cell searches (step 5). Each new bulb you place gives you more information. With practice, you'll develop an intuition for which cells to examine first.</li>
       </ol>
-      <p>The beauty of Akari is that every puzzle has a unique solution reachable through pure logic. If you ever feel stuck, go back to the numbered clues — there's always a deduction you haven't spotted yet.</p>
+      <p>The beauty of Akari is that every puzzle has a unique solution reachable through pure logic. If you ever feel stuck, go back to the numbered clues; there's always a deduction you haven't spotted yet.</p>
 
       <h2>Marking Empty Cells (the X Rule)</h2>
       <p>One of the most useful habits when learning how to play Akari is marking cells that <strong>cannot</strong> contain a bulb. Most Akari apps and pencil-and-paper solvers use an "X" or dot for this purpose. Here's when to mark an X:</p>
       <ul>
-        <li><strong>A 0-clue's neighbors</strong> — all four adjacent cells are guaranteed empty.</li>
-        <li><strong>A fully satisfied clue</strong> — if a "2" already has two adjacent bulbs, its remaining neighbors cannot have bulbs.</li>
-        <li><strong>Cells illuminated by a beam</strong> — a cell that's already lit cannot hold a bulb (Rule 4), so mark it with an X.</li>
-        <li><strong>Cells that would violate a clue</strong> — if placing a bulb would over-fill a numbered neighbor, that cell must be empty.</li>
+        <li><strong>A 0-clue's neighbors</strong>: all four adjacent cells are guaranteed empty.</li>
+        <li><strong>A fully satisfied clue</strong>. If a "2" already has two adjacent bulbs, its remaining neighbors cannot have bulbs.</li>
+        <li><strong>Cells illuminated by a beam</strong>: a cell that's already lit cannot hold a bulb (Rule 4), so mark it with an X.</li>
+        <li><strong>Cells that would violate a clue</strong>. If placing a bulb would over-fill a numbered neighbor, that cell must be empty.</li>
       </ul>
-      <p>Marking Xs is not just a convenience — it's a powerful solving technique. The more cells you eliminate, the fewer candidates remain, and the easier it becomes to spot forced placements. Advanced solvers mark Xs aggressively and find that most medium-difficulty Akari puzzles solve themselves once the grid is well-annotated.</p>
+      <p>Marking Xs is not just a convenience: it's a powerful solving technique. The more cells you eliminate, the fewer candidates remain, and the easier it becomes to spot forced placements. Advanced solvers mark Xs aggressively and find that most medium-difficulty Akari puzzles solve themselves once the grid is well-annotated.</p>
 
       <h2>Akari vs. Other Logic Puzzles</h2>
       <p>Curious how Akari stacks up against other popular logic puzzles? Here's a quick comparison:</p>
@@ -178,10 +178,10 @@ const description = "Learn how to play Akari (Light Up) puzzle with this step-by
           </tr>
           <tr>
             <td>Guessing required?</td>
-            <td>No — pure deduction</td>
-            <td>No — pure deduction</td>
-            <td>No — pure deduction</td>
-            <td>Sometimes — probability</td>
+            <td>No, pure deduction</td>
+            <td>No, pure deduction</td>
+            <td>No, pure deduction</td>
+            <td>Sometimes, probability</td>
           </tr>
           <tr>
             <td>Difficulty scaling</td>
@@ -199,7 +199,7 @@ const description = "Learn how to play Akari (Light Up) puzzle with this step-by
           </tr>
         </tbody>
       </table>
-      <p>Akari stands out for its spatial, light-propagation mechanic — it's less about filling in numbers and more about understanding how light moves through a space. If you enjoy Sudoku but want something fresh, learning how to play Akari is a great next step.</p>
+      <p>Akari stands out for its spatial, light-propagation mechanic; it's less about filling in numbers and more about understanding how light moves through a space. If you enjoy Sudoku but want something fresh, learning how to play Akari is a great next step.</p>
 
       <h2>Frequently Asked Questions</h2>
 
