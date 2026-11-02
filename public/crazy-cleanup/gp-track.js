@@ -5,7 +5,7 @@
   'use strict';
   var FUNNEL_EVENTS = [
     'visit',
-    'game_start', 'first_move', 'level_up', 'level_complete_1', 'level_complete_3',
+    'game_start', 'first_pick', 'first_move', 'pick_miss', 'level_up', 'level_complete_1', 'level_complete_3',
     'level_complete_5', 'level_complete_10', 'level_complete_20',
     'hint_click', 'hint_blocked', 'puzzle_reset', 'puzzle_skip', 'game_over', 'badge_help_click', 'help_click',
     'daily_start', 'daily_solved', 'daily_challenge_click',

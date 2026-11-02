@@ -11,6 +11,7 @@ let ITEMS = [], BUCKETS = [], FN = {}, SPR = {}, CFG = {};
 let alive, openQ, opened, done, have, pliers, forceMode, busy, collected, stash, stashOpen, adRunning, hints;
 let SEQ = 1, THEME = '', startTime = 0;
 let firstMoved = false;
+let firstPick = false;
 const els = [];
 const TOTAL = () => BUCKETS.reduce((s, b) => s + b.need, 0);
 function ccTrack(ev, meta){
@@ -59,7 +60,8 @@ scene.addEventListener('click', e => {
   const px = Math.floor((e.clientX - r.left) / z), py = Math.floor((e.clientY - r.top) / z);
   if(px < 0 || py < 0 || px >= pickCv.width || py >= pickCv.height) return;
   const d = pickCtx.getImageData(px, py, 1, 1).data;
-  if(d[3] < 10) return;
+  if(d[3] < 10){ ccTrack('pick_miss'); return; }   // 点进场景但像素未命中——此前零反馈零事件，「没兴趣 vs 抓不住」无法区分
+  if(!firstPick){ firstPick = true; ccTrack('first_pick'); }
   const i = (d[0] << 8 | d[1]) - 1;
   if(i >= 0 && i < ITEMS.length && alive[i]) tap(i, els[i]);
 });

@@ -6,6 +6,8 @@
 export const FUNNEL_EVENT_LIST: string[] = [
   'visit',
   'game_start', 'first_move', 'level_up', 'level_complete_1', 'level_complete_3',
+  // 2026-11-02 crazy-cleanup 拾取漏斗（与 funnel-track.ts / cc gp-track.js 同步）
+  'first_pick', 'pick_miss',
   'level_complete_5', 'level_complete_10', 'level_complete_20',
   'hint_click', 'hint_blocked', 'puzzle_reset', 'puzzle_skip', 'game_over',
   'daily_start', 'daily_solved', 'daily_challenge_click',
