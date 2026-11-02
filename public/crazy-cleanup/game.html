@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Crazy Cleanup — Sort &amp; Relax</title>
-<link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="theme.css">
 <script src="/crazy-cleanup/gp-track.js"></script>
 </head>
 <body>
@@ -35,6 +35,15 @@
 <script src="assets/engine.js"></script>
 <script src="levels.js"></script>
 <script>
+  // mobile fit: scale #app to viewport width (zoom keeps layout compact; rect-based
+  // coordinate math in engine.js is zoom-safe since getBoundingClientRect returns visual px)
+  function ccFit() {
+    const s = Math.min(1, document.documentElement.clientWidth / 560);
+    document.getElementById('app').style.zoom = s === 1 ? '' : String(s);
+  }
+  window.addEventListener('resize', ccFit);
+  ccFit();
+
   const seq = Math.max(1, Math.min(parseInt(new URLSearchParams(location.search).get('l')) || 1, (window.__LEVELS || []).length || 20));
   const s = document.createElement('script');
   s.src = 'packs/level-' + String(seq).padStart(2, '0') + '.js';
