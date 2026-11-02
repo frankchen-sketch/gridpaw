@@ -10,6 +10,8 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
+  { date: "2026-10-30", type: "New", game: "Crazy Cleanup", title: "Crazy Cleanup: a new sorting game joins the lineup", desc: "Every level is a messy room: dig out items buried under others, sort them into two open buckets, and keep the 6-slot tray from filling up. Twenty hand-built rooms, from a 26-item tutorial study to a 207-item gadget store, with hint and pliers tools — free, no account, works with touch or mouse. A fan-made original in the Goods Sort genre, not affiliated with the original developer." },
+  { date: "2026-10-30", type: "New", game: null, title: "GridPaw is now installable (PWA)", desc: "Add GridPaw to your home screen for a full-screen, app-like experience — your browser will offer the install prompt, and the site now ships a service worker plus a friendly offline page, so a dropped connection shows the offline shell instead of a browser error. Nothing about gameplay changes; everything just loads a little more like an app." },
   { date: "2026-10-29", type: "Fix", game: null, title: "All third-party ads removed — the site is now ad-free", desc: "Some visitors were redirected to spam pages by ads served through our previous ad network. We removed every third-party ad unit and script the same day — GridPaw is now completely ad-free. If advertising ever comes back, it will be announced on this page first, before it goes live, and it will never include anything that redirects you away from the site. Thanks to the players who reported it." },
   { date: "2026-10-28", type: "Improvement", game: null, title: "Today's answer, right on The Loop page", desc: "The Loop puzzle page now carries a Today's Answer module, so you no longer have to hop to the hints page when you just want the solution (it's still there if you'd rather try first). While shipping it we found the morning answer-refresh had silently failed for two days — a stray non-JSON prefix was poisoning the pipeline. Fixed, with parsing made tolerant so a bad feed can't take the chain down again." },
   { date: "2026-10-26", type: "Fix", game: null, title: "Daily leaderboards now count daily runs only", desc: "Wins from regular levels had been slipping onto the daily boards, crowding out real daily runs. Six client paths that let them through are closed, the server now verifies a run actually started on the daily board before accepting it, and five ghost rows were purged." },
@@ -73,6 +75,7 @@ const GAME_COLORS: Record<string, string> = {
   "Nonogram": "#5F8A5E",
   "Nurikabe": "#4E7D96",
   "Murdoku": "#A85B5B",
+  "Crazy Cleanup": "#C97F3D",
 };
 export function gameColor(game: string): string {
   return GAME_COLORS[game] || "#8A7D70";
