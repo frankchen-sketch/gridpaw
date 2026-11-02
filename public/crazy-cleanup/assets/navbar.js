@@ -4,8 +4,8 @@
 (function(){
   const PROG_KEY = 'cc_progress';
   window.GameProgress = {
-    get(){ return Math.max(1, parseInt(localStorage.getItem(PROG_KEY)) || 1); },
-    unlock(seq){ if(seq > this.get()) localStorage.setItem(PROG_KEY, seq); }
+    get(){ try { return Math.max(1, parseInt(localStorage.getItem(PROG_KEY)) || 1); } catch (e) { return 1; } },
+    unlock(seq){ try { if(seq > this.get()) localStorage.setItem(PROG_KEY, seq); } catch (e) {} }
   };
 
   function render(el, cfg){

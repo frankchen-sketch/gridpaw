@@ -17,6 +17,11 @@ button{cursor:pointer;font-family:inherit}
 .gn-cell.locked{opacity:.45;cursor:not-allowed}
 .gn-cell b{display:block;font-size:13px}
 .gn-cell small{font-size:9.5px;color:#8a6d1f}
+@media (max-width: 520px) {
+  .gn{flex-wrap:wrap;padding:8px 10px;row-gap:6px}
+  .gn-btn{padding:5px 8px;font-size:11px}
+  .gn-level{font-size:12px;padding:3px 8px}
+}
 
 /* ---- 游戏页 ---- */
 #app{width:560px;margin:0 auto}
@@ -60,6 +65,9 @@ button{cursor:pointer;font-family:inherit}
 @keyframes shake{0%,100%{margin-left:0}20%{margin-left:-7px}40%{margin-left:6px}60%{margin-left:-4px}80%{margin-left:3px}}
 .it.hintGlow{animation:hintPulse .8s ease-in-out 3;filter:drop-shadow(0 0 6px #ffe14d) drop-shadow(0 0 14px rgba(255,214,64,.9)) brightness(1.12)}
 @keyframes hintPulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.08)}}
+.hintRing{position:absolute;transform:translate(-50%,-50%);border:3px solid #ffb020;border-radius:12px;pointer-events:none;z-index:300;box-shadow:0 0 0 3px rgba(255,176,32,.25),0 0 18px rgba(255,176,32,.55);animation:hintRingPulse .9s ease-in-out 3}
+@keyframes hintRingPulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1}50%{transform:translate(-50%,-50%) scale(1.12);opacity:.65}}
+#fly{position:fixed;z-index:80;pointer-events:none;transition:left .38s ease,top .38s ease,width .38s ease,height .38s ease;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4))}
 #toast{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:rgba(30,24,12,.88);color:#ffe9c2;font-size:12px;font-weight:600;padding:6px 14px;border-radius:8px;opacity:0;transition:opacity .25s;white-space:nowrap;z-index:40;pointer-events:none;max-width:92%;overflow:hidden;text-overflow:ellipsis}
 #tip{font-size:11px;line-height:1.55;color:#7a6845;padding:8px 4px;max-width:560px}
 

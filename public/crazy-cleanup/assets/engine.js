@@ -55,7 +55,8 @@ function redrawPick(){
 scene.addEventListener('click', e => {
   if(busy || adRunning || document.getElementById('ending')) return;
   const r = scene.getBoundingClientRect();
-  const px = Math.floor(e.clientX - r.left), py = Math.floor(e.clientY - r.top);
+  const z = parseFloat(document.getElementById('app').style.zoom) || 1;  // ccFit 缩放时 clientX 是视觉 px，掩码是布局 px，先归一化
+  const px = Math.floor((e.clientX - r.left) / z), py = Math.floor((e.clientY - r.top) / z);
   if(px < 0 || py < 0 || px >= pickCv.width || py >= pickCv.height) return;
   const d = pickCtx.getImageData(px, py, 1, 1).data;
   if(d[3] < 10) return;
@@ -222,10 +223,10 @@ function tap(i, el){
   const it = ITEMS[i];
   const famIdx = openQ.findIndex(k => BUCKETS[k].fam === it.f);   // 位置，collectArrive/completeBucket 均按 openQ 位置索引
   const buried = it.b && it.b.some(j => alive[j]);
-  if(famIdx !== undefined && !buried){
+  if(famIdx !== -1 && !buried){
     fly(el, bucketRect(famIdx), () => collectArrive(i, famIdx));
   }
-  else if(famIdx === undefined){
+  else if(famIdx === -1){
     const idx = freeSlot();
     if(idx < 0) return;
     fly(el, slotRect(idx), () => stashArrive(i, idx));
@@ -266,6 +267,15 @@ function useHint(){
   el.classList.remove('hintGlow'); void el.offsetWidth;
   el.classList.add('hintGlow');
   setTimeout(() => el.classList.remove('hintGlow'), 2600);
+  const it = ITEMS[pick];             // 琥珀脉冲环标记位置（盖过所有物件 z 序，% 坐标自适应 zoom）
+  const ring = document.createElement('div');
+  ring.className = 'hintRing';
+  ring.style.left = it.left + '%';
+  ring.style.top = it.top + '%';
+  ring.style.width = (it.w + 4) + '%';
+  ring.style.height = (it.h + 4) + '%';
+  scene.appendChild(ring);
+  setTimeout(() => ring.remove(), 2600);
   toast(`💡 Try this: ${FN[ITEMS[pick].f]}`);
 }
 /* ---- 胜负：交 ending 模板 ---- */
