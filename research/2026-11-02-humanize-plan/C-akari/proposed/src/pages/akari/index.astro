@@ -1,0 +1,2001 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import ExtensionPromo from '../../components/ExtensionPromo.astro';
+import GameHub from '../../components/GameHub.astro';
+import BadgeUnlock from '../../components/BadgeUnlock.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import SideAd from '../../components/SideAd.astro';
+import { comparePairs } from '../../data/compare-pairs';
+import GameSwitcher from '../../components/GameSwitcher.astro';
+const title = "Play Akari Online — Free Light Up Puzzle Game | GridPaw";
+const description = "Play Akari (Light Up) free online: cat-themed logic puzzles in your browser, no download. Learn the rules in a minute and light up every grid.";
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical="/akari/" type="website" image="/og-akari-daily.png" />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/akari/">
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/akari/">
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://gridpaw.com/#website",
+        "url": "https://gridpaw.com/",
+        "name": "GridPaw",
+        "publisher": { "@id": "https://gridpaw.com/#organization" }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://gridpaw.com/#organization",
+        "name": "GridPaw",
+        "url": "https://gridpaw.com/"
+      },
+      {
+        "@type": "WebApplication",
+        "name": "GridPaw",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Web Browser",
+        "url": "https://gridpaw.com/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question", "name": "Is GridPaw free to play?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes, GridPaw is completely free to play in your browser. There is no download, no account, and no payment required. Just open the page and start solving." }
+          },
+          {
+            "@type": "Question", "name": "What is an Akari (Light Up) puzzle?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Akari, also called Light Up, is a Japanese logic puzzle where you place lights so every empty cell is illuminated, while numbered cells tell you exactly how many adjacent lights they touch. GridPaw is the cat-themed version." }
+          },
+          {
+            "@type": "Question", "name": "How is GridPaw different from Sudoku?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Both are logic puzzles, but the rules are very different. Sudoku fills a grid with numbers; GridPaw places glowing cats to light up the board. If you like Sudoku's deduction, you'll enjoy GridPaw's clue-based lighting." }
+          },
+          {
+            "@type": "Question", "name": "Where should beginners start?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Start with the Tutorial level, which walks you through every rule step by step, then move to Easy 6x6 boards before trying bigger grids." }
+          },
+          {
+            "@type": "Question", "name": "Is there a GridPaw mobile app?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes, GridPaw is available on Google Play, and the web version works on any device with a browser." }
+          },
+          {
+            "@type": "Question", "name": "Does my progress save automatically?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes, your progress, lives, and current level are saved automatically in your browser via local storage, so you can come back and continue anytime on the same device." }
+          },
+          {
+            "@type": "Question", "name": "Are GridPaw Akari puzzles solvable without guessing?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Every grid is generated and verified by GridPaw's own solver, which re-checks uniqueness after each clue is removed. Every puzzle has exactly one solution reachable by pure logic, and the Hint button always reveals the next provable placement, never a guess." }
+          }
+        ]
+      }
+    ]
+  })} />
+
+  <style is:global>
+    /* ── GridPaw 视觉合同 token（STYLE.md）── */
+    :root {
+      --gp-primary: #E8A888;
+      --gp-primary-strong: #D47A50;
+      --gp-primary-dark: #C06A40;
+      --gp-primary-soft: #F0B898;
+      --gp-brown-900: #342421;
+      --gp-brown-600: #6F5651;
+      --gp-brown-400: #9B726C;
+      --gp-stone: #9E9590;
+      --gp-cream: #FFF8F0;
+      --gp-cream-warm: #FFF4F0;
+      --gp-sand: #F8F6EF;
+      --gp-blush: #F4DFDC;
+      --gp-linen: #E7DACF;
+      --gp-parchment: #E8DDD0;
+      --gp-white: #FFFFFF;
+      --gp-error: #E74C3C;
+      --gp-success: #559C68;
+      --gp-info: #5C6BC0;
+      --gp-mint: #88C8A8;
+      --gp-lilac-soft: #E8E0EB;
+      --gp-lilac-bright: #CFC2E8;
+      --gp-badge-easy-bg: #B8E8C0;
+      --gp-badge-easy-text: #2D6A3F;
+      --gp-badge-med-bg: #FDD09F;
+      --gp-badge-med-text: #8B6914;
+      --gp-badge-hard-bg: #FFB3C6;
+      --gp-badge-hard-text: #8B2252;
+    }
+    /* ═══════════ meowdoku 风格配色 ════════════ */
+    :root {
+      --bg:            var(--gp-sand);
+      --card:          #ffffff;
+      --ink:           var(--gp-brown-900);
+      --text:          var(--gp-brown-600);
+      --text-muted:    var(--gp-brown-400);
+      --border:        var(--gp-linen);
+      --border-soft:   var(--gp-blush);
+      --hover-bg:      var(--gp-cream-warm);
+      --btn-dark:      var(--gp-brown-900);
+      --green:         var(--gp-success);
+      --focus:         var(--gp-mint);
+      --accent:        var(--gp-primary);
+      --shadow:        0 12px 28px rgba(78,64,55,0.10);
+      --shadow-sm:     0 4px 10px rgba(78,64,55,0.12);
+      --radius-lg:     1.7rem;
+      --radius-md:     1.15rem;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "SF Pro Rounded", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* ── 主布局：2xl 三栏 ── */
+    .shell {
+      max-width: 1500px; margin: 0 auto; flex: 1;
+      display: grid; grid-template-columns: minmax(0, 1fr); gap: 0;
+      padding: 1.5rem 1rem 3rem;
+    }
+    @media (min-width: 1536px) {
+      .shell { grid-template-columns: 300px minmax(0,1fr) 300px; gap: 1.5rem; padding: 2rem; }
+    }
+    .main { max-width: 52.5rem; width: 100%; margin: 0 auto; }
+
+    /* ── Sticky Header ── */
+    .site-header {
+      position: sticky; top: 0; z-index: 30;
+      border-bottom: 1px solid var(--border-soft);
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    }
+    .header-inner {
+      max-width: 80rem; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 4rem; padding: 0 1rem;
+    }
+    .brand { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-logo {
+      width: 2.25rem; height: 2.25rem; border-radius: 0.5rem;
+      box-shadow: var(--shadow-sm); display: grid; place-items: center;
+      font-size: 1.4rem; overflow: hidden;
+    }
+    .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .brand-name { line-height: 1.1; }
+    .brand-name .big { font-weight: 900; color: var(--ink); font-size: 1.05rem; display: block; }
+    .brand-name .small { font-weight: 600; color: var(--text-muted); font-size: 0.75rem; }
+    .nav { display: flex; align-items: center; gap: 0.25rem; }
+    .nav a {
+      border-radius: 0.375rem; padding: 0.5rem 0.75rem;
+      font-size: 0.875rem; font-weight: 700; color: var(--text);
+    }
+    .nav a:hover { background: var(--hover-bg); color: var(--ink); }
+
+
+
+
+
+
+
+
+
+
+    .nav .hamburger { display: none; font-size: 1.4rem; padding: 0.5rem; cursor: pointer; background: none; border: none; color: var(--text); }
+    @media (max-width: 768px) {
+      .nav a:not(.hamburger) { display: none; }
+      .nav .hamburger { display: block; }
+    }
+
+    /* ── 卡片通用 ── */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow), inset 0 0 0 1px var(--border);
+      padding: 1.5rem;
+    }
+    .section { margin-top: 2.5rem; }
+    .section-title { font-size: 1.5rem; font-weight: 800; color: var(--ink); margin-bottom: 1rem; }
+    .section-title .accent { color: var(--green); }
+
+    /* ── 游戏卡片 ── */
+    .game-card { padding: 0; overflow: hidden; }
+    .game-topbar {
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      align-items: center; gap: 0.75rem;
+      padding: 1rem 1.25rem; border-bottom: 1px solid var(--border-soft);
+      width: 100%;
+    }
+    @media (max-width: 640px) {
+      .game-topbar { grid-template-columns: 1fr; gap: 0.5rem; text-align: center; }
+      .game-topbar > :first-child { justify-self: center; }
+      .game-topbar > :last-child { justify-self: center; }
+    }
+    .level-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 999px; padding: 0.3rem 0.8rem;
+      font-weight: 700; color: var(--ink); font-size: 0.85rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .level-badge .count { color: var(--green); }
+    .game-center-info {
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+    }
+    .level-title { font-size: 1.25rem; font-weight: 900; color: var(--ink); text-align: center; }
+    @media (min-width: 640px) { .level-title { font-size: 1.875rem; } }
+    .health-display { display: flex; gap: 0.3rem; font-size: 1.5rem; }
+    .heart { transition: all 0.3s ease; filter: drop-shadow(0 2px 4px rgba(200,168,232,0.3)); }
+    .heart svg { width: 24px; height: 24px; }
+    .heart.lost { filter: grayscale(1) opacity(0.4); transform: scale(0.8); }
+    .progress { text-align: center; font-size: 0.85rem; color: var(--text-muted); min-height: 1.4rem; }
+    .game-actions { display: flex; gap: 0.5rem; }
+    .icon-btn {
+      position: relative; width: 2.4rem; height: 2.4rem; border-radius: 999px;
+      background: var(--card); border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm); cursor: pointer;
+      display: grid; place-items: center; font-size: 1rem;
+      transition: transform 0.15s ease; color: var(--text);
+    }
+    .icon-btn:hover { transform: translateY(-2px); color: var(--ink); }
+    .icon-btn .tip {
+      position: absolute; top: 100%; margin-top: 0.5rem; left: 50%;
+      transform: translateX(-50%); white-space: nowrap;
+      background: var(--btn-dark); color: #fff; font-size: 0.72rem;
+      padding: 0.2rem 0.6rem; border-radius: 999px; opacity: 0; pointer-events: none;
+      transition: opacity 0.15s;
+    }
+    .icon-btn:hover .tip { opacity: 1; }
+
+    /* ── 游戏区 ── */
+    .game-stage {
+      display: flex; justify-content: center; padding: 1rem;
+      background: linear-gradient(135deg, var(--gp-sand) 0%, var(--gp-sand) 100%);
+    }
+    .grid-wrapper { display: flex; justify-content: center; }
+    .puzzle-grid {
+      display: inline-grid; gap: 3px;
+      background: linear-gradient(145deg, var(--gp-linen), var(--gp-linen));
+      padding: 6px; border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(123,107,138,0.15), 0 2px 8px rgba(123,107,138,0.1);
+    }
+    .cell {
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 10px; user-select: none; cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      position: relative; overflow: hidden;
+    }
+    .cell:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(123,107,138,0.2); }
+    .cell-black { background: linear-gradient(145deg, var(--gp-brown-600), var(--gp-brown-900)); cursor: default; box-shadow: inset 0 3px 6px rgba(0,0,0,0.3), 0 2px 4px rgba(123,107,138,0.2); }
+    .cell-mask { visibility: hidden; cursor: default; }
+    .cell-number { font-weight: 800; color: var(--gp-cream-warm); text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+    .cell-satisfied .smile { position: relative; display: block; width: 100%; height: 100%; animation: smilePop .25s ease-out; }
+    .cell-satisfied .smile i { position: absolute; top: 26%; width: 13%; height: 19%; border-radius: 50%; background: #FDE68A; }
+    .cell-satisfied .smile i:first-child { left: 24%; }
+    .cell-satisfied .smile i + i { right: 24%; }
+    .cell-satisfied .smile b { position: absolute; left: 27%; right: 27%; bottom: 22%; height: 26%; border: 2.5px solid #FDE68A; border-top: none; border-left-color: transparent; border-right-color: transparent; border-radius: 0 0 18px 18px; }
+    @keyframes smilePop { 0% { transform: scale(.5); opacity: 0; } 70% { transform: scale(1.12); } 100% { transform: scale(1); opacity: 1; } }
+    .cell-lit { background: linear-gradient(145deg, #FFE9C4, #FFD9A3); box-shadow: inset 0 0 12px rgba(245,158,11,0.35); }
+    .cell-cat { background: linear-gradient(145deg, #FFF3D9, #FFE9C4); box-shadow: inset 0 0 14px rgba(245,158,11,0.5); }
+    .cell-x { background: var(--gp-white); box-shadow: inset 0 0 4px rgba(0,0,0,0.05); }
+    .cell-dark { background: linear-gradient(145deg, var(--gp-sand), var(--gp-parchment)); box-shadow: inset 0 2px 4px rgba(0,0,0,0.08); }
+    @keyframes hint-pulse { 0%,100% { box-shadow: inset 0 0 0 3px var(--gp-primary); } 50% { box-shadow: inset 0 0 0 3px var(--gp-primary), 0 0 16px rgba(232,168,136,0.5); } }
+    .cell-hint { animation: hint-pulse 0.8s ease-in-out infinite; }
+    @keyframes cat-place { 0% { transform: scale(0) rotate(-10deg); opacity: 0; } 50% { transform: scale(1.2) rotate(5deg); opacity: 1; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
+    .cell-cat-new { animation: cat-place 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+    @keyframes flash-red { 0%,100% { box-shadow: none; } 50% { box-shadow: inset 0 0 0 3px var(--gp-error), 0 0 8px rgba(231,76,60,0.4); } }
+    .cell-violation { animation: flash-red 0.5s ease; }
+    @keyframes shake { 0%,100% { transform: translateX(0); } 20%,60% { transform: translateX(-3px); } 40%,80% { transform: translateX(3px); } }
+    .cell-shake { animation: shake 0.4s ease; }
+
+    /* ── 新手引导 Coach（与 Shikaku 同款语言，真盘对错对照演示 2026-09-23）── */
+    #ak-coach { position: fixed; left: 50%; transform: translateX(-50%); bottom: max(16px, env(safe-area-inset-bottom)); width: min(340px, 92vw); background: #fff; border-radius: 14px; padding: 13px 14px; box-shadow: 0 8px 24px rgba(52,40,30,.30); z-index: 950; }
+    #ak-coach.hidden { display: none; }
+    #ak-coach .ob-step { font-size: 10.5px; font-weight: 800; letter-spacing: .12em; color: var(--gp-primary-strong, #B45309); text-transform: uppercase; }
+    #ak-coach h4 { font-size: 15px; margin: 3px 0 4px; color: var(--ink); }
+    #ak-coach p { font-size: 12.5px; line-height: 1.5; color: #6B5B4E; min-height: 36px; margin: 0; }
+    #ak-coach .ob-row { display: flex; align-items: center; justify-content: space-between; margin-top: 9px; }
+    #ak-coach .ob-dots { display: flex; gap: 5px; }
+    #ak-coach .ob-dot { width: 7px; height: 7px; border-radius: 50%; background: #E4D6C4; }
+    #ak-coach .ob-dot.on { background: var(--gp-primary-strong, #B45309); }
+    .ob-btn { border: none; border-radius: 999px; padding: 8px 16px; font-size: 12.5px; font-weight: 800; cursor: pointer; font-family: inherit; }
+    .ob-btn.main { background: var(--gp-primary-strong, #B45309); color: #fff; box-shadow: 0 2px 8px rgba(217,119,6,.35); }
+    .ob-btn.ghost { background: none; color: #A08D7C; }
+    #puzzle-grid { position: relative; }
+    .ak-paw { position: absolute; width: 50px; height: 50px; z-index: 60; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(78,64,55,.3)); transition: left .7s cubic-bezier(.45,.05,.35,1), top .7s cubic-bezier(.45,.05,.35,1); animation: ak-breathe 2.2s ease-in-out infinite; }
+    @keyframes ak-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    .ak-paw.press { transform: scale(.82,.78); }
+    /* ❌ 错误示范标记（CSS 双杠画叉，不依赖 emoji 字形） */
+    .ak-obx { position: absolute; z-index: 61; pointer-events: none; width: 72%; height: 72%; left: 14%; top: 14%; animation: ak-x-pop .85s ease forwards; }
+    .ak-obx::before, .ak-obx::after { content: ''; position: absolute; left: 50%; top: 0; width: 15%; height: 100%; margin-left: -7.5%; background: #E74C3C; border-radius: 4px; box-shadow: 0 0 0 2.5px #fff, 0 1px 5px rgba(0,0,0,.35); }
+    .ak-obx::before { transform: rotate(45deg); }
+    .ak-obx::after { transform: rotate(-45deg); }
+    @keyframes ak-x-pop { 0% { transform: scale(0) rotate(-20deg); opacity: 0; } 30% { transform: scale(1.25) rotate(0); opacity: 1; } 70% { transform: scale(1); opacity: 1; } 100% { transform: scale(.75); opacity: 0; } }
+    .ak-ripple { position: absolute; width: 14px; height: 14px; margin: -7px; border-radius: 50%; background: rgba(217,119,6,.35); animation: ak-rip .7s ease-out forwards; pointer-events: none; z-index: 59; }
+    @keyframes ak-rip { to { transform: scale(4.5); opacity: 0; } }
+    /* Coach toast */
+    #ak-toast { position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%) translateY(80px); background: #4E4037; color: #FFF6E8; padding: 10px 20px; border-radius: 999px; font-size: 13.5px; font-weight: 700; transition: transform .3s cubic-bezier(.34,1.56,.64,1); z-index: 960; pointer-events: none; }
+    #ak-toast.show { transform: translateX(-50%) translateY(0); }
+    /* ── 难度 badge ── */
+    .difficulty-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-left: 6px; vertical-align: middle; }
+    .badge-tutorial { background: var(--gp-badge-easy-bg); color: var(--gp-badge-easy-text); }
+    /* Clarity 录屏实锤：用户把难度徽章当帮助按钮狂点 → 让它可点，点了弹帮助 */
+    .difficulty-badge { cursor: pointer; transition: filter .15s; }
+    .difficulty-badge:hover { filter: brightness(1.08); }
+    /* hint 文字胶囊按钮（与 Shikaku 同款）：Clarity 实锤 icon-only 没人看得见 */
+    .game-actions .hint-btn { display: flex; align-items: center; gap: 5px; height: 32px; padding: 0 10px; border-radius: 999px; background: white; border: 1.5px solid var(--gp-primary-strong); font-size: 13px; font-weight: 800; color: var(--ink); cursor: pointer; transition: all 0.15s; position: relative; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .game-actions .hint-btn:hover { background: var(--gp-primary-strong); color: white; }
+    .game-actions .hint-btn .hint-word { line-height: 1; }
+    .game-actions .hint-btn.hint-nudge { border-color: var(--gp-primary-strong); box-shadow: 0 0 0 4px rgba(212,122,80,0.30), 0 1px 3px rgba(0,0,0,0.08); animation: hint-btn-shake 0.9s ease-in-out 2; }
+    /* 抖动+放大：横向抖三拍、越抖越大，两拍后停（残留光晕常驻指引视线） */
+    @keyframes hint-btn-shake {
+      0%, 100% { transform: scale(1) translateX(0); }
+      15% { transform: scale(1.14) translateX(-3px); }
+      30% { transform: scale(1.18) translateX(3px); }
+      45% { transform: scale(1.22) translateX(-4px); }
+      60% { transform: scale(1.24) translateX(4px); }
+      75% { transform: scale(1.22) translateX(-3px); }
+      90% { transform: scale(1.18) translateX(2px); }
+    }
+    @media (prefers-reduced-motion: reduce) { .game-actions .hint-btn.hint-nudge { animation: none; border-width: 3px; } }
+    .badge-easy { background: var(--gp-badge-easy-bg); color: var(--gp-badge-easy-text); }
+    .badge-medium { background: var(--gp-badge-med-bg); color: var(--gp-badge-med-text); }
+    .badge-medium-hard { background: var(--gp-badge-hard-bg); color: var(--gp-badge-hard-text); }
+    .badge-hard { background: var(--gp-badge-hard-bg); color: var(--gp-badge-hard-text); }
+    .badge-expert { background: var(--gp-lilac-bright); color: var(--gp-brown-900); }
+
+    /* ── Toast ── */
+    .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--gp-error); color: #fff; padding: 0.6rem 1.2rem; border-radius: 12px; font-size: 0.9rem; font-weight: 600; z-index: 1000; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .toast.show { opacity: 1; }
+    .toast.success { background: var(--green); }
+
+    /* ── Win Overlay ── */
+    .win-overlay { position: fixed; inset: 0; background: rgba(248,246,239,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999; opacity: 0; transition: opacity 0.4s; pointer-events: none; overflow: hidden; }
+    .win-overlay.show { opacity: 1; pointer-events: auto; }
+    .win-cat { animation: cat-pop 0.8s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+    @keyframes cat-pop { 0% { transform: scale(0) rotate(-10deg); } 50% { transform: scale(1.3) rotate(5deg); } 100% { transform: scale(1) rotate(0); } }
+    .win-glow { position: absolute; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(200,168,232,0.3) 0%, transparent 70%); animation: glow-pulse 2s ease-in-out infinite; pointer-events: none; }
+    @keyframes glow-pulse { 0%,100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.3); opacity: 1; } }
+    .win-text { font-size: 2rem; font-weight: 800; color: var(--ink); margin-top: 1.5rem; animation: text-pop 0.6s 0.3s cubic-bezier(0.34,1.56,0.64,1) both; }
+    @keyframes text-pop { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    .win-sub { font-size: 1.1rem; color: var(--text); margin-top: 0.5rem; animation: fade-up 0.5s 0.5s ease both; }
+    @keyframes fade-up { 0% { transform: translateY(20px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+    .win-btn { margin-top: 1.5rem; padding: 0.7rem 2rem; background: var(--accent); color: #fff; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+    .win-btn:hover { background: var(--gp-primary-strong); }
+    .win-share-row { display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; justify-content: center; }
+    #board-img { max-width: min(78vw, 420px); border-radius: 12px; border: 2px solid var(--mt-primary); display: block; margin: 0 auto 0.4rem; }
+    /* ── Rules overlay（点 Tutorial 徽章 / ? how to play 徽标 → 游戏内弹层，不离棋盘）── */
+    .rules-card { background: #fff8ef; border: 1.5px solid #e7d4b8; border-radius: 16px; max-width: 340px; width: 88%; padding: 1.2rem 1.3rem; box-shadow: 0 12px 30px rgba(74,59,50,.25); text-align: left; animation: text-pop 0.4s 0.05s cubic-bezier(0.34,1.56,0.64,1) both; }
+    .rules-card h3 { margin: 0 0 0.7rem; font-size: 1.05rem; font-weight: 900; color: var(--ink); text-align: center; }
+    .rules-rule { display: flex; gap: 0.6rem; margin: 0.6rem 0; align-items: flex-start; font-size: 0.85rem; line-height: 1.5; color: var(--text); }
+    .rules-rule .ic { flex: 0 0 28px; height: 28px; border-radius: 9px; background: #fff3dd; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; }
+    .rules-ok { display: block; width: 100%; margin-top: 0.9rem; background: var(--accent); color: #fff; border: 0; border-radius: 12px; padding: 0.7rem; font-weight: 800; font-size: 0.95rem; cursor: pointer; font-family: inherit; }
+    .rules-ok:hover { background: var(--gp-primary-strong); }
+    .rules-note { font-size: 0.72rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem; }
+    .howto-chip { display: inline-flex; align-items: center; gap: 0.3rem; background: #fff; border: 1.5px dashed var(--accent); color: var(--gp-primary-strong); border-radius: 999px; font-size: 0.72rem; font-weight: 800; padding: 0.35rem 0.7rem; cursor: pointer; font-family: inherit; }
+    .howto-chip:hover { background: #fde8c8; }
+    .board-card { position: relative; z-index: 3; background: var(--mt-surface); border-radius: 20px; padding: 1.4rem 1.6rem; box-shadow: 0 12px 40px rgba(52,36,33,.25); max-height: 88vh; overflow-y: auto; text-align: center; }
+    .share-btn { padding: 0.5rem 1rem; border: none; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: 600; font-family: inherit; transition: transform 0.1s; }
+    .share-btn:active { transform: scale(0.95); }
+    .share-copy { background: var(--gp-cream-warm); color: var(--gp-brown-600); }
+    .share-copy:hover { background: var(--gp-lilac-soft); }
+    .share-twitter { background: var(--gp-info); color: #fff; }
+    .share-twitter:hover { background: var(--gp-info); }
+    .share-reddit { background: #FF4500; color: #fff; }
+    .share-reddit:hover { background: var(--gp-primary-dark); }
+    .share-link-opt { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12.5px; color: var(--gp-brown-600); margin: 4px 0 2px; user-select: none; }
+    .share-link-opt input { accent-color: var(--gp-primary-strong); cursor: pointer; }
+    .settings-overlay { position: fixed; inset: 0; background: rgba(107,74,43,0.35); display: flex; align-items: center; justify-content: center; z-index: 1200; opacity: 0; pointer-events: none; transition: opacity .25s; }
+    .settings-overlay.show { opacity: 1; pointer-events: auto; }
+    .settings-card { width: 340px; max-width: 92vw; max-height: 86vh; overflow-y: auto; background: var(--gp-cream); border: 1px solid var(--gp-linen); border-radius: 14px; padding: 18px 16px 14px; box-shadow: 0 10px 30px rgba(107,74,43,0.18), 0 2px 8px rgba(107,74,43,0.08); transform: translateY(8px); transition: transform .25s; }
+    .settings-overlay.show .settings-card { transform: translateY(0); }
+    .settings-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 13px; }
+    .settings-title { font-size: 16px; font-weight: 800; color: var(--gp-brown-900); }
+    .settings-reset { font-size: 12px; color: var(--gp-brown-600); background: var(--gp-parchment); border: 1px solid var(--gp-linen); border-radius: 999px; padding: 5px 11px; cursor: pointer; }
+    .settings-row { display: flex; justify-content: space-between; align-items: center; background: #fff; border: 1px solid var(--gp-linen); border-radius: 10px; padding: 10px 13px; margin-bottom: 9px; min-height: 54px; cursor: pointer; }
+    .settings-lab { font-size: 13.5px; font-weight: 600; color: var(--gp-brown-900); }
+    .settings-lab small { display: block; font-size: 11px; color: var(--gp-brown-600); font-weight: 400; margin-top: 2px; }
+    .settings-tgl { width: 42px; height: 24px; border-radius: 12px; background: #E5D5BC; position: relative; flex-shrink: 0; transition: background .2s; }
+    .settings-tgl.on { background: var(--gp-primary); }
+    .settings-tgl::after { content: ''; position: absolute; width: 18px; height: 18px; border-radius: 50%; background: #fff; top: 3px; left: 3px; box-shadow: 0 1px 3px rgba(107,74,43,0.3); transition: left .2s; }
+    .settings-tgl.on::after { left: 21px; }
+    .settings-sel { min-width: 118px; height: 38px; background: var(--gp-parchment); border: 1px solid var(--gp-linen); border-radius: 8px; font-size: 12.5px; color: var(--gp-brown-900); padding: 0 11px; cursor: pointer; }
+    .settings-ok { width: 100%; height: 42px; background: var(--gp-primary); color: #fff; font-weight: 700; border-radius: 10px; border: none; font-size: 14.5px; margin-top: 3px; cursor: pointer; }
+    .settings-ok:active { transform: scale(.98); }
+    .confetti { position: absolute; width: 12px; height: 12px; border-radius: 3px; animation: confetti-fall linear forwards; }
+    @keyframes confetti-fall { 0% { transform: translateY(-100vh) rotate(0); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+    .paw-confetti { position: absolute; font-size: 24px; animation: paw-fall linear forwards; }
+    @keyframes paw-fall { 0% { transform: translateY(-100vh) rotate(0) scale(1); opacity: 0.8; } 100% { transform: translateY(100vh) rotate(360deg) scale(0.5); opacity: 0; } }
+
+    /* ── Video Walkthrough ── */
+    .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; }
+    .video-card {
+      border: 1px solid var(--border); border-radius: 1rem; overflow: hidden;
+      background: var(--card); transition: transform 0.15s ease; display: block;
+    }
+    .video-card:hover { transform: translateY(-3px); box-shadow: 0 18px 45px rgba(66,38,32,0.12); }
+    .video-card .thumb { position: relative; aspect-ratio: 16/9; overflow: hidden; background: var(--hover-bg); }
+    .video-card .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+    .video-card:hover .thumb img { transform: scale(1.05); }
+    .video-card .thumb .level-tag { position: absolute; left: 0.75rem; top: 0.75rem; border-radius: 0.375rem; background: var(--accent); padding: 0.25rem 0.5rem; font-size: 0.75rem; font-weight: 900; color: #fff; }
+    .video-card .meta { padding: 0.75rem 0.9rem; }
+    .video-card .meta h3 { font-weight: 700; color: var(--ink); font-size: 0.9rem; }
+    .video-card .meta small { display: block; color: var(--text-muted); font-weight: 500; font-size: 0.78rem; margin-top: 0.25rem; }
+
+    /* ── Tips Grid ── */
+    .tips-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+    .tip-card {
+      display: block; border-radius: 0.5rem; border: 1px solid var(--border);
+      background: var(--card); padding: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      transition: all 0.15s; text-decoration: none; color: inherit;
+    }
+    .tip-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(66,38,32,0.10); }
+    .tip-card .tip-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .tip-card h3 { font-size: 0.95rem; font-weight: 900; color: var(--ink); }
+    .tip-card p { margin-top: 0.375rem; font-size: 0.85rem; line-height: 1.6; color: var(--text); }
+
+    /* ── Featured Tip ── */
+    .featured-tip {
+      margin-top: 2rem; padding: 1.5rem; border-radius: 1rem;
+      background: linear-gradient(135deg, var(--gp-cream-warm), var(--gp-cream-warm));
+      border: 1px solid var(--border);
+    }
+    .featured-tip-label { font-size: 0.8rem; font-weight: 900; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .featured-tip h3 { font-size: 1.15rem; font-weight: 900; color: var(--ink); margin-bottom: 0.5rem; }
+    .featured-tip p { font-size: 0.95rem; line-height: 1.7; color: var(--text); margin-bottom: 0.75rem; }
+    .featured-tip-link { font-size: 0.9rem; font-weight: 900; color: var(--accent); text-decoration: none; }
+    .featured-tip-link:hover { text-decoration: underline; }
+
+    /* ── Strategy List ── */
+    .strategy-list { margin-top: 2rem; }
+    .strategy-list-title { font-size: 1rem; font-weight: 900; color: var(--ink); margin-bottom: 0.75rem; }
+    .strategy-item {
+      display: block; padding: 0.75rem 0; border-bottom: 1px solid var(--border-soft);
+      text-decoration: none; color: inherit; transition: background 0.15s;
+    }
+    .strategy-item:last-child { border-bottom: none; }
+    .strategy-item:hover { background: var(--hover-bg); margin: 0 -0.5rem; padding-left: 0.5rem; padding-right: 0.5rem; border-radius: 0.5rem; }
+    .strategy-item strong { display: block; font-size: 0.95rem; font-weight: 700; color: var(--ink); }
+    .strategy-item span { font-size: 0.85rem; color: var(--text-muted); }
+
+    /* ── Strategy Grid ── */
+    .strategy-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0.75rem;
+    }
+    .strategy-grid-item {
+      display: block; padding: 1rem; border-radius: 0.75rem;
+      border: 1px solid var(--border); background: var(--card);
+      text-decoration: none; color: inherit; transition: all 0.15s;
+    }
+    .strategy-grid-item:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(78,64,55,0.1); border-color: var(--accent); }
+    .strategy-grid-item strong { display: block; font-size: 0.9rem; font-weight: 900; color: var(--ink); margin-bottom: 0.25rem; }
+    .strategy-grid-item span { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+
+    /* ── Download Box ── */
+    .download-box {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 2rem;
+      padding: 2rem;
+    }
+    .download-phone { flex-shrink: 0; }
+    .download-phone img {
+      width: 200px; height: auto; border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+    .download-text { flex: 1; min-width: 200px; }
+    .download-buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .store-btn {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: var(--btn-dark); color: #fff; font-weight: 700;
+      border-radius: 0.75rem; padding: 0.7rem 1.4rem; transition: transform 0.15s ease;
+    }
+    .store-btn:hover { transform: translateY(-2px); }
+
+    /* ── Prose / Content ── */
+    .prose h2 { font-size: 1.35rem; font-weight: 800; color: var(--ink); margin: 2rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-soft); }
+    .prose h3 { font-size: 1.15rem; font-weight: 700; color: var(--ink); margin: 1.5rem 0 0.75rem; }
+    .prose p { margin-bottom: 1rem; font-size: 1rem; }
+    .prose ul, .prose ol { margin: 0 0 1rem 1.5rem; }
+    .prose li { margin-bottom: 0.5rem; }
+    .prose strong { color: var(--ink); }
+    .prose a { color: var(--accent); text-decoration: underline; font-weight: 600; }
+    .prose a:hover { color: var(--gp-primary-strong); }
+
+    /* ── FAQ Accordion ── */
+    details.faq-item {
+      border: 1px solid var(--border); border-radius: 1rem;
+      margin-bottom: 0.75rem; background: var(--card); overflow: hidden;
+    }
+    details.faq-item summary {
+      cursor: pointer; padding: 1rem 1.25rem; font-weight: 700;
+      color: var(--ink); list-style: none;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    details.faq-item summary::after {
+      content: "+"; font-size: 1.4rem; color: var(--text-muted); transition: transform 0.2s ease;
+    }
+    details.faq-item[open] summary::after { transform: rotate(45deg); }
+    details.faq-item .faq-answer { padding: 0 1.25rem 1.25rem; color: var(--text); line-height: 1.75; }
+
+    /* ── Footer ── */
+    .site-footer {
+      margin-top: 3rem; padding: 2rem 1rem; text-align: center;
+      border-top: 1px solid var(--border-soft); color: var(--text-muted); font-size: 0.875rem;
+    }
+    .site-footer a { color: var(--ink); font-weight: 600; }
+    .site-footer a:hover { color: var(--green); }
+
+    /* ── Ad Slot ── */
+    .ad-slot {
+      background: var(--card); border-radius: var(--radius-lg);
+      box-shadow: var(--shadow), inset 0 0 0 1px var(--border);
+      min-height: 600px; display: none;
+    }
+    @media (min-width: 1536px) { .ad-slot { display: block; } }
+
+    /* ── Mobile ── */
+    @media (max-width: 480px) {
+      .level-title { font-size: 1.1rem; }
+      .icon-btn { width: 2rem; height: 2rem; font-size: 0.85rem; }
+      .game-card { border-radius: 1.2rem; }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+  <script is:inline src="/leaderboard.js"></script>
+</head>
+<body>
+
+  <!-- ═══════════ Sticky Header ═══════════ -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/akari/" class="brand" aria-label="GridPaw home">
+        <span class="brand-logo"><img src="/assets/logo.png" alt="GridPaw cat mascot — Akari puzzle game" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Light Up Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <GameSwitcher />
+        <a href="#play">Play</a>
+        <a href="#walkthroughs">Walkthroughs</a>
+        <a href="/akari/how-to-play/">How to Play</a>
+        <a href="/akari/tips/">Tips</a>
+        <a href="/akari/daily/">Daily</a>
+        <div id="nav-account-area" style="display:flex;align-items:center"></div>
+        <a href="/leaderboard/" data-nav-extra="lb">🏆 Leaderboard</a>
+        <a href="/badges/" data-nav-extra="bd">🎖 Badges</a>
+        <button class="hamburger" id="mobile-menu-btn" aria-label="Menu">☰</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Nav Overlay -->
+  <div id="mobile-nav" style="display:none;position:fixed;inset:0;z-index:40;background:rgba(0,0,0,0.4)">
+    <div style="position:absolute;top:0;right:0;width:280px;height:100%;background:#fff;padding:1.5rem;box-shadow:-4px 0 20px rgba(0,0,0,0.1)">
+      <button id="mobile-nav-close" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;color:var(--text);cursor:pointer">&times;</button>
+      <a href="/leaderboard/" data-nav-extra="lb" style="display:block;padding:0.75rem 0;font-weight:700;color:var(--text);border-bottom:1px solid var(--border-soft)">🏆 Leaderboard</a>
+      <a href="/badges/" data-nav-extra="bd" style="display:block;padding:0.75rem 0;font-weight:700;color:var(--text);border-bottom:1px solid var(--border-soft)">🎖 Badges</a>
+      <a href="/akari/" style="display:block;padding:0.75rem 0;font-weight:700;color:var(--text);border-bottom:1px solid var(--border-soft)">Home</a>
+      <div style="padding:0.5rem 0;font-size:11px;font-weight:800;color:var(--gp-stone);text-transform:uppercase;letter-spacing:0.08em">Games</div>
+      <a href="/" style="display:block;padding:0.5rem 0 0.5rem 1.5rem;font-weight:700;color:var(--text);border-bottom:1px solid var(--border-soft)">🟧 Shikaku</a>
+      <a href="/akari/" style="display:block;padding:0.5rem 0 0.5rem 1.5rem;font-weight:700;color:var(--ink);border-bottom:1px solid var(--border-soft)">💡 Akari</a>
+      <a href="/kakuro/" style="display:block;padding:0.5rem 0 0.5rem 1.5rem;font-weight:700;color:var(--text);border-bottom:1px solid var(--border-soft)">🔢 Kakuro</a>
+      <a href="/nonogram/" style="display:block;padding:0.5rem 0 0.5rem 1.5rem;font-weight:700;color:var(--text);border-bottom:1px solid var(--border-soft)">🎨 Nonogram</a>
+      <a href="/nurikabe/" style="display:block;padding:0.5rem 0 0.5rem 1.5rem;font-weight:700;color:var(--text);border-bottom:1px solid var(--border-soft)">🏝️ Nurikabe</a>
+      <a href="/pictomino/" style="display:block;padding:0.5rem 0 0.5rem 1.5rem;font-weight:700;color:var(--text);border-bottom:1px solid var(--border-soft)">🧩 Pictomino</a>
+      <a href="/akari/how-to-play/" style="display:block;padding:0.75rem 0;font-weight:700;color:var(--text);border-bottom:1px solid var(--border-soft)">How to Play</a>
+      <a href="/akari/tips/" style="display:block;padding:0.75rem 0;font-weight:700;color:var(--text);border-bottom:1px solid var(--border-soft)">Tips</a>
+      <a href="/akari/daily/" style="display:block;padding:0.75rem 0;font-weight:700;color:var(--text);border-bottom:1px solid var(--border-soft)">Daily Challenge</a>
+      <a href="/akari/create/" style="display:block;padding:0.75rem 0;font-weight:700;color:var(--text);border-bottom:1px solid var(--border-soft)">Create Puzzle</a>
+      <a href="/akari/solver/" style="display:block;padding:0.75rem 0;font-weight:700;color:var(--text)">Solver</a>
+    </div>
+  </div>
+
+  <!-- ═══════════ Main Layout: 3-column ═══════════ -->
+  <div class="shell">
+
+    <aside class="ad-slot" aria-label="Advertisement"></aside>
+
+    <main class="main" id="main-content">
+
+      <!-- ═══════════ Game Card ═══════════ -->
+      <h1 style="font-size:1.5rem;font-weight:900;color:var(--ink);text-align:center;margin-bottom:1rem">Play Akari Online Free — Light Up Puzzle Game</h1>
+      <section id="play" class="card game-card" aria-label="GridPaw game">
+        <div class="game-topbar">
+          <span class="level-badge">
+ <span aria-hidden="true"></span>
+            <span id="level-badge-text">1<span style="color:var(--text-muted)"> / ∞</span></span>
+          </span>
+          <div class="game-center-info">
+            <div class="health-display" id="health-display">
+              <span class="heart" id="heart1"><svg width="24" height="24" viewBox="0 0 24 24" fill="#E8A888"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span>
+              <span class="heart" id="heart2"><svg width="24" height="24" viewBox="0 0 24 24" fill="#E8A888"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span>
+              <span class="heart" id="heart3"><svg width="24" height="24" viewBox="0 0 24 24" fill="#E8A888"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span>
+            </div>
+            <div class="level-title" id="level-display">Level 1 <span class="difficulty-badge badge-tutorial" id="diff-badge">Tutorial</span></div>
+            <div style="display:flex;align-items:center;gap:0.75rem;justify-content:center">
+              <div class="progress" id="progress"></div>
+              <div id="timer" style="font-size:0.85rem;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums">⏱ 0:00</div>
+              <div id="best-time" style="font-size:0.75rem;color:var(--text-muted);display:none">🏆 --:--</div>
+            </div>
+          </div>
+          <div class="game-actions">
+            <button class="icon-btn" id="new-btn" aria-label="New Puzzle"><span>🔄</span><span class="tip">New</span></button>
+            <button class="hint-btn" id="hint-btn" aria-label="Hint"><span>💡</span><span class="hint-word">Hint</span></button>
+            <button class="howto-chip" id="howto-chip" aria-label="How to play"><span>❓</span>how to play</button>
+            <button class="icon-btn" id="undo-btn" aria-label="Undo"><span>↩️</span><span class="tip">Undo (Ctrl+Z)</span></button>
+            <button class="icon-btn" id="redo-btn" aria-label="Redo"><span>↪️</span><span class="tip">Redo (Ctrl+Y)</span></button>
+            <button class="icon-btn" id="reset-btn" aria-label="Restart"><span>🗑️</span><span class="tip">Restart</span></button>
+            <button class="icon-btn" id="settings-btn" aria-label="Settings"><span>⚙️</span><span class="tip">Settings</span></button>
+            <a href="/akari/daily/" id="daily-btn" class="icon-btn" aria-label="Daily Challenge" style="text-decoration:none;background:linear-gradient(145deg,var(--gp-primary-soft),var(--gp-primary-strong));color:#fff;border-color:var(--gp-primary-strong)"><span>🔥</span><span class="tip">Daily</span></a>
+            <button class="icon-btn" id="install-btn" aria-label="Install app" data-gp-install data-gp-from="toolbar"><span>📥</span><span class="tip">Install</span></button>
+          </div>
+        </div>
+
+        <div class="game-stage">
+          <div class="grid-wrapper"><div class="puzzle-grid" id="puzzle-grid"></div></div>
+        </div>
+      </section>
+
+      <div class="toast" id="toast"></div>
+
+      <!-- Settings Overlay -->
+      <div class="settings-overlay" id="settings-overlay">
+        <div class="settings-card">
+          <div class="settings-head">
+            <div class="settings-title">⚙ Settings</div>
+            <button class="settings-reset" id="settings-reset">Restore defaults</button>
+          </div>
+          <div class="settings-row" data-k="sound"><div class="settings-lab">Sound<small>Place / error / win effects</small></div><div class="settings-tgl" id="tgl-sound"></div></div>
+          <div class="settings-row" data-k="wheels"><div class="settings-lab">Training wheels<small>Highlight the most recent bulb</small></div><div class="settings-tgl" id="tgl-wheels"></div></div>
+          <div class="settings-row" data-k="hidex"><div class="settings-lab">Hide ✗ on lit cells<small>Auto-fade marks on solved lights</small></div><div class="settings-tgl" id="tgl-hidex"></div></div>
+          <div class="settings-row"><div class="settings-lab">Include link in share<small>Default for the win-popup checkbox</small></div><select class="settings-sel" id="sel-share"><option value="on">On</option><option value="ask">Ask each time</option><option value="off">Off</option></select></div>
+          <button class="settings-ok" id="settings-ok">Done</button>
+        </div>
+      </div>
+
+      <!-- Win Overlay -->
+      <div class="win-overlay" id="win-overlay">
+        <div class="win-glow"></div>
+        <div id="confetti-container"></div>
+        <div class="win-cat"><img src="/assets/logo.png" alt="GridPaw" style="width:120px;height:120px;border-radius:24px;box-shadow:0 8px 24px rgba(212,122,80,.35)"></div>
+        <div class="win-text">🎉 Solved!</div>
+        <div class="win-sub" id="winGameLevel" style="font-weight:800;color:var(--mt-primary)">GridPaw Akari</div>
+        <div class="win-sub">All cells lit, all constraints satisfied!</div>
+        <BadgeUnlock />
+        <button class="win-btn" id="win-next">Next Puzzle →</button>
+        <div class="share-link-opt"><input type="checkbox" id="share-include-link" checked> Include link (gridpaw.com)</div>
+      <div class="win-share-row">
+          <button class="share-btn share-copy" id="share-copy">📋 Copy Result</button>
+          <button class="share-btn share-twitter" id="share-twitter">𝕏 Share</button>
+          <button class="share-btn share-reddit" id="share-reddit">👽 Reddit</button>
+        </div>
+        <div class="gp-lb-panel" id="gp-lb-win" style="margin-top:14px;min-width:280px;max-width:340px;text-align:left;background:rgba(255,255,255,.92);border:1.5px solid #e7d4b8;border-radius:14px;padding:12px 16px"></div>
+      </div>
+
+      <!-- Rules Overlay（徽章 / how-to-play 徽标触发；不改棋盘，不滚页） -->
+      <div class="win-overlay" id="rules-overlay">
+        <div class="rules-card">
+          <h3>💡 How to play Akari</h3>
+          <div class="rules-rule"><span class="ic">1️⃣</span><span>Tap cells to place light bulbs. Every white cell must be <b>lit</b>.</span></div>
+          <div class="rules-rule"><span class="ic">2️⃣</span><span>Bulbs can't shine on each other: light stops at black cells.</span></div>
+          <div class="rules-rule"><span class="ic">3️⃣</span><span>A numbered black cell must touch <b>exactly</b> that many bulbs.</span></div>
+          <button class="rules-ok" id="rules-close">Got it, let me play</button>
+          <div class="rules-note">💡 Hint button shows the next logical move anytime.</div>
+        </div>
+      </div>
+
+      <div class="win-overlay" id="board-overlay">
+        <div class="win-glow"></div>
+        <div class="board-card">
+          <div style="font-weight:900;color:var(--mt-ink);font-size:1.1rem;margin-bottom:0.6rem">Your board</div>
+          <img id="board-img" alt="Your winning board">
+          <div class="win-share-row">
+            <button class="share-btn share-copy" id="board-copy">📋 Copy Image</button>
+            <button class="share-btn share-copy" id="board-save">⬇️ Save</button>
+          </div>
+          <div class="win-share-row">
+            <button class="share-btn share-twitter" id="board-x">𝕏 Post</button>
+            <button class="share-btn share-reddit" id="board-reddit">👽 Post</button>
+          </div>
+          <button class="win-btn" id="board-close" style="margin-top:0.6rem">✕ Close</button>
+        </div>
+      </div>
+
+      <GameHub active="/akari/" />
+
+<AdSlot />
+<SideAd />
+
+      <!-- ═══════════ Video Walkthroughs ═══════════ -->
+      <section id="walkthroughs" class="section">
+        <h2 class="section-title">Level <span class="accent">Guides</span></h2>
+        <div class="video-grid">
+          <a class="video-card" href="/akari/levels/easy/">
+            <div class="thumb"><img src="/assets/screenshots/game-beginner.png" alt="GridPaw Beginner puzzle — 5×5 Akari grid with cat icons" loading="lazy"><span class="level-tag">Beginner</span></div>
+            <div class="meta"><h3>Easy Puzzles — Getting Started</h3><small>6×6 · 7×7 grids</small></div>
+          </a>
+          <a class="video-card" href="/akari/levels/medium/">
+            <div class="thumb"><img src="/assets/screenshots/game-medium.png" alt="GridPaw Medium puzzle — 7×7 Akari grid" loading="lazy"><span class="level-tag">Medium</span></div>
+            <div class="meta"><h3>Medium Puzzles — Core Techniques</h3><small>7×7 · 8×8 grids</small></div>
+          </a>
+          <a class="video-card" href="/akari/levels/hard/">
+            <div class="thumb"><img src="/assets/screenshots/game-hard.png" alt="GridPaw Hard puzzle — 9×9 Akari grid" loading="lazy"><span class="level-tag">Hard</span></div>
+            <div class="meta"><h3>Hard Puzzles — Advanced Logic</h3><small>9×9 · 10×10 grids</small></div>
+          </a>
+          <a class="video-card" href="/akari/daily/">
+            <div class="thumb"><img src="/assets/screenshots/game-daily.png" alt="GridPaw Daily Challenge — daily Akari puzzle with weekend super challenge" loading="lazy"><span class="level-tag">Daily</span></div>
+            <div class="meta"><h3>Daily Challenge</h3><small>10×10 daily · 14×14 weekends</small></div>
+          </a>
+        </div>
+      </section>
+
+      <!-- ═══════════ Tips & Techniques ═══════════ -->
+      <section class="section">
+        <h2 class="section-title">Tips &amp; <span class="accent">Techniques</span></h2>
+        <div class="tips-grid">
+          <a class="tip-card" href="/akari/tips/#number-0"><div class="tip-icon">0</div><h3>Reading "0" Cells</h3><p>A 0 means no adjacent cats. Mark all 4 neighbors as blocked immediately.</p></a>
+          <a class="tip-card" href="/akari/tips/#number-4"><div class="tip-icon">4</div><h3>Reading "4" Cells</h3><p>A 4 means all 4 neighbors must have cats. Place them all right away.</p></a>
+          <a class="tip-card" href="/akari/tips/#number-1"><div class="tip-icon">1</div><h3>Reading "1" Cells</h3><p>Only one neighbor gets a cat. Use elimination to find which one.</p></a>
+          <a class="tip-card" href="/akari/tips/#number-2"><div class="tip-icon">2</div><h3>Reading "2" Cells</h3><p>Two neighbors need cats. Corner and edge positions narrow the options.</p></a>
+          <a class="tip-card" href="/akari/tips/#number-3"><div class="tip-icon">3</div><h3>Reading "3" Cells</h3><p>Three neighbors need cats. One neighbor is blocked, so figure out which.</p></a>
+          <a class="tip-card" href="/akari/tips/elimination/"><div class="tip-icon">🔍</div><h3>Elimination Technique</h3><p>Use line-of-sight and number constraints together to narrow down cat positions.</p></a>
+        </div>
+
+        <!-- Featured Tip -->
+        <div class="featured-tip">
+          <div class="featured-tip-label">📖 Featured Strategy</div>
+          <h3>Why "4" Cells Are Your Best Friend</h3>
+          <p>A wall cell numbered "4" is the strongest clue in any Akari puzzle: all four adjacent cells must contain a cat, no thinking required. Start every puzzle by scanning for 4s first. Then check if those cats illuminate enough cells to reveal new forced placements. This "cascade from 4s" technique works on every difficulty level and is the single fastest way to speed up your solving.</p>
+          <a href="/akari/tips/#number-4" class="featured-tip-link">Read Full Guide →</a>
+        </div>
+
+        <!-- Strategy Guide Blog List -->
+        <div class="strategy-list">
+          <h3 class="strategy-list-title">📝 From the Strategy Guide</h3>
+          <a href="/akari/how-to-solve/" class="strategy-item">
+            <strong>5 Signs You're Ready for Hard Puzzles</strong>
+            <span>Mastered 4s and 0s? Here's how to know when to level up.</span>
+          </a>
+          <a href="/akari/tips/elimination/" class="strategy-item">
+            <strong>The Elimination Method Explained</strong>
+            <span>When basic rules aren't enough, contradiction testing solves the rest.</span>
+          </a>
+          <a href="/akari/how-to-play/" class="strategy-item">
+            <strong>Akari Rules — Complete Beginner's Guide</strong>
+            <span>Everything you need to solve your first puzzle in 5 minutes.</span>
+          </a>
+          <a href="/akari/tips/" class="strategy-item">
+            <strong>All Tips &amp; Strategies →</strong>
+            <span></span>
+          </a>
+        </div>
+      </section>
+
+      <!-- ═══════════ App Download ═══════════ -->
+      <section class="section">
+        <div class="card download-box">
+          <div class="download-phone">
+            <img src="/assets/screenshots/app-gameplay.png" alt="GridPaw mobile game — Akari puzzle on phone" loading="lazy">
+          </div>
+          <div class="download-text">
+            <h2 class="section-title" style="margin:0 0 0.5rem">Play <span class="accent">Anywhere</span></h2>
+            <p style="color:var(--text);margin-bottom:1rem;line-height:1.6">Install GridPaw as an app: daily puzzles keep working offline, and your streaks live on your device. Or keep playing right here in the browser, progress saves automatically.</p>
+            <div class="download-buttons">
+              <button class="store-btn" data-gp-install data-gp-from="anywhere" style="background:#D97706;color:#fff;cursor:pointer">
+                <span aria-hidden="true">📥</span>Install App
+              </button>
+              <a class="store-btn" href="/akari/" style="background:#A94E2B;color:#fff">
+                <span aria-hidden="true">💡</span>Play Now
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ Prose Content (1200+ words) ═══════════ -->
+      <section class="section prose" aria-label="About GridPaw">
+        <h2>What is <span class="accent">GridPaw</span>? — Free Akari Puzzle Game</h2>
+        <p>GridPaw is a <strong>free Light Up puzzle game</strong> with charming cats. Your goal is to place glowing cats on the grid so that every empty cell is illuminated, while respecting the numbered clues. It's the same satisfying logic as <strong>Akari puzzles</strong> (a classic Japanese brain teaser) but wrapped in an adorable feline theme.</p>
+        <p>If you're looking for a place to <strong>play akari online</strong> free, you're already there: every level below runs right in your browser, no download and no sign up.</p>
+        <p>Whether you're a puzzle veteran or completely new to <strong>Akari</strong>, GridPaw offers a gentle learning curve: start with the Tutorial, work through Easy boards, and graduate to Expert and Master sizes up to 12×12. Every level is hand-crafted and solvable with pure logic. No guessing required.</p>
+
+        <h3>How Akari Puzzles Work</h3>
+        <p>The rules of <strong>Akari</strong> (Light Up) are simple to learn but hard to master:</p>
+        <ul>
+          <li>Place lights (glowing cats) on empty cells.</li>
+          <li>Lights illuminate their entire row and column until blocked by a wall.</li>
+          <li>No two lights may shine on each other: if two cats can see each other in the same row or column, that's illegal.</li>
+          <li>Numbered cells indicate exactly how many lights must be placed directly adjacent (up, down, left, right).</li>
+          <li>The puzzle is solved when every empty cell is lit and every numbered clue is satisfied.</li>
+        </ul>
+
+        <h2>How to <span class="accent">Play</span>Akari Puzzle — GridPaw Guide</h2>
+        <p>Tap any empty cell to place a glowing cat. Tap again to remove it. The top bar shows your remaining lives. Make an invalid move and you'll lose one. Use the Hint button when you're stuck: it reveals the next logical cell without solving the entire board.</p>
+        <p><strong>Double-click</strong> (or right-click / long-press on mobile) to mark a cell with a paw print, which is useful for noting cells you know can't have cats. This note-taking mechanic is essential for harder puzzles where you need to track multiple possibilities.</p>
+        <p>Each difficulty introduces gradually bigger boards: 5×5 for Tutorial, 6×6 for Easy, up to 12×12 for Master. Larger boards require more advanced <strong>Akari</strong> techniques, including edge reasoning and exclusion along walls, but the core mechanic never changes.</p>
+
+        <h2>Akari Puzzle <span class="accent">Difficulty Levels</span>Explained</h2>
+        <ul>
+          <li><strong>Tutorial (5×5)</strong>: Perfect for first-timers. Small grid, simple clues, quick wins. Teaches every rule step by step.</li>
+          <li><strong>Easy (6×6)</strong>. Great for building confidence. More numbered clues, straightforward deduction.</li>
+          <li><strong>Medium (7×7)</strong>: The standard challenge. Requires intermediate techniques like line-of-sight elimination.</li>
+          <li><strong>Medium-Hard (8×8)</strong>. Mixed layouts requiring careful scanning and cross-hatching.</li>
+          <li><strong>Hard (9×9)</strong>: For experienced puzzlers. Fewer clues, deeper reasoning needed.</li>
+          <li><strong>Expert (10×10)</strong>. Misplacement causes cascading errors. Plan before you place.</li>
+          <li><strong>Master (12×12)</strong>: The ultimate challenge for the most demanding solvers.</li>
+        </ul>
+
+        <h2>Tips &amp; <span class="accent">Strategy</span> for Akari Puzzles</h2>
+        <p>Rushing to fill cells is the fastest way to lose lives. Instead, work systematically:</p>
+        <ol>
+          <li><strong>Start with the 4s.</strong> A wall cell numbered 4 forces a light in every adjacent cell. No other option. Place them immediately.</li>
+          <li><strong>Use 0s next.</strong> A 0 means none of its neighbors can have cats. Mark them all with paw prints right away.</li>
+          <li><strong>Watch for "dead cells."</strong> If a cell can't be lit from any direction after a placement, that placement is wrong.</li>
+          <li><strong>Mark uncertain candidates.</strong> Use the paw print mark to track possibilities before committing.</li>
+          <li><strong>Validate lines, not cells.</strong> Check entire rows and columns for conflicts before finalizing a section.</li>
+          <li><strong>Look for forced placements.</strong> If a cell can only be lit from one direction, that's a forced cat position.</li>
+        </ol>
+        <p>Once you internalize these patterns, you'll notice that advanced <strong>Akari</strong> boards are rarely about searching; they're about eliminating impossible positions until only one solution remains. Visit our <a href="/akari/tips/">Tips &amp; Strategy</a> page for detailed guides on each technique.</p>
+
+        <h2><span class="accent">Why</span>Play Akari Puzzle Online at GridPaw?</h2>
+        <p>Logic puzzles like GridPaw are a relaxing way to train pattern recognition and deductive reasoning. Because the rules are compact and visual, each session stays lightweight (perfect for a coffee break) while the larger boards reward deliberate, layered thinking.</p>
+        <p>Unlike many puzzle games, GridPaw has <strong>no timers, no ads interrupting gameplay, and no paywalls</strong>. Every puzzle is free, every solution is unique, and every successfully lit room ends with a delightful feline flourish. Plus, the <a href="/akari/daily/">Daily Challenge</a> gives you a reason to come back every day with a fresh 10×10 puzzle, plus a 14×14 Weekend Super Challenge on Saturdays and Sundays.</p>
+        <p>If you enjoy Sudoku, KenKen, or other number logic puzzles, <strong>Akari</strong> offers a refreshing change of pace with spatial reasoning instead of arithmetic. And if you're already an Akari fan, GridPaw's cat theme adds a layer of charm that makes every solve feel like a small celebration.</p>
+
+        <h3>Common Akari Puzzle Mistakes to Avoid</h3>
+        <p>New <strong>Akari puzzle</strong> players often make the same few mistakes. <strong>Forgetting line-of-sight:</strong> two cats in the same row or column without a wall between them is always illegal. The game will warn you with a shake animation. <strong>Ignoring number constraints:</strong> a numbered cell's count is exact, not "at most." A "2" needs exactly two cats adjacent, no more and no fewer. <strong>Guessing instead of deducing:</strong> every Akari puzzle in GridPaw has a unique solution that can be reached by pure logic. If you're guessing, you're missing a clue; try the Hint button to find the next logical step.</p>
+
+        <h3>Akari Puzzle Tips for Advanced Players</h3>
+        <p>Once you've mastered the basics, try these advanced <strong>Akari puzzle</strong> strategies. <strong>Corner tactics:</strong> a "2" in a corner means both adjacent cells must have cats, no guesswork needed. <strong>Forced lighting:</strong> if a white cell can only be reached by one possible cat position, that position is forced. <strong>Number propagation:</strong> when you know a number already has enough adjacent cats, mark its remaining neighbors as empty. <strong>Wall scanning:</strong> check each wall segment: if a row has only one unlit cell between two walls, that cell must hold a cat. These techniques are essential for Hard and Expert Akari puzzle grids.</p>
+
+        <h3>Why Akari Puzzles Are Good for Your Brain</h3>
+        <p>Playing <strong>Akari puzzles</strong> regularly exercises your logical reasoning and spatial awareness. Unlike passive entertainment, each Akari puzzle requires active deduction: you must analyze constraints, eliminate possibilities, and commit to decisions. Studies suggest that logic puzzles like Akari help maintain cognitive sharpness, similar to how crosswords exercise vocabulary. The best part? GridPaw's cat theme makes the mental workout feel like play, not work. Whether you have five minutes or an hour, there's always an Akari puzzle that fits your schedule and skill level.</p>
+
+        <h3>How GridPaw Akari Puzzles Are Made</h3>
+        <p>Every GridPaw grid is generated and verified by our own solver, right in your browser. The generator starts from a random fully-lit board and removes number clues one at a time, re-running the full solve after every removal; a clue only comes off the board if the solution stays unique. The result: every puzzle, from the 5×5 Tutorial to the 12×12 Master boards, plus the 10×10 Daily Challenge and 14×14 Weekend Super Challenge, has exactly one solution that can be reached by pure deduction. No guessing, ever.</p>
+        <p>Difficulty is graded the way a solver grades it: board size combined with the backtracking depth the solver needed at generation time. Easy boards (6×6) resolve with shallow logic, while Hard (9×9) and Expert (10×10) boards push the search deeper so the deduction chains get longer. Because each level is generated fresh on every play, the layout changes each time you come back, so you can never win by memorizing an old board.</p>
+        <p>You also have three lives per puzzle, an undo and redo pair, and a Hint button that reveals the next provable placement rather than a guess. GridPaw is free, runs entirely in your browser, and saves your progress automatically on your device.</p>
+      </section>
+
+      <!-- ═══════════ Strategy Guide Internal Links ═══════════ -->
+      <section class="section" id="strategy-guide" aria-label="Strategy guide">
+        <h2 class="section-title">📖 <span class="accent">Strategy</span>Guide</h2>
+        <div class="strategy-grid">
+          <a href="/akari/how-to-play/" class="strategy-grid-item">
+            <strong>How to Play Akari</strong>
+            <span>Complete beginner's guide: rules, controls, first puzzle</span>
+          </a>
+          <a href="/akari/solver/" class="strategy-grid-item">
+            <strong>Akari Solver</strong>
+            <span>Stuck? Get the solution for any puzzle instantly</span>
+          </a>
+          <a href="/akari/tips/#number-0" class="strategy-grid-item">
+            <strong>Number 0 Strategy</strong>
+            <span>Why 0-cells are your first move in every puzzle</span>
+          </a>
+          <a href="/akari/tips/#number-4" class="strategy-grid-item">
+            <strong>Number 4 Strategy</strong>
+            <span>The strongest clue: all 4 neighbors must be cats</span>
+          </a>
+          <a href="/akari/tips/#number-1" class="strategy-grid-item">
+            <strong>Number 1 Strategy</strong>
+            <span>Elimination techniques for single-neighbor clues</span>
+          </a>
+          <a href="/akari/tips/#number-2" class="strategy-grid-item">
+            <strong>Number 2 Strategy</strong>
+            <span>Corner and edge tactics for 2-cell constraints</span>
+          </a>
+          <a href="/akari/tips/#number-3" class="strategy-grid-item">
+            <strong>Number 3 Strategy</strong>
+            <span>Figure out which one neighbor is blocked</span>
+          </a>
+          <a href="/akari/tips/elimination/" class="strategy-grid-item">
+            <strong>Elimination Technique</strong>
+            <span>Advanced contradiction testing for hard puzzles</span>
+          </a>
+          <a href="/akari/how-to-solve/" class="strategy-grid-item">
+            <strong>How to Solve Akari</strong>
+            <span>Step-by-step solving methodology</span>
+          </a>
+          <a href="/akari/glossary/" class="strategy-grid-item">
+            <strong>Puzzle Glossary</strong>
+            <span>Every Akari term explained</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- ═══════════ FAQ ═══════════ -->
+      <!-- ═══════════ Leaderboard ═══════════ -->
+    <section class="section" id="leaderboard" aria-label="Akari leaderboard">
+      <h2 class="section-title">🏆 Daily <span class="accent">Leaderboard</span></h2>
+      <div class="gp-lb-panel" style="background:#fff8ef;border:1.5px solid #e7d4b8;border-radius:16px;padding:18px 22px;max-width:460px" id="gp-lb-page"></div>
+      <script is:inline>
+        (function () {
+          function init() {
+            if (window.GPLeaderboard && document.getElementById('gp-lb-page')) {
+              GPLeaderboard.mount('akari', document.getElementById('gp-lb-page'));
+            } else setTimeout(init, 300);
+          }
+          init();
+        })();
+      </script>
+    </section>
+
+    <section class="section" aria-label="Frequently asked questions">
+        <h2 class="section-title">Frequently Asked <span class="accent">Questions</span></h2>
+
+        <details class="faq-item">
+          <summary>Can I play akari online for free?</summary>
+          <div class="faq-answer">Yes — GridPaw lets you play akari online free in your browser, no download and no account. Pick a grid size below and start solving; progress saves automatically on your device.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Is GridPaw free to play?</summary>
+          <div class="faq-answer">Yes, GridPaw is completely free to play in your browser. There is no download, no account, and no payment required. Just open the page and start solving.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What is an Akari (Light Up) puzzle?</summary>
+          <div class="faq-answer">Akari, also called Light Up, is a Japanese logic puzzle where you place lights so every empty cell is illuminated, while numbered cells tell you exactly how many adjacent lights they touch. GridPaw is the cat-themed version — place glowing cats instead of bulbs!</div>
+        </details>
+        <details class="faq-item">
+          <summary>How is GridPaw different from Sudoku?</summary>
+          <div class="faq-answer">Both are logic puzzles, but the rules are very different. Sudoku fills a grid with numbers; GridPaw places glowing cats to light up the board. If you like Sudoku's deduction, you'll enjoy GridPaw's clue-based lighting. The spatial reasoning is a refreshing change from number crunching.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Where should beginners start?</summary>
+          <div class="faq-answer">Start with the Tutorial level, which walks you through every rule step by step, then move to Easy 6×6 boards before trying bigger grids. Check our <a href="/akari/how-to-play/">How to Play</a> guide for a complete walkthrough.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Is there a GridPaw mobile app?</summary>
+          <div class="faq-answer">Yes, GridPaw is available on Google Play, and the web version works on any device with a browser. The grid is fully responsive — long-press cells to mark them with paw prints on mobile.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Does my progress save automatically?</summary>
+          <div class="faq-answer">Yes, your progress, lives, and current level are saved automatically in your browser via local storage, so you can come back and continue anytime on the same device.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What do the numbered black cells mean?</summary>
+          <div class="faq-answer">Each number tells you exactly how many of the 4 adjacent cells (up, down, left, right) must contain a cat. A "0" means none, a "4" means all four. Unnumbered black cells are just walls — they block light but give no clues.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Are GridPaw Akari puzzles solvable without guessing?</summary>
+          <div class="faq-answer">Yes. Every grid is generated and verified by GridPaw's own solver, which re-checks uniqueness after each clue is removed. Every puzzle has exactly one solution reachable by pure logic, and the Hint button always reveals the next provable placement — never a guess.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I create my own puzzles?</summary>
+          <div class="faq-answer">Yes! Visit the <a href="/akari/create/">Create Puzzle</a> page to design your own Akari grid. The tool validates that your puzzle has exactly one solution, then generates a shareable link.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Does GridPaw have a daily challenge?</summary>
+          <div class="faq-answer">Yes! A fresh 10×10 puzzle is generated every day, and weekends (Sat & Sun UTC) feature a 14×14 Weekend Super Challenge. Track your solving streak and earn badges at 3, 7, 14, and 30 consecutive days. Visit the <a href="/akari/daily/">Daily Challenge</a> page to play today's puzzle.</div>
+        </details>
+      </section>
+
+      <!-- ═══════════ Explore More ═══════════ -->
+      <section class="section" aria-label="More cat puzzle games">
+        <h2 class="section-title">Explore More <span class="accent">Cat Puzzle</span>Games</h2>
+        <ul class="prose" style="margin-left:1.5rem">
+          <li><a href="/akari/light-up-puzzle/">Light Up Puzzle — Rules, Tips &amp; Play Online</a></li>
+          <li><a href="/akari/akari-puzzle/">Akari Puzzle — The Classic Japanese Logic Game</a></li>
+          <li><a href="/akari/cat-logic-puzzle/">Cat Logic Puzzle — Fun Brain Training with Cats</a></li>
+          <li><a href="/akari/games-like-sudoku/">Games Like Sudoku — Logic Puzzles You'll Love</a></li>
+          <li><a href="/akari/daily/">Daily Challenge — New Super Hard Puzzle Every Day</a></li>
+          <li><a href="/akari/create/">Create Custom Puzzle — Design &amp; Share</a></li>
+          <li><a href="/japanese-logic-puzzles/">Japanese Logic Puzzles — A Guide to Nikoli's Best Games</a></li>
+          <li><a href="/logic-puzzle-grid/">Logic Puzzle Grid — The Complete Guide to Grid-Based Puzzles</a></li>
+          <li><a href="/number-grid-puzzle/">Number Grid Puzzle — 8 Types Explained with Examples</a></li>
+          <li><a href="/brain-teasers-for-adults/">Brain Teasers for Adults — 25 Free Puzzles &amp; Riddles</a></li>
+        </ul>
+      </section>
+
+      <!-- ═══════════ Compare Puzzles ═══════════ -->
+      <section class="section" aria-label="Puzzle comparisons">
+        <h2 class="section-title">Compare <span class="accent">Puzzles</span></h2>
+        <ul class="prose" style="margin-left:1.5rem">
+          {comparePairs.map(p => (
+            <li><a href={`/akari/compare/${p.slug}/`}>{p.titleA} vs {p.titleB} — Key Differences</a></li>
+          ))}
+        </ul>
+      </section>
+
+    </main>
+
+    <aside class="ad-slot" aria-label="Advertisement"></aside>
+
+  </div>
+
+  <!-- ═══════════ Footer ═══════════ -->
+  <footer class="site-footer">
+    <img src="/og-default.png" alt="GridPaw — Free Akari Light Up Puzzle Game with Cats" width="1200" height="630" style="max-width:200px;height:auto;margin:0 auto 1rem;border-radius:0.5rem" loading="lazy">
+    <p><a href="/akari/">GridPaw</a> · Free Light Up Puzzle Game with Cute Cats</p>
+    <p style="margin-top:0.5rem">
+      <a href="/akari/how-to-play/">How to Play</a> ·
+      <a href="/akari/tips/">Tips</a> ·
+      <a href="/akari/daily/">Daily</a> ·
+      <a href="/akari/create/">Create</a> ·
+      <a href="/akari/solver/">Solver</a> ·
+      <a href="/akari/akari-puzzle/">Akari Guide</a> ·
+      <a href="/help/akari/">Help</a>
+    </p>
+    <ExtensionPromo />
+    <p style="margin-top:0.75rem">
+      <a href="https://gridpaw.com" rel="noopener">GridPaw</a> ·
+      <a href="https://furriq.com" rel="noopener">Furriq</a> ·
+      <a href="https://gridpaw.com/pictomino/" rel="noopener">Pictomino</a> ·
+      <a href="https://www.pinterest.com/gridpaw/" rel="noopener">Pinterest</a> ·
+      <a href="https://chromewebstore.google.com/detail/gridpaw-%E2%80%94-daily-akari-puz/mjdplaoanamjdbbpkgccjnhmlgnpcamj" rel="noopener">Chrome Extension</a> ·
+      <a href="https://gridpaw-games.lovable.app" rel="noopener">Lovable</a> ·
+      <a href="https://dles.gg/game/gridpaw" rel="noopener">DLES.gg</a> ·
+      <a href="/community/" rel="noopener">Community</a>
+    </p>
+    <p style="margin-top:0.75rem"><a href="/privacy/">Privacy Policy</a> · <a href="/terms/">Terms</a> · <a href="#" data-mail-user="hello" data-mail-domain="gridpaw.com" class="js-mail">Contact</a> · © 2026 GridPaw. All rights reserved.</p>
+  </footer>
+  <script>
+    // mailto assembled in JS: CF Email Obfuscation rewrites literal mailto: to a 404 /cdn-cgi link (jev-seo audit 2026-10)
+    document.querySelectorAll('a.js-mail').forEach(function (a) {
+      a.href = 'mailto:' + a.dataset.mailUser + '@' + a.dataset.mailDomain;
+    });
+  </script>
+
+  <!-- ═══════════ Mobile Nav Script ═══════════ -->
+  <script is:inline>
+    document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+      document.getElementById('mobile-nav').style.display = 'block';
+    });
+    document.getElementById('mobile-nav-close').addEventListener('click', function() {
+      document.getElementById('mobile-nav').style.display = 'none';
+    });
+    document.getElementById('mobile-nav').addEventListener('click', function(e) {
+      if (e.target === this) this.style.display = 'none';
+    });
+  </script>
+
+  <!-- ═══════════ Game Engine ═══════════ -->
+  <script is:inline src="/akari-engine.js"></script>
+  <!-- 新手引导 Coach 卡（真盘对错对照演示）+ 爪子渐变 defs -->
+  <div id="ak-coach" class="hidden">
+    <div class="ob-step" id="ak-ob-step">STEP 1 / 3</div>
+    <h4 id="ak-ob-title">Light up the room 🔍</h4>
+    <p id="ak-ob-text">Tap any cell to place a glowing cat. Cats light up their entire row and column until a wall blocks the light.</p>
+    <div class="ob-row">
+      <div class="ob-dots" id="ak-ob-dots"><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+      <div style="display:flex;gap:6px">
+        <button class="ob-btn ghost" id="ak-ob-skip">Skip</button>
+        <button class="ob-btn main" id="ak-ob-next">Watch how →</button>
+      </div>
+    </div>
+  </div>
+  <div id="ak-toast">💡 Meow! The whole row lights up</div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <radialGradient id="gpPadG" cx="42%" cy="32%" r="75%"><stop offset="0%" stop-color="#FFD3DE"/><stop offset="65%" stop-color="#FBAEC2"/><stop offset="100%" stop-color="#EF93AF"/></radialGradient>
+    <radialGradient id="gpBeanG" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#FFDFE8"/><stop offset="100%" stop-color="#F5A8BC"/></radialGradient>
+    <linearGradient id="gpFurG" x1="0" y1="0" x2="0.2" y2="1"><stop offset="0%" stop-color="#FFFBF4"/><stop offset="100%" stop-color="#EFD8BE"/></linearGradient>
+  </defs></svg>
+  <script is:inline src="/sfx.js"></script>
+  <script type="module">
+    const CAT_IMAGES = [
+      '/assets/cats/cat-clay-purple.png',
+      '/assets/cats/cat-happy-yellow.png',
+      '/assets/cats/cat-smile-orange.png',
+      '/assets/cats/cat-grumpy-red.png',
+      '/assets/cats/cat-sleepy-blue.png'
+    ];
+    function getCatImg(level) {
+      const idx = Math.floor((level - 1) / 3) % CAT_IMAGES.length;
+      return '<img src="' + CAT_IMAGES[idx] + '" style="width:95%;height:95%;object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 2px 6px rgba(123,107,138,.4))" />';
+    }
+    let CAT_IMG = getCatImg(1);
+    const X_MARK = '<svg viewBox="0 0 24 24" width="50%" height="50%" style="opacity:0.4"><line x1="6" y1="6" x2="18" y2="18" stroke="#B8A8C8" stroke-width="2.5" stroke-linecap="round"/><line x1="18" y1="6" x2="6" y2="18" stroke="#B8A8C8" stroke-width="2.5" stroke-linecap="round"/></svg>';
+    const DIRS = [[-1,0],[1,0],[0,-1],[0,1]];
+    function track(event, params) {
+    if (window.gpTrack) window.gpTrack(event, params || {});
+      if (typeof window.clarity === 'function') {
+        try {
+          window.clarity('event', event);
+          if (params && params.level != null) window.clarity('set', 'level', String(params.level));
+        } catch (e) {}
+      }
+      if (typeof window.gtag === 'function') {
+        const gtagParams = {};
+        Object.keys(params || {}).forEach(k => {
+          if (k === 'source') gtagParams['trigger'] = params[k];
+          else if (k === 'medium') gtagParams['evt_medium'] = params[k];
+          else if (k === 'campaign') gtagParams['evt_campaign'] = params[k];
+          else gtagParams[k] = params[k];
+        });
+        window.gtag('event', event, gtagParams);
+      }
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture(event, Object.assign({ site: 'gridpaw' }, params || {}));
+      }
+      if (typeof window.clarity === 'function') {
+        window.clarity('event', event);
+        if (params) Object.keys(params).forEach(k => window.clarity('set', k, String(params[k])));
+      }
+    }
+    let gaStarted = false;
+    
+    // ── 固定教学盘（2026-09-23）：4 关手工设计，全部经 solve() 验证唯一解 ──
+    // T1 数字含义（4=四邻全放）→ T2 对立冲突（2 强制两侧、墙挡视线）→ T3 三线索综合 → T4 升格 4×4
+    const AKARI_TUTORIALS = [
+      { size: 3, grid: [[-1, 9, -1], [9, 4, 9], [-1, 9, -1]] },
+      { size: 3, grid: [[9, -1, 9], [9, 2, 9], [9, -1, 9]] },
+      { size: 3, grid: [[9, 1, 9], [2, -1, 9], [9, 9, 1]] },
+      { size: 4, grid: [[2, 9, 9, 9], [9, 9, 9, 9], [2, 1, 9, 9], [9, 9, 9, 9]] },
+    ];
+    function buildTutorialPuzzle(lv) {
+      const t = AKARI_TUTORIALS[lv - 1];
+      if (!t) return null;
+      const r = solve(t.grid, t.size, 2);
+      if (!r.solution) return null;
+      return { id: 'tut' + lv, size: t.size, grid: t.grid.map(row => row.slice()), solution: r.solution, difficulty: 'Tutorial ' + lv };
+    }
+    function getDifficulty(level) {
+      /* 房间曲线（2026-10-15）：阶梯语义不变，Lv7 起注入异形 mask——
+         Kitchen(方形) → Study(缺角 15-24%) → Attic(重切 28-40%)，与 CG 预览同一生成器 */
+      if (level <= 3)  return { label: 'Tutorial',    badge: 'badge-tutorial',    size: 5 };
+      if (level <= 6)  return { label: 'Easy · Kitchen',   badge: 'badge-easy',        size: 6,  room: 'kitchen' };
+      if (level <= 9)  return { label: 'Medium · Study',   badge: 'badge-medium',      size: 7,  room: 'study' };
+      if (level <= 12) return { label: 'Medium-Hard · Study', badge: 'badge-medium-hard', size: 8, room: 'study' };
+      if (level <= 15) return { label: 'Hard · Attic',     badge: 'badge-hard',        size: 9,  room: 'attic' };
+      if (level <= 18) return { label: 'Expert · Attic',   badge: 'badge-expert',      size: 10, room: 'attic' };
+      return                  { label: 'Master · Attic',   badge: 'badge-expert',      size: 12, room: 'attic' };
+    }
+    let currentPuzzle = null, playerSolution = null, markX = null, won = false;
+    let health = 3, level = 0;
+    let consecErrors = 0;          // 卡关引导：连续违规落子计数（合规落子清零，换关清零）
+    let hintsUsed = 0, mistakes = 0;   // 分享统计维度（本局计数，换关/重开清零）
+    const CLOCK_FACES = ['🕛','🕐','🕑','🕒','🕓','🕔','🕕','🕖','🕗','🕘','🕙','🕚'];
+    function clockEmoji(sec) {
+      const h = Math.min(11, Math.max(0, Math.round((sec || 0) / 3600 * 12)));
+      return CLOCK_FACES[h];
+    }
+    function mistakeToken() {
+      if (mistakes === 0 && hintsUsed === 0) return '✨ Perfect';
+      if (mistakes === 0) return '✅ 0 mistakes';
+      return '⚠ ' + mistakes + ' mistake' + (mistakes > 1 ? 's' : '');
+    }
+    let nudgeShownThisLevel = false; // 每关只抖一次
+    let lastPlacedCell = null;
+    let gameStartTime = null;
+    let historyStack = [], redoStack = [];
+    let timerInterval = null, timerSeconds = 0;
+    const timerEl = document.getElementById('timer');
+    const bestTimeEl = document.getElementById('best-time');
+    
+    function startTimer() {
+      stopTimer();
+      timerSeconds = 0;
+      timerEl.textContent = '⏱ 0:00';
+      timerInterval = setInterval(() => {
+        timerSeconds++;
+        const m = Math.floor(timerSeconds / 60);
+        const s = timerSeconds % 60;
+        timerEl.textContent = '⏱ ' + m + ':' + String(s).padStart(2, '0');
+      }, 1000);
+    }
+    function stopTimer() { if (timerInterval) { clearInterval(timerInterval); timerInterval = null; } }
+    function formatTime(sec) { return Math.floor(sec/60) + ':' + String(sec%60).padStart(2,'0'); }
+    function checkBestTime() {
+      const diff = getDifficulty(level);
+      const key = 'gridpaw-best-' + diff.label;
+      const prev = localStorage.getItem(key);
+      if (!prev || timerSeconds < parseInt(prev)) {
+        localStorage.setItem(key, timerSeconds);
+        return true; // new record
+      }
+      return false;
+    }
+    function showBestTime() {
+      const diff = getDifficulty(level);
+      const key = 'gridpaw-best-' + diff.label;
+      const best = localStorage.getItem(key);
+      if (best) {
+        bestTimeEl.textContent = '🏆 ' + formatTime(parseInt(best));
+        bestTimeEl.style.display = 'block';
+      } else {
+        bestTimeEl.style.display = 'none';
+      }
+    }
+    
+    function snapshot() {
+      return { ps: playerSolution.map(r => r.slice()), mx: markX.map(r => r.slice()) };
+    }
+    function pushHistory() { historyStack.push(snapshot()); redoStack = []; }
+    function undo() {
+      if (!historyStack.length || won) return;
+      redoStack.push(snapshot());
+      const prev = historyStack.pop();
+      playerSolution = prev.ps; markX = prev.mx;
+      renderBoard(); updateProgress(); autoSave();
+    }
+    function redo() {
+      if (!redoStack.length || won) return;
+      historyStack.push(snapshot());
+      const next = redoStack.pop();
+      playerSolution = next.ps; markX = next.mx;
+      renderBoard(); updateProgress(); autoSave();
+    }
+    
+    function autoSave() {
+      if (!currentPuzzle || won) return;
+      const saveData = { level, health, puzzleId: currentPuzzle.id, puzzle: currentPuzzle, playerSolution, markX, timestamp: gameStartTime, savedAt: Date.now() };
+      try { localStorage.setItem('gridpaw-autosave', JSON.stringify(saveData)); } catch(e) {}
+    }
+    function loadAutoSave() {
+      const saved = localStorage.getItem('gridpaw-autosave');
+      if (!saved) return false;
+      try {
+        const d = JSON.parse(saved);
+        if (!d.puzzle || !d.playerSolution) return false;
+        // Expire after 24 hours
+        if (d.savedAt && Date.now() - d.savedAt > 24 * 60 * 60 * 1000) { clearAutoSave(); return false; }
+        level = d.level || 0; health = d.health || 3; currentPuzzle = d.puzzle;
+        playerSolution = d.playerSolution; markX = d.markX; gameStartTime = d.timestamp;
+        CAT_IMG = getCatImg(level); updateLevel(); updateHealth(); renderBoard(); updateProgress();
+        return true;
+      } catch(e) { return false; }
+    }
+    function clearAutoSave() { localStorage.removeItem('gridpaw-autosave'); }
+
+    const gridEl = document.getElementById('puzzle-grid');
+    const progressEl = document.getElementById('progress');
+    const toastEl = document.getElementById('toast');
+    const winOverlay = document.getElementById('win-overlay');
+    const healthDisplay = document.getElementById('health-display');
+    const levelDisplay = document.getElementById('level-display');
+    let toastTimer = null;
+
+    function showToast(m, t) {
+      toastEl.textContent = m; toastEl.className = 'toast show' + (t === 'success' ? ' success' : '');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toastEl.className = 'toast'; }, 2500);
+    }
+    function spawnConfetti() {
+      const c = document.getElementById('confetti-container');
+      if (!c) return; c.innerHTML = '';
+      const colors = ['#E8A888','#E8A888','#88C8A8','#F0E8FF','#FFB347','#A888C8'];
+      for (let i = 0; i < 40; i++) {
+        const el = document.createElement('div'); el.className = 'confetti';
+        el.style.left = Math.random()*100+'%'; el.style.background = colors[Math.floor(Math.random()*colors.length)];
+        el.style.animationDuration = (2+Math.random()*3)+'s'; el.style.animationDelay = Math.random()*1.5+'s';
+        el.style.width = (8+Math.random()*8)+'px'; el.style.height = (8+Math.random()*8)+'px'; c.appendChild(el);
+      }
+      for (let i = 0; i < 12; i++) {
+        const el = document.createElement('div'); el.className = 'paw-confetti'; el.textContent = '✨';
+        el.style.left = Math.random()*100+'%'; el.style.animationDuration = (3+Math.random()*3)+'s';
+        el.style.animationDelay = Math.random()*2+'s'; c.appendChild(el);
+      }
+    }
+    // ─── Level cloud sync（静默：登录态在 daily 页建立，这里只同步数据）───
+    let currentUser = null;
+    function mtFetch(url, opts, ms = 8000) {
+      opts = opts || {};
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), ms);
+      return fetch(url, Object.assign({}, opts, { signal: ctrl.signal })).finally(() => clearTimeout(t));
+    }
+
+    // ─── User Attribution (归因) ───────────────────────────────
+    (function() {
+      const ATTR_KEY = 'gp_attr';
+      if (localStorage.getItem(ATTR_KEY)) return;
+      const p = new URLSearchParams(location.search);
+      const attr = {
+        utm_source: p.get('utm_source') || null, utm_medium: p.get('utm_medium') || null,
+        utm_campaign: p.get('utm_campaign') || null, utm_content: p.get('utm_content') || null,
+        channel: p.get('channel') || null, referrer: document.referrer || null,
+        landing: location.pathname + location.search, first_seen_at: Date.now()
+      };
+      if (attr.utm_source || attr.utm_medium || attr.utm_campaign || attr.utm_content || attr.channel || attr.referrer)
+        localStorage.setItem(ATTR_KEY, JSON.stringify(attr));
+    })();
+    function sendAttribution() {
+      const raw = localStorage.getItem('gp_attr'); if (!raw) return;
+      try { const a = JSON.parse(raw);
+        mtFetch('/api/auth/save-attr', { method: 'POST', headers: {'content-type':'application/json'}, body: JSON.stringify(a) }, 5000)
+          .then(r => { if (r.ok) localStorage.removeItem('gp_attr'); }).catch(() => {});
+      } catch(e) {}
+    }
+    function postLevel(lv) {
+      mtFetch('/api/level', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ level: lv }) }).catch(() => {});
+    }
+    function syncLevelOnLoad() {
+      mtFetch('/api/auth/me').then(r => r.json()).then(me => {
+        currentUser = me && me.user ? me.user : null;
+        if (currentUser && currentUser.googleSub && typeof window.gtag === 'function') {
+          window.gtag('set', 'user_id', currentUser.googleSub);
+        }
+        if (!currentUser) return;
+        sendAttribution();
+        mtFetch('/api/level').then(r => r.ok ? r.json() : null).then(data => {
+          if (!data) return;
+          if (data.level == null) {
+            if (level + 1 > 1) postLevel(level + 1);
+          } else if (data.level > level + 1) {
+            // 云端领先（换设备恢复）→ 跳关；Math.max 守卫：legacy 存档 data.level=1 时不得落到 level 0（level=0 bug，2026-10-15 对账）
+            level = Math.max(1, data.level - 1);
+            updateLevel(); CAT_IMG = getCatImg(level);
+            clearAutoSave(); newPuzzleSkip();
+          } else if (level + 1 > data.level) {
+            postLevel(level + 1);
+          }
+        }).catch(() => {});
+      }).catch(() => {});
+    }
+    function newPuzzleSkip() {
+      won = false; winOverlay.classList.remove('show'); health = 3; updateHealth();
+      consecErrors = 0; nudgeShownThisLevel = false;
+      hintsUsed = 0; mistakes = 0;
+      const hbR1 = document.getElementById('hint-btn'); if (hbR1) hbR1.classList.remove('hint-nudge');
+      historyStack = []; redoStack = [];
+      startTimer(); showBestTime();
+      const diff = getDifficulty(level); const s = diff.size;
+      gridEl.innerHTML = '<div style="padding:2rem;color:var(--text-muted);font-size:0.9rem;">Generating...</div>';
+      progressEl.textContent = '';
+      setTimeout(() => {
+        try {
+          currentPuzzle = buildTutorialPuzzle(level) || (diff.room ? generateRoomPuzzle(diff.room, s) : generatePuzzle(s));
+          playerSolution = Array.from({length:s}, () => Array(s).fill(false));
+          markX = Array.from({length:s}, () => Array(s).fill(false));
+          renderBoard(); updateProgress(); autoSave();
+          akObMaybeCoach();
+        } catch(e) {}
+      }, 10);
+    }
+
+    function newPuzzle() {
+      won = false; winOverlay.classList.remove('show'); health = 3; updateHealth();
+      level++; updateLevel(); CAT_IMG = getCatImg(level); gameStartTime = Date.now();
+      if (currentUser) postLevel(level + 1);
+      historyStack = []; redoStack = [];
+      startTimer(); showBestTime();
+      const diff = getDifficulty(level); const s = diff.size;
+      gridEl.innerHTML = '<div style="padding:2rem;color:var(--text-muted);font-size:0.9rem;">Generating...</div>';
+      progressEl.textContent = '';
+      setTimeout(() => {
+        try {
+          currentPuzzle = buildTutorialPuzzle(level) || (diff.room ? generateRoomPuzzle(diff.room, s) : generatePuzzle(s));
+          playerSolution = Array.from({length:s}, () => Array(s).fill(false));
+          markX = Array.from({length:s}, () => Array(s).fill(false));
+          renderBoard(); updateProgress();
+          akObMaybeCoach();
+          if (!gaStarted) {
+            gaStarted = true;
+            const p = new URLSearchParams(location.search);
+            const src = p.get('embed') ? 'embed' : p.get('daily') ? 'daily' : document.referrer ? 'referral' : 'direct';
+            // 延迟到 DOMContentLoaded：gpTrack 由 module 脚本注入，太早调用会漏进 D1（同 index.astro 修复）
+            // game_start 口径（2026-10-13 Clarity 取证）：页面可见才算开局——后台标签加载不计，转可见补发
+            const fireGS = () => {
+              const gs = () => track('game_start', { level: level, difficulty: diff.label, source: src });
+              if (document.visibilityState === 'visible') { gs(); return; }
+              const onVis = () => {
+                if (document.visibilityState !== 'visible') return;
+                document.removeEventListener('visibilitychange', onVis);
+                gs();
+              };
+              document.addEventListener('visibilitychange', onVis);
+            };
+            if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', fireGS); } else { fireGS(); }
+          }
+        } catch(e) { showToast('Failed to generate.', 'error'); }
+      }, 10);
+    }
+    function resetPuzzle() {
+      if (!currentPuzzle) return; won = false; winOverlay.classList.remove('show');
+      track('puzzle_reset', { level: level, difficulty: getDifficulty(level).label });
+      const s = currentPuzzle.size;
+      playerSolution = Array.from({length:s}, () => Array(s).fill(false));
+      markX = Array.from({length:s}, () => Array(s).fill(false));
+      health = 3; updateHealth(); startTimer();
+      consecErrors = 0; nudgeShownThisLevel = false;
+      hintsUsed = 0; mistakes = 0;
+      const hbR2 = document.getElementById('hint-btn'); if (hbR2) hbR2.classList.remove('hint-nudge');
+      renderBoard(); updateProgress(); showToast('Board reset!', 'success'); autoSave();
+    }
+    function renderBoard() {
+      if (!currentPuzzle) return;
+      const g = currentPuzzle.grid, s = currentPuzzle.size;
+      const lit = illuminate(g, playerSolution, s);
+      const v = checkViolations(g, playerSolution, s);
+      const vc = {}, cp = {};
+      v.forEach(x => {
+        if (x.type === 'number_excess') {
+          vc[x.row+','+x.col] = true;
+          DIRS.forEach(d => { const nr=x.row+d[0],nc=x.col+d[1]; if(nr>=0&&nr<s&&nc>=0&&nc<s&&playerSolution[nr][nc]) vc[nr+','+nc]=true; });
+        } else if (x.type === 'cat_conflict') { cp[x.row+','+x.col]=true; cp[x.row2+','+x.col2]=true; }
+      });
+      const mw = Math.min(window.innerWidth-40,600);
+      const cs = Math.max(30,Math.min(44,Math.floor((mw-(s+1)*2-8)/s)));
+      gridEl.style.gridTemplateColumns = `repeat(${s},${cs}px)`;
+      gridEl.style.gridTemplateRows = `repeat(${s},${cs}px)`;
+      gridEl.innerHTML = '';
+      for (let r=0;r<s;r++) for (let c=0;c<s;c++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell'; cell.style.width = cs+'px'; cell.style.height = cs+'px';
+        cell.dataset.row = r; cell.dataset.col = c;
+        const val = g[r][c], key = r+','+c;
+        if (val === -3) {
+          /* 屋外（mask）：占格隐藏，不可点不可照——与生成器/solver 语义一致 */
+          cell.classList.add('cell-mask');
+          gridEl.appendChild(cell);
+          continue;
+        }
+        if (val !== 9) {
+          cell.classList.add('cell-black');
+          if (val >= 0) {
+            cell.classList.add('cell-number');
+            cell.style.fontSize = Math.max(12,cs*.5)+'px';
+            const cnt = countCatsAround(g, playerSolution, r, c);
+            if (cnt === val) { cell.classList.add('cell-satisfied'); cell.innerHTML = '<span class="smile"><i></i><i></i><b></b></span>'; }
+            else { cell.textContent = val; if(vc[key]) cell.classList.add('cell-violation'); }
+          }
+        } else {
+          if (playerSolution[r][c]) {
+            cell.classList.add('cell-cat');
+            if (lastPlacedCell && lastPlacedCell.r === r && lastPlacedCell.c === c && akSettings().wheels) cell.classList.add('cell-cat-new');
+            cell.innerHTML = CAT_IMG;
+            if(cp[key]) cell.classList.add('cell-shake');
+          }
+          else if (markX[r][c] && (!lit[r][c] || !akSettings().hideX)) { cell.classList.add('cell-x'); cell.innerHTML = X_MARK; }
+          else if (lit[r][c]) { cell.classList.add('cell-lit'); }
+          else { cell.classList.add('cell-dark'); }
+          cell.addEventListener('click', e => { e.preventDefault(); if(!won) handleClick(r,c); });
+          cell.addEventListener('dblclick', e => { e.preventDefault(); if(!won){pushHistory();markX[r][c]=!markX[r][c];renderBoard();} });
+          cell.addEventListener('contextmenu', e => { e.preventDefault(); if(!won){pushHistory();markX[r][c]=!markX[r][c];renderBoard();} });
+          let lpt=null,dlp=false;
+          cell.addEventListener('touchstart',()=>{dlp=false;lpt=setTimeout(()=>{dlp=true;if(!won){markX[r][c]=!markX[r][c];renderBoard();}},500);},{passive:true});
+          cell.addEventListener('touchend',e=>{if(lpt)clearTimeout(lpt);if(dlp)e.preventDefault();});
+          cell.addEventListener('touchmove',()=>{if(lpt)clearTimeout(lpt);},{passive:true});
+        }
+        gridEl.appendChild(cell);
+      }
+    }
+    function handleClick(r, c) {
+      if (!currentPuzzle) return;
+      if (!window.__firstMoveTracked) { window.__firstMoveTracked = true; track('first_move', { level: level + 1 }); }
+      const g = currentPuzzle.grid, s = currentPuzzle.size;
+      pushHistory();
+      if (playerSolution[r][c]) {
+        playerSolution[r][c] = false; lastPlacedCell = null; SFX.remove();
+      } else {
+        markX[r][c] = false; playerSolution[r][c] = true; lastPlacedCell = {r, c}; SFX.place();
+        consecErrors = 0;
+        const v = checkViolations(g, playerSolution, s);
+        let hasViolation = false;
+        for (const x of v) { if(x.type==='number_excess'){ showToast('Too many cats around number '+x.number+'!','error'); hasViolation=true; break; } }
+        for (const x of v) { if(x.type==='cat_conflict'){ showToast('Two cats are facing each other!','error'); hasViolation=true; break; } }
+        if (hasViolation) { SFX.error(); mistakes++; loseHealth(); consecErrors++; if (consecErrors >= 2 && !nudgeShownThisLevel) { nudgeShownThisLevel = true; const hbN = document.getElementById('hint-btn'); if (hbN) hbN.classList.add('hint-nudge'); } }
+        else akObOnPlace();
+      }
+      renderBoard(); updateProgress(); autoSave();
+      setTimeout(() => { lastPlacedCell = null; }, 500);
+      if (checkWin(g, playerSolution, s)) {
+        won=true; clearAutoSave(); stopTimer();
+        const isNewRecord = checkBestTime();
+        SFX.win(); spawnConfetti();
+        setTimeout(()=>{ winOverlay.classList.add('show');
+          const shareChk = document.getElementById('share-include-link');
+          if (shareChk) shareChk.checked = shareDefaultOn();
+          document.getElementById('winGameLevel').textContent = 'GridPaw Akari · Level ' + level;
+          // 徽章：胜利时对账（level 徽章在 Next 点击 POST，走 pending 下次弹层补显示）
+          if (window.GPBadges) GPBadges.win();
+          if (isNewRecord) {
+            document.querySelector('.win-sub').textContent = '🏆 New Best Time: ' + formatTime(timerSeconds) + '!';
+          }
+          // leaderboard：胜利面板只读展示当日榜。常规关是随机盘，各人关卡不同质、
+          // 时间不可比——上报会让 L1 快通变成「今日最快」，2026-10-26 污染事故后停报（daily 页仍报）
+          if (window.GPLeaderboard) {
+            GPLeaderboard.mount('akari', document.getElementById('gp-lb-win'));
+          }
+          // 3s 自动关 → 10s：给 leaderboard 面板渲染+阅读时间；点 Next 仍立即走
+          setTimeout(() => { if (won) { winOverlay.classList.remove('show'); newPuzzle(); } }, 10000);
+        },300);
+      }
+    }
+    function updateProgress() {
+      if (!currentPuzzle) return;
+      const catsPlaced = playerSolution.flat().filter(Boolean).length;
+      const totalCats = currentPuzzle.solution.flat().filter(Boolean).length;
+      progressEl.textContent = catsPlaced + ' / ' + totalCats + ' cats placed';
+    }
+    function updateHealth() {
+      healthDisplay.querySelectorAll('.heart').forEach((heart, i) => {
+        heart.classList.toggle('lost', i >= health);
+      });
+    }
+    function updateLevel() {
+      const diff = getDifficulty(level);
+      levelDisplay.innerHTML = 'Level ' + level + ' <span class="difficulty-badge ' + diff.badge + '" id="diff-badge">' + diff.label + '</span>';
+      const badgeEl = document.getElementById('level-badge-text');
+      if (badgeEl) badgeEl.innerHTML = level + '<span style="color:var(--text-muted)"> / ∞</span>';
+    }
+    function loseHealth() {
+      if (health > 0) { health--; updateHealth(); if (health === 0) { stopTimer(); track('game_over', { level: level }); showToast('Game Over! Try again.', 'error'); setTimeout(resetPuzzle, 1500); } }
+    }
+    document.getElementById('hint-btn').addEventListener('click', () => {
+      if (!currentPuzzle || won) return;
+      track('hint_click', { level: level });
+      const hbU = document.getElementById('hint-btn'); if (hbU) hbU.classList.remove('hint-nudge');
+      const h = getHint(currentPuzzle.grid, currentPuzzle.solution, playerSolution, currentPuzzle.size);
+      if (h) {
+        hintsUsed++;
+        const cell = gridEl.querySelector('[data-row="'+h[0]+'"][data-col="'+h[1]+'"]');
+        if (cell) { cell.classList.add('cell-hint'); setTimeout(()=>cell.classList.remove('cell-hint'),2000); }
+        SFX.hint(); showToast('Hint: try row '+(h[0]+1)+', col '+(h[1]+1),'success');
+      } else showToast('No hints!','error');
+    });
+    document.getElementById('reset-btn').addEventListener('click', resetPuzzle);
+    // Clarity 录屏实锤：用户把难度徽章当帮助按钮狂点（k3dlzr 75 秒点 8 次）。
+    // 9/23 曾改成滚到页底玩法指南——实测把人带离棋盘（1mllfzf 点完 5 秒离开）。改为原地弹规则弹层。
+    const rulesOverlay = document.getElementById('rules-overlay');
+    function openRules(source) {
+      rulesOverlay.classList.add('show');
+      track(source === 'badge' ? 'badge_help_click' : 'howto_open', { level: level, source: source });
+      track('rules_overlay_open', { level: level, source: source });
+    }
+    function closeRules() {
+      if (!rulesOverlay.classList.contains('show')) return;
+      rulesOverlay.classList.remove('show');
+      track('rules_overlay_close', {});
+    }
+    document.getElementById('level-display').addEventListener('click', (e) => {
+      const badge = e.target && e.target.closest ? e.target.closest('.difficulty-badge') : null;
+      if (!badge) return;
+      openRules('badge');
+    });
+    document.getElementById('howto-chip').addEventListener('click', () => openRules('chip'));
+    document.getElementById('rules-close').addEventListener('click', closeRules);
+    rulesOverlay.addEventListener('click', (e) => { if (e.target === rulesOverlay) closeRules(); });
+    document.getElementById('new-btn').addEventListener('click', newPuzzle);
+    // ── 设置面板（localStorage 持久化，与 daily.astro 副本对齐）──
+    const AK_SET_KEY = 'gp_akari_settings';
+    function akSettings() {
+      const d = { sound: true, wheels: false, hideX: true, share: 'ask' };
+      try { return Object.assign(d, JSON.parse(localStorage.getItem(AK_SET_KEY) || '{}')); } catch (e) { return d; }
+    }
+    function akSaveSettings(s) { try { localStorage.setItem(AK_SET_KEY, JSON.stringify(s)); } catch (e) {} }
+    function shareDefaultOn() {
+      const s = akSettings();
+      if (s.share === 'on') return true;
+      if (s.share === 'off') return false;
+      try { return localStorage.getItem('gp_akari_share_last') !== '0'; } catch (e) { return true; }  // ask each time：取上次选择
+    }
+    if (typeof SFX !== 'undefined') SFX.setMuted(!akSettings().sound);
+    const settingsOverlay = document.getElementById('settings-overlay');
+    document.getElementById('settings-btn').addEventListener('click', () => {
+      const s = akSettings();
+      document.getElementById('tgl-sound').classList.toggle('on', s.sound);
+      document.getElementById('tgl-wheels').classList.toggle('on', s.wheels);
+      document.getElementById('tgl-hidex').classList.toggle('on', s.hideX);
+      document.getElementById('sel-share').value = s.share;
+      settingsOverlay.classList.add('show');
+    });
+    document.querySelectorAll('#settings-overlay .settings-row[data-k]').forEach(row => {
+      row.addEventListener('click', () => { row.querySelector('.settings-tgl').classList.toggle('on'); });
+    });
+    document.getElementById('settings-reset').addEventListener('click', () => {
+      document.getElementById('tgl-sound').classList.add('on');
+      document.getElementById('tgl-wheels').classList.remove('on');
+      document.getElementById('tgl-hidex').classList.add('on');
+      document.getElementById('sel-share').value = 'ask';
+    });
+    document.getElementById('settings-ok').addEventListener('click', () => {
+      const s = {
+        sound: document.getElementById('tgl-sound').classList.contains('on'),
+        wheels: document.getElementById('tgl-wheels').classList.contains('on'),
+        hideX: document.getElementById('tgl-hidex').classList.contains('on'),
+        share: document.getElementById('sel-share').value
+      };
+      akSaveSettings(s);
+      if (typeof SFX !== 'undefined') SFX.setMuted(!s.sound);
+      settingsOverlay.classList.remove('show');
+      if (currentPuzzle && !won) renderBoard();
+    });
+    settingsOverlay.addEventListener('click', e => { if (e.target === settingsOverlay) settingsOverlay.classList.remove('show'); });
+    const shareChkEl = document.getElementById('share-include-link');
+    if (shareChkEl) shareChkEl.addEventListener('change', () => { try { localStorage.setItem('gp_akari_share_last', shareChkEl.checked ? '1' : '0'); } catch (e) {} });
+    document.getElementById('undo-btn').addEventListener('click', undo);
+    document.getElementById('redo-btn').addEventListener('click', redo);
+    document.addEventListener('keydown', e => {
+      if ((e.ctrlKey||e.metaKey) && e.key==='z') { e.preventDefault(); e.shiftKey ? redo() : undo(); }
+      if ((e.ctrlKey||e.metaKey) && e.key==='y') { e.preventDefault(); redo(); }
+    });
+    document.getElementById('win-next').addEventListener('click', () => { track('level_up', { level: level, difficulty: getDifficulty(level).label }); if ([1,3,5,7,9,10,12,13,15,20,25,30].indexOf(level) !== -1) { track('level_complete_' + level, { difficulty: getDifficulty(level).label }); } winOverlay.classList.remove('show'); if (window.GPBadges) GPBadges.next(); newPuzzle(); });
+    async function captureBoardToClipboard() {
+      try {
+        const boardEl = document.getElementById('puzzle-grid');
+        if (!boardEl || typeof html2canvas === 'undefined') return;
+        const canvas = await html2canvas(boardEl, { backgroundColor: '#f8f6ef', scale: 2 });
+        canvas.toBlob(async (blob) => {
+          if (!blob) return;
+          try { await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]); } catch(e) {}
+        }, 'image/png');
+      } catch(e) {}
+    }
+    document.getElementById('share-copy').addEventListener('click', () => {
+      track('share_copy', { level: level, difficulty: getDifficulty(level).label });
+      const diff = getDifficulty(level);
+      const text = 'Cleared GridPaw Akari Level ' + level + ' (' + diff.label + ' ' + diff.size + '×' + diff.size + ') ' + clockEmoji(timerSeconds) + ' ' + formatTime(timerSeconds) + ' · 💡 ' + hintsUsed + (hintsUsed === 1 ? ' hint' : ' hints') + ' · ' + mistakeToken() + (document.getElementById('share-include-link').checked ? ' — your turn → gridpaw.com/akari/' : '');
+      navigator.clipboard.writeText(text).then(() => showToast('📋 Copied to clipboard!', 'success'));
+    });
+    document.getElementById('share-twitter').addEventListener('click', () => {
+      openBoardCard(); // 点分享先弹棋盘卡，卡内再发帖
+    });
+    document.getElementById('share-reddit').addEventListener('click', () => {
+      openBoardCard();
+    });
+
+    // ── board share-card popup ──
+    const boardOverlay = document.getElementById('board-overlay');
+    function openBoardCard() {
+      track('share_card', { level: level, difficulty: getDifficulty(level).label });
+      document.getElementById('board-img').src = generateShareCard();
+      boardOverlay.classList.add('show');
+    }
+    document.getElementById('board-copy').addEventListener('click', async function () {
+      track('share_card_copy', { level: level });
+      try { navigator.clipboard.write([new ClipboardItem({ 'image/png': await (await fetch(document.getElementById('board-img').src)).blob() })]).catch(() => {}); } catch(e) {}
+      this.textContent = '✅ Copied';
+      const self = this;
+      setTimeout(() => { self.textContent = '📋 Copy Image'; }, 1500);
+    });
+    document.getElementById('board-save').addEventListener('click', () => {
+      const a = document.createElement('a'); a.download = 'gridpaw-akari-level-' + level + '.png'; a.href = document.getElementById('board-img').src; a.click();
+    });
+    document.getElementById('board-x').addEventListener('click', () => {
+      track('share_twitter', { level: level, difficulty: getDifficulty(level).label });
+      const diff = getDifficulty(level);
+      const text = encodeURIComponent('Cleared GridPaw Akari Level ' + level + ' (' + diff.label + ' ' + diff.size + '×' + diff.size + ') ' + clockEmoji(timerSeconds) + ' ' + formatTime(timerSeconds) + ' · 💡 ' + hintsUsed + (hintsUsed === 1 ? ' hint' : ' hints') + ' · ' + mistakeToken() + (document.getElementById('share-include-link').checked ? ' — your turn → gridpaw.com/akari/' : ''));
+      window.open('https://twitter.com/intent/tweet?text=' + text, '_blank');
+    });
+    document.getElementById('board-reddit').addEventListener('click', async () => {
+      track('share_reddit', { level: level, difficulty: getDifficulty(level).label });
+      await captureBoardToClipboard();
+      const diff = getDifficulty(level);
+      const text = encodeURIComponent('Cleared GridPaw Akari Level ' + level + ' (' + diff.label + ' ' + diff.size + '×' + diff.size + ') ' + clockEmoji(timerSeconds) + ' ' + formatTime(timerSeconds) + ' · 💡 ' + hintsUsed + (hintsUsed === 1 ? ' hint' : ' hints') + ' · ' + mistakeToken() + (document.getElementById('share-include-link').checked ? ' — your turn → gridpaw.com/akari/' : ''));
+      window.open('https://www.reddit.com/r/gridpaw/submit?url=' + encodeURIComponent('https://gridpaw.com/akari/') + '&title=' + text, '_blank');
+    });
+    document.getElementById('board-close').addEventListener('click', () => {
+      boardOverlay.classList.remove('show');
+    });
+    document.getElementById('daily-btn').addEventListener('click', () => {
+      track('daily_challenge_click');
+    });
+    const shareLogoImg = new Image(); shareLogoImg.src = '/assets/logo.png';
+    function generateShareCard() {
+      const s = currentPuzzle.size, g = currentPuzzle.grid;
+      const lit = illuminate(g, playerSolution, s);
+      const cardW = 600, cardH = 700, gridPadding = 20;
+      const cellSize = Math.floor((cardW - gridPadding * 2 - (s + 1) * 2) / s);
+      const gridW = cellSize * s + (s + 1) * 2, gridX = (cardW - gridW) / 2, gridY = 120;
+      const canvas = document.createElement('canvas'); canvas.width = cardW; canvas.height = cardH;
+      const ctx = canvas.getContext('2d');
+      const gradient = ctx.createLinearGradient(0, 0, cardW, cardH);
+      gradient.addColorStop(0, '#f8f6ef'); gradient.addColorStop(1, '#f8f6ef');
+      ctx.fillStyle = gradient; ctx.fillRect(0, 0, cardW, cardH);
+      if (shareLogoImg.complete && shareLogoImg.naturalWidth) ctx.drawImage(shareLogoImg, 18, 14, 44, 44);
+      ctx.fillStyle = '#342421'; ctx.font = 'bold 28px system-ui'; ctx.textAlign = 'center';
+      ctx.fillText('GridPaw Akari Challenge', cardW / 2 + 14, 40);
+      ctx.font = '16px system-ui'; ctx.fillStyle = '#6f5651';
+      const diff = getDifficulty(level);
+      ctx.fillText(s + '×' + s + ' · ' + diff.label + ' · Level ' + level, cardW / 2, 65);
+      ctx.font = 'bold 18px system-ui'; ctx.fillStyle = '#342421';
+      const timeStr = gameStartTime ? (Math.floor((Date.now()-gameStartTime)/60000)+':'+String(Math.floor(((Date.now()-gameStartTime)/1000)%60)).padStart(2,'0')) : '--:--';
+      ctx.fillText('⏱ '+timeStr+'   ❤️ '+health+' lives   💡 '+currentPuzzle.solution.flat().filter(Boolean).length+' bulbs', cardW/2, 100);
+      ctx.fillStyle = '#E8DDD8'; ctx.beginPath(); ctx.roundRect(gridX-4, gridY-4, gridW+8, gridW+8, 12); ctx.fill();
+      for (let r=0;r<s;r++) for (let c=0;c<s;c++) {
+        const x=gridX+c*(cellSize+2)+2, y=gridY+r*(cellSize+2)+2, val=g[r][c];
+        if (val!==9) { ctx.fillStyle='#8B7B9A'; ctx.beginPath(); ctx.roundRect(x,y,cellSize,cellSize,6); ctx.fill();
+          if(val>=0){ctx.fillStyle='#F0E8FF';ctx.font='bold '+Math.max(10,cellSize*0.4)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(val,x+cellSize/2,y+cellSize/2);}
+        } else if(playerSolution[r][c]){ctx.fillStyle='#D97706';ctx.beginPath();ctx.roundRect(x,y,cellSize,cellSize,6);ctx.fill();}
+        else if(lit[r][c]){ctx.fillStyle='#FFF8F0';ctx.beginPath();ctx.roundRect(x,y,cellSize,cellSize,6);ctx.fill();}
+        else{ctx.fillStyle='#F0EBE5';ctx.beginPath();ctx.roundRect(x,y,cellSize,cellSize,6);ctx.fill();}
+      }
+      const ctaY=gridY+gridW+30; ctx.font='bold 16px system-ui';ctx.fillStyle='#6f5651';ctx.textAlign='center';ctx.fillText('Play free at gridpaw.com/akari/',cardW/2,ctaY);
+      return canvas.toDataURL('image/png');
+    }
+    document.getElementById('share-copy').addEventListener('click', () => {
+      const cardData = generateShareCard();
+      const link = document.createElement('a'); link.download = 'gridpaw-level-' + level + '.png'; link.href = cardData; link.click();
+      showToast('📸 Share card downloaded!', 'success');
+    });
+    updateHealth(); updateLevel();
+    function loadCustomPuzzle() {
+      if (!window.location.hash) return false;
+      const encoded = window.location.hash.substring(1), parts = encoded.split(':');
+      if (parts.length !== 2) return false;
+      const s = parseInt(parts[0]), data = parts[1];
+      if (data.length !== s * s) return false;
+      const g = Array.from({length: s}, () => Array(s).fill(9));
+      for (let i = 0; i < data.length; i++) {
+        const r = Math.floor(i / s), c = i % s, ch = data[i];
+        if (ch === 'w') g[r][c] = 9; else if (ch === 'b') g[r][c] = -1;
+        else if (ch >= '0' && ch <= '4') g[r][c] = parseInt(ch); else return false;
+      }
+      try {
+        const result = solve(g, s, 2);
+        if (result.count !== 1 || !result.solution) return false;
+        currentPuzzle = { id: 'custom-' + Date.now(), size: s, grid: g, solution: result.solution, difficulty: 'custom', backtrackDepth: result.backtrackDepth };
+        playerSolution = Array.from({length: s}, () => Array(s).fill(false));
+        markX = Array.from({length: s}, () => Array(s).fill(false));
+        health = 3; won = false; gameStartTime = Date.now();
+        updateHealth(); renderBoard(); updateProgress(); showToast('Custom puzzle loaded!', 'success');
+        return true;
+      } catch (e) { return false; }
+    }
+    // Always start fresh from Level 1, then pull cloud level if signed in
+    newPuzzle();
+    // ─── 登录面板：Google + 邮箱密码小表单（2026-10-19 砍 Microsoft/Facebook——OAuth 未打通） ───
+    // 点 pill 展开面板，点外部关闭；登录成功 location.reload，失败静默（不挡游戏）
+    function buildSignInPanel(next) {
+      const GOOGLE_SVG = '<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 18.9 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.6 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>';
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'position:relative;display:inline-flex;z-index:30';
+      const pill = document.createElement('button');
+      pill.type = 'button';
+      pill.style.cssText = 'display:inline-flex;align-items:center;gap:5px;background:#fff;border:1.5px solid #dadce0;border-radius:999px;padding:5px 12px;font-size:0.8rem;font-weight:700;color:#3c4043;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.08);position:relative;z-index:5';
+      pill.innerHTML = GOOGLE_SVG + 'Sign in';
+      wrap.appendChild(pill);
+      const panel = document.createElement('div');
+      panel.style.cssText = 'display:none;position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);z-index:60;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.16);padding:10px;width:224px;text-align:left;white-space:normal';
+      const providers = [
+        { prov: 'google', label: 'Sign in with Google', svg: GOOGLE_SVG },
+      ];
+      providers.forEach((p) => {
+        const a = document.createElement('a');
+        a.href = '/api/auth/login?provider=' + p.prov + '&next=' + next;
+        a.style.cssText = 'display:flex;align-items:center;gap:.55rem;width:100%;box-sizing:border-box;background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:.45rem .6rem;margin-bottom:6px;font-size:.8rem;font-weight:700;color:var(--text);text-decoration:none';
+        a.innerHTML = p.svg + '<span>' + p.label + '</span>';
+        a.addEventListener('click', () => { if (typeof track === 'function') track('sign_in_click', { source: 'account_area', provider: p.prov }); });
+        panel.appendChild(a);
+      });
+      const divider = document.createElement('div');
+      divider.style.cssText = 'margin:4px 0 8px;height:1px;background:var(--border-soft)';
+      panel.appendChild(divider);
+      const form = document.createElement('form');
+      form.style.cssText = 'margin:0';
+      const em = document.createElement('input');
+      em.type = 'email'; em.placeholder = 'Email'; em.autocomplete = 'email'; em.required = true;
+      em.style.cssText = 'width:100%;box-sizing:border-box;border:1px solid #e5e7eb;border-radius:8px;padding:.45rem .55rem;font-size:.8rem;color:var(--text);margin-bottom:6px';
+      const pw = document.createElement('input');
+      pw.type = 'password'; pw.placeholder = 'Password'; pw.autocomplete = 'current-password'; pw.required = true;
+      pw.style.cssText = em.style.cssText;
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;gap:6px;margin-top:6px';
+      const shellBtnStyle = 'flex:1;border-radius:8px;padding:.42rem 0;font-size:.78rem;font-weight:800;cursor:pointer;border:1px solid #e5e7eb;background:#fff;color:var(--text)';
+      const regBtn = document.createElement('button');
+      regBtn.type = 'submit'; regBtn.setAttribute('data-action', 'register'); regBtn.textContent = 'Register';
+      regBtn.style.cssText = shellBtnStyle;
+      const logBtn = document.createElement('button');
+      logBtn.type = 'submit'; logBtn.setAttribute('data-action', 'login'); logBtn.textContent = 'Log in';
+      logBtn.style.cssText = shellBtnStyle + ';background:var(--accent,#e8816f);color:#fff;border-color:var(--accent,#e8816f)';
+      row.appendChild(regBtn); row.appendChild(logBtn);
+      form.appendChild(em); form.appendChild(pw); form.appendChild(row);
+      // Enter 键默认走 Log in
+      form.addEventListener('submit', (ev) => {
+        ev.preventDefault();
+        const action = ev.submitter && ev.submitter.getAttribute ? ev.submitter.getAttribute('data-action') : 'login';
+        submitCreds(action, em.value, pw.value);
+      });
+      panel.appendChild(form);
+      // 忘记密码：邮箱小表单 → POST /api/auth/forgot-password（防枚举，成功文案固定）
+      const fpLink = document.createElement('button');
+      fpLink.type = 'button';
+      fpLink.textContent = 'Forgot password?';
+      fpLink.style.cssText = 'display:block;width:100%;text-align:left;background:none;border:none;padding:4px 0 0;font-size:.72rem;font-weight:600;color:var(--text);text-decoration:underline;cursor:pointer;font-family:inherit';
+      const fpWrap = document.createElement('div');
+      fpWrap.style.cssText = 'display:none;margin-top:6px;border-top:1px dashed var(--border-soft);padding-top:8px';
+      const fpMsg = document.createElement('div');
+      fpMsg.style.cssText = 'font-size:.72rem;line-height:1.5;color:#559c68;margin:4px 0 2px';
+      const fpForm = document.createElement('form');
+      fpForm.style.cssText = 'margin:0';
+      const fpEm = document.createElement('input');
+      fpEm.type = 'email'; fpEm.placeholder = 'Email'; fpEm.autocomplete = 'email'; fpEm.required = true;
+      fpEm.style.cssText = em.style.cssText;
+      const fpBtn = document.createElement('button');
+      fpBtn.type = 'submit'; fpBtn.textContent = 'Send reset link';
+      fpBtn.style.cssText = shellBtnStyle + ';width:100%;margin-top:6px';
+      fpForm.appendChild(fpEm); fpForm.appendChild(fpBtn);
+      fpWrap.appendChild(fpForm); fpWrap.appendChild(fpMsg);
+      fpLink.addEventListener('click', () => { fpWrap.style.display = fpWrap.style.display === 'none' ? 'block' : 'none'; });
+      fpForm.addEventListener('submit', (ev) => {
+        ev.preventDefault();
+        const e = (fpEm.value || '').trim().toLowerCase();
+        if (!e) return;
+        fpBtn.disabled = true;
+        fetch('/api/auth/forgot-password', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ email: e }),
+          signal: AbortSignal.timeout(8000)
+        }).then((r) => r.json()).then((j) => {
+          if (j && j.ok) {
+            fpForm.style.display = 'none';
+            fpMsg.textContent = 'If that email has an account, a reset link is on the way';
+          } else {
+            fpBtn.disabled = false;
+          }
+        }).catch(() => { fpBtn.disabled = false; });
+      });
+      panel.appendChild(fpLink); panel.appendChild(fpWrap);
+      wrap.appendChild(panel);
+      pill.addEventListener('click', () => { panel.style.display = panel.style.display === 'none' ? 'block' : 'none'; });
+      // 点面板外部关闭
+      document.addEventListener('click', (ev) => { if (!wrap.contains(ev.target)) panel.style.display = 'none'; });
+      return wrap;
+    }
+    // 邮箱密码提交：成功 location.reload（服务端已发会话 cookie），失败静默降级
+    function submitCreds(action, email, password) {
+      const e = (email || '').trim().toLowerCase(), p = password || '';
+      if (!e || !p) return;
+      const url = action === 'register' ? '/api/auth/register' : '/api/auth/login-password';
+      fetch(url, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email: e, password: p }),
+        signal: AbortSignal.timeout(8000)
+      }).then((r) => r.json()).then((j) => {
+        if (j && j.ok) window.location.reload();
+      }).catch(() => {});
+    }
+    // ─── 导航栏登录区（复用 daily 页的登录体系，静默同步）──────────────
+    fetch('/api/auth/me', { signal: AbortSignal.timeout(8000) }).then(r => r.json()).then(me => {
+      const me_ = me && me.user ? me.user : null;
+      if (!me_) currentUser = null; else currentUser = me_;
+      const area = document.getElementById('nav-account-area');
+      if (!area) return;
+      area.innerHTML = '';
+      if (currentUser) {
+        if (currentUser.picture && /^https:\/\//.test(currentUser.picture)) {
+          const img = document.createElement('img');
+          img.src = currentUser.picture; img.alt = ''; img.referrerPolicy = 'no-referrer';
+          img.style.cssText = 'width:26px;height:26px;border-radius:50%';
+          area.appendChild(img);
+        }
+        const name = document.createElement('span');
+        name.textContent = currentUser.name || 'Cat Fan';
+        name.style.cssText = 'font-size:0.8rem;font-weight:700;color:var(--text)';
+        area.appendChild(name);
+      } else {
+        area.appendChild(buildSignInPanel('/'));
+      }
+      // 登录态已确认，重新拉云端关卡（此时 currentUser 可用）
+      if (currentUser) syncLevelOnLoad();
+    }).catch(() => {});
+    syncLevelOnLoad();
+
+    /* ── 新手引导 Coach：真盘对错对照演示（2026-09-23，与 Shikaku 同款语言）── */
+    // ⚠️ 不能包 if 块：module 严格模式下块内函数声明外部钩子调不到（已踩坑）
+    const akObCard = document.getElementById('ak-coach');
+    const akObStep = document.getElementById('ak-ob-step'), akObTitle = document.getElementById('ak-ob-title'), akObText = document.getElementById('ak-ob-text');
+    const akObNext = document.getElementById('ak-ob-next'), akObSkip = document.getElementById('ak-ob-skip'), akObToastEl = document.getElementById('ak-toast');
+    const akObDotEls = akObCard.querySelectorAll('.ob-dot');
+    const AK_PAW_SVG = '<svg viewBox="0 0 96 96" style="width:100%;height:100%"><g transform="rotate(-5 48 48)">' +
+      '<path d="M32 90 C22 90 17 83 19 74 C12 70 11 59 17 53 C11 45 14 33 22 28 C23 18 32 13 40 16 C43 10 52 9 56 14 C60 9 70 10 73 16 C81 13 89 19 89 28 C93 36 92 47 86 52 C90 60 87 72 78 76 C79 85 71 91 63 89 C56 94 44 94 40 90 C37 92 34 92 32 90 Z" fill="url(#gpFurG)" stroke="#D9BE9F" stroke-width="1.6"/>' +
+      '<path d="M50 50 q8 -8 15 -2 q8 7 0 15 q-5 6 -12 11 q-1.5 1.4 -3 0 q-7 -5 -12 -11 q-8 -8 0 -15 q7 -6 12 2z" fill="url(#gpPadG)"/>' +
+      '<g transform="rotate(-12 33 31)"><ellipse cx="33" cy="31" rx="7.8" ry="9.2" fill="url(#gpBeanG)"/></g>' +
+      '<g transform="rotate(-3 49 24)"><ellipse cx="49" cy="24" rx="8" ry="9.4" fill="url(#gpBeanG)"/></g>' +
+      '<g transform="rotate(8 65 26)"><ellipse cx="65" cy="26" rx="7.6" ry="9" fill="url(#gpBeanG)"/></g>' +
+      '<g transform="rotate(20 77 37)"><ellipse cx="77" cy="37" rx="7" ry="8.2" fill="url(#gpBeanG)"/></g></g></svg>';
+    let akObTut = {}; try { akObTut = JSON.parse(localStorage.getItem('akari_ob_tut') || '{}'); } catch(e) { akObTut = {}; }
+    let akObPhase = null, akObIdle = null, akObPaw = null, akObT = [], akObLevel = -1;
+    function akObSave() { try { localStorage.setItem('akari_ob_tut', JSON.stringify(akObTut)); } catch(e) {} }
+    function akObCell(r, c) { return gridEl.children[r * currentPuzzle.size + c]; }
+    function akObXY(cell) { const cb = cell.getBoundingClientRect(), hb = gridEl.getBoundingClientRect(); return { x: cb.left - hb.left + cb.width/2 - 25, y: cb.top - hb.top + cb.height/2 - 30, cx: cb.left - hb.left + cb.width/2, cy: cb.top - hb.top + cb.height/2 }; }
+    function akObKillPaw() { akObT.forEach(clearTimeout); akObT = []; if (akObPaw) { akObPaw.remove(); akObPaw = null; } }
+    function akObSpawnPaw() { akObKillPaw(); akObPaw = document.createElement('div'); akObPaw.className = 'ak-paw'; akObPaw.innerHTML = AK_PAW_SVG; gridEl.appendChild(akObPaw); return akObPaw; }
+    function akObRipple(cell) { const p = akObXY(cell); const r = document.createElement('div'); r.className = 'ak-ripple'; r.style.left = p.cx + 'px'; r.style.top = p.cy + 'px'; gridEl.appendChild(r); setTimeout(() => r.remove(), 750); }
+    function akObTap(cell, cb) { const p = akObXY(cell); akObPaw.style.left = p.x + 'px'; akObPaw.style.top = p.y + 'px'; akObT.push(setTimeout(() => { akObPaw.classList.add('press'); akObRipple(cell); }, 700)); akObT.push(setTimeout(() => { akObPaw.classList.remove('press'); if (cb) cb(); }, 1300)); }
+    function akObFlash(cell) {
+      cell.classList.add('cell-violation');
+      const x = document.createElement('div'); x.className = 'ak-obx'; cell.appendChild(x);
+      setTimeout(() => { cell.classList.remove('cell-violation'); x.remove(); }, 850);
+    }
+    function akObWrongCell() {
+      // 优先选「放在已满数字旁边会超标」的格子（number_excess 教学价值最高），退回已亮格
+      const s = currentPuzzle.size;
+      const hyp = playerSolution.map(r => r.slice());
+      for (let r = 0; r < s; r++) for (let c = 0; c < s; c++) {
+        if (currentPuzzle.grid[r][c] !== 9 || playerSolution[r][c]) continue;
+        hyp[r][c] = true;
+        const v = checkViolations(currentPuzzle.grid, hyp, s);
+        hyp[r][c] = false;
+        if (v.some(x => x.type === 'number_excess')) return { r, c };
+      }
+      return akObLitCell();
+    }
+    function akObFirstBulb() { const s = currentPuzzle.size, sol = currentPuzzle.solution; for (let r = 0; r < s; r++) for (let c = 0; c < s; c++) if (sol[r][c] && !playerSolution[r][c]) return { r, c }; return null; }
+    function akObLitCell() { const s = currentPuzzle.size; const lit = illuminate(currentPuzzle.grid, playerSolution, s); for (let r = 0; r < s; r++) for (let c = 0; c < s; c++) if (currentPuzzle.grid[r][c] === 9 && lit[r][c] && !playerSolution[r][c]) return { r, c }; return null; }
+    function akObSetDots(n) { akObDotEls.forEach((d, i) => d.classList.toggle('on', i <= n)); }
+    function akObToast() { akObToastEl.classList.add('show'); setTimeout(() => akObToastEl.classList.remove('show'), 1600); }
+    function akObDemo() {
+      const good = akObFirstBulb();
+      if (!good) { akObFinish(false); return; }
+      akObSpawnPaw();
+      // ① 做对：真落子（handleClick 真实路径：SFX+渲染+autosave）
+      akObTap(akObCell(good.r, good.c), () => {
+        if (akObPhase !== 'demo') return;
+        handleClick(good.r, good.c);
+        akObText.textContent = 'See that? One tap — the cat lights its whole row and column until a wall blocks it!';
+        // renderBoard 清掉了 paw → 重生后演示"做错"
+        akObT.push(setTimeout(() => {
+          if (akObPhase !== 'demo') return;
+          const bad = akObWrongCell();
+          const s2 = () => currentPuzzle.size;
+          akObSpawnPaw();
+          if (bad) akObTap(akObCell(bad.r, bad.c), () => {
+            if (akObPhase !== 'demo') return;
+            akObFlash(akObCell(bad.r, bad.c));
+            const h = playerSolution.map(r => r.slice()); h[bad.r][bad.c] = true;
+            const excess = checkViolations(currentPuzzle.grid, h, s2()).some(x => x.type === 'number_excess');
+            akObText.textContent = excess
+              ? 'Never here! That number already has all its cats — one more would be too many.'
+              : 'Never here! This cell is already lit — two cats would SEE each other. That is the one rule to remember.';
+            akObT.push(setTimeout(akObYourTurn, 1600));
+          }); else akObYourTurn();
+        }, 500));
+      });
+    }
+    function akObYourTurn() {
+      akObPhase = 'turn';
+ akObStep.textContent = 'STEP 3 / 3'; akObTitle.textContent = 'Your turn ';
+      akObText.textContent = ({ 1: 'Tap all four cells around the 4 — the number tells you exactly how many cats touch it!',
+        2: 'Place a cat on BOTH sides of the 2. They face each other — but the wall blocks their sight, so it is legal!',
+        3: 'Three clues, three cats. Each number tells you exactly how many cats touch it.',
+        4: 'Bigger board, same rules. Use every number as your anchor!' })[akObLevel] || 'Tap any unlit cell to place a cat. No two cats in the same row or column without a wall between them!';
+      akObNext.style.display = 'none';
+      akObScheduleIdle();
+    }
+    function akObScheduleIdle() {
+      clearTimeout(akObIdle);
+      akObIdle = setTimeout(() => {
+        if (akObPhase === 'turn' && !akObPaw && currentPuzzle) {
+          const nb = akObFirstBulb();
+          if (nb) { akObSpawnPaw(); akObTap(akObCell(nb.r, nb.c), () => akObKillPaw()); }
+        }
+        akObScheduleIdle();
+      }, 3000);
+    }
+    function akObFinish(complete) {
+      if (akObLevel >= 0) { akObTut['t' + akObLevel] = true; akObSave(); }
+      clearTimeout(akObIdle); akObKillPaw(); akObCard.classList.add('hidden');
+      akObNext.style.display = ''; akObPhase = null;
+      try { track(complete ? 'onboard_complete' : 'onboard_skip', { level: akObLevel + 1 }); } catch(e) {}
+    }
+    function akObOnPlace() { if (akObPhase === 'turn') { akObFinish(true); akObToast(); } }
+    function akObMaybeCoach() {
+      if (akObPhase !== null) akObFinish(false);
+      if (!currentPuzzle || getDifficulty(level).label !== 'Tutorial') return;
+      if (akObTut['t' + level]) return;
+      akObLevel = level; akObPhase = 'rule';
+      akObCard.classList.remove('hidden'); akObSetDots(0); akObNext.style.display = '';
+      if (!Object.keys(akObTut).length) {
+        akObStep.textContent = 'STEP 1 / 3'; akObTitle.textContent = 'Light up the room 🔍';
+        akObText.textContent = 'Tap any cell to place a glowing cat. Cats light their whole row and column until a wall blocks the light.';
+        akObNext.textContent = 'Watch how →';
+ akObNext.onclick = () => { akObNext.style.display = 'none'; akObPhase = 'demo'; akObSetDots(1); akObStep.textContent = 'STEP 2 / 3'; akObTitle.textContent = 'Watch: right vs wrong '; akObText.textContent = 'The paw shows a correct tap, then a wrong one. Tap the board any time to take over.'; try { track('onboard_step', { step: 2, level: level + 1 }); } catch(e) {} akObDemo(); };
+      } else {
+        akObNext.style.display = 'none'; akObPhase = 'demo'; akObSetDots(1);
+ akObStep.textContent = 'STEP 2 / 3'; akObTitle.textContent = 'Watch: right vs wrong ';
+        akObDemo();
+      }
+      try { track('onboard_start', { level: level + 1 }); } catch(e) {}
+    }
+    akObSkip.onclick = () => akObFinish(false);
+    // 用户接管：demo 期间真点击 → 直接进 your turn（capture 先于格子 handler，随后那次落子自然毕业）
+    gridEl.addEventListener('click', () => { if (akObPhase === 'demo') { akObKillPaw(); akObYourTurn(); } }, true);
+    akObMaybeCoach();
+  </script>
+</body>
+</html>

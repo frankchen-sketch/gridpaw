@@ -85,10 +85,10 @@ const tips = [
 
   <div class="container">
  <h1>Akari Tips &amp; Strategies</h1>
-    <p style="text-align:center;color:#6f5651;margin-bottom:1rem;">Every technique you need to solve a Light Up grid by logic alone — no guessing.</p>
+    <p style="text-align:center;color:#6f5651;margin-bottom:1rem;">Every technique you need to solve a Light Up grid by logic alone. No guessing.</p>
 
     <section class="seo-content">
-      <p>Akari tips are really about one thing: learning where to look. A Light Up puzzle has exactly one solution, and there is always a next move that follows <em>purely</em> from the rules — you just have to notice it. The strategies below are ordered by when you'll actually need them, from the number-cell reads that crack a board open in the first ten seconds to the elimination chains that finish the hardest 14×14 Weekend Super grids.</p>
+      <p>Akari tips are really about one thing: learning where to look. A Light Up puzzle has exactly one solution, and there is always a next move that follows <em>purely</em> from the rules; you just have to notice it. The strategies below are ordered by when you'll actually need them, from the number-cell reads that crack a board open in the first ten seconds to the elimination chains that finish the hardest 14×14 Weekend Super grids.</p>
 
       <h2>The Six Akari Techniques Worth Memorising</h2>
       <p>Start with whichever one matches the number staring at you. Together they handle the overwhelming majority of positions you'll meet:</p>
@@ -105,45 +105,45 @@ const tips = [
       </ul>
 
       <h2 id="number-0">Number 0 Cells: Block All Four Neighbours</h2>
-      <p>A <strong>number 0 cell</strong> tells you that none of its four adjacent cells (up, down, left, right) can hold a bulb. It is the cheapest information on the board — the moment you see one, mark all four neighbours with X and move on. Every X you place shrinks the candidate space for the numbers around it.</p>
-      <p>Zeroes also matter later in the solve: any bulb placement you are considering must not touch a 0's neighbours. When a region seems to have two possible solutions, check whether one of them lights a cell adjacent to a 0 — if it does, that solution is dead and the other one is forced.</p>
+      <p>A <strong>number 0 cell</strong> tells you that none of its four adjacent cells (up, down, left, right) can hold a bulb. It is the cheapest information on the board: the moment you see one, mark all four neighbours with X and move on. Every X you place shrinks the candidate space for the numbers around it.</p>
+      <p>Zeroes also matter later in the solve: any bulb placement you are considering must not touch a 0's neighbours. When a region seems to have two possible solutions, check whether one of them lights a cell adjacent to a 0; if it does, that solution is dead and the other one is forced.</p>
 
       <h2 id="number-1">Number 1 Cells: Exactly One Neighbour</h2>
-      <p>A <strong>number 1 cell</strong> means exactly one of its four adjacent cells holds a bulb — no more, no less. If three of its neighbours are already blocked (by walls, X marks, or the grid edge), the remaining neighbour <em>must</em> be a bulb. That forced placement is free progress.</p>
-      <p>The harder read is line-of-sight: once you know one specific neighbour is the bulb, the other three are X'd out — and if placing that bulb would illuminate a cell that already holds a bulb, your read is wrong somewhere. Trace back before you place anything else.</p>
+      <p>A <strong>number 1 cell</strong> means exactly one of its four adjacent cells holds a bulb, no more, no less. If three of its neighbours are already blocked (by walls, X marks, or the grid edge), the remaining neighbour <em>must</em> be a bulb. That forced placement is free progress.</p>
+      <p>The harder read is line-of-sight: once you know one specific neighbour is the bulb, the other three are X'd out, and if placing that bulb would illuminate a cell that already holds a bulb, your read is wrong somewhere. Trace back before you place anything else.</p>
 
       <h2 id="number-2">Number 2 Cells: Corners and Edges First</h2>
-      <p>A <strong>number 2 cell</strong> needs exactly two of its four neighbours lit. Corners and edges are where 2s become powerful: a 2 in a corner has only two available neighbours, so both must be bulbs — a forced placement, no deduction needed. A 2 on an edge with one neighbour blocked has exactly three candidates and usually narrows fast.</p>
+      <p>A <strong>number 2 cell</strong> needs exactly two of its four neighbours lit. Corners and edges are where 2s become powerful: a 2 in a corner has only two available neighbours, so both must be bulbs: a forced placement, no deduction needed. A 2 on an edge with one neighbour blocked has exactly three candidates and usually narrows fast.</p>
       <p>In the middle of the board a 2 carries less information on its own, but it compounds: every neighbouring cell you X out turns it one step closer to forced. Track 2s alongside their neighbours rather than in isolation.</p>
 
       <h2 id="number-3">Number 3 Cells: Find the Odd One Out</h2>
-      <p>A <strong>number 3 cell</strong> needs three of its four neighbours lit — only one is blocked. Flip the question around: instead of asking "which three get bulbs?", ask "which one can't?". If any neighbour is proven impossible (it would see another bulb, or it's next to a 0), the other three are all forced placements.</p>
+      <p>A <strong>number 3 cell</strong> needs three of its four neighbours lit, only one is blocked. Flip the question around: instead of asking "which three get bulbs?", ask "which one can't?". If any neighbour is proven impossible (it would see another bulb, or it's next to a 0), the other three are all forced placements.</p>
       <p>Threes are the second-richest read after 4s. On GridPaw boards a 3 squeezed between walls usually cracks open a whole corner of the grid, because its three forced bulbs illuminate two full lines each.</p>
 
       <h2 id="number-4">Number 4 Cells: Place Immediately</h2>
-      <p>A <strong>number 4 cell</strong> means all four adjacent cells must contain bulbs — there is nothing to deduce. Place all four the moment you spot one, and check the consequences: each of those bulbs illuminates its own row and column, so before making any other move, see which nearby numbers just became forced or blocked.</p>
-      <p>The only thing a 4 can't tell you is where its bulbs' light <em>must</em> stop — that's what the walls decide. After placing a 4's bulbs, re-scan the numbers touching those four lit lines; a 1 next to a newly lit neighbour often becomes a forced X chain.</p>
+      <p>A <strong>number 4 cell</strong> means all four adjacent cells must contain bulbs; there is nothing to deduce. Place all four the moment you spot one, and check the consequences: each of those bulbs illuminates its own row and column, so before making any other move, see which nearby numbers just became forced or blocked.</p>
+      <p>The only thing a 4 can't tell you is where its bulbs' light <em>must</em> stop: that's what the walls decide. After placing a 4's bulbs, re-scan the numbers touching those four lit lines; a 1 next to a newly lit neighbour often becomes a forced X chain.</p>
 
       <h2>Read Every Number Cell Before You Place Anything</h2>
-      <p>The single biggest beginner mistake in Akari is placing bulbs reactively — spotting an obvious one and clicking, then hunting for the next. Instead, do a full sweep of the grid first and read <em>every</em> number. A <a href="#number-0">number 0 cell</a> instantly tells you four cells are dead. A <a href="#number-4">number 4 cell</a> hands you four bulbs. Those two reads alone often account for a third of a puzzle's bulbs, and they cost you nothing but a single pass with your eyes.</p>
-      <p>This is the same discipline a solver automates. When you ask an <a href="/akari/solver/">Akari solver</a> for a hint, what it returns first is almost always one of these forced placements — because forced placements are provable, and provable moves don't need search.</p>
+      <p>The single biggest beginner mistake in Akari is placing bulbs reactively, spotting an obvious one and clicking, then hunting for the next. Instead, do a full sweep of the grid first and read <em>every</em> number. A <a href="#number-0">number 0 cell</a> instantly tells you four cells are dead. A <a href="#number-4">number 4 cell</a> hands you four bulbs. Those two reads alone often account for a third of a puzzle's bulbs, and they cost you nothing but a single pass with your eyes.</p>
+      <p>This is the same discipline a solver automates. When you ask an <a href="/akari/solver/">Akari solver</a> for a hint, what it returns first is almost always one of these forced placements, because forced placements are provable, and provable moves don't need search.</p>
 
       <h2>Understand Line of Sight</h2>
       <p>Every bulb illuminates its own cell and every cell along its row and column in both directions, stopping at the first black wall. Two consequences matter constantly:</p>
       <ol>
         <li><strong>A bulb can never see another bulb.</strong> If placing one would light a cell that already contains a bulb, that placement is illegal. This is the rule that makes elimination work.</li>
-        <li><strong>Walls cast shadows.</strong> A cell in the shadow of a wall on both axes must be lit by something local — usually a forced placement nearby.</li>
+        <li><strong>Walls cast shadows.</strong> A cell in the shadow of a wall on both axes must be lit by something local, usually a forced placement nearby.</li>
       </ol>
       <p>Once line of sight is automatic, the <a href="/akari/tips/elimination/">elimination technique</a> becomes natural: instead of asking "where can a bulb go?", ask "what breaks if I put one here?"</p>
 
       <h2>Work From Constraints, Not From Empty Space</h2>
-      <p>New solvers tend to scan for empty cells and wonder what belongs there. Strong solvers scan the number cells and the walls. Numbers and walls are the only things on the board that carry information — empty cells don't. This habit is the difference between a two-minute solve and a stalled one, and it's the same reason advanced Akari boards feel like deduction rather than search.</p>
+      <p>New solvers tend to scan for empty cells and wonder what belongs there. Strong solvers scan the number cells and the walls. Numbers and walls are the only things on the board that carry information; empty cells don't. This habit is the difference between a two-minute solve and a stalled one, and it's the same reason advanced Akari boards feel like deduction rather than search.</p>
 
       <h2>Mistakes That Stall a Solve</h2>
       <ul>
-        <li><strong>Guessing.</strong> Every Akari puzzle on GridPaw is generated to have exactly one solution reachable by logic alone. If you're guessing, you've missed a read — go back to the numbers.</li>
+        <li><strong>Guessing.</strong> Every Akari puzzle on GridPaw is generated to have exactly one solution reachable by logic alone. If you're guessing, you've missed a read, so go back to the numbers.</li>
         <li><strong>Forgetting to X out cells.</strong> Cells you've proven cannot hold a bulb deserve a mark. Untracked information is lost information.</li>
-        <li><strong>Chasing the same dead end.</strong> If a region resists every technique, move elsewhere — the grid will have a forced move somewhere else, and that placement will come back and unlock the stubborn region.</li>
+        <li><strong>Chasing the same dead end.</strong> If a region resists every technique, move elsewhere: the grid will have a forced move somewhere else, and that placement will come back and unlock the stubborn region.</li>
         <li><strong>Skipping the walls.</strong> Corner numbers, numbers on edges, and numbers squeezed between walls are the richest reads on the board.</li>
       </ul>
 

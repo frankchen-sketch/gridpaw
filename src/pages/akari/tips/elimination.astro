@@ -73,29 +73,29 @@ const description = "Master the elimination technique for Akari puzzles. Learn h
 
       <h2>What Is Elimination?</h2>
       <p>Elimination is a logical deduction technique used in Akari (also known as Light Up) puzzles when basic rules alone cannot make progress. Instead of proving where a light bulb <em>must</em> go, you prove where it <em>cannot</em> go by assuming the opposite and watching for a contradiction.</p>
-      <p>In a typical Akari puzzle, you start by applying straightforward rules: a numbered wall cell with all its neighbors accounted for, or a cell that can only be reached by one remaining position. These basic deductions carry you through easy and medium puzzles. But when you face a hard puzzle — especially the 12×12 grids on GridPaw — you will hit a wall where no obvious move presents itself. That is exactly where the elimination technique earns its place in your toolkit.</p>
+      <p>In a typical Akari puzzle, you start by applying straightforward rules: a numbered wall cell with all its neighbors accounted for, or a cell that can only be reached by one remaining position. These basic deductions carry you through easy and medium puzzles. But when you face a hard puzzle (especially the 12×12 grids on GridPaw) you will hit a wall where no obvious move presents itself. That is exactly where the elimination technique earns its place in your toolkit.</p>
       <p>The core idea is simple: <strong>assume a cell is a light bulb, then check whether that assumption leads to an impossible state.</strong> If it does, the cell must be empty. If assuming a cell is empty leads to a contradiction, then it must be a light bulb. Either way, you gain information without guessing.</p>
 
       <h2>How to Spot a Contradiction</h2>
       <p>Before you can use elimination effectively, you need to know what a contradiction looks like in an Akari puzzle. There are four common contradiction types:</p>
       <ol>
         <li><strong>Double illumination:</strong> Two light bulbs end up shining on each other with no wall between them. This violates the fundamental rule that light beams travel in straight lines until they hit a wall or the grid edge. If your assumption creates this situation, the assumption is wrong.</li>
-        <li><strong>Unreachable dark cell:</strong> After placing a hypothetical light bulb, you mark all the cells it illuminates. If any remaining empty cell can no longer be reached by any possible light bulb placement, you have a contradiction — that cell would stay dark forever.</li>
+        <li><strong>Unreachable dark cell:</strong> After placing a hypothetical light bulb, you mark all the cells it illuminates. If any remaining empty cell can no longer be reached by any possible light bulb placement, you have a contradiction: that cell would stay dark forever.</li>
         <li><strong>Overcrowded wall number:</strong> A numbered wall cell (0, 1, 2, 3, or 4) has a strict count of adjacent light bulbs. If your assumption forces a wall cell to have more adjacent bulbs than its number allows, the assumption fails.</li>
         <li><strong>Isolated region:</strong> Your assumption splits the remaining empty cells into disconnected regions, and one region has too few valid light-bulb positions to illuminate all its cells. This is the hardest contradiction type to spot, but it appears frequently in hard puzzle scenarios.</li>
       </ol>
       <p>Training your eye to recognize these four patterns is the key to making elimination fast and reliable. With practice, you will start seeing contradictions within seconds of placing a hypothetical bulb.</p>
 
       <h2>Elimination Walkthrough: Step by Step</h2>
-      <p>Let us walk through a concrete example to see elimination in action. Imagine you have a section of an Akari grid where two empty cells — call them A and B — sit in a corridor between several numbered walls. Basic rules have stalled, and you need to decide: is cell A a light bulb, or is it empty?</p>
+      <p>Let us walk through a concrete example to see elimination in action. Imagine you have a section of an Akari grid where two empty cells (call them A and B) sit in a corridor between several numbered walls. Basic rules have stalled, and you need to decide: is cell A a light bulb, or is it empty?</p>
       <h3>Step 1: Choose a candidate cell</h3>
-      <p>Pick a cell that, once resolved, would unlock several other deductions. Good candidates are cells that sit at intersections of multiple constraints — near numbered walls, in narrow corridors, or at the only position that can illuminate a specific dark cell.</p>
+      <p>Pick a cell that, once resolved, would unlock several other deductions. Good candidates are cells that sit at intersections of multiple constraints: near numbered walls, in narrow corridors, or at the only position that can illuminate a specific dark cell.</p>
       <h3>Step 2: Assume it is a light bulb</h3>
-      <p>Place a hypothetical light bulb in cell A. Now propagate all consequences: mark every cell this bulb illuminates along its row and column until walls block the beams. Check adjacent numbered wall cells — do any exceed their allowed bulb count?</p>
+      <p>Place a hypothetical light bulb in cell A. Now propagate all consequences: mark every cell this bulb illuminates along its row and column until walls block the beams. Check adjacent numbered wall cells: do any exceed their allowed bulb count?</p>
       <h3>Step 3: Look for a contradiction</h3>
-      <p>Scan for the four contradiction types. Does any wall number get violated? Does any remaining empty cell become permanently unreachable? Do two hypothetical bulbs shine directly on each other? If you find a contradiction, you have proven that cell A <em>cannot</em> be a light bulb — mark it as empty.</p>
+      <p>Scan for the four contradiction types. Does any wall number get violated? Does any remaining empty cell become permanently unreachable? Do two hypothetical bulbs shine directly on each other? If you find a contradiction, you have proven that cell A <em>cannot</em> be a light bulb, so mark it as empty.</p>
       <h3>Step 4: If no contradiction, try the opposite</h3>
-      <p>If assuming A is a bulb produces no contradiction, try assuming A is empty instead. Sometimes the contradiction appears on the other side. If assuming A is empty also produces no contradiction, this particular elimination test is inconclusive — pick a different candidate cell and come back later.</p>
+      <p>If assuming A is a bulb produces no contradiction, try assuming A is empty instead. Sometimes the contradiction appears on the other side. If assuming A is empty also produces no contradiction, this particular elimination test is inconclusive, so pick a different candidate cell and come back later.</p>
       <h3>Step 5: Apply the result and repeat</h3>
       <p>Once elimination gives you a definite answer (bulb or empty), mark it and immediately re-check all nearby constraints. A single resolved cell often triggers a chain of basic deductions that were previously blocked. Then pick your next candidate and repeat the process.</p>
 
@@ -107,7 +107,7 @@ const description = "Master the elimination technique for Akari puzzles. Learn h
         <li><strong>Symmetrical ambiguity:</strong> Two sections of the grid mirror each other, and you cannot tell which side gets the bulb. This is common in hard puzzle designs that deliberately create fork points.</li>
         <li><strong>Late-game deadlocks:</strong> Near the end of a hard puzzle, you may have only a handful of unresolved cells, but every one of them has two possible states. Elimination resolves these efficiently.</li>
       </ul>
-      <p>The transition from basic solving to elimination is not a failure — it is a sign that you are tackling genuinely challenging Akari puzzles. The best solvers use elimination as a natural extension of their basic toolkit, not as a last resort.</p>
+      <p>The transition from basic solving to elimination is not a failure. It is a sign that you are tackling genuinely challenging Akari puzzles. The best solvers use elimination as a natural extension of their basic toolkit, not as a last resort.</p>
 
       <h2>Tips for Faster Elimination</h2>
       <p>Elimination can be slow if you test every cell blindly. Use these strategies to speed up:</p>
@@ -121,12 +121,12 @@ const description = "Master the elimination technique for Akari puzzles. Learn h
 
       <h2>Practice the Elimination Technique</h2>
       <p>The best way to internalize elimination is to practice on real Akari puzzles. Start with medium-difficulty puzzles where basic rules get you 70–80% of the way, then use elimination to finish. As your recognition of contradiction patterns improves, move up to the hard 12×12 puzzles that require elimination from the start.</p>
-      <p>GridPaw offers puzzles at every difficulty level, all playable directly in your browser. The hard puzzles are specifically designed to require elimination — they are excellent training grounds for this technique.</p>
+      <p>GridPaw offers puzzles at every difficulty level, all playable directly in your browser. The hard puzzles are specifically designed to require elimination: they are excellent training grounds for this technique.</p>
 
       <h2>Frequently Asked Questions</h2>
       <details>
         <summary>Is elimination the same as guessing?</summary>
-        <p>No. Guessing means placing a light bulb and hoping it works. Elimination means placing a hypothetical bulb, checking for a logical contradiction, and drawing a definite conclusion. The difference is that elimination always produces a provable result — either the assumption leads to a contradiction (proving the cell is empty) or it does not (which you then test from the other direction). You never have to backtrack from a guess because you never commit to an unproven placement.</p>
+        <p>No. Guessing means placing a light bulb and hoping it works. Elimination means placing a hypothetical bulb, checking for a logical contradiction, and drawing a definite conclusion. The difference is that elimination always produces a provable result: either the assumption leads to a contradiction (proving the cell is empty) or it does not (which you then test from the other direction). You never have to backtrack from a guess because you never commit to an unproven placement.</p>
       </details>
       <details>
         <summary>How many times will I need elimination in a single hard puzzle?</summary>

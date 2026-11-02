@@ -61,12 +61,12 @@ const faqs = [
   <p class="lede">
     Pictomino is GridPaw's <strong>spatial reasoning game for kids</strong>: a
     real cat photo is cut into grid squares and shuffled; you rebuild the picture
-    piece by piece using logic — never guessing. It's pure static HTML (no build
+    piece by piece using logic, never guessing. It's pure static HTML (no build
     step), free, no account needed, and works on phones, tablets, and computers
     with taps or mouse clicks. Each level shows you the <strong>complete picture
     for 2 seconds</strong> ("👀 Remember the picture!"), then one piece at a time:
     find where it snaps into the board by comparing edges, fur color, ears,
-    whiskers. <strong>5 lives per level</strong> — a wrong tap costs one; lose all
+    whiskers. <strong>5 lives per level</strong>: a wrong tap costs one; lose all
     5 and the level ends. Finishing a level earns <strong>stars + points</strong>
     plus a <strong>fun fact about the cat breed</strong> you just rebuilt.
   </p>
@@ -79,10 +79,10 @@ const faqs = [
 
   <h2>Your First Puzzle</h2>
   <ol>
-    <li><strong>Open the game.</strong> The first time you play, a <strong>How to Play</strong> card explains the loop ("Look at the pieces. Find where they fit. Tap to place.") with a "Auto-show at start" toggle — tap <strong>Got it!</strong>. Then a short <strong>tutorial coach</strong> (STEP 1/2) walks you through one real placement: tap the highlighted piece, then tap the single <code>+</code> spot; a bouncing paw points at each target. Skip it anytime with <strong>Skip ➜</strong>.</li>
+    <li><strong>Open the game.</strong> The first time you play, a <strong>How to Play</strong> card explains the loop ("Look at the pieces. Find where they fit. Tap to place.") with a "Auto-show at start" toggle: tap <strong>Got it!</strong>. Then a short <strong>tutorial coach</strong> (STEP 1/2) walks you through one real placement: tap the highlighted piece, then tap the single <code>+</code> spot; a bouncing paw points at each target. Skip it anytime with <strong>Skip ➜</strong>.</li>
     <li><strong>Memorize the picture.</strong> Before every round the full photo shows for <strong>2 seconds</strong> with a countdown (also after a retry, and via the Peek button after losing).</li>
-    <li><strong>Place pieces one at a time.</strong> One candidate piece sits in the tray under the board (<code>👇 Find where this piece belongs, then tap the +!</code>). On the board, some cells are already filled in; empty cells show dashed outlines, and a few glow with a <strong><code>+</code></strong> — those are your candidate spots. Tap the <code>+</code> where the piece belongs. Correct: the piece pops in (+50 points) and a new <code>+</code> appears. Wrong: red flash, the piece shakes, <strong>−1 life</strong>.</li>
-    <li><strong>Keep going until the photo is whole.</strong> When every <code>+</code> is filled, the level completes — stars, score, and a cat fact card appear.</li>
+    <li><strong>Place pieces one at a time.</strong> One candidate piece sits in the tray under the board (<code>👇 Find where this piece belongs, then tap the +!</code>). On the board, some cells are already filled in; empty cells show dashed outlines, and a few glow with a <strong><code>+</code></strong>: those are your candidate spots. Tap the <code>+</code> where the piece belongs. Correct: the piece pops in (+50 points) and a new <code>+</code> appears. Wrong: red flash, the piece shakes, <strong>−1 life</strong>.</li>
+    <li><strong>Keep going until the photo is whole.</strong> When every <code>+</code> is filled, the level completes: stars, score, and a cat fact card appear.</li>
   </ol>
 
   <figure class="shot">
@@ -137,7 +137,7 @@ const faqs = [
     ("⚠️ Hard level! Watch the piece and find its spot"). A round timeout costs 1
     life and resets that round's fills (same puzzle, no progress lost beyond the
     round). The 10 cats: levels 1–2 are fixed (Siamese, American Shorthair),
-    levels 3–10 shuffle from the remaining pool — a fresh lineup every page load
+    levels 3–10 shuffle from the remaining pool, a fresh lineup every page load
     (re-shuffled when you hit <strong>Play again 🔁</strong>).
   </p>
 
@@ -155,11 +155,11 @@ const faqs = [
     <li><strong>+50 points</strong> per correct placement; running total in the ⭐ pill.</li>
     <li><strong>Level score</strong> = <code>lives remaining × 100</code> + <code>speed bonus</code> (up to +300, earned by finishing within 60 seconds: +5 per second faster, capped).</li>
     <li><strong>Stars:</strong> 3★ if you finish with 4–5 lives, 2★ with 2–3, 1★ with 1 (you can never get 0★). Your <strong>best star record per level</strong> is kept in the browser and survives reloads.</li>
-    <li><strong>Win screen:</strong> "Well Done! 🎉" — star row, "You completed the {'{Breed}'} puzzle!", <code>Level score +N</code> with the breakdown "Lives bonus +N · Speed bonus +N", a <strong>cat-fact card</strong> (breed name + 3 facts), then <strong>Next level ➜</strong> (or <strong>See total 🏆</strong> on level 10), and the share row (<strong>📣 Share on Reddit</strong> / <strong>🔗 Copy link</strong>), plus <strong>Continue ✓</strong> to stay on the finished board.</li>
-    <li><strong>All 10 done:</strong> 👑 <strong>Puzzle Master!</strong> — "You finished all 10 cat puzzles!" with your <strong>total score</strong>; <strong>Play again 🔁</strong> reshuffles the cats and resets the score.</li>
+    <li><strong>Win screen:</strong> "Well Done! 🎉": star row, "You completed the {'{Breed}'} puzzle!", <code>Level score +N</code> with the breakdown "Lives bonus +N · Speed bonus +N", a <strong>cat-fact card</strong> (breed name + 3 facts), then <strong>Next level ➜</strong> (or <strong>See total 🏆</strong> on level 10), and the share row (<strong>📣 Share on Reddit</strong> / <strong>🔗 Copy link</strong>), plus <strong>Continue ✓</strong> to stay on the finished board.</li>
+    <li><strong>All 10 done:</strong> 👑 <strong>Puzzle Master!</strong>: "You finished all 10 cat puzzles!" with your <strong>total score</strong>; <strong>Play again 🔁</strong> reshuffles the cats and resets the score.</li>
     <li><strong>Lose screen ("No lives left"):</strong> "Don't give up — your cat believes in you!", plus a nudge showing how many levels you've cleared. Three ways out: <strong>Try again 💪</strong> (restart the level), <strong>👁 Peek at the picture (2s)</strong> (replays the preview, then restarts), or <strong>Skip this puzzle →</strong> (advance with no score).</li>
     <li><strong>Share:</strong> Reddit opens <code>reddit.com/r/pictomino/submit</code> (title like "Beat Pictomino Level 3 (easy) ⭐⭐⭐ — can you do better? → gridpaw.com/pictomino") and first copies a picture of your board to the clipboard via html2canvas; <strong>Copy link</strong> copies the same text (shows ✅ Copied! 1.6s).</li>
-    <li><strong>Sound:</strong> synthesized Web Audio chips — rising double-tone on correct, descending buzz on wrong, arpeggio on win. No audio files, muted state persisted.</li>
+    <li><strong>Sound:</strong> synthesized Web Audio chips: rising double-tone on correct, descending buzz on wrong, arpeggio on win. No audio files, muted state persisted.</li>
   </ul>
 
   <figure class="shot">
@@ -172,13 +172,13 @@ const faqs = [
     The <strong>Daily Challenge</strong> (<a href="/pictomino/daily-puzzle">gridpaw.com/pictomino/daily-puzzle</a>)
     is a separate, harder mode: <strong>one puzzle per day, same for every player
     worldwide</strong> (date-seeded from UTC). It's a <strong>6×6 grid with 18
-    holes, 4 candidate spots, 33% blur, 50s per round</strong> — the hardest board
+    holes, 4 candidate spots, 33% blur, 50s per round</strong>. The hardest board
     in the game.
   </p>
   <ul>
     <li>Your <strong>streak</strong> grows by 1 for each day you solve it (broken if you skip a day), with badges: 💪 Keep it up! (3) → 🔥 Week warrior! (7) → ⭐ Two-week legend! (14) → 🏆 30-day champion! (30).</li>
     <li>Your <strong>best time</strong> is tracked; finishing the puzzle shows the streak card on the win screen.</li>
-    <li>Below the game, <strong>🏆 Today's Leaderboard</strong> ranks the day's fastest solvers (🥇🥈🥉 + times). To appear on it you must <strong>Sign in</strong> (Google) — "📅 Sign in and finish today's puzzle to compete!" — otherwise it's purely local. After you win, the page auto-scrolls to the leaderboard.</li>
+    <li>Below the game, <strong>🏆 Today's Leaderboard</strong> ranks the day's fastest solvers (🥇🥈🥉 + times). To appear on it you must <strong>Sign in</strong> (Google), "📅 Sign in and finish today's puzzle to compete!", otherwise it's purely local. After you win, the page auto-scrolls to the leaderboard.</li>
     <li>The Daily win screen hides "Next level" (there's only one) and its close button reads <strong>Done ✓</strong>.</li>
   </ul>
 

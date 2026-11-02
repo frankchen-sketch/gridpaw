@@ -1,0 +1,1885 @@
+diff --git a/src/data/meowdoku-levels.json b/src/data/meowdoku-levels.json
+--- a/src/data/meowdoku-levels.json
++++ b/src/data/meowdoku-levels.json
+@@ -6,31 +6,31 @@
+     "answer": "R1C5 · R2C1 · R3C3 · R4C6 · R5C4 · R6C2",
+     "regions": 6,
+     "solve": {
+-      "anchor": "Two regions set this board up. Blue is only two cells deep, R3C6 and R4C6, and both sit in column 6 — so column 6's cat is one of that pair, and R1C6, R2C6, R5C6 and R6C6 are gone. Salmon loses two of its three cells to that single fact, leaving R1C5 as the board's first cat, with row 1 and column 5 closing behind it.",
+-      "steps": [
+-        "Which half of blue? Empty R4C6 and follow the chain: it ends with column 1 needing two cats, which cannot be. So R4C6 holds the blue cat, and row 4 empties — R4C1, R4C2, R4C3 and R4C4 are all out.",
++      "anchor": "Two regions set this board up. Blue is only two cells deep, R3C6 and R4C6, and both sit in column 6, so column 6's cat is one of that pair, and R1C6, R2C6, R5C6 and R6C6 are gone. Salmon loses two of its three cells to that single fact, leaving R1C5 as the board's first cat, with row 1 and column 5 closing behind it.",
++      "steps": [
++        "Which half of blue? Empty R4C6 and follow the chain: it ends with column 1 needing two cats, which cannot be. So R4C6 holds the blue cat, and row 4 empties. R4C1, R4C2, R4C3 and R4C4 are all out.",
+         "Cream then handles the middle band. A cat on R2C2 would leave cream with no legal cell at all, so it goes. Row 2's remaining cells are R2C1 and R2C3, both cream, so cream's cat belongs to row 2 and R3C1 dies.",
+         "Between those two, empty R2C1 and row 3 starves. R2C1 takes the cream cat, R2C3 drops out, and column 1 closes with R5C1 and R6C1.",
+         "Row 5's open cells, R5C2 to R5C4, all sit inside lilac, so lilac's cat is in row 5 and R6C4 is out. Column 2 then has a single candidate left: R6C2, because emptying it would strip column 2 of every legal cell.",
+         "Look at what those two blue cells bought: four cells in column 6, two more out of salmon, and then all of row 4 once the blue cat was pinned. On a board this size, the smallest region is nearly always the cheapest place to start."
+       ],
+-      "close": "The last two come from counting. R5C4 is the only open cell of row 5, R3C3 the only one in column 3. Read the set back — R1C5, R2C1, R3C3, R4C6, R5C4, R6C2 — and every row, column and region carries one cat, none of them touching, corners included. The board is proven unique, so any legal finish lands here."
+-    },
+-    "hints": [
+-      "Start at the right edge. Blue holds only R3C6 and R4C6, and both sit in column 6 — so the column's cat is one of that pair, and R1C6, R2C6, R5C6 and R6C6 are dead before you place anything.",
++      "close": "The last two come from counting. R5C4 is the only open cell of row 5, R3C3 the only one in column 3. Read the set back (R1C5, R2C1, R3C3, R4C6, R5C4, R6C2), and every row, column and region carries one cat, none of them touching, corners included. The board is proven unique, so any legal finish lands here."
++    },
++    "hints": [
++      "Start at the right edge. Blue holds only R3C6 and R4C6, and both sit in column 6: the column's cat is one of that pair, and R1C6, R2C6, R5C6 and R6C6 are dead before you place anything.",
+       "That same fact breaks salmon: its three cells are R1C5, R1C6 and R2C6, and two of them are in column 6. R1C5 is the only one left, so it takes the cat, and row 1 plus column 5 close behind it.",
+       "Which half of blue? Empty R4C6 and follow the chain: column 1 ends up needing two cats. So R4C6 is the blue cat and row 4 empties. Cream then shifts into row 2, which kills R3C1.",
+       "The tail is counting. R2C2 fails because cream would be left with no cell, R2C1 must be the cream cat, R6C2 must close column 2, and then R5C4 and R3C3 are the last open cells of row 5 and column 3."
+     ],
+     "regionsGuide": [
+-      "Pink takes R4C1, R5C1, R6C1, R6C2 and R6C3 — 5 cells.",
++      "Pink takes R4C1, R5C1, R6C1, R6C2 and R6C3: 5 cells.",
+       "Salmon? That's R1C5, R1C6 and R2C6. 3 cells in all.",
+-      "Lilac takes R3C2, R4C2, R4C4, R5C2, R5C3, R5C4 and R6C4 — 7 cells.",
+-      "Blue takes R3C6 and R4C6 — 2 cells.",
++      "Lilac takes R3C2, R4C2, R4C4, R5C2, R5C3, R5C4 and R6C4 (7 cells).",
++      "Blue takes R3C6 and R4C6: 2 cells.",
+       "Green = a 14-cell patch, cells R1C2, R1C4, R2C2, R2C4, R2C5, R3C3, R3C4, R3C5, R4C3, R4C5, R5C5, R5C6, R6C5 and R6C6.",
+-      "Cream takes R1C1, R1C3, R2C1, R2C3 and R3C1 — 5 cells tucked into the top-left corner."
+-    ],
+-    "trap": "R2C5 reads as free space but isn't: drop a cat there and R1C5 — where the salmon region cat must live — is dead on arrival.",
++      "Cream takes R1C1, R1C3, R2C1, R2C3 and R3C1: 5 cells tucked into the top-left corner."
++    ],
++    "trap": "R2C5 reads as free space but isn't: drop a cat there and R1C5, where the salmon region cat must live, is dead on arrival.",
+     "contacts": [
+       "Pink touches cream ×1, lilac ×12.",
+       "Salmon touches green ×6, blue ×1.",
+@@ -53,7 +53,7 @@
+         "Column 2's open cells are R1C2, R2C2, R3C2 and R4C2, and all four belong to cream. Cream's cat is therefore in column 2, which removes R1C3 and R2C3.",
+         "Column 3 has just R3C3 and R4C3 open, both blue, so blue's cat sits in column 3 and R4C4, R4C5 and R5C4 fall away. Lilac's two open cells, R5C5 and R5C6, are both in row 5, so lilac's cat and row 5's cat are the same animal.",
+         "Now the blue pair. Empty R4C3 and the cascade ends with row 1 asking for two cats; R4C3 has to be the cat, and row 4 closes behind it with R4C6.",
+-        "Column 4's open cells all sit inside salmon, so salmon's cat is in column 4, and salmon's cells elsewhere are finished: R1C5, R1C6, R2C6, R3C6. Column 6's open cells all sit inside row 5, so row 5's cat is in column 6, and R5C5 — row 5's cell outside that column — is out.",
++        "Column 4's open cells all sit inside salmon, so salmon's cat is in column 4, and salmon's cells elsewhere are finished: R1C5, R1C6, R2C6, R3C6. Column 6's open cells all sit inside row 5, so row 5's cat is in column 6, and R5C5, row 5's cell outside that column, is out.",
+         "Add up the work: one free cell, three pointing deductions, one contradiction test, two more pointings, then four cells that need only a count. A dozen marks finish the grid, and not one of them was a guess."
+       ],
+       "close": "Four cells finish it, each with one reason: R3C5 is row 3's only open cell, R5C6 is row 5's, R1C4 is the only open cell left in column 4, R2C2 the only one in row 2. The finished board is R1C4, R2C2, R3C5, R4C3, R5C6, R6C1. Every row, column and region holds one cat, and no two of them touch, diagonals included."
+@@ -65,12 +65,12 @@
+       "Column 4 belongs to salmon, which kills R1C5, R1C6, R2C6, R3C6. Column 6 belongs to row 5, which kills R5C5. Four single cells remain: R3C5, R5C6, R1C4, R2C2."
+     ],
+     "regionsGuide": [
+-      "Pink takes R6C1 — 1 cell tucked into the bottom-left corner.",
++      "Pink takes R6C1: 1 cell tucked into the bottom-left corner.",
+       "The blue cells: R3C3, R4C3, R4C4, R4C5, R5C3, R5C4, R6C3, R6C4 and R6C5 (a 9-cell patch).",
+-      "Lilac takes R5C5, R5C6 and R6C6 — 3 cells tucked into the bottom-right corner.",
++      "Lilac takes R5C5, R5C6 and R6C6 (3 cells tucked into the bottom-right corner).",
+       "The salmon cells: R1C4, R1C5, R1C6, R2C4, R2C6 and R3C6 (a 6-cell patch).",
+-      "Green takes R2C5, R3C4, R3C5 and R4C6 — 4 cells.",
+-      "Cream takes R1C1, R1C2, R1C3, R2C1, R2C2, R2C3, R3C1, R3C2, R4C1, R4C2, R5C1, R5C2 and R6C2 — 13 cells."
++      "Green takes R2C5, R3C4, R3C5 and R4C6: 4 cells.",
++      "Cream takes R1C1, R1C2, R1C3, R2C1, R2C2, R2C3, R3C1, R3C2, R4C1, R4C2, R5C1, R5C2 and R6C2 (13 cells)."
+     ],
+     "trap": "Resist R2C5. It blocks R1C4, the salmon region's real cat square, and a board missing that cat cannot be finished.",
+     "contacts": [
+@@ -98,7 +98,7 @@
+         "Cream is left with R2C5, R2C6, R3C5, R3C6, R4C5 and R4C6. Rows 3 and 4 already have their cats, and R1C4 sits diagonally against R2C5, so R2C6 is cream's only cell. Column 6 closes there.",
+         "It is worth seeing why this level runs so cleanly: each placement shrinks the next region to a single cell, so the board feeds itself. Salmon hands over green, green hands over blue, blue hands over column 2, and column 2 hands over cream. A unit with one cell left can never be wrong."
+       ],
+-      "close": "One cell remains: R5C5, the only open cell of column 5, which row 5 has been waiting for since the start. The solution is R1C4, R2C6, R3C3, R4C1, R5C5, R6C2. Six cats, one per row, column and region, none of them in contact — and no step above required you to guess."
++      "close": "One cell remains: R5C5, the only open cell of column 5, which row 5 has been waiting for since the start. The solution is R1C4, R2C6, R3C3, R4C1, R5C5, R6C2. Six cats, one per row, column and region, none of them in contact. No step above required you to guess."
+     },
+     "hints": [
+       "Nothing on this board needs a test. Salmon is a single cell, R1C4, and that placement alone closes row 1 (R1C1, R1C2, R1C6) and column 4 (R3C4 to R6C4).",
+@@ -107,12 +107,12 @@
+       "Cream is the last region: rows 3 and 4 are spoken for and R1C4 touches R2C5, so R2C6 takes it. Column 5 has only R5C5 left. That is the whole solve, six forced placements and no guesses."
+     ],
+     "regionsGuide": [
+-      "Cream takes R1C5, R1C6, R2C5, R2C6, R3C5, R3C6, R4C5 and R4C6 — 8 cells.",
++      "Cream takes R1C5, R1C6, R2C5, R2C6, R3C5, R3C6, R4C5 and R4C6: 8 cells.",
+       "Lilac fills R5C4, R5C5, R5C6, R6C4, R6C5 and R6C6.",
+-      "Pink takes R2C1, R2C2, R3C2, R4C2, R4C3, R5C1, R5C2, R5C3, R6C1, R6C2 and R6C3 — 11 cells.",
++      "Pink takes R2C1, R2C2, R3C2, R4C2, R4C3, R5C1, R5C2, R5C3, R6C1, R6C2 and R6C3 (11 cells).",
+       "Blue? That's R1C1, R1C2, R3C1 and R4C1. 4 cells in all.",
+-      "Green takes R1C3, R2C3, R2C4, R3C3, R3C4 and R4C4 — 6 cells.",
+-      "Salmon takes R1C4 — 1 cell."
++      "Green takes R1C3, R2C3, R2C4, R3C3, R3C4 and R4C4: 6 cells.",
++      "Salmon takes R1C4 (1 cell)."
+     ],
+     "trap": "Most wrong first moves here start at R1C3. It kills R1C4 outright, and the salmon region never recovers.",
+     "contacts": [
+@@ -140,7 +140,7 @@
+         "Two candidates are left for cream's cat, and the test settles it: empty R2C1 and the lilac region has no cell left for its own cat. So R2C1 is the cat, row 2 closes at R2C6.",
+         "Notice how lopsided the methods are: two of the steps above were pure geometry, a row's cells sitting inside a region and a column's cells sitting inside another, and geometry costs nothing to check. Only the two placement tests needed a what-if, and each collapsed in one pass."
+       ],
+-      "close": "The blue region is the last open question, and the same test answers it: empty R4C6 and row 5 starves, so R4C6 carries the blue cat. Both tests prove a placement the same way — leave the cell empty and a unit starves, lilac first, then row 5. Two counting steps end the board — R5C4, row 5's only open cell, then R1C5, column 5's only one. Cats on R1C5, R2C1, R3C3, R4C6, R5C4, R6C2, one to a row, column and region, none adjacent."
++      "close": "The blue region is the last open question, and the same test answers it: empty R4C6 and row 5 starves, so R4C6 carries the blue cat. Both tests prove a placement the same way. Leave the cell empty and a unit starves, lilac first, then row 5. Two counting steps end the board (R5C4, row 5's only open cell, then R1C5, column 5's only one). Cats on R1C5, R2C1, R3C3, R4C6, R5C4, R6C2, one to a row, column and region, none adjacent."
+     },
+     "hints": [
+       "Pink is one cell, R6C2, so start there and let row 6 and column 2 close. The rest of this board is decided by shapes rather than by trials.",
+@@ -149,14 +149,14 @@
+       "Two placement tests finish it. Empty R2C1 and lilac starves, so R2C1 is cream's; empty R4C6 and row 5 starves, so R4C6 is blue's. R5C4 and R1C5 are then the last cells of row 5 and column 5."
+     ],
+     "regionsGuide": [
+-      "Salmon takes R1C4, R1C5, R1C6, R2C6 and R3C5 — 5 cells.",
++      "Salmon takes R1C4, R1C5, R1C6, R2C6 and R3C5: 5 cells.",
+       "Lilac fills R4C1, R4C3, R4C4, R5C1, R5C2, R5C3, R5C4, R5C5, R5C6, R6C1, R6C3, R6C4 and R6C5.",
+-      "Pink takes R6C2 — 1 cell tucked into the bottom-left corner.",
+-      "Blue takes R3C6, R4C5, R4C6 and R6C6 — 4 cells.",
+-      "Green takes R2C4, R2C5, R3C2, R3C3, R3C4 and R4C2 — 6 cells.",
+-      "Cream takes R1C1, R1C2, R1C3, R2C1, R2C2, R2C3 and R3C1 — 7 cells, holding the top-left corner."
+-    ],
+-    "trap": "Try R5C1 first and the pink region is wiped out in one move — every cell it owns aligns with that spot — same line, or one corner over.",
++      "Pink takes R6C2 (1 cell tucked into the bottom-left corner).",
++      "Blue takes R3C6, R4C5, R4C6 and R6C6: 4 cells.",
++      "Green takes R2C4, R2C5, R3C2, R3C3, R3C4 and R4C2: 6 cells.",
++      "Cream takes R1C1, R1C2, R1C3, R2C1, R2C2, R2C3 and R3C1: 7 cells, holding the top-left corner."
++    ],
++    "trap": "Try R5C1 first and the pink region is wiped out in one move: every cell it owns aligns with that spot, same line, or one corner over.",
+     "contacts": [
+       "Salmon meets cream ×2, green ×9, blue ×4, lilac ×1.",
+       "Lilac touches cream ×1, green ×11, salmon ×1, blue ×9, pink ×5.",
+@@ -174,7 +174,7 @@
+     "answer": "R1C2 · R2C5 · R3C3 · R4C1 · R5C4 · R6C6",
+     "regions": 6,
+     "solve": {
+-      "anchor": "Start with the smallest region and work outward. Blue is two cells, R4C1 and R4C2, both in row 4, so row 4's cat is inside blue and R4C3, R4C4, R4C5 and R4C6 are out on the first move. Green then has only R3C1, R3C2 and R3C3 open, all in row 3, so row 3's cat belongs to green and its other cells — R3C4, R3C5, R3C6 — are gone.",
++      "anchor": "Start with the smallest region and work outward. Blue is two cells, R4C1 and R4C2, both in row 4, so row 4's cat is inside blue and R4C3, R4C4, R4C5 and R4C6 are out on the first move. Green then has only R3C1, R3C2 and R3C3 open, all in row 3, so row 3's cat belongs to green and its other cells (R3C4, R3C5, R3C6) are gone.",
+       "steps": [
+         "Blue's two cells now decide each other. Empty R4C1 and green has no legal cell left for its cat, so R4C1 is the blue cat, and R4C2 goes with it. Row 3 collapses to R3C3, which takes the green cat; row 3 closes, and columns 1 and 3 close with it (R1C1, R2C1, R6C1 and R1C3, R5C3, R6C3).",
+         "Cream owns row 2: R2C5 and R2C6 are its only open cells there, so cream's cat is on row 2 and R1C5, R1C6 leave.",
+@@ -182,7 +182,7 @@
+         "Row 6's open cells, R6C4, R6C5 and R6C6, all sit in pink, so pink's cat is on row 6 and R5C6 is out. Empty R5C4 and row 6 starves, so R5C4 takes the lilac cat.",
+         "Trace the chain of causes: two cells in blue fixed row 4, row 4 fixed green's shape, green fixed row 3, and row 3 handed over columns 1 and 3. A pair of cells in the right place can carry a third of the board."
+       ],
+-      "close": "Only counting is left. R6C6 is row 6's last open cell, R2C5 is column 5's. That gives R1C2, R2C5, R3C3, R4C1, R5C4, R6C6 — one cat per row, column and region, no two touching, corners included. Every step above was either a region with one home left or a single contradiction check, and the board was proven unique before publication."
++      "close": "Only counting is left. R6C6 is row 6's last open cell, R2C5 is column 5's. That gives R1C2, R2C5, R3C3, R4C1, R5C4, R6C6: one cat per row, column and region, no two touching, corners included. Every step above was either a region with one home left or a single contradiction check, and the board was proven unique before publication."
+     },
+     "hints": [
+       "Blue is R4C1 and R4C2, both in row 4, so row 4's cat is one of them and R4C3, R4C4, R4C5, R4C6 are out on the first move.",
+@@ -191,12 +191,12 @@
+       "Row 6 belongs to pink, so R5C6 is out, and R5C4 must take the lilac cat because emptying it starves row 6. The finish is two counts: R6C6 for row 6, R2C5 for column 5."
+     ],
+     "regionsGuide": [
+-      "Pink takes R5C6, R6C4, R6C5 and R6C6 — 4 cells.",
++      "Pink takes R5C6, R6C4, R6C5 and R6C6: 4 cells.",
+       "The blue cells: R4C1 and R4C2 (a two-cell strip).",
+-      "Lilac takes R4C4, R5C1, R5C2, R5C3, R5C4, R5C5, R6C1, R6C2 and R6C3 — 9 cells.",
+-      "Green takes R3C1, R3C2, R3C3 and R4C3 — 4 cells.",
++      "Lilac takes R4C4, R5C1, R5C2, R5C3, R5C4, R5C5, R6C1, R6C2 and R6C3: 9 cells.",
++      "Green takes R3C1, R3C2, R3C3 and R4C3: 4 cells.",
+       "Salmon = a 8-cell patch, cells R1C1, R1C2, R1C3, R1C4, R2C1, R2C2, R2C3 and R2C4.",
+-      "Cream takes R1C5, R1C6, R2C5, R2C6, R3C4, R3C5, R3C6, R4C5 and R4C6 — 9 cells."
++      "Cream takes R1C5, R1C6, R2C5, R2C6, R3C4, R3C5, R3C6, R4C5 and R4C6: 9 cells."
+     ],
+     "trap": "The quiet mistake is R5C1. One cat there and the blue region has no home left on the whole grid.",
+     "contacts": [
+@@ -207,7 +207,7 @@
+       "Salmon touches cream ×7, green ×8.",
+       "Cream touches salmon ×7, green ×2, lilac ×6, pink ×2."
+     ],
+-    "strategic": "Each contact is a no-touch wall — even the diagonal ones — so a placed cat silences every cell it touches across those borders."
++    "strategic": "Each contact is a no-touch wall (even the diagonal ones), so a placed cat silences every cell it touches across those borders."
+   },
+   {
+     "level": 6,
+@@ -216,10 +216,10 @@
+     "answer": "R1C3 · R2C1 · R3C5 · R4C2 · R5C4 · R6C6",
+     "regions": 6,
+     "solve": {
+-      "anchor": "Nothing on this board is forced at the start, so the first pass is a sweep of one-move tests: put a cat on a cell, propagate, and see which unit runs dry. Eleven cells fail that test in the top three rows — R1C4, R1C6, R1C5, R1C1, R2C2, R2C3, R2C4, R2C5, R3C1, R3C2 and R3C4. Their reasons differ; the effect is the same.",
+-      "steps": [
+-        "Group them by what breaks. Blue is the victim twice: R3C1 and R2C3 each leave the region with no legal cell. Columns account for three more — R3C2 would put two cats in column 1, R1C4 starves column 2, R1C5 empties column 4. Rows account for four: R1C1, R2C4 and R3C4 all leave row 5 with nowhere to go, and R1C6 does the same to row 4. The last two are region kills, R2C2 giving salmon two cats and R2C5 leaving green with none.",
+-        "With R3C2 gone, blue's remaining cells are R4C1 and R4C2, both in row 4 — so row 4's cat is blue and R4C3, R4C4, R4C5, R4C6 are out. The salmon region's open cells, R1C3, R3C3 and R5C3, all sit in column 3, so column 3's cat is salmon's and R6C3 goes.",
++      "anchor": "Nothing on this board is forced at the start, so the first pass is a sweep of one-move tests: put a cat on a cell, propagate, and see which unit runs dry. Eleven cells fail that test in the top three rows. R1C4, R1C6, R1C5, R1C1, R2C2, R2C3, R2C4, R2C5, R3C1, R3C2 and R3C4. Their reasons differ; the effect is the same.",
++      "steps": [
++        "Group them by what breaks. Blue is the victim twice: R3C1 and R2C3 each leave the region with no legal cell. Columns account for three more. R3C2 would put two cats in column 1, R1C4 starves column 2, R1C5 empties column 4. Rows account for four: R1C1, R2C4 and R3C4 all leave row 5 with nowhere to go, and R1C6 does the same to row 4. The last two are region kills, R2C2 giving salmon two cats and R2C5 leaving green with none.",
++        "With R3C2 gone, blue's remaining cells are R4C1 and R4C2, both in row 4, so row 4's cat is blue and R4C3, R4C4, R4C5, R4C6 are out. The salmon region's open cells, R1C3, R3C3 and R5C3, all sit in column 3, so column 3's cat is salmon's and R6C3 goes.",
+         "One choice remains in the lower half: empty R5C4 and column 6 has no cell left for its cat. R5C4 is the lilac cat, and row 5 closes (R5C1, R5C2, R5C6).",
+         "If you are solving this one on paper, do the sweep first and strike all eleven cells before placing anything. It feels slow for a minute, and then the rest of the board has almost no wrong turns left in it."
+       ],
+@@ -228,18 +228,18 @@
+     "hints": [
+       "No cell is forced at the start, so sweep before you place. Eleven cells in the top three rows fail a one-move test: R1C4, R1C6, R1C5, R1C1, R2C2, R2C3, R2C4, R2C5, R3C1, R3C2, R3C4.",
+       "Their reasons differ. R3C1 and R2C3 leave blue with no cell, R3C2 would put two cats in column 1, R1C4 starves column 2, R1C5 empties column 4, and R1C1, R2C4, R3C4 all leave row 5 short.",
+-      "With those gone, blue is down to R4C1 and R4C2, both in row 4, so row 4's cat is blue. Salmon's open cells — R1C3, R3C3, R5C3 — all sit in column 3, so column 3's cat is salmon's and R6C3 is out.",
++      "With those gone, blue is down to R4C1 and R4C2, both in row 4, so row 4's cat is blue. Salmon's open cells (R1C3, R3C3, R5C3) all sit in column 3, so column 3's cat is salmon's and R6C3 is out.",
+       "One decision remains: empty R5C4 and column 6 has no legal cell, so R5C4 is the lilac cat. After that, five single-cell units: R3C5, R6C6, R2C1, R4C2, R1C3."
+     ],
+     "regionsGuide": [
+       "The pink cells: R4C6, R5C6, R6C4, R6C5 and R6C6 (a 5-cell patch).",
+-      "Lilac takes R4C4, R5C1, R5C2, R5C4, R5C5, R6C1, R6C2 and R6C3 — 8 cells.",
+-      "Cream takes R1C1, R1C2, R2C1 and R3C1 — 4 cells, holding the top-left corner.",
+-      "Blue takes R3C2, R4C1 and R4C2 — 3 cells.",
++      "Lilac takes R4C4, R5C1, R5C2, R5C4, R5C5, R6C1, R6C2 and R6C3: 8 cells.",
++      "Cream takes R1C1, R1C2, R2C1 and R3C1 (4 cells, holding the top-left corner).",
++      "Blue takes R3C2, R4C1 and R4C2: 3 cells.",
+       "The green cells: R1C4, R2C3, R2C4, R2C6, R3C5, R3C6 and R4C5 (a 7-cell patch).",
+-      "Salmon takes R1C3, R1C5, R1C6, R2C2, R2C5, R3C3, R3C4, R4C3 and R5C3 — 9 cells."
+-    ],
+-    "trap": "Try R5C5 first and the pink region is wiped out in one move — every cell it owns aligns with that spot — same line, or one corner over.",
++      "Salmon takes R1C3, R1C5, R1C6, R2C2, R2C5, R3C3, R3C4, R4C3 and R5C3: 9 cells."
++    ],
++    "trap": "Try R5C5 first and the pink region is wiped out in one move. Every cell it owns aligns with that spot, same line, or one corner over.",
+     "contacts": [
+       "Pink meets green ×4, lilac ×8, salmon ×1.",
+       "Lilac touches salmon ×10, green ×4, blue ×4, pink ×8.",
+@@ -257,7 +257,7 @@
+     "answer": "R1C4 · R2C2 · R3C5 · R4C1 · R5C3 · R6C6",
+     "regions": 6,
+     "solve": {
+-      "anchor": "Pink is a single cell again, R6C6, so the cat goes there and both of its lines close: row 6 loses R6C1 to R6C4, column 6 loses R1C6 to R4C6. Green immediately offers the next deduction, because its only open cells, R3C5 and R4C5, sit in column 5 — column 5's cat is green's, so R1C5 and R2C5 are out.",
++      "anchor": "Pink is a single cell again, R6C6, so the cat goes there and both of its lines close: row 6 loses R6C1 to R6C4, column 6 loses R1C6 to R4C6. Green immediately offers the next deduction, because its only open cells, R3C5 and R4C5, sit in column 5. Column 5's cat is green's, so R1C5 and R2C5 are out.",
+       "steps": [
+         "Two cells in the top left cannot hold cats. Put one on R1C1 and the salmon region is left with nothing; put one on R1C2 and the same thing happens. Both are out.",
+         "Row 1's open cells are then R1C3 and R1C4, both salmon, so salmon's cat is in row 1 and R2C1 is gone. Row 2's open cells (R2C2, R2C3, R2C4) all belong to cream, so cream's cat is in row 2 and R3C3, R3C4, R4C3 are out.",
+@@ -269,17 +269,17 @@
+     },
+     "hints": [
+       "Pink is a single cell, R6C6. Take it and both of its lines close: row 6 loses R6C1 to R6C4, column 6 loses R1C6 to R4C6.",
+-      "Green offers the next deduction, because its open cells R3C5 and R4C5 both sit in column 5 — so column 5's cat is green's and R1C5, R2C5 are out.",
++      "Green offers the next deduction, because its open cells R3C5 and R4C5 both sit in column 5, so column 5's cat is green's and R1C5, R2C5 are out.",
+       "Two cells in the top left die on the same test: a cat on R1C1 or R1C2 would leave salmon with nothing. That hands row 1 to salmon, which kills R2C1, and row 2 to cream, which kills R3C3, R3C4, R4C3.",
+       "Column 1 belongs to blue, so R3C2, R4C2, R5C2 go; column 2 belongs to row 2, leaving R2C2 as the cat. Then R3C5, R4C1, R5C3 and R1C4 are the last cells of their units."
+     ],
+     "regionsGuide": [
+-      "Pink takes R6C6 — 1 cell tucked into the bottom-right corner.",
++      "Pink takes R6C6: 1 cell tucked into the bottom-right corner.",
+       "The lilac cells: R4C4, R5C3, R5C4, R6C3 and R6C4 (a 5-cell patch).",
+-      "Blue takes R3C1, R3C2, R4C1, R4C2, R5C1, R5C2, R6C1 and R6C2 — 8 cells.",
++      "Blue takes R3C1, R3C2, R4C1, R4C2, R5C1, R5C2, R6C1 and R6C2 (8 cells).",
+       "Green = a 9-cell patch, cells R1C6, R2C6, R3C5, R3C6, R4C5, R4C6, R5C5, R5C6 and R6C5.",
+-      "Cream takes R1C1, R1C2, R2C2, R2C3, R2C4, R2C5, R3C3, R3C4 and R4C3 — 9 cells.",
+-      "Salmon takes R1C3, R1C4, R1C5 and R2C1 — 4 cells."
++      "Cream takes R1C1, R1C2, R2C2, R2C3, R2C4, R2C5, R3C3, R3C4 and R4C3: 9 cells.",
++      "Salmon takes R1C3, R1C4, R1C5 and R2C1 (4 cells)."
+     ],
+     "trap": "The quiet mistake is R2C6. One cat there and the pink region has no home left on the whole grid.",
+     "contacts": [
+@@ -302,26 +302,26 @@
+       "anchor": "The cream region is the smallest thing on the board, three cells (R1C1, R2C3, R3C1), and it cracks the puzzle. Before that, one cell can be struck at once: a cat on R1C1 would leave column 2 needing two cats, so R1C1 is out. Row 1's open cells, R1C2 to R1C6, all sit in salmon, so salmon's cat is in row 1 and R2C1, R2C2, R2C6 are gone.",
+       "steps": [
+         "Now cream. Empty R2C3 and the blue region has no legal cell left, so R2C3 must be the cat. Row 2 closes at R2C5, column 3 closes at R4C3, R5C3 and R6C3, and cream finishes with R3C1 gone.",
+-        "Three pointings follow in a row. Column 1's open cells all sit inside blue, so blue's cat is in column 1 and R4C2 is the blue cell that pays for it. Column 2's open cells all sit inside pink, so pink's cat is in column 2, and R3C5 and R4C4 leave. Column 4's open cells all sit inside lilac, so lilac's cat is in column 4 and its four cells outside that column — R5C5, R5C6, R6C5, R6C6 — are out.",
++        "Three pointings follow in a row. Column 1's open cells all sit inside blue, so blue's cat is in column 1 and R4C2 is the blue cell that pays for it. Column 2's open cells all sit inside pink, so pink's cat is in column 2, and R3C5 and R4C4 leave. Column 4's open cells all sit inside lilac, so lilac's cat is in column 4 and its four cells outside that column (R5C5, R5C6, R6C5, R6C6) are out.",
+         "Those three sweeps empty most of the bottom right. What stays open resolves in order: R3C6 for row 3, R4C1 for row 4, R5C4 for row 5.",
+         "Two columns remain short. Column 2 has only R6C2 open, column 5 only R1C5.",
+         "Two of the pointings did most of the work: column 2 belonged to pink, column 4 belonged to lilac, and between them they cleared nine cells without a single test. That is the cheapest kind of progress available on a board with tall, narrow regions."
+       ],
+-      "close": "The finished board reads R1C5, R2C3, R3C6, R4C1, R5C4, R6C2 — one cat per row, column and region, none of them touching, diagonal contacts included. Worth noting what did not happen: after the first test, no cell on this board needed a guess, only the recognition that a unit's cells had all come to sit inside another unit."
+-    },
+-    "hints": [
+-      "Begin with the smallest region. Cream is three cells — R1C1, R2C3, R3C1 — and R1C1 dies at once, because a cat there would leave column 2 needing two cats.",
++      "close": "The finished board reads R1C5, R2C3, R3C6, R4C1, R5C4, R6C2. One cat per row, column and region, none of them touching, diagonal contacts included. Worth noting what did not happen: after the first test, no cell on this board needed a guess, only the recognition that a unit's cells had all come to sit inside another unit."
++    },
++    "hints": [
++      "Begin with the smallest region. Cream is three cells (R1C1, R2C3, R3C1), and R1C1 dies at once, because a cat there would leave column 2 needing two cats.",
+       "That pushes everything in row 1 into salmon, so salmon's cat is in row 1 and R2C1, R2C2, R2C6 are out. Now cream: empty R2C3 and blue has no legal cell, so R2C3 is the cat.",
+       "Three pointings follow. Column 1 belongs to blue, which costs R4C2; column 2 belongs to pink, which costs R3C5 and R4C4; column 4 belongs to lilac, which costs R5C5, R5C6, R6C5 and R6C6.",
+       "The tail is single cells: R3C6 for row 3, R4C1 for row 4, R5C4 for row 5, then R6C2 and R1C5 for the two columns that were still short."
+     ],
+     "regionsGuide": [
+       "The pink cells: R3C3, R3C4, R3C5, R4C3, R4C4, R5C2, R5C3, R6C2 and R6C3 (a 9-cell patch).",
+-      "Green takes R2C4, R2C5, R3C6, R4C5 and R4C6 — 5 cells.",
+-      "Lilac takes R5C4, R5C5, R5C6, R6C4, R6C5 and R6C6 — 6 cells.",
++      "Green takes R2C4, R2C5, R3C6, R4C5 and R4C6: 5 cells.",
++      "Lilac takes R5C4, R5C5, R5C6, R6C4, R6C5 and R6C6: 6 cells.",
+       "Blue? That's R3C2, R4C1, R4C2, R5C1 and R6C1. 5 cells in all.",
+       "The cream cells: R1C1, R2C3 and R3C1 (a 3-cell patch tucked into the top-left corner).",
+-      "Salmon takes R1C2, R1C3, R1C4, R1C5, R1C6, R2C1, R2C2 and R2C6 — 8 cells."
++      "Salmon takes R1C2, R1C3, R1C4, R1C5, R1C6, R2C1, R2C2 and R2C6: 8 cells."
+     ],
+     "trap": "Resist R5C2. It blocks R4C1, the blue region's real cat square, and a board missing that cat cannot be finished.",
+     "contacts": [
+@@ -349,20 +349,20 @@
+         "One test is left. Empty R2C6 and row 4 starves, so R2C6 holds the cream cat and R2C1 is out.",
+         "Note the order in the bottom band: lilac's corner cat came from a test, pink's from geometry, and the two together fixed rows 5 and 6 plus the whole of column 4. Corner regions are usually where a 6×6 board gives first."
+       ],
+-      "close": "Two cells finish the grid: R3C1 for row 3, R4C5 for column 5. Cats on R1C3, R2C6, R3C1, R4C5, R5C2, R6C4 — six of them, one to a row, column and region, none within a step of another. The only guesses on this board were two contradiction checks, each one line long, and both were proved impossible rather than assumed."
++      "close": "Two cells finish the grid: R3C1 for row 3, R4C5 for column 5. Cats on R1C3, R2C6, R3C1, R4C5, R5C2, R6C4. Six of them, one to a row, column and region, none within a step of another. The only guesses on this board were two contradiction checks, each one line long, and both were proved impossible rather than assumed."
+     },
+     "hints": [
+       "The bottom corners carry this board. Empty R5C2 and row 4 starves, so R5C2 is the lilac cat, and row 5 (R5C4, R5C5, R5C6) plus column 2 (R1C2, R2C2, R3C2) close with it.",
+       "Pink follows at once: R6C4 is its only open cell, so it takes the cat and column 4 closes with R1C4 to R4C4.",
+-      "Row 4 belongs to blue, so R3C3 and R3C6 go; column 1 belongs to green, so R2C3 goes. Column 3 then has one open cell, R1C3, which is in row 1 and in salmon — both take their cat there, and R1C1, R1C5, R1C6, R2C5 leave.",
++      "Row 4 belongs to blue, so R3C3 and R3C6 go; column 1 belongs to green, so R2C3 goes. Column 3 then has one open cell, R1C3, which is in row 1 and in salmon: both take their cat there, and R1C1, R1C5, R1C6, R2C5 leave.",
+       "One test remains: empty R2C6 and row 4 starves, so R2C6 is cream's. R3C1 and R4C5 are then the last cells of row 3 and column 5."
+     ],
+     "regionsGuide": [
+-      "Lilac takes R5C2, R6C1 and R6C2 — 3 cells tucked into the bottom-left corner.",
+-      "Blue takes R3C3, R3C4, R3C6, R4C4, R4C5, R4C6, R5C4, R5C5, R5C6, R6C5 and R6C6 — 11 cells.",
+-      "Pink takes R5C3, R6C3 and R6C4 — 3 cells.",
++      "Lilac takes R5C2, R6C1 and R6C2: 3 cells tucked into the bottom-left corner.",
++      "Blue takes R3C3, R3C4, R3C6, R4C4, R4C5, R4C6, R5C4, R5C5, R5C6, R6C5 and R6C6 (11 cells).",
++      "Pink takes R5C3, R6C3 and R6C4: 3 cells.",
+       "Green = a 9-cell patch, cells R1C1, R1C2, R2C1, R2C2, R2C3, R3C1, R4C1, R4C2 and R5C1.",
+-      "Salmon takes R1C3, R1C4, R1C5, R2C5 and R3C2 — 5 cells.",
++      "Salmon takes R1C3, R1C4, R1C5, R2C5 and R3C2 (5 cells).",
+       "Cream? That's R1C6, R2C4, R2C6, R3C5 and R4C3. 5 cells in all."
+     ],
+     "trap": "Resist R5C1. It blocks R5C2, the lilac region's real cat square, and a board missing that cat cannot be finished.",
+@@ -374,7 +374,7 @@
+       "Salmon borders green ×10, cream ×10, blue ×3.",
+       "Cream touches salmon ×10, green ×2, blue ×12, pink ×1, lilac ×1."
+     ],
+-    "strategic": "Each contact is a no-touch wall — even the diagonal ones — so a placed cat silences every cell it touches across those borders."
++    "strategic": "Each contact is a no-touch wall, even the diagonal ones, so a placed cat silences every cell it touches across those borders."
+   },
+   {
+     "level": 10,
+@@ -385,29 +385,29 @@
+     "solve": {
+       "anchor": "The lilac region is a three-cell corner and the first question on the board: empty R5C1 and column 3 has no cell left for its cat, so R5C1 is the cat. Row 5 closes at once (R5C3, R5C4, R5C5, R5C6) and column 1 closes with it (R1C1, R2C1, R3C1), which is most of the top left settled before any counting.",
+       "steps": [
+-        "Salmon's open cells are R1C2 and R2C2, both in column 2, so column 2's cat is salmon's and R3C2 is out. Pink's open cells all sit in row 6, so row 6's cat is pink's, and R6C5 — row 6's cell outside pink — goes with it.",
++        "Salmon's open cells are R1C2 and R2C2, both in column 2, so column 2's cat is salmon's and R3C2 is out. Pink's open cells all sit in row 6, so row 6's cat is pink's, and R6C5, row 6's cell outside pink, goes with it.",
+         "The cream region is a vertical strip at the right edge, and it gives the next cat through a test: empty R4C5 and cream ends up needing two cats, so R4C5 must hold the blue cat. Column 5 and row 4 are both settled by that one placement.",
+         "From there the grid answers itself: R3C3 is the only open cell of row 3, R1C2 the only one in column 2, R2C6 the only one in row 2, R6C4 the only one in column 4.",
+-        "The last of those deserves a note. R6C4 belongs to pink, and pink's cat was already known to be on row 6 — this placement says exactly which cell of row 6 it is.",
++        "The last of those deserves a note. R6C4 belongs to pink, and pink's cat was already known to be on row 6: this placement says exactly which cell of row 6 it is.",
+         "That is the shape of most 6×6 boards: one or two tests to break the symmetry, then a run of single-cell units. The tests are the only places a wrong turn was possible, and both were short enough to check by hand."
+       ],
+-      "close": "Final set: R1C2, R2C6, R3C3, R4C5, R5C1, R6C4. One cat in every row, every column and every region, none of them adjacent, diagonals included. Two of the moves above were contradiction checks, two were shape deductions, and four were single cells with only one home left — which is about the mix a 6×6 board of this kind gives you."
++      "close": "Final set: R1C2, R2C6, R3C3, R4C5, R5C1, R6C4. One cat in every row, every column and every region, none of them adjacent, diagonals included. Two of the moves above were contradiction checks, two were shape deductions, and four were single cells with only one home left, which is about the mix a 6×6 board of this kind gives you."
+     },
+     "hints": [
+       "Lilac is the three-cell corner and the first question: empty R5C1 and column 3 starves, so R5C1 carries the cat, and row 5 plus column 1 close at once.",
+       "Salmon's open cells sit in column 2, so column 2's cat is salmon's and R3C2 is out; pink's open cells sit in row 6, so row 6's cat is pink's and R6C5 goes.",
+-      "The cream strip decides the right edge. Empty R4C5 and cream ends up needing two cats, so R4C5 is the blue cat — and that one placement settles row 4 and column 5 together.",
++      "The cream strip decides the right edge. Empty R4C5 and cream ends up needing two cats, so R4C5 is the blue cat. That one placement settles row 4 and column 5 together.",
+       "Four single-cell units finish the grid: R3C3 for row 3, R1C2 for column 2, R2C6 for row 2, R6C4 for column 4. The order between them does not matter."
+     ],
+     "regionsGuide": [
+-      "Blue takes R3C4, R4C5, R5C3, R5C4, R5C5 and R6C5 — 6 cells.",
+-      "Lilac takes R5C1, R6C1 and R6C2 — 3 cells tucked into the bottom-left corner.",
+-      "Pink takes R5C6, R6C3, R6C4 and R6C6 — 4 cells.",
++      "Blue takes R3C4, R4C5, R5C3, R5C4, R5C5 and R6C5: 6 cells.",
++      "Lilac takes R5C1, R6C1 and R6C2 (3 cells tucked into the bottom-left corner).",
++      "Pink takes R5C6, R6C3, R6C4 and R6C6: 4 cells.",
+       "The salmon cells: R1C1, R1C2, R2C1, R2C2 and R4C1 (a 5-cell patch).",
+-      "Green takes R1C3, R1C4, R2C3, R2C4, R2C5, R3C1, R3C2, R3C3, R3C5, R4C2, R4C3, R4C4 and R5C2 — 13 cells.",
++      "Green takes R1C3, R1C4, R2C3, R2C4, R2C5, R3C1, R3C2, R3C3, R3C5, R4C2, R4C3, R4C4 and R5C2: 13 cells.",
+       "The cream cells: R1C5, R1C6, R2C6, R3C6 and R4C6 (a 5-cell patch)."
+     ],
+-    "trap": "Try R5C2 first and the lilac region is wiped out in one move — every cell it owns aligns with that spot — same line, or one corner over.",
++    "trap": "Try R5C2 first and the lilac region is wiped out in one move: every cell it owns aligns with that spot, same line, or one corner over.",
+     "contacts": [
+       "Blue touches green ×16, cream ×3, pink ×11, lilac ×1.",
+       "Lilac touches salmon ×1, green ×4, blue ×1, pink ×1.",
+@@ -416,6 +416,6 @@
+       "Green borders salmon ×13, cream ×9, blue ×16, lilac ×4, pink ×1.",
+       "Cream touches green ×9, blue ×3, pink ×1."
+     ],
+-    "strategic": "Each contact is a no-touch wall — even the diagonal ones — so a placed cat silences every cell it touches across those borders."
++    "strategic": "Each contact is a no-touch wall, even the diagonal ones, so a placed cat silences every cell it touches across those borders."
+   }
+ ]
+diff --git a/src/pages/brain-puzzle-3-level-1/index.astro b/src/pages/brain-puzzle-3-level-1/index.astro
+--- a/src/pages/brain-puzzle-3-level-1/index.astro
++++ b/src/pages/brain-puzzle-3-level-1/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 1 “Quick Draw”: Help the protagonist score higher than the rival. 7 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 1 “Quick Draw”: Help the protagonist score higher than the rival. 7 moves in order, most of them drags. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -112,14 +112,14 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>: our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 1 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l1_hero.jpg" alt="Brain Puzzle 3 level 1 Quick Draw scene" loading="lazy" />
+     </a>
+ 
+     <h2>Watch the full solution<span class="accent">.</span></h2>
+-    <p>Watch the pistol leave the backpack and the cabinet swing on a left swipe — the two moves the cards describe worst.</p>
++    <p>Watch the pistol leave the backpack and the cabinet swing on a left swipe, the two moves the cards describe worst.</p>
+     <div class="video-wrap" id="video">
+       <iframe src="https://www.youtube-nocookie.com/embed/isoGuqaLrrE" title="Brain Puzzle 3 Level 1 walkthrough video" allowfullscreen></iframe>
+     </div>
+@@ -178,7 +178,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-10/index.astro b/src/pages/brain-puzzle-3-level-10/index.astro
+--- a/src/pages/brain-puzzle-3-level-10/index.astro
++++ b/src/pages/brain-puzzle-3-level-10/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 10 “Escape Office”: Helping employees leave the company. 13 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 10 “Escape Office”: Helping employees leave the company. 13 moves in order, most of them drags; follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 10 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l10_hero.jpg" alt="Brain Puzzle 3 level 10 Escape Office scene" loading="lazy" />
+@@ -178,7 +178,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-11/index.astro b/src/pages/brain-puzzle-3-level-11/index.astro
+--- a/src/pages/brain-puzzle-3-level-11/index.astro
++++ b/src/pages/brain-puzzle-3-level-11/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 11 “Online Date Door”: Help men open all locks. 12 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 11 “Online Date Door”: Help men open all locks. 12 moves in order, most of them drags. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -112,7 +112,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>: our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 11 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l11_hero.jpg" alt="Brain Puzzle 3 level 11 Online Date Door scene" loading="lazy" />
+@@ -187,7 +187,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-12/index.astro b/src/pages/brain-puzzle-3-level-12/index.astro
+--- a/src/pages/brain-puzzle-3-level-12/index.astro
++++ b/src/pages/brain-puzzle-3-level-12/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 12 “Overcrowded”: Help reduce the elevator's weight to 1000KG. 14 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 12 “Overcrowded”: Help reduce the elevator's weight to 1000KG. 14 moves in order, most of them drags; follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 12 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l12_hero.jpg" alt="Brain Puzzle 3 level 12 Overcrowded scene" loading="lazy" />
+@@ -179,7 +179,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-13/index.astro b/src/pages/brain-puzzle-3-level-13/index.astro
+--- a/src/pages/brain-puzzle-3-level-13/index.astro
++++ b/src/pages/brain-puzzle-3-level-13/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 13 “Mom Is Home”: Clean up the room. 17 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 13 “Mom Is Home”: Clean up the room. 17 moves in order, most of them drags. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -112,7 +112,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>: our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 13 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l13_hero.jpg" alt="Brain Puzzle 3 level 13 Mom Is Home scene" loading="lazy" />
+@@ -187,7 +187,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-137/index.astro b/src/pages/brain-puzzle-3-level-137/index.astro
+--- a/src/pages/brain-puzzle-3-level-137/index.astro
++++ b/src/pages/brain-puzzle-3-level-137/index.astro
+@@ -110,7 +110,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>: our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+ 
+     <h2>Watch the full solution<span class="accent">.</span></h2>
+@@ -152,17 +152,17 @@
+ 
+     <h2>What makes Level 137 tricky<span class="accent">.</span></h2>
+     <p>There is no drag in this level, no cabinet and no hidden object. Three passengers, three wigs, three taps, and that is the entire solution. The trap is the repetition: the first wig comes off, ten kilos go, and the coaster still will not climb, which reads like a wrong move rather than a first step. The second wig behaves exactly the same way. Most runs give up at the precise moment the game is telling them to keep going. Nothing in the scene advertises that a touch will do anything, because the only interactive surface in it is a wig on a head.</p>
+-    <p>The weight sign above the car is the only feedback in the scene. It starts at 240 kg, drops by ten with each wig, and the climb only begins once the third one has come off — thirty kilos across three passengers is enough and twenty is not. Nothing needs combining and nothing needs positioning, so the level rewards stubbornness rather than insight. That single number is the whole progress bar: a tap that removes nothing looks exactly like one that lands.</p>
++    <p>The weight sign above the car is the only feedback in the scene. It starts at 240 kg, drops by ten with each wig, and the climb only begins once the third one has come off. Thirty kilos across three passengers is enough and twenty is not. Nothing needs combining and nothing needs positioning, so the level rewards stubbornness rather than insight. That single number is the whole progress bar: a tap that removes nothing looks exactly like one that lands.</p>
+     <p>Watch the car instead of the track. The passengers are the only variable in the scene and the wigs are the only part of them that answers a touch, which is a much smaller target than a seated passenger. Once one wig has come off in front of you, the remaining two are the same gesture in a different seat. The video checks on the cards span fourteen seconds, from 0:44 to 0:58, roughly how long the level takes once the trick is clear. The FAQ below puts the same three taps into one line.</p>
+ 
+     <h2>Three taps, in this order<span class="accent">.</span></h2>
+     <p>Nothing here is hidden, so the only thing a run can get wrong is stopping early:</p>
+     <ul>
+-      <li>Rear passenger, then the middle seat, then the front — three taps, ten kilos each.</li>
++      <li>Rear passenger, then the middle seat, then the front. Three taps, ten kilos each.</li>
+       <li>After the first wig the sign still reads too heavy for the hill, which is expected rather than a failed tap.</li>
+       <li>The climb starts on the third wig; if the car has not moved, count how many wigs are left on the passengers.</li>
+     </ul>
+-    <p>No hints, no drags, nothing to combine — three taps and the polaroid screen.</p>
++    <p>No hints, no drags, nothing to combine: three taps and the polaroid screen.</p>
+ 
+     <h2>FAQ<span class="accent">.</span></h2>
+    
+@@ -186,7 +186,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-14/index.astro b/src/pages/brain-puzzle-3-level-14/index.astro
+--- a/src/pages/brain-puzzle-3-level-14/index.astro
++++ b/src/pages/brain-puzzle-3-level-14/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps: if a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 14 “Sausage Lip SOS”: Make the crab release its claw. 10 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 14 “Sausage Lip SOS”: Make the crab release its claw. 10 moves in order, most of them drags. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 14 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l14_hero.jpg" alt="Brain Puzzle 3 level 14 Sausage Lip SOS scene" loading="lazy" />
+@@ -178,7 +178,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-15/index.astro b/src/pages/brain-puzzle-3-level-15/index.astro
+--- a/src/pages/brain-puzzle-3-level-15/index.astro
++++ b/src/pages/brain-puzzle-3-level-15/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps: if a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 15 “Doorstep Creeper”: Drive away the creep outside the door. 12 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 15 “Doorstep Creeper”: Drive away the creep outside the door. 12 moves in order, most of them drags; follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -112,7 +112,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>, our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 15 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l15_hero.jpg" alt="Brain Puzzle 3 level 15 Doorstep Creeper scene" loading="lazy" />
+@@ -187,7 +187,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-16/index.astro b/src/pages/brain-puzzle-3-level-16/index.astro
+--- a/src/pages/brain-puzzle-3-level-16/index.astro
++++ b/src/pages/brain-puzzle-3-level-16/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps: if a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 16 “Big Head”: Help the girl reduce her head circumference. 13 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 16 “Big Head”: Help the girl reduce her head circumference. 13 moves in order, most of them drags. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 16 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l16_hero.jpg" alt="Brain Puzzle 3 level 16 Big Head scene" loading="lazy" />
+@@ -179,7 +179,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-17/index.astro b/src/pages/brain-puzzle-3-level-17/index.astro
+--- a/src/pages/brain-puzzle-3-level-17/index.astro
++++ b/src/pages/brain-puzzle-3-level-17/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps: if a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 17 “Girl Dorm Cool”: Help the bride chase away all her husband’s ex-girlfriends. 13 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 17 “Girl Dorm Cool”: Help the bride chase away all her husband’s ex-girlfriends. 13 moves in order, most of them drags; follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -112,7 +112,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>, our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 17 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l17_hero.jpg" alt="Brain Puzzle 3 level 17 Girl Dorm Cool scene" loading="lazy" />
+@@ -187,7 +187,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-18/index.astro b/src/pages/brain-puzzle-3-level-18/index.astro
+--- a/src/pages/brain-puzzle-3-level-18/index.astro
++++ b/src/pages/brain-puzzle-3-level-18/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 18 “Zombie Walk”: Don't let the baby cry, the sound will attract zombies. 10 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 18 “Zombie Walk”: Don't let the baby cry, the sound will attract zombies. 10 moves in order, most of them drags. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 18 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l18_hero.jpg" alt="Brain Puzzle 3 level 18 Zombie Walk scene" loading="lazy" />
+@@ -178,7 +178,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-19/index.astro b/src/pages/brain-puzzle-3-level-19/index.astro
+--- a/src/pages/brain-puzzle-3-level-19/index.astro
++++ b/src/pages/brain-puzzle-3-level-19/index.astro
+@@ -111,7 +111,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>, our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+ 
+     <h2>Watch the full solution<span class="accent">.</span></h2>
+@@ -153,7 +153,7 @@
+ 
+     <h2>What makes Level 19 tricky<span class="accent">.</span></h2>
+     <p>Six hiding spots, and only one of them is a drag. The blanket on the bed, the pink curtain, the window, the legs under the bed, the air conditioner and the clock all open on a press, and each press does two jobs at once: it moves the prop and it reveals a person. That is why the level feels slower than it is, since the reveal is the progress rather than the object you touched. The curtain is the clearest case, because it needs one tap to start the shower and a second one before the towel man steps out. The timestamps on the cards run from 0:08 to 0:41, which is the honest length of the level once you know where to press.</p>
+-    <p>The clock breaks the pattern at the end. Once the wall clock has turned into a grandfather clock, it stops reading as a hiding place and starts reading as scenery, and the move that finishes the level is a drag — pull it aside and the phone with the dating profile is underneath. Players who press the clock and wait for a reaction sit there while the level is one gesture from over. That single drag is also the last thing you do, so the level cannot be finished by pressing alone no matter how thorough the sweep.</p>
++    <p>The clock breaks the pattern at the end. Once the wall clock has turned into a grandfather clock, it stops reading as a hiding place and starts reading as scenery, and the move that finishes the level is a drag: pull it aside and the phone with the dating profile is underneath. Players who press the clock and wait for a reaction sit there while the level is one gesture from over. That single drag is also the last thing you do, so the level cannot be finished by pressing alone no matter how thorough the sweep.</p>
+     <p>The house is staged as an ordinary domestic interior: a bed, a bathroom, a window, a wall unit. Nothing in it is labelled, and the only signal that a spot has been checked is a person appearing, which is also why the pile of legs under the bed is the spot people scroll past. Legs read as furniture while they are lying still. Six presses spread across four walls, and none of the six looks different from the furniture beside it. All six spots appear again in the FAQ below, in order.</p>
+ 
+     <h2>How the six spots behave<span class="accent">.</span></h2>
+@@ -187,7 +187,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-2/index.astro b/src/pages/brain-puzzle-3-level-2/index.astro
+--- a/src/pages/brain-puzzle-3-level-2/index.astro
++++ b/src/pages/brain-puzzle-3-level-2/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 2 “Winter Warmth”: Help the man warm up. 10 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 2 “Winter Warmth”: Help the man warm up. 10 moves in order, most of them drags. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 2 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l2_hero.jpg" alt="Brain Puzzle 3 level 2 Winter Warmth scene" loading="lazy" />
+@@ -142,12 +142,12 @@
+     <h2>What makes Level 2 tricky<span class="accent">.</span></h2>
+     <p>Ten steps is a lot for one room, and the gestures rotate fast enough to lose track halfway. Four drags end on the man before anything else changes: the hot soup, the cat, the spray on the floor and the poster on the wall. Then the level flips the roles and asks you to drag the man himself into the bathtub, which is the first moment the protagonist stops being the destination. From there the input changes twice more, with a tap on the phone beside him, a tap on the air conditioner, a left swipe on that unit's control panel and a double tap on the wardrobe. None of the ten inputs is hard to find; the count itself is the obstacle.</p>
+     <p>That wardrobe is the step most runs miss. Double taps are rare this early, and a single press on the door gives no sign that the gesture wants repeating. Order matters as well: the panel only becomes a swipe target once the unit itself has been tapped, and the clothes inside cannot travel to the man until the door is open. Skip the panel and the sequence stops there, with the wardrobe still shut and the man still sitting in the tub. One role reversal, one appliance that wants two gestures, and one container that wants a double press: that is where a run loses the thread.</p>
+-    <p>The room tells you what the fix looks like. It is built for cold weather, with a bathtub in the middle of it, a poster on the wall, a unit mounted above and a wardrobe standing at the end of the chain. Every warm thing in the scene is its own separate step, which is why the count runs to ten instead of three. Soup, cat, spray, poster, tub, unit, clothes — the fix is a stack of small inputs rather than one clever idea. The FAQ below explains the press-or-slide split in one line.</p>
++    <p>The room tells you what the fix looks like. It is built for cold weather, with a bathtub in the middle of it, a poster on the wall, a unit mounted above and a wardrobe standing at the end of the chain. Every warm thing in the scene is its own separate step, which is why the count runs to ten instead of three. Soup, cat, spray, poster, tub, unit, clothes. The fix is a stack of small inputs rather than one clever idea. The FAQ below explains the press-or-slide split in one line.</p>
+ 
+     <h2>Where this sequence goes wrong<span class="accent">.</span></h2>
+     <p>Three inputs break the pattern of an otherwise straightforward drag chain:</p>
+     <ul>
+-      <li>The air conditioner. One tap on the unit, then a left swipe on the panel underneath it — two separate gestures on a single appliance.</li>
++      <li>The air conditioner. One tap on the unit, then a left swipe on the panel underneath it: two separate gestures on a single appliance.</li>
+       <li>The wardrobe. It opens on a double tap, and the clothes inside stay unreachable until the gesture lands.</li>
+       <li>The man. He becomes movable at step five; before that he is only a target, and afterwards he is the thing being carried.</li>
+     </ul>
+@@ -175,7 +175,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-20/index.astro b/src/pages/brain-puzzle-3-level-20/index.astro
+--- a/src/pages/brain-puzzle-3-level-20/index.astro
++++ b/src/pages/brain-puzzle-3-level-20/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 20 “Open Faster”: Help her clean the toilet. 12 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 20 “Open Faster”: Help her clean the toilet. 12 moves in order, most of them drags; follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 20 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l20_hero.jpg" alt="Brain Puzzle 3 level 20 Open Faster scene" loading="lazy" />
+@@ -179,7 +179,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-21/index.astro b/src/pages/brain-puzzle-3-level-21/index.astro
+--- a/src/pages/brain-puzzle-3-level-21/index.astro
++++ b/src/pages/brain-puzzle-3-level-21/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 21 “Cheating Scene”: Help the wife catch cheating. 12 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 21 “Cheating Scene”: Help the wife catch cheating. 12 moves in order, most of them drags. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -112,7 +112,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>: our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 21 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l21_hero.jpg" alt="Brain Puzzle 3 level 21 Cheating Scene scene" loading="lazy" />
+@@ -187,7 +187,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-22/index.astro b/src/pages/brain-puzzle-3-level-22/index.astro
+--- a/src/pages/brain-puzzle-3-level-22/index.astro
++++ b/src/pages/brain-puzzle-3-level-22/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps: if a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 22 “Coffee Master”: Help the barista make 10 different coffees. 14 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 22 “Coffee Master”: Help the barista make 10 different coffees. 14 moves in order, most of them drags; follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 22 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l22_hero.jpg" alt="Brain Puzzle 3 level 22 Coffee Master scene" loading="lazy" />
+@@ -178,7 +178,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-23/index.astro b/src/pages/brain-puzzle-3-level-23/index.astro
+--- a/src/pages/brain-puzzle-3-level-23/index.astro
++++ b/src/pages/brain-puzzle-3-level-23/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps: if a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 23 “Birthday Surprise”: Find the people hiding in the house. 11 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 23 “Birthday Surprise”: Find the people hiding in the house. 11 moves in order, most of them drags. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -112,7 +112,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>: our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 23 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l23_hero.jpg" alt="Brain Puzzle 3 level 23 Birthday Surprise scene" loading="lazy" />
+@@ -183,7 +183,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-24/index.astro b/src/pages/brain-puzzle-3-level-24/index.astro
+--- a/src/pages/brain-puzzle-3-level-24/index.astro
++++ b/src/pages/brain-puzzle-3-level-24/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps: if a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 24 “Above Tower”: Help them out of trouble. 13 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 24 “Above Tower”: Help them out of trouble. 13 moves in order, most of them drags; follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 24 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l24_hero.jpg" alt="Brain Puzzle 3 level 24 Above Tower scene" loading="lazy" />
+@@ -179,7 +179,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-25/index.astro b/src/pages/brain-puzzle-3-level-25/index.astro
+--- a/src/pages/brain-puzzle-3-level-25/index.astro
++++ b/src/pages/brain-puzzle-3-level-25/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps: if a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 25 “Parachute Peril”: Help them fix the parachute properly. 17 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 25 “Parachute Peril”: Help them fix the parachute properly. 17 moves in order, most of them drags. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -112,7 +112,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>, our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 25 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l25_hero.jpg" alt="Brain Puzzle 3 level 25 Parachute Peril scene" loading="lazy" />
+@@ -187,7 +187,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-28/index.astro b/src/pages/brain-puzzle-3-level-28/index.astro
+--- a/src/pages/brain-puzzle-3-level-28/index.astro
++++ b/src/pages/brain-puzzle-3-level-28/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 28 “Ghost Clinic”: Help them solve their problems. 16 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 28 “Ghost Clinic”: Help them solve their problems. 16 moves in order, most of them drags; follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 28 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l28_hero.jpg" alt="Brain Puzzle 3 level 28 Ghost Clinic scene" loading="lazy" />
+@@ -140,7 +140,7 @@
+     </div>
+ 
+     <h2>What makes Level 28 tricky<span class="accent">.</span></h2>
+-    <p>The ghost absorbs six of the sixteen moves: the towel at 1, the nurse's coat at 2, the bandage at 4, the notebook and pen at 5, the hammer at 8 and the pump at 11 all end on the same patient. That builds a habit — find an object, drag it to the ghost — which the level breaks at steps 6, 7 and 9. The candy goes to the child at step 6, the cosmetics to the girl at step 7, the scissors to the boy at step 9. Four patients share one waiting room, and the ghost is only the largest of them.</p>
++    <p>The ghost absorbs six of the sixteen moves: the towel at 1, the nurse's coat at 2, the bandage at 4, the notebook and pen at 5, the hammer at 8 and the pump at 11 all end on the same patient. That builds a habit (find an object, drag it to the ghost), which the level breaks at steps 6, 7 and 9. The candy goes to the child at step 6, the cosmetics to the girl at step 7, the scissors to the boy at step 9. Four patients share one waiting room, and the ghost is only the largest of them.</p>
+     <p>Two cards carry more than one thing. Step 5 is the notebook and the pen together, so a single drag has two objects in it, and step 12 is a click on the photo in the ghost's hand rather than on the ghost. The target there is the size of a card, not the size of a figure. Step 3 is the only swipe: the axe hangs above the ghost's head and has to be pushed up out of the way. Fourteen of the sixteen moves are drags, one is that click, one is that swipe, which makes the odd gesture the easiest thing in the clinic to get wrong.</p>
+     <p>The last four cards change cast. Step 13 sends the sleeping ghost's clothes to the doctor, step 14 sends the scissors to the sleeping ghost, step 15 sends the cut hair to the doctor, and step 16 drags the doctor to the ghost bride. That is a haircut and a costume change performed on a second ghost, and the recipient of both is the doctor, not the sleeping ghost whose clothes and hair they are. The scissors, already handed to the boy at step 9, come back out at 14; a run that treated them as spent stops one card short. The final drag is also the only person-to-person move in the level.</p>
+ 
+@@ -179,7 +179,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-29/index.astro b/src/pages/brain-puzzle-3-level-29/index.astro
+--- a/src/pages/brain-puzzle-3-level-29/index.astro
++++ b/src/pages/brain-puzzle-3-level-29/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 29 “Grim Reaper Chase”: Help them escape Death. 12 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 29 “Grim Reaper Chase”: Help them escape Death. 12 moves in order, most of them drags. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -112,7 +112,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>, our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 29 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l29_hero.jpg" alt="Brain Puzzle 3 level 29 Grim Reaper Chase scene" loading="lazy" />
+@@ -187,7 +187,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-3/index.astro b/src/pages/brain-puzzle-3-level-3/index.astro
+--- a/src/pages/brain-puzzle-3-level-3/index.astro
++++ b/src/pages/brain-puzzle-3-level-3/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 3 “Fair Lady”: Help her achieve that magazine cover look. 14 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 3 “Fair Lady”: Help her achieve that magazine cover look. 14 moves in order, most of them drags; follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -112,7 +112,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>, our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 3 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l3_hero.jpg" alt="Brain Puzzle 3 level 3 Fair Lady scene" loading="lazy" />
+@@ -150,7 +150,7 @@
+     <h2>What makes Level 3 tricky<span class="accent">.</span></h2>
+     <p>Fourteen moves, the longest of this run, and the first two belong to doors. Step one is a click on the door, step two a left swipe on the bathroom door, and neither ends on the girl. What follows reads like the previous level's cleaning rather than a beauty routine: the shower head goes to her at step three, the mop stays on the bathroom floor at step four. The opening four spend two moves on doors and one on a mop, which is why the count feels longer than the work.</p>
+     <p>From step five the level settles into a transfer chain. High heels, then perfume, then the hat pulled off the poster outside the door, all ending on the same person. Step eight is the only move whose target is clothing rather than skin, and the skirt it paints does not have to come off first. Step ten is the only swipe aimed at the girl herself, an upward gesture with nothing in hand, sitting between two drags that both carry an object.</p>
+-    <p>The first card hides a timing trap that the count does not show. The door is clicked before it is ready — the instruction says so outright — and a player who treats the door like the containers in other levels waits for a prompt that never comes, taps the closed door a few times, and moves on to the shower head with the first move unspent. Nothing rewards the early click except progress itself: the door simply opens, and the level never explains why acting early was correct there when every other gesture in the run waits for its object to appear. The bathroom door at step two behaves normally, which makes the inconsistency harder to spot — two doors, two cards apart, one wants patience and the other wants the opposite.</p>
++    <p>The first card hides a timing trap that the count does not show. The door is clicked before it is ready (the instruction says so outright), and a player who treats the door like the containers in other levels waits for a prompt that never comes, taps the closed door a few times, and moves on to the shower head with the first move unspent. Nothing rewards the early click except progress itself: the door simply opens, and the level never explains why acting early was correct there when every other gesture in the run waits for its object to appear. The bathroom door at step two behaves normally, which makes the inconsistency harder to spot. Two doors, two cards apart, one wants patience and the other wants the opposite.</p>
+     <p>The last stretch is where a run drops moves. The cosmetics at step nine, the comb at step eleven and the pronunciation book at step twelve are named on the cards with no ceremony, and the window at step thirteen is a double-click on scenery. Step fourteen puts the watering can into the flower basket and never touches the girl. It is the last move of the level, and the only thing it changes is the flower basket, so a run that stops after the book finishes a move short of a level it has already solved.</p>
+ 
+     <h2>Where the fourteen moves slip<span class="accent">.</span></h2>
+@@ -188,7 +188,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-30/index.astro b/src/pages/brain-puzzle-3-level-30/index.astro
+--- a/src/pages/brain-puzzle-3-level-30/index.astro
++++ b/src/pages/brain-puzzle-3-level-30/index.astro
+@@ -183,7 +183,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-32/index.astro b/src/pages/brain-puzzle-3-level-32/index.astro
+--- a/src/pages/brain-puzzle-3-level-32/index.astro
++++ b/src/pages/brain-puzzle-3-level-32/index.astro
+@@ -100,10 +100,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps: if a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 32 “Become Beauty”: Help the black-haired girl become beautiful. 12 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 32 “Become Beauty”: Help the black-haired girl become beautiful. 12 moves in order, most of them drags. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 32 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l32_hero.jpg" alt="Brain Puzzle 3 level 32 Become Beauty scene" loading="lazy" />
+@@ -178,7 +178,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-33/index.astro b/src/pages/brain-puzzle-3-level-33/index.astro
+--- a/src/pages/brain-puzzle-3-level-33/index.astro
++++ b/src/pages/brain-puzzle-3-level-33/index.astro
+@@ -100,10 +100,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps: if a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 33 “Dining Misconduct”: Help waiters handle uncivilized behaviors. 10 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 33 “Dining Misconduct”: Help waiters handle uncivilized behaviors. 10 moves in order, most of them drags; follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -111,7 +111,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>: our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 33 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l33_hero.jpg" alt="Brain Puzzle 3 level 33 Dining Misconduct scene" loading="lazy" />
+@@ -186,7 +186,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-34/index.astro b/src/pages/brain-puzzle-3-level-34/index.astro
+--- a/src/pages/brain-puzzle-3-level-34/index.astro
++++ b/src/pages/brain-puzzle-3-level-34/index.astro
+@@ -100,10 +100,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps: if a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 34 “Find Pervert”: Find all the perverts who spy on girls. 11 moves in order — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 34 “Find Pervert”: Find all the perverts who spy on girls. 11 moves in order; follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 34 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l34_hero.jpg" alt="Brain Puzzle 3 level 34 Find Pervert scene" loading="lazy" />
+@@ -139,7 +139,7 @@
+     </div>
+ 
+     <h2>What makes Level 34 tricky<span class="accent">.</span></h2>
+-    <p>The step list uses three words for one action — tap, click and double tap — and then two more for swipes, which makes the middle of the level hard to follow. Nine inputs out of the eleven are plain presses, but the chandelier answers only a downward swipe and the teddy bear only one to the right, and both of those sit between presses that work normally. A player who only presses will clear most of the room and then stall with two hiding spots left and no idea why. The two swipes are the only gestures in the level that need a direction, and both arrive without warning.</p>
++    <p>The step list uses three words for one action (tap, click and double tap), and then two more for swipes, which makes the middle of the level hard to follow. Nine inputs out of the eleven are plain presses, but the chandelier answers only a downward swipe and the teddy bear only one to the right, and both of those sit between presses that work normally. A player who only presses will clear most of the room and then stall with two hiding spots left and no idea why. The two swipes are the only gestures in the level that need a direction, and both arrive without warning.</p>
+     <p>Two of the targets are close to invisible. The wall texture in the top right corner is a patch of pattern rather than an object, and the darkest part of the floor is described more than it is drawn, so both need a deliberate second look before a press lands anywhere useful. The single drag involves the baton and the officer, the only move in the level that does not touch a hiding spot, and it arrives late, one step before the mattress. Neither has an outline you can aim at, which is why both of them need a second look before anything happens.</p>
+     <p>The room is a sitting room with a chandelier, a sofa, a portrait, curtains and a wardrobe, which is another way of saying it is full of places a person could be. The mattress is the exception, because it bulges, and that bulge is the only spot in the level that gives itself away. Everything else has to be found by touch. Counting the presses you have already made is more reliable than scanning the room, because the target list runs longer than the furniture suggests. Which inputs need a swipe is answered once, in the FAQ below.</p>
+ 
+@@ -174,7 +174,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-35/index.astro b/src/pages/brain-puzzle-3-level-35/index.astro
+--- a/src/pages/brain-puzzle-3-level-35/index.astro
++++ b/src/pages/brain-puzzle-3-level-35/index.astro
+@@ -100,10 +100,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps: if a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 35 “Snowfield Doomsday”: Help the boy fight off the snow monster. 16 moves in order — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 35 “Snowfield Doomsday”: Help the boy fight off the snow monster. 16 moves in order; follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -111,7 +111,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>: our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 35 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l35_hero.jpg" alt="Brain Puzzle 3 level 35 Snowfield Doomsday scene" loading="lazy" />
+@@ -185,7 +185,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-36/index.astro b/src/pages/brain-puzzle-3-level-36/index.astro
+--- a/src/pages/brain-puzzle-3-level-36/index.astro
++++ b/src/pages/brain-puzzle-3-level-36/index.astro
+@@ -100,10 +100,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 36 “Piglet's House”: Help the piglet build the roof. 17 moves in order — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 36 “Piglet's House”: Help the piglet build the roof. 17 moves in order. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 36 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l36_hero.jpg" alt="Brain Puzzle 3 level 36 Piglet's House scene" loading="lazy" />
+@@ -177,7 +177,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-37/index.astro b/src/pages/brain-puzzle-3-level-37/index.astro
+--- a/src/pages/brain-puzzle-3-level-37/index.astro
++++ b/src/pages/brain-puzzle-3-level-37/index.astro
+@@ -100,10 +100,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 37 “Short Drama Cover”: Restore the correct short drama cover. 11 moves in order — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 37 “Short Drama Cover”: Restore the correct short drama cover. 11 moves in order. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -111,7 +111,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>, our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 37 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l37_hero.jpg" alt="Brain Puzzle 3 level 37 Short Drama Cover scene" loading="lazy" />
+@@ -149,7 +149,7 @@
+     <h2>What makes Level 37 tricky<span class="accent">.</span></h2>
+     <p>The level opens on one face and asks for two different gestures in a row. The boxing glove is dragged onto the man in white's face, and the very next move swipes left across the same patch of skin. Nothing about the second input looks new, because the target has not changed and the face is still the only thing the screen points at, so most runs repeat the drag and get nothing. The poster keeps doing it: the girl's dress strap wants an upward swipe, her belly wants a plain tap, the rightmost person's hand at the waist wants a swipe down. Four moves in a row, three kinds of gesture, none of them announced.</p>
+     <p>The middle of the level is a chain. The hair tie and the razor both start in the girl's hand and both finish on the man in brown, but only the razor turns his beard into an item: step 6 has to land before step 7 has anything to grab. The beard then travels to the man in white's head, so a prop that began on one face ends on another. Try it early and the cursor finds nothing.</p>
+-    <p>The last two moves are about pockets rather than faces. The air cushion starts inside the brown-shirt guy's pocket, and the pen starts in the man in white's pocket — but the pen's destination is the bottom of the screen, empty space, not a character. After ten moves aimed at people, the hand is looking for a face to drop things on, and that is how a cover ends one prop short. Step 9 also takes either route, leftward on the woman or rightward on the leather jacket, so a run can differ from the list at step 9 and still be right.</p>
++    <p>The last two moves are about pockets rather than faces. The air cushion starts inside the brown-shirt guy's pocket, and the pen starts in the man in white's pocket. But the pen's destination is the bottom of the screen, empty space, not a character. After ten moves aimed at people, the hand is looking for a face to drop things on, and that is how a cover ends one prop short. Step 9 also takes either route, leftward on the woman or rightward on the leather jacket, so a run can differ from the list at step 9 and still be right.</p>
+ 
+     <h2>Four gestures, two pockets<span class="accent">.</span></h2>
+     <p>Everything that stalls this cover is a gesture that looks like the one before it:</p>
+@@ -186,7 +186,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-38/index.astro b/src/pages/brain-puzzle-3-level-38/index.astro
+--- a/src/pages/brain-puzzle-3-level-38/index.astro
++++ b/src/pages/brain-puzzle-3-level-38/index.astro
+@@ -100,10 +100,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 38 “Pyramid Hideout”: Help the girl hide successfully. 15 moves in order — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 38 “Pyramid Hideout”: Help the girl hide successfully. 15 moves in order; follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 38 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l38_hero.jpg" alt="Brain Puzzle 3 level 38 Pyramid Hideout scene" loading="lazy" />
+@@ -139,9 +139,9 @@
+     </div>
+ 
+     <h2>What makes Level 38 tricky<span class="accent">.</span></h2>
+-    <p>The brazier is the level in miniature. It is dragged to the girl in step 2, then to the frozen coffin in step 10, then back to the girl in step 13 — once as a gift, once as a thaw, once as what is left over. After the first delivery it sits in her pile and reads as spent, which is precisely when step 10 needs it again. Even its label changes on the return trip: what comes back is the extinguished brazier, and it still has to make the walk. Nothing in the sequence reads as reuse: two moves name a brazier, and only the third says extinguished.</p>
++    <p>The brazier is the level in miniature. It is dragged to the girl in step 2, then to the frozen coffin in step 10, then back to the girl in step 13 (once as a gift, once as a thaw, once as what is left over). After the first delivery it sits in her pile and reads as spent, which is precisely when step 10 needs it again. Even its label changes on the return trip: what comes back is the extinguished brazier, and it still has to make the walk. Nothing in the sequence reads as reuse: two moves name a brazier, and only the third says extinguished.</p>
+     <p>Two containers repeat the same two-beat pattern. The wooden box is clicked open, its gold bar is dragged to the girl, and then the box itself follows her in step 8. The coffin runs the pattern from the other end: the brazier has to thaw it before a click will open it, and only then can the pillow inside be dragged out. A closed container gives up nothing, and an opened one still has to be emptied.</p>
+-    <p>The final two moves are a repair, and they are the ones a run drops. The bandage does not go to the girl, it goes onto the broken wooden board, and a sturdy board only exists after that (step 15). Thirteen of the fourteen moves before it end on the girl, so the hand has been trained to deliver to her; now the destination is furniture, and then the finished item arrives under a new name. Nothing in the pile hints that a board was broken — the damage shows on the board itself.</p>
++    <p>The final two moves are a repair, and they are the ones a run drops. The bandage does not go to the girl, it goes onto the broken wooden board, and a sturdy board only exists after that (step 15). Thirteen of the fourteen moves before it end on the girl, so the hand has been trained to deliver to her; now the destination is furniture, and then the finished item arrives under a new name. Nothing in the pile hints that a board was broken. The damage shows on the board itself.</p>
+ 
+     <h2>Open it, empty it, then carry it<span class="accent">.</span></h2>
+     <p>Two containers and one repair account for every dead end in this hideout:</p>
+@@ -178,7 +178,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-4/index.astro b/src/pages/brain-puzzle-3-level-4/index.astro
+--- a/src/pages/brain-puzzle-3-level-4/index.astro
++++ b/src/pages/brain-puzzle-3-level-4/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 4 “Principal Coming”: Help her clean up the dorm. 19 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 4 “Principal Coming”: Help her clean up the dorm. 19 moves in order, most of them drags. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 4 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l4_hero.jpg" alt="Brain Puzzle 3 level 4 Principal Coming scene" loading="lazy" />
+@@ -179,7 +179,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-40/index.astro b/src/pages/brain-puzzle-3-level-40/index.astro
+--- a/src/pages/brain-puzzle-3-level-40/index.astro
++++ b/src/pages/brain-puzzle-3-level-40/index.astro
+@@ -100,10 +100,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps: if a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 40 “Choose a Pet”: Let customers adopt their favorite pet. 11 moves in order — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 40 “Choose a Pet”: Let customers adopt their favorite pet. 11 moves in order. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 40 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l40_hero.jpg" alt="Brain Puzzle 3 level 40 Choose a Pet scene" loading="lazy" />
+@@ -139,10 +139,10 @@
+     </div>
+ 
+     <h2>What makes Level 40 tricky<span class="accent">.</span></h2>
+-    <p>Eleven moves and nine of them are drags, each one ending on a named animal or person. That is the whole difficulty: the level is a matching exercise, and every object is written with exactly one recipient, so the pairing has to be read off the cards rather than guessed at. Four drags land on the dog and the puppy together — the food, the wolf photo, the mushroom lifted off the poster and the fan — which makes the dog the busiest customer in the shop by a wide margin. The puppy takes the first of the nine drags and the dog takes three of the next four, so the front of the queue is where the pattern is set.</p>
+-    <p>Two moves break the drag rhythm. The mouse hole is the only plain press, and it has to come before the mouse can be carried to the cat, because the mouse is not on screen as a draggable until the hole has been touched. The cabinet near the end opens on a downward swipe, the last input that is not a drag. The closing move pairs the robot dog with the man, and that robot is the only pet in the level that is not an animal. Both breaks sit in the back half of the sequence — the press at step seven, the swipe at step ten — which is why the ending feels unlike the opening.</p>
++    <p>Eleven moves and nine of them are drags, each one ending on a named animal or person. That is the whole difficulty: the level is a matching exercise, and every object is written with exactly one recipient, so the pairing has to be read off the cards rather than guessed at. Four drags land on the dog and the puppy together (the food, the wolf photo, the mushroom lifted off the poster and the fan), which makes the dog the busiest customer in the shop by a wide margin. The puppy takes the first of the nine drags and the dog takes three of the next four, so the front of the queue is where the pattern is set.</p>
++    <p>Two moves break the drag rhythm. The mouse hole is the only plain press, and it has to come before the mouse can be carried to the cat, because the mouse is not on screen as a draggable until the hole has been touched. The cabinet near the end opens on a downward swipe, the last input that is not a drag. The closing move pairs the robot dog with the man, and that robot is the only pet in the level that is not an animal. Both breaks sit in the back half of the sequence (the press at step seven, the swipe at step ten), which is why the ending feels unlike the opening.</p>
+     <p>The shop reads as a row of customers with one object waiting near each of them, which is what makes the order legible at a glance. The clock is the quiet oddity: it goes into the fish tank rather than to an animal, so the one item that looks like a pet accessory ends up as scenery for a fish. Seven recipients share the nine drags: the dog takes three of them and every other one takes a single delivery.</p>
+-    <p>The wolf photo at step three is the strangest item in the shop: a picture of an animal treated as a deliverable, carried to a live dog. Between the photo, the mushroom that grows on a poster and the robot dog at the end, three of the eleven moves hand over representations instead of creatures — the level keeps testing whether you drag what something is or what it looks like. The FAQ below explains why a press barely registers here.</p>
++    <p>The wolf photo at step three is the strangest item in the shop: a picture of an animal treated as a deliverable, carried to a live dog. Between the photo, the mushroom that grows on a poster and the robot dog at the end, three of the eleven moves hand over representations instead of creatures. The level keeps testing whether you drag what something is or what it looks like. The FAQ below explains why a press barely registers here.</p>
+ 
+     <h2>The pairings, one line each<span class="accent">.</span></h2>
+     <p>Read the level as a list of one-to-one pairs, because that is how the steps are written:</p>
+@@ -175,7 +175,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-41/index.astro b/src/pages/brain-puzzle-3-level-41/index.astro
+--- a/src/pages/brain-puzzle-3-level-41/index.astro
++++ b/src/pages/brain-puzzle-3-level-41/index.astro
+@@ -100,10 +100,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps: if a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 41 “Dog Fire Rescue”: Help the puppy put out all the fires. 12 moves in order — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 41 “Dog Fire Rescue”: Help the puppy put out all the fires. 12 moves in order; follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -111,7 +111,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>: our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 41 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l41_hero.jpg" alt="Brain Puzzle 3 level 41 Dog Fire Rescue scene" loading="lazy" />
+@@ -185,7 +185,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-42/index.astro b/src/pages/brain-puzzle-3-level-42/index.astro
+--- a/src/pages/brain-puzzle-3-level-42/index.astro
++++ b/src/pages/brain-puzzle-3-level-42/index.astro
+@@ -100,10 +100,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps: if a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 42 “Watch Sunrise”: Help the black-haired boy relieve fatigue. 13 moves in order — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 42 “Watch Sunrise”: Help the black-haired boy relieve fatigue. 13 moves in order; follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 42 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l42_hero.jpg" alt="Brain Puzzle 3 level 42 Watch Sunrise scene" loading="lazy" />
+@@ -178,7 +178,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-43/index.astro b/src/pages/brain-puzzle-3-level-43/index.astro
+--- a/src/pages/brain-puzzle-3-level-43/index.astro
++++ b/src/pages/brain-puzzle-3-level-43/index.astro
+@@ -100,10 +100,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps: if a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 43 “Glow-Up Comeback”: Help the girl change. 13 moves in order — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 43 “Glow-Up Comeback”: Help the girl change. 13 moves in order. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -111,7 +111,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>: our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 43 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l43_hero.jpg" alt="Brain Puzzle 3 level 43 Glow-Up Comeback scene" loading="lazy" />
+@@ -147,7 +147,7 @@
+     </div>
+ 
+     <h2>What makes Level 43 tricky<span class="accent">.</span></h2>
+-    <p>The opening card is the only negative instruction in this run: do not drag the magic wand to the man. Every other card says where something goes, this one says where it must not go, so the first decision is about the man rather than about the wand. After that the wand visits eleven targets in a fixed order — dirty floor, coffee, teddy bear, laptop, check-in calendar, cat, wardrobe, drawer under the wardrobe, fried chicken and soda, notebook under the table, begging girl. One object, eleven destinations, and the list is not grouped by room.</p>
++    <p>The opening card is the only negative instruction in this run: do not drag the magic wand to the man. Every other card says where something goes, this one says where it must not go, so the first decision is about the man rather than about the wand. After that the wand visits eleven targets in a fixed order (dirty floor, coffee, teddy bear, laptop, check-in calendar, cat, wardrobe, drawer under the wardrobe, fried chicken and soda, notebook under the table, begging girl). One object, eleven destinations, and the list is not grouped by room.</p>
+     <p>Two destinations are nested. The drawer is under the wardrobe and comes one card later, so the wardrobe has to be dealt with before the drawer is in reach, and the notebook waits under the table until after the food. Two others are not things you would think to point a wand at: a check-in calendar on the wall and a tray of fried chicken and soda. That is the shape of the level, a sweep of one room in which the wand is the only tool that changes anything.</p>
+     <p>The last two cards break the pattern twice. Step 12 points the wand at the begging girl, the only person on the eleven-target list, so the hand is still holding a wand when the level changes tools. Step 13 drags a bouquet to the man, the same man the first card told you to keep the wand away from. Twelve moves of one object and one destination each, then a different object to a person, which is why the ending slips: nothing about a bouquet looks like the next step in a wand sequence.</p>
+ 
+@@ -186,7 +186,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-44/index.astro b/src/pages/brain-puzzle-3-level-44/index.astro
+--- a/src/pages/brain-puzzle-3-level-44/index.astro
++++ b/src/pages/brain-puzzle-3-level-44/index.astro
+@@ -100,10 +100,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Scene confirmed on screen: green parrot on a perch in a kitchen, mouse hole, tooth-fairy painting, oven, broom, gingerbread man, trash can and sink — every object the steps name is present. The closing story card ('Polly wants a romantic date') marks the level end at 1:15. Frames were sampled every 5 s, so the timestamps are accurate to about ±5 s.</div>
++    <div class="verify-note">Scene confirmed on screen: green parrot on a perch in a kitchen, mouse hole, tooth-fairy painting, oven, broom, gingerbread man, trash can and sink. Every object the steps name is present. The closing story card ('Polly wants a romantic date') marks the level end at 1:15. Frames were sampled every 5 s, so the timestamps are accurate to about ±5 s.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Brain Puzzle 3 Level 44 is \"Polly the Parrot\": Help Polly gather enough cookies. 21 moves in order, listed below and shown in the embedded walkthrough. Most moves are drags — if a tap does nothing, drag the object onto the person or prop it belongs to.</p>
++      <p>Brain Puzzle 3 Level 44 is \"Polly the Parrot\": Help Polly gather enough cookies. 21 moves in order, listed below and shown in the embedded walkthrough. Most moves are drags (if a tap does nothing, drag the object onto the person or prop it belongs to).</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 44 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l44_hero.jpg" alt="Brain Puzzle 3 level 44 Polly the Parrot scene" loading="lazy" />
+@@ -178,7 +178,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-45/index.astro b/src/pages/brain-puzzle-3-level-45/index.astro
+--- a/src/pages/brain-puzzle-3-level-45/index.astro
++++ b/src/pages/brain-puzzle-3-level-45/index.astro
+@@ -100,10 +100,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Definitely this level: the frame shows the dental chair, the grandma with missing teeth, the dentist, the girl on the stool, the fish tank holding the crab and conch, and the computer desk with a 'SUPER SALE' screen — the exact odd props the steps use. Late moves were watched on screen (gold at 1:40, fish bone at 1:50, 'Completed' at 1:55). Timestamps are ±5 s.</div>
++    <div class="verify-note">Definitely this level: the frame shows the dental chair, the grandma with missing teeth, the dentist, the girl on the stool, the fish tank holding the crab and conch, and the computer desk with a 'SUPER SALE' screen (the exact odd props the steps use). Late moves were watched on screen (gold at 1:40, fish bone at 1:50, 'Completed' at 1:55). Timestamps are ±5 s.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Brain Puzzle 3 Level 45 is \"Grandma's Filling\": Help Grandma Fix Her Teeth. 24 moves in order, listed below and shown in the embedded walkthrough. Most moves are drags — if a tap does nothing, drag the object onto the person or prop it belongs to.</p>
++      <p>Brain Puzzle 3 Level 45 is \"Grandma's Filling\": Help Grandma Fix Her Teeth. 24 moves in order, listed below and shown in the embedded walkthrough. Most moves are drags (if a tap does nothing, drag the object onto the person or prop it belongs to).</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -111,7 +111,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>: our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 45 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l45_hero.jpg" alt="Brain Puzzle 3 level 45 Grandma's Filling scene" loading="lazy" />
+@@ -186,7 +186,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-46/index.astro b/src/pages/brain-puzzle-3-level-46/index.astro
+--- a/src/pages/brain-puzzle-3-level-46/index.astro
++++ b/src/pages/brain-puzzle-3-level-46/index.astro
+@@ -103,7 +103,7 @@
+     <div class="verify-note">Scene confirmed: classroom with the pink-haired girl on the left, the boy in the middle, the girl with glasses on the right, and the blackboard with the spider. The boy's thought bubble and the closing line 'Stop arguing with each other because of me' match this level's ending. Timestamps ±5 s.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Brain Puzzle 3 Level 46 is \"Ambiguous Campus\": Help the two girls raise the boy's favorability towards them. 12 moves in order, listed below and shown in the embedded walkthrough. Most moves are drags — if a tap does nothing, drag the object onto the person or prop it belongs to.</p>
++      <p>Brain Puzzle 3 Level 46 is \"Ambiguous Campus\": Help the two girls raise the boy's favorability towards them. 12 moves in order, listed below and shown in the embedded walkthrough. Most moves are drags (if a tap does nothing, drag the object onto the person or prop it belongs to).</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 46 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l46_hero.jpg" alt="Brain Puzzle 3 level 46 Ambiguous Campus scene" loading="lazy" />
+@@ -141,7 +141,7 @@
+     <h2>What makes Level 46 tricky<span class="accent">.</span></h2>
+     <p>Two girls share the frame and the level splits cleanly between them. The pink-haired girl on the left takes the milk tea, the small fan, the bento, the earphones and the nail polish; the girl with glasses on the right takes the chalk, the spider and the mineral water. That division is the difficulty: two girls stand a few feet apart, both accept a drag, and only one of them is the answer for any given item. Read the recipient before the object.</p>
+     <p>Two moves exist only to unlock the next one. The red shoulder bag is clicked rather than dragged, and the nail polish is the move that follows it. The blackboard does the same job at a larger scale near the end: the words on the board are dragged into the blank book, and what goes to the girl with glasses is the book with words. Both are container moves, and both get skipped because the thing they unlock looks like a thing you were already carrying.</p>
+-    <p>The end of the level breaks the pattern the first nine moves built. Words go onto an object instead of a person, then the book goes to the girl — a chain printed as steps 10 and 11. The finish is not a delivery at all: swipe right on the boy's arm. He has stood in the middle of the classroom the whole level and received nothing, so the single gesture that closes it is the one nobody aims at him. Miss it and both girls are fully stocked while the level sits there unfinished. He is also the only figure in the frame that no earlier step has touched, which is the hint that the last input belongs to him.</p>
++    <p>The end of the level breaks the pattern the first nine moves built. Words go onto an object instead of a person, then the book goes to the girl, a chain printed as steps 10 and 11. The finish is not a delivery at all: swipe right on the boy's arm. He has stood in the middle of the classroom the whole level and received nothing, so the single gesture that closes it is the one nobody aims at him. Miss it and both girls are fully stocked while the level sits there unfinished. He is also the only figure in the frame that no earlier step has touched, which is the hint that the last input belongs to him.</p>
+ 
+     <h2>Who gets what, and in what order<span class="accent">.</span></h2>
+     <p>The two halves of the classroom take different gifts, and the finish runs in a fixed order:</p>
+@@ -152,7 +152,7 @@
+       <li>The words on the blackboard go into the blank book, not onto either girl (step 10).</li>
+       <li>The book with words exists only once step 10 is done, and it belongs to the girl with glasses.</li>
+       <li>The spider is delivered to the girl with glasses, not to the pink-haired girl.</li>
+-      <li>The last input is a rightward swipe on the boy's arm — a gesture, not a hand-off.</li>
++      <li>The last input is a rightward swipe on the boy's arm, a gesture, not a hand-off.</li>
+     </ul>
+     <p>Twelve moves, two recipients, one swipe: if the classroom will not close, check the boy's arm first.</p>
+ 
+@@ -178,7 +178,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-47/index.astro b/src/pages/brain-puzzle-3-level-47/index.astro
+--- a/src/pages/brain-puzzle-3-level-47/index.astro
++++ b/src/pages/brain-puzzle-3-level-47/index.astro
+@@ -100,10 +100,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Scene confirmed: girl strapped to the operating chair, doctor in a lab coat with a syringe, biohazard trash can, surgical light and sink. The escape beat is visible — the doctor ends up hanging from the ceiling and the girl runs down the corridor. Timestamps ±5 s.</div>
++    <div class="verify-note">Scene confirmed: girl strapped to the operating chair, doctor in a lab coat with a syringe, biohazard trash can, surgical light and sink. The escape beat is visible. The doctor ends up hanging from the ceiling and the girl runs down the corridor. Timestamps ±5 s.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Brain Puzzle 3 Level 47 is \"Escape from the doctor\": Help the girl resist the doctor. 12 moves in order, listed below and shown in the embedded walkthrough. Most moves are drags — if a tap does nothing, drag the object onto the person or prop it belongs to.</p>
++      <p>Brain Puzzle 3 Level 47 is \"Escape from the doctor\": Help the girl resist the doctor. 12 moves in order, listed below and shown in the embedded walkthrough. Most moves are drags. If a tap does nothing, drag the object onto the person or prop it belongs to.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -111,7 +111,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>, our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 47 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l47_hero.jpg" alt="Brain Puzzle 3 level 47 Escape from the doctor scene" loading="lazy" />
+@@ -147,9 +147,9 @@
+     </div>
+ 
+     <h2>What makes Level 47 tricky<span class="accent">.</span></h2>
+-    <p>Eight of the twelve moves end on the same man. The doctor takes a green solution, a bottle, a fire extinguisher, hair, a bone, a garbage bag, an empty can and pepper spray, so the destination is never the problem — finding the source is. Each item has to be found before it can be thrown, and one of them only becomes reachable after the bin has been clicked. The level is a search dressed as a fight.</p>
++    <p>Eight of the twelve moves end on the same man. The doctor takes a green solution, a bottle, a fire extinguisher, hair, a bone, a garbage bag, an empty can and pepper spray, so the destination is never the problem. Finding the source is. Each item has to be found before it can be thrown, and one of them only becomes reachable after the bin has been clicked. The level is a search dressed as a fight.</p>
+     <p>Two bottles look like one. Step 1 drags the glass bottle of green solution; step 2 drags a glass bottle with no colour in its name. After the first bottle leaves, the scene looks one bottle emptier than it is, and that second bottle is the move most runs skip. At step 6 the gestures change kind: the surgical light above the head is slid downward rather than at the doctor, and the last move slides his pants the same way. Both slides act on scenery rather than on cargo, and both arrive right after a stretch of drags.</p>
+-    <p>The bin is a three-part move disguised as one. Clicking the trash can opens it, the garbage bag inside is dragged to the doctor, and then the empty can itself follows him in step 9 — the container becomes the weapon once it has been emptied. The faucet is the same trick with no cargo: it is clicked, nothing is delivered, and the pepper spray in step 11 is the payoff. After that only the slide down his pants remains, a gesture with no object in hand, which is why the room can look finished while the girl is still strapped to the chair.</p>
++    <p>The bin is a three-part move disguised as one. Clicking the trash can opens it, the garbage bag inside is dragged to the doctor, and then the empty can itself follows him in step 9, and the container becomes the weapon once it has been emptied. The faucet is the same trick with no cargo: it is clicked, nothing is delivered, and the pepper spray in step 11 is the payoff. After that only the slide down his pants remains, a gesture with no object in hand, which is why the room can look finished while the girl is still strapped to the chair.</p>
+ 
+     <h2>Eight deliveries, two slides, two clicks<span class="accent">.</span></h2>
+     <p>Twelve moves, and only eight of them are the same gesture:</p>
+@@ -158,7 +158,7 @@
+       <li>Steps 1 and 2 are two separate bottles; the second has no colour in its name and is the one that gets skipped.</li>
+       <li>The surgical light is slid downward, not dragged to the doctor (step 6).</li>
+       <li>Click the trash can before the garbage bag will move, and the emptied can is a delivery of its own (step 9).</li>
+-      <li>The faucet is clicked with nothing to hand over — preparation, not a hit (step 10).</li>
++      <li>The faucet is clicked with nothing to hand over: preparation, not a hit (step 10).</li>
+       <li>The last move is a slide on the doctor's pants, with empty hands.</li>
+       <li>Count the gestures if the room will not close: two clicks, two slides, eight drags.</li>
+     </ul>
+@@ -186,7 +186,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-49/index.astro b/src/pages/brain-puzzle-3-level-49/index.astro
+--- a/src/pages/brain-puzzle-3-level-49/index.astro
++++ b/src/pages/brain-puzzle-3-level-49/index.astro
+@@ -100,10 +100,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Scene confirmed: small boat with water gushing through the hull, the shark wearing a bib and holding a fork and knife, life buoy, anchor and coral in the water. Late moves were watched in order (fork deflates the buoy at 1:05, buoy plugs the hole at 1:10, coral over the hole at 1:15, rescue helicopter at 1:20). Note that this level is labelled Level 42/43/49 by different channels — the older uploads do not match the current order.</div>
++    <div class="verify-note">Scene confirmed: small boat with water gushing through the hull, the shark wearing a bib and holding a fork and knife, life buoy, anchor and coral in the water. Late moves were watched in order (fork deflates the buoy at 1:05, buoy plugs the hole at 1:10, coral over the hole at 1:15, rescue helicopter at 1:20). Note that this level is labelled Level 42/43/49 by different channels. The older uploads do not match the current order.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Brain Puzzle 3 Level 49 is \"Shark Crisis\": Help the protagonist block the leak until rescue arrives. 12 moves in order, listed below and shown in the embedded walkthrough. Most moves are drags — if a tap does nothing, drag the object onto the person or prop it belongs to.</p>
++      <p>Brain Puzzle 3 Level 49 is \"Shark Crisis\": Help the protagonist block the leak until rescue arrives. 12 moves in order, listed below and shown in the embedded walkthrough. Most moves are drags. If a tap does nothing, drag the object onto the person or prop it belongs to.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -111,7 +111,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>, our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 49 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l49_hero.jpg" alt="Brain Puzzle 3 level 49 Shark Crisis scene" loading="lazy" />
+@@ -186,7 +186,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-50/index.astro b/src/pages/brain-puzzle-3-level-50/index.astro
+--- a/src/pages/brain-puzzle-3-level-50/index.astro
++++ b/src/pages/brain-puzzle-3-level-50/index.astro
+@@ -100,10 +100,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">The scene is right — campsite, cold family, camper van, jerrycan, thundercloud — and the finish is on screen (lightning hits the fire at 0:45, bigger fire at 1:15, 'Completed' at 1:20). The frame-by-frame read of the item order was too unclear to confirm the logged step list, so treat the step order below as the written source order and the timestamps as rough anchors. A second upload of this level, 'C8pWeui_pJc', shows the in-game label 'LEVEL 44' — the numbering really does drift between channels.</div>
++    <div class="verify-note">The scene is right (campsite, cold family, camper van, jerrycan, thundercloud), and the finish is on screen (lightning hits the fire at 0:45, bigger fire at 1:15, 'Completed' at 1:20). The frame-by-frame read of the item order was too unclear to confirm the logged step list, so treat the step order below as the written source order and the timestamps as rough anchors. A second upload of this level, 'C8pWeui_pJc', shows the in-game label 'LEVEL 44'. The numbering really does drift between channels.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Brain Puzzle 3 Level 50 is \"Light a fire while camping\": Help the family start a fire. 20 moves in order, listed below and shown in the embedded walkthrough. Most moves are drags — if a tap does nothing, drag the object onto the person or prop it belongs to.</p>
++      <p>Brain Puzzle 3 Level 50 is \"Light a fire while camping\": Help the family start a fire. 20 moves in order, listed below and shown in the embedded walkthrough. Most moves are drags (if a tap does nothing, drag the object onto the person or prop it belongs to).</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 50 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l50_hero.jpg" alt="Brain Puzzle 3 level 50 Light a fire while camping scene" loading="lazy" />
+@@ -178,7 +178,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-51/index.astro b/src/pages/brain-puzzle-3-level-51/index.astro
+--- a/src/pages/brain-puzzle-3-level-51/index.astro
++++ b/src/pages/brain-puzzle-3-level-51/index.astro
+@@ -100,10 +100,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Scene confirmed: family by a wooden house with a garage, brown bear, deflated tyre, pump, balloon, paint, ninja outfit, motorcycle and mushrooms — all the listed props. Late moves were seen in order (garage opens at 1:05, mushroom/grandma at 1:10, 'Completed' at 1:20). Timestamps ±5 s.</div>
++    <div class="verify-note">Scene confirmed: family by a wooden house with a garage, brown bear, deflated tyre, pump, balloon, paint, ninja outfit, motorcycle and mushrooms. All the listed props. Late moves were seen in order (garage opens at 1:05, mushroom/grandma at 1:10, 'Completed' at 1:20). Timestamps ±5 s.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Brain Puzzle 3 Level 51 is \"Bear Attack\": Escape the terrifying brown bear attack. 14 moves in order, listed below and shown in the embedded walkthrough. Most moves are drags — if a tap does nothing, drag the object onto the person or prop it belongs to.</p>
++      <p>Brain Puzzle 3 Level 51 is \"Bear Attack\": Escape the terrifying brown bear attack. 14 moves in order, listed below and shown in the embedded walkthrough. Most moves are drags (if a tap does nothing, drag the object onto the person or prop it belongs to).</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -111,7 +111,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>, our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 51 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l51_hero.jpg" alt="Brain Puzzle 3 level 51 Bear Attack scene" loading="lazy" />
+@@ -185,7 +185,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-52/index.astro b/src/pages/brain-puzzle-3-level-52/index.astro
+--- a/src/pages/brain-puzzle-3-level-52/index.astro
++++ b/src/pages/brain-puzzle-3-level-52/index.astro
+@@ -103,14 +103,14 @@
+     <div class="verify-note">Scene confirmed: cabin interior with the dark monster, the hiding man, laptop, headphones, radio, antlers and the stove pipe. The first four moves are easy to read on screen (speaker clicked at 0:10, window at 0:20, laptop at 0:30, headphones at 0:40) and 'Completed' lands at 2:25. Timestamps ±5 s.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Brain Puzzle 3 Level 52 is \"A Quiet Place\": Help the man escape the cabin. 12 moves in order, listed below and shown in the embedded walkthrough. Most moves are drags — if a tap does nothing, drag the object onto the person or prop it belongs to.</p>
++      <p>Brain Puzzle 3 Level 52 is \"A Quiet Place\": Help the man escape the cabin. 12 moves in order, listed below and shown in the embedded walkthrough. Most moves are drags. If a tap does nothing, drag the object onto the person or prop it belongs to.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 52 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l52_hero.jpg" alt="Brain Puzzle 3 level 52 A Quiet Place scene" loading="lazy" />
+     </a>
+ 
+     <h2>Watch the full solution<span class="accent">.</span></h2>
+-    <p>Copy the opening from the clip — a click, a double tap and a downward swipe in a row are far easier to watch than to read.</p>
++    <p>Copy the opening from the clip. A click, a double tap and a downward swipe in a row are far easier to watch than to read.</p>
+     <div class="video-wrap" id="video">
+       <iframe src="https://www.youtube-nocookie.com/embed/tXtUyXJohQ8" title="Brain Puzzle 3 Level 52 walkthrough video" allowfullscreen></iframe>
+     </div>
+@@ -141,14 +141,14 @@
+     <h2>What makes Level 52 tricky<span class="accent">.</span></h2>
+     <p>The first three moves are three different gestures on three different fixtures, and not one of them is a drag. The speaker is clicked, the window is double-tapped, the laptop is swiped downward. That opening teaches nothing repeatable: the rhythm you find at the speaker fails at the window, where the tap has to be doubled. Drags do not begin until step 4, so a quarter of the level goes on learning three separate input styles.</p>
+     <p>From step 4 the level turns into a series of hand-offs to things rather than people. Headphones go to the monster, the battery to the monkey toy, the shoes to the trap, the saw blade to the antlers, the bullet to the rifle, the dried fish to the tabby cat on the wall. Six destinations and none of them is the man you are getting out, several of them tiny: a toy on the floor, a trap, a cat on the wall. He is never a target in this level, which is the opposite of what a rescue looks like.</p>
+-    <p>The last three moves stay inside two objects. The radio is clicked, then its volume knob is swiped right — a part of the thing you just touched, the only time the level asks you to operate a sub-part. Then the finish leaves the furniture altogether: swipe up the fireplace exhaust pipe. It is the only upward gesture in the level, the pipe is scenery, and it arrives after eleven moves that all ended on an object or a creature. That is where a run stalls with everything else already handled. No arrow points at the pipe either; it is drawn like every other fixture in the room.</p>
++    <p>The last three moves stay inside two objects. The radio is clicked, then its volume knob is swiped right (a part of the thing you just touched, the only time the level asks you to operate a sub-part). Then the finish leaves the furniture altogether: swipe up the fireplace exhaust pipe. It is the only upward gesture in the level, the pipe is scenery, and it arrives after eleven moves that all ended on an object or a creature. That is where a run stalls with everything else already handled. No arrow points at the pipe either; it is drawn like every other fixture in the room.</p>
+ 
+     <h2>Click, double tap, swipe, then drag<span class="accent">.</span></h2>
+     <p>Four input types in twelve moves, and the failures cluster at the changes:</p>
+     <ul>
+       <li>Speaker: one click. Window: a double tap. Laptop: a downward swipe (steps 1–3).</li>
+       <li>The window is the only double tap in the level; nothing else wants the gesture twice.</li>
+-      <li>The six drags in steps 4–9 end on the monster, the monkey toy, the trap, the antlers, the rifle and the cat on the wall — never on the man.</li>
++      <li>The six drags in steps 4–9 end on the monster, the monkey toy, the trap, the antlers, the rifle and the cat on the wall. Never on the man.</li>
+       <li>The battery belongs to the monkey toy, not to the radio or the laptop.</li>
+       <li>Click the radio before the volume knob will move, then swipe the knob right (steps 10–11).</li>
+       <li>The last move is an upward swipe on the fireplace exhaust pipe, which is scenery rather than a person.</li>
+@@ -178,7 +178,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-53/index.astro b/src/pages/brain-puzzle-3-level-53/index.astro
+--- a/src/pages/brain-puzzle-3-level-53/index.astro
++++ b/src/pages/brain-puzzle-3-level-53/index.astro
+@@ -103,7 +103,7 @@
+     <div class="verify-note">Scene confirmed: pink vanity room, white-haired makeup artist, clients queueing, window with clouds outside. Late moves were watched (self-tanner at 1:45, rainbow at 2:00 giving the artist rainbow hair, group-photo line at 2:10). This upload also shows a couple of rejected items early on, so the early timestamps are anchors rather than an exact 1:1 map of the step list.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Brain Puzzle 3 Level 53 is \"Makeup Pro\": Create beautiful makeup looks for the girls. 14 moves in order, listed below and shown in the embedded walkthrough. Most moves are drags — if a tap does nothing, drag the object onto the person or prop it belongs to.</p>
++      <p>Brain Puzzle 3 Level 53 is \"Makeup Pro\": Create beautiful makeup looks for the girls. 14 moves in order, listed below and shown in the embedded walkthrough. Most moves are drags. If a tap does nothing, drag the object onto the person or prop it belongs to.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -111,7 +111,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>: our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 53 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l53_hero.jpg" alt="Brain Puzzle 3 level 53 Makeup Pro scene" loading="lazy" />
+@@ -186,7 +186,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-6/index.astro b/src/pages/brain-puzzle-3-level-6/index.astro
+--- a/src/pages/brain-puzzle-3-level-6/index.astro
++++ b/src/pages/brain-puzzle-3-level-6/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 6 “Clean Bathroom”: Help Husband Restore the Bathroom. 13 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 6 “Clean Bathroom”: Help Husband Restore the Bathroom. 13 moves in order, most of them drags. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 6 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l6_hero.jpg" alt="Brain Puzzle 3 level 6 Clean Bathroom scene" loading="lazy" />
+@@ -179,7 +179,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-7/index.astro b/src/pages/brain-puzzle-3-level-7/index.astro
+--- a/src/pages/brain-puzzle-3-level-7/index.astro
++++ b/src/pages/brain-puzzle-3-level-7/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 7 “Ghost Wish”: Fulfill all the ghosts' wishes. 13 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 7 “Ghost Wish”: Fulfill all the ghosts' wishes. 13 moves in order, most of them drags; follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <style is:global>
+ .answer-inline{margin:.55rem 0 0;padding:.6rem .9rem;background:rgba(217,119,6,.06);border-left:3px solid rgba(217,119,6,.35);border-radius:0 10px 10px 0}
+@@ -112,7 +112,7 @@
+ .answer-inline a{color:#B45309;font-weight:800;text-decoration:underline}
+     </style>
+     <div class="answer-inline">
+-      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a> — our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
++      <p>Got it? If you enjoy these, try <a href="/akari/">Akari</a>: our own free browser puzzle with a fresh grid every midnight. No app, no ads.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 7 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l7_hero.jpg" alt="Brain Puzzle 3 level 7 Ghost Wish scene" loading="lazy" />
+@@ -187,7 +187,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight: light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
+diff --git a/src/pages/brain-puzzle-3-level-8/index.astro b/src/pages/brain-puzzle-3-level-8/index.astro
+--- a/src/pages/brain-puzzle-3-level-8/index.astro
++++ b/src/pages/brain-puzzle-3-level-8/index.astro
+@@ -101,10 +101,10 @@
+ 
+     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with the developer of Brain Puzzle 3.</div>
+ 
+-    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps — if a tap does nothing, try dragging the object instead.</div>
++    <div class="verify-note">Steps cross-checked against an independent all-levels reference (current game version) and the embedded walkthrough video. Brain Puzzle 3 moves are drags as often as taps. If a tap does nothing, try dragging the object instead.</div>
+     <div class="answer-box">
+       <span class="label">Quick answer</span>
+-      <p>Level 8 “Elevator Arrest”: Help him break free from the railing. 16 moves in order, most of them drags — follow the step cards below or copy the embedded video move-for-move.</p>
++      <p>Level 8 “Elevator Arrest”: Help him break free from the railing. 16 moves in order, most of them drags. Follow the step cards below or copy the embedded video move-for-move.</p>
+     </div>
+     <a class="hero-link" href="#video" aria-label="Jump to the level 8 full solution video">
+       <img class="hero" src="/brain-puzzle-3/l8_hero.jpg" alt="Brain Puzzle 3 level 8 Elevator Arrest scene" loading="lazy" />
+@@ -179,7 +179,7 @@
+         <div>
+           <span class="cross-kicker">Tonight's Puzzle</span>
+           <p class="cross-ttl">Daily Akari Challenge</p>
+-          <p class="cross-desc">New grid every midnight — light it up. No ads, no sign-up.</p>
++          <p class="cross-desc">New grid every midnight. Light it up. No ads, no sign-up.</p>
+         </div>
+         <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+       </div>
