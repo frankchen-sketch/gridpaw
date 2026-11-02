@@ -51,5 +51,103 @@
   s.onerror = () => { document.querySelector('#hdr b').textContent = 'Level pack failed to load'; };
   document.body.appendChild(s);
 </script>
+<style>
+/* ==== CC 开局引导 v2：3 步聚光教练式（黑布遮罩+洞口打光+手指；body 级 fixed 不吃 zoom）==== */
+.cc-intro{position:fixed;inset:0;z-index:300;font-family:-apple-system,'Segoe UI',Roboto,sans-serif}
+.cc-spot{position:fixed;border-radius:16px;box-shadow:0 0 0 200vmax rgba(15,10,3,.82);transition:all .4s cubic-bezier(.4,0,.2,1);pointer-events:none;z-index:1}
+.cc-spot::after{content:'';position:absolute;inset:-7px;border:2.5px solid rgba(255,176,32,.9);border-radius:20px;animation:ccPulse 1.5s ease-in-out infinite}
+@keyframes ccPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.06);opacity:.55}}
+.cc-finger{position:fixed;font-size:38px;z-index:2;pointer-events:none;animation:ccTap 1.1s ease-in-out infinite;filter:drop-shadow(0 3px 8px rgba(0,0,0,.55))}
+@keyframes ccTap{0%,100%{transform:translateY(0) scale(1)}45%{transform:translateY(11px) scale(.9)}}
+.cc-card{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);width:min(330px,88vw);background:#fffaf0;border:2px solid #e8d9b8;border-radius:14px;padding:14px 16px;z-index:3;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.cc-card .cc-step{font-size:11px;font-weight:800;letter-spacing:.07em;color:#b45309;text-transform:uppercase}
+.cc-card p{font-size:14.5px;line-height:1.5;color:#4a3a1e;margin:6px 0 0}
+.cc-card p b{color:#7a5c1a}
+.cc-hint{margin-top:10px;font-size:12px;color:#9b8355}
+#cc-intro-go{display:block;width:100%;margin-top:10px;padding:11px 0;font-size:15.5px;font-weight:800;border:none;border-radius:11px;background:#ffb020;color:#4a3000;cursor:pointer}
+.cc-skip{position:fixed;top:12px;right:14px;z-index:3;font-size:12.5px;color:rgba(255,244,220,.8);background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:5px 13px;cursor:pointer}
+.cc-intro.cc-out{transition:opacity .25s ease;opacity:0}
+</style>
+<script>
+/* ==== CC 开局引导 v2：3 步聚光教练式（黑布遮罩+洞口打光+手指）====
+   body 级 fixed 不吃 zoom；每浏览器一次（LS 不可用则每次显示）；
+   等 DBG 就绪后选目标（loose/buried 用引擎真源，异步 boot 用轮询兼容） */
+(function(){
+  var seen=false; try{seen=!!localStorage.getItem('cc_intro_seen')}catch(e){}
+  if(seen) return;
+  var ov=null, step=0, timer=null;
+  var T={loose:null, buried:null};
+  var STEPS=[
+    {t:'Step 1 of 3', html:'<b>Tap loose items</b> — they fly to the matching bucket.'},
+    {t:'Step 2 of 3', html:"<b>Buried items won't budge</b> — wrong taps shake &amp; fill the tray."},
+    {t:'Step 3 of 3', html:'<b>Stuck?</b> 💡 Hint ×3 highlights a safe tap · 🔧 Pliers ×3 force any item out · tray 6/6 = restart.'}
+  ];
+  function pickTargets(){
+    try{
+      var w=window; if(!w.DBG) return false;
+      var openFams={}; w.DBG.openQ.forEach(function(k){ openFams[w.DBG.BUCKETS[k].fam]=1 });
+      for(var i=0;i<w.DBG.ITEMS.length;i++){
+        var it=w.DBG.ITEMS[i], el=w.DBG.els[i];
+        if(!el||w.DBG.alive[i]===false) continue;
+        var buried=it.b&&it.b.some(function(j){return w.DBG.alive[j]!==false});
+        if(!T.loose&&!buried&&openFams[it.f]) T.loose=el;
+        if(!T.buried&&buried) T.buried=el;
+        if(T.loose&&T.buried) break;
+      }
+      return !!(T.loose&&T.buried);
+    }catch(e){return false}
+  }
+  function targetFor(s){
+    if(s===0) return T.loose||document.getElementById('scene');
+    if(s===1) return T.buried||document.getElementById('scene');
+    return document.getElementById('btns');
+  }
+  function render(){
+    if(!ov) return;
+    var el=targetFor(step), r=el.getBoundingClientRect(), pad=10;
+    var vw=window.innerWidth, vh=window.innerHeight;
+    var x=Math.max(6,r.x-pad), y=Math.max(6,r.y-pad);
+    var w=Math.min(vw-12-x, r.width+pad*2), h=r.height+pad*2;
+    var spot=ov.querySelector('.cc-spot');
+    spot.style.left=x+'px'; spot.style.top=y+'px'; spot.style.width=w+'px'; spot.style.height=h+'px';
+    var fg=ov.querySelector('.cc-finger');
+    if(y+h>vh*0.74){ fg.textContent='👇'; fg.style.left=(x+w/2-19)+'px'; fg.style.top=(y-46)+'px'; }
+    else { fg.textContent='👆'; fg.style.left=(x+w/2-19)+'px'; fg.style.top=(y+h-8)+'px'; }
+    ov.querySelector('.cc-step').textContent=STEPS[step].t;
+    ov.querySelector('.cc-txt').innerHTML=STEPS[step].html;
+    ov.querySelector('.cc-hint').style.display = step<2 ? '' : 'none';
+    ov.querySelector('#cc-intro-go').style.display = step<2 ? 'none' : 'block';
+  }
+  function finish(){
+    try{localStorage.setItem('cc_intro_seen','1')}catch(e){}
+    if(timer){clearInterval(timer);timer=null}
+    if(!ov) return;
+    ov.classList.add('cc-out');
+    setTimeout(function(){ if(ov){ov.remove();ov=null} },260);
+  }
+  function start(){
+    if(ov) return;
+    ov=document.createElement('div');
+    ov.className='cc-intro';
+    ov.innerHTML='<div class="cc-spot"></div><div class="cc-finger">👆</div>'
+      +'<button class="cc-skip">Skip ✕</button>'
+      +'<div class="cc-card"><div class="cc-step"></div><p class="cc-txt"></p>'
+      +'<div class="cc-hint">Tap anywhere to continue</div>'
+      +'<button id="cc-intro-go">Start tidying</button></div>';
+    document.body.appendChild(ov);
+    ov.addEventListener('click',function(e){
+      if(e.target.closest('.cc-skip')||e.target.closest('#cc-intro-go')||step>=2){ finish(); return }
+      step++; render();
+    });
+    render();
+    timer=setInterval(render,350); // 跟随入场动画/视口变化保持洞口对位
+  }
+  var tries=0, iv=setInterval(function(){
+    tries++;
+    if(pickTargets()){ clearInterval(iv); start(); }
+    else if(tries>60){ clearInterval(iv); T.loose=document.getElementById('scene'); T.buried=document.getElementById('scene'); start(); }
+  },50);
+})();
+</script>
 </body>
 </html>

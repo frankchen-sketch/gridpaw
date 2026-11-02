@@ -12,6 +12,10 @@ let alive, openQ, opened, done, have, pliers, forceMode, busy, collected, stash,
 let SEQ = 1, THEME = '', startTime = 0;
 let firstMoved = false;
 let firstPick = false;
+let ccPendingGS = false;   // game_start 可见性门控：hidden 加载时挂起，切回可见补发
+document.addEventListener('visibilitychange', () => {
+  if(ccPendingGS && document.visibilityState === 'visible'){ ccPendingGS = false; ccTrack('game_start'); }
+});
 const els = [];
 const TOTAL = () => BUCKETS.reduce((s, b) => s + b.need, 0);
 function ccTrack(ev, meta){
@@ -103,7 +107,9 @@ function init(pack){
     levels: window.__LEVELS || []
   });
   firstMoved = false;
-  ccTrack('game_start');
+  // game_start 可见性门控（2026-11-02 拍板）：后台标签加载不计开局，切回可见时补发一次
+  if(document.visibilityState === 'visible') ccTrack('game_start');
+  else ccPendingGS = true;
 }
 
 function prog(){
