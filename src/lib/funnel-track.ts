@@ -9,6 +9,8 @@ import { APP_BUILD } from './app-build.generated';
 export const FUNNEL_EVENTS = [
   'visit',
   'game_start', 'first_move', 'level_up', 'level_complete_1', 'level_complete_3',
+  // 2026-11-02 crazy-cleanup 拾取漏斗（与 public/crazy-cleanup/gp-track.js 同步）：first_pick=首次像素命中(tap)，pick_miss=点进场景但 alpha 未命中
+  'first_pick', 'pick_miss',
   'level_complete_5', 'level_complete_10', 'level_complete_20',
   'hint_click', 'hint_blocked', 'puzzle_reset', 'puzzle_skip', 'game_over', 'badge_help_click', 'help_click',
   'daily_start', 'daily_solved', 'daily_challenge_click',

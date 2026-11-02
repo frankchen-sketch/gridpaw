@@ -472,6 +472,14 @@ const faqJsonLd = [
         if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
       });
     });
+    // guide→play CTA 测量（2026-11-02）：两条 /meowdoku/ 内链此前是裸 <a>，guide→game 转化是盲区
+    document.addEventListener('click', function (e) {
+      var a = e.target && e.target.closest ? e.target.closest('a[href="/meowdoku/"]') : null;
+      if (!a) return;
+      var params = { target: '/meowdoku/', placement: 'guide-play-inline', from: location.pathname };
+      if (typeof window.gtag === 'function') window.gtag('event', 'cta_click', params);
+      if (typeof window.gpTrack === 'function') window.gpTrack('cta_click', params);
+    }, true);
   </script>
 </body>
 </html>
