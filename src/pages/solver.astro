@@ -89,17 +89,17 @@ const faqs = [
     <section class="seo-content">
 
       <h2>What the Shikaku Solver Does</h2>
-      <p>Every Shikaku puzzle has exactly one solution, and GridPaw knows it — each board is generated from a verified tiling before you ever see it. The <strong>Shikaku solver</strong> taps into that knowledge. When you are stuck, it looks at the numbers you have not yet enclosed, picks one, and highlights the exact rectangle that belongs to it. The highlight pulses for a few seconds, then fades, leaving you to draw it (or, better, to work out <em>why</em> that rectangle was forced).</p>
-      <p>It does not fill in the whole grid. It does not tell you which of your existing rectangles is wrong. It shows one true placement and hands control back. That restraint is deliberate: a fully solved board teaches nothing, while a single revealed rectangle is a pointed question — <em>what did I miss here?</em></p>
+      <p>Every Shikaku puzzle has exactly one solution, and GridPaw knows it: each board is generated from a verified tiling before you ever see it. The <strong>Shikaku solver</strong> taps into that knowledge. When you are stuck, it looks at the numbers you have not yet enclosed, picks one, and highlights the exact rectangle that belongs to it. The highlight pulses for a few seconds, then fades, leaving you to draw it (or, better, to work out <em>why</em> that rectangle was forced).</p>
+      <p>It does not fill in the whole grid. It does not tell you which of your existing rectangles is wrong. It shows one true placement and hands control back. That restraint is deliberate. A fully solved board teaches nothing, while a single revealed rectangle is a pointed question: <em>what did I miss here?</em></p>
       <p>The solver lives inside the game itself. There is no separate tool to open; the 💡 Hint button on the <a href="/#play">play screen</a> is the solver.</p>
 
       <h2>How to Use the Solver</h2>
       <ol>
-        <li><strong>Open a puzzle.</strong> Go to the <a href="/#play">game board</a>. Any level works — Tutorial through Legend — and so does the Daily Challenge.</li>
+        <li><strong>Open a puzzle.</strong> Go to the <a href="/#play">game board</a>. Any level works (Tutorial through Legend), and so does the Daily Challenge.</li>
         <li><strong>Sign in.</strong> Hints are tied to a free account so your usage and progress sync. Tap the account area above the board and sign in with Google. Guests can play unlimited puzzles but cannot use hints.</li>
         <li><strong>Try the puzzle first.</strong> Place every rectangle you can prove. The solver is most useful when you have already exhausted the obvious moves.</li>
         <li><strong>Press 💡 Hint.</strong> The solver picks an unplaced number and highlights its correct rectangle on the board for about three seconds. You get three hints per level.</li>
-        <li><strong>Draw the rectangle — and study it.</strong> Before you drag it in, ask what ruled out the alternatives. Was it a corner? A prime that could only fit one way? A cell no other number could reach?</li>
+        <li><strong>Draw the rectangle and study it.</strong> Before you drag it in, ask what ruled out the alternatives. Was it a corner? A prime that could only fit one way? A cell no other number could reach?</li>
         <li><strong>Continue solving.</strong> The revealed rectangle usually unlocks a cascade. Return to your own reasoning and see how far it carries you before the next hint.</li>
       </ol>
       <p>If the solver responds with <em>"Everything placed — look for mistakes!"</em>, every number already has a rectangle but the tiling is not correct. That is your cue to find the gap (an uncovered cell) and remove the rectangle beside it.</p>
@@ -122,7 +122,7 @@ const faqs = [
       <h2>Using the Solver as a Learning Tool</h2>
 
       <h3>Try first, then check</h3>
-      <p>Before pressing Hint, write down (mentally or on paper) which number you think is most constrained and what its rectangle should be. Then reveal. If you were right, you have confirmed your technique. If you were wrong, you have found a blind spot — and a specific one, not a vague sense of "being bad at Shikaku."</p>
+      <p>Before pressing Hint, write down (mentally or on paper) which number you think is most constrained and what its rectangle should be. Then reveal. If you were right, you have confirmed your technique. If you were wrong, you have found a blind spot, and a specific one, not a vague sense of "being bad at Shikaku."</p>
 
       <h3>Reverse-engineer the reveal</h3>
       <p>The solver shows <em>what</em>, never <em>why</em>. Supply the why yourself. For the highlighted rectangle, list every other shape that number could have taken and find the reason each one fails: it overlaps a placed rectangle, it swallows a second number, it runs off the grid, or it would strand a cell that no other number can reach. One of those four reasons always applies. Learning to spot it quickly is the whole skill.</p>
@@ -137,7 +137,7 @@ const faqs = [
       <p>If a board required two or three hints, pay attention to which numbers they landed on. On the next puzzle of the same difficulty tier, look for those numbers first. The solver has effectively told you where your reasoning is thin; go and thicken it.</p>
 
       <h2>How the Solver Works Behind the Scenes</h2>
-      <p>GridPaw does not solve the puzzle while you wait — it already has the answer. When a board is generated, the engine first builds a complete rectangle tiling of the grid, then places one number inside each rectangle, then runs a uniqueness check to confirm that no other tiling satisfies those numbers. The solution rectangles are stored with the puzzle. When you press Hint, the game scans that list for a rectangle whose number you have not yet enclosed and highlights it. The lookup is instant and always correct.</p>
+      <p>GridPaw does not solve the puzzle while you wait: it already has the answer. When a board is generated, the engine first builds a complete rectangle tiling of the grid, then places one number inside each rectangle, then runs a uniqueness check to confirm that no other tiling satisfies those numbers. The solution rectangles are stored with the puzzle. When you press Hint, the game scans that list for a rectangle whose number you have not yet enclosed and highlights it. The lookup is instant and always correct.</p>
       <p>Because the solver draws from the verified solution rather than from a heuristic search, it will never suggest a rectangle that is merely plausible. What it shows is the one rectangle that belongs there in the unique answer. That reliability is what makes it safe to learn from.</p>
 
       <h2>Frequently Asked Questions</h2>

@@ -24,10 +24,10 @@ const N = 5; // 5×5 cells → 11×11 dot lattice
     <button class="pbtn ghost" id={`${P}-reset`}>New board</button>
   </div>
   <div class="playrow">
-    <div class="pmsg" id={`${P}-msg`}>Click the gaps between dots to draw the loop. A number tells you how many of that cell's four edges belong to the loop — the line must close on itself, with no branches or crossings.</div>
+    <div class="pmsg" id={`${P}-msg`}>Click the gaps between dots to draw the loop. A number tells you how many of that cell's four edges belong to the loop: the line must close on itself, with no branches or crossings.</div>
   </div>
   <div class="playwin" id={`${P}-win`}></div>
-  <div class="playnote">A fresh 5×5 board is generated every round — each one programmatically proven to have exactly one loop. This is Slitherlink, the classic loop-drawing logic puzzle and The Loop's namesake cousin. Free fan-made demo.</div>
+  <div class="playnote">A fresh 5×5 board is generated every round: each one programmatically proven to have exactly one loop. This is Slitherlink, the classic loop-drawing logic puzzle and The Loop's namesake cousin. Free fan-made demo.</div>
 </div>
 
 <style is:global>
@@ -151,7 +151,7 @@ const N = 5; // 5×5 cells → 11×11 dot lattice
           }
         }
       }
-      if (flashed) setMsg('❌ Three lines meet at a dot — the loop can\'t branch. Undo one of the red edges.');
+      if (flashed) setMsg('❌ Three lines meet at a dot. The loop can\'t branch. Undo one of the red edges.');
       return flashed;
     }
 
@@ -183,7 +183,7 @@ const N = 5; // 5×5 cells → 11×11 dot lattice
       winEl.classList.remove('show');
       document.getElementById(P + '-verified').textContent = 'Unique solution verified ✓';
       buildLattice(); renderClues();
-      setMsg('Click the gaps between dots to draw the loop. A number tells you how many of that cell\'s four edges belong to the loop — the line must close on itself.');
+      setMsg('Click the gaps between dots to draw the loop. A number tells you how many of that cell\'s four edges belong to the loop: the line must close on itself.');
       fireGameStart();
     }
 
@@ -197,7 +197,7 @@ const N = 5; // 5×5 cells → 11×11 dot lattice
       var res = SE.validate(puzzle, edges);
       if (res.ok) { onWin(); return; }
       for (var k = 0; k < res.errors.length; k++) {
-        if (/degree/.test(res.errors[k])) { setMsg('The loop isn\'t closed yet — every dot needs exactly 0 or 2 lines.'); return; }
+        if (/degree/.test(res.errors[k])) { setMsg('The loop isn\'t closed yet: every dot needs exactly 0 or 2 lines.'); return; }
       }
     }
 
@@ -216,7 +216,7 @@ const N = 5; // 5×5 cells → 11×11 dot lattice
           return;
         }
       }
-      setMsg('Everything drawn so far is already correct — keep going!');
+      setMsg('Everything drawn so far is already correct: keep going!');
     });
 
     document.getElementById(P + '-reset').addEventListener('click', function () {
@@ -227,7 +227,7 @@ const N = 5; // 5×5 cells → 11×11 dot lattice
 
     function onWin() {
       solved = true;
-      winEl.innerHTML = '<b>Solved! Board #' + boardNum + ' — the loop closes cleanly, every clue satisfied.</b><br>Next: <a href="#" id="' + P + '-next">new board →</a> · <a href="/slitherlink/">Full Slitherlink (5×5 to 10×10)</a> · <a href="/">Shikaku</a>';
+      winEl.innerHTML = '<b>Solved! Board #' + boardNum + '. The loop closes cleanly, every clue satisfied.</b><br>Next: <a href="#" id="' + P + '-next">new board →</a> · <a href="/slitherlink/">Full Slitherlink (5×5 to 10×10)</a> · <a href="/">Shikaku</a>';
       winEl.classList.add('show');
       track('level_up', { level: boardNum, difficulty: 'easy 5x5' });
       var next = document.getElementById(P + '-next');

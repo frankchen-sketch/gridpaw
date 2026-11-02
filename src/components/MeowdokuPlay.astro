@@ -21,12 +21,12 @@ const engineSrc = '/star-battle-engine.js';
     <button class="pbtn ghost" id={`${P}-reset`}>{mode === 'level' ? 'Restart' : 'Reset'}</button>
   </div>
   <div class="playrow">
-    <div class="pmsg" id={`${P}-msg`}>Click cycle: 1st tap marks ✕ (excluded), 2nd tap places the cat, 3rd tap clears. One cat per region, row, and column — never touching, diagonals included.</div>
+    <div class="pmsg" id={`${P}-msg`}>Click cycle: 1st tap marks ✕ (excluded), 2nd tap places the cat, 3rd tap clears. One cat per region, row, and column: never touching, diagonals included.</div>
   </div>
   <div class="playwin" id={`${P}-win`}></div>
   <div class="playnote">{mode === 'level'
     ? `This board is fixed: Level ${level} always looks the same and has exactly one solution (programmatically proven). Fan-made Meowdoku-style puzzle, not affiliated with Oakever.`
-    : 'A fresh board is generated every round — each one programmatically proven to have exactly one solution. A 3-heart mode: an illegal placement flashes red and costs a heart; run out and a new board loads. Unofficial fan-made demo, not affiliated with Oakever.'}
+    : 'A fresh board is generated every round: each one programmatically proven to have exactly one solution. A 3-heart mode: an illegal placement flashes red and costs a heart; run out and a new board loads. Unofficial fan-made demo, not affiliated with Oakever.'}
   </div>
 </div>
 
@@ -144,7 +144,7 @@ const engineSrc = '/star-battle-engine.js';
       winEl.classList.remove('show');
       document.getElementById(P + '-verified').textContent = 'Unique solution verified ✓';
       buildBoardEl(); updateHearts();
-      setMsg('Click cycle: 1st tap marks ✕ (excluded), 2nd tap places the cat (an illegal tap clears the mark), 3rd tap clears. One cat per region, row, and column — never touching, diagonals included.');
+      setMsg('Click cycle: 1st tap marks ✕ (excluded), 2nd tap places the cat (an illegal tap clears the mark), 3rd tap clears. One cat per region, row, and column: never touching, diagonals included.');
       fireGameStart();
     }
 
@@ -160,9 +160,9 @@ const engineSrc = '/star-battle-engine.js';
       return null;
     }
     function violationText(kind, r, c) {
-      if (kind === 'touch') return '❌ Cats can\'t touch — R' + (r + 1) + 'C' + (c + 1) + ' neighbors an existing cat. −1 ♥';
-      if (kind === 'row') return '❌ Its row/column already has a cat — one per row and column. −1 ♥';
-      return '❌ That region already has a cat — one cat per region. −1 ♥';
+      if (kind === 'touch') return '❌ Cats can\'t touch: R' + (r + 1) + 'C' + (c + 1) + ' neighbors an existing cat. −1 ♥';
+      if (kind === 'row') return '❌ Its row/column already has a cat. One per row and column. −1 ♥';
+      return '❌ That region already has a cat. One cat per region. −1 ♥';
     }
     function countCats() {
       var n = 0;
@@ -175,12 +175,12 @@ const engineSrc = '/star-battle-engine.js';
       if (mode === 'level') {
         var nav = '';
         if (level < 10) nav += '<a href="/meowdoku/levels/' + (level + 1) + '/">Level ' + (level + 1) + ' →</a> · ';
-        else nav += '<a href="/meowdoku/">All levels cleared — back to hub →</a> · ';
+        else nav += '<a href="/meowdoku/">All levels cleared: back to hub →</a> · ';
         nav += '<a href="/meowdoku/">More boards</a> · <a href="/meowdoku-guide/">Strategy guide</a>';
-        winEl.innerHTML = '<b>Solved! Level ' + level + ' — unique solution verified.</b><br>Next: ' + nav + '<br>⭐ Rate this level below — your rating shapes what we build next.';
+        winEl.innerHTML = '<b>Solved! Level ' + level + ', unique solution verified.</b><br>Next: ' + nav + '<br>⭐ Rate this level below; your rating shapes what we build next.';
         track('level_up', { level: level, difficulty: 'easy 6x6' });
       } else {
-        winEl.innerHTML = '<b>Solved! Board #' + boardNum + ' — unique solution verified.</b><br>Next: <a href="#" id="' + P + '-next">new board →</a> · <a href="/star-battle/">Star Battle (multi-star)</a> · <a href="/">Shikaku</a>';
+        winEl.innerHTML = '<b>Solved! Board #' + boardNum + ', unique solution verified.</b><br>Next: <a href="#" id="' + P + '-next">new board →</a> · <a href="/star-battle/">Star Battle (multi-star)</a> · <a href="/">Shikaku</a>';
         track('level_up', { level: boardNum, difficulty: 'easy 6x6' });
         var next = document.getElementById(P + '-next');
         if (next) next.addEventListener('click', function (e) { e.preventDefault(); newBoard(); boardEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
@@ -202,14 +202,14 @@ const engineSrc = '/star-battle-engine.js';
         setMsg(violationText(bad, r, c));
         hearts--; updateHearts();
         if (hearts <= 0) {
-          if (mode === 'level') { setMsg('💔 Out of hearts — restarting Level ' + level + '.'); setTimeout(newBoard, 700); }
-          else { setMsg('💔 Out of hearts — a fresh board is loading.'); setTimeout(newBoard, 700); }
+          if (mode === 'level') { setMsg('💔 Out of hearts: restarting Level ' + level + '.'); setTimeout(newBoard, 700); }
+          else { setMsg('💔 Out of hearts. A fresh board is loading.'); setTimeout(newBoard, 700); }
         }
         return;
       }
       state[idx] = 2;
       renderCell(d, 2);
-      setMsg('Cat settled at R' + (r + 1) + 'C' + (c + 1) + ' ✓ — re-scan the board (Strategy 6).');
+      setMsg('Cat settled at R' + (r + 1) + 'C' + (c + 1) + ' ✓. Re-scan the board (Strategy 6).');
       if (countCats() === N * K) onWin();
     }
 
@@ -221,13 +221,13 @@ const engineSrc = '/star-battle-engine.js';
           var r = (i / N) | 0, c = i % N;
           state[i] = 2; renderCell(d, 2);
           d.classList.add('hintcell');
-          setMsg('Hint: R' + (r + 1) + 'C' + (c + 1) + ' is forced — this cell is the region\'s only legal home.');
+          setMsg('Hint: R' + (r + 1) + 'C' + (c + 1) + ' is forced: this cell is the region\'s only legal home.');
           track('hint_click', { level: mode === 'level' ? level : boardNum });
           if (countCats() === N * K) onWin();
           return;
         }
       }
-      setMsg('No hint left — every solution cat is already placed.');
+      setMsg('No hint left: every solution cat is already placed.');
     });
 
     document.getElementById(P + '-reset').addEventListener('click', function () {

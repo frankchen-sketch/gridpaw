@@ -168,7 +168,7 @@
 <body>
   <header>
     <h1><img src="/assets/logo.png" alt="" style="width:24px;height:24px;border-radius:6px;vertical-align:-5px"> Nonogram</h1>
-    <div class="sub">GridPaw demo — clues count runs, fill the picture</div>
+    <div class="sub">GridPaw demo: clues count runs, fill the picture</div>
   </header>
 
   <div class="topbar">
@@ -217,7 +217,7 @@
     </div>
   </div>
 
-  <div class="foot" id="foot">Demo build — engine self-tested via scripts/selftest-nonogram.mjs</div>
+  <div class="foot" id="foot">Demo build: engine self-tested via scripts/selftest-nonogram.mjs</div>
 
 <script src="../nonogram-engine.js?v=1"></script>
 <script>
@@ -421,7 +421,7 @@
       m.textContent = '✕';
       el.appendChild(m);
       el.classList.add('err-flash');
-      setMsg('That cell is empty in the picture — auto-marked ✕ (mistake №' + mistakes + ')', 'err');
+      setMsg('That cell is empty in the picture: auto-marked ✕ (mistake №' + mistakes + ')', 'err');
       track('puzzle_mistake', { level: level });
       setTimeout(function () {
         el.classList.remove('err-flash');
@@ -452,14 +452,14 @@
   }
   function maybeWin() {
     if (pictureComplete()) { onWin(); return; }
-    if (allKnown()) setMsg('Every cell is marked, but the picture doesn\u2019t match the clues — some ✕ cells are actually filled. Review and fix!', 'err');
+    if (allKnown()) setMsg('Every cell is marked, but the picture doesn\u2019t match the clues. Some ✕ cells are actually filled. Review and fix!', 'err');
   }
 
 // ── hint (demo tier: direct reveal; 3 per level, unlimited in dev) ──
   function useHint() {
     if (busy || !puzzle) return;
     if (!isDev && hintsLeft <= 0) {
-      setMsg('No hints left this level — solve it!', 'err');
+      setMsg('No hints left this level. Solve it!', 'err');
       return;
     }
     if (!isDev) {
@@ -479,13 +479,13 @@
       }
     }
     if (target < 0) {
-      setMsg('Nothing left to hint — every cell is already marked!');
+      setMsg('Nothing left to hint: every cell is already marked!');
       return;
     }
     grid[target] = puzzle.solution[target] === 1 ? CELL_FILLED : CELL_EMPTY;
     var gr = Math.floor(target / puzzle.cols) + 1;
     var gc = (target % puzzle.cols) + 1;
-    setMsg('💡 Row ' + gr + ', col ' + gc + ' is ' + (grid[target] === CELL_FILLED ? 'filled — tap it ⬛.' : 'empty — tap it ✕.') +
+    setMsg('💡 Row ' + gr + ', col ' + gc + ' is ' + (grid[target] === CELL_FILLED ? 'filled. Tap it ⬛.' : 'empty. Tap it ✕.') +
       ' (' + (isDev ? 'unlimited hints' : hintsLeft + ' hints left') + ')');
     render();
     maybeWin();
@@ -503,7 +503,7 @@
     overlayEl.classList.remove('show');
 
     if (info.type === 'tutorial') {
-      chipEl.textContent = 'Tutorial ' + (level + 1) + '/4 — ' + info.def.title;
+      chipEl.textContent = 'Tutorial ' + (level + 1) + '/4: ' + info.def.title;
       chipEl.className = 'chip tut';
       document.getElementById('skipBtn').style.display = '';
       setMsg(info.def.lesson, 'tut');
@@ -520,9 +520,9 @@
     chipEl.className = 'chip';
     document.getElementById('skipBtn').style.display = 'none';
     var label = info.type === 'daily' ? 'Daily' : 'Level ' + info.num + '/11';
-    chipEl.textContent = label + ' — ' + info.preset.label +
-      (info.type === 'daily' ? ' ' : ' — ') + info.preset.rows + '×' + info.preset.cols;
-    setMsg(info.type === 'daily' ? '📅 Daily puzzle — same board for everyone today.' : 'Generating a fresh puzzle…');
+    chipEl.textContent = label + ': ' + info.preset.label +
+      (info.type === 'daily' ? ' ' : ' · ') + info.preset.rows + '×' + info.preset.cols;
+    setMsg(info.type === 'daily' ? '📅 Daily puzzle: same board for everyone today.' : 'Generating a fresh puzzle…');
     setTimeout(function () {
       var p = null, tries = 0;
       while (!p && tries < 6) {
@@ -539,13 +539,13 @@
       }
       busy = false;
       if (!p) {
-        setMsg('Could not generate a puzzle this time — tap ↺ Restart to try again.', 'err');
+        setMsg('Could not generate a puzzle this time. Tap ↺ Restart to try again.', 'err');
         return;
       }
       puzzle = p;
       grid = new Array(p.rows * p.cols).fill(CELL_UNKNOWN);
       setMsg(info.type === 'daily'
-        ? '📅 Same board for everyone today — come back tomorrow for a fresh one.'
+        ? '📅 Same board for everyone today. Come back tomorrow for a fresh one.'
         : 'Paint the picture: tap a cell to fill ⬛, again for ✕, again to clear.');
       render();
     }, 30);

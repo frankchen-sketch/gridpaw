@@ -222,7 +222,7 @@
 <body>
   <header>
     <h1><img src="/assets/logo.png" alt="" style="width:26px;height:26px;border-radius:7px;vertical-align:-5px"> Kakuro</h1>
-    <div class="sub">GridPaw demo — sums, no repeats, pure logic</div>
+    <div class="sub">GridPaw demo: sums, no repeats, pure logic</div>
   </header>
 
   <div class="topbar">
@@ -277,10 +277,10 @@
 
   <div class="coach-card" id="clueCoach">
     <div class="cc-title">💡 New: clue cells are tappable</div>
-    <div>Tap any clue cell — like the glowing one — and the run it controls lights up, so you always know which cells a number governs.</div>
+    <div>Tap any clue cell (like the glowing one) and the run it controls lights up, so you always know which cells a number governs.</div>
   </div>
 
-  <div class="foot">Demo build — engine self-tested via scripts/selftest-kakuro.mjs</div>
+  <div class="foot">Demo build: engine self-tested via scripts/selftest-kakuro.mjs</div>
 
 <script src="../kakuro-engine.js?v=fog2"></script>
 <script>
@@ -382,7 +382,7 @@
     var bar = document.getElementById('peekbar');
     if (!fogActive) { bar.className = 'peekbar'; return; }
     bar.className = 'peekbar show';
-    bar.textContent = ' Tap the fog to peek — free & unlimited';
+    bar.textContent = ' Tap the fog to peek: free & unlimited';
   }
 
   function attemptPeek(i) {
@@ -430,7 +430,7 @@
     fogUnlocked = true;
     boardEl.classList.add('unlocked');
     track('fog_block_unlocked', { level: level });
- setMsg(' Fog lifted! The far side is revealed — finish the board.');
+ setMsg(' Fog lifted! The far side is revealed. Finish the board.');
     updatePeekbar();
   }
 
@@ -475,7 +475,7 @@
   function useHint() {
     if (busy || !puzzle) return;
     if (!isDev && hintsLeft <= 0) {
- setMsg('No hints left this level — use peeks or solve it!', 'err');
+ setMsg('No hints left this level. Use peeks or solve it!', 'err');
       return;
     }
     if (!isDev) {
@@ -505,7 +505,7 @@
       }
       if (target < 0) target = bestCell;
     }
-    if (target < 0) { setMsg('Nothing left to hint — board looks complete!'); return; }
+    if (target < 0) { setMsg('Nothing left to hint: board looks complete!'); return; }
     var answer = puzzle.solution[target];
     hintFocus = { idx: target, digit: answer };
     selected = target;
@@ -518,7 +518,7 @@
     setTimeout(function () {
       if (tEl) tEl.classList.remove('hint-target');
     }, 3000);
-    setMsg('💡 Fill ' + answer + ' in row ' + gr + ', col ' + gc + ' — the green key. (' + (isDev ? 'unlimited hints' : hintsLeft + ' hints left') + ')');
+    setMsg('💡 Fill ' + answer + ' in row ' + gr + ', col ' + gc + '. The green key. (' + (isDev ? 'unlimited hints' : hintsLeft + ' hints left') + ')');
   }
 
   // ── clue-cell tap: highlight the run(s) a clue governs ──
@@ -690,8 +690,8 @@
       }
       setMsg(
         err === 'dup'
-          ? 'That digit is already in this run — no repeats!'
-          : 'That run already sums past its clue — too big!',
+          ? 'That digit is already in this run: no repeats!'
+          : 'That run already sums past its clue. Too big!',
         'err'
       );
       return; // do not keep the wrong digit
@@ -712,7 +712,7 @@
       if (dead) {
         track('board_dead', { level: level });
         track('game_over', { level: level }); // 通用失败漏斗事件（board_dead 的跨游戏别名，口径对齐 zen 页 game_over）
-        setMsg('⚠️ This board can no longer be solved — one of your earlier digits must be wrong. Clear cells to backtrack.', 'err');
+        setMsg('⚠️ This board can no longer be solved. One of your earlier digits must be wrong. Clear cells to backtrack.', 'err');
       } else {
         maybeUnlockFog();
         advanceSelection();
@@ -866,7 +866,7 @@
     boardEl.classList.remove('unlocked');
 
     if (info.type === 'tutorial') {
-      chipEl.textContent = 'Tutorial ' + (level + 1) + '/4 — ' + info.def.title;
+      chipEl.textContent = 'Tutorial ' + (level + 1) + '/4: ' + info.def.title;
       chipEl.className = 'chip tut';
       document.getElementById('skipBtn').style.display = '';
       setMsg(info.def.lesson, 'tut');
@@ -878,25 +878,25 @@
       }, 30);
     } else {
       var lvlLabel = info.type === 'daily' ? 'Daily' : 'Level ' + info.num + '/11';
-      chipEl.textContent = lvlLabel + ' — ' + info.key.charAt(0).toUpperCase() + info.key.slice(1) +
-        ' — ' + (info.preset.rows) + '×' + (info.preset.cols) + (info.key === 'easy' ? ' · no fog' : ' · 🐾 fog');
+      chipEl.textContent = lvlLabel + ': ' + info.key.charAt(0).toUpperCase() + info.key.slice(1) +
+        ' · ' + (info.preset.rows) + '×' + (info.preset.cols) + (info.key === 'easy' ? ' · no fog' : ' · 🐾 fog');
       chipEl.className = 'chip';
       document.getElementById('skipBtn').style.display = 'none';
-      setMsg(info.type === 'daily' ? '📅 Daily puzzle — same board for everyone today.' : 'Generating a fresh puzzle…');
+      setMsg(info.type === 'daily' ? '📅 Daily puzzle: same board for everyone today.' : 'Generating a fresh puzzle…');
       generateAsync(info.preset, function (p) {
         puzzle = p;
         busy = false;
         if (!p) {
-          setMsg('Could not generate a puzzle this time — tap ↺ Restart to try again.', 'err');
+          setMsg('Could not generate a puzzle this time. Tap ↺ Restart to try again.', 'err');
           return;
         }
         initFog();
         if (fogActive) {
- setMsg(' Fog mode: solve the visible block first. Tap the fog to peek — free & unlimited.');
+ setMsg(' Fog mode: solve the visible block first. Tap the fog to peek: free & unlimited.');
         } else if (info.type === 'gen' && info.key === 'easy') {
- setMsg('Easy has no fog — Fog mode starts at Medium (use the fog preview buttons below).');
+ setMsg('Easy has no fog. Fog mode starts at Medium (use the fog preview buttons below).');
         } else {
-          setMsg('Fill every white cell. Runs must sum to their clue — no repeated digits in a run.');
+          setMsg('Fill every white cell. Runs must sum to their clue: no repeated digits in a run.');
         }
         render();
         maybeClueCoach();
@@ -912,7 +912,7 @@
     var text = document.getElementById('winText');
     if (info.type === 'tutorial') {
       // auto-advance tutorials (skill pattern: no "next" friction during teaching)
-      setMsg('✅ ' + info.def.title + ' — got it! Next lesson…', 'tut');
+      setMsg('✅ ' + info.def.title + ': got it! Next lesson…', 'tut');
       setTimeout(function () {
         level++;
         busy = false;

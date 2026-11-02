@@ -206,7 +206,7 @@
 <body>
   <header>
     <h1><img src="/assets/logo.png" alt="" style="width:24px;height:24px;border-radius:6px;vertical-align:-5px"> Nurikabe</h1>
-    <div class="sub">GridPaw demo — every island matches its number, the sea stays one</div>
+    <div class="sub">GridPaw demo: every island matches its number, the sea stays one</div>
   </header>
 
   <div class="topbar">
@@ -264,7 +264,7 @@
     <div class="card">
       <div class="cat">💔</div>
       <h2 id="failTitle">Out of hearts</h2>
-      <p id="failText">Three wrong marks — this board got away from you.</p>
+      <p id="failText">Three wrong marks: this board got away from you.</p>
       <button id="retryBtn">New board ↻</button>
     </div>
   </div>
@@ -297,18 +297,18 @@
       </div>
       <div class="rule-seg">
         <div class="seg-title">Rule 3 · No 2×2 sea</div>
-        <p class="rule">Four black cells in a square are forbidden — three sea cells around one corner force the fourth to be island.</p>
+        <p class="rule">Four black cells in a square are forbidden: three sea cells around one corner force the fourth to be island.</p>
       </div>
       <div class="rule-seg">
         <div class="seg-title">Win</div>
         <p class="rule">A full, consistent board wins. Wrong marks are warned, never locked.</p>
       </div>
-      <p class="guide-taps">The 4 tutorials teach each rule one at a time — skip them anytime with “Skip tutorial »”.</p>
-      <button id="guideGoBtn">Got it — start with Tutorial 1</button>
+      <p class="guide-taps">The 4 tutorials teach each rule one at a time. Skip them anytime with “Skip tutorial »”.</p>
+      <button id="guideGoBtn">Got it, start with Tutorial 1</button>
     </div>
   </div>
 
-  <div class="foot" id="foot">Demo build — engine self-tested via scripts/selftest-nurikabe.mjs</div>
+  <div class="foot" id="foot">Demo build: engine self-tested via scripts/selftest-nurikabe.mjs</div>
 
 <script src="../nurikabe-engine.js?v=3"></script>
 <script>
@@ -421,9 +421,9 @@
 
   // extra per-lesson action tips — strengthened teaching on tutorial levels
   var TUT_TIPS = [
-    'First move: tap any cell without a number — it turns into sea ≈. The 1-island is already complete!',
+    'First move: tap any cell without a number. It turns into sea ≈. The 1-island is already complete!',
     'First move: grow the island by tapping cells next to it, then flood the rest and trace the sea.',
-    'First move: find three sea cells ≈ around one corner — the fourth cell must be island.',
+    'First move: find three sea cells ≈ around one corner. The fourth cell must be island.',
     'First move: pin the corner clue first, then the sea cells it would seal off.'
   ];
 
@@ -507,12 +507,12 @@
       el.classList.add('err-flash');
       var label = truth === CELL_SEA ? 'sea ≈' : 'island';
       if (levelInfo(level).type === 'tutorial') {
-        setMsg('Wrong — that cell is ' + label + ' in the solution — auto-marked (mistake №' + mistakes + ')', 'err');
+        setMsg('Wrong: that cell is ' + label + ' in the solution. Auto-marked (mistake №' + mistakes + ')', 'err');
         track('puzzle_mistake', { level: level });
       } else {
         hearts--;
         renderHearts();
-        setMsg('Wrong — auto-marked ' + label + ' (−1 ❤, ' + hearts + ' left)', 'err');
+        setMsg('Wrong. Auto-marked ' + label + ' (−1 ❤, ' + hearts + ' left)', 'err');
         track('puzzle_mistake', { level: level });
         track('hp_loss', { level: level, hearts: hearts });
         if (hearts <= 0) {
@@ -554,14 +554,14 @@
   function maybeWin() {
     if (!allKnown()) return;
     if (checkNurikabeWin(puzzle, grid)) onWin();
-    else setMsg('Every cell is marked, but the islands don\u2019t match the numbers — some sea cells are actually island, or an island has the wrong size. Review and fix!', 'err');
+    else setMsg('Every cell is marked, but the islands don\u2019t match the numbers. Some sea cells are actually island, or an island has the wrong size. Review and fix!', 'err');
   }
 
 // ── hint (demo tier: direct reveal; 3 per level, unlimited in dev) ──
   function useHint() {
     if (busy || !puzzle) return;
     if (!isDev && hintsLeft <= 0) {
-      setMsg('No hints left this level — solve it!', 'err');
+      setMsg('No hints left this level. Solve it!', 'err');
       return;
     }
     if (!isDev) {
@@ -581,13 +581,13 @@
       }
     }
     if (target < 0) {
-      setMsg('Nothing left to hint — every cell is already marked!');
+      setMsg('Nothing left to hint: every cell is already marked!');
       return;
     }
     grid[target] = puzzle.solution[target];
     var gr = Math.floor(target / puzzle.cols) + 1;
     var gc = (target % puzzle.cols) + 1;
-    setMsg('💡 Row ' + gr + ', col ' + gc + ' is ' + (grid[target] === CELL_ISLAND ? 'an island — tap it twice to clear.' : 'sea ≈ — tap it once.') +
+    setMsg('💡 Row ' + gr + ', col ' + gc + ' is ' + (grid[target] === CELL_ISLAND ? 'an island. Tap it twice to clear.' : 'sea ≈: tap it once.') +
       ' (' + (isDev ? 'unlimited hints' : hintsLeft + ' hints left') + ')');
     render();
     maybeWin();
@@ -670,7 +670,7 @@
     overlayEl.classList.remove('show');
 
     if (info.type === 'tutorial') {
-      chipEl.textContent = 'Tutorial ' + (level + 1) + '/4 — ' + info.def.title;
+      chipEl.textContent = 'Tutorial ' + (level + 1) + '/4: ' + info.def.title;
       chipEl.className = 'chip tut';
       document.getElementById('skipBtn').style.display = '';
       setMsg(info.def.lesson + ' ' + TUT_TIPS[level], 'tut');
@@ -692,15 +692,15 @@
     chipEl.className = 'chip';
     document.getElementById('skipBtn').style.display = 'none';
     var label = info.type === 'daily' ? 'Daily' : 'Level ' + info.num + '/11';
-    chipEl.textContent = label + ' — ' + info.preset.label +
-      (info.type === 'daily' ? ' ' : ' — ') + info.preset.rows + '×' + info.preset.cols;
-    setMsg(info.type === 'daily' ? '📅 Daily puzzle — same board for everyone today.' : 'Generating a fresh puzzle…');
+    chipEl.textContent = label + ': ' + info.preset.label +
+      (info.type === 'daily' ? ' ' : ' · ') + info.preset.rows + '×' + info.preset.cols;
+    setMsg(info.type === 'daily' ? '📅 Daily puzzle: same board for everyone today.' : 'Generating a fresh puzzle…');
     showSpinner();
     generateAsync(info.preset, info.type === 'daily' ? 'Daily' : 'Level ' + info.num, info.seed, function (p) {
       hideSpinner();
       busy = false;
       if (!p) {
-        setMsg('Could not generate a puzzle this time — tap ↺ Restart to try again.', 'err');
+        setMsg('Could not generate a puzzle this time. Tap ↺ Restart to try again.', 'err');
         return;
       }
       puzzle = p;
@@ -710,7 +710,7 @@
       grid = new Array(p.rows * p.cols).fill(CELL_UNKNOWN);
       for (i2 = 0; i2 < grid.length; i2++) if (clueOf[i2]) grid[i2] = CELL_ISLAND;
       setMsg(info.type === 'daily'
-        ? '📅 Same board for everyone today — come back tomorrow for a fresh one.'
+        ? '📅 Same board for everyone today. Come back tomorrow for a fresh one.'
         : 'Grow each numbered island · keep the sea ≈ connected · no 2×2 sea.');
       render();
     });
@@ -730,7 +730,7 @@
       title.textContent = 'Solved!';
       document.getElementById('winGameLevel').textContent = 'GridPaw Nurikabe · Tutorial';
       nameEl.textContent = info.def.title;
-      text.textContent = 'Rule learned: ' + info.def.title + ' — next lesson…';
+      text.textContent = 'Rule learned: ' + info.def.title + '. Next lesson…';
       nextBtnEl.style.display = 'none';
       showIslandReveal(puzzle);
       overlayEl.classList.add('show');
@@ -771,7 +771,7 @@
     track('level_fail', { level: level, difficulty: (levelInfo(level).preset || {}).label || 'tutorial' });
     document.getElementById('failTitle').textContent = '💔 Out of hearts';
     document.getElementById('failText').textContent =
-      'Three wrong marks — this board got away from you. A fresh one is coming up.';
+      'Three wrong marks: this board got away from you. A fresh one is coming up.';
     document.getElementById('failOverlay').classList.add('show');
   }
 
