@@ -6,6 +6,11 @@
  * Never runs in: ?embed=1 (third-party embeds), standalone (already installed). */
 (function () {
   'use strict';
+  // re-entry guard: SEOHead loads this site-wide now, and some pages (home, akari,
+  // kakuro/nonogram/nurikabe) also load it directly — without this, LS_VIEWS counts
+  // double and the header icon/banner logic races itself.
+  if (window.__gpInstallLoaded) return;
+  window.__gpInstallLoaded = true;
   // CSS FIRST — hides [data-gp-install] mounts on every browser and every page variant
   // (embed pages included, where the script bails below) until the install logic reveals them.
   var css = document.createElement('style');
@@ -178,19 +183,31 @@
     ov.innerHTML =
       '<div class="gp-ios-card"><h3>' + title + '</h3><ol>' + stepsHtml + '</ol>' +
       '<button class="gp-iocl">Got it</button></div>';
-    ov.querySelector('.gp-iocl').addEventListener('click', function () { ov.remove(); });
-    ov.addEventListener('click', function (e) { if (e.target === ov) ov.remove(); });
+    function dismiss() {
+      ov.remove();
+      lsSet(LS_SNOOZE, String(Date.now()));
+      track('install_dismissed', { from: 'guide' });
+    }
+    ov.querySelector('.gp-iocl').addEventListener('click', dismiss);
+    ov.addEventListener('click', function (e) { if (e.target === ov) dismiss(); });
     document.body.appendChild(ov);
   }
 
   // ── lifecycle ──
-  window.addEventListener('beforeinstallprompt', function (e) {
-    e.preventDefault();
-    deferred = e;
+  // activate() runs unconditionally on load — entries must NOT be gated on
+  // beforeinstallprompt: iOS Safari never fires it, and pre-2026-11 the header icon,
+  // mounts and banner only existed inside its callback, leaving 43% of mobile
+  // sessions (iOS) with no install entry at all.
+  function activate() {
     document.documentElement.classList.add('gp-installable');
     wireMounts();
     injectHeaderIcon();
     maybeBanner();
+  }
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferred = e;
+    activate();
   });
 
   window.addEventListener('appinstalled', function () {
@@ -203,8 +220,8 @@
 
   // if the prompt event fired before this script executed, recover on load
   if (document.readyState === 'complete') {
-    wireMounts();
+    activate();
   } else {
-    window.addEventListener('load', wireMounts);
+    window.addEventListener('load', activate);
   }
 })();
