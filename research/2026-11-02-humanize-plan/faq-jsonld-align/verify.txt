@@ -1,0 +1,63 @@
+# FAQ JSON-LD 对齐补丁验证
+
+generated_at: 2026-11-03T11:56:13+08:00
+HEAD_at_delivery: 14f6cbf7ad127cd108de2d854cbb77de80c9d217
+
+## git apply --check (main repo)
+changes-final.patch: PASS
+changes-strict-78.patch: PASS
+
+## patch stats
+ src/pages/slitherlink/index.astro               |   12 ++++++------
+ src/pages/star-battle/index.astro               |   12 ++++++------
+ 24 files changed, 81 insertions(+), 81 deletions(-)
+
+## sha256
+e272315b5ac657ba610a829dfe0bf944152c3d123765483314765c2dd65aa084  research/2026-11-02-humanize-plan/faq-jsonld-align/changes-final.patch
+2b87c0ba6d9e643653e31f129c2fb1b5ff1174610b5e538e4bddc266c0bdad7e  research/2026-11-02-humanize-plan/faq-jsonld-align/changes-strict-78.patch
+
+## inventory
+{
+ "patch_entries": 81,
+ "patch_pages": 24,
+ "patch_files": 24,
+ "exact_question": 78,
+ "question_wording_variant": 3,
+ "guard_83_reproduced": 83,
+ "guard_pages": 24,
+ "blocked_no_visible_counterpart": 4
+}
+blocked: [('/index.html', 'Drag to draw rectangles on the grid. Each rectangle must cov'), ('/index.html', 'Yes! GridPaw uses the exact same rules as Shikaku, the class'), ('/index.html', 'GridPaw is a free online Shikaku game with cat visuals. Shik'), ('/binary/takuzu/index.html', 'Yes. The grid is fully responsive: tap any cell to cycle it ')]
+
+## reverse-replacement proof (proposed -> HEAD byte compare)
+PASS public/pictomino/easy.html
+PASS public/pictomino/index.html
+PASS src/pages/akari/index.astro
+PASS src/pages/arrows-puzzle-walkthrough/index.astro
+PASS src/pages/binary/index.astro
+PASS src/pages/binary/takuzu.astro
+PASS src/pages/brain-teasers-for-adults/index.astro
+PASS src/pages/crazy-cleanup/index.astro
+PASS src/pages/hashi/how-to-play.astro
+PASS src/pages/hashi/index.astro
+PASS src/pages/index.astro
+PASS src/pages/japanese-logic-puzzles/index.astro
+PASS src/pages/kenken/index.astro
+PASS src/pages/meowdoku-guide/index.astro
+PASS src/pages/murder-sudoku/index.astro
+PASS src/pages/pt-br/akari.astro
+PASS src/pages/pt-br/index.astro
+PASS src/pages/pt-br/kakuro.astro
+PASS src/pages/pt-br/nonogram.astro
+PASS src/pages/pt-br/nurikabe.astro
+PASS src/pages/pt-br/pictomino.astro
+PASS src/pages/pt-br/shikaku.astro
+PASS src/pages/slitherlink/index.astro
+PASS src/pages/star-battle/index.astro
+reverse proof: PASS
+
+## Node FAQPage array evaluation
+OK src/pages/crazy-cleanup/index.astro 1
+OK src/pages/meowdoku-guide/index.astro 1
+OK src/pages/arrows-puzzle-walkthrough/index.astro 1
+total 81 expected 81 ALL OK
