@@ -30,7 +30,8 @@
 - 游戏内按钮与 JS 状态文案，例如 `Sign in — keep them on every device`
 - 只含「—」的表格占位格
 - 题面、谜题原文引用；`src/data/puzzles.json` 与 `scripts/generate-puzzles.mjs`（本轮整体不动）
-- `/de/` 德语页、`public/pictomino/index.html`、`/the-loop-*`（cron 生成页）
+- `public/pictomino/index.html`、`/the-loop-*`（cron 生成页）
+- 注：`/de/` 德语页已于 2026-11-03 由法老定为纳入修改（见 STATUS F2 交接），不再属于本清单。
 - 代码注释里的 em dash（不可见，保留）
 - 第 1 节列出的全部 SEO 基础项
 
