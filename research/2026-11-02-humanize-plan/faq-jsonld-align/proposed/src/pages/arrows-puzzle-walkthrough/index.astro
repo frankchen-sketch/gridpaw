@@ -1,0 +1,410 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import ExtensionPromo from '../../components/ExtensionPromo.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import SideAd from '../../components/SideAd.astro';
+
+const title = "Arrows Puzzle Walkthrough: Escape Every Level with These Strategies";
+const description = "A complete Arrows Puzzle Escape walkthrough: general strategy for early, mid, and late levels, how to unstick common arrow deadlocks, level progression tips, and answers to the most-asked questions.";
+
+const faqJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "How many levels are in Arrows Puzzle Escape?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "The official listing says \"thousands of handcrafted levels,\" and that checks out: the v0.23.1 package we inspected ships with 3,983 campaign boards (plus rotating daily challenges on top). The developer keeps extending the count through updates, so any exact figure online is a snapshot — but thousands is real, not marketing."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "What happens when I lose all hearts in Arrows Puzzle Escape?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "The developer has not published a detailed statement of what happens when your three hearts run out. What is certain: a collision only happens when you tap an arrow whose path is blocked, and levels have no timer, so you are never forced into a risky tap. Keep hearts by reading the board first — the framework on this page is built exactly around that."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "What are the difficulty tiers in Arrows Puzzle Escape?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "The official difficulty ladder is Normal, Hard, Super Hard, and Nightmare, plus daily challenges that rotate fresh boards. There is no published level-number-to-tier mapping, so judge a tier by its boards: longer paths, denser arrow traffic, and more re-blocking as you clear."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Does Arrows Puzzle Escape have a timer?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "No. Every level is untimed — the only pressure is your three hearts. You can stare at a board as long as you need, which makes careful planning strictly better than fast tapping."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Does Arrows Puzzle Escape have hints?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes, Arrows – Puzzle Escape has a built-in hint system. On a tangled board, a hint beats a gamble: collisions cost hearts, hints do not."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "What is the fastest way to clear an Arrows Puzzle Escape board?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Read the board in layers, tap the free arrows first, and peel each layer off one by one. In practice: slide every arrow with an empty path immediately, clear the outer rim before the interior, then resolve single-blocker pairs — arrows stopped by exactly one other arrow — before anything else. No-timer levels reward that steady peel over speed."
+        }
+      }
+    ]
+  }
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/arrows-puzzle-walkthrough"
+    type="article"
+    breadcrumbTitle="Arrows Puzzle Walkthrough"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --ap-primary: #E87A4F;
+      --ap-secondary: #6B8FE8;
+      --ap-bg: #FFFAF5;
+      --ap-cell-border: #F0DFD2;
+      --ap-text: #42352E;
+      --ap-text-light: #A08D80;
+      --ap-shadow-sm: 0 2px 8px rgba(232,122,79,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--ap-bg); color: var(--ap-text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--ap-text-light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--ap-text-light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--ap-primary); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; color: var(--ap-text); margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; color: var(--ap-text); margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--ap-primary); }
+    .seo-section h3 { font-size: 1.1rem; color: var(--ap-text); margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--ap-primary); }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: white; border: 1.5px solid var(--ap-cell-border); border-radius: 10px; box-shadow: var(--ap-shadow-sm); }
+    .seo-section details[open] { border-color: var(--ap-primary); }
+    .seo-section summary { cursor: pointer; font-weight: 800; color: var(--ap-text); line-height: 1.5; }
+    .seo-section summary:hover { color: var(--ap-primary); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--ap-text-light); }
+    .seo-footer a { color: var(--ap-text-light); }
+    .seo-footer a:hover { color: var(--ap-primary); }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: white; border: 2px dashed var(--ap-primary); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--ap-text); }
+    .cta-box a { color: var(--ap-primary); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .disclaimer { font-size: 0.82rem; color: var(--ap-text-light); font-style: italic; background: #fff; border: 1px solid var(--ap-cell-border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .lede { font-size: 1rem; color: #3a4054; line-height: 1.75; margin: 0.5rem 0 0.25rem; }
+
+    /* ===== callouts ===== */
+    .callout { font-size: 0.88rem; padding: 0.55rem 0.75rem; border-radius: 8px; margin: 0.7rem 0; display: flex; gap: 6px; align-items: flex-start; line-height: 1.6; }
+    .callout.warn { background: #FFF4E0; color: #92610A; border: 1px dashed #E8B15C; }
+    .callout.grn { background: rgba(34,197,94,.1); color: #15803d; }
+    /* ===== level browser ===== */
+    .lv-topbar { display:flex; align-items:center; justify-content:space-between; gap:.6rem; margin:1rem 0 .4rem; }
+    .lv-topbar button { background:#FBF3EA; border:1px solid #F0DFD2; border-radius:8px; padding:.45rem .9rem; font-weight:700; color:#42352E; cursor:pointer; font-family:inherit; }
+    .lv-topbar button:hover { background:#F3E6D8; }
+    .lv-title { font-weight:800; font-size:1.15rem; color:#42352E; }
+    .lv-meta { font-size:.85rem; color:#8A7A6E; margin-bottom:.5rem; }
+    #lv-board { overflow:auto; max-height:440px; text-align:center; background:#FFFDF9; border:1px solid #F0DFD2; border-radius:10px; padding:.6rem; }
+    #lv-board svg { max-height:420px; width:auto; max-width:100%; height:auto; }
+    .lv-steps-wrap h4 { margin:.8rem 0 .3rem; }
+    .lv-picker { display:flex; flex-wrap:wrap; gap:4px; margin-top:1rem; }
+    .lv-picker button { min-width:34px; padding:.3rem 0; background:#FBF3EA; border:1px solid #F0DFD2; border-radius:6px; font-size:.8rem; font-weight:700; color:#42352E; cursor:pointer; font-family:inherit; }
+    .lv-picker button:hover { background:#F3E6D8; }
+    .lv-picker button.lv-on { background:#E87A4F; border-color:#E87A4F; color:#FFFAF5; }
+
+    /* ===== strategy list ===== */
+    .strat { margin: 6px 0; columns: 2; column-gap: 30px; }
+    .strat .st { break-inside: avoid; display: flex; gap: 10px; padding: 7px 2px; border-bottom: 1px dashed var(--ap-cell-border); font-size: 0.88rem; color: #555; line-height: 1.55; }
+    .strat .st i { font-style: normal; color: var(--ap-primary); font-weight: 800; font-size: 1.05rem; line-height: 1.15; flex: 0 0 16px; font-family: Georgia, 'Times New Roman', serif; }
+    .strat .st b { color: var(--ap-text); }
+
+    /* ===== snapshot gallery ===== */
+    .snaprow { display: flex; gap: 12px; margin: 6px 0; flex-wrap: wrap; }
+    .snaprow figure { flex: 1 1 150px; margin: 0; text-align: center; }
+    .snaprow img { width: 100%; max-width: 200px; border-radius: 8px; border: 1.5px solid #D8DFF2; }
+    .snaprow figcaption { font-size: 10px; color: var(--ap-text-light); margin-top: 3px; }
+
+    @media (max-width: 600px) {
+      .strat { columns: 1; }
+    }
+    @media (max-width: 480px) {
+      .seo-section h1 { font-size: 1.4rem; }
+      .seo-section h2 { font-size: 1.2rem; }
+      .seo-section { padding: 1.2rem 0.8rem 1rem; }
+    }
+
+    .cmp { width:100%; border-collapse:collapse; margin:1.2rem 0 0.6rem; font-size:0.95rem; }
+    .cmp th, .cmp td { border:1px solid #F0DFD2; padding:0.6rem 0.75rem; text-align:left; vertical-align:top; color:#42352E; }
+    .cmp thead th { background:#42352E; color:#FFFAF5; font-size:0.85rem; }
+    .cmp tbody th { background:#FBF3EA; font-weight:700; white-space:nowrap; }
+    .cmp-note { font-size:0.9rem; color:#A08D80; font-style:italic; }
+    @media (max-width:620px){ .cmp thead{display:none;} .cmp tbody tr{display:block; margin:0 0 0.7rem;} .cmp tbody th, .cmp tbody td{display:block; border:none; padding:0.2rem 0.5rem; white-space:normal;} .cmp tbody th{padding-bottom:0.1rem;} }
+
+    .lvboard { margin:1rem 0 0.4rem; }
+    .lvboard svg { max-width:280px; width:100%; height:auto; display:block; }
+    .lvsteps { margin:0.4rem 0 1.4rem; padding-left:1.4rem; }
+    .lvsteps li { margin:0.3rem 0; }
+    .lvtag { display:inline-block; background:#42352E; color:#FFFAF5; font-size:0.78rem; font-weight:700; padding:0.15rem 0.6rem; border-radius:10px; margin-right:0.5rem; }
+
+    .ctabox { background:#FBF3EA; border:1px solid #F0DFD2; border-radius:10px; padding:1.2rem 1.4rem; margin:1.4rem 0; }
+    .ctabox h3 { margin:0 0 0.4rem; }
+    .ctabox p { margin:0 0 0.9rem; font-size:0.95rem; }
+    .ctabox button { background:#E87A4F; color:#FFFAF5; border:none; border-radius:8px; padding:0.7rem 1.4rem; font-size:1rem; font-weight:700; cursor:pointer; font-family:inherit; }
+    .ctabox button:disabled { background:#A08D80; cursor:default; }
+    #cta-thanks { display:block; margin-top:0.7rem; font-size:0.9rem; color:#42352E; }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; Arrows Puzzle Walkthrough</nav>
+
+  <main class="seo-section">
+  <SideAd />
+    <h1>Arrows Puzzle Walkthrough: Escape Every Level with These Strategies</h1>
+
+    <p class="lede"><strong>Arrows – Puzzle Escape</strong> throws thousands of handcrafted boards at you, from short Normal paths to packed Nightmare mazes. The good news: every single board is solved with the same method: read the board in <b>layers</b>, find the <b>free arrows</b> whose path is already empty, and <b>peel each layer off</b> in order. This walkthrough teaches that method, explains the official difficulty tiers so you know what each level is asking, and answers the questions players actually search for.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Lessmore GmbH.</div>
+
+    <div class="callout grn"><span><b>Per-level boards are here:</b> Levels 1–100 below are <b>real boards extracted from the game's own package</b> (v0.23.1), not redrawn from video, not generated. Every one was verified solvable by our solver, with a full tap order you can follow. Use the board browser, or read the method first and apply it there.</span></div>
+
+    <h2>How to Use This Walkthrough</h2>
+    <p>There is no single solution path through Arrows – Puzzle Escape, but there is a reliable <em>procedure</em> that works on every board:</p>
+    <ol>
+      <li><b>Read the board in layers.</b> Before tapping anything, walk every path from edge to edge and note which arrows can already slide out safely.</li>
+      <li><b>Find the free arrows.</b> An arrow with an empty slide path is a guaranteed safe tap. Collect all of them first.</li>
+      <li><b>Peel each layer.</b> Every arrow you pull out empties paths behind it, which creates the next layer of free arrows. Keep peeling until the grid is bare.</li>
+    </ol>
+    <p>Everything else in this walkthrough (the tier notes and the six-step framework below) is a refinement of those three lines.</p>
+
+    <h2>Arrows Puzzle Difficulty Tiers</h2>
+    <p>The official difficulty ladder is <strong>Normal / Hard / Super Hard / Nightmare</strong>, plus daily challenges. There is no published level-number-to-tier mapping, so judge a tier by its boards rather than its number:</p>
+    <ul>
+      <li><strong>Normal</strong>: single winding paths and few arrows. Most taps are obviously safe; this is where you build the free-arrows habit.</li>
+      <li><strong>Hard</strong>: longer paths with more arrows packed along them. Collisions stop being theoretical: you must count paths before tapping.</li>
+      <li><strong>Super Hard</strong>: dense boards where clearing one arrow's path can re-block another's. Order of extraction becomes the real puzzle.</li>
+      <li><strong>Nightmare</strong>: packed grids where one careless tap can cascade into a lost heart. Plan the whole peel before the first tap.</li>
+      <li><strong>Daily Challenge</strong>: a curated fresh board each day, typically tougher than Normal, that resets your routine. The framework applies unchanged.</li>
+    </ul>
+
+    <h2>Universal Solving Framework: 6 Steps</h2>
+    <div class="strat">
+      <div class="st"><i>1</i><span><b>Scan every arrow before the first tap.</b> Walk each arrow's path to the edge in your head. Arrows with a clear run are your opening layer.</span></div>
+      <div class="st"><i>2</i><span><b>Tap the free arrows in any order you like.</b> They are guaranteed safe, and each removal empties a path that frees the next arrow behind it.</span></div>
+      <div class="st"><i>3</i><span><b>Peel the outside in.</b> Rim arrows have short paths and few blockers; clearing the outer ring opens the interior instead of leaving it to tangle.</span></div>
+      <div class="st"><i>4</i><span><b>Resolve single-blocker pairs.</b> An arrow stopped by exactly one other arrow tells you the next move: slide that blocker out, and the arrow behind it becomes a free tap.</span></div>
+      <div class="st"><i>5</i><span><b>Use double-headed arrows as escape doors.</b> When a double arrow is the only thing standing in a path, try both exits and take the direction that frees the most arrows with the least risk.</span></div>
+      <div class="st"><i>6</i><span><b>Count hearts, not time.</b> There is no timer, so hesitation is free and collisions are not. If a tap's outcome is unclear, study or hint instead of gambling a heart.</span></div>
+    </div>
+    <div class="callout grn"><span><b>One check before every tap:</b> "Is the path in front of this arrow empty?" If yes, tap. If no, resolve the blocker first. That single question clears more boards than any other habit.</span></div>
+
+    <h2>Real Boards: Official Screenshots</h2>
+    <div class="snaprow">
+      <figure><img src="/arrows-puzzle/board-1.jpg" alt="Arrows – Puzzle Escape official screenshot: a knight-shaped arrow path, three hearts at top, no timer" loading="lazy"><figcaption>Official board · read the layers</figcaption></figure>
+      <figure><img src="/arrows-puzzle/board-2.jpg" alt="Arrows – Puzzle Escape official screenshot: a dense arrow path where blockers sit in each other's way" loading="lazy"><figcaption>Official board · find the free arrows</figcaption></figure>
+    </div>
+    <p>Try the layered read on these two boards: every arrow touching an outside edge with a clear run is layer one; every arrow behind it is layer two. Dense boards like the second one are exactly where the single-blocker rule (Step 4) earns its keep.</p>
+
+
+    <h2>How This Walkthrough Compares</h2>
+    <p>Arrows – Puzzle Escape walkthroughs come in three flavors. Here is the honest breakdown of what each one is good for.</p>
+    <table class="cmp">
+      <thead><tr><th>Source</th><th>What you get</th><th>Watch out for</th></tr></thead>
+      <tbody>
+        <tr><th>This walkthrough</th><td><b>Real boards and verified tap orders for Levels 1–100</b>, extracted from the game's own package, plus a universal layered method that works on any board the game deals you, official difficulty-tier explanations, and an FAQ fact-checked against the store listing.</td><td>—</td></tr>
+        <tr><th>Video walkthroughs</th><td>The correct move order for one specific board.</td><td>With thousands of levels plus rotating daily challenges, nobody has filmed your exact board, and scrubbing video for a single move is slow.</td></tr>
+        <tr><th>Auto-generated level sites</th><td>A dedicated page for every level number.</td><td>Boilerplate tips repeated word-for-word across levels, no real board layouts, and level numbers dressed up as solutions.</td></tr>
+      </tbody>
+    </table>
+    <p class="cmp-note">The method on this page was checked against the official Google Play listing and actual gameplay: the mechanics described here are the ones the game really runs.</p>
+
+
+    <h2>Arrows Puzzle Escape Levels 1–100: Real Boards, Real Solutions</h2>
+    <p>Every board below was extracted from the game's own package (v0.23.1). These are the actual handcrafted levels, not reconstructions from fuzzy video. Our solver verified each board and computed a complete tap order for it. Pick a level, follow the numbered taps, and clear it without losing a heart.</p>
+    <p class="cmp-note">How to read the boards: each arrow is a track with an <b>arrowhead at its tip</b> and a <b>numbered dot at its tail</b>. The tap order lists arrows by their numbers; when an arrow has two heads, the order tells you which way to send it. Early levels are free-for-alls; from Level 3 on, order matters.</p>
+
+    <div id="lvbrowser">
+      <div class="lv-topbar">
+        <button id="lv-prev" type="button" aria-label="Previous level">‹ Prev</button>
+        <div class="lv-title" id="lv-title">Level 1</div>
+        <button id="lv-next" type="button" aria-label="Next level">Next ›</button>
+      </div>
+      <div class="lv-meta" id="lv-meta"></div>
+      <div class="lvboard" id="lv-board"></div>
+      <div class="lv-steps-wrap">
+        <h4>Tap order</h4>
+        <ol class="lvsteps" id="lv-steps"></ol>
+      </div>
+      <div class="lv-picker" id="lv-picker" role="tablist" aria-label="Choose a level"></div>
+    </div>
+    <p class="cmp-note">Boards rendered from structured data extracted directly from the game package; tap orders computed by a solver that simulates every slide and collision check. The arrow numbers are our extraction's labels: badge on the tail, head at the tip.</p>
+
+    <div class="ctabox">
+      <h3>Want Levels 101 and up?</h3>
+      <p>The game package holds thousands more boards: we build these batches one verified level at a time. Tap to vote and we'll extend in the order players actually need.</p>
+      <button id="more-levels-cta" type="button">Yes, bring on Levels 101+</button>
+      <span id="cta-thanks" hidden>Noted. Your vote is logged. Batches get prioritized by demand.</span>
+    </div>
+    <script is:inline>
+    (function () {
+      var b = document.getElementById('more-levels-cta');
+      if (!b) return;
+      function track(e, p) {
+        if (typeof window.gtag === 'function') window.gtag('event', e, p || {});
+        if (typeof window.clarity === 'function') window.clarity('event', e);
+        if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(e, Object.assign({ site: 'gridpaw' }, p || {}));
+      }
+      b.addEventListener('click', function () {
+        if (b.dataset.done) return;
+        b.dataset.done = '1';
+        track('guide_more_levels_click', { page: 'arrows-walkthrough', covered: '1-100' });
+        b.textContent = 'Got it, logged ✓';
+        b.disabled = true;
+        var t = document.getElementById('cta-thanks');
+        if (t) t.hidden = false;
+      });
+    })();
+    </script>
+    <script is:inline>
+    (function () {
+      var PAL = ['#E87A4F', '#6B8FE8', '#C1658A', '#9179D1', '#3FA37C', '#D9A03F', '#8A6FE8', '#5FA8D4', '#B0713F', '#4E9E6B'];
+      var data = null, cur = 1, MAX = 100;
+      function track(e, p) {
+        if (typeof window.gtag === 'function') window.gtag('event', e, p || {});
+        if (typeof window.clarity === 'function') window.clarity('event', e);
+        if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(e, Object.assign({ site: 'gridpaw' }, p || {}));
+      }
+      function render() {
+        var lv = data.levels[String(cur)];
+        var board = document.getElementById('lv-board');
+        if (!lv) { board.innerHTML = '<p>Board data missing for this level.</p>'; return; }
+        var W = lv.x * 28 + 28, H = lv.y * 28 + 28;
+        var s = ['<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Level ' + cur + ' board, ' + lv.x + ' by ' + lv.y + ' grid, ' + lv.arrows.length + ' arrows">'];
+        s.push('<defs>');
+        for (var k = 0; k < PAL.length; k++)
+          s.push('<marker id="lva' + k + '" markerWidth="7" markerHeight="7" refX="4.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="' + PAL[k] + '"/></marker>');
+        s.push('</defs>');
+        for (var c = 0; c < lv.x; c++)
+          for (var r = 0; r < lv.y; r++)
+            s.push('<circle cx="' + (c * 28 + 14) + '" cy="' + (r * 28 + 14) + '" r="2.2" fill="#E8D9CC"/>');
+        lv.arrows.forEach(function (a, i) {
+          var col = PAL[i % PAL.length], mk = 'lva' + (i % PAL.length);
+          var pts = a.p.slice().reverse().map(function (q) { return (q[0] * 28 + 14) + ',' + (q[1] * 28 + 14); }).join(' ');
+          var dbl = (i === lv.special);
+          s.push('<polyline points="' + pts + '" fill="none" stroke="' + col + '" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#' + mk + ')"' + (dbl ? ' marker-start="url(#' + mk + ')"' : '') + '/>');
+          var t = a.p[a.p.length - 1];
+          s.push('<circle cx="' + (t[0] * 28 + 14) + '" cy="' + (t[1] * 28 + 14) + '" r="9" fill="#42352E"/>');
+          s.push('<text x="' + (t[0] * 28 + 14) + '" y="' + (t[1] * 28 + 17.5) + '" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFAF5">' + (i + 1) + '</text>');
+        });
+        s.push('</svg>');
+        board.innerHTML = s.join('');
+        document.getElementById('lv-title').textContent = 'Level ' + cur;
+        document.getElementById('lv-meta').textContent = lv.x + '×' + lv.y + ' grid · ' + lv.arrows.length + ' arrows' + (lv.special >= 0 ? ' · includes a double-headed arrow' : '');
+        document.getElementById('lv-steps').innerHTML = lv.sol.map(function (st, k) {
+          var isDbl = st[0] === lv.special;
+          return '<li><b>Tap ' + (k + 1) + ', Arrow ' + (st[0] + 1) + '</b>' + (isDbl ? ', send it ' + st[1] : '') + '.</li>';
+        }).join('');
+        document.querySelectorAll('#lv-picker button').forEach(function (btn) {
+          btn.classList.toggle('lv-on', +btn.dataset.lv === cur);
+        });
+        if (location.hash !== '#level-' + cur) history.replaceState(null, '', '#level-' + cur);
+      }
+      function pick(n) {
+        if (n < 1 || n > MAX || !data || !data.levels[String(n)] || n === cur) return;
+        cur = n;
+        render();
+        track('guide_level_view', { page: 'arrows-walkthrough', level: String(cur) });
+      }
+      var pk = document.getElementById('lv-picker'), frag = '';
+      for (var i = 1; i <= MAX; i++) frag += '<button type="button" data-lv="' + i + '">' + i + '</button>';
+      pk.innerHTML = frag;
+      pk.addEventListener('click', function (ev) {
+        var b = ev.target.closest('button[data-lv]');
+        if (b) pick(+b.dataset.lv);
+      });
+      document.getElementById('lv-prev').addEventListener('click', function () { pick(cur - 1); });
+      document.getElementById('lv-next').addEventListener('click', function () { pick(cur + 1); });
+      document.addEventListener('keydown', function (ev) {
+        if (ev.key === 'ArrowLeft') pick(cur - 1);
+        if (ev.key === 'ArrowRight') pick(cur + 1);
+      });
+      fetch('/arrows-puzzle/levels.json').then(function (r) { return r.json(); }).then(function (j) {
+        data = j;
+        var h = parseInt((location.hash || '').replace('#level-', ''), 10);
+        if (h >= 1 && h <= MAX && data.levels[String(h)]) cur = h;
+        render();
+        track('guide_level_view', { page: 'arrows-walkthrough', level: String(cur) });
+      });
+    })();
+    </script>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <details><summary>How many levels are in Arrows Puzzle Escape?</summary><p>The official listing says "thousands of handcrafted levels," and that checks out: the v0.23.1 package we inspected ships with 3,983 campaign boards (plus rotating daily challenges on top). The developer keeps extending the count through updates, so any exact figure online is a snapshot — but thousands is real, not marketing.</p></details>
+
+    <details><summary>What happens when I lose all hearts in Arrows Puzzle Escape?</summary><p>The developer has not published a detailed statement of what happens when your three hearts run out. What is certain: a collision only happens when you tap an arrow whose path is blocked, and levels have no timer, so you are never forced into a risky tap. Keep hearts by reading the board first — the framework on this page is built exactly around that.</p></details>
+
+    <details><summary>What are the difficulty tiers in Arrows Puzzle Escape?</summary><p>The official difficulty ladder is Normal, Hard, Super Hard, and Nightmare, plus daily challenges that rotate fresh boards. There is no published level-number-to-tier mapping, so judge a tier by its boards: longer paths, denser arrow traffic, and more re-blocking as you clear.</p></details>
+
+    <details><summary>Does Arrows Puzzle Escape have a timer?</summary><p>No. Every level is untimed — the only pressure is your three hearts. You can stare at a board as long as you need, which makes careful planning strictly better than fast tapping.</p></details>
+
+    <details><summary>Does Arrows Puzzle Escape have hints?</summary><p>Yes, Arrows – Puzzle Escape has a built-in hint system. On a tangled board, a hint beats a gamble: collisions cost hearts, hints do not.</p></details>
+
+    <details><summary>What is the fastest way to clear an Arrows Puzzle Escape board?</summary><p>Read the board in layers, tap the free arrows first, and peel each layer off one by one. In practice: slide every arrow with an empty path immediately, clear the outer rim before the interior, then resolve single-blocker pairs — arrows stopped by exactly one other arrow — before anything else. No-timer levels reward that steady peel over speed.</p></details>
+
+    <div class="cta-box">
+      <p>Want to practice that layered read right now? No download, no signup. Play free in your browser: <a href="/">Play Shikaku Free →</a></p>
+    </div>
+
+    <AdSlot />
+
+    <h2>Related Puzzle Guides</h2>
+    <p>Direction and placement logic share a lot of DNA with other classic puzzles. Feed the habit:</p>
+    <ul>
+      <li><a href="/arrows-puzzle/">Arrows Puzzle: How to Play, Full Rules, and Beginner Tips</a>: the complete hub for the rules, a visual collision demo, and the six core strategies.</li>
+      <li><a href="/meowdoku-guide/">Meowdoku Guide</a>: hints, strategy, and games like Meowdoku for Queens-style puzzle fans.</li>
+      <li><a href="/">Play Shikaku on GridPaw</a>: the rectangle-partition logic puzzle that trains the same spatial reasoning for free.</li>
+    </ul>
+  </main>
+
+  <section class="seo-section" style="border-top:2px solid #e7dacf;padding-top:1rem;margin-top:2rem">
+    <h2>Read Next</h2>
+    <ul>
+      <li><a href="/arrows-puzzle/">Arrows Puzzle Hub</a>: how to play, full rules, and beginner tips</li>
+      <li><a href="/meowdoku-guide/">Meowdoku Guide</a>: hints, strategy &amp; games like Meowdoku</li>
+      <li><a href="/block-blast-hints/">Block Blast Hints</a>: 10+ strategies for higher scores</li>
+    </ul>
+  </section>
+
+  <footer class="seo-footer">
+    <p>GridPaw: Free online logic puzzles with cats.</p>
+    <ExtensionPromo />
+    <p style="margin-top:0.3rem;"><a href="/">GridPaw Shikaku</a> · <a href="/akari/">GridPaw Akari</a> · <a href="/nonogram/">GridPaw Nonogram</a> · <a href="/nurikabe/">GridPaw Nurikabe</a> · <a href="/pictomino/">GridPaw Pictomino</a> · <a href="https://www.pinterest.com/gridpaw/">Pinterest</a> · <a href="/community/">Community</a></p>
+    <p style="margin-top:0.3rem;"><a href="/">Home</a> · <a href="/akari/">Akari</a> · <a href="/pictomino/">Pictomino</a></p>
+  </footer>
+</body>
+</html>
