@@ -1,5 +1,7 @@
 # C 流交付：/akari/ 人味改写（100 页）
 
+> **已取代（2026-11-03）**：本目录为 2026-11-02 旧口径，数字不可引用；现役见 `../G-akari/plan.md` 与 STATUS ⑦。
+
 **涉及文件 25 个**：22 个页面 `.astro` + `puzzles.json` + `blog-posts.ts` + `generate-puzzles.mjs`。
 
 **正文 em dash：956 → 1**（源文件口径）。残留 1 处是 index 策略卡标题「Akari Rules — Complete Beginner's Guide」，锚文本=目标页标题，按不动处理。

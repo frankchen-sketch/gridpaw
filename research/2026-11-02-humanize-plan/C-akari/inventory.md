@@ -1,5 +1,7 @@
 # C 流资产盘点：/akari/ 页面源与模板
 
+> **已取代（2026-11-03）**：本目录为 2026-11-02 旧口径，数字不可引用；现役见 `../G-akari/plan.md` 与 STATUS ⑦。
+
 统计时间：2026-11-02　｜　基线：`/Users/frank/.hermes/cache/scratch/p1-verify/before/`（100 个 `akari*.html`）
 
 ## 1. 页面与模板
