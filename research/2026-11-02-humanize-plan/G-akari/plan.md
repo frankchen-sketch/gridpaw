@@ -2,7 +2,7 @@
 
 - 盘点对象：`dist/akari/**` 当前构建产物（100 个 HTML，HEAD=514497f9）
 - 统计口径：`seo_guard.vis()` 后的可见文本节点数 U+2014；逐页与自写 DOM 文本节点计数比对，**99 页逐页一致，无差异**
-- 写入：本文件与 `nodes.json` / `per-page.csv` 均在 `/Users/frank/.hermes/cache/scratch/g-akari/`，**未修改仓库任何文件**
+- 存档：本目录即全部产物（原写入位置 `scratch/g-akari/` 已搬入此处，2026-11-03）；**未修改仓库其他文件**
 - 复核：`python3 scan.py`（DOM 归类）、`summarize.py`（vis 对账）、`rewrites.json`（27 条方案，机器校验数字多重集与词序）
 
 ## 1. 总量与类别归因

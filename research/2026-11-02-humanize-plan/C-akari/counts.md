@@ -1,5 +1,7 @@
 # C-akari 计数明细（em dash，U+2014）
 
+> **已取代（2026-11-03）**：本目录为 2026-11-02 旧口径，数字不可引用；现役见 `../G-akari/plan.md` 与 STATUS ⑦。
+
 口径：`all` = Python `str.count("\u2014")`；`body` = 去掉 frontmatter 的 title/description、
 `<script>`/`<style>`、HTML 与 JS 注释、H1-H6、`<details>`（FAQ/折叠块）、属性值、
 `<footer>`、品牌行、以及「锚文本 = 目标页标题」后的正文计数。
