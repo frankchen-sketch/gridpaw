@@ -434,7 +434,7 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     .brand-name { display: flex; flex-direction: column; line-height: 1.1; }
     .brand-name .big { font-size: 17px; font-weight: 900; color: var(--gp-primary-strong); }
     .brand-name .small { font-size: 10px; font-weight: 600; color: var(--gp-stone); letter-spacing: 0.02em; }
-    .header-nav { display: flex; gap: 0; align-items: center; }
+    .header-nav { display: flex; gap: 14px; align-items: center; }
     .header-nav a { font-size: 12.5px; font-weight: 700; color: var(--gp-info); text-decoration: none; padding: 8px 9px; white-space: nowrap; transition: color 0.15s; }
     .header-nav a[data-nav-extra] { font-size: 12px; padding: 8px 7px; white-space: nowrap; }
     .header-nav a:hover { color: var(--gp-primary-strong); }
@@ -621,12 +621,18 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     </a>
     <nav class="header-nav" aria-label="Main navigation">
       <a href="#play">Play</a>
-      <a href="/leaderboard/" data-nav-extra="lb">🏆 Leaderboard</a>
-      <a href="/badges/" data-nav-extra="bd">🎖 Badges</a>
+      <div class="game-switcher">
+        <button class="game-switcher-btn" onclick="this.nextElementSibling.classList.toggle('open')">🏆 Leaderboard</button>
+        <div class="game-switcher-menu">
+          <a href="/leaderboard/"><strong>🏆 Leaderboard</strong><span class="game-desc">Top cats this week</span></a>
+          <a href="/badges/"><strong>🎖 Badges</strong><span class="game-desc">14 badges to collect</span></a>
+        </div>
+      </div>
       <GameSwitcher />
       <div class="game-switcher">
         <button class="game-switcher-btn" onclick="this.nextElementSibling.classList.toggle('open')">Guides</button>
         <div class="game-switcher-menu">
+          <a href="#walkthroughs"><strong>🗺 Shikaku Walkthroughs</strong><span class="game-desc">Every level, step by step</span></a>
           <a href="/how-to-play-shikaku/"><strong>📖 How to Play Shikaku</strong><span class="game-desc">Rules &amp; step-by-step</span></a>
           <a href="/tips/"><strong>💡 Shikaku Tips</strong><span class="game-desc">Advanced shortcuts</span></a>
           <a href="/arrows-puzzle-walkthrough/"><strong>📚 Arrows Puzzle Walkthrough</strong><span class="game-desc">Strategy for every level</span></a>
@@ -636,7 +642,6 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
           <a href="/cross-math-puzzle/"><strong>📚 Cross Math Puzzle</strong><span class="game-desc">Rules &amp; strategies</span></a>
         </div>
       </div>
-      <a href="#walkthroughs">Walkthroughs</a>
       <a href="#play" id="navDaily">Daily</a>
       <a href="/solver/">Solver</a>
     </nav>
