@@ -5,7 +5,6 @@ import GameHub from '../components/GameHub.astro';
 import BadgeUnlock from '../components/BadgeUnlock.astro';
 import AdSlot from '../components/AdSlot.astro';
 import SideAd from '../components/SideAd.astro';
-import GamePortal from '../components/GamePortal.astro';
 import GameSwitcher from '../components/GameSwitcher.astro';
 import DetectiveWall from '../components/DetectiveWall.astro';
 import { latestRecentEntry, formatBannerDate, gameColor } from '../lib/changelog-data';
@@ -628,6 +627,8 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
       <div class="game-switcher">
         <button class="game-switcher-btn" onclick="this.nextElementSibling.classList.toggle('open')">Guides</button>
         <div class="game-switcher-menu">
+          <a href="/how-to-play-shikaku/"><strong>📖 How to Play Shikaku</strong><span class="game-desc">Rules &amp; step-by-step</span></a>
+          <a href="/tips/"><strong>💡 Shikaku Tips</strong><span class="game-desc">Advanced shortcuts</span></a>
           <a href="/arrows-puzzle-walkthrough/"><strong>📚 Arrows Puzzle Walkthrough</strong><span class="game-desc">Strategy for every level</span></a>
           <a href="/arrows-puzzle/"><strong>📚 Arrows Puzzle</strong><span class="game-desc">Rules &amp; how to play</span></a>
           <a href="/block-blast-hints/"><strong>📚 Block Blast Hints</strong><span class="game-desc">10+ score strategies</span></a>
@@ -636,16 +637,12 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
         </div>
       </div>
       <a href="#walkthroughs">Walkthroughs</a>
-      <a href="/how-to-play-shikaku/">How to Play</a>
-      <a href="/tips/">Tips</a>
       <a href="#play" id="navDaily">Daily</a>
       <a href="/solver/">Solver</a>
     </nav>
     <button class="hamburger" id="mobile-menu-btn" aria-label="Menu">☰</button>
   </div>
 </header>
-
-<GamePortal />
 
 <!-- Mobile Nav Overlay -->
 <div class="mobile-nav" id="mobile-nav">
@@ -674,27 +671,6 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     <a href="/cross-math-puzzle/" style="padding-left:1.5rem">📚 Cross Math Puzzle</a>
   </div>
 </div>
-{bannerEntry && (
-  <div class="changelog-banner" id="changelogBanner" data-entry-date={bannerEntry.date}>
-    <span class="cb-date">{bannerDate}</span>
-    {bannerEntry.game && <span class="cb-game" style={`background:${gameColor(bannerEntry.game)}`}>{bannerEntry.game}</span>}
-    <span class="cb-text"><strong>{bannerEntry.title}</strong>. {bannerEntry.desc.length > 110 ? bannerEntry.desc.slice(0, 107) + '…' : bannerEntry.desc} <a class="cb-more" href="/changelog/">Full changelog →</a></span>
-    <button class="cb-close" id="changelogClose" aria-label="Dismiss update">✕</button>
-  </div>
-)}
-<script is:inline>
-  (function () {
-    var b = document.getElementById('changelogBanner');
-    if (!b) return;
-    var d = b.getAttribute('data-entry-date');
-    try { if (localStorage.getItem('gp-changelog-seen') === d) { b.remove(); return; } } catch (e) {}
-    var x = document.getElementById('changelogClose');
-    if (x) x.addEventListener('click', function () {
-      try { localStorage.setItem('gp-changelog-seen', d); } catch (e) {}
-      b.remove();
-    });
-  })();
-</script>
 <div class="app" id="app">
   <div id="account-area" style="display:flex;justify-content:center;align-items:center;gap:.5rem;margin:.4rem 0;min-height:2.4rem;flex-wrap:nowrap;white-space:nowrap"></div>
   <div class="daily-status" id="dailyStatus"></div>
@@ -796,9 +772,31 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
   </section>
 </div>
 
+{bannerEntry && (
+  <div class="changelog-banner" id="changelogBanner" data-entry-date={bannerEntry.date}>
+    <span class="cb-date">{bannerDate}</span>
+    {bannerEntry.game && <span class="cb-game" style={`background:${gameColor(bannerEntry.game)}`}>{bannerEntry.game}</span>}
+    <span class="cb-text"><strong>{bannerEntry.title}</strong>. {bannerEntry.desc.length > 110 ? bannerEntry.desc.slice(0, 107) + '…' : bannerEntry.desc} <a class="cb-more" href="/changelog/">Full changelog →</a></span>
+    <button class="cb-close" id="changelogClose" aria-label="Dismiss update">✕</button>
+  </div>
+)}
+<script is:inline>
+  (function () {
+    var b = document.getElementById('changelogBanner');
+    if (!b) return;
+    var d = b.getAttribute('data-entry-date');
+    try { if (localStorage.getItem('gp-changelog-seen') === d) { b.remove(); return; } } catch (e) {}
+    var x = document.getElementById('changelogClose');
+    if (x) x.addEventListener('click', function () {
+      try { localStorage.setItem('gp-changelog-seen', d); } catch (e) {}
+      b.remove();
+    });
+  })();
+</script>
+
 <GameHub active="/" />
 
-<DetectiveWall game="shikaku" />
+<DetectiveWall game="shikaku" limit={4} />
 
 <AdSlot />
 <SideAd />

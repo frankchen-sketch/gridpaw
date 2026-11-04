@@ -23,14 +23,16 @@ const games = [
   { href: '/slitherlink/', icon: '/assets/game-icons/slitherlink.webp', name: 'Slitherlink', desc: 'Loop drawing' },
   { href: '/crazy-cleanup/', icon: '/assets/game-icons/crazycleanup.webp', name: 'Crazy Cleanup', desc: 'Tidy & sort', isNew: true, badgeGame: 'crazy-cleanup' },
 ];
-const tiles = games.filter((g) => g.href !== active);
+const tiles = active === '/' ? games : games.filter((g) => g.href !== active);
+// 2026-11-04 首页合并宫格：顶部 GamePortal 已删，首页 hub 成为唯一入口 → 标题 All，并含 Shikaku 本页
+const isHome = active === '/';
 // 徽章卡角：只给有徽章组的游戏（shikaku 阶梯 / murdoku 破案档案），图标模板 SSR 自 badge-icons.ts
 const badgeGames = Array.from(new Set(tiles.filter((g) => g.badgeGame).map((g) => g.badgeGame)));
 import { BADGES } from '../lib/badge-icons';
 ---
 
-<nav class="gp-hub" aria-label="More cat puzzle games" data-gp-hub>
-  <h2 class="gp-hub-title">More <span class="gp-hub-accent">Cat Puzzle</span> Games</h2>
+<nav class="gp-hub" aria-label={isHome ? 'All cat puzzle games' : 'More cat puzzle games'} data-gp-hub>
+  <h2 class="gp-hub-title">{isHome ? 'All' : 'More'} <span class="gp-hub-accent">Cat Puzzle</span> Games</h2>
   <div class="gp-hub-grid">
     {tiles.map((g) => (
       <a href={g.href} class="gp-hub-tile">

@@ -18,9 +18,13 @@
     '[data-gp-install]{display:none!important}' +
     'html.gp-installable [data-gp-install]{display:inline-flex!important;cursor:pointer}' +
     '@media (max-width:768px){html.gp-installable [data-gp-install]{display:none!important}}' + // mobile uses banner
-    '.gp-hdr-install{width:34px;height:34px;border-radius:8px;background:#FFF0D4;border:1.5px solid #D97706;' +
-    'display:inline-flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;margin-left:8px;flex-shrink:0}' +
-    '@media (max-width:768px){.gp-hdr-install{width:30px;height:30px;font-size:13px;margin-left:4px}}' +
+    '.gp-hdr-install{height:34px;border-radius:999px;background:#FFF0D4;border:1.5px solid #D97706;' +
+    'display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:0 12px;font-family:inherit;' +
+    'font-size:12.5px;font-weight:800;color:#B45309;white-space:nowrap;cursor:pointer;margin-left:8px;flex-shrink:0}' +
+    '.gp-hdr-install:hover{background:#FFE3B8}' +
+    /* 移动端只留图标（安装引导走 in-flow banner，头部不出长按钮） */
+    '@media (max-width:768px){.gp-hdr-install{padding:0;width:30px;height:30px;font-size:14px;margin-left:4px}' +
+    '.gp-hdr-install-label{display:none}}' +
     '.gp-install-banner{margin:14px 16px 0;background:#fff;border:2px solid #D97706;border-radius:12px;' +
     'padding:14px 16px;box-shadow:0 2px 10px rgba(217,119,6,.14);font-family:inherit}' +
     '.gp-install-banner .gp-bt{font-size:14.5px;font-weight:800;color:#3A2F28}' +
@@ -94,7 +98,7 @@
     b.className = 'gp-hdr-install';
     b.title = 'Install app';
     b.setAttribute('aria-label', 'Install app');
-    b.textContent = '📥';
+    b.innerHTML = '<span aria-hidden="true">📥</span><span class="gp-hdr-install-label">Install app</span>';
     b.addEventListener('click', function () { promptInstall('header'); });
     nav.appendChild(b);
   }
