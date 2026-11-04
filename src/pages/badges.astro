@@ -1,6 +1,6 @@
 ---
 // /badges/ —— 徽章墙（P2，2026-10-20）
-// SSR 出 11 枚真 SVG 目录（src/lib/badge-icons.ts），客户端补「本机已解锁」与稀有度。
+// SSR 出 14 枚真 SVG 目录（src/lib/badge-icons.ts），客户端补「本机已解锁」与稀有度。
 // 特效分级（设计稿 p2-v2-preview）：bronze 静止 / silver 微光呼吸 / gold 金光扫光+光晕 / mythic 额外 conic 流转金环。
 // 解锁信息来自 /api/badges（登录 uid 归并 + 访客 anonId 继承），稀有度来自 /api/badges?stats=1（24h 缓存）。
 import SEOHead from '../components/SEOHead.astro';
@@ -87,6 +87,7 @@ const grouped = GROUPS.map((g) => ({ ...g, items: BADGES.filter((b) => b.game ==
       font-size: 0.78rem; font-weight: 700; color: var(--gp-brown-600);
       background: var(--gp-cream-warm); border-radius: 10px; padding: 8px 12px; margin: 0 0 16px;
     }
+    .rarity-legend[hidden] { display: none; }
 
     /* 盘点条：本机有解锁但未登录 */
     .syncbar {
@@ -126,6 +127,7 @@ const grouped = GROUPS.map((g) => ({ ...g, items: BADGES.filter((b) => b.game ==
     .t-gold { background: #FBEED8; color: #A1630A; }
     .t-mythic { background: #F6E7F0; color: var(--gp-mythic); }
     .bw-card .rarity { font-size: 0.64rem; font-weight: 800; color: var(--gp-amber); margin-top: 4px; }
+    .bw-card .rarity[hidden] { display: none; }
     .bw-card .rarity.ultra { color: var(--gp-mythic); }
     .bw-card .rarity.muted { color: var(--gp-brown-400); }
 
@@ -174,7 +176,7 @@ const grouped = GROUPS.map((g) => ({ ...g, items: BADGES.filter((b) => b.game ==
   <main>
     <h1>🎖 Badges</h1>
     <p class="page-sub">
-      <span id="bw-count">11 badges</span> to collect across Shikaku, Murder Sudoku, and the daily challenge.
+      <span id="bw-count">{BADGES.length} badges</span> to collect across Shikaku, Murder Sudoku, Crazy Cleanup, and the daily challenge.
       Play signed in and they stay on your name on every device.
     </p>
 
@@ -186,7 +188,7 @@ const grouped = GROUPS.map((g) => ({ ...g, items: BADGES.filter((b) => b.game ==
       <a href="/api/auth/login?next=/badges/">Sign in</a>
     </div>
 
-    <p class="rarity-legend">
+    <p class="rarity-legend" id="rarity-legend" hidden>
       📊 Rarity counts real players who unlocked each badge. Under 30 cats we say “only N cats”; past that we show the share of all players.
     </p>
 
@@ -200,7 +202,7 @@ const grouped = GROUPS.map((g) => ({ ...g, items: BADGES.filter((b) => b.game ==
               <div class="bn">{b.name}</div>
               <div class="bh">{b.how}</div>
               <span class={`tier t-${b.tier}`}>{b.tier}</span>
-              <div class="rarity muted" data-rarity={b.id}>—</div>
+              <div class="rarity muted" data-rarity={b.id} hidden></div>
             </article>
           ))}
         </div>
@@ -265,6 +267,7 @@ const grouped = GROUPS.map((g) => ({ ...g, items: BADGES.filter((b) => b.game ==
         if (!d) return;
         var counts = d.counts || {};
         var totalKeys = Number(d.totalKeys) || 0;
+        var filled = 0;
         for (var i = 0; i < cards.length; i++) {
           var id = cards[i].getAttribute('data-badge-id');
           var el = cards[i].querySelector('.rarity');
@@ -281,7 +284,12 @@ const grouped = GROUPS.map((g) => ({ ...g, items: BADGES.filter((b) => b.game ==
             var pct = totalKeys > 0 ? Math.max(1, Math.round((n / totalKeys) * 100)) : 0;
             el.textContent = pct > 0 ? '📊 ' + pct + '% of players' : '📊 ' + n + ' cats';
           }
+          el.hidden = false;
+          filled++;
         }
+        // 图例只在真有稀有度数字后出现（无 JS / 接口挂时不留孤立说明与裸占位）
+        var legend = document.getElementById('rarity-legend');
+        if (legend && filled > 0) legend.hidden = false;
       });
     })();
   </script>
