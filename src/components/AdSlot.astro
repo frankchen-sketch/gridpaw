@@ -86,7 +86,11 @@ const native = false;
   </script>
 )}
 
-<style>
+{/* 2026-11-04：样式随 native 门一起关。此前 native=false 时 markup 不渲染，
+    但 scoped <style> 仍被 Astro 内联进 132 个页面 HTML，页面源码留 7 处 .adsterra-* 死样式
+    （申请 Mediavine 前清场）。恢复广告时 native 置 true，样式随之回来（is:inline 交还本组件）。 */}
+{native && (
+<style is:inline>
   .adsterra-slot { margin: 1.5rem 0; }
   .adsterra-label { font-size: 10px; color: #999; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 4px; }
   .adsterra-mob {
@@ -107,3 +111,4 @@ const native = false;
     .adsterra-mob { display: none; }    /* 300×250 仅移动 */
   }
 </style>
+)}
