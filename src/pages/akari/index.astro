@@ -1868,14 +1868,20 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
         name.style.cssText = 'font-size:0.8rem;font-weight:700;color:var(--text)';
         area.appendChild(name);
       } else {
-        var box = document.createElement('div');
-        box.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:.22rem';
-        box.appendChild(buildSignInPanel('/'));
-        var note = document.createElement('span');
-        note.textContent = 'Free · badges, stats and progress saved on every device';
-        note.style.cssText = 'font-size:.7rem;font-weight:600;line-height:1.3;color:#7A6750;text-align:center;white-space:normal;max-width:min(92vw,340px)';
-        box.appendChild(note);
-        area.appendChild(box);
+        var signPanel = buildSignInPanel('/');
+        // 价值说明只放得下在宽导航里（≤900px 时 nav-account-area 只剩 77px 宽，小字会压成 5 行撑爆头部）
+        if (window.innerWidth >= 900) {
+          var box = document.createElement('div');
+          box.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:.22rem';
+          box.appendChild(signPanel);
+          var note = document.createElement('span');
+          note.textContent = 'Free · badges, stats and progress saved on every device';
+          note.style.cssText = 'font-size:.7rem;font-weight:600;line-height:1.3;color:#7A6750;text-align:center;white-space:normal;max-width:340px';
+          box.appendChild(note);
+          area.appendChild(box);
+        } else {
+          area.appendChild(signPanel);
+        }
       }
       // 登录态已确认，重新拉云端关卡（此时 currentUser 可用）
       if (currentUser) syncLevelOnLoad();
