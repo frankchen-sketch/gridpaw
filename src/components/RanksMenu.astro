@@ -1,0 +1,113 @@
+---
+/**
+ * RanksMenu.astro —— 全站统一的「🏆 Leaderboard + 🎖 Badges」合并下拉
+ *
+ * 由来：2026-11-04 首页 header 收敛方案 B（法老批准）。原先 49 个页面各自手写
+ *   <a href="/leaderboard/">🏆 Leaderboard</a> <a href="/badges/">🎖 Badges</a>
+ * 改导航要动 49 个文件；现统一由本组件渲染。
+ *
+ * 关键约束（改动前先读）：
+ * 1. 触发器必须是 <a>，不能用 <button>。8 个游戏页在 ≤768px 用
+ *    `.nav a:not(.hamburger){display:none}` 把导航收进汉堡，<button> 不匹配该规则
+ *    会把头部顶出屏外（2026-11-04 实测 /akari/ 390px 溢出 443px）。
+ *    用 <a> 还让触发器自动继承各页 `.nav a` 的字号/内边距，与同级链接完全一致。
+ * 2. 桌面端靠 hover 展开，点击 = 照常跳 /leaderboard/（不劫持导航）。
+ *    窄屏 ≤768px 点击改成展开/收起菜单（此时是触屏，没有 hover）。
+ * 3. 菜单右对齐，避免在页面右缘溢出。
+ *
+ * 用法：<RanksMenu />            （普通页面）
+ *       <RanksMenu current="lb" />（/leaderboard/ 本页）
+ *       <RanksMenu current="bd" />（/badges/ 本页）
+ */
+interface Props {
+  /** 当前页落在下拉里时高亮菜单项 */
+  current?: 'lb' | 'bd';
+}
+const { current } = Astro.props;
+---
+<div class="gp-ranks" data-gp-ranks>
+  <a
+    href="/leaderboard/"
+    class="gp-ranks-btn"
+    aria-haspopup="true"
+    aria-expanded="false"
+    onclick="return window.__gpRanks ? window.__gpRanks(event, this) : true"
+  >
+    <span>🏆 Leaderboard</span><span class="gp-ranks-caret" aria-hidden="true">▾</span>
+  </a>
+  <div class="gp-ranks-menu" role="menu">
+    <a role="menuitem" href="/leaderboard/" class:list={[{ 'is-current': current === 'lb' }]}>
+      <strong>🏆 Leaderboard</strong><span>Top cats this week</span>
+    </a>
+    <a role="menuitem" href="/badges/" class:list={[{ 'is-current': current === 'bd' }]}>
+      <strong>🎖 Badges</strong><span>14 badges to collect</span>
+    </a>
+  </div>
+</div>
+
+<script is:inline>
+  window.__gpRanks = function (e, el) {
+    var wrap = el.parentNode;
+    var m = wrap.querySelector('.gp-ranks-menu');
+    if (!window.matchMedia('(max-width: 768px)').matches) return true; // 桌面：正常跳转，菜单靠 hover
+    e.preventDefault();
+    var open = m.classList.toggle('open');
+    el.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.querySelectorAll('.gp-ranks-menu.open').forEach(function (x) { if (x !== m) x.classList.remove('open'); });
+    if (!open) { m.style.left = ''; m.style.right = ''; return false; }
+    // 窄屏把菜单夹进视口：触发按钮靠左时右对齐会溢出屏幕（/tips/ 390px 实测 left:-79）
+    m.style.left = ''; m.style.right = '';
+    var r = m.getBoundingClientRect(), vw = document.documentElement.clientWidth, pad = 8, shift = 0;
+    if (r.left < pad) shift = pad - r.left;
+    else if (r.right > vw - pad) shift = vw - pad - r.right;
+    if (shift) {
+      var wq = wrap.getBoundingClientRect();
+      m.style.left = Math.round(r.left + shift - wq.left) + 'px';
+      m.style.right = 'auto';
+    }
+    return false;
+  };
+  document.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('[data-gp-ranks]')) return;
+    document.querySelectorAll('.gp-ranks-menu.open').forEach(function (m) { m.classList.remove('open'); m.style.left = ''; m.style.right = ''; });
+  });
+</script>
+
+<style>
+  /* display:flex + align-items:center 是实测唯一能让触发器与同级 <a> 垂直居中对齐
+     的方案（9 个页面对比：inline-block 在 privacy/terms/reset-password 偏 4.5px，
+     inline-flex 在 changelog 撑高 6px；flex+center 全部 0 偏差）。 */
+  .gp-ranks { position: relative; display: flex; align-items: center; }
+  /* 字号/内边距/圆角一律继承各页 .nav a，只补布局。
+     不要给 .gp-ranks-btn 设 display:inline-flex —— 会把行高撑成 39px，
+     和同级 <a> 的 33px 对不齐（2026-11-04 changelog 实测）。保持 inline 流。 */
+  .gp-ranks-btn { white-space: nowrap; }
+  .gp-ranks-caret { font-size: 0.66em; opacity: 0.6; margin-left: 0.15rem; }
+  .gp-ranks-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% - 4px);
+    right: 0;
+    min-width: 216px;
+    background: #fff;
+    border: 1px solid #efe3da;
+    border-radius: 12px;
+    box-shadow: 0 10px 26px rgba(52, 36, 33, 0.14);
+    padding: 6px;
+    z-index: 400;
+  }
+  .gp-ranks:hover .gp-ranks-menu,
+  .gp-ranks-menu.open { display: block; }
+  .gp-ranks-menu a {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    text-decoration: none;
+  }
+  .gp-ranks-menu a strong { font-size: 0.82rem; font-weight: 800; color: #342421; }
+  .gp-ranks-menu a > span { font-size: 0.7rem; font-weight: 500; color: #8a7a62; }
+  .gp-ranks-menu a:hover { background: #fff4f0; }
+  .gp-ranks-menu a.is-current { background: #fdf1e0; }
+</style>
