@@ -1917,7 +1917,15 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
       out.style.cssText = 'font-size:.75rem;color:var(--gp-stone);text-decoration:underline';
       area.appendChild(out);
     } else {
-      area.appendChild(buildSignInPanel('/'));
+      // 2026-11-04：Sign in 下面补一句价值说明（法老：记录 badge 和战绩、进度保存）
+      var box = document.createElement('div');
+      box.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:.22rem';
+      box.appendChild(buildSignInPanel('/'));
+      var note = document.createElement('span');
+      note.textContent = 'Free · badges, stats and progress saved on every device';
+      note.style.cssText = 'font-size:.7rem;font-weight:600;line-height:1.3;color:#7A6750;text-align:center;white-space:normal;max-width:min(92vw,340px)';
+      box.appendChild(note);
+      area.appendChild(box);
     }
   }
   // ─── P1-4 登录 prompt（2026-10-19）：资产行 + Sign in 按钮 + 内联面板（Google + 邮箱） ───

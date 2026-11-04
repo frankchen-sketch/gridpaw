@@ -1868,7 +1868,14 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
         name.style.cssText = 'font-size:0.8rem;font-weight:700;color:var(--text)';
         area.appendChild(name);
       } else {
-        area.appendChild(buildSignInPanel('/'));
+        var box = document.createElement('div');
+        box.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:.22rem';
+        box.appendChild(buildSignInPanel('/'));
+        var note = document.createElement('span');
+        note.textContent = 'Free · badges, stats and progress saved on every device';
+        note.style.cssText = 'font-size:.7rem;font-weight:600;line-height:1.3;color:#7A6750;text-align:center;white-space:normal;max-width:min(92vw,340px)';
+        box.appendChild(note);
+        area.appendChild(box);
       }
       // 登录态已确认，重新拉云端关卡（此时 currentUser 可用）
       if (currentUser) syncLevelOnLoad();

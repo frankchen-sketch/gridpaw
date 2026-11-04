@@ -1148,7 +1148,14 @@ const description = "Take on today's GridPaw challenge! A fresh 10×10 Akari puz
         out.style.cssText = 'font-size:.75rem;color:#9b726c;text-decoration:underline';
         area.appendChild(out);
       } else {
-        area.appendChild(buildSignInPanel('/daily'));
+        var box = document.createElement('div');
+        box.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:.22rem';
+        box.appendChild(buildSignInPanel('/daily'));
+        var note = document.createElement('span');
+        note.textContent = 'Free · badges, stats and progress saved on every device';
+        note.style.cssText = 'font-size:.7rem;font-weight:600;line-height:1.3;color:#7A6750;text-align:center;white-space:normal;max-width:min(92vw,340px)';
+        box.appendChild(note);
+        area.appendChild(box);
       }
     }
     // ─── 登录面板：Google + 邮箱密码小表单（2026-10-19 砍 Microsoft/Facebook——OAuth 未打通） ───
