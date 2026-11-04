@@ -14,10 +14,11 @@ pnpm run deploy       # 部署 = wrangler pages deploy + IndexNow 提交（勿�
                       # ⚠️ 本机未装全局 wrangler（项目也没进 devDeps）：报 command not found 时用
                       # `npx -y wrangler pages deploy dist --project-name gridpaw --commit-dirty=true`
                       # + `node scripts/indexnow-ping.mjs` 手动等价执行（登录态在 ~/Library/Preferences/.wrangler/config/default.toml）
-                      # ⚠️ wrangler oauth 登录态会静默过期（token 401 + refresh_token 一起死，2026-10-10 实测）：
-                      # 部署前先 `npx -y wrangler whoami` 探活；过期后优先 scp mini 的活 token 过来（同账号 a8395，
-                      # ~/Library/Preferences/.wrangler/config/default.toml，14:00 管线维护常为活；2026-10-29 实测救场）
-                      # mini 不可用再 `npx wrangler login` 重新 OAuth（浏览器点授权，交互式；本机浏览器会被 CF 盾卡死须手动点）
+                      # ⚠️ wrangler oauth 登录态会静默过期（token 401 + refresh_token 一起死）：部署前先 `npx -y wrangler whoami` 探活。
+                      # 过期重登顺序：① 先删 ~/Library/Preferences/.wrangler/config/default.toml 再 `npx -y wrangler login`
+                      #    （死 token 的 config 会毒化重登：授权页点完 token 不落盘 + 日志 "query string parameter doesn't match"；2026-11-04 实测删了才通）；
+                      #    ② 兜底=从另一台取活 token（scp default.toml，同账号 a8395）；③ 浏览器不在本机时用 ego 代点授权（8976 只监听 [::1]，须 IPv4→IPv6 转发）。
+                      #    完整排障阶梯 → skill `wrangler-deploy-verify`「wrangler OAuth 重登」节
                       # ⚠️ 部署落地瞬间的新 URL 可能被 CF 边缘缓存 404（爬虫先到）——上线后 curl 验证 404 时先
                       # 试 `?cb=随机数` 排除边缘缓存（cache-bust 200 = 内容正常，等缓存过期或 Dashboard 手动 Purge）
                       # ⚠️ 部署闸（loop-hints-pull.sh）只护 loop cron——手动 wrangler deploy 不过闸：并行 WIP 在飞时
