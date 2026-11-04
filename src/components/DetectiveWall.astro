@@ -5,14 +5,16 @@
 // 评论先审后显 + 三层闸门在 /api/comments；embed 模式整段隐藏。
 interface Props {
   game: 'murdoku' | 'shikaku';
+  /** 折叠上限：给 N 时首页只展开 N 条，余下走「Show all」按钮（首页墙 12 条 auto 曾占 1142px） */
+  limit?: number;
 }
-const { game } = Astro.props;
+const { game, limit } = Astro.props;
 const sub = game === 'murdoku'
   ? 'Closed a case? Leave a note for the other detectives.'
   : 'Cleared a level? Leave a note for the other detectives.';
 ---
 
-<section class="gpw" aria-label="Detective wall" data-gp-wall={game} data-game={game}>
+<section class="gpw" aria-label="Detective wall" data-gp-wall={game} data-game={game} data-gpw-limit={limit || undefined}>
   <h2 class="gpw-title">Detective&rsquo;s <span class="gpw-accent">Wall</span></h2>
   <p class="gpw-sub">{sub}</p>
   <div class="gpw-list" data-gpw-list></div>
@@ -49,6 +51,8 @@ const sub = game === 'murdoku'
   .gpw-autotag { display: inline-flex; background: transparent; color: #B9A98F; border: 1px dashed #D8C6A4; border-radius: 999px; padding: 0.05rem 0.45rem; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
   .gpw-txt { margin-top: 0.15rem; font-size: 0.92rem; color: #4A3B2A; line-height: 1.5; overflow-wrap: anywhere; white-space: pre-wrap; }
   .gpw-empty { text-align: center; color: #8A7A62; font-size: 0.9rem; padding: 0.75rem 0; }
+  .gpw-more { display: block; margin: 0.2rem auto 0; background: #fff; color: #B87333; border: 1.5px solid #EAD3AC; border-radius: 999px; padding: 0.45rem 1.1rem; font-size: 0.82rem; font-weight: 800; cursor: pointer; }
+  .gpw-more:hover { background: #FDF4E3; border-color: #D97706; color: #B8650A; }
   .gpw-open { display: block; margin: 0 auto; background: #D97706; color: #fff; font-weight: 800; border: none; border-radius: 12px; padding: 0.6rem 1.2rem; cursor: pointer; font-size: 0.9rem; }
   .gpw-open:hover { background: #B8650A; }
   .gpw-form { margin-top: 0.9rem; }

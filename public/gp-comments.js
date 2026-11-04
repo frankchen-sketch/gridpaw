@@ -98,6 +98,8 @@
     var siteKey = null;
     var widgetId = null;
     var captchReady = false;
+    // 折叠上限（首页墙曾 12 条 auto 撑到 1142px）：0/缺省 = 全部展开
+    var wallLimit = parseInt(root.getAttribute('data-gpw-limit') || '0', 10) || 0;
 
     function say(text, isErr) {
       if (!msgEl) return;
@@ -109,13 +111,29 @@
     function renderWall(data) {
       if (!listEl) return;
       listEl.textContent = '';
-      (data.comments || []).forEach(function (c) { listEl.appendChild(row(c)); });
-      (data.auto || []).forEach(function (a) { listEl.appendChild(row(a, { auto: true })); });
-      if (!(data.comments || []).length && !(data.auto || []).length) {
+      var rows = [];
+      (data.comments || []).forEach(function (c) { rows.push(row(c)); });
+      (data.auto || []).forEach(function (a) { rows.push(row(a, { auto: true })); });
+      if (!rows.length) {
         var empty = document.createElement('div');
         empty.className = 'gpw-empty';
         empty.textContent = 'The case files are empty — be the first detective to leave a note.';
         listEl.appendChild(empty);
+        return;
+      }
+      var cut = wallLimit > 0 && rows.length > wallLimit ? wallLimit : rows.length;
+      for (var i = 0; i < cut; i++) listEl.appendChild(rows[i]);
+      if (cut < rows.length) {
+        var more = document.createElement('button');
+        more.type = 'button';
+        more.className = 'gpw-more';
+        more.textContent = 'Show all ' + rows.length + ' notes ↓';
+        more.addEventListener('click', function () {
+          for (var j = cut; j < rows.length; j++) listEl.insertBefore(rows[j], more);
+          more.remove();
+          if (typeof window.gtag === 'function') window.gtag('event', 'wall_expand', { game: game, total: rows.length });
+        });
+        listEl.appendChild(more);
       }
     }
 
