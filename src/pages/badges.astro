@@ -1,4 +1,5 @@
 ---
+import RanksMenu from '../components/RanksMenu.astro';
 // /badges/ —— 徽章墙（P2，2026-10-20）
 // SSR 出 14 枚真 SVG 目录（src/lib/badge-icons.ts），客户端补「本机已解锁」与稀有度。
 // 特效分级（设计稿 p2-v2-preview）：bronze 静止 / silver 微光呼吸 / gold 金光扫光+光晕 / mythic 额外 conic 流转金环。
@@ -166,8 +167,7 @@ const grouped = GROUPS.map((g) => ({ ...g, items: BADGES.filter((b) => b.game ==
         </span>
       </a>
       <nav class="header-nav" aria-label="Main navigation">
-        <a href="/leaderboard/">🏆 Leaderboard</a>
-        <a href="/badges/" class="active" aria-current="page">🎖 Badges</a>
+        <RanksMenu current="bd" />
         <a href="/api/auth/login?next=/badges/">Sign in</a>
       </nav>
     </div>

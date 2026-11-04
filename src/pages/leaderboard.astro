@@ -1,4 +1,5 @@
 ---
+import RanksMenu from '../components/RanksMenu.astro';
 // /leaderboard/ —— 13 游戏双榜页（P2，2026-10-20）
 // 数据全走客户端 fetch（noindex：SSR 空壳对搜索无价值，且榜单每分钟都在变）。
 // Fastest = GET /api/leaderboard?game=X&date=<UTC today>（时间升序 top 20）
@@ -143,8 +144,7 @@ const GAMES = [
         </span>
       </a>
       <nav class="header-nav" aria-label="Main navigation">
-        <a href="/leaderboard/" class="active" aria-current="page">🏆 Leaderboard</a>
-        <a href="/badges/">🎖 Badges</a>
+        <RanksMenu current="lb" />
         <a href="/api/auth/login?next=/leaderboard/">Sign in</a>
       </nav>
     </div>
