@@ -2,6 +2,26 @@
 
 > **站内 /from/* 营销短链不在此表**：那是 `public/_redirects`（CF Pages 302+UTM 附加，随构建部署），非 CF Dashboard 规则。全部 `/from/<tag>` 规则直接看该文件（含 Lemmy 剥 UTM 的注释）；发帖归因约定见 skill `lemmy-posting`。本表只管旧域名 Dashboard 侧规则。
 
+> ## ✅ 2026-11-05 cf CLI 实测（运行态，可随时复核）
+>
+> 数据来源：`cf rulesets get <id> --zone <domain>`（token `hermes-cf-cli-v2`）。此后核对运行态不必靠 Dashboard 目视。
+>
+> | zone | ruleset id | 规则数 | 版本 | 最后更新 |
+> |---|---|---|---|---|
+> | meow-block.com | `cadf5c66e907458db88bc070d3b90481` | 9 | 20 | 2026-11-05 |
+> | meowtrail.org | `07781882d4544cbe99e70d2e27397eb5` | 3 | 10 | 2026-09-15 |
+> | spatialreasoninggame.com | `1584e4df9c31450cbb6520db36056df3` | 2 | 5 | 2026-09-15 |
+> | gridpaw.com | `dc047c4175bc408c8a963c969e462f1f` | 5 | 5 | 2026-10-14 |
+>
+> **两处与既有记录不符，需注意：**
+>
+> 1. ✅ **已处置（2026-11-05）**：meow-block.com 原第 1 条规则 `meowblock → gridpaw`（`http.host eq "meow-block.com"`，301 → 首页，长期 `enabled=false`）**已删除** —— 按「先匹配赢」它排第 1 位，误启用一次就会吃掉整个域名（含首页）并静默废掉后 8 条规则。
+>    - 删前全量备份：`tools/cf-cli/backups/meow-block-redirect-2026-11-05.json`（ruleset v19，10 条）
+>    - 删后 ruleset **v20 / 9 条**；9 个路径 + www 子域抽查逐条与删前基线一致；跟随重定向最终落 200。
+> 2. **gridpaw.com 主域自己有 5 条 Dashboard 规则，本文件此前完全未记录**（本文档开头声明「只管旧域名」）：`www → 裸域`（保路径：`concat("https://gridpaw.com", http.request.uri.path)`）、`/390e708d7bc94f369a866111e32df9c3.txt → /`（废弃旧 IndexNow key 止损）、`/akari/glossary/* → /akari/glossary/`、`/akari/tips/number-* → /akari/tips/`、`/akari/compare/* → /akari/compare/`。
+>
+> 其余三个旧域规则结构与 2026-09-15 修复结论一致（meowtrail.org 首页规则在保路径规则之前 ✅；spatialreasoninggame.com 例外规则在通配之前 ✅）。
+>
 > ## ⚠️ 运行态核对（2026-09-15 实测，务必先读）
 >
 > **本表记录的是「设计意图」，不是「运行现状」。两者目前不一致。**
