@@ -938,3 +938,14 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **验收**（本地 dist + 线上各一轮，6 页 × 375×568 / 667×320 / 844×390 / 390×844，均注入满内容）：667×320 分享行回到首屏（akari bottom 313、其余 201；修前 akari 分享行 +6 被裁、猫 −179）；375×568 六页全部一屏放下（修前猫 −55 / 榜 +55）；844×390 五页全放下、akari 仅排行榜需滑；390×844 前后**逐像素一致**。线上 CSS 复验 6 页 `justify-content:flex-start` 与 `max-height:480px` 均命中，HTML 200。
 - **部署** `38100c44` → `a1f0dbde`，IndexNow 200。
 - **预览方法学（下一轮 UI 提案沿用）**：vision 判读半透明 overlay 不可靠（三轮全失败）；`::preview` 内嵌 iframe + `srcdoc` 会被沙箱挡成空白 → 改成**纯 DOM 帧**（抽 dist 真实 markup+CSS，把 `position:fixed` 关进固定尺寸盒子，修复档做成 class 而不是 media query），跨机给 cloudflared 临时隧道（`trycloudflare.com`，Hermes 跑在另一台机器时 localhost 用户打不开）。
+
+## 2026-11-05：Crazy Cleanup 选关网格修复（CSS 整块失效，非样式微调）
+
+法老列的「老问题」两条：`items · 34 buckets` 挤成两行、Level 1 像默认蓝链接。实测发现是**同一个根因**，而且比预想严重——整套 `.lv-*` 规则从来没生效过。
+
+- **根因**：选关卡片由页内 inline script 用 `createElement` 生成，元素上没有 Astro 的 `data-astro-cid-nmsn26kr` 属性，而 `.lv-*` 规则写在**第二个 scoped `<style>`** 里（编译成 `.lv-card[data-astro-cid-…]`）→ 全部匹配不上。实测卡片 `background: rgba(0,0,0,0)`、`border-color` 等于文字色、`text-decoration: underline`、`.m` 用 16px 默认字号（应为 0.62rem）。
+- **改法**（commit `5ba2b504`）：① `.lv-grid/.lv-card/.lv-note` 搬进独立的 `<style is:global>`；② `.m` 拆成 `<span>207 items</span><span class="sep"> · </span><span>34 buckets</span>`——`>640px` 一行带 `·`，`≤640px` 固定两行并隐藏分隔符（不再断在词中间）；③ 主题名 `≤640px` 预留两行（`min-height:2.7em` + flex 居中），`Restaurant Kitchen` 这类两行名字不再把该行卡片撑高；④ 锁图标从 `<b>` 文本挪到卡片左上角 absolute（`'🔒 Level 10'` 在 320px 卡片里会换行，把整行从 105px 撑到 130px）。
+- **验收**（本地 dist + 线上各一轮，20 张卡 × 1440/768/375/320）：高度 1440/768=80px、375/320=105px **全站唯一值**（修前 375 出现 92/109、320 出现 92/109/117/134 四种高度）；`.m` 桌面 1 行、移动 2 行；无溢出、无下划线、白底 + 羊皮纸边框；无横向滚动。关卡入口 `/crazy-cleanup/game?l=1` 线上可达（hdr「🧹 Level 1 · Gadget Store」）。
+- **部署** `5ba2b504` → `1752769c`，IndexNow 200。
+- **待清（需批准）**：`public/crazy-cleanup/index.html` 是**死文件**——同路径被 Astro 页覆盖，`.html` 变体被 CF 308 归一，线上永不送达；里面还留着一份旧的选关网格逻辑（同样的 bug），将来容易有人改错文件。建议删或改成跳转桩。
+- **通用教训（同类会再犯）**：Astro 页面里**运行时创建的 DOM 元素拿不到 scoped style 的 cid**，凡是 JS 渲染的列表/卡片，CSS 必须放进 `is:global` 块；另外本仓库多数游戏页 `<style>` 本身就是 `is:global`，在里面再写 `:global(...)` 会输出成无效选择器（11-05 胜利弹窗那轮踩过同一个坑）。
