@@ -93,13 +93,9 @@ const description = "A Goods Sort–style organizing game: sort 20 messy rooms, 
     }
     a { color: inherit; }
   </style>
-  <style>
-    /* 内容列 ≤840px（52.5rem）—— SideAd 契约 */
-    .main { max-width: 52.5rem; margin: 0 auto; padding: 1.2rem 1rem 2.4rem; }
-    .hero { text-align: center; padding: 0.6rem 0 0.4rem; }
-    .hero h1 { font-size: 1.7rem; font-weight: 900; margin: 0 0 0.4rem; }
-    .hero h1 .accent { color: var(--gp-amber); }
-    .hero p { margin: 0 auto; max-width: 40rem; color: var(--gp-brown-600); font-size: 0.95rem; }
+  <style is:global>
+    /* 选关 grid —— 卡片由 JS 运行时 createElement 生成，拿不到 Astro 的 data-astro-cid 属性，
+       所以这里的规则必须全局；放 scoped style 里会整块失效（卡片变成无色块 + 默认下划线链接）。 */
     /* 选关 grid */
     .lv-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 1.1rem 0 0.4rem; }
     @media (max-width: 640px) { .lv-grid { grid-template-columns: repeat(3, 1fr); } }
@@ -111,12 +107,30 @@ const description = "A Goods Sort–style organizing game: sort 20 messy rooms, 
     .lv-card:hover { transform: translateY(-2px); border-color: var(--gp-amber); }
     .lv-card b { display: block; font-size: 1rem; }
     .lv-card .t { display: block; font-size: 0.68rem; font-weight: 700; color: var(--gp-amber-strong); margin: 2px 0; }
-    .lv-card .m { display: block; font-size: 0.62rem; color: var(--gp-brown-600); }
+    .lv-card .m { display: block; font-size: 0.62rem; color: var(--gp-brown-600); line-height: 1.45; }
+    .lv-card .m .sep { display: inline; }
+    @media (max-width: 640px) {
+      /* 窄卡片固定两行（items / buckets），不要靠自动换行断在词中间 */
+      .lv-card .m > span { display: block; }
+      .lv-card .m .sep { display: none; }
+      .lv-card { padding: 9px 4px 7px; }
+      /* 主题名预留两行高度：不然 "Restaurant Kitchen" 这类两行名字会把那一行卡片撑高、网格参差 */
+      .lv-card .t { display: flex; align-items: center; justify-content: center; line-height: 1.35; min-height: 2.7em; }
+    }
     .lv-card.locked { opacity: .45; }
     .lv-card.cur { outline: 2.5px solid var(--gp-amber); }
+    .lv-card .lk { position: absolute; top: 4px; left: 5px; font-size: 0.72rem; line-height: 1; opacity: .8; }
     .lv-card .done { position: absolute; top: -7px; right: -5px; background: var(--gp-success); color: #fff;
       font-size: 9px; font-weight: 900; border-radius: 999px; padding: 2px 7px; }
     .lv-note { text-align: center; font-size: 0.78rem; color: var(--gp-brown-600); margin: 0.4rem 0 1.6rem; }
+  </style>
+  <style>
+    /* 内容列 ≤840px（52.5rem）—— SideAd 契约 */
+    .main { max-width: 52.5rem; margin: 0 auto; padding: 1.2rem 1rem 2.4rem; }
+    .hero { text-align: center; padding: 0.6rem 0 0.4rem; }
+    .hero h1 { font-size: 1.7rem; font-weight: 900; margin: 0 0 0.4rem; }
+    .hero h1 .accent { color: var(--gp-amber); }
+    .hero p { margin: 0 auto; max-width: 40rem; color: var(--gp-brown-600); font-size: 0.95rem; }
     /* 正文段 */
     .seo-section { max-width: 46rem; margin: 0 auto 1.8rem; }
     .seo-section h2 { font-size: 1.25rem; font-weight: 900; margin: 0 0 0.6rem; }
@@ -206,9 +220,9 @@ const description = "A Goods Sort–style organizing game: sort 20 messy rooms, 
         if (locked) { a.setAttribute('aria-disabled', 'true'); }
         else { a.href = '/crazy-cleanup/game?l=' + lv.seq; } // extensionless：CF Pages 归一后直达，免 308 跳
         a.innerHTML = (lv.seq < unlocked ? '<span class="done">✓</span>' : '') +
-          '<b>' + (locked ? '🔒 ' : '') + 'Level ' + lv.seq + '</b>' +
+          '<b>' + (locked ? '<span class="lk">🔒</span>' : '') + 'Level ' + lv.seq + '</b>' +
           '<span class="t">' + lv.themeEn + '</span>' +
-          '<span class="m">' + lv.items + ' items · ' + lv.buckets + ' buckets</span>';
+          '<span class="m"><span>' + lv.items + ' items</span><span class="sep"> · </span><span>' + lv.buckets + ' buckets</span></span>';
         grid.appendChild(a);
       });
       if (!L.length) grid.innerHTML = '<p>Levels are loading…</p>';
