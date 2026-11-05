@@ -921,5 +921,20 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **发帖前置（先落地再发）**：changelog 停更 5 天（线上末条 10-30）→ backfill 三条真实条目（2026-11-04 首屏重排、2026-11-04 全站 header 统一、2026-11-02 Crazy Cleanup 修复），changelog.astro `dateModified`/`Last updated` → 2026-11-04，新增短链 `/from/lemmy-home`。commit `3e17f974`（push https）→ build 270 页 → deploy `2d8783df`（274 文件）→ IndexNow 200；线上实测三条目 + 四短链 302 带 utm。
 - **宣发**：!dailygames 主力帖 **74462547**（body 1288，含固定 Daily puzzle 段 + Akari 规则段 + 三短链）/ !gridpaw_dailyakari 转发帖 **74462549**（站内直链主力帖）；两帖回读 deleted=False。
 - **回帖**：squirrel 追问（29827934，win 弹窗分享按钮）→ 回复 **29904326**，认领 `overflow:hidden` 矮视口裁切根因，不宣称已修。
-- **未修 P1**：`src/pages/akari/index.astro:364` `.win-overlay{overflow:hidden}` 矮视口裁掉 share row 且不可滚动（玩家两次反馈，移动端约四成会话）→ 修复需 UI 1:1 预览后执行。
+- ~~**未修 P1**~~ **已修（2026-11-05，见下节）**：`.win-overlay{overflow:hidden}` 矮视口裁掉 share row 且不可滚动（玩家两次反馈，移动端约四成会话）→ 已按 C+ 方案修，六页统一。
 - 记录：`~/workspace/backlink-workspace/records/daily/2026-11-05-gridpaw-lemmy.md` + lemmy-post-status.txt。
+
+## 2026-11-05：胜利弹窗矮视口裁切修复（C+，六页统一）
+
+承 Lemmy devlog 帖认领的 P1（回帖 29904326）。玩家两次说「分享按钮被裁、滚不动」。
+
+- **根因**：`.win-overlay` = `flex` + `justify-content:center` + `overflow:hidden`。内容高于视口那一刻上下两头**对称**溢出——顶上的猫、底下的排行榜同时跑到屏外，且 overflow:hidden 滚不动。
+- **实测纠正**（注入满内容：badge 解锁块 + 4 行排行榜）：竖屏 375×568 与常规横屏 844×390 最先被裁的是**猫图标（顶）与排行榜面板（底）**，分享行完整；分享行只在可用高 ~320px 时被裁 6px——玩家那台正是 **667×320（横屏 + 浏览器工具栏）**。修的是同一个根因。
+- **改法**（`akari`/`hashi`/`slitherlink`/`star-battle`/`kenken`/`binary` 六页逐字一致，commit `38100c44`）：
+  - `overflow-y:auto` + `justify-content:flex-start` + `.win-cat{margin-top:auto}` / `.gp-lb-panel{margin-bottom:auto}` —— 不超高时 auto margin 仍居中（高屏零变化），超高时从顶部起可滚
+  - `@media (max-height:720px)` 压缩一档：猫 120→72px、标题 2rem→1.4rem、按钮/分享行收紧
+  - `@media (max-height:480px)` 再压一档：猫 48px、badge 行图标 32px，把分享行留在首屏
+- **两个坑（别退回去）**：① `.win-cat img` 尺寸写在 **inline style**（`style="width:120px"`），媒体查询必须 `!important` 才盖得住；② 这些页 `<style>` 本身是 `is:global`，再写 `:global(...)` 会被原样输出成**无效选择器**（整条规则失效；实测 badge 行 padding 没变才揪出来）。
+- **验收**（本地 dist + 线上各一轮，6 页 × 375×568 / 667×320 / 844×390 / 390×844，均注入满内容）：667×320 分享行回到首屏（akari bottom 313、其余 201；修前 akari 分享行 +6 被裁、猫 −179）；375×568 六页全部一屏放下（修前猫 −55 / 榜 +55）；844×390 五页全放下、akari 仅排行榜需滑；390×844 前后**逐像素一致**。线上 CSS 复验 6 页 `justify-content:flex-start` 与 `max-height:480px` 均命中，HTML 200。
+- **部署** `38100c44` → `a1f0dbde`，IndexNow 200。
+- **预览方法学（下一轮 UI 提案沿用）**：vision 判读半透明 overlay 不可靠（三轮全失败）；`::preview` 内嵌 iframe + `srcdoc` 会被沙箱挡成空白 → 改成**纯 DOM 帧**（抽 dist 真实 markup+CSS，把 `position:fixed` 关进固定尺寸盒子，修复档做成 class 而不是 media query），跨机给 cloudflared 临时隧道（`trycloudflare.com`，Hermes 跑在另一台机器时 localhost 用户打不开）。
