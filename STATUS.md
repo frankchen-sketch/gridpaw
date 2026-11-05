@@ -913,3 +913,11 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **⑭（2026-11-04 续）全站导航统一：Leaderboard/Badges 收敛成 `RanksMenu.astro`**（法老指示「全站统一 再开一轮」后当日执行）：新增 `src/components/RanksMenu.astro`（桌面 hover 展开、点击照常跳 `/leaderboard/` 不劫持导航、≤768px 点击展开并夹进视口）；49 个手写 nav 页把相邻两个 `<a>` 换成 `<RanksMenu />`（`index.astro` 桌面导航保留自有内联下拉、**移动抽屉恢复为普通两行链接**——批量替换一度误伤抽屉，见下）；`GameNav.astro` 顶部平铺的 `.gp-nav-lb` 两项也换成组件（外套 `.gp-nav-lb` 保留 ≤900px 隐藏）。**线上实测 270 页全 200，250 页渲染下拉**；例外 20 页：18 页本来就没有 header nav（`/about/`、`/community/`、`/contact/`、`/crazy-cleanup/`、`/meowdoku/`+9 个关卡页、`/offline/`、`/admin/funnel/`、`/akari/akari-puzzle-online/`）、首页（自有下拉）、`/nonogram/solver/`（导航里从来没有这两项）。**构建前后对账**：135 页 nav 内 href 集合零丢失、零新增（`/leaderboard/` 因触发器复用出现两次，同目标）。
 - **⑭ 踩坑（别退回去）**：① 触发器必须是 `<a>` 不能用 `<button>`——8 个游戏页 ≤768px 用 `.nav a:not(.hamburger){display:none}` 收进汉堡，`<button>` 不匹配该规则把头部顶出屏（`/akari/` 390px 实测溢出 443px）；② 外层必须 `display:flex;align-items:center`——`inline-block` 在 privacy/terms/reset-password 比同级链接低 4.5px，`inline-flex` 在 changelog 撑高 6px，flex+center 在 9 页实测全部 0 偏差；③ 窄屏点开要把菜单夹进视口（右对齐在触发项靠左时溢出，`/tips/` 390px 实测 left:-79）；④ 批量替换会命中**移动抽屉**里的同名 `<a>` 对，改完必须逐页比对「抽屉内是纵向普通链接」。
 - 部署记录（续）：`e0f8f964`→`0d22d90d`（全站统一）、`b0e72abb`→`1d1f5746`（修首页抽屉）、`2d44b0ee`→`f2c5b26a`（GameNav 并入），IndexNow 均 200。
+
+
+## 2026-11-05：Lemmy devlog 双发（首页首屏 + header 统一）
+- **发帖前置（先落地再发）**：changelog 停更 5 天（线上末条 10-30）→ backfill 三条真实条目（2026-11-04 首屏重排、2026-11-04 全站 header 统一、2026-11-02 Crazy Cleanup 修复），changelog.astro `dateModified`/`Last updated` → 2026-11-04，新增短链 `/from/lemmy-home`。commit `3e17f974`（push https）→ build 270 页 → deploy `2d8783df`（274 文件）→ IndexNow 200；线上实测三条目 + 四短链 302 带 utm。
+- **宣发**：!dailygames 主力帖 **74462547**（body 1288，含固定 Daily puzzle 段 + Akari 规则段 + 三短链）/ !gridpaw_dailyakari 转发帖 **74462549**（站内直链主力帖）；两帖回读 deleted=False。
+- **回帖**：squirrel 追问（29827934，win 弹窗分享按钮）→ 回复 **29904326**，认领 `overflow:hidden` 矮视口裁切根因，不宣称已修。
+- **未修 P1**：`src/pages/akari/index.astro:364` `.win-overlay{overflow:hidden}` 矮视口裁掉 share row 且不可滚动（玩家两次反馈，移动端约四成会话）→ 修复需 UI 1:1 预览后执行。
+- 记录：`~/workspace/backlink-workspace/records/daily/2026-11-05-gridpaw-lemmy.md` + lemmy-post-status.txt。
