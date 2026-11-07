@@ -1,0 +1,242 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 1 Level 2 Walkthrough: Escape Room";
+const description = "Step-by-step Rooms & Exits Chapter 1 Level 2 walkthrough: book-spine puzzle, hidden handle and knife, world map jigsaw, code 514 and the exit key.";
+const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the code for the wall safe in Rooms & Exits Chapter 1 Level 2?", "acceptedAnswer": {"@type": "Answer", "text": "514. Turn on the neon light above the mirror and count the fingers on the three glowing handprints: five on the first, one on the second, four on the third. Enter 5-1-4 on the wall safe beside the cell bars; its door opens onto the colour panel."}}, {"@type": "Question", "name": "Where is the knife in Rooms & Exits Level 2?", "acceptedAnswer": {"@type": "Answer", "text": "Inside the desk drawer that has no handle. Solve the four book spines on the left shelf to get the Handle, fit it on the drawer, pull it open and the Knife is the only item inside."}}, {"@type": "Question", "name": "How do I get the crumpled paper in Level 2?", "acceptedAnswer": {"@type": "Answer", "text": "Select the Knife in your inventory, then use it on the hanging sack that dangles from the chain above the radiator on the left wall. The sack tears open and the Crumpled paper drops out."}}, {"@type": "Question", "name": "Does this walkthrough match the current version of the game?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The order was rebuilt frame by frame from two independent playthroughs recorded in July and August 2025. One widely copied instruction still tells players to cut open a green armchair cushion; there is no armchair in this room, and the knife target is the hanging sack."}}]};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-1-level-2"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 1 Level 2"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .chain { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; }
+    .chain th, .chain td { text-align: left; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .chain th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--light); }
+    .chain td b { color: var(--text); }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .index-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.5rem; margin: 0.8rem 0; }
+    .index-list a, .index-list span { display: block; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; padding: 0.55rem 0.7rem; text-decoration: none; font-weight: 700; color: var(--text); font-size: 0.9rem; }
+    .index-list a:hover { border-color: var(--amber); color: var(--amber); }
+    .index-list span { color: var(--light); font-weight: 600; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--light); }
+    .seo-footer a { color: var(--light); }
+    .seo-footer a:hover { color: var(--amber); }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 1</a> &gt; Level 2</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 1 Level 2 Walkthrough: Escape Room</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Every move below was rebuilt frame by frame from two independent playthroughs of the current build (uploads dated July and August 2025), not copied from another text guide. Tap and drag are both used in this level. If a tap does nothing, try dragging the same object.</div>
+
+    <LevelSelector chapter={1} current={2} variant="jump" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>The item chain runs in one line: books &#8594; Handle &#8594; desk drawer &#8594; Knife &#8594; hanging sack &#8594; Crumpled paper &#8594; Puzzle piece &#8594; wall map &#8594; Neon light &#8594; mirror &#8594; <b>code 514</b> &#8594; wall safe &#8594; colour panel &#8594; Key &#8594; exit door.</p>
+      <ol>
+        <li>Rotate the four book spines on the left shelf until the patterns line up. A compartment opens, take the <b>Handle</b>.</li>
+        <li>Fit the Handle on the desk drawer that is missing one, open it, take the <b>Knife</b>.</li>
+        <li>Use the Knife on the hanging sack above the radiator. Collect the <b>Crumpled paper</b>.</li>
+        <li>Dismantle the Crumpled paper in the inventory to get a <b>Puzzle piece</b>.</li>
+        <li>Insert the piece in the framed jigsaw above the desk and finish the world map. Take the <b>Neon light</b>.</li>
+        <li>Use the Neon light on the fixture above the mirror. Three handprints show <b>5, 1, 4</b> fingers.</li>
+        <li>Enter <b>514</b> on the metal lock beside the cell bars.</li>
+        <li>Solve the colour panel on the cell's back wall. Take the <b>Key</b>.</li>
+        <li>Use the Key on the exit door.</li>
+      </ol>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/hero-room.jpg" alt="Rooms & Exits Chapter 1 Level 2 Escape Room: the jail cell room with the bookshelf on the left and the desk on the right" width="1200" height="594" />
+
+    <h2>Watch the full solution<span class="accent">.</span></h2>
+    <p>The recording below clears the level in one pass. Every step card further down links to its exact timestamp, so you can jump straight to the move you are stuck on instead of watching all four minutes.</p>
+    <div class="video-wrap" id="video">
+      <iframe src="https://www.youtube-nocookie.com/embed/T6fi-NyH8do" title="Rooms & Exits Chapter 1 Level 2 Escape Room walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <InContentAd />
+
+    <h2>The room, and what each object is for<span class="accent">.</span></h2>
+    <p>Level 2 of Chapter 1 (Wicked Games) drops you in a jail cell room: a barred cell in the middle with a bunk inside, a metal shelf unit on the left wall, a hanging sack on a pulley chain above a white radiator, a wooden desk on the right with a green blotter and a wheeled chair, a framed jigsaw on the wall above that desk, a mirror on a vanity to the right of the desk, and the exit door on the far right. A puddle with a floor drain sits in the middle of the tiles, and an old television hangs on the wall top left. Nothing in this room is decoration: the shelf, the sack, the desk, the picture frame, the mirror and the wall safe are the only six things you will touch, and the safe turns out to hold a second puzzle in its door.</p>
+    <p>The level is a single chain rather than a set of parallel puzzles. Each item unlocks exactly one place, and the map puzzle is the gate in the middle. Until the jigsaw is finished you cannot reach the mirror clue, and until you have that clue the cell stays locked. If you are wandering the room with an item you have not used, that item is the answer to whatever is still sparkling.</p>
+
+    <h2>Item chain in order<span class="accent">.</span></h2>
+    <table class="chain">
+      <thead><tr><th>#</th><th>Item</th><th>Where it comes from</th><th>What it unlocks</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><b>Handle</b></td><td>Compartment behind the four book spines on the left shelf</td><td>The handle-less desk drawer</td></tr>
+        <tr><td>2</td><td><b>Knife</b></td><td>Inside that desk drawer</td><td>Cuts the hanging sack open</td></tr>
+        <tr><td>3</td><td><b>Crumpled paper</b></td><td>Inside the cut sack</td><td>Dismantle it for a puzzle piece</td></tr>
+        <tr><td>4</td><td><b>Puzzle piece</b></td><td>Dismantled Crumpled paper</td><td>The world map jigsaw above the desk</td></tr>
+        <tr><td>5</td><td><b>Neon light</b></td><td>Released when the world map is completed</td><td>The light fixture above the mirror</td></tr>
+        <tr><td>6</td><td><b>Key</b></td><td>Colour panel inside the wall safe, after 514</td><td>The exit door</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Step 1</span>
+      <strong>Solve the four book spines, take the Handle</strong>
+      <p>Tap the shelf unit on the left wall. Four spines sit in a row, each printed with a different line pattern, and the pattern on each one rotates when you tap it. The books never leave the shelf and they are all the same thickness, so there is nothing to sort: rotate each spine until the line on it continues the line on the spine above. When all four patterns join into one design, a compartment pops open and the Handle comes out.</p>
+      <img src="/rooms-and-exits/book-puzzle.jpg" alt="Rooms & Exits Level 2: the four book spines with rotating line patterns" loading="lazy" width="1200" height="594" />
+      <p class="ts">Video: <a href="https://www.youtube.com/watch?v=T6fi-NyH8do&amp;t=4" target="_blank" rel="noopener">0:04</a> &#183; handle collected at <a href="https://www.youtube.com/watch?v=T6fi-NyH8do&amp;t=18" target="_blank" rel="noopener">0:18</a></p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2</span>
+      <strong>Fit the Handle on the desk drawer, take the Knife</strong>
+      <p>Open the inventory, select the Handle, hit Use, then tap the desk drawer on the right that has no handle. The drawer slides open on the first try and the Knife is the only thing inside. Note that the Handle is not consumed by this. But you will not need it again, so leave it in the bag.</p>
+      <img src="/rooms-and-exits/drawer-knife.jpg" alt="Rooms & Exits Level 2: the knife inside the opened desk drawer" loading="lazy" width="1200" height="594" />
+      <p class="ts">Video: drawer at <a href="https://www.youtube.com/watch?v=T6fi-NyH8do&amp;t=32" target="_blank" rel="noopener">0:32</a> &#183; knife at <a href="https://www.youtube.com/watch?v=T6fi-NyH8do&amp;t=36" target="_blank" rel="noopener">0:36</a></p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3</span>
+      <strong>Cut the hanging sack, take the Crumpled paper</strong>
+      <p>This is the step most guides get wrong. The Knife does not go on the chair, the bunk or the desk. It goes on the sack hanging from the pulley chain on the left wall, directly above the white radiator. Select the Knife, use it on the sack, and the Crumpled paper falls out and is added to your inventory.</p>
+      <img src="/rooms-and-exits/sack-paper.jpg" alt="Rooms & Exits Level 2: the Crumpled paper card after cutting open the hanging sack" loading="lazy" width="1200" height="594" />
+      <p class="ts">Video: <a href="https://www.youtube.com/watch?v=T6fi-NyH8do&amp;t=46" target="_blank" rel="noopener">0:46</a></p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4</span>
+      <strong>Dismantle the paper into a Puzzle piece</strong>
+      <p>Open the inventory, select the Crumpled paper and press Dismantle rather than Use. The paper unfolds into a single Puzzle piece. If you only press Examine you will read the note and get nothing. Dismantle is the button that matters here.</p>
+      <p class="ts">Video: <a href="https://www.youtube.com/watch?v=T6fi-NyH8do&amp;t=58" target="_blank" rel="noopener">0:58</a></p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5</span>
+      <strong>Finish the world map jigsaw, take the Neon light</strong>
+      <p>Tap the framed picture above the desk: it is an antique world map broken into loose pieces. Place the Puzzle piece from your inventory into the frame first, then assemble the rest. The board is small and the pieces overlap, so the reliable order is to drag every loose piece out of the frame into the empty space around it, rebuild the four corners, then work inwards along the coastlines. Completing the map releases the Neon light tube from the frame.</p>
+      <img src="/rooms-and-exits/map-jigsaw.jpg" alt="Rooms & Exits Level 2: the antique world map jigsaw above the desk, half assembled" loading="lazy" width="1200" height="594" />
+      <p class="ts">Video: start <a href="https://www.youtube.com/watch?v=T6fi-NyH8do&amp;t=64" target="_blank" rel="noopener">1:04</a> &#183; map finished <a href="https://www.youtube.com/watch?v=T6fi-NyH8do&amp;t=164" target="_blank" rel="noopener">2:44</a></p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6</span>
+      <strong>Light the mirror, read 5-1-4</strong>
+      <p>Select the Neon light and use it on the fixture above the mirror to the right of the desk. The room dims, the tube glows, and three handprints light up on the glass. Count the extended fingers from the top print down: five, then one, then four. That is the whole clue. There is nothing else to find in this room for the code.</p>
+      <img src="/rooms-and-exits/mirror-code.jpg" alt="Rooms & Exits Level 2: the mirror lit by the neon tube with three glowing handprints" loading="lazy" width="1200" height="594" />
+      <p class="ts">Video: install <a href="https://www.youtube.com/watch?v=T6fi-NyH8do&amp;t=176" target="_blank" rel="noopener">2:56</a> &#183; handprints <a href="https://www.youtube.com/watch?v=T6fi-NyH8do&amp;t=184" target="_blank" rel="noopener">3:04</a></p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7</span>
+      <strong>Enter 514 on the wall safe</strong>
+      <p>The safe is the metal box on the wall beside the bars of the cell, with three number slots. Set them to 5, 1 and 4 and tap the front to confirm. The door swings open. And it does not contain the key. Inside is a second, smaller puzzle: the colour panel.</p>
+      <img src="/rooms-and-exits/safe-514.jpg" alt="Rooms & Exits Level 2: the wall safe with its three number slots set to 514" loading="lazy" width="1200" height="594" />
+      <p class="ts">Video: <a href="https://www.youtube.com/watch?v=T6fi-NyH8do&amp;t=192" target="_blank" rel="noopener">3:12</a></p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8</span>
+      <strong>Solve the colour panel, take the Key</strong>
+      <p>With the safe open, the panel in its door becomes the active puzzle: four sections of wavy line with coloured dots on both sides of each one. Each section rotates, and the goal is to route every colour to the matching colour on the opposite side. Yellow to yellow, pink to pink, blue to blue. Rotate one section at a time and stop touching it once its two dots line up; when the last circuit closes, the Key appears inside the safe for you to collect.</p>
+      <img src="/rooms-and-exits/colour-panel.jpg" alt="Rooms & Exits Level 2: the colour-connection panel inside the opened wall safe" loading="lazy" width="1200" height="594" />
+      <p class="ts">Video: <a href="https://www.youtube.com/watch?v=T6fi-NyH8do&amp;t=198" target="_blank" rel="noopener">3:18</a></p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9</span>
+      <strong>Unlock the exit door</strong>
+      <p>Select the Key, use it on the door on the far right, and the level ends. The comparison screen comes up with your time, hint usage and the number of taps, and Chapter 1 Level 3 unlocks.</p>
+      <p class="ts">Video: door at <a href="https://www.youtube.com/watch?v=T6fi-NyH8do&amp;t=218" target="_blank" rel="noopener">3:38</a> &#183; level complete <a href="https://www.youtube.com/watch?v=T6fi-NyH8do&amp;t=230" target="_blank" rel="noopener">3:50</a></p>
+    </div>
+
+    <h2>Where older walkthroughs send you wrong<span class="accent">.</span></h2>
+    <p>Rooms &amp; Exits has been patched since the first wave of guides went up, and Level 2 is one of the rooms that changed. Two instructions in particular are still floating around and both will cost you ten minutes:</p>
+    <ul>
+      <li><b>"Cut open the armchair cushion with the knife."</b> There is no armchair in this room, and the only soft container is the sack on the pulley chain above the radiator. This is the single most common dead end in the level: players keep tapping the chair and the bunk because a guide told them to.</li>
+      <li><b>"The safe holds the key."</b> Almost right, and the reason people think the level is broken. 514 opens the safe, but what is inside is another puzzle; the key only appears once the colour panel in the safe door is solved.</li>
+    </ul>
+    <p>Both traps come from compressing a three-stage ending into one line. The safer habit is to read the ending of a guide as a list of objects rather than a list of outcomes: safe, panel, key, door. Four separate taps, not one.</p>
+
+    <h2>Why the map puzzle is the hard gate<span class="accent">.</span></h2>
+    <p>Most people get stuck in Level 2 with a Puzzle piece in the bag and nothing sparkling, because the map frame is easy to read as wall decoration. It is not: it is the only interactive surface above the desk, and it stays inert until you physically insert the piece from the inventory rather than just tapping the frame. Once the piece is in, the remaining moves are pure jigsaw.</p>
+    <p>The jigsaw itself is where runs lose their time. The board is roughly seven by five, the pieces are unlabelled and a piece can sit a millimetre off and still refuse to snap. Pulling every piece out of the frame first is the single biggest time save in this level: inside the frame you are guessing, outside it you can see the four corner pieces and the two long coastlines at a glance. Corners, then edges, then the continents from west to east.</p>
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    <details><summary>What is the code for the wall safe in Rooms &amp; Exits Chapter 1 Level 2?</summary><p><b>514.</b> Light the mirror with the neon tube and count the fingers on the three handprints. Five, one, four, top to bottom. Then set that on the three number slots of the safe beside the cell bars. The code opens the safe; the key inside it needs the colour panel solved first.</p></details>
+    <details><summary>Where is the knife in Rooms &amp; Exits Level 2?</summary><p>In the desk drawer that has no handle. Solve the four book spines on the left shelf to get the Handle, fit it on the drawer, pull it open and take the Knife.</p></details>
+    <details><summary>How do I get the crumpled paper?</summary><p>Select the Knife in your inventory and use it on the hanging sack above the radiator on the left wall. The sack tears and the Crumpled paper drops into the bag.</p></details>
+    <details><summary>How long does Level 2 take?</summary><p>A first clear runs seven to eight minutes, and the map jigsaw takes about half of that. With the item order known, the level is under four minutes.</p></details>
+
+    <h2>Stuck on another level?<span class="accent">.</span></h2>
+    <p>Chapter 1 guides are being rebuilt room by room from frame-verified playthroughs. Level 2 is live; the rest of Wicked Games follows.</p>
+    <LevelSelector chapter={1} current={2} compact={true} />
+
+    <div class="cta-box">
+      <p><a href="/">Play Shikaku →</a> · <a href="/akari/">Play Akari →</a> · <a href="/japanese-logic-puzzles/">More Japanese logic puzzles →</a></p>
+    </div>
+  </main>
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

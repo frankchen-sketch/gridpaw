@@ -1,0 +1,266 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 1 Level 4 Walkthrough: High School";
+const description = "Rooms & Exits Chapter 1 Level 4 walkthrough: the arcade maze that gives 1590, the classroom keypad, the blackboard letter-to-number cipher, the globe, the locker room panel and the trophy cabinet that ends the level.";
+const cipher = [
+  ['A','4'],['B','11'],['C','21'],['D','5'],['E','25'],['F','15'],['G','23'],['H','18'],['I','1'],
+  ['J','26'],['K','10'],['L','9'],['M','12'],['N','6'],['O','17'],['P','22'],['Q','2'],['R','14'],
+  ['S','7'],['T','19'],['U','3'],['V','20'],['W','8'],['X','13'],['Y','24'],['Z','16'],
+];
+const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+  {"@type": "Question", "name": "What is the code from the arcade maze in Level 4?", "acceptedAnswer": {"@type": "Answer", "text": "1590. Finish the dot-maze on the classroom screen and the game shows 1590. That is the number the classroom keypad wants."}},
+  {"@type": "Question", "name": "What does the blackboard in Level 4 mean?", "acceptedAnswer": {"@type": "Answer", "text": "It is a letter-to-number cipher: A=4, B=11, C=21, D=5, E=25, F=15, G=23, H=18, I=1, J=26, K=10, L=9, M=12, N=6, O=17, P=22, Q=2, R=14, S=7, T=19, U=3, V=20, W=8, X=13, Y=24, Z=16. The numbers are scrambled, so you have to read them off the board rather than count."}},
+  {"@type": "Question", "name": "How do you read the globe in High School?", "acceptedAnswer": {"@type": "Answer", "text": "The globe carries three numbers on the continents: 20, 17 and 39, each on a differently coloured landmass. They feed the three coloured buttons on the small keypad."}},
+  {"@type": "Question", "name": "Where is the trophy that ends Level 4?", "acceptedAnswer": {"@type": "Answer", "text": "In the display cabinet in the corridor with the red and green lockers. Opening it triggers the closing dialogue about the trophy and ends the level."}}]};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-1-level-4"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 1 Level 4"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .cipher { display: grid; grid-template-columns: repeat(auto-fill, minmax(58px, 1fr)); gap: 4px; margin: 0.8rem 0; }
+    .cipher span { background: #fff; border: 1.5px solid var(--border); border-radius: 6px; padding: 4px 0; text-align: center; font-size: 0.85rem; font-weight: 800; color: var(--text); }
+    .cipher span i { display: block; font-style: normal; font-size: 0.7rem; color: var(--amber); font-weight: 700; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 1</a> &gt; Level 4</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 1 Level 4 Walkthrough: High School</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from a recorded playthrough of the current build. High School is the longest room in Chapter 1 at around six minutes and the first one with three separate areas, so this page is ordered by area rather than by the order a fast player happens to hit the puzzles.</div>
+
+    <LevelSelector chapter={1} current={4} variant="jump" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p><b>1590</b> is the number this level is built around: you get it by finishing the dot-maze on the classroom screen, and it opens the keypad in the same room.</p>
+      <ol>
+        <li>Play the arcade maze on the wall screen → it shows <b>1590</b> → type 1590 on the classroom keypad.</li>
+        <li>Copy the blackboard cipher onto paper: the numbers are scrambled, and no other puzzle in the room makes sense without it.</li>
+        <li>The globe carries three numbers on coloured continents: <b>20 / 17 / 39</b>: they feed the three coloured buttons.</li>
+        <li>Slide the block puzzle to free the U-shaped block; it opens the way to the wall safe.</li>
+        <li>The level ends in the locker corridor: open the display cabinet and take the trophy.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/fKDjHfsksEM" title="Rooms & Exits Chapter 1 Level 4 High School walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/l4-hero-classroom.jpg" alt="Rooms and Exits Chapter 1 Level 4 High School: classroom with desks, wall screen and locked cabinet" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>High School is three connected areas, and the game never tells you which one you are supposed to be in:</p>
+    <ul>
+      <li><b>The classroom</b>: desks, a blackboard, a globe, a wall screen and the arcade machine bolted to the wall. Most of the level's information lives here.</li>
+      <li><b>The corridor</b>: a tiled hall with a red and orange sofa, an EXIT door, a bank of red and green lockers, a fuse panel and a display cabinet.</li>
+      <li><b>The utility corner</b>: sink, lockers and a smoking air-conditioning unit, which is where the extinguisher finally earns its place.</li>
+    </ul>
+    <p>Unlike Levels 1–3, nothing here is a single chain. High School is a hub: three or four puzzles run in parallel and each one hands you a piece of a different lock. That is why players get stuck for twenty minutes here and then finish the last four puzzles in six.</p>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:24</span>
+      <strong>The rotating-ring lock on the classroom side</strong>
+      The first thing the game puts in front of you is a circular lock made of concentric rings with a keyhole in the middle. Turn the rings until the cut-outs line up into a single channel to the centre. It is a "rotate, do not push" lock: tapping a ring repeatedly does nothing, you have to drag it a quarter turn. There is no code on this one. It opens purely on the alignment.
+      <img src="/rooms-and-exits/l4-circular-lock.jpg" alt="The rotating ring lock in the High School classroom" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fKDjHfsksEM&t=24s" target="_blank" rel="noopener">0:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:48</span>
+      <strong>The arcade maze on the wall screen</strong>
+      The classroom screen runs a small dot-collecting maze: a green circle, a grid of dots and a countdown that starts around 3:00. Steer the circle over every dot without touching the walls. This is the only timed thing in the room, and it is generous. The recording finishes it with over a minute to spare. If you bounce off a wall the clock keeps running; there is a <b>RESTART</b> button in the corner.
+      <img src="/rooms-and-exits/l4-arcade-maze.jpg" alt="The dot-collecting arcade maze on the classroom wall screen" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fKDjHfsksEM&t=48s" target="_blank" rel="noopener">0:48</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 2:14</span>
+      <strong>1590. The number the maze hands you</strong>
+      Clear the board and the screen replaces the maze with a four-digit number: <b>1590</b>. This is the answer to the keypad in the same room, and it is the only place in the level that number appears. Write it down before you tap away. The arcade screen does not show it again.
+      <img src="/rooms-and-exits/l4-maze-code.jpg" alt="The arcade screen showing the code 1590" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fKDjHfsksEM&t=134s" target="_blank" rel="noopener">2:14</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 2:26</span>
+      <strong>The classroom keypad: 1590</strong>
+      The keypad is on the classroom side, a standard 0–9 pad with a green confirm key. Type <b>1590</b>. It releases the cabinet the puzzle part sits in, which is what unblocks the sliding puzzle in the corridor.
+      <img src="/rooms-and-exits/l4-classroom-keypad.jpg" alt="The classroom keypad where 1590 is entered" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fKDjHfsksEM&t=146s" target="_blank" rel="noopener">2:26</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 2:36</span>
+      <strong>The sliding block puzzle</strong>
+      A sliding-block frame in which one wooden block is a green <b>U</b>. The job is to walk the U to the marked slot at the bottom without lifting anything out. Move the small square blocks around the outside first to open a lane down the middle, then bring the U through it. Solving it opens the way to the wall safe in the corridor.
+      <img src="/rooms-and-exits/l4-sliding-block.jpg" alt="The sliding block puzzle with the green U block" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fKDjHfsksEM&t=156s" target="_blank" rel="noopener">2:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 3:00</span>
+      <strong>The globe: 20 / 17 / 39</strong>
+      The classroom globe opens on a hinge and has a wire mechanism inside. That is the puzzle, not decoration. On the outside, three continents carry a number each: <b>20</b> on the green one, <b>17</b> on the second green one and <b>39</b> on the orange one. Those three numbers feed the three coloured buttons on the small keypad beside it. Match the colour of the button to the colour of the continent, not the order the numbers are written in.
+      <img src="/rooms-and-exits/l4-globe.jpg" alt="The open globe with numbers 20, 17 and 39 on coloured continents" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fKDjHfsksEM&t=182s" target="_blank" rel="noopener">3:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 3:50</span>
+      <strong>The blackboard cipher</strong>
+      The blackboard is the most important screen in the level and the easiest to walk past. It is a full letter-to-number cipher with the numbers deliberately scrambled: A is 4, B is 11, C is 21. Not A=1, B=2. Any code later in the level has to be read off this board, so photograph it or copy it before you leave the classroom.
+      <img src="/rooms-and-exits/l4-cipher-board.jpg" alt="The blackboard letter to number cipher in the High School classroom" width="1200" height="594" loading="lazy" />
+      <div class="cipher">
+        {cipher.map(([l, n]) => <span>{l}<i>{n}</i></span>)}
+      </div>
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fKDjHfsksEM&t=232s" target="_blank" rel="noopener">3:50</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 4:02</span>
+      <strong>The locker corridor</strong>
+      Out of the classroom you get the tiled corridor: EXIT door on the left, red and green lockers along the wall, a sofa, a plant, a sink and the display cabinet at the end. This is where the last third of the level happens. One of the lockers has a six-digit red panel on it. The panel takes the digits one at a time and each slot lights up when it accepts a digit.
+      <div class="warn">
+        <b>We do not print the six-digit code.</b> Our two recordings of this panel disagree on the last two digits and we would rather send you to the source than hand you a number that costs a minute of retyping. The digits come from the cipher board plus the numbers already in your inventory; the panel itself is the red locker face in this corridor.
+      </div>
+      <img src="/rooms-and-exits/l4-locker-panel.jpg" alt="The six-digit red panel on the locker in the High School corridor" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fKDjHfsksEM&t=242s" target="_blank" rel="noopener">4:02</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 4:48</span>
+      <strong>The fuse panel and the smoking air conditioner</strong>
+      The fuse panel has eight switches; the correct configuration is the one that lights the green indicators on both sides at once. The air-conditioning unit above the sink starts smoking partway through the level. That is the game telling you the extinguisher you are carrying has a use. Discharge it on the unit and the corridor clears.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fKDjHfsksEM&t=288s" target="_blank" rel="noopener">4:48</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 5:16</span>
+      <strong>The hexagonal tile board</strong>
+      The last big puzzle is a honeycomb board of hexagonal tiles. You slot a hexagonal <b>puzzle piece</b> you picked up earlier into the empty socket, then rotate the surrounding tiles until every path links into one continuous run. There is exactly one empty socket, so there is no ambiguity about where the piece goes. The work is in the rotations, and the board snaps into place when the last tile lines up.
+      <img src="/rooms-and-exits/l4-hex-tiles.jpg" alt="The hexagonal tile board near the end of Level 4" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fKDjHfsksEM&t=316s" target="_blank" rel="noopener">5:16</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 5:36</span>
+      <strong>The trophy cabinet ends the level</strong>
+      The display cabinet in the corridor holds a trophy, and opening it plays the closing beat of the chapter: the trophy is engraved <em>"Most likely to succeed"</em> and the dialogue lands the joke about who it belonged to. The level completes immediately after. There is no exit door to walk through in High School.
+      <img src="/rooms-and-exits/l4-trophy.jpg" alt="The trophy cabinet in the High School corridor" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fKDjHfsksEM&t=336s" target="_blank" rel="noopener">5:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 5:50</span>
+      <strong>Level complete</strong>
+      <b>+50 coins</b>, efficiency around 7/10 and an in-game time of 5:16. Level 5 (Yacht) needs stars to unlock, so if you have been finishing rooms fast this is the point where the star gate starts to matter.
+      <img src="/rooms-and-exits/l4-complete.jpg" alt="Level Completed screen for Chapter 1 Level 4" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fKDjHfsksEM&t=350s" target="_blank" rel="noopener">5:50</a></div>
+    </div>
+
+    <h2>The cipher, copied out<span class="accent">.</span></h2>
+    <p>This is the blackboard, transcribed. The numbers are not in order, which is the whole point: the board is a lookup table, not a counting game.</p>
+    <div class="cipher">
+      {cipher.map(([l, n]) => <span>{l}<i>{n}</i></span>)}
+    </div>
+    <p>Two things worth knowing before you use it. First, there is no zero on the board, so a code that needs a 0 is not coming from the cipher. Second, the board writes <em>FAIL</em> across itself once you get a puzzle wrong. That is the game mocking you, not a new clue.</p>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>The arcade screen.</b> It is easy to read as decoration. It is not: it is the only source of 1590, and the keypad in the same room is useless until you clear it.</li>
+      <li><b>The globe colours.</b> Players read 20, 17 and 39 top to bottom and type them in that order. The keypad wants them by <em>button colour</em>, not by position on the globe.</li>
+      <li><b>The cipher.</b> Assuming A=1 is the single most common mistake in this room. A is 4. Copy the board.</li>
+      <li><b>The corridor.</b> The lockers look like the goal. They are not. The level ends at the display cabinet with the trophy.</li>
+    </ul>
+
+    <h2>Chapter 1 levels<span class="accent">.</span></h2>
+    <LevelSelector chapter={1} current={4} compact={true} />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    <details><summary>What is the code from the arcade maze?</summary><p><b>1590</b>. Finish the dot maze on the classroom screen and it shows the number, which is what the classroom keypad takes.</p></details>
+    <details><summary>What does the blackboard cipher decode?</summary><p>It maps each letter to a scrambled number: A=4, B=11, C=21, D=5, E=25, F=15, G=23, H=18, I=1, J=26, K=10, L=9, M=12, N=6, O=17, P=22, Q=2, R=14, S=7, T=19, U=3, V=20, W=8, X=13, Y=24, Z=16.</p></details>
+    <details><summary>What are the numbers on the globe?</summary><p><b>20</b>, <b>17</b> and <b>39</b>, one on each coloured continent. They go into the three coloured buttons on the small keypad, matched by colour.</p></details>
+    <details><summary>Does High School have a timed puzzle?</summary><p>Only the arcade maze, and it is generous. Around three minutes of clock for a board that takes well under two. Everything else in the level waits for you.</p></details>
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-1-level-3/">← Level 3. William's Apartment</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-1-level-5/">Level 5. Yacht →</a></p>
+      <p><a href="/rooms-and-exits/">All Chapter 1 guides →</a></p>
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

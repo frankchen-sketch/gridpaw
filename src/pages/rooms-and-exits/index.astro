@@ -1,0 +1,120 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import SideAd from '../../components/SideAd.astro';
+import LevelSelector from '../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Walkthrough: Chapter 1 Level Guides (2026)";
+const description = "Rooms & Exits: Escape Room Games walkthroughs rebuilt frame by frame from real playthroughs. Chapter 1 (Wicked Games) level guides, item chains and codes.";
+const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is Rooms & Exits: Escape Room Games?", "acceptedAnswer": {"@type": "Answer", "text": "A hidden-object escape room game by Webelinx Games. You play Fiona, a journalist, and clear one locked room per level by finding items, combining them, dismantling them for clues and cracking locks. Chapter 1 is called Wicked Games and starts with a warm-up room before the jail cell in Level 2."}}, {"@type": "Question", "name": "Why do other Rooms & Exits guides show different steps?", "acceptedAnswer": {"@type": "Answer", "text": "The game has been patched since the first wave of walkthroughs. Chapter 1 Level 2 is the clearest example: the crumpled paper is no longer hidden in furniture upholstery but inside a hanging sack, and the safe beside the cell bars holds a second puzzle before it gives up the key. Guides that still describe the old build send you to objects that no longer react."}}]};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Walkthrough"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .level-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.9rem; margin: 0.8rem 0; }
+    .level-card { display: flex; flex-direction: column; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); text-decoration: none; color: var(--text); transition: transform .15s, border-color .15s; }
+    .level-card:hover { transform: translateY(-2px); border-color: var(--amber); }
+    .level-card .thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; border-bottom: 1.5px solid var(--border); }
+    .level-card .meta { padding: 0.6rem 0.7rem 0.75rem; }
+    .level-card .lvl { font-size: 0.68rem; font-weight: 900; color: var(--amber); text-transform: uppercase; letter-spacing: 0.06em; display: block; }
+    .level-card .name { font-size: 0.9rem; font-weight: 800; line-height: 1.3; margin-top: 0.15rem; display: block; }
+    .level-card .goal { font-size: 0.75rem; color: var(--light); margin-top: 0.3rem; line-height: 1.45; margin-bottom: 0; }
+    .chapter-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.8rem 0; }
+    .chapter-bar span, .chapter-bar a { font-size: 0.82rem; font-weight: 700; border: 1.5px solid var(--border); background: #fff; border-radius: 999px; padding: 0.3rem 0.75rem; text-decoration: none; color: var(--text); }
+    .chapter-bar .on { border-color: var(--amber); color: var(--amber); }
+    .chapter-bar .todo { color: #C4B5A5; font-weight: 600; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; Rooms &amp; Exits</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Walkthrough: Chapter 1 Level Guides</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <LevelSelector chapter={1} variant="jump" />
+
+    <div class="verify-note">These guides are not summaries of other guides. Each room is rebuilt frame by frame from recorded playthroughs of the current build, then cross-checked against a second recording, so the item order matches what the game actually accepts today.</div>
+
+    <p>Rooms &amp; Exits: Escape Room Games is a hidden-object escape game by Webelinx Games. You play Fiona, a journalist working her way through locked rooms, and every level is a closed loop: find objects, combine or dismantle them, use the result on the thing that will not move, read the clue you just uncovered, and walk out the door. There is no timer pressure and no fail state — the level only stops moving when you have missed an item.</p>
+    <p>Chapter 1 is called <b>Wicked Games</b>. It opens with a short warm-up room, then drops you in the jail cell of Level 2, and from there each room adds one more layer of item chaining. That is why Level 2 is the room most players search for: it is the first level where the chain is longer than two steps, and the first one where an item has to be dismantled rather than used.</p>
+
+    <h2>Chapter 1 guides<span class="accent">.</span></h2>
+    <div class="chapter-bar">
+      <a class="on" href="/rooms-and-exits/">Chapter 1 · Wicked Games</a>
+      <span class="todo">Chapter 2</span>
+      <span class="todo">Chapter 3</span>
+      <span class="todo">Chapter 4+</span>
+    </div>
+    <LevelSelector chapter={1} teasers={true} />
+
+    <h2>What actually blocks people<span class="accent">.</span></h2>
+    <p>Three patterns show up in every room, and knowing them saves the most time:</p>
+    <ul>
+      <li><b>An item that only works after Dismantle.</b> Paper, cloth and wrapped objects almost never get used as-is. Open the inventory, select the item and look at whether Dismantle or Combine is lit before you go hunting for a place to use it.</li>
+      <li><b>A surface that looks like decoration.</b> Framed pictures, mirrors and wall panels are interactive far more often than furniture is. If you have an unused item and nothing sparkles, the answer is usually on a wall.</li>
+      <li><b>A clue that is a count, not a number.</b> Codes are usually built from something countable — fingers, fish, jars, stripes. Write down what you see rather than guessing digits; the game rarely shows the digits themselves.</li>
+    </ul>
+
+    <h2>How these pages are built<span class="accent">.</span></h2>
+    <p>Every step on this site is taken from a screen recording of the level being cleared, read frame by frame, and then verified against a second independent recording of the same room. Where the two disagree, the page says so instead of picking one. The screenshots on each guide are frames from that recording, cropped to the game area, and the embedded video is the source recording itself, linked to the exact second of each step.</p>
+    <p>That method exists because Rooms &amp; Exits has been patched repeatedly. Chapter 1 Level 2, for example, used to ask you to sort books by size and to cut open an armchair cushion; the current build rotates patterns on four fixed spines and hides the paper in a hanging sack. Guides written before that patch still rank, and they still send players to objects that do nothing. Rebuilding from footage is the only way to stay correct.</p>
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    <details><summary>What is Rooms &amp; Exits: Escape Room Games?</summary><p>A hidden-object escape room game by Webelinx Games. You play Fiona, a journalist, and clear one locked room per level by finding items, combining or dismantling them for clues and cracking locks. Chapter 1 is Wicked Games.</p></details>
+    <details><summary>Why do other Rooms &amp; Exits guides show different steps?</summary><p>The game has been patched since the first wave of walkthroughs. Level 2 is the clearest example: the crumpled paper sits in a hanging sack rather than in furniture upholstery, and the safe gives up a puzzle before it gives up the key. Old guides point at objects that no longer react.</p></details>
+    <details><summary>Do I need to watch the video, or is the text enough?</summary><p>The text is enough. Each step names the object, the inventory action and the target, and the timestamps are there only if you want to see a move performed once.</p></details>
+
+    <div class="cta-box">
+      <p><a href="/">Play Shikaku →</a> · <a href="/akari/">Play Akari →</a> · <a href="/japanese-logic-puzzles/">More Japanese logic puzzles →</a></p>
+    </div>
+  </main>
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

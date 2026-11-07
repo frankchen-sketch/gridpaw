@@ -1,0 +1,305 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 1 Level 9 Walkthrough: Junkyard";
+const description = "Rooms & Exits Chapter 1 Level 9 walkthrough: JWFMI opens the letter lock on the trailer door, 99452 opens the yellow keypad panel, and the crane finishes the Junkyard.";
+const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+  {"@type": "Question", "name": "What is the letter lock code in Level 9?", "acceptedAnswer": {"@type": "Answer", "text": "JWFMI. It is written on a piece of paper lying in a crate in the yard, and it goes into the five-column letter lock on the trailer door. It is not a word, so there is nothing to guess."}},
+  {"@type": "Question", "name": "What is the code for the yellow keypad panel?", "acceptedAnswer": {"@type": "Answer", "text": "99452. The five digits are written on the white border of the polaroid Fiona hands you near the end of the level. The panel is the yellow box beside the crane, and entering the code opens a tray of crane parts."}},
+  {"@type": "Question", "name": "Where do you get the bolt cutters?", "acceptedAnswer": {"@type": "Answer", "text": "In the yard, once the crane is assembled. Our recording picks them up at 6:43, right after the crane goes up, and the item is labelled \"Bolt cutters\" on pickup. The frames either side are a jump cut, so we cannot point at the exact spot. But they are the tool the exit wants."}},
+  {"@type": "Question", "name": "How does the Junkyard level end?", "acceptedAnswer": {"@type": "Answer", "text": "Cut the chain on the EXIT barrier in the middle of the yard with the bolt cutters. In our recording the level completed right after that, and the reward screen gave 50 coins."}},
+  {"@type": "Question", "name": "Is there a timed puzzle in Junkyard?", "acceptedAnswer": {"@type": "Answer", "text": "Nothing in our recording of Level 9 ran on a clock. The yard maze, the ring puzzle, the dial and the tread tray all wait for you. A change from the timed arcade maze in Level 4."}}]};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-1-level-9"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 1 Level 9"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 1</a> &gt; Level 9</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 1 Level 9 Walkthrough: Junkyard</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from a 1080p recording of the current build. Where the recording does not show a number or a result clearly enough to read twice, this page says so instead of filling the gap.</div>
+
+    <LevelSelector chapter={1} current={9} variant="jump" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p><b>JWFMI</b> opens the letter lock on the trailer door, and <b>99452</b> opens the yellow keypad panel beside the crane. Those are the only two codes the level asks you to type.</p>
+      <ol>
+        <li>Take the piece of paper out of the crate in the yard: it reads <b>JWFMI</b>. Enter those five letters on the trailer door lock. It is not a word, so stop trying to guess one.</li>
+        <li>Inside the trailer, solve the three-peg ring puzzle on the shelf. It drops a golden key and opens the drawer underneath.</li>
+        <li>Work the trailer's other boards. The octagonal node board, the licence-plate wall, the emblem board, the tread tray. And pick up the wrench, the sandpaper and the rust remover as you pass them.</li>
+        <li>Near the end, Fiona hands you a polaroid with <b>99452</b> written on it. That is the yellow keypad panel: it opens a tray with four crane parts.</li>
+        <li>Assemble the crane. That unlocks the yard's interactive spots, and the <b>bolt cutters</b> are among them. Pick them up and cut the chain on the EXIT barrier. Reward: 50 coins.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/dYHWRLgbu1c" title="Rooms & Exits Chapter 1 Level 9 Junkyard walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>Junkyard is one outdoor diorama and one building. The diorama is a scrapyard: a blue and white striped trailer sitting on a raised slab, a gantry crane spanning the roof line above it, two red vintage cars behind a low fence, a car-carrier truck with a gold car chained to its bed, a brick workshop with solar panels, and a painted hippie van parked under the big tree on the right. The building is the trailer itself, and once you are through its door the level stops being one room and becomes four.</p>
+    <ul>
+      <li><b>The yard</b>: the overview screen you start on. Almost everything here is scenery until you find the two interactive panels; the maze and the crane both live out here.</li>
+      <li><b>The study</b>, immediately left of the trailer door. A desk with two orange chairs, a wall of collected licence plates, and a cabinet of tools.</li>
+      <li><b>The kitchen</b>, in the middle. Counters, a sink under a plaid curtain, paint cans on the floor, and the cabinet the wrench comes out of.</li>
+      <li><b>The living room</b>, on the right. An L-shaped sofa with yellow cushions, a coffee table with the octagonal board on it, a CRT television, and the wall the fire extinguisher is mounted on.</li>
+    </ul>
+    <p>The thing that makes Junkyard harder than it looks is that it has no single chain. Level 4 gave you a classroom and a corridor and a clear order of operations; here you get a locked trailer door, and behind it five boards that all look equally important and none of which tell you what they are for. Our recording spends roughly six and a half minutes inside, and about a third of that is backtracking between the trailer and the yard.</p>
+    <p>One warning before the steps: Junkyard keeps handing you tools. Sandpaper, a wrench, rust remover, a brush loaded with paint. And never once tells you what any of them is for. The wrench is the one that matters, because it opens the blue panel out in the yard. Our recording also uses the brush on the dark vintage car behind the fence. What the sandpaper and the rust remover are for never becomes clear in the footage, so this page is not going to invent a use for them; if you are stuck, the odds are you have missed a board, not a tool.</p>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:12</span>
+      <strong>The yard is the map, not a puzzle</strong>
+      The camera opens on the whole scrapyard, and it is worth the ten seconds it takes to read it. Clockwise from the trailer door: the gantry crane and its hook, a stack of satellite dishes, the brick workshop with two solar panels bolted to its roof and a yellow stair up the side, the car-carrier with a gold car on the bed, the hippie van under the tree, and. Dead centre, between two red-and-white striped posts. The chained EXIT barrier. That barrier is the last thing you touch in the level, not the first, so ignore it for now; everything you need is on the left half of the screen.
+      <img src="/rooms-and-exits/l9-hero-junkyard.jpg" alt="The Junkyard yard: trailer, gantry crane, red cars, car carrier, hippie van and the chained EXIT barrier" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dYHWRLgbu1c&t=12s" target="_blank" rel="noopener">0:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:18</span>
+      <strong>The steering maze on the yard panel</strong>
+      One of the panels out here opens onto a grid maze rather than a keypad. Brown squares are walls, the pale blue squares are the path, and you steer a small arrow with four direction buttons around a centre pad. The goal is the black-and-white checkered square in the top right. There is no timer and no penalty for bumping a wall. You just reverse and try the other lane. Which makes this the friendliest puzzle in the level and a good place to warm up.
+      <img src="/rooms-and-exits/l9-steering-maze.jpg" alt="The grid steering maze with the checkered flag goal square" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dYHWRLgbu1c&t=18s" target="_blank" rel="noopener">0:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:36</span>
+      <strong>The piece of paper: JWFMI</strong>
+      The clue that unlocks the trailer is lying in an open crate on the ground, and it is the single most missed object in the level. Players walk past it because it looks like litter. Pick it up and the camera gives you the paper full screen: five letters, <b>J W F M I</b>, in a stencilled font. Write it down. The inventory entry is also called "Piece of paper", which tells you nothing, so photograph the screen if you are playing on a phone you cannot alt-tab out of.
+      <img src="/rooms-and-exits/l9-paper-code.jpg" alt="The piece of paper with the letters JWFMI on it" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dYHWRLgbu1c&t=36s" target="_blank" rel="noopener">0:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:48</span>
+      <strong>The five-column letter lock on the trailer door</strong>
+      The trailer door is a carved wooden panel with five vertical columns of letter tiles. Each column scrolls on its own through the alphabet, and the centre row is highlighted in teal. That highlighted row is the code you are building. Set the five columns to <b>JWFMI</b> and the door releases; in our recording it opened the moment the last column landed on I, with no separate confirm button to press.
+      <div class="warn">
+        <b>This is where most players stall.</b> The lock looks like it wants a word, so people try YACHT, JUNKYARD, FIONA and anything else the level has shown them. It does not want a word. It wants the five letters off the paper, in the order the paper prints them, and the paper is outside on the ground.
+      </div>
+      <img src="/rooms-and-exits/l9-letter-lock.jpg" alt="The five-column letter lock set to JWFMI on the trailer door" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dYHWRLgbu1c&t=48s" target="_blank" rel="noopener">0:48</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:18</span>
+      <strong>Inside the trailer</strong>
+      The door swings and the game cuts to a cross-section of the trailer, which is the level's real map. Study on the left with the licence-plate wall and two orange chairs; kitchen in the middle with the paint cans on the floor and an EXIT arrow over the door; living room on the right with the yellow sofa, the coffee table and the CRT. Both interior doors have orange arrows once you are inside, and they all lead back out to the yard. This trailer is one room split into three, not a corridor into somewhere else.
+      <img src="/rooms-and-exits/l9-trailer-interior.jpg" alt="Cross-section of the trailer interior: study, kitchen and living room" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dYHWRLgbu1c&t=78s" target="_blank" rel="noopener">1:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:24</span>
+      <strong>The three-peg ring puzzle. And the key it drops</strong>
+      On the shelf in the trailer, next to a wooden drawer, sits a small three-peg puzzle with three rings: cyan at the bottom, yellow in the middle, red on top, all on the left peg. It reads like the Tower of Hanoi, but with three rings there is nothing to work out. A handful of moves gets them across. Solve it and two things happen at once: a <b>golden key</b> appears on the shelf beside the puzzle, and the drawer below slides open.
+      <img src="/rooms-and-exits/l9-ring-puzzle.jpg" alt="The three-peg ring puzzle with cyan, yellow and red rings on the trailer shelf" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dYHWRLgbu1c&t=84s" target="_blank" rel="noopener">1:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 1:42</span>
+      <strong>The open drawer, and the sandpaper in it</strong>
+      The drawer the ring puzzle released is not empty. Inside is a sheet of red <b>sandpaper</b>, labelled "Sandpaper" when you pick it up. It goes into the inventory and stays there. This is the pattern for the whole middle of the level: the trailer keeps giving you objects and the game never tells you what any of them is meant to touch, so pick everything up and keep moving.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dYHWRLgbu1c&t=102s" target="_blank" rel="noopener">1:42</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 1:48</span>
+      <strong>The octagonal board on the coffee table</strong>
+      The living room's coffee table holds an octagonal board: eight coloured nodes around the rim. Green, blue, red, yellow, magenta, cyan, purple and orange. A handful of smaller coloured nodes inside, and a web of grey paths joining them. It is a connect-the-colours board, and it takes the longest single stretch of the recording: roughly forty seconds of tapping in silence. We are not going to pretend we know what it gates, because our footage never shows what changed afterwards; if you are hunting for the thing that unlocks the next area, this board is the most likely candidate and the one worth doing first.
+      <img src="/rooms-and-exits/l9-octagon-board.jpg" alt="The octagonal board with eight coloured nodes joined by grey paths" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dYHWRLgbu1c&t=108s" target="_blank" rel="noopener">1:48</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 2:42</span>
+      <strong>The wrench, and the blue panel it opens</strong>
+      There is a tools cabinet in the trailer. Spray bottles, a red can marked HEET, screwdrivers, pliers, a green power tool on the bottom shelf. And the useful thing in it is the <b>wrench</b>. Take it outside. The blue steel panel in the yard is bolted shut, and until you have the wrench the game floats a small wrench icon over the panel's corner to tell you so; use it and the panel opens onto the dial underneath.
+      <img src="/rooms-and-exits/l9-blue-dial.jpg" alt="The blue panel in the yard with its four-segment dial and two indicator lights" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dYHWRLgbu1c&t=180s" target="_blank" rel="noopener">3:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 3:00</span>
+      <strong>The four-segment dial</strong>
+      The dial is one circle cut into four quadrants. In the state our recording left it, green top-left, red top-right, yellow bottom-left, cyan bottom-right. With a plain blue button at the centre and two indicator lights on the panel beside it, one red and one green. The quadrants rotate and the lights respond, and that is the entire readout the game gives you: no numbers, no key, no diagram anywhere in the level that matches it.
+      <div class="warn">
+        <b>We are not printing a colour order for this one.</b> Our recording shows the lights on at 3:16 and off again at 3:32, and the two frames disagree about which quadrant was selected when they flipped. Printing a guess here would cost you more time than it saves, so treat this as the level's honest hard puzzle: rotate a quadrant, watch the lights, keep the arrangement that lights both.
+      </div>
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dYHWRLgbu1c&t=196s" target="_blank" rel="noopener">3:16</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 4:24</span>
+      <strong>The licence-plate wall</strong>
+      The study wall is a collector's board with ten slots and, in our recording, nine plates on it. Half of them are jokes and half are real state designs: a German <b>B JN 34</b>, a Korean <b>경남 0007</b>, a California plate starting <b>FEB</b>, a Nevada <b>538</b> reading SILVER STATE, a North Carolina <b>4751</b>, a Washington <b>OBAMA OH</b> stamped "taxation without representation", a New York <b>2 FAST</b> reading EMPIRE STATE, a blue plate with a beetle on it, and a Russian <b>28 … AP 14</b>. The single empty slot is the interesting part, and the one thing the recording never resolves is which plate the game wants in it.
+      <img src="/rooms-and-exits/l9-plate-wall.jpg" alt="The licence-plate wall in the trailer study with nine plates and one empty slot" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dYHWRLgbu1c&t=264s" target="_blank" rel="noopener">4:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 4:54</span>
+      <strong>The emblem board</strong>
+      Somewhere in the trailer there is a second collector's board: a plain wooden plank with a set of cast-metal emblems laid out in it. An owl made of a nut and bolts, a gear, a crescent moon with a face, a beetle, a sun, a five-pointed star, a few shapes that are harder to name. Same rules as the plates: it looks like a display, and it is not. Our recording opens it, looks at it and moves on without anything obvious changing, so if a lock in this level refuses to open and you have already done the trailer door and the yard dial, this board is the next thing to work.
+      <img src="/rooms-and-exits/l9-emblem-board.jpg" alt="The wooden board with cast-metal emblems in a grid" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dYHWRLgbu1c&t=294s" target="_blank" rel="noopener">4:54</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 5:24</span>
+      <strong>The tread tray</strong>
+      A yellow-framed tray holds eight compartments in two rows of four, and seven of them are filled with black rubber tiles, each stamped with a different tyre tread: a zigzag, a row of circles, chevrons, a diamond lattice, interlocking U shapes, a wavy tread and a fine square grid. One compartment is empty. This is the level's tidiest puzzle. The shapes are unambiguous, you can read them off a single screenshot, and there is exactly one hole to fill.
+      <img src="/rooms-and-exits/l9-tread-tray.jpg" alt="The tread tray: eight compartments with seven tyre-tread tiles and one empty slot" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dYHWRLgbu1c&t=324s" target="_blank" rel="noopener">5:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 6:06</span>
+      <strong>The polaroid: 99452</strong>
+      The level's last clue is not a puzzle at all, it is a cutscene. Fiona hands over a polaroid of William and his daughter at a lighthouse, and handwritten on the white border underneath the photo is a five-digit number: <b>99452</b>. This is the only place in Junkyard where that number appears, and it is not repeated anywhere in the inventory, so write it down before you tap through the dialogue. Jack gets a line in the same exchange; the two of them talk over the top of the photo, which is why the number is easy to tap past.
+      <img src="/rooms-and-exits/l9-photo-code.jpg" alt="The polaroid with 99452 written on its white border" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dYHWRLgbu1c&t=366s" target="_blank" rel="noopener">6:06</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 6:18</span>
+      <strong>The yellow keypad: 99452</strong>
+      The yellow box beside the crane is a keypad cabinet with a green digital display, a standard 3×4 pad, and two indicator lights stacked on its left side, green above red. Type <b>99452</b>. The display fills digit by digit. At 6:18 the display reads 99 and both lights are lit, which is the point where players who have not written the number down start guessing at the last three.
+      <div class="warn">
+        <b>Five digits, not four.</b> If the panel keeps rejecting your code, count what you typed. The common failure here is dropping the second 9 and entering 9452 from memory.
+      </div>
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dYHWRLgbu1c&t=378s" target="_blank" rel="noopener">6:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 6:24</span>
+      <strong>Assemble the crane</strong>
+      The keypad does not open a door, it opens a parts tray. Inside are four yellow pieces: a T-shaped boom section, a jointed grabber arm, a base with a vertical shaft, and a flat circular <b>electromagnet</b> on blue chains. Drag them together into one working crane. Base first, shaft into the base, boom onto the shaft, magnet hanging from the boom tip. The traffic-light indicator on the left of the tray shows green while the assembly is valid.
+      <img src="/rooms-and-exits/l9-crane-parts.jpg" alt="The crane parts tray: boom, grabber arm, base and an electromagnet on chains" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dYHWRLgbu1c&t=384s" target="_blank" rel="noopener">6:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 17 · 6:41</span>
+      <strong>The crane goes up, and the yard opens</strong>
+      Back outside, the finished crane stands over the trailer roof with its electromagnet hanging on blue chains. And the yard that looked like scenery for six minutes is suddenly covered in sparkles: the workbench, the hydraulic lift, the tire rack, the flatbed's load, the tree. Among them is the pair of <b>bolt cutters</b>, which the game labels "Bolt cutters" when you take it. We cannot point at the exact sparkle, because the recording jump-cuts straight from the crane being assembled to the pickup, but the gate is clear: the bolt cutters come after the crane, and they are the tool the exit wants.
+      <img src="/rooms-and-exits/l9-crane-lift.jpg" alt="The assembled yellow crane with its electromagnet hanging over the trailer roof" width="1200" height="594" loading="lazy" />
+      <img src="/rooms-and-exits/l9-bolt-cutters.jpg" alt="The bolt cutters picked up in the yard after the crane is assembled" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dYHWRLgbu1c&t=401s" target="_blank" rel="noopener">6:41</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 18 · 6:49</span>
+      <strong>Cut the chain and finish</strong>
+      The EXIT barrier in the middle of the yard. Two red-and-white striped posts with a STOP sign and a chain slung between them. Is the way out. Use the bolt cutters on the chain. There is no walk-through animation to follow: the recording cuts from the barrier straight to the reward screen, which lands <b>+50 coins</b> with the efficiency bar at full. That is the whole of Level 9.
+      <img src="/rooms-and-exits/l9-level-complete.jpg" alt="The reward screen at the end of Level 9: Reward! +50 coins and a full efficiency bar" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dYHWRLgbu1c&t=409s" target="_blank" rel="noopener">6:49</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>The letter lock.</b> Everyone tries to spell something. The answer is JWFMI, off a piece of paper that is lying in a crate on the ground outside. Not on the trailer, not in the inventory. If you did not pick the paper up, the lock is unsolvable and nothing on screen tells you why.</li>
+      <li><b>The trailer itself.</b> For the first minute the trailer reads as scenery. The door only becomes interactive once the lock is off it, and the interior camera is a cut, not a walk. If you are hunting for a corridor, you will not find one.</li>
+      <li><b>The octagonal board.</b> It is the longest puzzle in the level and the one with the least feedback. Forty seconds of tapping with no sound cue is normal here; do not assume you have broken it.</li>
+      <li><b>The four-segment dial.</b> Two unlabelled lights are the only feedback the game gives you. There is no matching diagram on the plate wall, the emblem board or the tread tray. We checked.</li>
+      <li><b>The yellow keypad.</b> The code is five digits and it is printed on a polaroid, not carved anywhere in the world. Miss the photo and the panel is a guessing game with 100,000 combinations.</li>
+      <li><b>The last step.</b> Players finish the crane and then wander the yard looking for a door. The exit is the chained barrier in the middle of the yard, and the bolt cutters you pick up after the crane goes up are what open it.</li>
+    </ul>
+
+    <h2>Chapter 1 levels<span class="accent">.</span></h2>
+    <LevelSelector chapter={1} current={9} compact={true} />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    <details><summary>What is the letter lock code in Level 9?</summary><p><b>JWFMI</b>. It is written on a piece of paper lying in a crate in the yard, and it goes into the five-column letter lock on the trailer door. It is not a word, so there is nothing to guess.</p></details>
+    <details><summary>What is the code for the yellow keypad panel?</summary><p><b>99452</b>. The five digits are written on the white border of the polaroid Fiona hands you near the end of the level. The panel is the yellow box beside the crane, and entering the code opens a tray of crane parts.</p></details>
+    <details><summary>Where do you get the bolt cutters?</summary><p>In the yard, once the crane is assembled. Our recording picks them up at 6:43, right after the crane goes up, and the item is labelled "Bolt cutters" on pickup. The frames either side are a jump cut, so we cannot point at the exact spot. But they are the tool the exit wants.</p></details>
+    <details><summary>How does the Junkyard level end?</summary><p>Cut the chain on the EXIT barrier in the middle of the yard with the bolt cutters. In our recording the level completed right after that, and the reward screen gave <b>50 coins</b>.</p></details>
+    <details><summary>Is there a timed puzzle in Junkyard?</summary><p>Nothing in our recording of Level 9 ran on a clock. The yard maze, the ring puzzle, the dial and the tread tray all wait for you. A change from the timed arcade maze in Level 4.</p></details>
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-1-level-8/">← Level 8. Log Cabin</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-1-level-10/">Level 10. Train Station →</a></p>
+      <p><a href="/rooms-and-exits/">All Chapter 1 guides →</a></p>
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

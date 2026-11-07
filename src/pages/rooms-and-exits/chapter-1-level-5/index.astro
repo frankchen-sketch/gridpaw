@@ -1,0 +1,279 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 1 Level 5 Walkthrough: Yacht";
+const description = "Rooms & Exits Chapter 1 Level 5 walkthrough: the code 58137 on the life vest, the keypad it opens, the four jars of coloured sand, the bar shelves you have to sort, and the finish worth +50 coins.";
+const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the keypad code in Chapter 1 Level 5?", "acceptedAnswer": {"@type": "Answer", "text": "58137. The digits are printed in a vertical column on the left panel of the orange life vest on the aft wall, next to a red anchor and a blue anchor. Take the vest into your inventory, press Examine, read the digits top to bottom and type them into the steel keypad beside the stairs."}}, {"@type": "Question", "name": "Where do the four jars of coloured sand come from?", "acceptedAnswer": {"@type": "Answer", "text": "Red sand comes out of the cabinet under the wash-corner counter once the five pump bottles are worked in the right order. Green and blue sand are picked up in the same run along the shelf wall with the sailboat picture and the ship's bell. White sand comes out of the round aquarium on the deck after you use the claw toy in it. The game stacks all four into a single jar in your inventory."}}, {"@type": "Question", "name": "In what order do you pour the sand into the empty jar?", "acceptedAnswer": {"@type": "Answer", "text": "Blue first, then the cream layer, then red, then green on top. That is the order our recording pours them and the game accepts it. Read from the bottom of the finished jar upwards, the stripes are blue, cream, red, green."}}, {"@type": "Question", "name": "How do you solve the bar bottle shelves?", "acceptedAnswer": {"@type": "Answer", "text": "It is a sorting puzzle, not a code. The three shelves hold bottles in green, red and pale blue, and each shelf has to end up holding one colour: green on top, red in the middle, pale blue on the bottom. When the last bottle moves, the shelves release the next item."}}, {"@type": "Question", "name": "What is the reward for finishing the Yacht?", "acceptedAnswer": {"@type": "Answer", "text": "+50 coins. The level ends in the lounge after the piano beat, with the photographs on the keys and the line about the old amusement park."}}, {"@type": "Question", "name": "Does the Yacht have a timed puzzle?", "acceptedAnswer": {"@type": "Answer", "text": "No. The clock in the corner is the level clock counting up, not a countdown, and nothing in the level fails you for being slow. The only thing that can hold you up is the pump-bottle sequence on the wash counter."}}]};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-1-level-5"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 1 Level 5"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 1</a> &gt; Level 5</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 1 Level 5 Walkthrough: Yacht</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from a recorded playthrough of the current build. 4 minutes 56 seconds of footage, extracted at one frame per second and read at full resolution. Every number below was read twice from separate frames. Where the recording cannot settle a detail, this page says so instead of guessing.</div>
+
+    <LevelSelector chapter={1} current={5} variant="jump" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>The only code in the Yacht is <b>58137</b>, printed down the orange life vest, and it opens the steel keypad by the stairs. The level finishes worth <b>+50 coins</b>.</p>
+      <ol>
+        <li>Work the five pump bottles on the wash counter until the cabinet under it unlatches → take the <b>red sand</b>.</li>
+        <li>Two green loungers by the hot tub: collect the <b>handle</b> and the <b>claw toy</b>.</li>
+        <li>Shelf wall: <b>green sand</b>, a <b>key</b> from the ship's bell, the big <b>empty jar</b>, then <b>blue sand</b>.</li>
+        <li>Examine the <b>life vest</b> → <b>58137</b> → type it into the keypad → a wall cabinet opens.</li>
+        <li>Use the claw in the round <b>aquarium</b> → <b>white sand</b>; pour all four sands into the jar.</li>
+        <li>Carved box on the shelf → key. Bar shelves: <b>one colour per shelf</b>. Piano beat ends the level.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/kLyiBWwoDOs" title="Rooms &amp; Exits Chapter 1 Level 5 Yacht walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/l5-hero-yacht.jpg" alt="Rooms and Exits Chapter 1 Level 5 Yacht: the deck with the hot tub, green loungers, yellow corner sofa and the aquarium window" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>The Yacht is the first level in Chapter 1 that is a place rather than a room, and it is laid out like one. You get a sun deck with a hot tub, two green loungers and a yellow corner sofa; a wash corner with a row of pump bottles; a shelf wall with a sailboat picture, a ship's bell and a glass jar; a round aquarium built into the deck with a shark behind the glass; and an interior lounge with a white Seiler piano, a curved red sofa and a bar of bottle shelves.</p>
+    <p>That layout is the reason people stall here. Nothing tells you which end of the deck to start at, three of the puzzles only give up an item after you have already walked past them once, and the one number the level contains is printed on something most players never think to pick up. The footage runs under five minutes for a reason: once you know the order, there is no hard puzzle in the level, only a lot of ground to cover.</p>
+    <p>The inventory you end up holding is a handle, a claw toy, four jars of coloured sand, one big glass jar and at least one key. Almost every one of those items is used more than twenty seconds away from where you find it, which is exactly the kind of level design that produces the "I have eleven things and no idea what to do" feeling.</p>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:04</span>
+      <strong>The wash corner and its five pump bottles</strong>
+      The first zoom-in of the level is a white counter with folded towels and five pump bottles in a row. Pale blue, green, red, pale blue and yellow at the start. The bottles are not decoration: you press them one at a time and the game answers every press. After roughly twenty-five seconds of working the row, the cabinet under the counter unlatches at <b>0:30</b>.
+      <img src="/rooms-and-exits/l5-vanity-bottles.jpg" alt="The wash counter with five coloured pump bottles in Rooms and Exits Level 5 Yacht" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kLyiBWwoDOs&t=4s" target="_blank" rel="noopener">0:04</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:32</span>
+      <strong>Red sand, from the cabinet you just opened</strong>
+      The drawer under the counter holds a small jar of red sand. Take it and the pickup screen names it <b>Red sand</b>. It is easy to read as set dressing, and that is the trap: this is one of four, and the game has quietly started a collection that will not pay off for another two minutes.
+      <img src="/rooms-and-exits/l5-red-sand.jpg" alt="The red sand jar picked up from the wash counter cabinet" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kLyiBWwoDOs&t=32s" target="_blank" rel="noopener">0:32</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:44</span>
+      <strong>The lounger by the hot tub: a handle and a claw</strong>
+      Behind the hot tub, on the wooden deck, sit two green sun loungers. The near one has a small chrome handle lying loose against its frame. Pick it up and the inventory logs <b>Handle</b> at 0:48. Sixteen seconds later the same piece of deck gives you a second item, a blue-and-green grabber claw labelled <b>Toy</b> (1:04). Neither one is used anywhere near the chair, so do not stand there trying to fit them into something.
+      <img src="/rooms-and-exits/l5-lounge-chair.jpg" alt="The green lounger by the hot tub where the handle and the claw toy are found" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kLyiBWwoDOs&t=44s" target="_blank" rel="noopener">0:44</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 1:06</span>
+      <strong>Green sand</strong>
+      The next pickup is the second of the four sands: <b>Green sand</b>, collected on the way along the deck. There is no puzzle attached to it and no way to fail. If you have read this far and only have red, you have simply not walked the shelf wall yet.
+      <img src="/rooms-and-exits/l5-green-sand.jpg" alt="The green sand jar pickup in Level 5" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kLyiBWwoDOs&t=66s" target="_blank" rel="noopener">1:06</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:14</span>
+      <strong>The bell shelf: a key and the empty jar</strong>
+      The shelf wall holds three things worth knowing: a framed picture of sailboats, a brass ship's bell on a wooden stand, and a large empty glass jar. The bell gives up a <b>key</b> (the label on the pickup screen reads "Key"), and the jar comes off the same shelf with it. That jar is the important one. It is the vessel for the sand puzzle later, and without it the four sands are dead weight in your inventory.
+      <img src="/rooms-and-exits/l5-bell-shelf.jpg" alt="The shelf with the sailboat picture, ship's bell, key and the empty glass jar" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kLyiBWwoDOs&t=74s" target="_blank" rel="noopener">1:14</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:24</span>
+      <strong>Blue sand</strong>
+      Third sand, same run: <b>Blue sand</b>. At this point the inventory stacks the jars together into one item rather than four separate slots, which is why some players think they only have one jar and go looking for three more somewhere else. You do not: the stack is the collection.
+      <img src="/rooms-and-exits/l5-blue-sand.jpg" alt="The blue sand jar pickup in Level 5 Yacht" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kLyiBWwoDOs&t=84s" target="_blank" rel="noopener">1:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 1:34</span>
+      <strong>The life vest on the aft wall: 58137</strong>
+      On the wall by the stern, between a red anchor and a blue anchor, an orange life vest hangs on a hook. Tap it, put it in your inventory, and press <b>Examine</b>: the number is not readable while the vest is on the wall. In the inspection view the digits are printed in a black vertical column on the left panel, and reading the column from the top down gives <b>5 · 8 · 1 · 3 · 7</b>.
+      <img src="/rooms-and-exits/l5-life-vest.jpg" alt="The orange life vest with the code 58137 printed on its left panel" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kLyiBWwoDOs&t=102s" target="_blank" rel="noopener">1:42</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 1:46</span>
+      <strong>The steel keypad: 58137</strong>
+      The keypad sits on the wall beside the stairs. A plain 1–9 grid, a zero, a C to clear and a curved enter key. Type <b>58137</b> and confirm. The pad takes the digits one at a time and shows them as you go, so if the display does not read 58137 before you confirm, clear it and start again rather than pressing enter on a partial entry.
+      <img src="/rooms-and-exits/l5-keypad.jpg" alt="The steel keypad beside the stairs that takes the 58137 code" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kLyiBWwoDOs&t=106s" target="_blank" rel="noopener">1:46</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 2:05</span>
+      <strong>The wall cabinet the code opens</strong>
+      A small white cabinet on the wall swings open. It is easy to miss because it opens off to the side of the deck and the camera does not linger. The recording steps back to the wide view almost immediately. Everything in that cabinet is a step towards the lounge at the end of the level, so open it before you go hunting for the aquarium.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kLyiBWwoDOs&t=125s" target="_blank" rel="noopener">2:05</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 2:08</span>
+      <strong>The round aquarium and the claw toy</strong>
+      The aquarium is built into the deck: a round glass tank with rocks on the bottom and a shark circling behind it. Use the <b>claw toy</b> on the tank. This is what the toy was for. The game does not tell you that, and the claw is the item most players never connect to this screen. Working the tank pays out <b>white sand</b> at 2:28, the fourth and last jar.
+      <img src="/rooms-and-exits/l5-aquarium.jpg" alt="The round aquarium on the deck where the claw toy is used to get the white sand" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kLyiBWwoDOs&t=146s" target="_blank" rel="noopener">2:26</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 2:51</span>
+      <strong>The pour: four sands into the empty jar</strong>
+      With all four sands and the jar in hand, the game opens a pouring screen: one tall empty jar in the middle, the four coloured jars around it. Pour each one in and the sand settles into stripes. Our recording pours <b>blue first, then the cream layer, then red, then green on top</b>, and the puzzle accepts it. Bottom to top the finished jar reads blue, cream, red, green.
+      <img src="/rooms-and-exits/l5-sand-pour.jpg" alt="The sand pouring puzzle with the four coloured jars around the empty jar" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kLyiBWwoDOs&t=171s" target="_blank" rel="noopener">2:51</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 3:09</span>
+      <strong>The carved box on the shelf</strong>
+      Back at the shelf wall, a carved wooden box takes tiles across its face. You shift them one at a time until the row closes up into one continuous band with no gaps; the box then opens and hands over a <b>key</b>. There is no number to read here and nothing to copy off another screen. It is a pure manipulation puzzle, and the recording clears it in about twenty seconds of tile moves.
+      <img src="/rooms-and-exits/l5-carved-box.jpg" alt="The carved wooden box with sliding tiles on the shelf in Level 5" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kLyiBWwoDOs&t=189s" target="_blank" rel="noopener">3:09</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 3:52</span>
+      <strong>The bar shelves: sort the bottles by colour</strong>
+      The lounge bar is three shelves of bottles in green, red and pale blue, mixed on every shelf at the start. This is a sorting puzzle, not a code: move the bottles until each shelf holds a single colour. <b>green on the top shelf, red on the middle, pale blue on the bottom</b>. When the last bottle lands, the shelves release the next item.
+      <img src="/rooms-and-exits/l5-bar-bottles.jpg" alt="The bar shelves with the bottles sorted one colour per shelf" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kLyiBWwoDOs&t=232s" target="_blank" rel="noopener">3:52</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 4:24</span>
+      <strong>The piano and the photographs</strong>
+      The last screen of the level is the white Seiler piano in the lounge. There are photograph cards lying on the keys, a small padlock plate under the keyboard, and a conversation between Fiona and Jack about the old amusement park. This is the closing beat rather than a puzzle you can lose: the dialogue runs out, the camera pulls back and the level ends. The amusement park the conversation refers to is the next room, which is named Amusement Park.
+      <img src="/rooms-and-exits/l5-piano.jpg" alt="The white Seiler piano in the lounge with photographs on the keys" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kLyiBWwoDOs&t=264s" target="_blank" rel="noopener">4:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 4:56</span>
+      <strong>Level complete: +50 coins</strong>
+      The level closes on the reward screen with <b>+50 coins</b> and a mostly-full efficiency bar. Nothing carries over into Level 6 except the coins, and there is no exit door to walk through. The Yacht ends the moment the lounge conversation finishes.
+      <img src="/rooms-and-exits/l5-complete.jpg" alt="The Level Completed screen for Chapter 1 Level 5 with a +50 coin reward" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kLyiBWwoDOs&t=296s" target="_blank" rel="noopener">4:56</a></div>
+    </div>
+
+    <h2>The sand jar, stripe by stripe<span class="accent">.</span></h2>
+    <p>The jar is the one thing in the Yacht that looks like it should have a code behind it and does not. Four coloured sands, one empty jar, and no other screen in the level tells you what to do with them. Here is what our footage actually shows, in the order the sand goes in:</p>
+    <ol>
+      <li><b>Blue</b>: poured first, ends up at the bottom of the jar.</li>
+      <li><b>Cream</b>: the pale, almost white layer, poured second.</li>
+      <li><b>Red</b>: poured third, sits above the cream.</li>
+      <li><b>Green</b>: last, and it ends up as the top stripe.</li>
+    </ol>
+    <img class="hero" src="/rooms-and-exits/l5-sand-jar-shelf.jpg" alt="The finished layered sand jar back on the shelf next to the sailboat picture and the ship's bell" width="1200" height="594" loading="lazy" />
+    <p>Once the pour is done the jar returns to the shelf between the sailboat picture and the bell, and you can read the finished stripes off it any time you like. Bottom to top they are blue, cream, red, green. Which is just the pour order read backwards, so there is nothing to memorise.</p>
+    <div class="warn">
+      <b>What we could not verify:</b> whether the pour order is enforced. Our recording pours blue, cream, red, green and the game accepts it on the first attempt, but the footage never shows a wrong pour being rejected, so we cannot tell you that a different order fails. If the game refuses a pour, match the four stripes exactly as listed above.
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>The life vest.</b> The number only exists in the examine view. Players tap the vest, see an orange rectangle, and walk away. The vest has to go into the inventory and then through <b>Examine</b> before 58137 is readable at all. This one step is the difference between finishing the level in five minutes and wandering the deck for twenty.</li>
+      <li><b>The claw toy.</b> It is labelled "Toy", it comes off a sun lounger, and nothing hints that it belongs in the aquarium. If you are stuck with a finished sand stack and no white sand, this is why.</li>
+      <li><b>The empty jar.</b> The sands are useless until you have the big jar from the bell shelf. Four sands and no jar reads as a bug to most players; it is not, you have simply not picked the jar up.</li>
+      <li><b>The bar.</b> Three shelves of mixed bottles look like a colour-code puzzle with an order to memorise. They are not. Every shelf takes one colour and the game does not care about the sequence you move them in.</li>
+      <li><b>The pump bottles.</b> This is the only genuinely unhelpful screen in the level: five bottles, no instruction, and the game only reacts when the row is worked correctly. We could not recover the exact order from the footage, so treat it as trial and error. The cabinet under the counter opens in under a minute of pressing, and nothing else in the level depends on the sequence you use.</li>
+    </ul>
+
+    <h2>Chapter 1 levels<span class="accent">.</span></h2>
+    <LevelSelector chapter={1} current={5} compact={true} />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    <details><summary>What is the keypad code in Chapter 1 Level 5?</summary><p><b>58137</b>. The digits are printed in a vertical column on the left panel of the orange life vest on the aft wall, next to a red anchor and a blue anchor. Take the vest into your inventory, press Examine, read the digits top to bottom and type them into the steel keypad beside the stairs.</p></details>
+    <details><summary>Where do the four jars of coloured sand come from?</summary><p>Red sand comes out of the cabinet under the wash-corner counter once the five pump bottles are worked in the right order. Green and blue sand are picked up in the same run along the shelf wall with the sailboat picture and the ship's bell. White sand comes out of the round aquarium on the deck after you use the claw toy in it. The game stacks all four into a single jar in your inventory.</p></details>
+    <details><summary>In what order do you pour the sand into the empty jar?</summary><p>Blue first, then the cream layer, then red, then green on top. That is the order our recording pours them and the game accepts it. Read from the bottom of the finished jar upwards, the stripes are blue, cream, red, green.</p></details>
+    <details><summary>How do you solve the bar bottle shelves?</summary><p>It is a sorting puzzle, not a code. The three shelves hold bottles in green, red and pale blue, and each shelf has to end up holding one colour: green on top, red in the middle, pale blue on the bottom. When the last bottle moves, the shelves release the next item.</p></details>
+    <details><summary>What is the reward for finishing the Yacht?</summary><p><b>+50 coins</b>. The level ends in the lounge after the piano beat, with the photographs on the keys and the line about the old amusement park.</p></details>
+    <details><summary>Does the Yacht have a timed puzzle?</summary><p>No. The clock in the corner is the level clock counting up, not a countdown, and nothing in the level fails you for being slow. The only thing that can hold you up is the pump-bottle sequence on the wash counter.</p></details>
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-1-level-4/">← Level 4. High School</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-1-level-6/">Level 6. Amusement Park →</a></p>
+      <p><a href="/rooms-and-exits/">All Chapter 1 guides →</a></p>
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

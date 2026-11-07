@@ -1,0 +1,297 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 1 Level 11 Walkthrough: Lighthouse";
+const description = "Rooms & Exits Chapter 1 Level 11 walkthrough: the Lighthouse finale. The four-colour cable board, the lettered books, the node board and the five-fuse colour code that disarms the bomb.";
+const fuses = [
+  ['red', 'yellow'], ['orange', 'red'], ['purple', 'blue'], ['yellow', 'orange'], ['blue', 'pink'],
+];
+const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+  {"@type": "Question", "name": "How do you disarm the bomb in Rooms & Exits Lighthouse?", "acceptedAnswer": {"@type": "Answer", "text": "Use the Piece of paper in your inventory. It shows five fuses, each paired with a dot of a different colour: red with yellow, orange with red, purple with blue, yellow with orange, blue with pink. On the bomb panel the five wires hang in the same order, so the five round buttons want yellow, red, blue, orange and pink from top to bottom."}},
+  {"@type": "Question", "name": "What does the Piece of paper in Lighthouse show?", "acceptedAnswer": {"@type": "Answer", "text": "Two columns of five. On the left are five fuses, coloured red, orange, purple, yellow and blue from top to bottom. On the right are five dots, coloured yellow, red, blue, orange and pink in the same rows. It is a wiring table, not decoration: each row pairs the fuse on the left with the button colour on the right."}},
+  {"@type": "Question", "name": "How many levels are in Rooms & Exits Chapter 1?", "acceptedAnswer": {"@type": "Answer", "text": "Chapter 1, Wicked Games, has eleven rooms. Lighthouse is the eleventh and the last one; finishing it returns you to the level map and closes the chapter."}},
+  {"@type": "Question", "name": "Does Lighthouse have a timer or a fail state?", "acceptedAnswer": {"@type": "Answer", "text": "No. The man tied to the chair is carrying dynamite and a display, which reads as a countdown, but the room never fails you. There is no restart screen and the puzzles wait for you. Our recording clears the level with an in-game time of 12:51."}},
+  {"@type": "Question", "name": "Is there a number code in Lighthouse?", "acceptedAnswer": {"@type": "Answer", "text": "No. Lighthouse is the one Chapter 1 room with no keypad and no digit code. Every lock in it is either a path to trace, a row of icons to set or the colour pairing from the Piece of paper. If you are searching for four digits, you are in the wrong room."}}]};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-1-level-11"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 1 Level 11"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .pair-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 6px; margin: 0.8rem 0; }
+    .pair-grid span { background: #fff; border: 1.5px solid var(--border); border-radius: 8px; padding: 6px 9px; font-size: 0.85rem; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 7px; }
+    .sw { width: 14px; height: 14px; border-radius: 50%; display: inline-block; border: 1px solid rgba(0,0,0,0.18); flex: none; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 1</a> &gt; Level 11</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 1 Level 11 Walkthrough: Lighthouse</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from a recorded playthrough of the current build. Lighthouse is the last room of Chapter 1 and the only one in it with two floors: you can see both from the spiral staircase, and the whole level is a loop between them. Our recording clears it in 12:51 of in-game time, which makes it the longest room of the chapter.</div>
+
+    <LevelSelector chapter={1} current={11} variant="jump" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>The last lock is the <b>bomb on the man upstairs</b>, and the answer is a colour pairing, not a number. There is no keypad anywhere in Lighthouse.</p>
+      <ol>
+        <li>Open the <b>Piece of paper</b> in your inventory. It is a wiring table: five fuses on the left, five dots on the right.</li>
+        <li>Read the rows: <b>red&nbsp;→&nbsp;yellow</b>, <b>orange&nbsp;→&nbsp;red</b>, <b>purple&nbsp;→&nbsp;blue</b>, <b>yellow&nbsp;→&nbsp;orange</b>, <b>blue&nbsp;→&nbsp;pink</b>.</li>
+        <li>On the bomb panel the five wires hang in exactly that order, so the five round buttons want <b>yellow, red, blue, orange, pink</b> from top to bottom.</li>
+        <li>Everything else in the room feeds the way there: the four-colour cable board, the lettered books, the 3x3 candle shelf and the node board.</li>
+        <li>Finishing it closes Chapter 1. Lighthouse is room 11 of 11.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/-0FSYyvjFTs" title="Rooms &amp; Exits Chapter 1 Level 11 Lighthouse walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/l11-hero-lantern-room.jpg" alt="Rooms and Exits Chapter 1 Level 11 Lighthouse: the lantern room with the big lamp, crates and the man tied to a chair" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>Lighthouse is two rooms stacked on top of each other, and the game opens in the wrong one on purpose: you start in the lantern room, standing next to a man who cannot tell you what he needs.</p>
+    <ul>
+      <li><b>The living quarters</b>: a round stone room with a spiral staircase, a bookshelf, a sofa, a small television, a white 3x3 shelf unit of candles and a chest. Almost every clue in the level is in here.</li>
+      <li><b>The lantern room</b>: the glass floor at the top: multi-pane windows all round, the big lamp mechanism in the middle, a red tool chest, crates, a first-aid kit and a man tied to a wooden chair with dynamite and a grey device strapped to him.</li>
+    </ul>
+    <p>The man is the reason you are here and the room wants you to think he is a countdown. He is not. Nothing in Lighthouse fails you, there is no restart screen, and the display on his chest is not a clock you race. Players who sprint between the two floors looking for a code lose more time than the room actually takes. Our recording spends twelve minutes and change and most of that is reading, not reacting.</p>
+    <p>The shape of the level is a single loop. The living quarters hand out items and patterns; the lantern room consumes them; and the last thing you touch, the defusal panel on the bomb, is opened by an item you picked up downstairs and probably never examined. That is the whole trick.</p>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:12</span>
+      <strong>Two floors, two jobs</strong>
+      The level opens upstairs. Windows on every side, the big lamp housing in the middle, crates and a tool chest against the wall, and a man tied to a wooden chair with a grey device and bundles of dynamite strapped to him. Tap him once: the close-up is your goal for the next twelve minutes. There is nothing to solve in this room yet. Everything the man needs is one floor down, through the hatch by the spiral staircase.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=-0FSYyvjFTs&t=12s" target="_blank" rel="noopener">0:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:48</span>
+      <strong>The living quarters, swept once before you touch anything</strong>
+      Go downstairs and do a lap without solving anything. Four things matter and three of them look like furniture: the bookshelf with a row of decorated volumes, the little television on the sideboard, the white 3x3 shelf unit of candles next to the sofa, and the chest in the middle of the floor. The potted plant is not decoration either. Lifting items here costs nothing and the level never punishes a wasted tap, so take the lap: several of these are locked until something else in the room is done, and knowing which is which saves you a second pass.
+      <img src="/rooms-and-exits/l11-living-quarters.jpg" alt="The living quarters of the Lighthouse: bookshelf, sofa, spiral staircase and candle shelf" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=-0FSYyvjFTs&t=48s" target="_blank" rel="noopener">0:48</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 1:12</span>
+      <strong>The four-colour cable board</strong>
+      A wooden board in a white bracket frame, with channels carved into it and four coloured pairs on it: a dot and a matching square for each colour. Drag a path from each dot through the channels to its own square. The channels are shared and the paths cannot cross, so the first colour you draw decides how much room the others have left. This is the one puzzle in the level where a wrong start is worth undoing rather than pushing through. Our recording does them one at a time and the board clears in about a minute.
+      <img src="/rooms-and-exits/l11-cable-board.jpg" alt="The four-colour cable board in the Lighthouse living quarters" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=-0FSYyvjFTs&t=72s" target="_blank" rel="noopener">1:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 2:36</span>
+      <strong>Wheel and Handle. Two items that are one item</strong>
+      Two pickups in a row, both named on screen: a <b>Wheel</b> and a <b>Handle</b>. Both are taken in the lantern room, next to the red tool chest, and our recording walks them straight back to that chest. Nothing in the level names the target, so if you are hunting for where they go, the chest is the first thing to try. A wheel and a handle that arrive together on a wheeled chest is not a coincidence.
+      <img src="/rooms-and-exits/l11-tool-chest.jpg" alt="The red tool chest in the Lighthouse lantern room" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=-0FSYyvjFTs&t=156s" target="_blank" rel="noopener">2:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 3:30</span>
+      <strong>The three-slot icon panel</strong>
+      A grey panel with three square windows in it, each showing one carved icon: a captain's hat, a lifebuoy, a submarine. Tap a window and the icon in it changes, which is the whole mechanic. This is a set of three reels, not a lock. Our recording cycles the windows a few times before the panel releases, so the icons are not fixed to their slots. The trap is that all three start on plausible nautical icons, which makes the panel look finished the first time you find it.
+      <img src="/rooms-and-exits/l11-icon-panel.jpg" alt="The three-slot icon panel showing a captain's hat, a lifebuoy and a submarine" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=-0FSYyvjFTs&t=210s" target="_blank" rel="noopener">3:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 3:42</span>
+      <strong>Candle and Lighter</strong>
+      Two more named pickups, and this pair is a construction rather than a key: a <b>Candle</b> on a small round plate, and later a red <b>Lighter</b> by the plant. Where they are used is the candle shelf in the living quarters: our recording ends up back at that shelf with both in the bag, and the candles on it are burning from that point on.
+      <img src="/rooms-and-exits/l11-candle-lighter.jpg" alt="The Lighter item picked up in the Lighthouse living quarters" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=-0FSYyvjFTs&t=222s" target="_blank" rel="noopener">3:42</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 4:06</span>
+      <strong>The hanging panel</strong>
+      A horizontal bar with objects hung from it on hooks. A bell, shells, a small bucket. With gears at both ends. Our recording sets the row and the panel gives way immediately after. This is the puzzle people give up on because it does not look like a lock at all; it reads as a workshop rack. Treat the positions as a code: copy the order you saw, count from the left, and set each item by tapping it rather than dragging.
+      <img src="/rooms-and-exits/l11-hanging-panel.jpg" alt="The hanging objects panel with a bell, shells and a bucket on a gear rail" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=-0FSYyvjFTs&t=246s" target="_blank" rel="noopener">4:06</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 5:42</span>
+      <strong>The row of lettered books</strong>
+      Five decorated volumes in a row on the shelf, one letter on each spine, in five different colours. Read them off the shelf in the order they stand and put that order into the lock they belong to. Two warnings. First, the letters are not a word you can recognise, so do not try to guess the answer from the letters. Copy the row. Second, our two passes over this shelf read the letters in different orders, and we would rather not hand you a five-letter string we cannot stand behind. Read the row on your own screen; the letters are large and there is nothing else competing for space.
+      <img src="/rooms-and-exits/l11-bookshelf-books.jpg" alt="The row of five decorated books with letters on the spines in the Lighthouse living quarters" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=-0FSYyvjFTs&t=342s" target="_blank" rel="noopener">5:42</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 6:12</span>
+      <strong>The television and the 3x3 shelf unit</strong>
+      Two pieces of furniture on the same side of the living quarters that are easy to walk past. The small television on the sideboard is interactive. Tap it and the game gives you a close-up rather than a line of dialogue. The white shelf unit next to the sofa is a 3x3 grid of compartments, some of them holding candle-shaped objects, and it is the thing the candle you picked up two steps ago is for. Neither of them opens on the first visit; both come back later in the level.
+      <img src="/rooms-and-exits/l11-tv.jpg" alt="The small television in the Lighthouse living quarters" width="1200" height="594" loading="lazy" />
+      <img src="/rooms-and-exits/l11-shelf-grid.jpg" alt="The white 3x3 candle shelf unit in the Lighthouse living quarters" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=-0FSYyvjFTs&t=372s" target="_blank" rel="noopener">6:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 8:30</span>
+      <strong>The man, and the only written line in the level</strong>
+      Back up in the lantern room, the man tied to the chair gets his close-up and one line: <em>"Please, help me, I'm so afraid!"</em> That is the entire instruction the game gives you, and it is also the moment to actually look at what is strapped to him. A grey open-front device with a panel of coloured buttons and wires inside it, bundled with dynamite, and a red display above the buttons. The panel is the last puzzle in the level, and it is shut until you have the paper. If you came up here hoping to force it, you are one item short.
+      <img src="/rooms-and-exits/l11-man-dialogue.jpg" alt="The man tied to the chair with the bomb device in the Lighthouse lantern room" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=-0FSYyvjFTs&t=510s" target="_blank" rel="noopener">8:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 10:06</span>
+      <strong>The node board</strong>
+      A metal-framed network of small nodes. Roughly three dozen of them. With two larger ringed nodes at opposite corners and no obvious order to follow. The job is to link the two ringed nodes through the network: you tap node by node and the ones you have taken light up, while everything untouched stays its original colour. In our recording the path is built one node at a time and the whole board flips green when the two ends finally connect. Everything you can see on the board is on the board; there is no external clue for this one, which is why it eats time.
+      <img src="/rooms-and-exits/l11-node-path.jpg" alt="The node network puzzle in the Lighthouse living quarters" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=-0FSYyvjFTs&t=606s" target="_blank" rel="noopener">10:06</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 11:00</span>
+      <strong>The candle chart, and the shelf that answers it</strong>
+      A 3x3 card of candle drawings. Nine cells, each one a different candle in a different holder. And then the white shelf unit again with the candle you carried down from the lantern room sitting in it. This is the step the whole candle-and-lighter thread has been pointing at. Our recording works the two together: the chart tells you what the shelf should look like, the shelf is where you build it. Once the candles on the shelf are lit, the room stops sending you back to it.
+      <img src="/rooms-and-exits/l11-candle-chart.jpg" alt="The 3x3 candle chart in the Lighthouse living quarters" width="1200" height="594" loading="lazy" />
+      <img src="/rooms-and-exits/l11-candle-shelf.jpg" alt="The candle shelf with lit candles in the Lighthouse living quarters" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=-0FSYyvjFTs&t=660s" target="_blank" rel="noopener">11:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 12:36</span>
+      <strong>The Piece of paper. The answer to the whole level</strong>
+      The item you have been carrying since the living quarters, finally worth opening. It is a wiring table, drawn in two columns of five. On the left, five fuses. On the right, five dots. Each row pairs one fuse with one dot of a different colour, and that is the code for the bomb. Our two independent reads of this item agree row for row, and the fuse colours match the wires hanging inside the defusal panel exactly. Which is how we know the paper is a drawing of that panel and not a general hint.
+      <div class="pair-grid">
+        {fuses.map(([a, b]) => (
+          <span>
+            <i class="sw" style={`background:${a}`} /> {a} fuse
+            <b>→</b>
+            <i class="sw" style={`background:${b}`} /> {b}
+          </span>
+        ))}
+      </div>
+      <img src="/rooms-and-exits/l11-paper-code.jpg" alt="The Piece of paper showing five fuses paired with five coloured dots" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=-0FSYyvjFTs&t=756s" target="_blank" rel="noopener">12:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 13:08</span>
+      <strong>The bomb panel: five wires, five buttons</strong>
+      The panel inside the device on the man's chest. Left to right there are three things: five wire ends, five round buttons, five small square buttons. The wire ends hang in the same order as the fuses on the paper. <b>red, orange, purple, yellow, blue</b>: and the round buttons are what the dots refer to. So the buttons want, from top to bottom: <b>yellow</b> for the red fuse, <b>red</b> for the orange fuse, <b>blue</b> for the purple fuse, <b>orange</b> for the yellow fuse, and <b>pink</b> for the blue fuse. Our recording works them from top to bottom, one at a time, and the panel goes green on the last one.
+      <div class="warn">
+        <b>Do not match a button to the wire beside it.</b> The panel is laid out so that the button sitting next to a red wire is not the red one. The paper pairs each fuse with a <em>different</em> colour, and that is the whole puzzle. If you have been pressing buttons by the colour of the wire in the same row, nothing will happen no matter how many times you do it.
+      </div>
+      <img src="/rooms-and-exits/l11-bomb-panel.jpg" alt="The bomb defusal panel with five coloured wires and five round buttons" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=-0FSYyvjFTs&t=788s" target="_blank" rel="noopener">13:08</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 13:38</span>
+      <strong>Level complete. And the end of Chapter 1</strong>
+      The panel clears, the close-up cuts back to the room, and the last dialogue plays out: <em>"Quick! We can all leave now!"</em> Then the summary: <b>LEVEL COMPLETED!</b>, <b>+50 coins</b>, efficiency <b>8 of 10</b>, in-game time <b>12:51</b>, and 80 coins into the piggy bank. Lighthouse is room eleven of eleven, so this is where Chapter 1, Wicked Games, ends. There is no epilogue screen and no cutscene gate. You get the summary, the Continue button, and the map.
+      <img src="/rooms-and-exits/l11-level-complete.jpg" alt="The Level Completed screen for Rooms and Exits Chapter 1 Level 11 Lighthouse" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=-0FSYyvjFTs&t=818s" target="_blank" rel="noopener">13:38</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>They look for a keypad.</b> Lighthouse has no digit code anywhere. Every lock is a path, a row of icons or the colour pairing, so searching the walls for four digits is searching for something the room does not have.</li>
+      <li><b>They read the paper as a drawing instead of a table.</b> The five fuses on the left and the five dots on the right are a wiring diagram. If you only look at the fuses, the panel looks like it wants you to match colours that are already matched, and you press buttons for ten minutes with nothing happening.</li>
+      <li><b>They treat the man as a countdown.</b> The device has a red display and he is visibly terrified, which reads as a timer. Nothing in this room fails you. Players who rush between the two floors lose more time than the room takes.</li>
+      <li><b>They leave the candle behind.</b> The Candle and the Lighter are the two items in the level that look like set dressing, and the shelf they belong to is the one piece of furniture in the living quarters that stays inert until they arrive.</li>
+      <li><b>They stop at the panel.</b> The defusal panel is the last puzzle, not the last action. Once the buttons are set, the close-up stays on the device until the dialogue plays out. Tap through it or you will sit in front of a finished puzzle wondering what else is missing.</li>
+    </ul>
+
+    <h2>Chapter 1 ends here<span class="accent">.</span></h2>
+    <p>Lighthouse is the eleventh room of eleven in Chapter 1, and the level summary is the only ending the chapter gets. No credits, no cutscene, no second door. If you have come this far in order, the earlier rooms are all written up on the hub: <a href="/rooms-and-exits/">Chapter 1 level guides</a>. Chapter 2 is not documented on this site yet; when it is, it will be built the same way, from recordings rather than from other guides.</p>
+    <p>One thing worth knowing before you move on: the level card prices Lighthouse at <b>15 energy</b> and pays <b>+50 coins</b>, which is worth planning around if you are running the chapter on a budget.</p>
+
+    <h2>Chapter 1 levels<span class="accent">.</span></h2>
+    <LevelSelector chapter={1} current={11} compact={true} />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    <details><summary>How do you disarm the bomb in Rooms &amp; Exits Lighthouse?</summary><p>Use the Piece of paper in your inventory. It shows five fuses, each paired with a dot of a different colour: red with yellow, orange with red, purple with blue, yellow with orange, blue with pink. On the bomb panel the five wires hang in the same order, so the five round buttons want yellow, red, blue, orange and pink from top to bottom.</p></details>
+    <details><summary>What does the Piece of paper in Lighthouse show?</summary><p>Two columns of five. On the left are five fuses, coloured red, orange, purple, yellow and blue from top to bottom. On the right are five dots, coloured yellow, red, blue, orange and pink in the same rows. It is a wiring table, not decoration: each row pairs the fuse on the left with the button colour on the right.</p></details>
+    <details><summary>How many levels are in Rooms &amp; Exits Chapter 1?</summary><p>Chapter 1, Wicked Games, has eleven rooms. Lighthouse is the eleventh and the last one; finishing it returns you to the level map and closes the chapter.</p></details>
+    <details><summary>Does Lighthouse have a timer or a fail state?</summary><p>No. The man tied to the chair is carrying dynamite and a display, which reads as a countdown, but the room never fails you. There is no restart screen and the puzzles wait for you. Our recording clears the level with an in-game time of 12:51.</p></details>
+    <details><summary>Is there a number code in Lighthouse?</summary><p>No. Lighthouse is the one Chapter 1 room with no keypad and no digit code. Every lock in it is either a path to trace, a row of icons to set or the colour pairing from the Piece of paper. If you are searching for four digits, you are in the wrong room.</p></details>
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-1-level-10/">← Level 10. Train Station</a></p>
+      <p>Next: <a href="/rooms-and-exits/">Chapter 2 (guides in progress) →</a></p>
+      <p><a href="/rooms-and-exits/">All Chapter 1 guides →</a></p>
+    </div>
+
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

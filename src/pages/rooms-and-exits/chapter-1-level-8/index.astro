@@ -1,0 +1,327 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 1 Level 8 Walkthrough: Log Cabin";
+const description = "Rooms & Exits Chapter 1 Level 8 Log Cabin walkthrough: the laptop display that wants 1746, the six animal portraits hiding a red safe, the two collection sets (8 stained glass, 5 tiles) and the door keypad code 358429 that ends the level.";
+const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+  {"@type": "Question", "name": "What is the code for the door at the end of Log Cabin?", "acceptedAnswer": {"@type": "Answer", "text": "358429. It is written on the piece of paper you pick up at the very end of the level, after the last puzzle is solved, and the six-digit keypad beside the door takes it."}},
+  {"@type": "Question", "name": "What is the four-digit code on the laptop in Level 8?", "acceptedAnswer": {"@type": "Answer", "text": "1746. The laptop on the desk by the window shows 0000 when you open it; the recording sets it to 1746 and the display takes it. We read the seven-segment digits twice at high zoom because OCR tends to confuse 7 with 0 and 6 with 3 on that font."}},
+  {"@type": "Question", "name": "How many stained glass pieces and tiles are there in Log Cabin?", "acceptedAnswer": {"@type": "Answer", "text": "Two separate collections: eight stained glass pieces, which reach 8/8 at 3:22, and five coloured tiles, which reach 5/5 at 2:46. They feed the two last puzzles, not the door."}},
+  {"@type": "Question", "name": "What is behind the animal portraits in Log Cabin?", "acceptedAnswer": {"@type": "Answer", "text": "A red safe with twelve paw-print buttons, green and red buttons underneath them, and a gold dial on the right. Solving the wall opens the compartment; the safe itself opens after the paw-print sequence from the desk drawer."}},
+  {"@type": "Question", "name": "Does Log Cabin have a timed puzzle?", "acceptedAnswer": {"@type": "Answer", "text": "No. Nothing in Level 8 is on a clock. The longest single puzzle is the hexagonal glass panel in the last third, which took the recording about ninety seconds."}}]};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-1-level-8"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 1 Level 8"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .fact-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; }
+    .fact-table th, .fact-table td { border: 1px solid var(--border); padding: 0.45rem 0.6rem; text-align: left; }
+    .fact-table th { background: #FFF0D4; color: #8A5A00; font-weight: 800; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 1</a> &gt; Level 8</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 1 Level 8 Walkthrough: Log Cabin</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from a recorded playthrough of the current build (5:12 total, no cuts). Every number on this page was read at least twice at high zoom, and the two readings had to agree before it was written down. Where they did not agree, the page tells you so instead of picking one.</div>
+
+    <LevelSelector chapter={1} current={8} variant="jump" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Log Cabin is one room with two collection sets and two codes. The codes are <b>1746</b> (the laptop on the desk) and <b>358429</b> (the door keypad at the very end).</p>
+      <ol>
+        <li>Laptop on the desk by the window: set the four-digit display to <b>1746</b>.</li>
+        <li>Collect as you go: <b>8 stained glass pieces</b> and <b>5 coloured tiles</b>. Both sets are needed for the last two puzzles, so do not walk past a piece on the floor.</li>
+        <li>Six black-and-white animal portraits on the wall right of the fireplace hide a <b>red safe</b> with twelve paw-print buttons. The sheet of animal outlines you find at 0:40 is the only animal list in the room.</li>
+        <li>Desk drawer: four paw prints on a white strip, tapped in order.</li>
+        <li>Solve the circular bird window (it gives the <b>hammer</b>), use the hammer, take the <b>key</b>, finish the 4×4 tile board, then fill the hexagonal glass panel.</li>
+        <li>The piece of paper at the end reads <b>358429</b>. Type it on the six-digit keypad and the door opens.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/Jnh_YS7ZIrY" title="Rooms & Exits Chapter 1 Level 8 Log Cabin walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/l8-hero-cabin.jpg" alt="Rooms and Exits Chapter 1 Level 8 Log Cabin: the whole room with fireplace, red sofa, desk by the window and the wall of animal portraits" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>Log Cabin is the first level in Chapter 1 that is a <em>single</em> room. No corridor, no second area, no walking between scenes: the fireplace, the sofa, the desk and the door are all inside one cut-away cabin, and the camera never leaves it. That is the good news. The bad news is that everything is layered on top of everything else, so the level looks finished long before it is.</p>
+    <p>There are four things to keep in mind before you touch anything:</p>
+    <ul>
+      <li><b>One room, five work surfaces.</b> The tall cabinet on the left (boots and cameras), the coffee table in the middle (a small tile board), the wall right of the fireplace (six animal portraits), the desk by the window (a laptop), and the tree-branch sculpture on the far right wall (a keyhole).</li>
+      <li><b>Two collection sets, not one.</b> Eight stained glass pieces and five coloured tiles run as separate counters in your bag. They finish at 2:46 (tiles, 5/5) and 3:22 (glass, 8/8) and they unlock the two hardest puzzles.</li>
+      <li><b>Two codes, both given to you late.</b> The laptop wants 1746; the exit door wants 358429. Neither is written anywhere near the lock that uses it.</li>
+      <li><b>No timer, no hearts, no fail state.</b> Nothing in Level 8 punishes a wrong answer beyond a red flash, so there is no reason to rush a puzzle you have not understood.</li>
+    </ul>
+    <p>The reason players stall here is almost never a hard puzzle. It is that the room gives you two of everything. Two counters, two keypads, two animal clues. And the game never says which one belongs to which lock.</p>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>The order below is the order the recording actually played the level in, not a theoretical optimum. Where the recording backtracks, the step says so. Timestamps are links into the video at the exact second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:03</span>
+      <strong>The title card, then the room</strong>
+      The level card reads <b>Level 8. Log Cabin</b> and drops you straight into the cut-away room: door and tall cabinet on the left, fireplace and red sofa in the middle, desk with a laptop under the window on the right, and a wall of framed animal photos between the fireplace and the desk. The camera is free-rotation, so the first useful thing to do is a slow 360° sweep and count the work surfaces. There are five, and this page walks them in the order the recording does.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=3s" target="_blank" rel="noopener">0:03</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:06</span>
+      <strong>First pickup: the green tile</strong>
+      Six seconds in, the game hands you a floating <b>Green tile</b> with its name printed underneath. The label is the game's way of telling you it is an inventory item and not scenery. This is the first of the <b>five tiles</b>. Pick up every one you see: the tile counter has to reach 5/5 before the board on the coffee table will do anything.
+      <img src="/rooms-and-exits/l8-green-tile.jpg" alt="The Green tile pickup in Rooms and Exits Log Cabin" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=6s" target="_blank" rel="noopener">0:06</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:09</span>
+      <strong>Second pickup: a stained glass piece</strong>
+      Three seconds later it is a <b>Stained glass</b> piece, the first of <b>eight</b>. Do not confuse the two counters in your bag: the glass set is the bigger one and it finishes last (8/8 at 3:22), the tile set is the smaller one and it finishes at 2:46. If you are ever short one piece at the end, check the bag, not the room. The counters tell you which set you are missing from.
+      <img src="/rooms-and-exits/l8-stained-glass.jpg" alt="A stained glass piece being picked up in the Log Cabin" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=9s" target="_blank" rel="noopener">0:09</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:22</span>
+      <strong>The tall cabinet: boots and cameras</strong>
+      The left-hand cabinet is the one piece of furniture that looks like a puzzle and is not. The lower shelf holds four pairs of patterned wellington boots. Red, blue with hearts, yellow with flowers, green. And the upper shelf holds cameras, a tripod and a grey bag. The only thing here that responds to a tap is the camera, which opens into a close-up view of the body and the lens. No lock, no code, no combination. Spend ten seconds here, then leave it alone.
+      <img src="/rooms-and-exits/l8-entry-shelf.jpg" alt="The cabinet in Log Cabin with boots and cameras on its shelves" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=22s" target="_blank" rel="noopener">0:22</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 0:25</span>
+      <strong>The laptop by the window: 0000 becomes 1746</strong>
+      The desk under the window has a laptop, a white cup on a saucer, a pen holder and a smartwatch with its face dark. Tapping the laptop opens a four-digit seven-segment display reading <b>0000</b>. The recording sets it to <b>1746</b> and moves on, so the display took it.
+      <p><b>1746</b> is the number this level hinges on, and it is also the easiest number in the level to misread. On that seven-segment font a <b>7</b> reads like a <b>0</b> and a <b>6</b> reads like a <b>3</b>: we had machine text recognition insist on 1043 and 1045 off the same frame, while two high-zoom reads of the lit segments said 1-7-4-6. The segment map won. 1746. If your display refuses it, check the second digit first.</p>
+      <img src="/rooms-and-exits/l8-laptop-code.jpg" alt="The laptop display in Log Cabin set to the code 1746" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=25s" target="_blank" rel="noopener">0:25</a> · accepted at <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=33s" target="_blank" rel="noopener">0:33</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 0:40</span>
+      <strong>The sheet of animal outlines</strong>
+      A light-blue sheet with six animals drawn as single unbroken lines, laid out three over three: <b>giraffe, elephant, wolf</b> on the top row and <b>big cat, bear, deer</b> on the bottom. No numbers, no arrows, no handwriting. It is the only object in the room that lists animals, which is what makes it important. The wall right of the fireplace is six animal portraits, and they are the same six animals. Keep the sheet in mind; you will use the wall in the next step.
+      <img src="/rooms-and-exits/l8-animal-sheet.jpg" alt="The sheet of six one-line animal outlines found in Log Cabin" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=40s" target="_blank" rel="noopener">0:40</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 0:48</span>
+      <strong>The six portraits, and the red safe behind the big one</strong>
+      The wall right of the fireplace carries six framed black-and-white wildlife portraits: <b>lioness, wolf and giraffe</b> across the top, and <b>elephants, a much larger bear and a deer</b> below them. They are not decoration: the recording spends eighteen seconds working this wall, the frames shift, and the big central bear frame swings away to reveal a <b>red safe</b> set into the wall.
+      <p>That is the trap of Level 8. The safe is not behind a hidden switch or a puzzle you can skip. It is behind the largest picture on the wall, the one you are most likely to read as set dressing. If you have been staring at a room with nothing to do, you have not pressed the bear.</p>
+      <img src="/rooms-and-exits/l8-photo-wall.jpg" alt="The six black and white animal portraits on the Log Cabin wall" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=48s" target="_blank" rel="noopener">0:48</a> · safe revealed at <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=69s" target="_blank" rel="noopener">1:09</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 1:14</span>
+      <strong>The desk drawer: four paw prints on a white strip</strong>
+      The desk has a drawer, and the drawer is a puzzle. Inside, pinned along the back, is a white strip printed with <b>four paw prints</b>, each one a different animal's print. Tapping them marks one at a time; the recording works them for about thirteen seconds and the drawer stops being a drawer. It becomes a clue. This is the only place in Log Cabin where paw prints are laid out in a line, and there is exactly one lock in the room that takes paw prints.
+      <img src="/rooms-and-exits/l8-paw-strip.jpg" alt="The white strip with four paw prints inside the Log Cabin desk drawer" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=74s" target="_blank" rel="noopener">1:14</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 1:39</span>
+      <strong>The red safe: twelve paw buttons and a dial</strong>
+      The safe behind the bear frame is red with a grid of <b>twelve paw-print buttons</b>, green and red buttons underneath them, and a gold dial on the right-hand edge. This is a two-part lock: the paw buttons take the sequence, the dial is what you turn to open it.
+      <p>Order matters. The drawer strip at 1:14 is the only ordered set of prints in the room, so if you are guessing, you are guessing at something the level already told you. The recording has the safe open by <b>1:42</b> and the wooden panel beside it open by <b>1:45</b>; two compartments, one after the other.</p>
+      <img src="/rooms-and-exits/l8-red-safe.jpg" alt="The red safe with twelve paw print buttons and a gold dial in Log Cabin" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=99s" target="_blank" rel="noopener">1:39</a> · open at <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=102s" target="_blank" rel="noopener">1:42</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 1:51</span>
+      <strong>The circular bird window</strong>
+      Above the cabinet on the left wall hangs a round stained-glass picture of <b>two birds on a branch</b>, and it is cut into segments. The segments turn. This is a rotation puzzle, not a jigsaw: you tap a segment, it spins, and the picture only settles when every ring lines up with its neighbours. The branch has to run continuously across the circle and both birds have to sit upright in their own ring.
+      <p>Work from the centre outward. The recording takes eighteen seconds here (1:51 to 2:09) with no backtracking, which is what a centre-out order looks like; hunting randomly on a rotating ring puzzle is what turns it into ten minutes.</p>
+      <img src="/rooms-and-exits/l8-bird-window.jpg" alt="The circular two bird stained glass picture in Log Cabin" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=111s" target="_blank" rel="noopener">1:51</a> · solved at <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=129s" target="_blank" rel="noopener">2:09</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 2:13</span>
+      <strong>A box opens under the window picture: the hammer</strong>
+      Aligning the birds opens a small wooden box below the picture, and inside it is a <b>Hammer</b> with its name printed under it. Take it. Nothing in the room will tell you what the hammer is for, and that is deliberate. The target is a stone surface, not a container, so there is nothing to tap that looks like a lock.
+      <img src="/rooms-and-exits/l8-hammer-box.jpg" alt="The open wooden box with the hammer inside, under the bird window" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=133s" target="_blank" rel="noopener">2:13</a> · picked up at <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=139s" target="_blank" rel="noopener">2:19</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 2:24</span>
+      <strong>Use the hammer, take the orange tile and the key</strong>
+      The hammer goes on the stonework around the fireplace, not on furniture. Break the stone and the game gives you an <b>Orange tile</b> (2:30) and then a <b>Key</b> (2:31). The key belongs to the <b>tree-branch sculpture</b> on the far right wall. The gnarled dark branch mounted on the pale panel has a keyhole in its trunk, and turning the key opens a compartment inside it.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=144s" target="_blank" rel="noopener">2:24</a> · tile at <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=150s" target="_blank" rel="noopener">2:30</a> · key at <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=151s" target="_blank" rel="noopener">2:31</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 2:48</span>
+      <strong>The 4×4 tile board on the coffee table</strong>
+      With the tile counter at <b>5/5</b> (2:46), the coffee table stops being a table. It opens into a <b>4×4 board of sixteen coloured squares</b>: red, green, blue, orange and yellow. And exactly <b>five of those squares carry a small white dot</b>. Five dots, five tiles. That is the whole hint the game gives you.
+      <p>The recording spends twenty-five seconds swapping tiles and the board locks at about <b>3:13</b>. Watch the dotted squares, not the whole grid: the five marked positions are the only ones that have to change, and the other eleven are there to make the board look like a bigger problem than it is.</p>
+      <img src="/rooms-and-exits/l8-tile-board.jpg" alt="The 4x4 coloured tile board in Log Cabin with five white dots marking squares" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=168s" target="_blank" rel="noopener">2:48</a> · locks at <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=193s" target="_blank" rel="noopener">3:13</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 3:27</span>
+      <strong>The hexagonal glass panel: the last long puzzle</strong>
+      One more stained glass piece at <b>3:16</b> takes the counter to <b>8/8</b> (3:22), and then a wide yellow panel slides into the middle of the room. In the centre of it is a <b>window frame filled with hexagons</b>; on the left and right of the frame sit clusters of coloured hexagons. Red, green, blue, white and tan. In triangular and chevron shapes. The clusters are the pieces. You drag them into the frame.
+      <p>This is the longest single stretch in the level: <b>3:27 to 4:55, about eighty-eight seconds</b> of continuous work. Nothing else in Log Cabin takes that long, so if you have been at this for two minutes and it still looks half empty, you are not stuck. You are on pace. Fill from the bottom of the frame upward, because the bottom rows are the ones the panel pre-fills and the empty sockets at the top are what you are actually matching.</p>
+      <img src="/rooms-and-exits/l8-glass-panel.jpg" alt="The yellow panel with a hexagonal stained glass window frame and coloured hex clusters in Log Cabin" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=207s" target="_blank" rel="noopener">3:27</a> · finished at <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=295s" target="_blank" rel="noopener">4:55</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 4:59</span>
+      <strong>The piece of paper: 358429</strong>
+      The panel closes and the room hands you the last object it has: a yellow <b>Piece of paper</b> with <b>358429</b> written on it. Fiona and Jack talk over it. "I think we found everything there is to find here". Which is the game's way of telling you the search phase is over.
+      <p>Do not overthink this number. It is not a cipher, not a date, and not the laptop code with two extra digits; it is a six-digit door code that goes in exactly as printed. It is also the number this page checks hardest: the same six digits were read off the paper at 4:59 and off the keypad display at 5:07 by two different readers, and both agreed.</p>
+      <img src="/rooms-and-exits/l8-paper-code.jpg" alt="The piece of paper in Log Cabin with the door code 358429 written on it" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=299s" target="_blank" rel="noopener">4:59</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 5:05</span>
+      <strong>The six-digit keypad by the door</strong>
+      Back at the door on the left wall there is a keypad with a green display above a standard 1–9/0 pad. The display fills one digit at a time. It shows <b>2</b>, then <b>358</b>, then the full <b>358429</b>: and the door releases. If your display is still showing a single digit after six presses, you have been pressing too fast; the pad drops inputs while it is animating.
+      <img src="/rooms-and-exits/l8-final-keypad.jpg" alt="The six digit keypad by the door in Log Cabin with 358 entered" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=305s" target="_blank" rel="noopener">5:05</a> · complete code at <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=307s" target="_blank" rel="noopener">5:07</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 17 · 5:11</span>
+      <strong>Level complete</strong>
+      The door opens, the walk-out plays, and the summary screen reads <b>LEVEL COMPLETED!</b> with <b>+50 coins</b> and <b>+1</b> of the purple crystal. The recording finishes the room at <b>5:12</b>, which makes Log Cabin a medium-length level for Chapter 1: longer than Warm Up or Escape Room, shorter than the three-area rooms like High School.
+      <img src="/rooms-and-exits/l8-complete.jpg" alt="The Level Completed screen for Rooms and Exits Chapter 1 Level 8 Log Cabin" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Jnh_YS7ZIrY&t=311s" target="_blank" rel="noopener">5:11</a></div>
+    </div>
+
+    <h2>The two numbers, and what they open<span class="accent">.</span></h2>
+    <p>Log Cabin uses two keypads and they are not interchangeable. Getting them the wrong way round is the single most common way to waste five minutes in this room.</p>
+    <table class="fact-table">
+      <tr><th>Lock</th><th>Code</th><th>How it reads on screen</th></tr>
+      <tr><td>Laptop on the desk, under the window (0:25)</td><td><b>1746</b></td><td>Four digits, seven-segment font, starts at 0000</td></tr>
+      <tr><td>Keypad beside the door, after the last puzzle (5:05)</td><td><b>358429</b></td><td>Six digits, green display above a 1–9/0 pad, printed on the paper at 4:59</td></tr>
+    </table>
+    <p>Everything else in the room is a physical puzzle: frames to press, rings to turn, paw prints to tap, tiles to swap, hexagons to drag. There is no third code, and the red safe takes paw prints rather than digits, so no combination you find written anywhere goes into a numeric pad except these two.</p>
+
+    <h2>Why the two collections matter<span class="accent">.</span></h2>
+    <p>Two counters run in parallel in your bag, and the game is not generous about telling you which is which. They are the reason Log Cabin feels unfair: you can solve four puzzles, be missing one piece, and have no idea what you are missing.</p>
+    <ul>
+      <li><b>Five coloured tiles</b>: Green tile at 0:06, Blue tile at 1:34, Orange tile at 2:30, and two more picked up along the way. The counter hits <b>5/5 at 2:46</b> and the 4×4 board on the coffee table opens two seconds later.</li>
+      <li><b>Eight stained glass pieces</b>: the first at 0:09, then more at 1:43, 2:40 and 3:16. The counter hits <b>8/8 at 3:22</b> and the hexagonal panel arrives at 3:27.</li>
+    </ul>
+    <p>So the sequence is honest if you read the bag: tiles first, glass second, door last. If you are standing in front of the big yellow panel at 7/8, the missing piece is somewhere you have already been. Open the bag, check whether it says 7/8 or 8/8, and only then go looking.</p>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>The wall of portraits looks like set dressing.</b> Six black-and-white animal photos above a sofa read as atmosphere, and the largest one. The bear. Is the frame that hides the safe. Press the pictures. All of them.</li>
+      <li><b>Two animal clues that look like one puzzle.</b> The sheet at 0:40 lists the same six animals as the wall, so players assume it is the answer key and try to read an order into it. It is a list, not a code: no numbers, no arrows, no handwriting. What it establishes is that the six animals are the point of the wall.</li>
+      <li><b>The laptop's font.</b> A seven-segment <b>7</b> looks like a <b>0</b> and a <b>6</b> looks like a <b>3</b>, which is how a four-digit code turns into a five-digit-looking one. It is 1746: four digits, second digit a 7, last digit a 6.</li>
+      <li><b>The hammer has no visible target.</b> Every other tool in the room is used on something that looks locked. The hammer is used on stonework around the fireplace, so if you are carrying it and nothing responds, tap the stone, not the furniture.</li>
+      <li><b>The tile board looks bigger than it is.</b> Sixteen squares, five dots. The eleven undotted squares are noise; the puzzle is the five marked ones.</li>
+      <li><b>Two keypads, two different answers.</b> 1746 is the laptop. 358429 is the door. Typing the laptop number into the door pad does nothing at all, and there is no error message to tell you why.</li>
+    </ul>
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      <p><b>Where 1746 comes from.</b> Our recording sets the display and moves on, so the display took it, but the camera never shows the clue that produced that number. No note, no clock, no watch face on screen at that moment. Treat 1746 as a verified input, not a solved derivation.</p>
+      <p><b>The paw-print sequence on the red safe.</b> The drawer strip is clearly the ordered clue and the safe clearly takes it, but the recording taps fast enough that we cannot read which print went in which position. We are not printing a four-print order we cannot see: a wrong sequence costs a reset, and a guessed order is worse than none.</p>
+      <p><b>What the safe actually contains.</b> The bag is never opened at that moment, so we cannot say whether the safe gave a stained glass piece, a tile or the key. The counters move around that point, which is why this page describes the compartments and not their contents.</p>
+      <p><b>That the hexagonal panel is built from the eight glass pieces.</b> The timing (8/8 at 3:22, panel at 3:27) makes it the obvious reading and the panel is a stained-glass window, but the game never says the words out loud. If you have 8/8 and the panel still will not respond, that assumption is where to look first.</p>
+    </div>
+
+    <h2>Chapter 1 levels<span class="accent">.</span></h2>
+    <LevelSelector chapter={1} current={8} compact={true} />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    <details><summary>What is the code for the door at the end of Log Cabin?</summary><p><b>358429</b>. It is written on the piece of paper you pick up at the very end of the level, after the last puzzle is solved, and the six-digit keypad beside the door takes it.</p></details>
+    <details><summary>What is the four-digit code on the laptop in Level 8?</summary><p><b>1746</b>. The laptop on the desk by the window shows 0000 when you open it; the recording sets it to 1746 and the display takes it. We read the seven-segment digits twice at high zoom because OCR tends to confuse 7 with 0 and 6 with 3 on that font.</p></details>
+    <details><summary>How many stained glass pieces and tiles are there in Log Cabin?</summary><p>Two separate collections: eight stained glass pieces, which reach 8/8 at 3:22, and five coloured tiles, which reach 5/5 at 2:46. They feed the two last puzzles, not the door.</p></details>
+    <details><summary>What is behind the animal portraits in Log Cabin?</summary><p>A red safe with twelve paw-print buttons, green and red buttons underneath them, and a gold dial on the right. Solving the wall opens the compartment; the safe itself opens after the paw-print sequence from the desk drawer.</p></details>
+    <details><summary>Does Log Cabin have a timed puzzle?</summary><p>No. Nothing in Level 8 is on a clock. The longest single puzzle is the hexagonal glass panel in the last third, which took the recording about ninety seconds.</p></details>
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-1-level-7/">← Level 7. The Game Night Agency</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-1-level-9/">Level 9. Junkyard →</a></p>
+      <p><a href="/rooms-and-exits/">All Chapter 1 guides →</a></p>
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

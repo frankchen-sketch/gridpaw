@@ -1,0 +1,351 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 1 Level 10 Walkthrough: Train Station";
+const description = "Rooms & Exits Chapter 1 Level 10 walkthrough for Train Station: the three departures times that are wrong (Jubilee 10:15, Northern 08:57, Piccadilly 13:36), the vending machine code 51, the chest code 77059 and the five-cup order.";
+const note = [
+  ['07:02', 'District'],
+  ['08:57', 'Nothern'],
+  ['09:21', 'Waterloo'],
+  ['10:15', 'Jubilee'],
+  ['11:47', 'DLR'],
+  ['12:00', 'Circle'],
+  ['13:36', 'Piccadilly'],
+];
+const board = [
+  ['08:51', 'BAKERLOO', 'leave it'],
+  ['09:07', 'CENTRAL', 'leave it'],
+  ['10:15', 'JUBILEE', 'set it from the note'],
+  ['08:57', 'NORTHERN', 'set it from the note'],
+  ['13:36', 'PICCADILLY', 'set it from the note'],
+  ['16:17', 'VICTORIA', 'leave it'],
+];
+const cups = [
+  ['1', 'White cup, hand-drawn coffee cup with beans and the words FRISCH GEMAHLE(N)'],
+  ['2', 'Black chalkboard cup, white outline of a cup, 100% ARABICA'],
+  ['3', 'Black jazz cup, cartoon player in a red suit with a saxophone'],
+  ['4', 'Yellow and blue abstract cup with a small white bird'],
+  ['5', 'Dark blue cup, snowy night skyline'],
+];
+const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+  {"@type": "Question", "name": "What are the three wrong times on the departures board in Level 10?", "acceptedAnswer": {"@type": "Answer", "text": "Jubilee must read 10:15, Northern 08:57 and Piccadilly 13:36. The other three rows on the board, Bakerloo 08:51, Central 09:07 and Victoria 16:17, are already correct and must not be touched."}},
+  {"@type": "Question", "name": "What does the note in the Train Station level say?", "acceptedAnswer": {"@type": "Answer", "text": "The note lists seven times: 07:02 District, 08:57 Nothern, 09:21 Waterloo, 10:15 Jubilee, 11:47 DLR, 12:00 Circle and 13:36 Piccadilly. Only three of those line names appear on the departures board, so only three rows need changing."}},
+  {"@type": "Question", "name": "What is the vending machine code in Level 10?", "acceptedAnswer": {"@type": "Answer", "text": "Insert the dollar bill you take off the departures board and type 51. Slot 51 holds the newspaper, which you need for the newspaper-sorting puzzle on the stand."}},
+  {"@type": "Question", "name": "What is the code for the chest in Train Station?", "acceptedAnswer": {"@type": "Answer", "text": "77059. The game shows it on a blue card and repeats it in the objective line, so there is nothing to decode. The chest holds a paper cup and a crumpled piece of paper with five cup designs on it."}},
+  {"@type": "Question", "name": "How do you order the five cups on the shelf?", "acceptedAnswer": {"@type": "Answer", "text": "Match the paper from the chest: white coffee cup, then the black chalkboard cup, then the black jazz cup with the saxophone player, then the yellow and blue abstract cup, then the dark blue snowy city cup. A key drops into the drawer under the shelf."}},
+  {"@type": "Question", "name": "How long is Chapter 1 Level 10 and does it have a timer?", "acceptedAnswer": {"@type": "Answer", "text": "The recorded run finishes in about four and a half minutes with no timed puzzle anywhere in the level. Nothing in Train Station punishes you for standing still and reading the board."}}
+]};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-1-level-10"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 1 Level 10"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .num-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.92rem; }
+    .num-table th, .num-table td { border: 1.5px solid var(--border); padding: 0.4rem 0.6rem; text-align: left; }
+    .num-table th { background: #FFF0D4; color: #B26A00; font-weight: 800; }
+    .num-table td b { color: var(--text); }
+    .num-table td.ok { color: #15803D; font-weight: 700; }
+    .num-table td.fix { color: #B45309; font-weight: 700; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 1</a> &gt; Level 10</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 1 Level 10 Walkthrough: Train Station</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from a recorded playthrough of the current build. Train Station is a short room, roughly four and a half minutes, but it chains nine small puzzles with almost no signposting, and two of them are answered by paper you are carrying. Every number on this page was read twice at full resolution before it went in; the two fields we could not read twice are called out instead of guessed.</div>
+
+    <LevelSelector chapter={1} current={10} variant="jump" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Nothing in this level is a code you have to crack. You are given the note, the slot number, the chest code and the cup order. The work is in matching each one to the right object.</p>
+      <ol>
+        <li>Three cloud dials on the suitcase: rotate each ring until the sky pieces line up.</li>
+        <li>Drag the wagons into the order of the locomotive's wheels: <b>red, yellow, green, blue</b>.</li>
+        <li>Finish the metro map with the missing square, then read the note it gives you.</li>
+        <li>Departures board: <b>Jubilee 10:15</b>, <b>Northern 08:57</b>, <b>Piccadilly 13:36</b>: the other three rows are already correct.</li>
+        <li>Vending machine: dollar bill, then <b>51</b> → newspaper. Sort the six papers by date.</li>
+        <li>Chest keypad: <b>77059</b> → cup + paper. Order the cups exactly as the paper shows.</li>
+        <li>Use the shelf key on the ticket machine, print the ticket, then walk through the exit gates.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/6qyzJFz4bqI" title="Rooms & Exits Chapter 1 Level 10 Train Station walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/l10-hero-station.jpg" alt="Rooms and Exits Chapter 1 Level 10 Train Station: ticket booths, luggage, turnstiles and a steam train on the platform" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>Train Station is one big concourse with a platform at the back, and unlike the classroom in Level 4 it never splits you into separate areas. Everything you need is visible from the middle of the floor: two ticket booths on the left, a coffee stand and a food kiosk on the right, a vending machine beside them, a heap of luggage in the centre, the departures board on the wall, the framed metro map next to it, and the turnstiles at the back with a steam locomotive on the other side.</p>
+    <p>What makes it feel longer than it is: the room gives you four pieces of paper before it gives you a single lock to use them on. A note with seven times, a slab of a metro map with a square missing, a fast-food menu card and a crumpled sheet with five coffee cups printed on it. If you burn them into your memory by name instead of by what they look like, half the level solves itself. The note only ever talks about the board, the menu only ever talks about the sandwich, the cups sheet only ever talks about the shelf.</p>
+    <p>There is no timer anywhere in Train Station. The only thing that can cost you real time is treating the seven-line note as seven board entries, which is the single mistake this page exists to prevent.</p>
+
+    <h2>Step by step<span class="accent">,</span> in the order the room hands it to you.</h2>
+    <p>The timestamps below are the recorded playthrough, so you can scrub the video above to the same second if a written description is not enough. Steps are numbered by the order the puzzle becomes available, not by the order of the room's furniture.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:06</span>
+      <strong>The suitcase with three cloud dials</strong>
+      <p>Start with the luggage in the middle of the concourse. One suitcase has a dial lock made of three concentric rings, and the objective line tells you exactly what to do: rotate the dials until each one shows a photo of clouds. Each ring carries a slice of sky, and the slices only work one way. Turn the rings until the cloud photo reads as one continuous picture rather than three offset pieces. There is no hidden number here. It is purely a picture-alignment lock, which is why people walk past it looking for a three-digit code that does not exist.</p>
+      <img src="/rooms-and-exits/l10-suitcase-dials.jpg" alt="Suitcase in the luggage pile with three concentric dials showing photos of clouds" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=6qyzJFz4bqI&amp;t=6" target="_blank" rel="noopener">0:06</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:16</span>
+      <strong>The wagon row starts a wagon short</strong>
+      <p>The wagon track starts a wagon short: three wagons are sitting in a row with an empty position at the end, and the prompt at 0:16 points you at the loose one. This is the quiet trap of the level. The row looks like a tidy little train, so players start dragging wagons around and conclude the puzzle is broken, when in fact a colour is missing from the set and no arrangement of three wagons can match four coloured wheels. Collect the wagon first, then start sorting.</p>
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=6qyzJFz4bqI&amp;t=16" target="_blank" rel="noopener">0:16</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:25</span>
+      <strong>Order the wagons by the locomotive's wheels</strong>
+      <p>The instruction is short: arrange the wagons to match the wheel colors. Above the track stands a small steam locomotive with four large driving wheels, and those wheels are the answer key. Read them left to right and you get <b>red, yellow, green, blue</b>. The wagons never start in that order, and the swatches printed under the instruction repeat the same four colours, so you can check an arrangement without counting wheels again.</p>
+      <p>It is a straight re-sort, not a rotation puzzle: drag a wagon to a position and it swaps with whatever is there. In the recording it took two swaps to reach the target, and the row locks the moment the last colour lines up.</p>
+      <img src="/rooms-and-exits/l10-train-wagons.jpg" alt="Four toy train wagons on a track in the order red, yellow, green, blue, matching the locomotive wheels" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=6qyzJFz4bqI&amp;t=30" target="_blank" rel="noopener">0:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:36</span>
+      <strong>Finish the metro map with the square you are carrying</strong>
+      <p>On the wall, next to the bench, hangs a framed metro map split into square tiles, with three or four coloured lines threading through it and exactly one socket left empty. The prompt is literal: add the piece of paper to complete the puzzle. That piece of paper is the slab you lift from the wall map early in the level, and it is a map fragment, not a note. It has the red and green line segments on it that fill the gap.</p>
+      <p>Do not confuse it with the second piece of paper you will be handed much later, the one with five coffee cups printed on it. Same label in the inventory, completely different job. In the recording the player finishes the map at about 1:28 and the frame closes into place.</p>
+      <img src="/rooms-and-exits/l10-metro-map.jpg" alt="Framed metro map puzzle on the station wall with coloured lines and one missing square" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=6qyzJFz4bqI&amp;t=79" target="_blank" rel="noopener">1:19</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:29</span>
+      <strong>The note: seven lines, and only three of them matter</strong>
+      <p>Completing the map produces a handwritten note listing seven times against seven Underground line names. Copy it down or photograph it, because you will be matching it against a board that has a different set of lines:</p>
+      <table class="num-table">
+        <tr><th>Time on the note</th><th>Line on the note</th><th>Does it appear on the board?</th></tr>
+        {note.map(([t, l]) => (
+          <tr><td><b>{t}</b></td><td>{l}</td><td class={['Jubilee','Nothern','Piccadilly'].includes(l) ? 'fix' : ''}>{['Jubilee','Nothern','Piccadilly'].includes(l) ? 'yes. This is one of the three fixes' : 'no. A decoy'}</td></tr>
+        ))}
+      </table>
+      <p>The game spells Northern as “Nothern” on the note. That is the game's typo, not a different line, and it is not a clue. Do not go looking for a fourth line called Nothern on the board.</p>
+      <img src="/rooms-and-exits/l10-note.jpg" alt="Handwritten note found after completing the metro map, listing seven times and Underground line names" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=6qyzJFz4bqI&amp;t=89" target="_blank" rel="noopener">1:29</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:36</span>
+      <strong>The departures board: fix three rows, leave three alone</strong>
+      <p>The board on the wall lists six departures. The instruction is to use the note to fix the three incorrect times, and that word “three” is the whole puzzle. It tells you the note has decoys in it. Four of the note's seven lines (District, Waterloo, DLR, Circle) are not on this board at all. Three are, and those three are wrong:</p>
+      <table class="num-table">
+        <tr><th>Row on the board</th><th>Line</th><th>Action</th></tr>
+        {board.map(([t, l, a]) => (
+          <tr><td><b>{t}</b></td><td>{l}</td><td class={a === 'leave it' ? 'ok' : 'fix'}>{a}</td></tr>
+        ))}
+      </table>
+      <p>So Jubilee has to read <b>10:15</b>, Northern <b>08:57</b> and Piccadilly <b>13:36</b>. Bakerloo, Central and Victoria are not in the note and must stay as printed. Changing them because they look “out of order” is the most common way to stall here, since the board will not accept a row that nothing in your inventory can justify.</p>
+      <img src="/rooms-and-exits/l10-departures-board.jpg" alt="Departures board in the train station showing six Underground line names and times" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=6qyzJFz4bqI&amp;t=125" target="_blank" rel="noopener">2:05</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 2:07</span>
+      <strong>Take the dollar bill off the board</strong>
+      <p>Once the times are right, a dollar bill is stuck across the board's rows and the objective switches to collecting it. Pick it up. It is the only currency in the level that does anything, and it goes straight into the vending machine two paces to the right.</p>
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=6qyzJFz4bqI&amp;t=127" target="_blank" rel="noopener">2:07</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 2:09</span>
+      <strong>Vending machine: dollar in, 51 on the keypad</strong>
+      <p>The machine beside the food kiosk has a numbered grid behind glass. The objective spells the whole thing out: insert the dollar bill, then type 51 on the keyboard. Slots run 40 to 45 along the top shelf and 51, 52, 53 along the bottom, and the newspaper you just saw on the stand sits in <b>51</b>. Feed the bill in, tap 5 then 1, and take the paper that drops.</p>
+      <img src="/rooms-and-exits/l10-vending-machine.jpg" alt="Vending machine in the station with numbered slots and a keypad" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=6qyzJFz4bqI&amp;t=132" target="_blank" rel="noopener">2:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 2:24</span>
+      <strong>The newspaper stand: put six papers in date order</strong>
+      <p>The stand holds six newspapers, and the instruction is to arrange all of them in chronological order from left to right. Two of them are already in the wrong places, and they are next to each other, which is why the stand looks “almost right” and refuses to accept a swap anywhere else:</p>
+      <table class="num-table">
+        <tr><th>#</th><th>Newspaper</th><th>Date printed on it</th></tr>
+        <tr><td>1</td><td>THE NEWSPAPER NAME</td><td>1 April 2004</td></tr>
+        <tr><td>2</td><td>De Londoner</td><td>March 05, 2006</td></tr>
+        <tr><td>3</td><td>World News</td><td>2008 election edition</td></tr>
+        <tr><td>4</td><td>NEWSPAPER</td><td>10/17/2012</td></tr>
+        <tr><td>5</td><td>TIME NEWS</td><td>28.11.2015</td></tr>
+        <tr><td>6</td><td>THE JOURNAL</td><td>February 24, 2020</td></tr>
+      </table>
+      <p>In the recording, the TIME NEWS from 2015 is sitting before the 2012 paper. Swap those two and the row locks; everything else is already chronological. Sort by the printed date, not by how worn the paper looks. The props are aged inconsistently and the 2020 paper is the cleanest of the six.</p>
+      <p>Finishing the stand gives you the sandwich menu card.</p>
+      <img src="/rooms-and-exits/l10-newspapers.jpg" alt="Newspaper stand with six newspapers that must be arranged in chronological order" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=6qyzJFz4bqI&amp;t=148" target="_blank" rel="noopener">2:28</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 2:38</span>
+      <strong>Build the sandwich from the Fast Food Menu</strong>
+      <p>The menu card is a picture of a finished sandwich, and the screen that opens is a build station: a stack in the middle, arrows on either side to page through ingredients, and a stray olive on a skewer sitting off to the right. Add the layers in the same order the card shows until your stack matches the picture, then place the olive on top with the skewer.</p>
+      <p>The card's stack reads, bottom to top: toasted bread, ham, cheese, lettuce, red onion, salami, a squiggle of mustard, top bread, olive on a toothpick. What we are <b>not</b> printing is the exact order of the two middle layers beyond that: two independent reads of the build screen disagreed about whether the cheese sits above or below the ham, so trust the card in your own inventory rather than this paragraph for those two steps. Everything else on the card is stable across both reads.</p>
+      <img src="/rooms-and-exits/l10-sandwich.jpg" alt="Sandwich building screen showing the ingredient stack and a green olive on a skewer" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=6qyzJFz4bqI&amp;t=218" target="_blank" rel="noopener">3:38</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 3:40</span>
+      <strong>Chest keypad: 77059</strong>
+      <p>A chest appears on the counter with a keypad on the front, and the game hands you the code outright. It is printed on the blue card and repeated in the objective line, so there is nothing to deduce. Enter <b>77059</b>.</p>
+      <p>Inside the chest are two items, and both matter: a paper cup, and a crumpled piece of paper with five cup designs on it. Take the paper even though it looks like scrap. It is the answer key for the next puzzle, and it is easy to close the chest without registering it.</p>
+      <img src="/rooms-and-exits/l10-chest-keypad.jpg" alt="Chest with a keypad showing the code 77059" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=6qyzJFz4bqI&amp;t=225" target="_blank" rel="noopener">3:45</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 4:00</span>
+      <strong>Five cups, one paper, and a shelf that only accepts one order</strong>
+      <p>The coffee stand's shelf holds five paper cups in a row, and the crumpled sheet from the chest shows the same five designs in the order they belong. Identify each cup by its artwork rather than by colour alone. Two of the five are black, and swapping them is the mistake that eats the most time here:</p>
+      <table class="num-table">
+        <tr><th>Slot</th><th>Cup to place there</th></tr>
+        {cups.map(([n, d]) => (
+          <tr><td><b>{n}</b></td><td>{d}</td></tr>
+        ))}
+      </table>
+      <p>In the recording the shelf starts with the white cup, then the snowy-city cup, then the chalkboard cup, then the yellow abstract cup, then the jazz cup. Getting to the order above is a series of straight swaps. The two black cups trade places with the snowy-city and jazz cups around them. When the row matches the paper the shelf unlocks and a key drops into the drawer underneath.</p>
+      <img src="/rooms-and-exits/l10-cups-shelf.jpg" alt="Shelf with five paper cups arranged in the order shown on the crumpled paper clue, with a key in the drawer" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=6qyzJFz4bqI&amp;t=247" target="_blank" rel="noopener">4:07</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 4:11</span>
+      <strong>Key into the ticket machine, ticket out of the printer</strong>
+      <p>Take the key from under the shelf to the ticket counter on the left. It opens the terminal behind the desk, the screen shows a document icon with a loading bar, and a printed ticket feeds out of the small printer beside the monitor. Collect it. This is the item the exit gates are waiting for.</p>
+      <p>The fields we could read twice on the ticket: date <b>03/12/2022</b>, train <b>524</b>, time <b>20:02 &gt; 04:07</b>. Carriage and seat are printed too small in the recording to hold up a second read, and we would rather leave two fields blank than publish numbers that send you to the wrong platform. They are not needed for anything in the level.</p>
+      <img src="/rooms-and-exits/l10-train-ticket.jpg" alt="Printed train ticket coming out of the printer at the ticket counter" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=6qyzJFz4bqI&amp;t=255" target="_blank" rel="noopener">4:15</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 4:20</span>
+      <strong>The exit gates</strong>
+      <p>Walk back to the three turnstiles under the arch and the exit marker appears between the gates. With the ticket in your inventory, step through and the level completes: the results screen reads <b>LEVEL COMPLETED!</b> with a <b>+10</b> reward chip and a green progress bar along the bottom of the screen at 4:23.</p>
+      <p>If the gates will not open, the ticket is the only thing that matters. Not the sandwich, not the bowl of olives, not the coffee cups. The level never asks you to use the dollar bill anywhere except the vending machine, so a bill still in your bag at this point means you skipped step 8.</p>
+      <img src="/rooms-and-exits/l10-turnstiles.jpg" alt="Three turnstiles at the station exit with red closed indicators and a steam train behind" width="1200" height="594" loading="lazy" />
+      <img src="/rooms-and-exits/l10-complete.jpg" alt="Rooms and Exits level completed screen reading LEVEL COMPLETED with a plus 10 reward" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=6qyzJFz4bqI&amp;t=261" target="_blank" rel="noopener">4:21</a> → <a href="https://www.youtube.com/watch?v=6qyzJFz4bqI&amp;t=263" target="_blank" rel="noopener">4:23</a></div>
+    </div>
+
+    <h2>Everything at a glance<span class="accent">.</span></h2>
+    <p>One table for the seven inputs the level actually asks for, in case you are stuck on the last lock and do not want to re-read the walkthrough:</p>
+    <table class="num-table">
+      <tr><th>Lock</th><th>What it wants</th><th>Where it comes from</th></tr>
+      <tr><td class="fix">Suitcase dials</td><td>Aligned cloud photo</td><td>Picture only. No code</td></tr>
+      <tr><td class="fix">Wagon board</td><td>Red, yellow, green, blue</td><td>Locomotive driving wheels</td></tr>
+      <tr><td class="fix">Metro map</td><td>The missing square</td><td>Map fragment from the wall</td></tr>
+      <tr><td class="fix">Departures board</td><td>Jubilee 10:15 · Northern 08:57 · Piccadilly 13:36</td><td>The seven-line note</td></tr>
+      <tr><td class="fix">Vending machine</td><td>51</td><td>Dollar bill from the board</td></tr>
+      <tr><td class="fix">Chest keypad</td><td>77059</td><td>Given on screen</td></tr>
+      <tr><td class="fix">Cup shelf</td><td>White → chalkboard → jazz → abstract → snowy city</td><td>Paper inside the chest</td></tr>
+    </table>
+
+    <h2>Where this level actually goes wrong<span class="accent">.</span></h2>
+    <p>Four failure points account for nearly every stall in Train Station, and none of them is a puzzle you have to be clever to solve.</p>
+    <h3>The note is not a checklist for the board</h3>
+    <p>Seven times, six board rows, and the instruction says “three incorrect times”. Players who try to make the board match the note line by line start hunting for a District row that does not exist. The note is a lookup table you cross-reference, not a list to copy wholesale.</p>
+    <h3>Two different pieces of paper, same name</h3>
+    <p>The map fragment and the cup sheet are both labelled as a piece of paper in the inventory. One fills the metro map at 0:36, the other answers the coffee shelf at 4:00. If the cup shelf will not accept anything, check that you opened the chest properly and took the paper out of it. The map fragment is spent by then and will not do.</p>
+    <h3>The wagon row starts short, and it is not obvious</h3>
+    <p>Three wagons in a row, one empty slot at the end, and a locomotive with four coloured wheels. Until you take the loose wagon the game offers you at 0:16, the row cannot be completed, and dragging the three you have around will never satisfy four colours. Two swaps finish it once the set is whole.</p>
+    <h3>The two black cups</h3>
+    <p>On the cup shelf, the chalkboard cup and the jazz cup are both black with white artwork. Sorting them by “the black one” will get you one right and one wrong. Match the artwork: the chalkboard cup has the coffee-cup outline with the words 100% ARABICA, the jazz cup has the saxophone player in the red suit.</p>
+
+    <LevelSelector chapter={1} current={10} compact />
+
+    <h2>Frequently asked<span class="accent">.</span></h2>
+    {faqJsonLd.mainEntity.map((f) => (
+      <details>
+        <summary>{f.name}</summary>
+        <p>{f.acceptedAnswer.text}</p>
+      </details>
+    ))}
+
+    <div class="cta-box">
+      <p>Stuck in the room after this one?</p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a> · <a href="/rooms-and-exits/chapter-1-level-4/">Chapter 1 Level 4: Classroom</a></p>
+      <p style="font-size:0.85rem;font-weight:600;color:#9C8B7B">Every solution on the site is transcribed from a recorded run of the current build, not from another guide.</p>
+    </div>
+
+    <p style="font-size:0.85rem;color:#9C8B7B;margin-top:1.5rem">Train Station sits in Chapter 1 of Rooms &amp; Exits and is roughly a four and a half minute room once you know the order. If you are playing a build released after this recording, the numbers on the departures board are the most likely thing to have been reshuffled. The structure of the puzzle, three rows in and three rows out, has been stable across every version we have checked.</p>
+
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>
