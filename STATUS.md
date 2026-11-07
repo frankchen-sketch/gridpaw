@@ -989,3 +989,12 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **坑（重踩，已写回 skill `wrangler-deploy-verify`）**：从 detached worktree 部署**未加 `--branch main`** → 回执 `Deployment alias URL: head.gridpaw.pages.dev` = Preview，主域新 URL 3 个全 404、预览别名 200；补 `--branch main` 重发即好。判别顺序固定「先看 alias 有无 branch 前缀，再打主域」。
 - **验收**：build 367 页 exit 0；dist 137 关页、可见正文 0 个 `\uXXXX` 残渣（模板级转义 bug 顺带修掉）、图片 0 缺失、canonical 全尾斜杠、**FAQ schema 与可见 details 83/83 逐字一致**、hub 137 卡无漏链、sitemap 286 URL 全有真实 lastmod；线上抽 7 页 200 + 标题/视频/双场景节逐项核对；IndexNow 83 → 137 条均 200。
 - **待办**：德语 L31-137（107 页，1,292 步翻译中；**用英文批模板而非 L1-30 模板**——老德语页带逐步截图+时间戳，107 关做不出 1,292 张截图）；`/de/` 首页目前无 BP3 入口，待加区块；R&E Ch1 L12-31 仍等本单收尾。
+
+## 2026-11-08 04:0x：BP3 德语 L31-137 共 107 页上线 + 抓出并修掉「新页 CSS 未内联」事故（部署 0f9beb4c）
+
+- **德语产出**：107 页 `src/pages/de/brain-puzzle-3-level-{31..137}.astro`（德语 du-Form；1,292 条步骤由 10 个子 agent 并行翻译，逐关步数与英文源 0 偏差），`/de/` 首页新增 137 条关卡内链，sitemap 393 URL（DE BP3 137 条）。commit `00e6ee33`。
+- **结构决策**：德语新页复刻**本次英文批**模板（hero + 步骤卡 + 完整视频 + 校验说明 + FAQ），**不复刻 L1-30 老德语页**——老页带逐步截图与视频时间戳，107 关需要 1,292 张截图，做不出来也不该假装有。翻译数据 `scripts/bp3/data/de_{src,out}/*.json` 入库可复算。
+- **可复用坑（已写入 skill `astro-static-site-pitfalls`）**：生成器把 CSS 占位符写成 f-string 双大括号 `{{STYLE}}` → 页面里留下字面量 `{STYLE}`；**Astro 不在 `<style>` 内做插值**，于是 190 页「无页面 CSS」上线，而 build 只有一条 `[esbuild css minify] Unexpected "{"` 警告、退出码仍 0。**验证必须逐页看有没有 `_astro/*.css` 引用**，有引用再核该 CSS 是否含 `.step-card` 这类页内规则；build 绿 + 截图「不算破版」都不算验证。
+- **事故时间线（诚实记录）**：英文 83 页 03:37 部署（5d6995ca）时即为无 CSS 状态，当时只做了结构审计 + 截图判读；04:00 德语 build 打出 css-syntax 警告才发现同源 bug 波及两批共 190 页 → 修生成器、重生成、重建、重部署（0f9beb4c），线上实测 EN L54 链接 `index.89RAvcyr.css` 且含 `.step-card/.answer-box/.video-wrap`。
+- **德语 title**：59 字符内 + 词边界裁剪（不切半个词），裁完不足两个词时退回纯关键词式 `Brain Puzzle 3 Level N Lösung`（3 例）。dist 中位数 60、最长 68（含 SEOHead 统一追加的 ` | GridPaw`，共享组件不动）。
+- **IndexNow**：192 URL（107 德语 + 83 英文重发 + `/de/` + hub）HTTP 200。坑：`--urls` 后接未加引号的命令替换会被吞成 1 条——先落文件再 `$(tr '\n' ' ')`，并核对打印的 "submitting N URL(s)"。
