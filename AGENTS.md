@@ -19,6 +19,11 @@ pnpm run deploy       # 部署 = wrangler pages deploy + IndexNow 提交（勿�
                       #    （死 token 的 config 会毒化重登：授权页点完 token 不落盘 + 日志 "query string parameter doesn't match"；2026-11-04 实测删了才通）；
                       #    ② 兜底=从另一台取活 token（scp default.toml，同账号 a8395）；③ 浏览器不在本机时用 ego 代点授权（8976 只监听 [::1]，须 IPv4→IPv6 转发）。
                       #    完整排障阶梯 → skill `wrangler-deploy-verify`「wrangler OAuth 重登」节
+                      # ⚠️ 并行 WIP 在飞时部署的正确做法＝从干净 worktree 构建（`git worktree add --detach /tmp/x <commit>`），
+                      #    只带已提交状态；本机 dist 留给另一个会话继续调试，互不干扰。两个前置坑：
+                      #    ① build 前把 `public/<key>.txt` cp 进 worktree（IndexNow key 故意不入库，check-indexnow-key 会拦）；
+                      #    ② build 前跑 `node scripts/check-tracked-imports.mjs`——防「页面入库、它 import 的组件没入库」
+                      #       这类只有干净检出才炸的缺陷（2026-11-07 R&E LevelSelector/SolverTiles 实锤，dc533052 当时就是坏的）
                       # ⚠️ 部署落地瞬间的新 URL 可能被 CF 边缘缓存 404（爬虫先到）——上线后 curl 验证 404 时先
                       # 试 `?cb=随机数` 排除边缘缓存（cache-bust 200 = 内容正常，等缓存过期或 Dashboard 手动 Purge）
                       # ⚠️ 部署闸（loop-hints-pull.sh）只护 loop cron——手动 wrangler deploy 不过闸：并行 WIP 在飞时
@@ -43,7 +48,7 @@ pnpm run deploy       # 部署 = wrangler pages deploy + IndexNow 提交（勿�
 - **trailingSlash: 'always'**——所有 URL 带尾斜杠
 - **首页支持 ?embed=1**——隐藏 header/footer，用于内容页内嵌游戏 iframe
 - **游戏卡内容列 ≤840px（52.5rem）**——SideAd 契约：160×600 侧栏广告盖在 840px 内容列之外，超宽页面（如 .main 72rem 全宽）棋盘右列会被广告层吃掉真实点击（murdoku 2026-10-14 Playwright 逐格实测）；游戏组件必须收窄居中（kenken 棋盘 496-784 即范式）
-- **广告全线关闭（2026-10-29 终态，取代 10-21 双形态）**——Adsterra 全撤（两周内两起独立零点击跳转投诉→DLES.gg 除名 10-28）：SideAd/InContentAd `ADSTERRA_OFF=true` 整体不渲染、AdSlot `const native = false` 关死；站点零广告（dist 反查六特征应全 0：highrevenueformat/bauval.org/profitableratecpm/container-da224/c3072bbb/309484c0）。**恢复纪律：先 /changelog/ 公告 + 单独邮件 Peter（DLES.gg 站长）才许上线；游戏页/首页/?embed=1 零文内广告红线不变；跳转类格式永不使用；任何一起跳转投诉=当天撤不辩护；新网络=新组件，不重开 Adsterra kill switch**。变现主线=Mediavine Journey（premium 计时中）。细节→STATUS.md 2026-10-29 条目 + skill `ad-network-monetization`
+- **广告现役状态（2026-11-07 恢复，banner-only）**——Adsterra 已按「六道闸」恢复，**只开静态 iframe banner**：InContentAd 300×250（unit 31836413）+ SideAd 160×600（unit 31688449），且**只挂攻略/内容页**——首页 `/`、11 款游戏页、所有 `*/solver/` 页零广告（`SideAd.astro` 的 `PLAY_SURFACES` 闸；实测 dist：incontent 68 页 / side 119 页 / 游戏页连 CSS 都不内联）。**Native 卡片不恢复**（`AdSlot` 里 `const native = false` 硬编码，10-15 投诉的直接来源；要开必须单独说服法老）。Social Bar / Popunder / Smartlink 永久禁用。invoke 域会轮换——以 `GET /api/placements/6063560/extended` 现值为准（2026-11-07 实测 160×600 已从 `www.highrevenueformat.com/<key>/invoke.js` 改为 `https://bauval.org/22/<key>`）。**止损铁律不变：任何一起跳转投诉=当天撤，不辩护**；恢复纪律=先 /changelog/ 公告再上线（DLES.gg 那条 2026-11-07 法老决定暂不卡，邮件稿存 `research/2026-11-07-peter-email-draft.md`）。**Journey 上线前必须撤 Adsterra 并清 ads.txt 的 google 行**（官方要求独占，任何多条 ads.txt 行都算违规）。细节→STATUS.md 2026-11-07 条目 + `research/2026-11-07-adsterra-restart-execution.md` + skill `ad-network-monetization`
 - **KD 数据源**：web.cafe 为主（skill `webcafe-kd`），sitedata 不可靠（差 10 倍）
 - **games 数组两处维护：`src/components/GameSwitcher.astro`（游戏页/头部下拉）+ `src/components/GameNav.astro`（content 页头部，混排内容页链接）**——新增游戏两处都要加；`scripts/check-nav-consistency.mjs` 构建期对账 GameSwitcher⊆GameNav，分叉即红（有意省略写脚本内 EXCEPTIONS）。勿再内联复制第三份（2026-10-14 结构债清偿；GameNav 曾漏 6 游戏致内容页无头部入口，2026-10-16 补）
 - **Meowdoku 三页分工（2026-10-30 立项判定，防内耗/防抢建）**：`/meowdoku/`=cat sudoku 词族（title/desc/H1/lede/FAQ+攻略节已织入上线）；`/meowdoku-guide/`=meowdoku 品牌攻略族（pos 8.2，FAQ/schema 保护不动）；`/meowdoku/levels/`=`meowdoku level N` 族。**独立 /cat-sudoku/ 页挂触发门**：cat sudoku 月量破 10K 桶或 `/meowdoku/` pos ≤15 才重开议题（先过哥飞）；meowdoku hints/answers 由 guide 承接不新建；daily answer 线已关闭（app 盘面随机化无唯一今日答案）。细节→`research/2026-10-30-gsc-review-and-plan.md` 晚补节
