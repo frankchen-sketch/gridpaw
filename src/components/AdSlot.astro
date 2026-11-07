@@ -24,7 +24,9 @@
 import AdGate from './AdGate.astro';
 // 2026-10-29 Adsterra 全线下架：第二次独立零点击跳转投诉触发 STATUS.md 10-21 止损规则，
 // native 门强制关死（Adsterra RTB 创意池=假验证码/赌场/loader 自带 popunder 机器）。
-// 恢复时还原为 `const { native = false } = Astro.props;`
+// 2026-11-07 恢复期决定：Native 卡片**不恢复**（它是 10-15 Reddit 投诉的直接来源，
+// CPM $3.08-3.21 虽最高，但跳转伤害面最大）。只恢复 InContentAd 300x250 + SideAd 160x600
+// 两个 iframe banner。要开 Native 必须单独说服法老。
 const native = false;
 ---
 {native && (

@@ -1,38 +1,141 @@
 ---
-// SideAd — 桌面侧栏 sticky 广告（160x600 Banner，unit 31688449）
-// 仅 ≥1350px 渲染（2026-10-16 从 1200 上调：1200-1350 的笔记本 gutter 放不下"离内容 32px"的侧栏，
-// 强塞=贴脸，Reddit 玩家实测误点开新标签）；内容列 ≤840px，两侧缝 32px
-// 单元代码见 .adsterra/banner-160x600.snippet.md；embed 模式下不渲染
-// 2026-10-22 起注入前过 AdGate（geo 黑名单 CN/HK + bot UA，fail-open）
+// AdSlots（文件名保留 SideAd.astro，避免 137 处 import 改动）—— 全站广告位调度器
+// 三个位按视口互斥，全部走同一条 __gpAdChain 串行注入 + AdGate 前置闸：
+//   ≥1350px        左右 160×600 侧栏（贴 840px 内容列之外，缝里）
+//   768–1349px     底部 728×90 sticky（带关闭按钮；给 body 加 padding-bottom 保证内容能滚出来）
+//   <768px 移动     顶部 320×50（JS 插到 header 之后，棋盘之上、不覆盖）
+// 永不启用：popunder / smartlink / social bar / interstitial / Native 卡片。
+// 2026-11-07 法老定：sticky 全站都上（游戏页接受压住底部控件）；移动端只做顶部+信息流。
+// 单元 id：160×600=31688449 / 728×90=32144316 / 320×50=32144309（均 Active）
+// 代码档：.adsterra/banner-160x600.snippet.md 等；invoke 域按后台 API 现值 bauval.org/22/
 import AdGate from './AdGate.astro';
-const invokeKey = '309484c05af1066efb6f321317c94311';
-const invokeHost = 'https://www.highrevenueformat.com';
-// 2026-10-29 Adsterra 全线下架：第二次独立零点击跳转投诉（10-15 Reddit mcfroogle + 10-28 DLES.gg 站长移除收录），
-// 触发 STATUS.md 10-21 止损规则「再撞零点击跳转指控=当天撤，不辩护」。变现主线=Mediavine Journey（10-26 拍板）。
-// 下架=本组件整体不渲染（含 AdGate 与 invoke.js 注入）；恢复=置 false。
-const ADSTERRA_OFF = true;
+
+const RAIL_KEY = '309484c05af1066efb6f321317c94311';
+const STICKY_KEY = 'c0a7039d4910c7d761aa9df9b0c73367';
+const TOP_KEY = '361fc202189557ef23683b546d7f0393';
+const BASE = 'https://bauval.org/22/';
+
+// 2026-11-07 恢复：只恢复静态 banner 类。恢复闸：/changelog/ 公告先行；
+// 任何一起跳转投诉=当天撤，不辩护。
+const ADSTERRA_OFF = false;
+
+// 2026-11-07 法老拍板（方案①）：play surface 零广告。
+// 命中即整组件不输出——AdGate、三个 slot、CSS 全不出，连空盒子都不留。
+// 判据是路径白名单（去尾斜杠比较）；新增游戏页/解题器页必须同步加进来。
+const PLAY_SURFACES = new Set([
+  '/',
+  '/akari', '/binary', '/crazy-cleanup', '/hashi', '/kakuro', '/kenken',
+  '/meowdoku', '/murdoku', '/nonogram', '/nurikabe', '/slitherlink', '/star-battle',
+  '/solver', '/akari/solver', '/hashi/solver', '/nonogram/solver',
+  // 同族真棋盘页（2026-11-08 补）：不是 /akari/ 主入口但同样直接渲染可玩棋盘
+  '/akari/akari-puzzle', '/akari/cat-logic-puzzle', '/akari/create', '/akari/daily',
+  '/akari/light-up-puzzle', '/akari/logic-puzzle', '/akari/sudoku-with-pictures',
+  '/murdoku/trail', '/the-loop-puzzle',
+]);
+// 按目录整片收：单关棋盘页（/akari/puzzle/puzzle-001 … /meowdoku/levels/1 …）
+const PLAY_PREFIXES = ['/akari/puzzle/', '/meowdoku/levels/'];
+const PAGE_PATH = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isPlaySurface =
+  PLAY_SURFACES.has(PAGE_PATH) || PLAY_PREFIXES.some((p) => PAGE_PATH.startsWith(p));
+
+const SHOW = !ADSTERRA_OFF && !isPlaySurface;
 ---
-{!ADSTERRA_OFF && <AdGate />}
-{!ADSTERRA_OFF && <div class="gp-side-ad gp-side-ad--left" aria-hidden="true"></div>}
-{!ADSTERRA_OFF && <div class="gp-side-ad gp-side-ad--right" aria-hidden="true"></div>}
-{!ADSTERRA_OFF && (
+{SHOW && <AdGate />}
+
+{SHOW && (
+<div class="gp-side-ad gp-side-ad--left">
+  <span class="gp-side-ad__label">Advertisement</span>
+  <div class="gp-side-ad__slot" data-gp-slot="left"></div>
+</div>
+)}
+
+{SHOW && (
+<div class="gp-side-ad gp-side-ad--right">
+  <span class="gp-side-ad__label">Advertisement</span>
+  <div class="gp-side-ad__slot" data-gp-slot="right"></div>
+</div>
+)}
+
+{SHOW && (
+<div class="gp-sticky-ad" id="gpStickyAd">
+  <span class="gp-sticky-ad__label">Advertisement</span>
+  <button class="gp-sticky-ad__close" type="button" aria-label="Close advertisement">×</button>
+  <div class="gp-sticky-ad__slot" data-gp-slot="sticky"></div>
+</div>
+)}
+
+{SHOW && (
+<div class="gp-top-ad">
+  <span class="gp-top-ad__label">Advertisement</span>
+  <div class="gp-top-ad__slot" data-gp-slot="top"></div>
+</div>
+)}
+
+{SHOW && (
 <script is:inline>
 (function () {
-  if (new URLSearchParams(location.search).has('embed')) return;
-  if (window.innerWidth < 1350) return;
-  var KEY = '309484c05af1066efb6f321317c94311';
-  var SRC = 'https://www.highrevenueformat.com/' + KEY + '/invoke.js';
-  // 与 InContentAd（300x250，DOM 更早）共用 __gpAdChain 串行注入：
-  // 每次注入前 set 自己的 atOptions，invoke.js load 后才放行下一个，互不覆盖尺寸
+  var KEYS = { left: '309484c05af1066efb6f321317c94311', right: '309484c05af1066efb6f321317c94311', sticky: 'c0a7039d4910c7d761aa9df9b0c73367', top: '361fc202189557ef23683b546d7f0393' };
+  var DIMS = { left: [160, 600], right: [160, 600], sticky: [728, 90], top: [320, 50] };
+  var BASE = 'https://bauval.org/22/';
+
+  // 内嵌模式（?embed=1）：一个广告都不出，连盒子也不留
+  if (new URLSearchParams(location.search).has('embed')) {
+    var all = document.querySelectorAll('.gp-side-ad, .gp-sticky-ad, .gp-top-ad');
+    for (var i = 0; i < all.length; i++) all[i].style.display = 'none';
+    return;
+  }
+
+  // 付费去广告（/ad-free/）：有权益就不注入，空盒子由 html.gp-ads-free 一并藏掉
+  var free = false;
+  try { free = !!localStorage.getItem('gp_ads_free'); } catch (e) {}
+  if (free) { document.documentElement.classList.add('gp-ads-free'); return; }
+
+  function visible(el) { return el && getComputedStyle(el).display !== 'none'; }
+
+  // ⚠ 不能用 getComputedStyle 判显示：组件 <style> 在脚本之后才生效，
+  // 执行时读到的 display 是默认值（实测 1440 桌面被误加 gp-has-sticky）。
+  // 这里用与 CSS 媒体查询完全一致的阈值，两处必须同步改。
+  var vw = window.innerWidth;
+  var showRail = vw >= 1350;
+  var showSticky = vw >= 768 && vw < 1350;
+  var showTop = vw < 768;
+
+  // 移动端顶部位：插到 header 之后（DOM 里组件在 body 末尾，位置不对）
+  var topAd = showTop ? document.querySelector('.gp-top-ad') : null;
+  if (topAd) {
+    var hdr = document.querySelector('header, .site-header, nav');
+    if (hdr && hdr.parentNode) hdr.parentNode.insertBefore(topAd, hdr.nextSibling);
+    else if (document.body.firstChild) document.body.insertBefore(topAd, document.body.firstChild);
+  }
+
+  // 底部 sticky：给 body 留出 90px，内容才不会被永久压住
+  var stickyAd = showSticky ? document.getElementById('gpStickyAd') : null;
+  if (stickyAd) {
+    var closed = false;
+    try { closed = sessionStorage.getItem('gp-sticky-closed') === '1'; } catch (e) {}
+    if (closed) { stickyAd.style.display = 'none'; stickyAd = null; }
+    else {
+      document.documentElement.classList.add('gp-has-sticky');
+      var btn = stickyAd.querySelector('.gp-sticky-ad__close');
+      if (btn) btn.addEventListener('click', function () {
+        stickyAd.style.display = 'none';
+        document.documentElement.classList.remove('gp-has-sticky');
+        try { sessionStorage.setItem('gp-sticky-closed', '1'); } catch (e) {}
+      });
+    }
+  }
+
   window.__gpAdChain = window.__gpAdChain || Promise.resolve();
-  function fill(side) {
+  function fill(name) {
+    var slot = document.querySelector('[data-gp-slot="' + name + '"]');
+    if (!slot) return;
+    var dim = DIMS[name];
     window.__gpAdChain = window.__gpAdChain.then(function () {
       return new Promise(function (resolve) {
-        var slot = document.querySelector('.gp-side-ad--' + side);
-        if (!slot || slot.childElementCount > 0) return resolve();
-        window.atOptions = { 'key': KEY, 'format': 'iframe', 'height': 600, 'width': 160, 'params': {} };
+        if (!slot.isConnected || slot.childElementCount > 0) return resolve();
+        window.atOptions = { key: KEYS[name], format: 'iframe', height: dim[1], width: dim[0], params: {} };
         var s = document.createElement('script');
-        s.src = SRC;
+        s.src = BASE + KEYS[name];
         s.async = false;
         s.addEventListener('load', resolve);
         s.addEventListener('error', resolve);
@@ -40,28 +143,99 @@ const ADSTERRA_OFF = true;
       });
     });
   }
-  // 广告前置闸（AdGate）：geo 黑名单/bot 不注入，两个 slot 一起闸
-  window.__gpGeoGate.then(function (allow) {
-    if (allow) { fill('left'); fill('right'); }
-  });
+
+  function start() {
+    // 只填当前视口实际显示的位（阈值与 CSS 媒体查询一致，见上面的 showRail/showSticky/showTop）
+    if (showRail) { fill('left'); fill('right'); }
+    if (stickyAd) fill('sticky');
+    if (topAd) fill('top');
+  }
+  if (window.__gpGeoGate) window.__gpGeoGate.then(function (allow) { if (allow) start(); });
 })();
 </script>
 )}
+
+{SHOW && (
 <style>
-  .gp-side-ad {
-    display: none;
-  }
-  @media (min-width: 1200px) {
+  /* 三个位互斥，全部由媒体查询决定「存在与否」，JS 只负责填内容。
+     ≤767 移动：只有顶部 320×50
+     768–1349：只有底部 728×90 sticky
+     ≥1350：只有左右 160×600 */
+  .gp-side-ad, .gp-sticky-ad, .gp-top-ad { display: none; }
+
+  /* —— 侧栏 160×600 —— */
+  @media (min-width: 1350px) {
     .gp-side-ad {
       display: block;
       position: fixed;
       top: 50%;
       transform: translateY(-50%);
       width: 160px;
-      height: 600px;
       z-index: 30;
     }
-    .gp-side-ad--left { left: max(8px, calc((100vw - 840px) / 2 - 160px - 32px)); }
-    .gp-side-ad--right { right: max(8px, calc((100vw - 840px) / 2 - 160px - 32px)); }
+    .gp-side-ad--left { left: max(8px, calc((100vw - 840px) / 2 - 192px)); }
+    .gp-side-ad--right { right: max(8px, calc((100vw - 840px) / 2 - 192px)); }
+    .gp-side-ad__slot { width: 160px; height: 600px; }
   }
+
+  /* —— 顶部 320×50（移动）—— */
+  @media (max-width: 767px) {
+    .gp-top-ad {
+      display: block;
+      width: 320px;
+      max-width: 100%;
+      margin: 0.5rem auto 0.75rem;
+    }
+    .gp-top-ad__slot { width: 320px; height: 50px; margin: 0 auto; }
+  }
+
+  /* —— 底部 sticky 728×90（平板/小笔记本）—— */
+  @media (min-width: 768px) and (max-width: 1349px) {
+    .gp-sticky-ad {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 90px;
+      z-index: 40;
+      background: #FFF8E6;
+      border-top: 1.5px solid #E8D5B5;
+    }
+    .gp-sticky-ad__slot { width: 728px; height: 90px; }
+    .gp-sticky-ad__close {
+      position: absolute;
+      top: 2px;
+      right: 6px;
+      width: 22px;
+      height: 22px;
+      line-height: 1;
+      border: 0;
+      background: transparent;
+      color: #8A7A5F;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    html.gp-has-sticky body { padding-bottom: 100px; }
+  }
+
+  /* 标签：所有位统一 10px 灰字 */
+  .gp-side-ad__label, .gp-sticky-ad__label, .gp-top-ad__label {
+    display: block;
+    font-size: 10px;
+    line-height: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #9A8B72;
+    text-align: center;
+  }
+
+  /* 已购去广告：三个位全部不占位 */
+  html.gp-ads-free .gp-side-ad,
+  html.gp-ads-free .gp-sticky-ad,
+  html.gp-ads-free .gp-top-ad { display: none !important; }
+  html.gp-ads-free body { padding-bottom: 0 !important; }
 </style>
+)}

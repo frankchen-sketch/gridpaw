@@ -7,9 +7,11 @@
 // 串行注入（set atOptions → append invoke.js → 等 load），否则后注入方的尺寸会覆盖先注入方。
 // 2026-10-22 起注入前过 AdGate（geo 黑名单 CN/HK + bot UA，fail-open）。
 import AdGate from './AdGate.astro';
-// 2026-10-29 Adsterra 全线下架：第二次独立零点击跳转投诉触发 STATUS.md 10-21 止损规则。
-// 下架=本组件整体不渲染；恢复=置 false。
-const ADSTERRA_OFF = true;
+// 2026-11-07 恢复：法老拍板「先恢复 Adsterra 做收益」，站点转向攻略站。
+// 只恢复静态 banner 类（本组件 300x250 iframe / SideAd 160x600 iframe）；
+// AdSlot 的 Native 门保持 false（Native 卡片是 10-15 投诉的直接来源，不恢复）。
+// 恢复闸：/changelog/ 公告 → 邮件 Peter(DLES.gg) → 才上线；任何一起跳转投诉=当天撤。
+const ADSTERRA_OFF = false;
 ---
 {!ADSTERRA_OFF && <AdGate />}
 {!ADSTERRA_OFF && (
@@ -22,6 +24,10 @@ const ADSTERRA_OFF = true;
 <script is:inline>
 (function () {
   if (new URLSearchParams(location.search).has('embed')) return;
+  // 付费去广告（/ad-free/）：localStorage 有权益 token 就不注入，并把空盒子一起藏掉
+  var free = false;
+  try { free = !!localStorage.getItem('gp_ads_free'); } catch (e) {}
+  if (free) { document.documentElement.classList.add('gp-ads-free'); return; }
   var KEY = 'c3072bbbf851bb748d0bc833da23e21e';
   var SRC = 'https://bauval.org/22/' + KEY;
   var slot = document.querySelector('.gp-incontent-ad__slot');
@@ -71,4 +77,6 @@ const ADSTERRA_OFF = true;
     z-index: 1;
   }
   .gp-incontent-ad__slot { width: 300px; height: 250px; }
+  /* 已购去广告：彻底不占位 */
+  html.gp-ads-free .gp-incontent-ad { display: none !important; }
 </style>
