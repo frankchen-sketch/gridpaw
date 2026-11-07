@@ -23,7 +23,79 @@ const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEn
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <style is:global>{STYLE}</style>
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; max-width: 380px; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 420px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .hero-link { display: block; cursor: pointer; text-decoration: none; }
+    .hero { width: 100%; max-width: 420px; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0 auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .cross-card { margin: 1.2rem 0; background: #fff; border: 2px solid var(--border); border-top: 5px solid var(--amber); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(217,119,6,.08); }
+    .cross-card img { width: 100%; display: block; aspect-ratio: 1200 / 630; object-fit: contain; background: #2D3740; }
+    .cross-card .cross-body { padding: .9rem 1.1rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .cross-card .cross-kicker { font-size: .68rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; color: var(--amber); }
+    .cross-card .cross-ttl { font-weight: 900; font-size: 1.05rem; margin: .1rem 0; }
+    .cross-card .cross-desc { font-size: .85rem; color: #555; margin: 0; }
+    .cross-card .cross-cta { background: var(--amber); color: #fff; font-weight: 800; font-size: .88rem; border-radius: 10px; padding: .5rem 1rem; text-decoration: none; white-space: nowrap; }
+    .index-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.5rem; margin: 0.8rem 0; }
+    .index-list a { display: block; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; padding: 0.55rem 0.7rem; text-decoration: none; font-weight: 700; color: var(--text); font-size: 0.9rem; }
+    .index-list a:hover { border-color: var(--amber); color: var(--amber); }
+    .level-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.9rem; margin: 0.8rem 0; }
+    .level-card { display: flex; flex-direction: column; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); text-decoration: none; color: var(--text); transition: transform 0.15s, border-color 0.15s; }
+    .level-card:hover { transform: translateY(-2px); border-color: var(--amber); }
+    .level-card .thumb { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; border-bottom: 1.5px solid var(--border); }
+    .level-card .meta { padding: 0.6rem 0.7rem 0.75rem; }
+    .level-card .lvl { font-size: 0.68rem; font-weight: 900; color: var(--amber); text-transform: uppercase; letter-spacing: 0.06em; display: block; }
+    .level-card .name { font-size: 0.85rem; font-weight: 800; line-height: 1.3; margin-top: 0.15rem; color: var(--text); display: block; }
+    .level-card .goal { font-size: 0.72rem; color: var(--light); font-style: italic; margin-top: 0.3rem; line-height: 1.45; margin-bottom: 0; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--light); }
+    .seo-footer a { color: var(--light); }
+    .seo-footer a:hover { color: var(--amber); }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+
+    .alt-steps { counter-reset: altstep; list-style: none; padding-left: 0; }
+    .alt-steps li { counter-increment: altstep; position: relative; padding-left: 2.1rem; }
+    .alt-steps li::before { content: counter(altstep); position: absolute; left: 0; top: 0.1rem;
+      width: 1.5rem; height: 1.5rem; border-radius: 999px; background: #FFF0D4; color: #B26A00;
+      font-size: 0.75rem; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+</style>
 </head>
 <body>
   <GameNav />

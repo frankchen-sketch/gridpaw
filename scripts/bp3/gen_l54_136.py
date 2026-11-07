@@ -530,7 +530,7 @@ const faqJsonLd = {json.dumps(faq_json)};
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <style is:global>{{STYLE}}</style>
+  <style is:global>{style}</style>
 </head>
 <body>
   <GameNav />
