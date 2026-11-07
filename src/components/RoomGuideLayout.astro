@@ -1,0 +1,153 @@
+---
+/**
+ * Skeleton page shell for a Rooms & Exits level whose frame-verified steps
+ * are not published yet. Honest by construction: it promises a video, not steps.
+ * The finished pages (Level 2 onward) are hand-written and do not use this shell.
+ */
+import SEOHead from './SEOHead.astro';
+import GameNav from './GameNav.astro';
+import AdSlot from './AdSlot.astro';
+import SideAd from './SideAd.astro';
+import LevelSelector from './LevelSelector.astro';
+import data from '../data/rooms-and-exits-levels.json';
+
+interface Props {
+  n: number;
+  chapter?: number;
+}
+const { n, chapter = 1 } = Astro.props;
+const ch = data.chapters.find((c: any) => c.chapter === chapter) ?? data.chapters[0];
+const level: any = ch.levels.find((l: any) => l.n === n);
+const name = level?.name ?? `Level ${n}`;
+const video = level?.video;
+const title = `Rooms & Exits Chapter 1 Level ${n} ${name} Walkthrough`;
+const description = `Rooms & Exits Chapter 1 Level ${n} (${name}) — the recording that clears the room, plus what the written walkthrough will cover.`;
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: `Is there a written walkthrough for Rooms & Exits Chapter 1 Level ${n}?`,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: `Not yet. The step-by-step write-up for ${name} is being rebuilt from recorded playthroughs the same way the Chapter 1 Level 2 guide was. The recording that clears this room is embedded on this page in the meantime.`,
+      },
+    },
+    {
+      '@type': 'Question',
+      name: `What is Chapter 1 Level ${n} called?`,
+      acceptedAnswer: { '@type': 'Answer', text: `Chapter 1 (Wicked Games) Level ${n} is called ${name}.` },
+    },
+  ],
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical={`/rooms-and-exits/chapter-1-level-${n}`}
+    type="article"
+    breadcrumbTitle={`Level ${n}: ${name}`}
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .status-box { background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 10px; padding: 0.7rem 0.9rem; margin: 0.8rem 0; color: #7A6420; font-size: 0.88rem; }
+    .status-box b { color: #6A5410; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 1</a> &gt; Level {n}</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 1 Level {n} {name} Walkthrough</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="status-box">
+      <b>Written steps for this room are not published yet.</b> Level 2 is finished; {name} is in the same pipeline — recorded, then read frame by frame, then written up. Until that lands, the recording below clears the room in one pass, and the chapter mechanics further down apply to every room in Wicked Games.
+    </div>
+
+    <LevelSelector chapter={chapter} current={n} variant="jump" />
+
+    {video && (
+      <div class="video-wrap">
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${video}`}
+          title={`Rooms & Exits Chapter 1 Level ${n} ${name} walkthrough`}
+          allowfullscreen
+          loading="lazy"></iframe>
+      </div>
+    )}
+
+    <h2>What the finished page will cover<span class="accent">.</span></h2>
+    <p>Every guide on this site answers the same four questions for a room, and this one will be no different once it is written:</p>
+    <ul>
+      <li><b>The item chain.</b> Which object gives which item, in the order the game actually accepts, with the dead ends we hit ourselves.</li>
+      <li><b>Puzzle by puzzle.</b> One card per puzzle, the screenshot that shows the solved state, and the reasoning that gets you there rather than just the answer.</li>
+      <li><b>Codes and counts.</b> What the numbers are and where in the room they are hidden, since Rooms &amp; Exits never labels them.</li>
+      <li><b>Timestamps.</b> A link to the exact second of the recording for each move, so you can watch one step instead of the whole video.</li>
+    </ul>
+    <p>Level 2 already works this way — if you want to see the shape of a finished page, <a href="/rooms-and-exits/chapter-1-level-2/">read the Escape Room guide</a>.</p>
+
+    <h2>What decides a room in Wicked Games<span class="accent">.</span></h2>
+    <p>Chapter 1 is the chapter that teaches its own grammar, and the same three rules decide every room in it. They are worth knowing before you open {name}:</p>
+    <ul>
+      <li><b>Dismantle before you search.</b> Paper, cloth and wrapped objects usually do not work as they are. Select them in the inventory and check whether Dismantle or Combine is lit before you go hunting for a place to use them.</li>
+      <li><b>Walls are interactive more often than furniture.</b> Frames, mirrors, panels and notice boards carry most of the clues. If you are holding an unused item and nothing sparkles, the answer is usually on a wall.</li>
+      <li><b>Codes are counts, not digits.</b> The game rarely writes a number down. Count fingers, jars, stripes, steps — then try that.</li>
+    </ul>
+
+    <h2>Chapter 1 levels<span class="accent">.</span></h2>
+    <LevelSelector chapter={chapter} current={n} compact={true} />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    <details><summary>Is there a written walkthrough for Rooms &amp; Exits Chapter 1 Level {n}?</summary><p>Not yet. The step list is being rebuilt from recorded playthroughs the way the <a href="/rooms-and-exits/chapter-1-level-2/">Level 2 guide</a> was. The recording on this page clears the room in the meantime.</p></details>
+    <details><summary>What is Chapter 1 Level {n} called?</summary><p>Chapter 1 (Wicked Games) Level {n} is <b>{name}</b>. The chapter has eleven rooms in total.</p></details>
+
+    <div class="cta-box">
+      <p><a href="/rooms-and-exits/">All Chapter 1 guides →</a> · <a href="/rooms-and-exits/chapter-1-level-2/">Finished guide: Level 2 →</a></p>
+      <p style="font-size:.8rem;color:#9C8B7B;font-weight:600">Play something else: <a href="/">Shikaku</a> · <a href="/akari/">Akari</a></p>
+    </div>
+  </main>
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

@@ -1,8 +1,9 @@
 ---
 import SEOHead from '../../../components/SEOHead.astro';
 import GameSwitcher from '../../../components/GameSwitcher.astro';
-const title = "Nonogram Solver — Free Online Puzzle Solver | GridPaw";
-const description = "Enter clues, get the full solution — with an optional step-by-step deduction log. Free nonogram solver for 5×5 to 25×25; flags impossible or multi-solution grids.";
+import SolverTiles from '../../../components/SolverTiles.astro';
+const title = "Nonogram Solver — Picross, Griddlers & Hanjie | GridPaw";
+const description = "Free nonogram solver, also called picross, griddlers or hanjie. Enter the clues, get the full solution plus a step-by-step deduction log.";
 
 const faqs = [
   { q: "Is this nonogram solver free?", a: "Yes — completely free, no account, no download. The solver runs entirely in your browser: your clues never leave your device." },
@@ -12,7 +13,10 @@ const faqs = [
   { q: "Does it solve colored (multi-color) nonograms?", a: "Not yet. This solver handles classic two-color nonograms — black and white, which is what the vast majority of books and apps use. Colored puzzles, where adjacent blocks of different colors may touch, need a different solver." },
   { q: "Can I see how the solver reached the answer?", a: "Yes — tick \"Step by step\" before pressing Solve. The solver replays its entire deduction one line at a time: which row or column it examined, which cells were forced filled or crossed out, and whether any step needed search. Puzzles solvable by pure line logic — the vast majority — show zero search steps, so you can follow along or verify the answer yourself." },
   { q: "Can I share the puzzle I entered with someone?", a: "Yes — after a successful solve the clues are saved into the page URL. Press \"Copy link\" and anyone who opens that link sees your exact puzzle, already solved. It is the fastest way to ask for help in a forum or show a friend a puzzle that has you stuck." },
+  { q: "Is this also a picross or griddlers solver?", a: "Yes. Picross, griddlers, hanjie, pic-a-pix and paint by numbers are all the same puzzle under different names, and the clues are entered identically. There is no separate tool to hunt down: type the row and column numbers and this page solves it, whatever the book or app called it." },
+  { q: "My book calls it a griddler. Are the rules the same?", a: "For classic black-and-white grids, yes: numbers give the lengths of the filled runs in order, with at least one empty cell between runs. The one difference to watch for is colour. Some griddler books print multi-colour puzzles where blocks of different colours may touch, and this solver handles only two-colour grids." },
 ];
+import SideAd from '../../../components/SideAd.astro';
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -204,6 +208,16 @@ const faqs = [
       </ul>
       <p>New to nonograms? <a href="/nonogram/">Play our free Nonogram game</a>. It generates puzzles with built-in hints that teach line logic as you go, from 5×5 up.</p>
 
+      <h2>Picross, Griddlers, Hanjie: One Puzzle, Many Names</h2>
+      <p>If the puzzle you are stuck on is not called a nonogram, you are still in the right place. The grid with numbers down the side and along the top has picked up a different name in almost every country and every decade:</p>
+      <ul>
+        <li><strong>Picross</strong> is the name Nintendo made famous (short for picture crossword), and the one most console and handheld players grew up with.</li>
+        <li><strong>Griddlers</strong>, or the singular griddler, is what the puzzle is usually called in the UK and across much of Europe.</li>
+        <li><strong>Hanjie</strong> and <strong>pic-a-pix</strong> are the labels used by several puzzle-book and newspaper publishers.</li>
+        <li><strong>Paint by numbers</strong>, <strong>Japanese crossword</strong> and <strong>picture cross</strong> are the names app stores tend to use.</li>
+      </ul>
+      <p>A picross solver, a griddlers solver and a hanjie solver all do exactly the same job, because the clues do not change with the label: each number is a run of filled cells, the runs appear in the order listed, and neighbouring runs are separated by at least one empty cell. Type the numbers from your book, magazine or app into the boxes above and this page solves it under any of those names. The only thing to check is colour: the solver handles classic black-and-white grids, not the multi-colour variants some griddler books print.</p>
+
       <h2>Frequently Asked Questions</h2>
       {faqs.map(f => (
         <details>
@@ -212,6 +226,8 @@ const faqs = [
         </details>
       ))}
     </section>
+
+    <SolverTiles current="/nonogram/solver/" />
 
     <a href="/nonogram/" class="play-cta">🎨 Play Nonogram Online Free</a>
 
@@ -474,5 +490,6 @@ const faqs = [
     if (!loadPermalink()) updateCounts();
   })();
   </script>
+<SideAd />
 </body>
 </html>
