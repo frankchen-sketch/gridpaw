@@ -1,0 +1,72 @@
+---
+// SolverTiles —— 工具页互链区块。
+// 作用不是给某一页灌链接，而是让 Google 把分散的 solver / 攻略工具页认成一个簇
+// （同类竞品 logic-puzzles-online 用 18 个工具页互链做这件事，我们 6 页之间原本零互链）。
+// 用法：<SolverTiles current="/nonogram/solver/" />，current 指向的条目会被排除（不链自己）。
+export interface Props {
+  current?: string;
+}
+const { current = '' } = Astro.props;
+
+const tiles = [
+  {
+    href: '/nonogram/solver/',
+    name: 'Nonogram Solver',
+    desc: 'Enter row and column clues, get the grid. Also solves picross, griddlers and hanjie puzzles.',
+  },
+  {
+    href: '/solver/',
+    name: 'Shikaku Solver',
+    desc: 'Rectangle-number puzzles: reveals the correct rectangle when you are stuck.',
+  },
+  {
+    href: '/akari/solver/',
+    name: 'Akari Solver',
+    desc: 'Light Up boards solved bulb by bulb, with the deduction behind each placement.',
+  },
+  {
+    href: '/hashi/solver/',
+    name: 'Hashi Solver',
+    desc: 'Bridges puzzles: which pairs of islands the solution connects, and why.',
+  },
+  {
+    href: '/akari/how-to-solve/',
+    name: 'Akari Strategy Guide',
+    desc: 'Solve Light Up puzzles yourself: the techniques, in the order you actually need them.',
+  },
+  {
+    href: '/binary/how-to-solve/',
+    name: 'Binary Puzzle Strategy',
+    desc: 'Takuzu and Binairo technique, from the no-three-in-a-row rule to the harder deductions.',
+  },
+];
+
+const visible = tiles.filter((t) => t.href !== current);
+---
+<section class="solver-tiles" aria-labelledby="solver-tiles-h">
+  <h2 id="solver-tiles-h">More Puzzle Solvers and Strategy Guides</h2>
+  <p class="solver-tiles-lede">
+    Every tool here runs in your browser and needs no account. If you are working through a puzzle book,
+    a newspaper page or an app level and you would rather check your reasoning than just see the answer,
+    start with the strategy guide for that puzzle type.
+  </p>
+  <ul>
+    {visible.map((t) => (
+      <li>
+        <a href={t.href}>{t.name}</a>
+        <span>{t.desc}</span>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style is:global>
+  .solver-tiles{margin:2.5rem 0 1rem;padding:1.25rem 1.25rem 1rem;border:1px solid rgba(224,152,120,.35);border-radius:14px;background:linear-gradient(160deg,rgba(240,184,152,.10),rgba(255,255,255,.02))}
+  .solver-tiles h2{margin:0 0 .5rem;font-size:1.15rem}
+  .solver-tiles-lede{margin:0 0 1rem;font-size:.92rem;opacity:.82;line-height:1.55}
+  .solver-tiles ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.75rem}
+  .solver-tiles li{display:flex;flex-direction:column;gap:.2rem;padding:.6rem .75rem;border-radius:10px;background:rgba(240,184,152,.10)}
+  .solver-tiles li a{font-weight:600;text-decoration:none;color:#B4562F}
+  .solver-tiles li a:hover{text-decoration:underline}
+  .solver-tiles li span{font-size:.85rem;line-height:1.45;opacity:.85}
+</style>

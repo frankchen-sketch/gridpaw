@@ -1,0 +1,155 @@
+---
+/**
+ * Rooms & Exits level selector.
+ * One source of truth: src/data/rooms-and-exits-levels.json
+ * Levels marked "live" render as links; everything else renders as an inert card
+ * so we never publish a 404 into the nav.
+ */
+import data from '../data/rooms-and-exits-levels.json';
+
+interface Props {
+  chapter?: number;
+  current?: number;
+  teasers?: boolean;
+  compact?: boolean;
+  label?: string;
+  variant?: 'grid' | 'jump';
+}
+
+const { chapter = 1, current, teasers = false, compact = false, label = 'Chapter 1 · Wicked Games', variant = 'grid' } = Astro.props;
+
+const ch = data.chapters.find((c: any) => c.chapter === chapter) ?? data.chapters[0];
+const levels = ch.levels as any[];
+const live = levels.filter((l) => l.status === 'live');
+const fullCount = levels.filter((l: any) => l.status === 'live' && l.stage === 'full').length;
+const idx = current ? levels.findIndex((l) => l.n === current) : -1;
+const prev = idx > 0 ? levels[idx - 1] : null;
+const next = idx >= 0 && idx < levels.length - 1 ? levels[idx + 1] : null;
+---
+
+<div class="rxe-selector" data-chapter={chapter}>
+  <div class="rxe-head">
+    <span class="rxe-chapter">{label}</span>
+    <span class="rxe-count">{fullCount} of {levels.length} with full written steps · {live.length} with a video</span>
+  </div>
+
+  {variant === 'jump' && (
+    <div class="rxe-jump">
+      <label for={`rxe-jump-${chapter}`}>Jump to a level</label>
+      <select
+        id={`rxe-jump-${chapter}`}
+        aria-label="Jump to a Rooms & Exits level"
+        data-current={current ?? ''}
+        onchange="if(this.value){window.location.href=this.value;}">
+        <option value="">Chapter {chapter} — pick a level…</option>
+        {levels.map((l: any) => (
+          <option value={l.slug} selected={l.n === current}>
+            {l.n}. {l.name}{l.status === 'live' && l.stage !== 'full' ? ' (video only)' : ''}
+          </option>
+        ))}
+      </select>
+    </div>
+  )}
+
+  {variant === 'grid' && (
+  <ol class:list={['rxe-grid', { compact, wide: teasers }]}>
+    {levels.map((l) => {
+      const isLive = l.status === 'live';
+      const body = (
+        <>
+          <span class="rxe-num">{l.n}</span>
+          <span class="rxe-row">
+            <span class="rxe-name">{l.name}</span>
+            {l.n === current && <span class="rxe-flag here">you are here</span>}
+            {isLive && l.stage === 'full' && l.n !== current && <span class="rxe-flag ready">guide</span>}
+            {isLive && l.stage !== 'full' && <span class="rxe-flag video">video</span>}
+            {!isLive && <span class="rxe-flag soon">coming</span>}
+          </span>
+          {teasers && l.teaser && <span class="rxe-teaser">{l.teaser}</span>}
+        </>
+      );
+      return (
+        <li class:list={['rxe-item', isLive ? 'is-live' : 'is-todo', l.n === current ? 'is-current' : '']}>
+          {isLive ? (
+            <a href={l.slug} aria-current={l.n === current ? 'page' : undefined}>{body}</a>
+          ) : (
+            <span class="rxe-pending">{body}</span>
+          )}
+        </li>
+      );
+    })}
+  </ol>
+  )}
+
+  {variant === 'grid' && current && (
+    <nav class="rxe-pn" aria-label="Level navigation">
+      {prev ? (
+        prev.status === 'live'
+          ? <a class="rxe-pn-link prev" href={prev.slug}>← Level {prev.n}: {prev.name}</a>
+          : <span class="rxe-pn-link prev disabled">← Level {prev.n}: {prev.name} (coming)</span>
+      ) : <span class="rxe-pn-link prev disabled">First level of the chapter</span>}
+      <a class="rxe-pn-link up" href="/rooms-and-exits/">All Chapter 1 levels</a>
+      {next ? (
+        next.status === 'live'
+          ? <a class="rxe-pn-link next" href={next.slug}>Level {next.n}: {next.name} →</a>
+          : <span class="rxe-pn-link next disabled">Level {next.n}: {next.name} (coming)</span>
+      ) : <span class="rxe-pn-link next disabled">Last level of the chapter</span>}
+    </nav>
+  )}
+</div>
+
+<style>
+  .rxe-selector { margin: 1.1rem 0 1.4rem; }
+  .rxe-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem .8rem; margin-bottom: .6rem; }
+  .rxe-chapter { font-size: .72rem; font-weight: 900; text-transform: uppercase; letter-spacing: .07em; color: #B26A00; background: #FFF0D4; border-radius: 999px; padding: .18rem .6rem; }
+  .rxe-count { font-size: .78rem; color: #9C8B7B; font-weight: 700; }
+
+  .rxe-grid { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .5rem; }
+  .rxe-grid.compact { grid-template-columns: repeat(auto-fill, minmax(126px, 1fr)); }
+  .rxe-grid.wide { grid-template-columns: repeat(auto-fill, minmax(212px, 1fr)); }
+  .rxe-item { margin: 0; display: flex; }
+
+  .rxe-item a, .rxe-pending {
+    display: grid; width: 100%;
+    grid-template-columns: 1.3rem 1fr;
+    grid-template-areas: "num row" "num teaser";
+    column-gap: .5rem; row-gap: .18rem;
+    align-content: start;
+    background: #fff; border: 1.5px solid #F2E4D4; border-radius: 10px;
+    padding: .5rem .6rem; text-decoration: none; color: #3A2F28;
+    transition: border-color .15s, transform .15s, box-shadow .15s;
+  }
+  .rxe-item a:hover { border-color: #D97706; transform: translateY(-1px); box-shadow: 0 3px 10px rgba(217,119,6,.12); }
+
+  .rxe-num { grid-area: num; font-size: .95rem; font-weight: 900; color: #D97706; line-height: 1.5; text-align: center; }
+  .rxe-row { grid-area: row; display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem; }
+  .rxe-name { font-size: .84rem; font-weight: 800; line-height: 1.35; color: #3A2F28; }
+  .rxe-teaser { grid-area: teaser; font-size: .72rem; color: #8B7A69; line-height: 1.45; }
+
+  .rxe-flag { font-size: .6rem; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; border-radius: 999px; padding: .1rem .4rem; white-space: nowrap; }
+  .rxe-flag.here { color: #15803D; background: #E8F6EC; }
+  .rxe-flag.soon { color: #9C8B7B; background: #F4EDE4; }
+  .rxe-flag.ready { color: #B26A00; background: #FFE9BE; }
+  .rxe-flag.video { color: #6B7280; background: #EEF0F2; }
+  .rxe-item.is-live a { border-color: #E9C08A; }
+
+  .rxe-item.is-current a { border-color: #15803D; background: #F7FDF9; }
+  .rxe-item.is-todo .rxe-name { color: #6B5B4D; font-weight: 700; }
+  .rxe-item.is-todo .rxe-num { color: #B9A695; }
+  .rxe-pending { background: #FDFBF7; border-style: dashed; }
+
+  .rxe-jump { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: .2rem 0 .4rem; }
+  .rxe-jump label { font-size: .78rem; font-weight: 800; color: #9C8B7B; text-transform: uppercase; letter-spacing: .05em; }
+  .rxe-jump select { flex: 1 1 240px; max-width: 100%; font-family: inherit; font-size: .88rem; font-weight: 700; color: #3A2F28; background: #fff; border: 1.5px solid #F2E4D4; border-radius: 10px; padding: .45rem .6rem; cursor: pointer; }
+  .rxe-jump select:hover, .rxe-jump select:focus { border-color: #D97706; outline: none; }
+  .rxe-pn { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .8rem; }
+  .rxe-pn-link { font-size: .8rem; font-weight: 800; text-decoration: none; border: 1.5px solid #F2E4D4; background: #fff; border-radius: 999px; padding: .35rem .8rem; color: #D97706; }
+  .rxe-pn-link:hover { border-color: #D97706; }
+  .rxe-pn-link.up { color: #9C8B7B; }
+  .rxe-pn-link.disabled { color: #C4B5A5; font-weight: 600; border-style: dashed; }
+
+  @media (max-width: 480px) {
+    .rxe-grid, .rxe-grid.wide { grid-template-columns: 1fr 1fr; }
+    .rxe-pn-link { width: 100%; text-align: center; }
+  }
+</style>
