@@ -1,7 +1,15 @@
 # 交接 · AdSlots（三档广告位）待确认事项
 > 交给广告兄弟会话。写于 2026-11-07 23:5x，由攻略会话实测产出。**不要重跑攻略/缩略图那条线。**
 
-## 0. 当前线上状态
+## 状态更新（广告会话 2026-11-08 00:5x 回填 · 本文件其余部分保留原样作历史）
+
+- **§0 已过期**：`3a8c45db` 不是当前生产。线上先后被 `d01fc37c` → `2a02ae04`（广告开）→ **`4e08e9e1`（当前生产，方案①）** 顶掉。三档调度器 + 188 页侧栏早就上线了，不是「还没上线」。
+- **§1 已拍板：走方案①**（法老 2026-11-07 明确选择；方案②改口未采用）。已实现：`SideAd.astro` 的 `PLAY_SURFACES` 闸（26 条精确 + 2 条前缀，共盖 106 页），命中即整组件不渲染（AdGate / 三个 slot / CSS 全不出）。dist 实测 106 个 play surface 的 `gp-*-ad` 与 `bauval.org` 全 0（含 `/akari/puzzle/*`、`/meowdoku/levels/*`）；内容页 `/japanese-logic-puzzles/`、`/meowdoku-guide/`、`/akari/levels/easy/` 仍有广告位。线上 `9f37806f` 抽查 `/akari/`、`/akari/daily/`、`/akari/puzzle/puzzle-007/`、`/meowdoku/levels/3/`、`/murdoku/trail/`、`/solver/` 全 0。
+- **补充**：Peter 邮件不再发送（法老 2026-11-07 决定），方案① 的理由从此只按 UX/误点风险成立，不再按「说到做到」。
+- **§3 未重跑**，按交接要求沿用你们的实测结论。
+- **遗留已处理（2026-11-08 凌晨）**：法老指示「真棋盘页加进白名单」。按 dist 实测（页面是否真加载 `*-engine.js` 或嵌 `embed=1` iframe）重定白名单：17 条 → **26 条精确 + 2 条前缀**（`/akari/puzzle/` 70 页、`/meowdoku/levels/` 10 页），共盖 **106 页**。新增的真棋盘页 = `/akari/akari-puzzle`、`/akari/cat-logic-puzzle`、`/akari/create`、`/akari/daily`、`/akari/light-up-puzzle`、`/akari/logic-puzzle`、`/akari/sudoku-with-pictures`、`/murdoku/trail`、`/the-loop-puzzle`。内嵌 demo 的内容页（`/japanese-logic-puzzles`、`/logic-puzzle-grid`、`/number-grid-puzzle`、`/brain-teasers-for-adults`、`/meowdoku-guide`、`/hashi/how-to-play`、`/de/shikaku`、5 个 `/pt-br/*`）**故意保留广告**。排除项：`/binary/takuzu`（只是外链不嵌盘）、`/akari/play`（构建产物无引擎）、`/rooms-and-exits/*`·`/rotate-rings/*`（第三方游戏攻略页）。部署 `9f37806f`，dist 广告页 258 → **169**。
+
+## 0. 当前线上状态（历史记录，见上方状态更新）
 
 - 生产部署 `3a8c45db`（commit `57f58bc8`）= **已提交基线，广告全关**。
 - 原因：攻略会话部署 R&E 缩略图时，为避免带上并行 WIP，从干净 worktree 构建部署。你这边的工作区改动一行没动，仍在本机 `~/workspace/gridpaw`。

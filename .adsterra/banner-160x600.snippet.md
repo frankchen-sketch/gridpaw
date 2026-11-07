@@ -16,11 +16,11 @@
 		'params' : {}
 	};
 </script>
-<script type="text/javascript" src="//www.highrevenueformat.com/309484c05af1066efb6f321317c94311/invoke.js"></script>
+<script type="text/javascript" src="//bauval.org/22/309484c05af1066efb6f321317c94311"></script>
 ```
 
 ## 部署坑位记录
 
 - 后台按钮文本渲染为「Ad Unit」（非大写 AD UNIT），DOM 精确匹配会 miss，用行内坐标/含前后缀匹配
 - 单元创建后 ~3 分钟激活（"Activation in progress" 提示）
-- invoke.js 域名不同：Banner 走 highrevenueformat.com（Native 走 profitableratecpmnetwork.com），两者都是 Adsterra 官方域名
+- invoke 域**会轮换**：2026-11-07 后台 API `GET /api/placements/6063560/extended` 实测该单元已改为 `bauval.org/22/<key>`（旧的 `www.highrevenueformat.com/<key>/invoke.js` 已作废）。Native（`bauval.org/21/da224…`）与本单元同理。永远以 API 现值为准，别照抄历史档
