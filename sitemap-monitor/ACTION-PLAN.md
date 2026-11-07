@@ -8,12 +8,12 @@
 
 | 站 | URL 数 | 近 30d 新增 | 健康 | 对应作战地图线 | 备注 |
 |---|---|---|---|---|---|
-| hitoriconquest.com | 312 | +11（10-28 轮） | 🟢 活跃 | japanese logic puzzles | 新页全是 daily archive 机器页（噪音），盯是否上新游戏线；10-28 周检 +11 仍全 archive（#139-143，连续第四轮噪音） |
-| riddlesrush.com | 795 | +65（10-28 轮） | 🟡 URL-only | brain teasers for adults | 内容页 403 bot 墙，只能看 URL slug 判形态；slug 本身可读。10-28：+50 谜语模板 + **15 /es/ 西语分类页（开建西语线，/blog/acertijos-* 同 slug 迁入）+ /app**——locale 噪音级，无 logic 类 slug，越界未触发 |
-| logic-puzzles-online.com | 1,114 | +40（10-24 轮），10-28 轮 0 | 🟢 | japanese logic puzzles / solver | **10-24 信号：批量铺 solver 工具页**（akari/hashi/masyu/nurikabe/slitherlink ×6 locale + printable str8ts ×8 locale，40 页/3 天）；DR9 排 kakuro solver #1 → solver 形态真金投票，候选词过 KWP 后定承接；10-28 轮零新增（批铺后停手，观察期正常） |
+| hitoriconquest.com | 327 | +15（11-04 轮） | 🟢 活跃 | japanese logic puzzles | 新页全是 daily archive 机器页（噪音），盯是否上新游戏线；11-04 周检 +15 = daily #144-150 + weekly/22（**连续第五轮噪音**），无新游戏 slug |
+| riddlesrush.com | 795 | 0（11-04 轮） | 🟡 URL-only | brain teasers for adults | 内容页 403 bot 墙，只能看 URL slug 判形态；slug 本身可读。10-28：+50 谜语模板 + **15 /es/ 西语分类页（开建西语线，/blog/acertijos-* 同 slug 迁入）+ /app**——locale 噪音级，无 logic 类 slug，越界未触发；11-04 轮 0 新增（西语线批铺后停手） |
+| logic-puzzles-online.com | 1,114 | +40（10-24 轮），10-28 / 11-04 轮 0 | 🟢 | japanese logic puzzles / solver | **10-24 信号：批量铺 solver 工具页**（akari/hashi/masyu/nurikabe/slitherlink ×6 locale + printable str8ts ×8 locale，40 页/3 天）；DR9 排 kakuro solver #1 → solver 形态真金投票，候选词过 KWP 后定承接；10-28 起连续两轮零新增（批铺后停手，观察期正常） |
 | shikaku.games | 332 | 0 | 🟡 停更 | shikaku puzzle/online/solver | sitemap lastmod 停在 2026-07-11；dailyArchive 模板铺量页是噪音；恢复更新即盯 |
 | puzzleplayground.com | 264 | 0 | 🟡 停更 | pictomino 侧 | lastmod 全停 2024-08，sitemap 不再更新，差集大概率常年 0——低成本留着 |
-| shikakuofthe.day | 8 | 6 | 🟢 | shikaku puzzle/online | sitemap 只列 8 页，覆盖极窄；盘面定性=外链数据源非搜索标杆 |
+| shikakuofthe.day | 8 | 0（11-04 轮） | 🟢 | shikaku puzzle/online | sitemap 只列 8 页，覆盖极窄；11-04 lastmod 刷到 11-03（站活着）但 URL 集未动；盘面定性=外链数据源非搜索标杆 |
 | shikaku.ch | 7 | 0 | 🟢 | shikaku puzzle/online | 体验分垫底的第一反超目标；curl 本轮可达（9/20 曾被拦） |
 
 ### 淘汰记录（探测过、不入集，勿重复探测）
@@ -52,4 +52,5 @@
 - 采集：`~/.hermes/skills/seo/seo-keyword-selection/scripts/sitemap-monitor.py`（init/check/add）
 - 内容爬取：`./crawl_round.py --dir <本目录> [--date] [-n 25]`（通用版，接任意实例目录）
 - 周报：cron `d78215faf122`（周三 08:30，错开 hexa 的周一 08:00）
+- 通知：本机无 ntfy-mac，走 `ssh frankchen@192.168.31.52 '/opt/homebrew/bin/ntfy-mac notify -t … -m … -p 4'`（exit 0 即送达）
 - 每轮产物：`baseline-<date>/`（check --save 时）、`crawl-<date>/`、digest、本文件状态列更新

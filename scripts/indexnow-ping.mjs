@@ -21,10 +21,15 @@ import { join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const repoRoot = join(fileURLToPath(new URL('.', import.meta.url)), '..');
-const appUrl = process.argv[2] || 'https://gridpaw.com';
+const argv = process.argv.slice(2);
+const isUrl = (s) => /^https?:\/\//.test(s || '');
+// argv[0] 是可选的站点根，argv[1] 是可选 key；两者都必须先过掉 --urls 这类开关，
+// 否则 `--urls` 会被当成 appUrl（2026-11-05 实测 ERR_INVALID_URL）。
+const appUrl = isUrl(argv[0]) ? argv[0] : 'https://gridpaw.com';
+const explicitKey = argv[1] && !isUrl(argv[1]) && !argv[1].startsWith('--') ? argv[1] : null;
 
 function detectKey() {
-  const explicit = process.argv[3] && !process.argv[3].startsWith('--') ? process.argv[3] : null;
+  const explicit = explicitKey;
   if (explicit) return { key: explicit, source: 'argv' };
   if (process.env.INDEXNOW_KEY) return { key: process.env.INDEXNOW_KEY, source: 'env INDEXNOW_KEY' };
 

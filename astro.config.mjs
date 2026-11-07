@@ -14,7 +14,8 @@ export default defineConfig({
     sitemap({
       changefreq: 'weekly',
       priority: 0.7,
-      lastmod: new Date(),
+      // lastmod 不在这里给：@astrojs/sitemap 只能给构建时间戳，全站同一个值等于假信号。
+      // 真实日期由 scripts/sitemap-lastmod.mjs 在构建后按源码 git 提交时间逐页注入。
       filter: (page) => {
         // Exclude noindex pages (exact match, not prefix)
         const exactExcludes = [
