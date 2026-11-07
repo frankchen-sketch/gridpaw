@@ -1,0 +1,188 @@
+---
+// /ad-free/ —— 一次性买断去广告（Stripe hosted Checkout）
+// 契约：skill `stripe-checkout-integration`（§1 参数 / §2 模式 B / §6 静态站形态 / §7 验证清单）
+// 金额只在这里显示，真源是 wrangler.toml 的 ADFREE_PRICE_CENTS —— 改价两处同步。
+// 页面侧唯一判断依据是 /api/payment/status 的返回，URL 上的任何 paid=1 之类参数一律不信。
+const PRICE_LABEL = '$4.99';
+const TITLE = 'Remove ads · GridPaw';
+const DESC = 'One payment, no account needed. Hide every ad on GridPaw, on all your devices with the same email.';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, follow" />
+    <title>{TITLE}</title>
+    <meta name="description" content={DESC} />
+    <link rel="canonical" href="https://gridpaw.com/ad-free/" />
+    <style>
+      :root { --amber: #D97706; --cream: #FFFBF5; --text: #3A2F28; --muted: #9C8B7B; --border: #F2E4D4; --ok: #3F7D4E; }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px 16px; }
+      .card { width: 100%; max-width: 520px; background: #fff; border: 2px solid var(--border); border-radius: 18px; padding: 30px 26px; }
+      .paw { font-size: 38px; text-align: center; margin-bottom: 10px; }
+      h1 { font-size: 23px; text-align: center; margin-bottom: 8px; letter-spacing: -0.01em; }
+      .lede { font-size: 14.5px; line-height: 1.6; color: var(--muted); text-align: center; margin-bottom: 20px; }
+      .price { font-size: 34px; font-weight: 800; text-align: center; color: var(--amber); margin-bottom: 4px; }
+      .price small { font-size: 13px; font-weight: 600; color: var(--muted); display: block; margin-top: 4px; }
+      ul { list-style: none; margin: 18px 0 22px; }
+      li { font-size: 14px; line-height: 1.55; padding-left: 24px; position: relative; margin-bottom: 9px; }
+      li::before { content: '🐾'; position: absolute; left: 0; top: 0; font-size: 12px; }
+      label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+      input[type=email] { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 15px; background: var(--cream); color: var(--text); }
+      input[type=email]:focus { outline: none; border-color: var(--amber); }
+      button { width: 100%; margin-top: 12px; background: var(--amber); color: #fff; border: none; border-radius: 11px; padding: 14px; font-size: 15px; font-weight: 800; cursor: pointer; }
+      button[disabled] { opacity: 0.55; cursor: default; }
+      button.ghost { background: transparent; color: var(--amber); border: 1.5px solid var(--amber); font-weight: 700; }
+      .note { font-size: 12.5px; color: var(--muted); line-height: 1.55; margin-top: 14px; text-align: center; }
+      .msg { font-size: 13.5px; line-height: 1.5; margin-top: 12px; padding: 10px 12px; border-radius: 9px; display: none; }
+      .msg.show { display: block; }
+      .msg.err { background: #FFF1EF; color: #9B2C1F; }
+      .msg.info { background: #FFF8E6; color: #7A5B18; }
+      .ok-box { text-align: center; }
+      .ok-box h2 { color: var(--ok); font-size: 20px; margin-bottom: 10px; }
+      .hide { display: none !important; }
+      a { color: var(--amber); }
+      .restore { margin-top: 22px; border-top: 1.5px dashed var(--border); padding-top: 18px; }
+      .restore h3 { font-size: 13.5px; margin-bottom: 8px; }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <div class="paw">🐾</div>
+
+      <!-- 已解锁 -->
+      <section id="doneState" class="ok-box hide">
+        <h1>You're ad-free 🎉</h1>
+        <p class="lede">Ads are off on this device. Same email keeps it on any other browser.</p>
+        <button class="ghost" onclick="location.href='/'">Back to the puzzles</button>
+      </section>
+
+      <!-- 付款回跳轮询 -->
+      <section id="checking" class="hide">
+        <h1>Confirming your payment…</h1>
+        <p class="lede" id="checkNote">This usually takes a few seconds. Keep this tab open.</p>
+      </section>
+
+      <!-- 主售卖区 -->
+      <section id="buyState">
+        <h1>Remove all ads</h1>
+        <p class="lede">Every puzzle on GridPaw, no ads, no account needed.</p>
+        <div class="price">{PRICE_LABEL}<small>one payment · lifetime · VAT included where applicable</small></div>
+        <ul>
+          <li>All banner slots disappear: sidebars, sticky bar, in-article</li>
+          <li>Works on any device — restore with the same email</li>
+          <li>Supports a one-person puzzle site 🐾</li>
+        </ul>
+        <label for="email">Email (for your receipt &amp; restore)</label>
+        <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" />
+        <button id="buyBtn">Get it for {PRICE_LABEL}</button>
+        <div id="msg" class="msg err"></div>
+        <p class="note">Secure checkout by Stripe. Cards, Apple&nbsp;Pay and Google&nbsp;Pay where available. 7-day no-questions refund — see <a href="/refund-policy/">refund policy</a>.</p>
+
+        <div class="restore">
+          <h3>Already bought it on another device?</h3>
+          <input id="restoreEmail" type="email" inputmode="email" placeholder="you@example.com" />
+          <button id="restoreBtn" class="ghost">Restore with email</button>
+          <div id="rmsg" class="msg err"></div>
+        </div>
+      </section>
+    </main>
+
+    <script is:inline>
+      (function () {
+        var KEY = 'gp_ads_free';
+        var $ = function (id) { return document.getElementById(id); };
+        function show(section) {
+          ['buyState', 'checking', 'doneState'].forEach(function (id) { $(id).classList.add('hide'); });
+          $(section).classList.remove('hide');
+        }
+        function say(el, text, kind) {
+          var box = $(el);
+          box.textContent = text;
+          box.className = 'msg ' + (kind || 'err') + ' show';
+        }
+        function unlock(token) {
+          try { localStorage.setItem(KEY, token || '1'); } catch (e) {}
+          document.documentElement.classList.add('gp-ads-free');
+          show('doneState');
+        }
+
+        // 已解锁直接进完成态
+        var existing = null;
+        try { existing = localStorage.getItem(KEY); } catch (e) {}
+        if (existing) { unlock(existing); return; }
+
+        var params = new URLSearchParams(location.search);
+        var orderNo = params.get('order_no');
+
+        if (params.get('canceled')) {
+          say('msg', 'Checkout canceled — nothing was charged.', 'info');
+        }
+
+        if (orderNo) {
+          show('checking');
+          var tries = 0;
+          var timer = setInterval(function () {
+            tries++;
+            fetch('/api/payment/status?order_no=' + encodeURIComponent(orderNo))
+              .then(function (r) { return r.json(); })
+              .then(function (d) {
+                if (d.status === 'paid') {
+                  clearInterval(timer);
+                  unlock(d.token);
+                } else if (d.status === 'not_found' || tries > 30) {
+                  clearInterval(timer);
+                  show('buyState');
+                  say('msg', 'We could not confirm this order automatically. Email support@gridpaw.com with your receipt and we will unlock it.', 'err');
+                }
+              })
+              .catch(function () { /* 网络抖动：继续轮询 */ });
+          }, 2000);
+        }
+
+        $('buyBtn').addEventListener('click', function () {
+          var email = $('email').value.trim();
+          var btn = $('buyBtn');
+          btn.disabled = true;
+          fetch('/api/payment/checkout', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ email: email || undefined }),
+          })
+            .then(function (r) { return r.json().then(function (d) { return { s: r.status, d: d }; }); })
+            .then(function (res) {
+              if (res.d && res.d.pay_url) { location.assign(res.d.pay_url); return; }
+              btn.disabled = false;
+              if (res.d && res.d.error === 'stripe_not_configured') {
+                say('msg', 'Payments are not live yet — check back shortly.', 'info');
+              } else {
+                say('msg', (res.d && (res.d.detail || res.d.error)) || 'Could not start checkout. Please try again.', 'err');
+              }
+            })
+            .catch(function () { btn.disabled = false; say('msg', 'Network error. Please try again.', 'err'); });
+        });
+
+        $('restoreBtn').addEventListener('click', function () {
+          var email = $('restoreEmail').value.trim();
+          if (!email) { say('rmsg', 'Enter the email you paid with.', 'err'); return; }
+          var btn = $('restoreBtn');
+          btn.disabled = true;
+          fetch('/api/payment/restore', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ email: email }),
+          })
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+              btn.disabled = false;
+              if (d.status === 'paid') unlock(d.token);
+              else say('rmsg', 'No purchase found for that email.', 'err');
+            })
+            .catch(function () { btn.disabled = false; say('rmsg', 'Network error. Please try again.', 'err'); });
+        });
+      })();
+    </script>
+  </body>
+</html>

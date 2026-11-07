@@ -23,6 +23,16 @@ export interface Env {
   COMMENTS_ADMIN_TOKEN?: string;  // /admin/comments?token= 审核口令（未配置=审核接口 403）
   COMMENTS_SALT?: string;         // ip_hash 盐；缺省回退 OAUTH_STATE_SECRET
   COMMENTS_NOTIFY_EMAIL?: string; // 新评论邮件通知收件人；未配置=不发信
+  // 去广告一次性付款（functions/api/payment/*）—— 契约见 skill `stripe-checkout-integration`
+  // secret 一律 `wrangler pages secret put`，不进仓库；金额/币种/tax code 走 wrangler.toml [vars]
+  STRIPE_SECRET_KEY?: string;      // sk_/rk_ live 或 test；未配置 = checkout 返回 503
+  STRIPE_SIGNING_SECRET?: string;  // whsec_…；未配置 = webhook 一律 fail-closed 404
+  STRIPE_PUBLISHABLE_KEY?: string; // 仅当要用 Stripe.js 时
+  ENTITLEMENT_SECRET?: string;     // 权益 token HMAC 密钥；缺省回退 OAUTH_STATE_SECRET
+  ADFREE_PRICE_CENTS?: string;     // 如 '499'
+  ADFREE_CURRENCY?: string;        // 如 'usd'
+  ADFREE_TAX_CODE?: string;        // 如 'txcd_10000000'，改码会改变净收入
+  ADFREE_PRODUCT_LABEL?: string;
 }
 
 export const AUTH_PROVIDERS = ['google', 'microsoft', 'facebook'] as const;
