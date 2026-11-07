@@ -384,7 +384,15 @@ def page_html(n, d, all_levels, style):
                        'all-levels table only. The embedded video is the tiebreaker \u2014 if a step '
                        'does not react, follow the video.</div>')
 
-    title = f'Brain Puzzle 3: Crazy Mind Level {n} Answer: {name} Guide'
+    # 60-char ceiling: Google cut 118/137 old titles mid-phrase (see shorten_titles.py)
+    title = f'Brain Puzzle 3 Level {n} Answer: {name}'
+    if len(title) > 60:
+        keep, out = 60 - len(f'Brain Puzzle 3 Level {n} Answer: '), ''
+        for w in name.split():
+            if len((out + ' ' + w).strip()) > keep:
+                break
+            out = (out + ' ' + w).strip()
+        title = f'Brain Puzzle 3 Level {n} Answer: {out or name}' 
     # GSC query data: goal-sentence queries pull 13-15% CTR while bare "level N"
     # queries pull 0-1%, so the meta description leads with the goal text verbatim
     desc = (f'{goal} Brain Puzzle 3: Crazy Mind Level {n} ({name}) walkthrough: '
@@ -633,7 +641,7 @@ def write_hub(plan):
     for k, d in plan['levels'].items():
         n = d['n']
         merged[n] = {
-            'title': f"Brain Puzzle 3: Crazy Mind Level {n} Answer: {d['name']} Guide",
+            'title': f"Brain Puzzle 3 Level {n} Answer: {d['name']}",
             'goal': d['goal'],
             'hero': d.get('hero'),
             'slug': f'brain-puzzle-3-level-{n}',

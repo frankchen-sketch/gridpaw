@@ -13,7 +13,7 @@ OUT_PAGES = f'{REPO}/src/pages'
 LEVELS = {
     1: {
         'slug': 'brain-puzzle-3-level-1',
-        'title': 'Brain Puzzle 3 Level 1 Answer: Quick Draw Guide',
+        'title': 'Brain Puzzle 3 Level 1 Answer: Quick Draw',
         'description': 'Brain Puzzle 3 Level 1 (Quick Draw) answer: score higher than the rival in the western duel. Full step order plus the complete video walkthrough.',
         'goal': 'Help the protagonist score higher than the rival',
         'video_id': 'isoGuqaLrrE',
@@ -34,7 +34,7 @@ LEVELS = {
     },
     2: {
         'slug': 'brain-puzzle-3-level-2',
-        'title': 'Brain Puzzle 3 Level 2 Answer: Winter Warmth Guide',
+        'title': 'Brain Puzzle 3 Level 2 Answer: Winter Warmth',
         'description': 'Brain Puzzle 3 Level 2 (Winter Warmth) answer: warm the man up with every heat source in the room. Full step order plus the complete video walkthrough.',
         'goal': 'Help the man warm up',
         'video_id': 'hXfOPjxdsRc',
@@ -56,7 +56,7 @@ LEVELS = {
     },
     3: {
         'slug': 'brain-puzzle-3-level-3',
-        'title': 'Brain Puzzle 3 Level 3 Answer: Fair Lady Guide',
+        'title': 'Brain Puzzle 3 Level 3 Answer: Fair Lady',
         'description': 'Brain Puzzle 3 Level 3 (Fair Lady) answer: get the magazine-cover look before the door opens. Full step order plus the complete video walkthrough.',
         'goal': 'Help her achieve that magazine cover look',
         'video_id': 'BLrDe8tZQMQ',
@@ -78,7 +78,7 @@ LEVELS = {
     },
     4: {
         'slug': 'brain-puzzle-3-level-4',
-        'title': 'Brain Puzzle 3 Level 4 Answer: Principal Coming Guide',
+        'title': 'Brain Puzzle 3 Level 4 Answer: Principal Coming',
         'description': 'Brain Puzzle 3 Level 4 (Principal Coming) answer: clean the dorm before the principal arrives. Full step order plus the complete video walkthrough.',
         'goal': 'Help her clean up the dorm',
         'video_id': '6cchHfXWRbo',
@@ -100,7 +100,7 @@ LEVELS = {
     },
     5: {
         'slug': 'brain-puzzle-3-level-5',
-        'title': 'Brain Puzzle 3 Level 5 Answer: Creepy Ferris Guide',
+        'title': 'Brain Puzzle 3 Level 5 Answer: Creepy Ferris',
         'description': 'Brain Puzzle 3 Level 5 (Creepy Ferris) answer: build an escape route out of the creepy carnival. Full step order plus the complete video walkthrough.',
         'goal': 'Help the girl get out of this creepy place',
         'video_id': 'lKbt_08mQBw',
@@ -122,7 +122,7 @@ LEVELS = {
     },
     6: {
         'slug': 'brain-puzzle-3-level-6',
-        'title': 'Brain Puzzle 3 Level 6 Answer: Clean Bathroom Guide',
+        'title': 'Brain Puzzle 3 Level 6 Answer: Clean Bathroom',
         'description': 'Brain Puzzle 3 Level 6 (Clean Bathroom) answer: restore the bathroom before the wife gets home. Full step order plus the complete video walkthrough.',
         'goal': 'Help Husband Restore the Bathroom',
         'video_id': 'zidBwDCJqB4',
@@ -144,7 +144,7 @@ LEVELS = {
     },
     7: {
         'slug': 'brain-puzzle-3-level-7',
-        'title': 'Brain Puzzle 3 Level 7 Answer: Ghost Wish Guide',
+        'title': 'Brain Puzzle 3 Level 7 Answer: Ghost Wish',
         'description': 'Brain Puzzle 3 Level 7 (Ghost Wish) answer: grant every ghost\'s wish in the haunted apartment. Full step order plus the complete video walkthrough.',
         'goal': 'Fulfill all the ghosts\' wishes',
         'video_id': 'ByYnl8Ze8lc',
@@ -166,7 +166,7 @@ LEVELS = {
     },
     8: {
         'slug': 'brain-puzzle-3-level-8',
-        'title': 'Brain Puzzle 3 Level 8 Answer: Elevator Arrest Guide',
+        'title': 'Brain Puzzle 3 Level 8 Answer: Elevator Arrest',
         'description': 'Brain Puzzle 3 Level 8 (Elevator Arrest) answer: break the man free from the elevator railing. Full step order plus the complete video walkthrough.',
         'goal': 'Help him break free from the railing',
         'video_id': 'tLimJ3s02SQ',
@@ -188,7 +188,7 @@ LEVELS = {
     },
     9: {
         'slug': 'brain-puzzle-3-level-9',
-        'title': 'Brain Puzzle 3 Level 9 Answer: Delicious Hotdog Guide',
+        'title': 'Brain Puzzle 3 Level 9 Answer: Delicious Hotdog',
         'description': 'Brain Puzzle 3 Level 9 (Delicious Hotdog) answer: stack a jumbo hot dog from the strangest finds. Full step order plus the complete video walkthrough.',
         'goal': 'Let\'s make some delicious hot dogs!',
         'video_id': '_qn1ratXftU',
@@ -210,7 +210,7 @@ LEVELS = {
     },
     10: {
         'slug': 'brain-puzzle-3-level-10',
-        'title': 'Brain Puzzle 3 Level 10 Answer: Escape Office Guide',
+        'title': 'Brain Puzzle 3 Level 10 Answer: Escape Office',
         'description': 'Brain Puzzle 3 Level 10 (Escape Office) answer: help every employee escape the office. Full step order plus the complete video walkthrough.',
         'goal': 'Helping employees leave the company',
         'video_id': 'I7Ad-91mm-Q',
@@ -252,7 +252,7 @@ LEVELS = {
     },
     11: {
         'slug': 'brain-puzzle-3-level-11',
-        'title': 'Brain Puzzle 3 Level 11 Answer: Online Date Door Guide',
+        'title': 'Brain Puzzle 3 Level 11 Answer: Online Date Door',
         'description': 'Brain Puzzle 3 Level 11 (Online Date Door) answer: open every lock on the online date door. Full step order plus the complete video walkthrough.',
         'goal': 'Help men open all locks',
         'video_id': '6nk0kPib3Yg',
@@ -274,7 +274,7 @@ LEVELS = {
     },
     12: {
         'slug': 'brain-puzzle-3-level-12',
-        'title': 'Brain Puzzle 3 Level 12 Answer: Overcrowded Guide',
+        'title': 'Brain Puzzle 3 Level 12 Answer: Overcrowded',
         'description': 'Brain Puzzle 3 Level 12 (Overcrowded) answer: reduce the elevator weight to 1000KG before it drops. Full step order plus the complete video walkthrough.',
         'goal': 'Help reduce the elevator\'s weight to 1000KG',
         'video_id': 'rsWKWSoIBBU',
@@ -296,7 +296,7 @@ LEVELS = {
     },
     13: {
         'slug': 'brain-puzzle-3-level-13',
-        'title': 'Brain Puzzle 3 Level 13 Answer: Mom Is Home Guide',
+        'title': 'Brain Puzzle 3 Level 13 Answer: Mom Is Home',
         'description': 'Brain Puzzle 3 Level 13 (Mom Is Home) answer: clean up the room before mom gets home. Full step order plus the complete video walkthrough.',
         'goal': 'Clean up the room',
         'video_id': 'Ndnc35wC13Y',
@@ -318,7 +318,7 @@ LEVELS = {
     },
     14: {
         'slug': 'brain-puzzle-3-level-14',
-        'title': 'Brain Puzzle 3 Level 14 Answer: Sausage Lip SOS Guide',
+        'title': 'Brain Puzzle 3 Level 14 Answer: Sausage Lip SOS',
         'description': 'Brain Puzzle 3 Level 14 (Sausage Lip SOS) answer: make the crab release its claw. Full step order plus the complete video walkthrough.',
         'goal': 'Make the crab release its claw',
         'video_id': 'W1QWV5DS0Fg',
@@ -340,7 +340,7 @@ LEVELS = {
     },
     15: {
         'slug': 'brain-puzzle-3-level-15',
-        'title': 'Brain Puzzle 3 Level 15 Answer: Doorstep Creeper Guide',
+        'title': 'Brain Puzzle 3 Level 15 Answer: Doorstep Creeper',
         'description': 'Brain Puzzle 3 Level 15 (Doorstep Creeper) answer: drive away the creep outside the door. Full step order plus the complete video walkthrough.',
         'goal': 'Drive away the creep outside the door',
         'video_id': '_sMhL_Wr1rQ',
@@ -362,7 +362,7 @@ LEVELS = {
     },
     16: {
         'slug': 'brain-puzzle-3-level-16',
-        'title': 'Brain Puzzle 3 Level 16 Answer: Big Head Guide',
+        'title': 'Brain Puzzle 3 Level 16 Answer: Big Head',
         'description': 'Brain Puzzle 3 Level 16 (Big Head) answer: help the girl reduce her head circumference. Full step order plus the complete video walkthrough.',
         'goal': 'Help the girl reduce her head circumference',
         'video_id': 'lPoRWm_t1zg',
@@ -384,7 +384,7 @@ LEVELS = {
     },
     17: {
         'slug': 'brain-puzzle-3-level-17',
-        'title': 'Brain Puzzle 3 Level 17 Answer: Girl Dorm Cool Guide',
+        'title': 'Brain Puzzle 3 Level 17 Answer: Girl Dorm Cool',
         'description': 'Brain Puzzle 3 Level 17 (Girl Dorm Cool) answer: chase away all the husband’s ex-girlfriends. Full step order plus the complete video walkthrough.',
         'goal': 'Help the bride chase away all her husband’s ex-girlfriends',
         'video_id': 'wLLw1DrPJJY',
@@ -406,7 +406,7 @@ LEVELS = {
     },
     18: {
         'slug': 'brain-puzzle-3-level-18',
-        'title': 'Brain Puzzle 3 Level 18 Answer: Zombie Walk Guide',
+        'title': 'Brain Puzzle 3 Level 18 Answer: Zombie Walk',
         'description': 'Brain Puzzle 3 Level 18 (Zombie Walk) answer: keep the baby quiet before the zombies arrive. Full step order plus the complete video walkthrough.',
         'goal': 'Don\'t let the baby cry, the sound will attract zombies',
         'video_id': '3aZoyy587H0',
@@ -428,7 +428,7 @@ LEVELS = {
     },
     20: {
         'slug': 'brain-puzzle-3-level-20',
-        'title': 'Brain Puzzle 3 Level 20 Answer: Open Faster Guide',
+        'title': 'Brain Puzzle 3 Level 20 Answer: Open Faster',
         'description': 'Brain Puzzle 3 Level 20 (Open Faster) answer: help her clean the toilet fast. Full step order plus the complete video walkthrough.',
         'goal': 'Help her clean the toilet',
         'video_id': 'B-SnrZoaqzE',
@@ -450,7 +450,7 @@ LEVELS = {
     },
     21: {
         'slug': 'brain-puzzle-3-level-21',
-        'title': 'Brain Puzzle 3 Level 21 Answer: Cheating Scene Guide',
+        'title': 'Brain Puzzle 3 Level 21 Answer: Cheating Scene',
         'description': 'Brain Puzzle 3 Level 21 (Cheating Scene) answer: help the wife catch the cheating scene. Full step order plus the complete video walkthrough.',
         'goal': 'Help the wife catch cheating',
         'video_id': 'D5nqDl4EhkM',
@@ -472,7 +472,7 @@ LEVELS = {
     },
     22: {
         'slug': 'brain-puzzle-3-level-22',
-        'title': 'Brain Puzzle 3 Level 22 Answer: Coffee Master Guide',
+        'title': 'Brain Puzzle 3 Level 22 Answer: Coffee Master',
         'description': 'Brain Puzzle 3 Level 22 (Coffee Master) answer: help the barista make 10 different coffees. Full step order plus the complete video walkthrough.',
         'goal': 'Help the barista make 10 different coffees',
         'video_id': 'PBCqe1zIy3Q',
@@ -494,7 +494,7 @@ LEVELS = {
     },
     23: {
         'slug': 'brain-puzzle-3-level-23',
-        'title': 'Brain Puzzle 3 Level 23 Answer: Birthday Surprise Guide',
+        'title': 'Brain Puzzle 3 Level 23 Answer: Birthday Surprise',
         'description': 'Brain Puzzle 3 Level 23 (Birthday Surprise) answer: find the people hiding in the house. Full step order plus the complete video walkthrough.',
         'goal': 'Find the people hiding in the house',
         'video_id': 'fyPDfpUkx7Y',
@@ -516,7 +516,7 @@ LEVELS = {
     },
     24: {
         'slug': 'brain-puzzle-3-level-24',
-        'title': 'Brain Puzzle 3 Level 24 Answer: Above Tower Guide',
+        'title': 'Brain Puzzle 3 Level 24 Answer: Above Tower',
         'description': 'Brain Puzzle 3 Level 24 (Above Tower) answer: help them out of trouble on the tower. Full step order plus the complete video walkthrough.',
         'goal': 'Help them out of trouble',
         'video_id': 'HdY3PYKKvPQ',
@@ -538,7 +538,7 @@ LEVELS = {
     },
     25: {
         'slug': 'brain-puzzle-3-level-25',
-        'title': 'Brain Puzzle 3 Level 25 Answer: Parachute Peril Guide',
+        'title': 'Brain Puzzle 3 Level 25 Answer: Parachute Peril',
         'description': 'Brain Puzzle 3 Level 25 (Parachute Peril) answer: help them fix the parachute properly. Full step order plus the complete video walkthrough.',
         'goal': 'Help them fix the parachute properly',
         'video_id': 'jPHsfpSmxd4',
@@ -560,7 +560,7 @@ LEVELS = {
     },
     26: {
         'slug': 'brain-puzzle-3-level-26',
-        'title': 'Brain Puzzle 3 Level 26 Answer: Zombie Crisis Guide',
+        'title': 'Brain Puzzle 3 Level 26 Answer: Zombie Crisis',
         'description': 'Brain Puzzle 3 Level 26 (Zombie Crisis) answer: extend the ladder so the girl climbs upstairs. Full step order plus the complete video walkthrough.',
         'goal': 'Help the girl extend the ladder to climb upstairs',
         'video_id': 'os7P4LMb9pE',
@@ -582,7 +582,7 @@ LEVELS = {
     },
     27: {
         'slug': 'brain-puzzle-3-level-27',
-        'title': 'Brain Puzzle 3 Level 27 Answer: Paint Cleanup Guide',
+        'title': 'Brain Puzzle 3 Level 27 Answer: Paint Cleanup',
         'description': 'Brain Puzzle 3 Level 27 (Paint Cleanup) answer: rub the paint off the prisoner’s back. Full step order plus the complete video walkthrough.',
         'goal': 'Rub off the paint on the prisoner\'s back',
         'video_id': 'UTQRTVoth1w',
@@ -603,7 +603,7 @@ LEVELS = {
     },
     28: {
         'slug': 'brain-puzzle-3-level-28',
-        'title': 'Brain Puzzle 3 Level 28 Answer: Ghost Clinic Guide',
+        'title': 'Brain Puzzle 3 Level 28 Answer: Ghost Clinic',
         'description': 'Brain Puzzle 3 Level 28 (Ghost Clinic) answer: solve every ghost’s problem at the clinic. Full step order plus the complete video walkthrough.',
         'goal': 'Help them solve their problems',
         'video_id': '6LiT0x4hm34',
@@ -625,7 +625,7 @@ LEVELS = {
     },
     29: {
         'slug': 'brain-puzzle-3-level-29',
-        'title': 'Brain Puzzle 3 Level 29 Answer: Grim Reaper Chase Guide',
+        'title': 'Brain Puzzle 3 Level 29 Answer: Grim Reaper Chase',
         'description': 'Brain Puzzle 3 Level 29 (Grim Reaper Chase) answer: escape Death himself. Full step order plus the complete video walkthrough.',
         'goal': 'Help them escape Death',
         'video_id': 'oe9AWLs1NRM',
@@ -667,7 +667,7 @@ LEVELS = {
     },
     31: {
         'slug': 'brain-puzzle-3-level-31',
-        'title': 'Brain Puzzle 3 Level 31 Answer: Subway Guide',
+        'title': 'Brain Puzzle 3 Level 31 Answer: Subway',
         'description': 'Brain Puzzle 3 Level 31 (Subway Panic) answer: the creepy subway car — most findings are drags, not taps. Live-verified moves plus video timestamps.',
         'goal': 'Help her figure out what\'s strange',
         'video_id': 'VtOrg4WJ19o',
@@ -689,7 +689,7 @@ LEVELS = {
     },
     32: {
         'slug': 'brain-puzzle-3-level-32',
-        'title': 'Brain Puzzle 3 Level 32 Answer: Become Beauty Guide',
+        'title': 'Brain Puzzle 3 Level 32 Answer: Become Beauty',
         'description': 'Brain Puzzle 3 Level 32 (Become Beauty) answer: help the black-haired girl become beautiful. Full step order plus the complete video walkthrough.',
         'goal': 'Help the black-haired girl become beautiful',
         'video_id': 'DMn7l5ry-gU',
@@ -711,7 +711,7 @@ LEVELS = {
     },
     33: {
         'slug': 'brain-puzzle-3-level-33',
-        'title': 'Brain Puzzle 3 Level 33 Answer: Dining Misconduct Guide',
+        'title': 'Brain Puzzle 3 Level 33 Answer: Dining Misconduct',
         'description': 'Brain Puzzle 3 Level 33 (Dining Misconduct) answer: help the waiters handle uncivilized guests. Full step order plus the complete video walkthrough.',
         'goal': 'Help waiters handle uncivilized behaviors',
         'video_id': 'ykpS-OALS3Y',
@@ -733,7 +733,7 @@ LEVELS = {
     },
     34: {
         'slug': 'brain-puzzle-3-level-34',
-        'title': 'Brain Puzzle 3 Level 34 Answer: Find Pervert Guide',
+        'title': 'Brain Puzzle 3 Level 34 Answer: Find Pervert',
         'description': 'Brain Puzzle 3 Level 34 (Find Pervert) answer: find all the perverts who spy on girls. Full step order plus the complete video walkthrough.',
         'goal': 'Find all the perverts who spy on girls',
         'video_id': 'aVuYeZ-3cJo',
@@ -755,7 +755,7 @@ LEVELS = {
     },
     35: {
         'slug': 'brain-puzzle-3-level-35',
-        'title': 'Brain Puzzle 3 Level 35 Answer: Snowfield Doomsday Guide',
+        'title': 'Brain Puzzle 3 Level 35 Answer: Snowfield Doomsday',
         'description': 'Brain Puzzle 3 Level 35 (Snowfield Doomsday) answer: help the boy fight off the snow monster. Full step order plus the complete video walkthrough.',
         'goal': 'Help the boy fight off the snow monster',
         'video_id': 'NYW38W4Pwsk',
@@ -777,7 +777,7 @@ LEVELS = {
     },
     36: {
         'slug': 'brain-puzzle-3-level-36',
-        'title': 'Brain Puzzle 3 Level 36 Answer: Piglet\'s House Guide',
+        'title': 'Brain Puzzle 3 Level 36 Answer: Piglet\'s House',
         'description': 'Brain Puzzle 3 Level 36 (Piglet\'s House) answer: help the piglet build the roof. Full step order plus the complete video walkthrough.',
         'goal': 'Help the piglet build the roof',
         'video_id': 'ZIe85dZg08k',
@@ -799,7 +799,7 @@ LEVELS = {
     },
     37: {
         'slug': 'brain-puzzle-3-level-37',
-        'title': 'Brain Puzzle 3 Level 37 Answer: Short Drama Cover Guide',
+        'title': 'Brain Puzzle 3 Level 37 Answer: Short Drama Cover',
         'description': 'Brain Puzzle 3 Level 37 (Short Drama Cover) answer: restore the correct short drama cover. Full step order plus the complete video walkthrough.',
         'goal': 'Restore the correct short drama cover',
         'video_id': '8yVSZNLeEs8',
@@ -821,7 +821,7 @@ LEVELS = {
     },
     38: {
         'slug': 'brain-puzzle-3-level-38',
-        'title': 'Brain Puzzle 3 Level 38 Answer: Pyramid Hideout Guide',
+        'title': 'Brain Puzzle 3 Level 38 Answer: Pyramid Hideout',
         'description': 'Brain Puzzle 3 Level 38 (Pyramid Hideout) answer: help the girl hide successfully. Full step order plus the complete video walkthrough.',
         'goal': 'Help the girl hide successfully',
         'video_id': 'L5xOYikbAS0',
@@ -843,7 +843,7 @@ LEVELS = {
     },
     39: {
         'slug': 'brain-puzzle-3-level-39',
-        'title': 'Brain Puzzle 3 Level 39 Answer: Destroy Mummy Guide',
+        'title': 'Brain Puzzle 3 Level 39 Answer: Destroy Mummy',
         'description': 'Brain Puzzle 3 Level 39 (Destroy Mummy) answer: help the girl drive away the mummy. Full step order plus the complete video walkthrough.',
         'goal': 'Help the girl drive away the mummy',
         'video_id': 'gnDRCZ_faro',
@@ -865,7 +865,7 @@ LEVELS = {
     },
     40: {
         'slug': 'brain-puzzle-3-level-40',
-        'title': 'Brain Puzzle 3 Level 40 Answer: Choose a Pet Guide',
+        'title': 'Brain Puzzle 3 Level 40 Answer: Choose a Pet',
         'description': 'Brain Puzzle 3 Level 40 (Choose a Pet) answer: let customers adopt their favorite pet. Full step order plus the complete video walkthrough.',
         'goal': 'Let customers adopt their favorite pet',
         'video_id': 'M66a8zw5huA',
@@ -887,7 +887,7 @@ LEVELS = {
     },
     41: {
         'slug': 'brain-puzzle-3-level-41',
-        'title': 'Brain Puzzle 3 Level 41 Answer: Dog Fire Rescue Guide',
+        'title': 'Brain Puzzle 3 Level 41 Answer: Dog Fire Rescue',
         'description': 'Brain Puzzle 3 Level 41 (Dog Fire Rescue) answer: help the puppy put out all the fires. Full step order plus the complete video walkthrough.',
         'goal': 'Help the puppy put out all the fires',
         'video_id': 'bJ4beKGDKLw',
@@ -909,7 +909,7 @@ LEVELS = {
     },
     42: {
         'slug': 'brain-puzzle-3-level-42',
-        'title': 'Brain Puzzle 3 Level 42 Answer: Watch Sunrise Guide',
+        'title': 'Brain Puzzle 3 Level 42 Answer: Watch Sunrise',
         'description': 'Brain Puzzle 3 Level 42 (Watch Sunrise) answer: help the black-haired boy relieve fatigue. Full step order plus the complete video walkthrough.',
         'goal': 'Help the black-haired boy relieve fatigue',
         'video_id': 'SIgu0uV07bY',
@@ -931,7 +931,7 @@ LEVELS = {
     },
     43: {
         'slug': 'brain-puzzle-3-level-43',
-        'title': 'Brain Puzzle 3 Level 43 Answer: Glow-Up Comeback Guide',
+        'title': 'Brain Puzzle 3 Level 43 Answer: Glow-Up Comeback',
         'description': 'Brain Puzzle 3 Level 43 (Glow-Up Comeback) answer: help the girl change. Full step order plus the complete video walkthrough.',
         'goal': 'Help the girl change',
         'video_id': 'KjblARd5bHI',
@@ -953,7 +953,7 @@ LEVELS = {
     },
     44: {
         'slug': 'brain-puzzle-3-level-44',
-        'title': 'Brain Puzzle 3 Level 44 Answer: Polly the Parrot Guide',
+        'title': 'Brain Puzzle 3 Level 44 Answer: Polly the Parrot',
         'description': 'Brain Puzzle 3 Level 44 (Polly the Parrot) answer: help Polly gather enough cookies. Full step order plus the complete video walkthrough.',
         'goal': 'Help Polly gather enough cookies',
         'video_id': 'GHre1ekBAqI',
@@ -975,7 +975,7 @@ LEVELS = {
     },
     45: {
         'slug': 'brain-puzzle-3-level-45',
-        'title': 'Brain Puzzle 3 Level 45 Answer: Grandma\'s Filling Guide',
+        'title': 'Brain Puzzle 3 Level 45 Answer: Grandma\'s Filling',
         'description': 'Brain Puzzle 3 Level 45 (Grandma\'s Filling) answer: help Grandma Fix Her Teeth. Full step order plus the complete video walkthrough.',
         'goal': 'Help Grandma Fix Her Teeth',
         'video_id': 'o3l_32lfqn8',
@@ -997,7 +997,7 @@ LEVELS = {
     },
     46: {
         'slug': 'brain-puzzle-3-level-46',
-        'title': 'Brain Puzzle 3 Level 46 Answer: Ambiguous Campus Guide',
+        'title': 'Brain Puzzle 3 Level 46 Answer: Ambiguous Campus',
         'description': 'Brain Puzzle 3 Level 46 (Ambiguous Campus) answer: help the two girls raise the boy\'s favorability. Full step order plus the complete video walkthrough.',
         'goal': 'Help the two girls raise the boy\'s favorability towards them',
         'video_id': '5BTnI8TLD4c',
@@ -1019,7 +1019,7 @@ LEVELS = {
     },
     47: {
         'slug': 'brain-puzzle-3-level-47',
-        'title': 'Brain Puzzle 3 Level 47 Answer: Escape from the doctor Guide',
+        'title': 'Brain Puzzle 3 Level 47 Answer: Escape from the doctor',
         'description': 'Brain Puzzle 3 Level 47 (Escape from the doctor) answer: help the girl resist the doctor. Full step order plus the complete video walkthrough.',
         'goal': 'Help the girl resist the doctor',
         'video_id': 'pcnrYyNCoPU',
@@ -1041,7 +1041,7 @@ LEVELS = {
     },
     48: {
         'slug': 'brain-puzzle-3-level-48',
-        'title': 'Brain Puzzle 3 Level 48 Answer: Chimney Cooling Guide',
+        'title': 'Brain Puzzle 3 Level 48 Answer: Chimney Cooling',
         'description': 'Brain Puzzle 3 Level 48 (Chimney Cooling) answer: don\'t let the girl be spotted by the pervert!. Full step order plus the complete video walkthrough.',
         'goal': 'Don\'t let the girl be spotted by the pervert!',
         'video_id': '5ZouNdyM7FE',
@@ -1063,7 +1063,7 @@ LEVELS = {
     },
     49: {
         'slug': 'brain-puzzle-3-level-49',
-        'title': 'Brain Puzzle 3 Level 49 Answer: Shark Crisis Guide',
+        'title': 'Brain Puzzle 3 Level 49 Answer: Shark Crisis',
         'description': 'Brain Puzzle 3 Level 49 (Shark Crisis) answer: help the protagonist block the leak until rescue. Full step order plus the complete video walkthrough.',
         'goal': 'Help the protagonist block the leak until rescue arrives',
         'video_id': 'Onlyg3fwByE',
@@ -1085,7 +1085,7 @@ LEVELS = {
     },
     50: {
         'slug': 'brain-puzzle-3-level-50',
-        'title': 'Brain Puzzle 3 Level 50 Answer: Light a fire while camping Guide',
+        'title': 'Brain Puzzle 3 Level 50 Answer: Light a fire while camping',
         'description': 'Brain Puzzle 3 Level 50 (Light a fire while camping) answer: help the family start a fire. Full step order plus the complete video walkthrough.',
         'goal': 'Help the family start a fire',
         'video_id': 'ecDtTpNm-pM',
@@ -1107,7 +1107,7 @@ LEVELS = {
     },
     51: {
         'slug': 'brain-puzzle-3-level-51',
-        'title': 'Brain Puzzle 3 Level 51 Answer: Bear Attack Guide',
+        'title': 'Brain Puzzle 3 Level 51 Answer: Bear Attack',
         'description': 'Brain Puzzle 3 Level 51 (Bear Attack) answer: escape the terrifying brown bear attack. Full step order plus the complete video walkthrough.',
         'goal': 'Escape the terrifying brown bear attack',
         'video_id': 'bA-Xx-dvteQ',
@@ -1129,7 +1129,7 @@ LEVELS = {
     },
     52: {
         'slug': 'brain-puzzle-3-level-52',
-        'title': 'Brain Puzzle 3 Level 52 Answer: A Quiet Place Guide',
+        'title': 'Brain Puzzle 3 Level 52 Answer: A Quiet Place',
         'description': 'Brain Puzzle 3 Level 52 (A Quiet Place) answer: help the man escape the cabin. Full step order plus the complete video walkthrough.',
         'goal': 'Help the man escape the cabin',
         'video_id': 'tXtUyXJohQ8',
@@ -1151,7 +1151,7 @@ LEVELS = {
     },
     53: {
         'slug': 'brain-puzzle-3-level-53',
-        'title': 'Brain Puzzle 3 Level 53 Answer: Makeup Pro Guide',
+        'title': 'Brain Puzzle 3 Level 53 Answer: Makeup Pro',
         'description': 'Brain Puzzle 3 Level 53 (Makeup Pro) answer: create beautiful makeup looks for the girls. Full step order plus the complete video walkthrough.',
         'goal': 'Create beautiful makeup looks for the girls',
         'video_id': 'wINSLsJC5to',
@@ -1173,7 +1173,7 @@ LEVELS = {
     },
     137: {
         'slug': 'brain-puzzle-3-level-137',
-        'title': 'Brain Puzzle 3 Level 137 Answer: Coaster Guide',
+        'title': 'Brain Puzzle 3 Level 137 Answer: Coaster',
         'description': 'Brain Puzzle 3 Level 137 answer, step by step: tap off all three passenger wigs to drop the coaster weight. Quick answer, screenshots, video timestamps.',
         'goal': 'Why won\'t this roller coaster go up!',
         'video_id': 'MlcohtcpNDM',
@@ -1427,7 +1427,7 @@ def hub_page():
     THUMB = {19: 'l26_hero.jpg', 30: 'l27_hero.jpg', 31: 'l28_hero.jpg', 137: 'l25_step1.jpg'}
     cards = ''
     for n, d in LEVELS.items():
-        name = d['title'].split('Answer: ')[-1].replace(' Guide', '')
+        name = d['title'].split('Answer: ')[-1].replace('', '')
         thumb = d.get('hero') or THUMB.get(n)
         img = f'\n      <img class="thumb" src="/brain-puzzle-3/{thumb}" alt="Brain Puzzle 3 Level {n} {esc(name)}" loading="lazy" />' if thumb else ''
         cards += f'''    <a class="level-card" href="/{d['slug']}/">{img}
