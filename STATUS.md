@@ -9,7 +9,11 @@
 >
 > **最新作战地图：`research/2026-09-24_横向拓展前置验证_GamePix供给侧与DR差距.md`**（0924：横向拓展前置验证通过+供给侧实测补全；P0 待办收敛为 3 条：注册 publisher 账号 / 定游戏页形态 / 外链换质；Game Over 降级已结案）
 >
-> **⚡ 现役执行入口（2026-11-05 定稿）：`research/2026-11-05-battle-plan.md`** —— 2027-01-04 前只巩固不扩张；重申后第一枪 = Rooms & Exits 第一章（32 关，trickystory 只做 12）；第二枪 = akari solver 修一页。**新会话执行从这里开始，不要重跑已结案的调研。**（配套方向定义：`research/2026-11-05-next-direction.md`）
+> **⚡ 现役执行入口（2026-11-08 更新）：`research/2026-11-08-bp3-expansion-plan.md`** —— **P0 = BP3 L54-136（英 83 关，1 关/页）+ 德语 L31+**。依据（实测）：L1-53 每关均 1,258-2,037 曝光、曲线平坦无衰减，孤立 L137 单关 200 曝光/13 点击——**「L54-136 零信号」是 GSC「没页→没排名→没曝光」盲区，不是没需求**；keyword_volume 对关卡词全 null（连在吃流量的 L30/50/137 也 null），不可用作判据。trickystory 11-06 已建 2 个 BP3 页，抢 100 关/页之前的窗口就这几周。
+>
+> **基础计划（2026-11-05 battle-plan）：`research/2026-11-05-battle-plan.md`** —— 2027-01-04 前只巩固不扩张；其第一枪 = Rooms & Exits 第一章（32 关，trickystory 只做 12）降为 **P1**；第二枪 akari solver 修一页 = **P2**。**新会话执行从这里开始，不要重跑已结案的调研。**（配套方向定义：`research/2026-11-05-next-direction.md`）
+>
+> **R&E 复核已结案（2026-11-08）：`research/2026-11-08-rxe-recheck.md`** —— 需求真实（SERP 8/10 视频位 + trickystory 章节页月 310 流量）、空窗存在（网页位仅 rgamereview DR26 + trickystory DR0），**但缺口比 battle-plan 大 3 倍：游戏实际 105 关，我们只做 11 关（L1-11），且漏看 levelsolve.com 已同粒度覆盖前 50 关**。**开工前置：等 BP3 L54-136 铺完。** 顺序 = Ch1 L12-31/32（约 20 关）→ 验证 L33-50 流量 → 才做 L51-105（55 关空窗）；URL `chapter-N-level-M` 结构已确认无风险（与 walkthroughs.net 一致，Chapter 2+ 用章节内编号勿用全局编号）。
 
 >
 > **Reddit 复苏首发（2026-10-28，u/finn_chen_cat @ r/puzzlevideogames）**：BP3 数据帖「I wrote walkthroughs for every level of Brain Puzzle 3: Crazy Mind. The search data says Level 33 is where everyone gets stuck — by a landslide」（reddit.com/r/puzzlevideogames/comments/1xhrfni）。**正文零链接**（外链冻结期纪律；预案=评论被问时指 profile）。数据钩子=28d GSC 实拉：L33 214 clicks 断层第一（L17 121/L32 55）+「输入沟通问题非逻辑问题」洞察（8/10 步是拖拽+第 7 步双击无提示）。ego 实测存活 score 1 / 0 comments。盯守：24h 内评论必回（养活跃主目标）；后续外链帖须先过探雷（本帖存活=信号之一）。前置调查（10-28）：该 sub 零自定义版规、24K 订阅、开发者帖常态可发。
