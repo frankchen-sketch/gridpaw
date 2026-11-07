@@ -1,0 +1,73 @@
+diff --git a/src/pages/rooms-and-exits/index.astro b/src/pages/rooms-and-exits/index.astro
+index af631e8f..297d4e3c 100644
+--- a/src/pages/rooms-and-exits/index.astro
++++ b/src/pages/rooms-and-exits/index.astro
+@@ -4,6 +4,10 @@ import GameNav from '../../components/GameNav.astro';
+ import AdSlot from '../../components/AdSlot.astro';
+ import SideAd from '../../components/SideAd.astro';
+ import LevelSelector from '../../components/LevelSelector.astro';
++import levelsData from '../../data/rooms-and-exits-levels.json';
++
++const chapter = levelsData.chapters.find((c: any) => c.chapter === 1) ?? levelsData.chapters[0];
++const chapterLevels = chapter.levels as any[];
+ 
+ const title = "Rooms & Exits Walkthrough: Chapter 1 Level Guides (2026)";
+ const description = "Rooms & Exits: Escape Room Games walkthroughs rebuilt frame by frame from real playthroughs. Chapter 1 (Wicked Games) level guides, item chains and codes.";
+@@ -45,13 +49,16 @@ const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEn
+     .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+     .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+     .level-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.9rem; margin: 0.8rem 0; }
+-    .level-card { display: flex; flex-direction: column; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); text-decoration: none; color: var(--text); transition: transform .15s, border-color .15s; }
++    .level-card { display: flex; flex-direction: column; min-width: 0; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); text-decoration: none; color: var(--text); transition: transform .15s, border-color .15s; }
+     .level-card:hover { transform: translateY(-2px); border-color: var(--amber); }
+-    .level-card .thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; border-bottom: 1.5px solid var(--border); }
++    .level-card .thumb { width: 100%; height: auto; aspect-ratio: 16/10; object-fit: cover; display: block; border-bottom: 1.5px solid var(--border); background: #F4EDE4; }
+     .level-card .meta { padding: 0.6rem 0.7rem 0.75rem; }
+     .level-card .lvl { font-size: 0.68rem; font-weight: 900; color: var(--amber); text-transform: uppercase; letter-spacing: 0.06em; display: block; }
+     .level-card .name { font-size: 0.9rem; font-weight: 800; line-height: 1.3; margin-top: 0.15rem; display: block; }
+     .level-card .goal { font-size: 0.75rem; color: var(--light); margin-top: 0.3rem; line-height: 1.45; margin-bottom: 0; }
++    .level-card .badge { display: inline-block; margin-top: 0.4rem; font-size: 0.6rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; color: #B26A00; background: #FFE9BE; border-radius: 999px; padding: 0.12rem 0.45rem; }
++    .level-card.is-pending { opacity: 0.72; background: #FDFBF7; border-style: dashed; }
++    .level-card.is-pending:hover { transform: none; border-color: var(--border); }
+     .chapter-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.8rem 0; }
+     .chapter-bar span, .chapter-bar a { font-size: 0.82rem; font-weight: 700; border: 1.5px solid var(--border); background: #fff; border-radius: 999px; padding: 0.3rem 0.75rem; text-decoration: none; color: var(--text); }
+     .chapter-bar .on { border-color: var(--amber); color: var(--amber); }
+@@ -91,7 +98,37 @@ const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEn
+       <span class="todo">Chapter 3</span>
+       <span class="todo">Chapter 4+</span>
+     </div>
+-    <LevelSelector chapter={1} teasers={true} />
++    <div class="level-grid">
++      {chapterLevels.map((l: any) => {
++        const shipped = l.status === 'live' && l.stage === 'full';
++        const card = (
++          <>
++            {l.thumb ? (
++              <img
++                class="thumb"
++                src={l.thumb}
++                alt={`Rooms & Exits Chapter 1 Level ${l.n}: ${l.name} walkthrough`}
++                loading="lazy"
++                decoding="async"
++              />
++            ) : (
++              <div class="thumb" aria-hidden="true" />
++            )}
++            <div class="meta">
++              <span class="lvl">Level {l.n}</span>
++              <span class="name">{l.name}</span>
++              <p class="goal">{l.teaser}</p>
++              {!shipped && <span class="badge">{l.status === 'live' ? 'Video only' : 'Coming soon'}</span>}
++            </div>
++          </>
++        );
++        return shipped ? (
++          <a class="level-card" href={l.slug}>{card}</a>
++        ) : (
++          <div class="level-card is-pending">{card}</div>
++        );
++      })}
++    </div>
+ 
+     <h2>What actually blocks people<span class="accent">.</span></h2>
+     <p>Three patterns show up in every room, and knowing them saves the most time:</p>
