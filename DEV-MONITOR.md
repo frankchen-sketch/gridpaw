@@ -62,6 +62,7 @@
 ## 关键教训（首实战认知修正记录）
 
 - **安装量 ≠ 搜索量**：Ivy 5 亿装搜索衰退 80%，Nebula 1000 万装搜索为 0，Ecffri 100M 装才刚让品类词爬到 5,400/月。转化率不可假设，必须词级实测
+- **同厂转化不外溢（Oakever 新品实证）**：Hidden Fest（2026-08-26 上架）/ Pics Blast（2026-09-12）上架 2-3 个月后，name + hints/answers/walkthrough/levels 共 10 词**全部 null**（2026-11-07 首查，`fromCache=false` 真新读）。同厂 Meowdoku/Amaze GO 有「安装→搜索」转化实锤，不代表每款都成词 → **新品不预建页**，等词族出现非零；T1 的价值是「等词出现」不是「提前押注」
 - **包名前缀 ≠ 开发者**：com.zm.* 实为 Tripledot；com.ecffri.arrows 一度被误判为 Lessmore。以 Play dev 页为准
 - **规划师月度快照会骗「见顶」判断**：meowdoku 8 月快照 60,500 被判见顶，Trends 周度显示仍在涨（10 月趋势 99-100）。快照管存量、Trends 管方向，必须一起看
 - ** SERP 弱占位的量化形态**（help 词）：YouTube×3-4 + Reddit×1 + 单篇博客 = 独立网页真空，弱占位者形态；主词（安装意图）则是 Play×3 + YouTube×3 的商店天下，不碰
