@@ -252,7 +252,7 @@ const faqJsonLd = {json.dumps(faq_json, ensure_ascii=False)};
 {prev_html}{next_html}    </div>
 
     <div class="cta-box">
-      <p>Mehr Lösungen? <a href="/brain-puzzle-3-answers/">Alle Brain Puzzle 3 Antworten findest du hier \u2192</a></p>
+      <p>Alle Level auf einen Blick: <a href="/de/brain-puzzle-3-answers/">Brain Puzzle 3 Lösungen Level 1–137 \u2192</a></p>
       <p><a href="/">Shikaku spielen \u2192</a> \u00b7 <a href="/akari/">Akari spielen \u2192</a> \u00b7 <a href="/japanese-logic-puzzles/">Mehr japanische Logikr\u00e4tsel \u2192</a></p>
     </div>
   </main>
