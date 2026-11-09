@@ -276,4 +276,5 @@ cron（job 1329cf1d31a5）去重真源。状态：`reported`（已报告未动�
 - **铺多少关（需求曲线）**：巴西 top12=433 (68%)、top20=521 (82%)、top30=586 (92%)、top50=637。→ **铺 30 关，不铺 137**（德语 111/140 零曝光是反面教材）。
 - **实现**：数据驱动模板（1 个 `[level].astro` + JSON），12 关先上；title 统一 `Brain Puzzle 3 Level N Resposta: <Name>`（40–51 字符），desc 133–156 带 solução/resposta/fase；FAQ 首答为完整有序步骤；`inLanguage: pt-BR`；hreflang 双向（12 个英文页各补 pt-BR 回程）。
 - **判据（上线后 2 周）**：巴西 BP3 葡语 query 的 CTR ≥5%（现在 3.3%）且 28d 点击 ≥40 → **立刻补第二批 18 关到 30**；CTR <3% → 说明不是语言问题而是排名问题，30 关也不铺。
-- **上线状态**：commit `b34b663`，**未 push 未部署**，等母语审读门 + 事实核验门。
+- **审读门（2026-11-09，三 agent）**：①巴西母语审读 6/10 → P0：`arrastões`（巴西=抢劫，L40 出现 6 次）/`arrastes`（命令式当名词）、L31 步骤卡漏灭火器一步（照卡做会卡关）、verifyNote 与页面事实矛盾、L40「四拖落狗和幼崽」事实错；②事实核验：12 关 11 关逐条对齐，L31 步卡漏步为唯一 P0；③复验：抓到单数 `arrastão` 8 处、L45 名词 `arraste` 3 处、FAQ 问句 `Level` 12 处、L24 `destinatária` 等一批机械替换漏网。全部修完，dist 复验 0 残留。
+- **上线状态**：commit `efe6145` + 二轮修复，已 push `origin/feat/pt-br-bp3`，**未部署、未动 main**。
