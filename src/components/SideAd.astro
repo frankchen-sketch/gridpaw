@@ -31,6 +31,8 @@ const PLAY_SURFACES = new Set([
   '/akari/akari-puzzle', '/akari/cat-logic-puzzle', '/akari/create', '/akari/daily',
   '/akari/light-up-puzzle', '/akari/logic-puzzle', '/akari/sudoku-with-pictures',
   '/murdoku/trail', '/the-loop-puzzle',
+  // 产品/售卖页：用户在这页是来买/看产品的，不挂广告（2026-11-09 unlock-all 落地页）
+  '/unlock-all', '/ad-free',
 ]);
 // 按目录整片收：单关棋盘页（/akari/puzzle/puzzle-001 … /meowdoku/levels/1 …）
 const PLAY_PREFIXES = ['/akari/puzzle/', '/meowdoku/levels/'];
@@ -101,10 +103,15 @@ const SHOW = !ADSTERRA_OFF && !isPlaySurface;
   var showTop = vw < 768;
 
   // 移动端顶部位：插到 header 之后（DOM 里组件在 body 末尾，位置不对）
+  // 2026-11-09：BP3 实验条 .gp-unlock-bar 若位于 header 之后，广告插在条之后（付费钩子优先于广告）。
+  // ⚠ header 与 bar 之间隔着组件内联 <script>，不能用 nextElementSibling 判断——用文档顺序比较。
   var topAd = showTop ? document.querySelector('.gp-top-ad') : null;
   if (topAd) {
     var hdr = document.querySelector('header, .site-header, nav');
-    if (hdr && hdr.parentNode) hdr.parentNode.insertBefore(topAd, hdr.nextSibling);
+    var barEl = document.querySelector('.gp-unlock-bar');
+    var barAfterHdr = !!(hdr && barEl && (hdr.compareDocumentPosition(barEl) & Node.DOCUMENT_POSITION_FOLLOWING));
+    if (barAfterHdr) barEl.parentNode.insertBefore(topAd, barEl.nextSibling);
+    else if (hdr && hdr.parentNode) hdr.parentNode.insertBefore(topAd, hdr.nextSibling);
     else if (document.body.firstChild) document.body.insertBefore(topAd, document.body.firstChild);
   }
 

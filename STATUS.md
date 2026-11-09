@@ -99,6 +99,7 @@ GSC 近 28 天（08-20~09-16）**267 曝光 / 5 点击**，均位 13.8。按设�
 | 游戏订阅工具站 + 纯 checkout | mapgenie 订阅成立但不可复制；新站现实区间 5千-2万；**抽卡手游不成立**（WuWa 7 词 vs Roblox 236，大 DAU 要加 UGC） | `research/2026-11-09-game-subscription-tools.md` |
 | **gridpaw 订阅模型测算** | BP3 占 81.4% 流量、solver 仅 1.4%（108 clicks/28d）；订阅 vs AdSense 6.6 倍但绝对值太小 → **不做全站订阅**；一次性需求是结构障碍 | `research/2026-11-09-gridpaw-subscription-model.md` |
 | **GSC 工具方向判死** | Wizard 11.7万访问 vs mcpsearchconsole 1,537（停留 157s vs 3.4s）；MCP 已被 3 个 MIT 开源填满 → **否决**（SaaS 生意非建站生意） | `research/2026-11-09-gsc-tools-verdict.md` |
+| **solver 机会点（另一会话）** | 无第 5 个日式谜题 solver 值得做（全家桶去重 3,900/月，天花板 230-1,170 visits/月）；机会 = ①`/nonogram/solver/` 修排名 ②KenKen 新页 ③自定义盘面（待验证）。含 4 周可证伪判据 | `research/2026-11-09-next-solver-opportunity.md` |
 
 > 七份研究的共同结论：**没有找到比「gridpaw 现有攻略线 + AdSense」更匹配当前能力的方向**。2027-01 前的执行口径不变（§四 + `research/2026-11-05-battle-plan.md`）。
 
@@ -113,6 +114,7 @@ GSC 近 28 天（08-20~09-16）**267 曝光 / 5 点击**，均位 13.8。按设�
 | 待办 | **Pictomino 实现 easy/hard 模式**（2026-09-28 拍板）：落地页宣传 3×3 + 7 命，`game.html` 只实现 `mode=daily` | `public/pictomino/game.html` + `help-docs/pictomino.md` |
 | 待办 | **Phase 2 裁决点 = 11-10**（月度体检 cron `1041dc2740c8`）：takuzu / hashiwokakero 词位若动了 → 补 blog/glossary 页型 | §六 |
 | 待办 | 视觉合同欠账（样式收编 + 验证欠账） | `HANDOFF-VISUAL-CONTRACT.md` §三 |
+| 待办 | **solver 线机会**：① `/nonogram/solver/` 修排名（snippet 重写 + 内链锚集中 + H2 吃 online/checker/helper）② KenKen solver 新页（`calcudoku-engine` 引擎现成）。4 周判据：head 词 pos ≤10 且 clicks ≥40/28d | `research/2026-11-09-next-solver-opportunity.md` |
 
 > **已作废（勿再执行）**：11-07 收 28 天验证窗（10-16 二次读数已提前通过，见 NEWWORD-LEDGER.md）、10/3 复查 how-to-solve Title（观察期已过）、9/30 Request Indexing cron（repeat 已用完）
 

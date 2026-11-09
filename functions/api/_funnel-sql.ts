@@ -16,6 +16,8 @@ export const FUNNEL_EVENT_LIST: string[] = [
   'share_reddit', 'share_copy', 'share_twitter', 'share_card', 'share_card_copy', 'community_click',
   'sign_in_prompt_shown', 'sign_in_click', 'tool_start', 'tool_action', 'badge_help_click', 'help_click',
   'rate_submit', 'cta_click',
+  // 2026-11-09 BP3 头部「Unlock all」付费意向测试（与 funnel-track.ts 同步）
+  'unlock_click',
   // 2026-10-19 全站清扫补录（与 funnel-track.ts 同步；详见该文件注释）
   'onboard_start', 'onboard_step', 'rules_overlay_open', 'rules_overlay_close',
   'hint_used', 'puzzle_mistake', 'puzzle_complete', 'level_fail', 'board_dead', 'hp_loss',
