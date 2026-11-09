@@ -31,7 +31,7 @@ GSC `sc-domain:gridpaw.com`，2026-10-12 → 2026-11-08（28 天），dimension=
 - 位置：`<GameNav />` 正下方，全宽通栏（方案 A，2026-11-09 拍板）
 - 桌面文案：`🔓 Unlock all 137 levels — every answer in one page, no ads.` + `Unlock All →`
 - 移动 ≤560px：副文案 `.ub-full` 隐藏，只留 `Unlock all 137 levels`；字号 13px，按钮 40px 高（触控下限）
-- 实测（dev，1280×800 / 390×844）：桌面条高 51px、h1 top 122→173（仍在首屏）；移动条高 56px、无横向溢出
+- 实测（dev，1280×800 / 390×844）：桌面条高 51px、h1 top 122→173（仍在首屏）；移动条高 57px、无横向溢出
 - 链接：`/unlock-all/?utm_source=bp3&utm_campaign=unlock-bar`
 
 ### 2.2 广告位顺序（`src/components/SideAd.astro`）
@@ -78,7 +78,8 @@ GSC `sc-domain:gridpaw.com`，2026-10-12 → 2026-11-08（28 天），dimension=
 
 ## 5. 待办（部署后）
 
-- [ ] 部署（需法老批准；`pnpm run build` 后 `npx -y wrangler pages deploy dist --project-name gridpaw --commit-dirty=true` + IndexNow）
-- [ ] GA4 注册 `unlock_click` 事件参数（自定义维度 placement）
-- [ ] D1 日查脚本：`SELECT count(DISTINCT visitor), count(*) FROM events WHERE name='unlock_click'`
+- [x] 部署（2026-11-09 16:47，`--branch main`，IndexNow 11 URL HTTP 200）
+- [ ] GA4 注册 `unlock_click` 事件参数（自定义维度 placement；事件本身已自动出现在 Events 报告）
+- [x] D1 端到端验证：线上真实点击 → `POST /api/events` 200 → `gp_event` 表落库 3 条 `unlock_click`
+- [ ] D1 日查 SQL：`SELECT count(DISTINCT guest_id), count(*) FROM gp_event WHERE event_name='unlock_click'`（表名是 `gp_event`，不是 events）
 - [ ] 第 7 天中期读数（只报数不判断），第 14 天出结论
