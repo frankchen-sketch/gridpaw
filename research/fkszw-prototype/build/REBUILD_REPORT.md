@@ -27,6 +27,8 @@ patch 重放：5 个 patch（含 sed）+ 1 个文档串 patch 全部命中（old
 
 ## 2. 从包重跑
 
+> **2026-11-09 瘦身（135M → 26M）**：中间产物（`build/unpack` 36M、`build/fkszw_bg` 42M、`build/fkszw_v7` 4.4M、`build/sprites_webp` 652K、`game/packs` 22M）已删，只保留 `build/dec`（20M，脱离微信容器的独立备份）+ `levels_all.json` + `config_docs.pkl`。下表所有产物用 `bash scripts/run_pipeline.sh` 从 dec 重建，无需重回微信。
+
 | 步骤 | 输出 | 结果 |
 |---|---|---|
 | 解密 + 解包 | `build/dec/`、`build/unpack/{app,config,assets,wx_sdk}` | 61 / 137 / 6005 / 2 文件；`ofs` 绝对偏移自校验通过 |
