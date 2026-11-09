@@ -24,6 +24,7 @@
 - **广告曝光基线（11-07 23:00→11-08 12:00）**：1,147 imp / 1 click / CPM $0.227；imp/PV≈1.8-1.9（双槽满填，不是填充问题）；**瓶颈=PV 不是槽位**；稳态 ≈3,800 imp/天 ≈ $0.9/天。仪表必须 `timezone=GMT+08:00`（默认 GMT+0 会把 13h 拆成两天）
 - **Reddit**：r/puzzlevideogames 10-28 数据帖 `1xhrfni` 被 ModTeam 删除（标题读作粉丝口吻、未披露 maker 身份）。**纪律：所有自关帖从第一版起带 maker 披露**
 - **Umami（2026-11-09 上线）**：自建 `umami.gridpaw.com`（mini Docker + CF Tunnel），埋点已进 471 页；与 GA4/Clarity 同生产域守卫
+- **BP3 付费意向实验（2026-11-09 代码就绪，待部署）**：10 个 BP3 关卡页（GSC 28d top10，3,497 clicks）顶挂「Unlock all 137 levels」通栏（`src/components/UnlockBar.astro`），事件 `unlock_click` 四通道 + D1 白名单；落地页 `/unlock-all/`（noindex，不接支付）。**判定：14 天点击率 >2% 才做支付**。口径/决策树 → `research/2026-11-09-unlock-all-test.md`
 
 ## 跨会话指针（原 memory 下沉 2026-10-20）
 
@@ -774,3 +775,14 @@ GameSwitcher 组件接管后各页 <style> 的 switcher 规则对组件标记不
 - **事故时间线（诚实记录）**：英文 83 页 03:37 部署（5d6995ca）时即为无 CSS 状态，当时只做了结构审计 + 截图判读；04:00 德语 build 打出 css-syntax 警告才发现同源 bug 波及两批共 190 页 → 修生成器、重生成、重建、重部署（0f9beb4c），线上实测 EN L54 链接 `index.89RAvcyr.css` 且含 `.step-card/.answer-box/.video-wrap`。
 - **德语 title**：59 字符内 + 词边界裁剪（不切半个词），裁完不足两个词时退回纯关键词式 `Brain Puzzle 3 Level N Lösung`（3 例）。dist 中位数 60、最长 68（含 SEOHead 统一追加的 ` | GridPaw`，共享组件不动）。
 - **IndexNow**：192 URL（107 德语 + 83 英文重发 + `/de/` + hub）HTTP 200。坑：`--urls` 后接未加引号的命令替换会被吞成 1 条——先落文件再 `$(tr '\n' ' ')`，并核对打印的 "submitting N URL(s)"。
+
+## 2026-11-09：BP3 头部「Unlock all」付费意向实验（代码就绪，待部署）
+
+- **立项依据**：法老定「10 页挂按钮测点击率，>2% 才做支付」。10 页 = GSC 28d（10-12→11-08）BP3 关卡页 clicks top10：L33/17/6/42/36/45/16/3/32/40，合计 3,497 clicks；其余 127 关页留作对照。
+- **方案选择**：三变体 1:1 试排（通栏条 / h1 上卡片 / 右下悬浮）→ 法老拍板 **A 通栏条**。否决 B 的理由：压在「Level N Answer」标题前，用户找答案先看到卖东西，点击率会混入「误以为当前答案要付费」；否决 C：桌面贴 sticky 广告 22px、移动长页常驻遮正文，投诉风险最高。
+- **实现**：`src/components/UnlockBar.astro`（桌面条高 51px、移动 56px + 13px 字 + 40px 触控按钮；移动端副文案 `.ub-full` 隐藏）；10 页在 `<GameNav />` 后插 `<UnlockBar />`；`/unlock-all/` 落地页（noindex、$4.99 定价展示、mailto 意向 CTA、**不接支付**）。
+- **广告顺序**：`SideAd.astro` 移动端 320×50 顶部位在有 `.gp-unlock-bar` 时改插到条之后（付费钩子优先）。⚠ 坑：header 与 bar 之间有组件内联 `<script>`，`nextElementSibling` 判断失效，须用 `compareDocumentPosition & DOCUMENT_POSITION_FOLLOWING`。
+- **埋点**：`unlock_click`（placement/from/target）四通道 gtag+posthog+clarity+gpTrack；D1 白名单 `src/lib/funnel-track.ts` + `functions/api/_funnel-sql.ts` 两处已同步。
+- **顺带修**：`/ad-free/`（11-07 上线）一直是 noindex 却在 sitemap 里，与本页一并加进 `astro.config.mjs` 的 `exactExcludes`；`/unlock-all/`、`/ad-free/` 加进 `PLAY_SURFACES`（购买页零广告）。
+- **验收（dev 4322 + build）**：build 476 页 exit 0；dist 恰 10 页带 `data-unlock-bar`、第 11 页 0；Playwright 18 项全绿（桌面/移动几何、无横向溢出、点击 `unlock_click` 参数、对照页 L34 无条、落地页 mailto/noindex/无广告、零 pageerror）；`check-tracked-imports` 通过。
+- **待办**：部署（需批准）→ GA4 注册 `unlock_click` 自定义维度 → 第 7 天中期读数 → 第 14 天按 `research/2026-11-09-unlock-all-test.md` 决策树收口。

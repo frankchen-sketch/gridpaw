@@ -1,0 +1,82 @@
+---
+// /unlock-all/ —— 「解锁全部」付费意向落地页（2026-11-09 上线为 coming-soon）
+// 定位：BP3 头部 Unlock All 按钮的落地页。10 页实验期只测按钮点击率（>2% 才做支付），
+//       本页 therefore 不接支付、noindex，只做产品说明 + 邮件意向收集。
+// 若判定达标：把本页升级为真卖页，复用 functions/api/payment/*（同 ad-free 骨架），
+//       届时去掉 noindex、加 sitemap、/changelog/ 公告。
+const PRICE_LABEL = '$4.99';
+const TITLE = 'Unlock everything · GridPaw';
+const DESC = 'All 137 Brain Puzzle 3 answers on one page, plus zero ads across GridPaw. One payment, lifetime access.';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, follow" />
+    <title>{TITLE}</title>
+    <meta name="description" content={DESC} />
+    <link rel="canonical" href="https://gridpaw.com/unlock-all/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <style>
+      :root { --amber: #D97706; --cream: #FFFBF5; --text: #3A2F28; --muted: #9C8B7B; --border: #F2E4D4; --ok: #15803D; }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: 'Nunito', -apple-system, 'Segoe UI', Roboto, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 28px 16px; }
+      .card { width: 100%; max-width: 540px; background: #fff; border: 2px solid var(--border); border-radius: 18px; padding: 30px 26px; box-shadow: 0 4px 24px rgba(217,119,6,.08); }
+      .paw { font-size: 38px; text-align: center; margin-bottom: 10px; }
+      h1 { font-size: 24px; text-align: center; margin-bottom: 8px; letter-spacing: -0.01em; }
+      .lede { font-size: 14.5px; line-height: 1.6; color: var(--muted); text-align: center; margin-bottom: 18px; }
+      .price { font-size: 34px; font-weight: 800; text-align: center; color: var(--amber); margin-bottom: 3px; }
+      .price small { font-size: 13px; font-weight: 600; color: var(--muted); display: block; margin-top: 4px; }
+      ul { list-style: none; margin: 18px 0 20px; }
+      li { font-size: 14px; line-height: 1.55; padding-left: 24px; position: relative; margin-bottom: 10px; }
+      li::before { content: '🐾'; position: absolute; left: 0; top: 0; font-size: 12px; }
+      .soon { background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 10px; padding: 11px 13px; font-size: 13.5px; line-height: 1.5; color: #7A6420; margin-bottom: 16px; }
+      .soon b { color: #5A4A10; }
+      .btn { display: block; width: 100%; text-align: center; text-decoration: none; border-radius: 11px; padding: 14px; font-size: 15px; font-weight: 800; cursor: pointer; border: none; }
+      .btn-primary { background: var(--amber); color: #fff; }
+      .btn-primary:hover { background: #B45309; }
+      .btn-ghost { background: transparent; color: var(--amber); border: 1.5px solid var(--amber); font-weight: 700; margin-top: 10px; }
+      .note { font-size: 12.5px; color: var(--muted); line-height: 1.55; margin-top: 14px; text-align: center; }
+      a { color: var(--amber); }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <div class="paw">🔓</div>
+      <h1>Unlock all 137 levels</h1>
+      <p class="lede">Every Brain Puzzle 3 answer on a single page. Search the level, read the moves, done — no clicking through 137 separate pages.</p>
+
+      <div class="price">{PRICE_LABEL}<small>one payment · lifetime · VAT included where applicable</small></div>
+
+      <ul>
+        <li>All 137 BP3 levels' steps in one searchable page, with the full-move videos in place</li>
+        <li>Every banner ad gone across GridPaw — sidebars, sticky bar, in-article</li>
+        <li>Free updates whenever the game adds levels</li>
+        <li>Works on any device, no account needed</li>
+      </ul>
+
+      <div class="soon"><b>Not on sale yet.</b> We only build paid products people actually ask for — tell us you want this and you'll be first in line when it opens.</div>
+
+      <a class="btn btn-primary" id="notifyBtn" data-mail-user="support" data-mail-domain="gridpaw.com" href="#">Email me when it's ready</a>
+      <a class="btn btn-ghost" href="/brain-puzzle-3-answers/">Back to all Brain Puzzle 3 answers</a>
+
+      <p class="note">This page is a product preview, not a checkout. Nothing is charged. See <a href="/privacy/">privacy</a>.</p>
+    </main>
+
+    <script is:inline>
+      // mailto assembled in JS: Cloudflare Email Obfuscation rewrites literal mailto: into a /cdn-cgi 404 (jev-seo audit 2026-10)
+      (function () {
+        var a = document.getElementById('notifyBtn');
+        if (!a) return;
+        var user = a.dataset.mailUser, domain = a.dataset.mailDomain;
+        a.href = 'mailto:' + user + '@' + domain + '?subject=' + encodeURIComponent('Unlock all 137 levels — count me in') + '&body=' + encodeURIComponent('Hi GridPaw, I want the Unlock all pack. Please tell me when it is ready.\n\nLevel I was on: ' + (document.referrer || 'n/a'));
+        a.addEventListener('click', function () {
+          var p = { placement: 'unlock-all-page', from: location.pathname };
+          if (typeof window.gtag === 'function') window.gtag('event', 'unlock_notify_click', p);
+          if (typeof window.clarity === 'function') window.clarity('event', 'unlock_notify_click');
+        });
+      })();
+    </script>
+  </body>
+</html>

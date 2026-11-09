@@ -1,0 +1,62 @@
+---
+// UnlockBar — BP3 关卡页头部「Unlock all」付费意向测试条（2026-11-09）
+// 契约：只挂 GSC 28d 点击 top10 的 10 个 BP3 关卡页，位于 GameNav 正下方；
+//       点击率 >2% 才做支付（判定口径见 research/2026-11-09-unlock-all-test.md）。
+// 打点：unlock_click（4 通道 + D1）—— 白名单必须同步：
+//       src/lib/funnel-track.ts FUNNEL_EVENTS + functions/api/_funnel-sql.ts
+// 广告位顺序：SideAd 的移动端 top ad 会把 .gp-unlock-bar 当锚点，插在它之后（保持条在广告上方）。
+interface Props {
+  href?: string;
+}
+const { href = '/unlock-all/?utm_source=bp3&utm_campaign=unlock-bar' } = Astro.props;
+---
+<div class="gp-unlock-bar" data-unlock-bar>
+  <div class="ub-in">
+    <p class="ub-txt">🔓 <strong>Unlock all 137 levels</strong><span class="ub-full"> — every answer in one page, no ads.</span></p>
+    <a class="ub-btn" href={href} rel="nofollow">Unlock All →</a>
+  </div>
+</div>
+
+<style>
+  .gp-unlock-bar {
+    background: linear-gradient(90deg, #FFF6E8 0%, #FFE6C2 100%);
+    border-bottom: 1px solid #F0CF9F;
+  }
+  .gp-unlock-bar .ub-in {
+    max-width: 72rem; margin: 0 auto;
+    display: flex; align-items: center; justify-content: center; gap: 14px;
+    padding: 9px 16px;
+  }
+  .gp-unlock-bar .ub-txt {
+    margin: 0; font-size: 14.5px; line-height: 1.35; color: #5A4635;
+  }
+  .gp-unlock-bar .ub-txt strong { color: #3A2F28; font-weight: 900; }
+  .gp-unlock-bar .ub-btn {
+    background: #D97706; color: #fff;
+    border-radius: 999px; padding: 10px 20px;
+    font-size: 14px; font-weight: 900; text-decoration: none; white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(217,119,6,.28);
+    min-height: 40px; display: inline-flex; align-items: center;
+  }
+  .gp-unlock-bar .ub-btn:hover { background: #B45309; }
+  @media (max-width: 560px) {
+    .gp-unlock-bar .ub-in { gap: 10px; padding: 8px 10px; }
+    .gp-unlock-bar .ub-full { display: none; }
+    .gp-unlock-bar .ub-txt { font-size: 13px; }
+    .gp-unlock-bar .ub-btn { padding: 10px 14px; font-size: 13px; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var a = document.querySelector('.gp-unlock-bar .ub-btn');
+    if (!a) return;
+    a.addEventListener('click', function () {
+      var p = { placement: 'bp3-header', from: location.pathname, target: a.getAttribute('href') || '' };
+      if (typeof window.gtag === 'function') window.gtag('event', 'unlock_click', p);
+      if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture('unlock_click', Object.assign({ site: 'gridpaw' }, p));
+      if (typeof window.clarity === 'function') window.clarity('event', 'unlock_click');
+      if (window.gpTrack) window.gpTrack('unlock_click', p);
+    });
+  })();
+</script>
