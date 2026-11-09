@@ -15,6 +15,9 @@ export interface Props {
   image?: string;
   noindex?: boolean;
   breadcrumbTitle?: string; // Override breadcrumb label (defaults to page title)
+  locale?: string; // og:locale (default en_US)
+  homeName?: string; // breadcrumb root label (default Home)
+  segmentNames?: Record<string, string>; // override derived crumb names per path segment
 }
 
 const {
@@ -25,6 +28,9 @@ const {
   image = '/og-default.png',
   noindex = false,
   breadcrumbTitle,
+  locale = 'en_US',
+  homeName = 'Home',
+  segmentNames = {},
 } = Astro.props;
 
 // Normalize: ensure trailing slash (match sitemap convention)
@@ -35,11 +41,11 @@ const fullTitle = canonical === '/' ? title : (title.includes(brandName) ? title
 // Build BreadcrumbList from canonical path
 const pathParts = normalizedCanonical.split('/').filter(Boolean);
 const breadcrumbs = [
-  { name: 'Home', url: `https://${domain}/` },
+  { name: homeName, url: `https://${domain}/` },
   ...pathParts.map((part, i) => {
     const url = `https://${domain}/` + pathParts.slice(0, i + 1).join('/') + '/';
-    // Derive readable name from slug
-    const name = part
+    // Derive readable name from slug (segmentNames overrides for locale paths)
+    const name = segmentNames[part] ?? part
       .replace(/^puzzle-/, 'Puzzle #')
       .replace(/-/g, ' ')
       .replace(/\b\w/g, c => c.toUpperCase());
@@ -94,7 +100,7 @@ const articleJsonLd = type === 'article' ? {
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content={`${brandName} — Free Puzzle Game`}>
 <meta property="og:site_name" content={brandName}>
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content={locale}>
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">

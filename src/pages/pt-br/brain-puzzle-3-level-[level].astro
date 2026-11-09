@@ -38,6 +38,9 @@ const cardGroups = d.stepCards || [];
     description={description}
     canonical={canonical}
     type="article"
+    locale="pt_BR"
+    homeName="Início"
+    segmentNames={{ 'pt-br': 'Português (Brasil)' }}
     breadcrumbTitle={`Brain Puzzle 3 nível ${d.level}`}
   />
   <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
@@ -131,7 +134,7 @@ const cardGroups = d.stepCards || [];
     <h2>Passo a passo do nível {d.level}: cada movimento na ordem<span class="accent">.</span></h2>
     {cardGroups.map((c: any) => (
       <div class="step-card">
-        <span class="step-num">{c.num}</span>
+        <span class="step-num">{String(c.num).includes('–') ? 'Passos ' : 'Passo '}{c.num}</span>
         <strong>{c.head}</strong>
         <p>{c.body}</p>
       </div>
@@ -156,7 +159,7 @@ const cardGroups = d.stepCards || [];
       <details><summary>{f.q}</summary><p>{f.a}</p></details>
     ))}
 
-    <h2>Travou em outro nível?<span class="accent">.</span></h2>
+    <h2>Travou em outro nível?</h2>
     <p>Outras soluções de Brain Puzzle 3 em português:</p>
     <div class="index-list">
       {others.map((o: any) => (
