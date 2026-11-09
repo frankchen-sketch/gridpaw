@@ -83,6 +83,24 @@ def legacy_de(n):
             'steps_de': ['x'] * len(re.findall(r'class="step-num"', h))}
 
 
+SCENE_DE = {
+    1: 'Schnellziehen', 2: 'Winterwärme', 3: 'Schöne Dame', 4: 'Der Direktor kommt',
+    5: 'Gruseliges Riesenrad', 6: 'Badezimmer reparieren', 7: 'Wunsch der Geister',
+    8: 'Im Aufzug gefangen', 9: 'Leckere Hotdogs', 10: 'Flucht aus dem Büro',
+    11: 'Tür beim Online-Date', 12: 'Überlasteter Aufzug', 13: 'Mama kommt nach Hause',
+    14: 'Wurstlippen-SOS', 15: 'Spanner vor der Tür', 16: 'Dicker Kopf',
+    17: 'Cooles Mädchenwohnheim', 18: 'Zombie-Spaziergang', 19: 'Finde sie alle',
+    20: 'Schneller öffnen', 21: 'Fremdgeh-Szene', 22: 'Kaffee-Meister',
+    23: 'Geburtstagsüberraschung', 24: 'Hoch auf dem Turm', 25: 'Fallschirm-Notfall',
+    26: 'Zombiekrise', 27: 'Farbe abreiben', 28: 'Geisterklinik',
+    29: 'Verfolgung durch den Sensenmann', 30: 'Masken ab',
+}
+"""Scene names for levels 1-30. Those levels have no translation JSON (hand-written
+German pages), so the hub had been falling back to a truncated goal sentence — the
+only cards that looked different from 31+. Names mirror the English hub labels
+(`src/pages/brain-puzzle-3-answers/`) in the same style as the 31+ `name_de` values."""
+
+
 levels = []
 for n in range(1, 138):
     k = str(n)
@@ -99,7 +117,7 @@ for n in range(1, 138):
         tier = 'C'
     levels.append({
         'n': n,
-        'name': d.get('name_de') or short_title(d.get('goal_de')) or 'Brain Puzzle 3',
+        'name': d.get('name_de') or SCENE_DE.get(n) or short_title(d.get('goal_de')) or 'Brain Puzzle 3',
         'goal': (d.get('goal_de') or '').strip(),
         'steps': len(steps),
         'video': bool((src.get(k) or {}).get('video')),
