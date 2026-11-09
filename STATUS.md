@@ -109,7 +109,7 @@ GSC 近 28 天（08-20~09-16）**267 曝光 / 5 点击**，均位 13.8。按设�
 |---|---|---|
 | **P0** | BP3 L54-136 英 83 关 + 德语 L31-137 | 见「现役执行入口」 |
 | **P1** | R&E Ch1 L12-31（约 20 关，等 BP3 铺完再开） | `research/2026-11-08-rxe-recheck.md` |
-| **实验中** | **BP3「Unlock all」支付意向测试**：top10 关卡页挂横条 + `/unlock-all/` 落地页（$4.99 预览、mailto 收集意向、未接支付），埋 `unlock_click` 四通道。**判决规则：14 天内 ≥2% 点击 → 建支付；<0.5% → 永久放弃** | 分支 `add-支付功能开发` / worktree `gridpaw-paywall`（commit `454f1a8`）；测算依据 `research/2026-11-09-gridpaw-subscription-model.md` |
+| **实验中** | **BP3「Unlock all」支付意向测试**：top10 关卡页挂横条 + `/unlock-all/` 落地页（**价格未定**——展示 "One-time purchase / price announced at launch"，mailto 收集意向、未接支付），埋 `unlock_click` 四通道。**判决规则：14 天内 ≥2% 点击 → 建支付；<0.5% → 永久放弃** | **已上线（2026-11-09）**，worktree/分支已清理并入 main；主 commit `454f1a8` + 文案 `25d3323`；测算依据 `research/2026-11-09-gridpaw-subscription-model.md`。**判定日 2026-11-23**，查数 `SELECT count(DISTINCT guest_id), count(*) FROM gp_event WHERE event_name='unlock_click'`（D1 表 `gp_event`） |
 | 待办 | 对账 Pages 报告 27 条「已发现不抓取」× sitemap 68 条（GSC UI 导出，API 不出清单） | §二 |
 | 待办 | **Pictomino 实现 easy/hard 模式**（2026-09-28 拍板）：落地页宣传 3×3 + 7 命，`game.html` 只实现 `mode=daily` | `public/pictomino/game.html` + `help-docs/pictomino.md` |
 | 待办 | **Phase 2 裁决点 = 11-10**（月度体检 cron `1041dc2740c8`）：takuzu / hashiwokakero 词位若动了 → 补 blog/glossary 页型 | §六 |
