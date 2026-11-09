@@ -27,7 +27,7 @@ pnpm run deploy       # 裸版 = wrangler pages deploy + IndexNow 提交（勿�
                       # ✅ **首选 API Token（2026-11-09 起，别再靠 OAuth）**：`gridpaw/.env.production` 存 `CLOUDFLARE_API_TOKEN`，
                       #    值 = `~/.hermes/secrets/cloudflare-api-token`（**11-05 就已存在的长期 token**，含 Pages/R2/KV/Workers/D1 编辑；无过期。
                       #    今天之前全站还在用 OAuth 硬扛 → 这才是「隔几周掉一次」的真因：工具早有，没人用）。
-                      #    whoami 若不显示 email（缺 User Details:Read）不影响 deploy / d1 execute，属正常。
+                      #    whoami 已显示 email（2026-11-09 补了 User policy → 用户详细信息: 读取；User policy 无需绑资源，Account/Zone policy 才要）。
                       #    用法：`set -a && . ./.env.production && set +a && npx -y wrangler pages deploy dist --project-name gridpaw --branch main`
                       #    ⚠️ 设了 env var 后 wrangler **不回退 OAuth**：token 缺权限的命令直接失败（`d1 execute` 曾报 7403，补 D1:Edit 后通）。
                       #    加权限：dashboard → API 令牌 → 行末「操作」→「编辑」→「Add new policy」→「Add new Account policy」→
