@@ -11,6 +11,11 @@ pnpm run build        # 构建（含引擎编译 + pagefind 索引）
 pnpm run deploy       # 部署 = wrangler pages deploy + IndexNow 提交（勿只跑裸 wrangler，会漏 IndexNow）
                       # ⚠️ deploy script 不含 build！先 `pnpm run build` 再 deploy，否则 wrangler 把旧 dist 重传
                       #    报 "Uploaded 0 files (N already uploaded)" 静默假成功（2026-11-02 实测：cron 10:10 的旧 dist 被当新部署）
+                      # ⚠️ **wrangler 按当前 git 分支路由**：在 feature 分支跑 deploy 只生成 **preview** 部署
+                      #    （alias `<branch>.gridpaw.pages.dev`），wrangler 照样打印 Success+Uploaded N files，
+                      #    但 gridpaw.com 继续服务旧 HTML（2026-11-09 实测：/kenken/solver/ 线上 404、nonogram 旧 title）。
+                      #    要发生产必须显式 `--branch main`（或从 main worktree 跑）。分不清时：先看 wrangler 输出的
+                      #    "Deployment alias URL" 是不是 `<分支名>.gridpaw.pages.dev`，是则=preview；再 curl 线上带 cache-bust 验证。
                       # ⚠️ 本机未装全局 wrangler（项目也没进 devDeps）：报 command not found 时用
                       # `npx -y wrangler pages deploy dist --project-name gridpaw --commit-dirty=true`
                       # + `node scripts/indexnow-ping.mjs` 手动等价执行（登录态在 ~/Library/Preferences/.wrangler/config/default.toml）

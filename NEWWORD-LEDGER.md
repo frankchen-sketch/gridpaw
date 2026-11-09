@@ -266,3 +266,4 @@ cron（job 1329cf1d31a5）去重真源。状态：`reported`（已报告未动�
 - **打法**：cages + Givens 双模式（覆盖「多格 cage 内 printed given」的真实出题法）+ 唯一性裁决（多解会明说）+ permalink 分享 = 与只给答案的站差异化；play surface 零广告。
 - **同批**：`/nonogram/solver/` title/desc 重写 + 两节 H2（free online / checker-helper）+ 截图 OCR FAQ，4 处正文内链（help/nonogram、japanese-logic-puzzles、logic-puzzle-grid、number-grid-puzzle）。
 - **判据（4 周）**：`kenken solver` pos ≤12 且 ≥15 clicks/28d；`nonogram solver` pos ≤10 且 clicks ≥40/28d。不达 → 整条 solver 线关掉，不再加内链。
+- **上线（2026-11-09）**：deploy `032f7f51`（`--branch main`）；线上 `/kenken/solver/` 200、`/nonogram/solver/` 新 title、sitemap 收录、engine 修复生效、IndexNow 提交 1 URL 200。读数窗 11-09→12-07。
