@@ -29,6 +29,8 @@ export default defineConfig({
           'https://gridpaw.com/reset-password/',    // noindex functional page (adsense audit 2026-10)
           'https://gridpaw.com/leaderboard/',       // noindex 全 JS 榜单页（P2）：SSR 空壳，进 sitemap 无价值
           'https://gridpaw.com/akari/levels/hard/', // thin content, same as easy/medium
+          'https://gridpaw.com/ad-free/',           // noindex 售卖页（2026-11-09 补；11-07 上线时漏排除）
+          'https://gridpaw.com/unlock-all/',        // noindex coming-soon 落地页（2026-11-09 实验期）
         ];
         if (exactExcludes.includes(page)) {
           return false;
