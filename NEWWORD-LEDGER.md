@@ -267,3 +267,13 @@ cron（job 1329cf1d31a5）去重真源。状态：`reported`（已报告未动�
 - **同批**：`/nonogram/solver/` title/desc 重写 + 两节 H2（free online / checker-helper）+ 截图 OCR FAQ，4 处正文内链（help/nonogram、japanese-logic-puzzles、logic-puzzle-grid、number-grid-puzzle）。
 - **判据（4 周）**：`kenken solver` pos ≤12 且 ≥15 clicks/28d；`nonogram solver` pos ≤10 且 clicks ≥40/28d。不达 → 整条 solver 线关掉，不再加内链。
 - **上线（2026-11-09）**：deploy `032f7f51`（`--branch main`）；线上 `/kenken/solver/` 200、`/nonogram/solver/` 新 title、sitemap 收录、engine 修复生效、IndexNow 提交 1 URL 200。读数窗 11-09→12-07。
+
+## BP3 葡语（巴西）top12 关卡页（2026-11-09，分支 `feat/pt-br-bp3`，待上线）
+
+- **需求实测（GSC 28d 10-12→11-09，country=bra）**：BP3 在巴西 **637 曝光 / 23 点击**（50 个关卡页有曝光）；其中**葡语 query 50 条 184 曝光**，位次 **1.0–9.2**（`como resolver` pos 1.0、`ajude a noiva a expulsar…` 31imp/3clk pos 4.9、`ajude o garcom…` 31imp/1clk pos 5.2）——**我们有排名但页面是英文，CTR 3.3% vs 美国 8.8%**。
+- **供给实测**：葡语 SERP **0 条专用结果**（`"brain puzzle 3" solução "todas as fases" walkthrough português` 返回空）；英文站 trickystory 已铺到 179 关。
+- **推翻旧结论**：11-05 判「语言乘数对单款手游攻略无效」依据是德语，但 `/de/brain-puzzle-3` 28d 实测 **1,686 曝光 / 119 点击 / CTR 7.1%**（29 页有曝光，140 页里 111 页零曝光，前 9 页占 73%）→ **德语是成功的，只是尾部空转**。判据改为「逐市场判需求，不逐品类判」。
+- **铺多少关（需求曲线）**：巴西 top12=433 (68%)、top20=521 (82%)、top30=586 (92%)、top50=637。→ **铺 30 关，不铺 137**（德语 111/140 零曝光是反面教材）。
+- **实现**：数据驱动模板（1 个 `[level].astro` + JSON），12 关先上；title 统一 `Brain Puzzle 3 Level N Resposta: <Name>`（40–51 字符），desc 133–156 带 solução/resposta/fase；FAQ 首答为完整有序步骤；`inLanguage: pt-BR`；hreflang 双向（12 个英文页各补 pt-BR 回程）。
+- **判据（上线后 2 周）**：巴西 BP3 葡语 query 的 CTR ≥5%（现在 3.3%）且 28d 点击 ≥40 → **立刻补第二批 18 关到 30**；CTR <3% → 说明不是语言问题而是排名问题，30 关也不铺。
+- **上线状态**：commit `b34b663`，**未 push 未部署**，等母语审读门 + 事实核验门。
