@@ -17,6 +17,10 @@ pnpm run deploy:safe  # ✅ 多会话并发/日常一律用这个：前置三查
 # ③ 部署者固定动作：`git branch -v` 看在飞 → `git merge` 所有在飞分支 → `pnpm run deploy:safe`（缺谁它直接拦）
 # ④ 同机 worktree 共享 .git：合本地分支即可（不必 push/fetch）；push 只为备份+跨机，
 #    但 **main 必须 push** —— `origin/main` 是脚本判断"落后"的基准线，不推则检查失效
+# ⑤ 在 main 上 commit（哪怕只是文档）必须**当场 push**。留在本地 = origin/main 落后，
+#    deploy:safe 的"是否落后"检查就看不见远端真实进度（2026-11-09 实测：f9f75a8 停在本地，基准线假绿）
+# ⑥ **主 worktree 不等于 main**：它可能停在别人的 feature 分支上（2026-11-09 实测停着 feat/nonogram-input-ux）。
+#    部署第一步先 `git rev-parse --abbrev-ref HEAD` 确认；不在 main 就先切回 main 再 merge 在飞分支
 pnpm run deploy       # 裸版 = wrangler pages deploy + IndexNow 提交（勿只跑裸 wrangler，会漏 IndexNow）
                       #    无前置检查、不 build —— 并发时别用
                       # ⚠️ deploy script 不含 build！先 `pnpm run build` 再 deploy，否则 wrangler 把旧 dist 重传
