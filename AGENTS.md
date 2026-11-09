@@ -11,6 +11,12 @@ pnpm run build        # 构建（含引擎编译 + pagefind 索引）
 pnpm run deploy:safe  # ✅ 多会话并发/日常一律用这个：前置三查（脏树 / 落后 origin/main / 其它 worktree 有游离 commit）
                       #    → build → deploy --branch main → IndexNow → 线上 sw.js 指纹 + 4 URL 自检，全绿才 exit 0
                       #    并发部署由锁文件串行；前置不过 exit 2（不部署），部署后自检失败 exit 4
+# ── 多会话并行铁律（2026-11-09 两次实测事故后定；违反任一条=线上整包回滚）──
+# ① 干活各回各家：各会话只 commit + push 自己的分支，**不 deploy**
+# ② 部署权归一处：只有 main worktree（或指定人）跑 deploy:safe
+# ③ 部署者固定动作：`git branch -v` 看在飞 → `git merge` 所有在飞分支 → `pnpm run deploy:safe`（缺谁它直接拦）
+# ④ 同机 worktree 共享 .git：合本地分支即可（不必 push/fetch）；push 只为备份+跨机，
+#    但 **main 必须 push** —— `origin/main` 是脚本判断"落后"的基准线，不推则检查失效
 pnpm run deploy       # 裸版 = wrangler pages deploy + IndexNow 提交（勿只跑裸 wrangler，会漏 IndexNow）
                       #    无前置检查、不 build —— 并发时别用
                       # ⚠️ deploy script 不含 build！先 `pnpm run build` 再 deploy，否则 wrangler 把旧 dist 重传
