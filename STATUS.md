@@ -17,7 +17,7 @@
 
 ## 现役状态摘要（截至 2026-11-09）
 
-- **广告（Adsterra，2026-11-07 恢复）**：banner-only 四档互斥（桌面 160×600 / 平板 728×90 / 移动 320×50 / 内容页 300×250）；`PLAY_SURFACES` 白名单 106 页 play surface 零广告（26 条精确路径 + 2 条前缀），**新增游戏页/解题器页/单关页必须同步加**。**铁律：任何一起跳转投诉=当天撤不辩护**。Journey 上线前必须先撤 Adsterra 并清 ads.txt 的 google 行。Native 卡片不恢复。机制与实测见 AGENTS.md「广告现役状态」+ skill `ad-network-monetization`
+- **广告（Adsterra，2026-11-07 恢复）**：banner-only 四档互斥（桌面 160×600 / 平板 728×90 / 移动 320×50 / 内容页 300×250）；`PLAY_SURFACES` 白名单 109 页 play surface 零广告（29 条精确路径 + 2 条前缀），**新增游戏页/解题器页/单关页必须同步加**。**铁律：任何一起跳转投诉=当天撤不辩护**。Journey 上线前必须先撤 Adsterra 并清 ads.txt 的 google 行。Native 卡片不恢复。机制与实测见 AGENTS.md「广告现役状态」+ skill `ad-network-monetization`
 - **Adsterra 引擎合规**：官方引擎 10-20 起全量自动生效；11-07 恢复时已按 API 现值 `bauval.org/22/<key>` 贴码=已合规。风险项=创意/落地页更偏诱导型（与 10-29 结论是两条独立风险线），重启期监控后台 Creative 变化
 - **对 Peter 的承诺（10-29，仍有效）**：任何广告上线前先 /changelog/ 公告；玩家再报跳转=当天处理；他可直接永久除名无需再问。DLES.gg 条目保持 delisted
 - **GSC 收录推进**：11-08 提交 11 页，**L54/L55 次日已「已收录」**（请求编入索引杠杆成立）；每日配额实测=11 次，且 11-09 起 **>25h 未恢复**（与「约 1 小时」和「午夜重置」两种模型都不符，恢复时刻未知）；cron `4dd8b22f7490` 每日 09/12/15/18/21 探测（队列 191 URL，已交 11）
@@ -114,7 +114,7 @@ GSC 近 28 天（08-20~09-16）**267 曝光 / 5 点击**，均位 13.8。按设�
 | 待办 | **Pictomino 实现 easy/hard 模式**（2026-09-28 拍板）：落地页宣传 3×3 + 7 命，`game.html` 只实现 `mode=daily` | `public/pictomino/game.html` + `help-docs/pictomino.md` |
 | 待办 | **Phase 2 裁决点 = 11-10**（月度体检 cron `1041dc2740c8`）：takuzu / hashiwokakero 词位若动了 → 补 blog/glossary 页型 | §六 |
 | 待办 | 视觉合同欠账（样式收编 + 验证欠账） | `HANDOFF-VISUAL-CONTRACT.md` §三 |
-| 待办 | **solver 线机会**：① `/nonogram/solver/` 修排名（snippet 重写 + 内链锚集中 + H2 吃 online/checker/helper）② KenKen solver 新页（`calcudoku-engine` 引擎现成）。4 周判据：head 词 pos ≤10 且 clicks ≥40/28d | `research/2026-11-09-next-solver-opportunity.md` |
+| **待部署** | **solver 线一期（已实现，等部署批准）**：① `/nonogram/solver/` snippet 重写 + H2 吃 online/checker/helper + 4 处正文内链 ② 新页 `/kenken/solver/`（cages/Givens 双模式 + 唯一性裁决 + permalink），顺带修 calcudoku `+` cage 边界反例。4 周判据不变：head 词 pos ≤10 且 clicks ≥40/28d；KenKen pos ≤12 且 ≥15 clicks/28d | 分支 `feat/solver-opps`（commit `3dc3fb2`）；`research/2026-11-09-next-solver-opportunity.md`；细节见 §九 |
 
 > **已作废（勿再执行）**：11-07 收 28 天验证窗（10-16 二次读数已提前通过，见 NEWWORD-LEDGER.md）、10/3 复查 how-to-solve Title（观察期已过）、9/30 Request Indexing cron（repeat 已用完）
 
@@ -226,6 +226,19 @@ GSC 近 28 天（08-20~09-16）**267 曝光 / 5 点击**，均位 13.8。按设�
 - 归因口径：按访客**首次到访**版本（rn=1），回访不重归因；live = 24h 内有 visit
 - **读表纪律**（实施文档 §6.7）：单版本 visit 两位数以内 = 噪声，禁止下改版结论；先查 bot 比例（`json_extract(metadata,'$.isLikelyBot')`，机房流量约半数）；发布后 CDN 旧 HTML 继续报旧 build id 是预期
 - 未做（有意）：pictomino 子站接入（P1 可选项，`public/pictomino/*.html` 需 `build-id.js` + analytics.js 改造）；CF Access 替代 token；identity 合并表
+
+---
+
+## 九、solver 线一期：`/kenken/solver/` 新页 + nonogram solver 重写（2026-11-09，分支 `feat/solver-opps`，**待部署**）
+
+- **立项依据**：`research/2026-11-09-next-solver-opportunity.md`——全家桶去重 3,900/月、天花板 230-1,170 visits/月，故不做第 5 个日式谜题 solver；两个真机会 = ①`/nonogram/solver/` 已在 pos 18.8 有量无击（clicks 0）②kenken solver 720/月 KD 27 无页但有现成引擎。
+- **新页 `/kenken/solver/`**：cages 模式（选格→算子→目标→Add cage）+ **Givens 模式**（多格 cage 内 printed given，NYT app/多数 app 与本站 KenKen 生成器都这样出题——只支持单格 given 会解不出用户自己的盘面）；`countSolutions(limit=2)` 给唯一性裁决（"more than one solution" 是真信号不是报错）；permalink（base64+URI 编码进 hash）分享盘面；无解时给 5 条对账清单。**play surface 零广告**。
+- **引擎 bug（顺带修，影响线上生成器）**：`src/lib/puzzle-core/constraints.ts` `case '+'` 可达边界反置 → 合法盘被误判无解、生成器挖不开 `+` cage（givens 偏多）。修复后 `smoke-calcudoku` 525/525、`xval-calcudoku` 24/24（4×4 givens: easy 9 / medium 5 / hard 2）；`public/calcudoku-engine.js` 已重新 bundle。
+- **nonogram solver 重写**：title `Nonogram Solver Online — Picross & Griddlers`（截断更短）+ description 首句带 "solver online"；新增 H2「Free Online Nonogram Solver: No Download, No Signup」「Using It as a Nonogram Checker or Helper」+ 截图/OCR FAQ，吃 `free / online / checker / helper` 意图（head 词已 pos 18.8，这轮先抢 snippet 点击）。
+- **内链**：help/nonogram、japanese-logic-puzzles、logic-puzzle-grid、number-grid-puzzle 各 1 条正文锚（此前只有 GameNav 模板 + SolverTiles + `/nonogram/` 一条 CTA，无正文锚）；`/kenken/` 游戏页 1 条 CTA 指向新 solver。
+- **白名单/导航**：`SideAd.PLAY_SURFACES` 29 条精确路径（共 109 页零广告；其中 `/unlock-all`·`/ad-free` 为另一会话同日加的售卖页）、`SolverTiles`、`GameNav` 三处同加；`check-nav-consistency` 绿。
+- **验收（实测）**：`pnpm run build` 476 页 exit 0；dist 实抓 title/description/canonical/sitemap 均正确、页面 0 广告节点；ego-browser 逐点击手输 4×4（7 cage + 6 given）→ "one unique solution"、解 `3412123423414123`；permalink 往返同解；不完整盘报 "14 cells are not in any cage"；`=` 格在 Givens 模式被拦且不污染选中态。
+- **未做**：部署（等法老批准）；4 周判据读数；`/kenken/solver/` 暂未进 llms.txt 手维护索引（llms-full 构建期自动覆盖）。
 
 ---
 

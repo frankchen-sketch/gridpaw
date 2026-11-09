@@ -258,3 +258,11 @@ cron（job 1329cf1d31a5）去重真源。状态：`reported`（已报告未动�
 - **meowdoku 方案 C 收窗（10-16..11-07）**：`rate_submit` **全历史仅 1 条**——10-28，`/meowdoku/` hub，level=0（随机盘），5★，referrer=www.google.com；**10 个 levels 页 0 条**。可评分面 = hub 38 人类访客 + levels 29 人类访客，合计转化 **1/67（1.5%）**；guide 页无评分组件（非试点面）。
 - **levels 页 GSC 28d**：10 页合计 **318 imp / 6 clk**（pos 6.6-8.5，CTR 1.9%）；周曝光 55→114→149（+171%）但点击 0→5→1；query 维度只出到 "meowdoku level 10"（level 9=41 imp 0 clk 为单页最大），**无 11 关以上的需求证据**。D1 同窗：levels 29 人类访客 / 6 first_move / 2 level_up；hub 38 / 14 / 7 + 1 rate_submit。
 - **判定（待法老拍板）**：兴趣信号与 levels 转化双零 → **保持 10 关，不铺 50-100**；铺关的流量天花板 ≈ meowdoku levels 词族 320/月（webcafe 08 快照），当前 28d 已吃进 318 imp，扩容无增量空间。
+
+## KenKen solver 页（2026-11-09，`/kenken/solver/`，分支 `feat/solver-opps`，待部署）
+
+- **目标词**：`kenken solver` 720/月 · KD 27（webcafe 11-09 实测，gl=us）；词族 12 个月 -52%。
+- **SERP**：10 条里 9 条专营 solver 页 → **只做一页，不铺集群**（与 nonogram 那条区别：nonogram 已有页 + 长尾变体 pos 5-9，值得修排名；kenken 是空白页从 0 起）。
+- **打法**：cages + Givens 双模式（覆盖「多格 cage 内 printed given」的真实出题法）+ 唯一性裁决（多解会明说）+ permalink 分享 = 与只给答案的站差异化；play surface 零广告。
+- **同批**：`/nonogram/solver/` title/desc 重写 + 两节 H2（free online / checker-helper）+ 截图 OCR FAQ，4 处正文内链（help/nonogram、japanese-logic-puzzles、logic-puzzle-grid、number-grid-puzzle）。
+- **判据（4 周）**：`kenken solver` pos ≤12 且 ≥15 clicks/28d；`nonogram solver` pos ≤10 且 clicks ≥40/28d。不达 → 整条 solver 线关掉，不再加内链。
