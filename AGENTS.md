@@ -18,7 +18,15 @@ pnpm run deploy       # 部署 = wrangler pages deploy + IndexNow 提交（勿�
                       #    "Deployment alias URL" 是不是 `<分支名>.gridpaw.pages.dev`，是则=preview；再 curl 线上带 cache-bust 验证。
                       # ⚠️ 本机未装全局 wrangler（项目也没进 devDeps）：报 command not found 时用
                       # `npx -y wrangler pages deploy dist --project-name gridpaw --commit-dirty=true`
-                      # + `node scripts/indexnow-ping.mjs` 手动等价执行（登录态在 ~/Library/Preferences/.wrangler/config/default.toml）
+                      # + `node scripts/indexnow-ping.mjs` 手动等价执行（OAuth 凭据实路径 = **~/.wrangler/config/default.toml**
+                      #    ——wrangler 4.158+ 从这里读；`~/Library/Preferences/...` 是旧位置，照旧文档排障会看错文件，2026-11-09 实测）
+                      # ✅ **首选 API Token（2026-11-09 起，别再靠 OAuth）**：`gridpaw/.env.production` 存 `CLOUDFLARE_API_TOKEN`
+                      #    （用户级 token `hermes-deploy-gridpaw`，含 Pages/R2/KV/Workers/D1/Containers 编辑 + Account Settings/User Details 读，无过期）。
+                      #    用法：`set -a && . ./.env.production && set +a && npx -y wrangler pages deploy dist --project-name gridpaw --branch main`
+                      #    ⚠️ 设了 env var 后 wrangler **不回退 OAuth**：token 缺权限的命令直接失败（`d1 execute` 曾报 7403，补 D1:Edit 后通）。
+                      #    加权限：dashboard → API 令牌 → 行末「操作」→「编辑」→「Add new policy」→「Add new Account policy」→
+                      #    搜权限名 → 勾「编辑」→ **必须点「Show options」把 Account 资源选上**（资源为空会让「继续以显示摘要」无声失败）→
+                      #    继续 → 摘要 → 「更新令牌」。`.env.*` 已在 .gitignore（勿 `git add -A` 带密钥）。
                       # ⚠️ wrangler oauth 登录态会静默过期（token 401 + refresh_token 一起死）：部署前先 `npx -y wrangler whoami` 探活。
                       # 过期重登顺序：① 先删 ~/Library/Preferences/.wrangler/config/default.toml 再 `npx -y wrangler login`
                       #    （死 token 的 config 会毒化重登：授权页点完 token 不落盘 + 日志 "query string parameter doesn't match"；2026-11-04 实测删了才通）；
