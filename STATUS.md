@@ -243,6 +243,17 @@ GSC 近 28 天（08-20~09-16）**267 曝光 / 5 点击**，均位 13.8。按设�
 - **⚠ 上线 4 分钟后被并行会话回滚（17:12–17:18，已修复）**：paywall 会话从 `gridpaw-paywall` worktree 提交 `25d3323`（unlock-all 价格文案）后直接 `--branch main` 部署 → 生产变 `80ec902e`（源 commit `25d3323`），**本分支的 solver 改动整批消失**（`/kenken/solver/` 404、nonogram 回旧 title，线上实测）。处置：主 worktree `git merge 25d3323`（干净）→ build → deploy `29f2445c`（源 `d583773`），线上三查同时成立：`/kenken/solver/` 200+0 广告、`/nonogram/solver/` 新 title、`/unlock-all/` 新文案。**纪律：production 只认 main worktree 的 dist；任何会话部署前必须 `git merge` 在飞分支 + `pnpm run build`，否则每次部署都是一次整包回滚**。
 - **未做**：4 周判据读数（11-09→12-07）；llms-full 构建期自动覆盖已含新页。
 
+### 九·补：nonogram solver 输入体验三件套（2026-11-09，分支 `feat/nonogram-input-ux`，**未部署**）
+
+- **立项依据（D1 实测，近 7 天）**：`tool_action` tool=nonogram-solver 17 条 / 6 个访客 → **2 成功 4 失败（33%）**。失败两类：`error`（格式/行数，2 人）、`contradiction`（线索自相矛盾，2 人；其中 1 人 16:09–16:19 连试 5 次全灭）。反向证据：11-06 访客 referrer=google.com，5×6 连试 3 次全成功。**「解自己盘面」需求真实存在，瓶颈是输入体验而非谜题种类** —— 原计划 #3（自定义盘面推广到 Shikaku/Akari）据此**否决**（SEO <30 clicks/月 + 无变现出口 + 复制已知失败）。
+- **引擎实测（随机盘往返，线索必可解）**：10×10 / 15×15 各 100 盘、20×20 40 盘 **0 假矛盾**（最慢 172ms）；25×25 15 盘 3 次 timeout、30×30 5/5 timeout。→ 线上那两个 4ms 级 contradiction 确认是**用户抄错**，不是引擎 bug。
+- **改动①「墨水量对账」（核心）**：行列线索的填格总数必然相等（任何合法非图的必要条件）。`updateCounts` 实时显示 `N / M lines · K cells`，两侧不等时红框报差值并指名哪一侧多；`solve()` 前置同一检查，不等直接拦截不跑引擎（新 D1 status=`sum_mismatch`）。零成本捕获「改了一个数字」类抄错（数字变→总和必变）。
+- **改动② contradiction 定位**：`public/nonogram-solver.js` 的 `propagate()` 记录首个矛盾点（行/列 + 交叉格）；`solve()` 只用 `captureConflict` 在**初始传播**捕获（search 树内冲突不算证据）。页面报「Row X / Column Y 相撞」或「Row X 无法满足」。**准确率有限**：59 例单行改错测试直接命中错行仅 5 例（8%），故文案写「至少这两条之一错」并保留 ink 数提示，不承诺精确指认。
+- **改动③ 上限诚实化**：timeout 文案从「线索太模糊」改为「25×25 以上可能超 5s，是工具边界不是你的错」；正文第 1/3 步 + FAQ 同步（新增「Why does a very large puzzle time out?」，改写「It says no solution」）。
+- **评估后放弃**：skip-row 诊断（逐行删除测试 → 真凶 100% 在候选、候选均值 7.2 条，但 15×15 需 3370ms/例，体验不可接受；手动按钮版也放弃）。
+- **实测**：`pnpm run build` 477 页 exit 0；dist title/description **未变**（不污染 4 周 GSC 判据）；ego-browser 逐场景过 —— 空输入不显示对账 / 62 vs 63 实时报「列侧多 1」+ Solve 拦截 / 56=56 但矛盾报 Row 1 / 9 行报 `expected 10 lines, got 9` / Load example 解出 100 格 / 25×25 超时文案命中 / 改输入清旧错误 / permalink reload 恢复并解出；桌面 + 375px 手机截图 vision 复核无溢出遮挡。
+- **未做**：未部署（分支只 push 不 deploy）；判据是否改三段式待法老拍板（现 AND 二元会误杀「位置到 10 但 clicks 仅 23–39」的中间态）。
+
 ---
 
 ## 历史事件档案

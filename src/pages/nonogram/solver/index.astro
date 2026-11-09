@@ -8,7 +8,8 @@ const description = "Free nonogram solver online: type the row and column clues 
 const faqs = [
   { q: "Is this nonogram solver free?", a: "Yes — completely free, no account, no download. The solver runs entirely in your browser: your clues never leave your device." },
   { q: "What notation do the clues use?", a: "Type the numbers exactly as they appear beside the puzzle. Each line of the box is one row (or one column), and the numbers are the block lengths in order, separated by spaces or commas. Use 0 or leave the line empty for a row or column with no filled cells — for example 2 1 3, or 0." },
-  { q: "It says no solution — but my puzzle has one. Why?", a: "Almost always a typo or an order slip: a clue typed as 3 1 instead of 1 3, a block written in the wrong row, or a line missed entirely. The solver checks every clue against every other clue, so one wrong number breaks the whole board. Re-read the clues against the original puzzle, top to bottom." },
+  { q: "It says no solution — but my puzzle has one. Why?", a: "Almost always a miscopied number, and the page now points at where to look. It totals the ink on both sides first: rows and columns must always cover exactly the same number of filled cells, so a mismatch means a number is wrong on one side. When the totals do match, it names the row and column where the clues first collide — re-read those two lines against the original. A clue typed as 3 1 instead of 1 3, a block in the wrong row, or a line missed entirely all surface this way." },
+  { q: "Why does a very large puzzle time out?", a: "The search stops after 5 seconds. Up to 20×20 a normal puzzle finishes in well under a second, but 25×25 boards can exceed the limit even when the clues are correct — that is the tool's ceiling, not a mistake in your puzzle. Stay at 20×20 or below for reliable results." },
   { q: "What does it mean when the solver says there are multiple solutions?", a: "It means the clues you entered describe more than one valid picture. That is a property of the puzzle, not an error — hand-made puzzles in some books and apps are not always uniquely solvable. The solver shows the first solution it finds and warns you so you know a guess may be involved." },
   { q: "Does it solve colored (multi-color) nonograms?", a: "Not yet. This solver handles classic two-color nonograms — black and white, which is what the vast majority of books and apps use. Colored puzzles, where adjacent blocks of different colors may touch, need a different solver." },
   { q: "Can I see how the solver reached the answer?", a: "Yes — tick \"Step by step\" before pressing Solve. The solver replays its entire deduction one line at a time: which row or column it examined, which cells were forced filled or crossed out, and whether any step needed search. Puzzles solvable by pure line logic — the vast majority — show zero search steps, so you can follow along or verify the answer yourself." },
@@ -75,6 +76,9 @@ import SideAd from '../../../components/SideAd.astro';
     .status.warn{display:block;background:#fdf3e4;border:1px solid #eeddba;color:#7a5b16}
     .status.err{display:block;background:#fbeeee;border:1px solid #ecc8c8;color:#7a2e2e}
     .status ul{margin:.3rem 0 0 1.2rem}
+    .ink-check{display:none;margin:.5rem 0 0;padding:.4rem .6rem;border-radius:8px;font-size:.78rem;line-height:1.45}
+    .ink-check.ok{display:block;background:#eef7ee;border:1px solid #bfe0bf;color:#2c5e2c}
+    .ink-check.bad{display:block;background:#fbeeee;border:1px solid #ecc8c8;color:#7a2e2e}
     .result-wrap{margin-top:.9rem;overflow-x:auto;display:none}
     .nongrid{display:grid;gap:1px;background:#d8cbbd;border:2px solid #b3a08c;width:max-content}
     .nongrid div{width:var(--cell);height:var(--cell);background:#fff}
@@ -149,6 +153,7 @@ import SideAd from '../../../components/SideAd.astro';
           <small id="col-count">0 / 10 lines</small>
         </div>
       </div>
+      <p class="ink-check" id="ink-check" role="status"></p>
       <div class="tool-row">
         <button class="tool-btn primary" id="solve-btn">Solve</button>
         <button class="tool-btn secondary" id="example-btn">Load example</button>
@@ -174,9 +179,9 @@ import SideAd from '../../../components/SideAd.astro';
     <section class="seo-content">
       <h2>How to Use This Nonogram Solver</h2>
       <ol>
-        <li><strong>Pick the board size.</strong> Use a preset (5×5 to 20×20) or type a custom size up to 25×25. It must match the puzzle you are solving.</li>
-        <li><strong>Type the clues.</strong> Row clues go in the left box, one line per row from top to bottom. Column clues go in the right box, one line per column from left to right. Copy the numbers exactly as printed, including their order.</li>
-        <li><strong>Press Solve.</strong> The full grid appears below: filled cells in dark, empty cells in white. If something is off, the solver tells you exactly which line failed and why.</li>
+        <li><strong>Pick the board size.</strong> Use a preset (5×5 to 20×20) or type a custom size up to 25×25. It must match the puzzle you are solving. Boards above 20×20 can hit the solver's 5-second limit even with valid clues.</li>
+        <li><strong>Type the clues.</strong> Row clues go in the left box, one line per row from top to bottom. Column clues go in the right box, one line per column from left to right. Copy the numbers exactly as printed, including their order. The page totals the ink as you type: if the two sides do not add up to the same number of filled cells, one of the numbers is wrong, and it says which side to re-check.</li>
+        <li><strong>Press Solve.</strong> The full grid appears below: filled cells in dark, empty cells in white. If something is off, the solver says which line failed and why — or, when the clues only contradict each other in combination, the row and column where they first collide.</li>
       </ol>
       <p>The solver works on <em>any</em> source: newspaper puzzles, puzzle books, apps, printouts. Because the clues describe the puzzle completely, nothing else is needed, no image, no app connection.</p>
 
@@ -264,9 +269,49 @@ import SideAd from '../../../components/SideAd.astro';
       while (arr.length && arr[arr.length - 1].trim() === '') arr.pop();
       return arr;
     }
+    /* Ink accounting: every correct nonogram has the same number of filled cells on both
+     * sides. A mismatch is the cheapest possible proof that a clue was miscopied, and it
+     * points at which side to re-check before the solver burns time on an impossible set. */
+    function auditSide(text, lineLen) {
+      var arr = linesOf(text);
+      var ink = 0, badLine = 0;
+      for (var i = 0; i < arr.length; i++) {
+        var p = window.NonogramSolver.parseClueLine(arr[i], lineLen);
+        if (p.error) { if (!badLine) badLine = i + 1; continue; }
+        for (var k = 0; k < p.clues.length; k++) ink += p.clues[k];
+      }
+      return { lines: arr.length, ink: ink, badLine: badLine };
+    }
     function updateCounts() {
-      rowCount.textContent = linesOf(rowEl.value).length + ' / ' + R + ' lines';
-      colCount.textContent = linesOf(colEl.value).length + ' / ' + C + ' lines';
+      var rows = auditSide(rowEl.value, C);
+      var cols = auditSide(colEl.value, R);
+      rowCount.textContent = rows.lines + ' / ' + R + ' lines · ' + rows.ink + ' cells';
+      colCount.textContent = cols.lines + ' / ' + C + ' lines · ' + cols.ink + ' cells';
+      var chk = document.getElementById('ink-check');
+      if (!chk) return;
+      if (!rows.ink && !cols.ink) { chk.className = 'ink-check'; chk.textContent = ''; return; }
+      if (rows.badLine || cols.badLine) {
+        chk.className = 'ink-check bad';
+        chk.textContent = (rows.badLine ? 'Row ' + rows.badLine : 'Column ' + cols.badLine) + ' is not a valid clue line — fix that first.';
+        return;
+      }
+      if (rows.lines !== R || cols.lines !== C) { chk.className = 'ink-check'; chk.textContent = ''; return; }
+      if (rows.ink === cols.ink) {
+        chk.className = 'ink-check ok';
+        chk.textContent = '✓ Both sides describe ' + rows.ink + ' filled cells, as every valid puzzle must.';
+      } else {
+        var d = Math.abs(rows.ink - cols.ink);
+        chk.className = 'ink-check bad';
+        chk.textContent = '⚠ Row clues add up to ' + rows.ink + ' filled cells, column clues to ' + cols.ink +
+          ' — one side has ' + d + ' too many. A valid puzzle always balances, so at least one number is miscopied; re-check the ' +
+          (rows.ink > cols.ink ? 'row' : 'column') + ' clues.';
+      }
+      /* A stale error describes the previous clue set, not this one — drop it on edit. */
+      if (statusEl.className.indexOf('err') !== -1) {
+        statusEl.className = 'status';
+        statusEl.innerHTML = '';
+        hideResult();
+      }
     }
     function hideResult() { wrapEl.style.display = 'none'; wrapEl.innerHTML = ''; }
     function setStatus(kind, html) {
@@ -312,15 +357,15 @@ import SideAd from '../../../components/SideAd.astro';
       var errors = [];
       if (arr.length !== expectedLines) {
         errors.push(sideName + ' clues: expected ' + expectedLines + ' lines (one per ' + sideName.toLowerCase() + '), got ' + arr.length + '.');
-        return { clues: null, errors: errors };
+        return { clues: null, errors: errors, ink: 0 };
       }
-      var clues = [];
+      var clues = [], ink = 0;
       for (var i = 0; i < arr.length; i++) {
         var parsed = window.NonogramSolver.parseClueLine(arr[i], lineLen);
         if (parsed.error) { errors.push(sideName + ' ' + (i + 1) + ': "' + arr[i] + '" — ' + parsed.error + '.'); clues.push(null); }
-        else clues.push(parsed.clues);
+        else { clues.push(parsed.clues); for (var k = 0; k < parsed.clues.length; k++) ink += parsed.clues[k]; }
       }
-      return { clues: clues, errors: errors };
+      return { clues: clues, errors: errors, ink: ink };
     }
 
     function solve() {
@@ -334,6 +379,20 @@ import SideAd from '../../../components/SideAd.astro';
         setStatus('err', html + '</ul>');
         hideResult();
         track('error');
+        return;
+      }
+      /* Every solvable nonogram inks the same cell count from rows and from columns.
+       * If they disagree the clue set is provably impossible, so say which side to re-read
+       * instead of spending the search on it. */
+      if (rows.ink !== cols.ink) {
+        var diff = Math.abs(rows.ink - cols.ink);
+        setStatus('err', '<b>These clues cannot describe the same picture.</b> Row clues add up to ' + rows.ink +
+          ' filled cells and column clues to ' + cols.ink + ', a difference of ' + diff + '. At least one number was miscopied — re-check the ' +
+          (rows.ink > cols.ink ? 'row' : 'column') + ' clues first: that is the side with ' + diff + ' too many cells.');
+        hideResult();
+        stopSteps();
+        clearPermalink();
+        track('sum_mismatch');
         return;
       }
       var t0 = Date.now();
@@ -357,12 +416,29 @@ import SideAd from '../../../components/SideAd.astro';
           stopSteps();
         }
       } else if (res.status === 'contradiction') {
-        setStatus('err', '<b>No solution exists for these clues.</b> Nine times out of ten it is a typo or an order slip — re-read every clue against the original puzzle, top to bottom, left to right.');
+        /* The engine reports where the FIRST contradiction surfaced. It is a pointer, not a
+         * verdict: the miscopied number can sit elsewhere on either crossing line. */
+        var cf = res.conflict, where;
+        if (cf && cf.side === 'row' && cf.col !== undefined) {
+          where = 'The first conflict shows up where <b>Row ' + (cf.index + 1) + '</b> crosses <b>Column ' + (cf.col + 1) +
+            '</b> — at least one of those two clues is not what the original says.';
+        } else if (cf && cf.side === 'col' && cf.row !== undefined) {
+          where = 'The first conflict shows up where <b>Column ' + (cf.index + 1) + '</b> crosses <b>Row ' + (cf.row + 1) +
+            '</b> — at least one of those two clues is not what the original says.';
+        } else if (cf && cf.side === 'row') {
+          where = 'The first line that cannot be satisfied is <b>Row ' + (cf.index + 1) + '</b>: its clues disagree with cells the columns already force. If that row is copied correctly, the typo sits in one of the columns it crosses.';
+        } else if (cf && cf.side === 'col') {
+          where = 'The first line that cannot be satisfied is <b>Column ' + (cf.index + 1) + '</b>: its clues disagree with cells the rows already force. If that column is copied correctly, the typo sits in one of the rows it crosses.';
+        } else {
+          where = 'Each line is valid on its own, but no grid satisfies all of them together.';
+        }
+        setStatus('err', '<b>No solution exists for these clues.</b> ' + where +
+          ' Start from there instead of re-reading all ' + (R + C) + ' lines, and compare the ink count above: a mismatched total is the fastest giveaway.');
         hideResult();
         stopSteps();
         clearPermalink();
       } else {
-        setStatus('err', '<b>This one took too long to solve (&gt;5 s).</b> Extremely ambiguous clue sets can do that. Double-check the clues, or try a smaller board.');
+        setStatus('err', '<b>This board is beyond the solver\'s time limit.</b> The search stops at 5 seconds, and boards of 25×25 and up can exceed that even when the clues are perfectly correct — that is the tool\'s limit, not your mistake. Try 20×20 or smaller; up to that size a normal puzzle solves in well under a second.');
         hideResult();
         stopSteps();
         clearPermalink();
