@@ -240,6 +240,7 @@ GSC 近 28 天（08-20~09-16）**267 曝光 / 5 点击**，均位 13.8。按设�
 - **验收（实测）**：`pnpm run build` 476 页 exit 0；dist 实抓 title/description/canonical/sitemap 均正确、页面 0 广告节点；ego-browser 逐点击手输 4×4（7 cage + 6 given）→ "one unique solution"、解 `3412123423414123`；permalink 往返同解；不完整盘报 "14 cells are not in any cage"；`=` 格在 Givens 模式被拦且不污染选中态。
 - **部署（2026-11-09）**：`npx wrangler pages deploy dist --project-name gridpaw --branch main` → `032f7f51`；线上实测 `/kenken/solver/` 200 + 新 title + 0 广告节点、`/nonogram/solver/` 新 title、sitemap 收 `/kenken/solver/`、`calcudoku-engine.js` 含修复、`/kenken/` 有 solver CTA、llms.txt 有词条；IndexNow 提交 1 URL HTTP 200。
 - **新坑（已写进 AGENTS.md 部署节）**：在 feature 分支直接 `pnpm run deploy` 会按分支路由成 **preview**（alias `<分支名>.gridpaw.pages.dev`），wrangler 报 "Uploaded 483 files / Success" 但 gridpaw.com 仍服务旧 HTML（`/kenken/solver/` 404、nonogram 旧 title）——**必须显式 `--branch main`**，部署后必查线上。
+- **⚠ 上线 4 分钟后被并行会话回滚（17:12–17:18，已修复）**：paywall 会话从 `gridpaw-paywall` worktree 提交 `25d3323`（unlock-all 价格文案）后直接 `--branch main` 部署 → 生产变 `80ec902e`（源 commit `25d3323`），**本分支的 solver 改动整批消失**（`/kenken/solver/` 404、nonogram 回旧 title，线上实测）。处置：主 worktree `git merge 25d3323`（干净）→ build → deploy `29f2445c`（源 `d583773`），线上三查同时成立：`/kenken/solver/` 200+0 广告、`/nonogram/solver/` 新 title、`/unlock-all/` 新文案。**纪律：production 只认 main worktree 的 dist；任何会话部署前必须 `git merge` 在飞分支 + `pnpm run build`，否则每次部署都是一次整包回滚**。
 - **未做**：4 周判据读数（11-09→12-07）；llms-full 构建期自动覆盖已含新页。
 
 ---

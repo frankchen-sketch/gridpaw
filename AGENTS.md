@@ -24,6 +24,11 @@ pnpm run deploy       # 部署 = wrangler pages deploy + IndexNow 提交（勿�
                       #    （死 token 的 config 会毒化重登：授权页点完 token 不落盘 + 日志 "query string parameter doesn't match"；2026-11-04 实测删了才通）；
                       #    ② 兜底=从另一台取活 token（scp default.toml，同账号 a8395）；③ 浏览器不在本机时用 ego 代点授权（8976 只监听 [::1]，须 IPv4→IPv6 转发）。
                       #    完整排障阶梯 → skill `wrangler-deploy-verify`「wrangler OAuth 重登」节
+                      # ⚠️ **多会话并行时 production 只认一个源**：gridpaw 的 solver 一期上线 4 分钟后被另一会话
+                      #    从自己的 worktree（含它自己的分支）`--branch main` 部署整包覆盖，solver 页全 404
+                      #    （2026-11-09 实测）。部署前固定动作：① 在主 worktree `git fetch && git merge` 所有在飞分支
+                      #    （或至少 `git log origin/main..<在飞分支>` 确认无独有 commit）② `pnpm run build` ③ `--branch main`
+                      #    部署 ④ curl 主域 cache-bust 逐项验（自己改的 + 别的会话刚上线的都要在）。
                       # ⚠️ 并行 WIP 在飞时部署的正确做法＝从干净 worktree 构建（`git worktree add --detach /tmp/x <commit>`），
                       #    只带已提交状态；本机 dist 留给另一个会话继续调试，互不干扰。两个前置坑：
                       #    ① build 前把 `public/<key>.txt` cp 进 worktree（IndexNow key 故意不入库，check-indexnow-key 会拦）；
