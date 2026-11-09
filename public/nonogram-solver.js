@@ -101,6 +101,14 @@
     var nodes = 0, NODE_CAP = 2000000;
     var deadline = Date.now() + 5000; /* wall-clock guard: pathological clue sets stop honestly */
     var timedOut = false;
+    /* Where the FIRST contradiction appeared (row/col index, 0-based). Only captured during
+     * the initial propagation wave: conflicts found inside the search tree are artifacts of
+     * an arbitrary guess, not evidence about the user's typed clues. */
+    var conflict = null, captureConflict = false;
+    function noteConflict(c) {
+      if (!captureConflict) return;
+      if (!conflict || (conflict.col === undefined && c.col !== undefined)) conflict = c;
+    }
     var sols = [];
     var rowUnknown = new Array(R), colUnknown = new Array(C);
     for (r = 0; r < R; r++) rowUnknown[r] = C;
@@ -125,10 +133,10 @@
           if (!rowDirty[i]) continue;
           rowDirty[i] = false;
           res = deduceLine(rowClues[i], g[i]);
-          if (!res) return false;
+          if (!res) { noteConflict({ side: 'row', index: i }); return false; }
           for (j = 0; j < C; j++) {
             if (g[i][j] !== -1) continue;
-            if (!res.canFill[j] && !res.canEmpty[j]) return false;
+            if (!res.canFill[j] && !res.canEmpty[j]) { noteConflict({ side: 'row', index: i, col: j }); return false; }
             if (!res.canEmpty[j]) { setCell(i, j, 1); colDirty[j] = true; guard = true; }
             else if (!res.canFill[j]) { setCell(i, j, 0); colDirty[j] = true; guard = true; }
           }
@@ -139,10 +147,10 @@
           line = [];
           for (i2 = 0; i2 < R; i2++) line.push(g[i2][j]);
           res = deduceLine(colClues[j], line);
-          if (!res) return false;
+          if (!res) { noteConflict({ side: 'col', index: j }); return false; }
           for (i2 = 0; i2 < R; i2++) {
             if (g[i2][j] !== -1) continue;
-            if (!res.canFill[i2] && !res.canEmpty[i2]) return false;
+            if (!res.canFill[i2] && !res.canEmpty[i2]) { noteConflict({ side: 'col', index: j, row: i2 }); return false; }
             if (!res.canEmpty[i2]) { setCell(i2, j, 1); rowDirty[i2] = true; guard = true; }
             else if (!res.canFill[i2]) { setCell(i2, j, 0); rowDirty[i2] = true; guard = true; }
           }
@@ -185,7 +193,10 @@
       }
     }
 
-    if (!propagate()) return { status: 'contradiction' };
+    captureConflict = true;
+    var firstWaveOk = propagate();
+    captureConflict = false;
+    if (!firstWaveOk) return { status: 'contradiction', conflict: conflict };
     if (!findUnknown()) return { status: 'solved', grid: g, multiple: false, guessed: false };
     search();
     if (timedOut) return { status: 'timeout' };
