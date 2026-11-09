@@ -97,7 +97,7 @@ var CalcudokuEngine = (() => {
       // single cell must be filled
       case "+": {
         const sum = filled.reduce((a, b) => a + b, 0);
-        return sum + empty * N <= cage.target && sum + empty * 1 >= cage.target;
+        return sum + empty * 1 <= cage.target && sum + empty * N >= cage.target;
       }
       case "\xD7": {
         const prod = filled.reduce((a, b) => a * b, 1);

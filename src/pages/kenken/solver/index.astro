@@ -1,0 +1,641 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameSwitcher from '../../../components/GameSwitcher.astro';
+import SolverTiles from '../../../components/SolverTiles.astro';
+import SideAd from '../../../components/SideAd.astro';
+
+const title = "KenKen Solver — Solve Any Calcudoku Online";
+const description = "Free KenKen solver: enter each cage and its target plus any givens, and get the full grid in one click. Also solves Calcudoku, Mathdoku and NYT KenKen puzzles.";
+
+const faqs = [
+  { q: "Is this KenKen solver free?", a: "Yes — free, no account, no download, no limit on how many puzzles you solve. Everything runs in your browser: the cages you type never leave your device." },
+  { q: "How do I enter a KenKen puzzle?", a: "Two passes. First the cages: click the cells that make up one cage, pick its operator, type the target number, then press Add cage — repeat until every cell is covered. Then the givens: switch to Givens mode, click each cell that shows a printed digit and set it. A digit alone in its cell can go in as a one-cell cage with = instead. Press Solve when the grid is covered." },
+  { q: "What does the ÷ operator mean in KenKen?", a: "Division cages have exactly two cells: the larger digit divided by the smaller one equals the target. So 6÷ on two cells means 6 and 1, or 3 and 2. Order does not matter — 1 and 6 is the same cage as 6 and 1." },
+  { q: "What does the − operator mean?", a: "Subtraction cages also have exactly two cells: the difference between the two digits equals the target. A 2− cage is 3 and 1, or 4 and 2 — never 1 and 1." },
+  { q: "Can it solve a 6×6 or a 9×9 KenKen?", a: "Yes. The tool handles 3×3 up to 9×9, which covers the NYT daily KenKen sizes (4×4 to 7×7) and the 9×9 monsters in puzzle apps. Boards up to 6×6 solve instantly; the very largest sizes take a moment on a phone." },
+  { q: "The solver says my puzzle has more than one solution. Is the solver wrong?", a: "No. That message means your cage set genuinely allows two or more different grids, and the solver shows the first one it finds. It usually happens when a cage was typed with the wrong target, when two cages that should be one were entered separately, or when the puzzle itself is ambiguous. A correctly entered KenKen from a newspaper or the NYT app has exactly one solution." },
+  { q: "Why does it say no solution exists?", a: "Something in the entry contradicts the KenKen rules. The four usual suspects: a cell left out of every cage, a target typed one off, a digit typed into a cage that already contains a given, or a two-cell ÷ / − cage entered as three cells. The solver prints which cage cannot be satisfied, then check that cage against the original puzzle." },
+  { q: "Is KenKen the same as Calcudoku or Mathdoku?", a: "Yes. KenKen is the trademarked name (invented by Tetsuya Miyamoto, popularised by the New York Times), and Calcudoku, Mathdoku, Kendoku, Newdoku and MathDoku are the same puzzle under different names. Cage entry and rules are identical, so this page solves all of them." },
+  { q: "Does it show the solving steps?", a: "No — and it does not pretend to. Unlike a nonogram, where human line logic maps cleanly onto steps, KenKen solving is a constraint search: the solver narrows each cage to the digit combinations that fit, then fills the grid by Latin-square rules. What it gives you instead is the full answer plus a uniqueness verdict, which is the part you actually need when you are stuck." },
+  { q: "Can I share a puzzle with someone?", a: "Yes. After you solve or build a puzzle the cages are written into the page address. Press Copy link and anyone who opens it sees the same puzzle, ready to solve — the fastest way to ask a friend or a forum why a puzzle feels impossible." },
+];
+
+const exampleNote = "The example is a 4×4 KenKen with a division cage, a multiplication cage and five givens — four of them printed inside a bigger cage, the way most puzzle apps print them.";
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <SEOHead title={title} description={description} canonical="/kenken/solver" type="article" image="/og-kenken.png" breadcrumbTitle="KenKen Solver" />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } }))
+  })} />
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:linear-gradient(180deg,#f8f6ef,#f8f6ef);color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.8rem;color:#342421;text-align:center;margin:.5rem 0}
+    .sub{text-align:center;color:#6f5651;margin-bottom:1rem;line-height:1.55}
+    .seo-content{margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .seo-content p{margin:.5rem 0;line-height:1.7}
+    .seo-content ol,.seo-content ul{padding-left:1.5rem;margin:.5rem 0}
+    .seo-content li{margin-bottom:.4rem;line-height:1.65}
+    .seo-content a{color:#E8A888;text-decoration:underline}
+    .seo-content h2{font-size:1.3rem;color:#342421;margin:1.5rem 0 .5rem}
+    .seo-content h3{font-size:1.1rem;color:#342421;margin:1rem 0 .3rem}
+    details{margin:.5rem 0;padding:.5rem .8rem;background:#f8f6ef;border-radius:8px}
+    summary{cursor:pointer;font-weight:600;color:#E8A888}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    footer a{color:#6f5651}
+    .play-cta{display:block;text-align:center;margin:2rem 0;padding:1rem;background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;border-radius:12px;text-decoration:none;font-weight:600;font-size:1.1rem}
+    .play-cta:hover{background:linear-gradient(145deg,#E0A888,#D08868)}
+
+    /* ── Solver tool ── */
+    .solver{background:#fff;border:2px solid #e7dacf;border-radius:14px;padding:1rem 1.1rem;margin:1.2rem 0;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+    .bar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-bottom:.7rem}
+    .bar label{font-size:.85rem;font-weight:700;color:#6f5651}
+    select#size-sel{border:1.5px solid #e7dacf;border-radius:8px;padding:.35rem .5rem;font-family:inherit;font-size:.9rem;font-weight:700;color:#342421;background:#fffdf9}
+    .size-btn{border:1.5px solid #e7dacf;background:#fff;color:#342421;border-radius:8px;padding:.35rem .6rem;font-weight:700;font-size:.85rem;cursor:pointer;font-family:inherit}
+    .size-btn:hover{border-color:#E8A888}
+    .size-btn.active{background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;border-color:#E09878}
+    .grid-wrap{display:flex;justify-content:center;margin:.4rem 0 .8rem}
+    .kgrid{display:grid;width:max-content;background:#fff;border:3px solid #5b463f;border-radius:6px;overflow:hidden;user-select:none}
+    .kcell{position:relative;width:var(--cell);height:var(--cell);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.25rem;font-weight:800;color:#342421;transition:filter .12s}
+    .kcell:hover{filter:brightness(.96)}
+    .kcell.sel{outline:3px solid #B4562F;outline-offset:-3px;z-index:2}
+    .kcell.flash{animation:kflash .6s ease}
+    @keyframes kflash{0%,100%{filter:none}40%{filter:brightness(.82) saturate(1.6)}}
+    .kcell.miss{background:#fbeeee!important}
+    .klabel{position:absolute;top:1px;left:2px;font-size:.62rem;font-weight:800;color:#5b463f;letter-spacing:-.02em;line-height:1}
+    .kval{font-size:1.2rem}
+    .kval.given{color:#342421}
+    .kval.solved{color:#B4562F}
+    .build{display:flex;flex-direction:column;gap:.45rem;margin:.2rem 0 .6rem;padding:.6rem .7rem;border:1.5px dashed #e7dacf;border-radius:10px;background:#fffdf9}
+    .mode-row{display:flex;gap:.35rem;align-items:center;flex-wrap:wrap}
+    .mode-btn{border:1.5px solid #e7dacf;background:#fff;color:#342421;border-radius:8px;padding:.3rem .8rem;font-weight:800;font-size:.82rem;cursor:pointer;font-family:inherit}
+    .mode-btn:hover{border-color:#E8A888}
+    .mode-btn.active{background:#342421;color:#fff;border-color:#342421}
+    .build-row{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
+    #op-wrap{display:flex;gap:.35rem}
+    .op-btn{border:1.5px solid #e7dacf;background:#fff;color:#342421;border-radius:8px;padding:.4rem .7rem;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit;min-width:2.6rem}
+    .op-btn:hover{border-color:#E8A888}
+    .op-btn.active{background:linear-gradient(145deg,#F0B898,#E09878);color:#fff;border-color:#E09878}
+    #target-in{width:4.2rem;border:1.5px solid #e7dacf;border-radius:8px;padding:.45rem .5rem;font-family:inherit;font-size:.95rem;font-weight:700;color:#342421;background:#fff}
+    .build small{flex-basis:100%;color:#6f5651;font-size:.75rem;line-height:1.45}
+    .cage-list{display:flex;flex-wrap:wrap;gap:.35rem;margin:.2rem 0 .6rem;min-height:1.6rem}
+    .cage-list .empty{font-size:.8rem;color:#9b726c}
+    .chip{display:inline-flex;align-items:center;gap:.35rem;border:1.5px solid #e0d3c6;border-radius:999px;padding:.22rem .55rem;font-size:.8rem;font-weight:700;cursor:pointer;background:#fff;font-family:inherit;color:#342421}
+    .chip:hover{border-color:#d98a6b;color:#B4562F}
+    .chip i{width:.7rem;height:.7rem;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.12)}
+    .tool-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.2rem}
+    .tool-btn{border:0;border-radius:10px;padding:.6rem 1.1rem;font-weight:700;font-size:.95rem;cursor:pointer;font-family:inherit}
+    .tool-btn.primary{background:linear-gradient(145deg,#F0B898,#E09878);color:#fff}
+    .tool-btn.primary:hover{background:linear-gradient(145deg,#E0A888,#D08868)}
+    .tool-btn.secondary{background:#fff;border:1.5px solid #e7dacf;color:#342421}
+    .tool-btn.secondary:hover{border-color:#E8A888}
+    .status{margin-top:.8rem;padding:.6rem .8rem;border-radius:8px;font-size:.9rem;line-height:1.5;display:none}
+    .status.ok{display:block;background:#eef7ee;border:1px solid #bfe0bf;color:#2c5e2c}
+    .status.warn{display:block;background:#fdf3e4;border:1px solid #eeddba;color:#7a5b16}
+    .status.err{display:block;background:#fbeeee;border:1px solid #ecc8c8;color:#7a2e2e}
+    .howto-note{font-size:.8rem;color:#6f5651;margin-top:.6rem;line-height:1.5}
+
+    /* ── Header ── */
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid #f4dfdc;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .header-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:4rem;padding:0 1rem}
+    .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .brand-logo{width:2.25rem;height:2.25rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden}
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-name{line-height:1.1}
+    .brand-name .big{font-weight:900;color:#342421;font-size:1.05rem;display:block}
+    .brand-name .small{font-weight:600;color:#9b726c;font-size:0.75rem}
+    .nav{display:flex;align-items:center;gap:0.25rem}
+    .nav a{border-radius:0.375rem;padding:0.5rem 0.75rem;font-size:0.875rem;font-weight:700;color:#6f5651;text-decoration:none}
+    .nav a:hover{background:#fff4f0;color:#342421}
+    @media (max-width: 640px){.header-inner{height:auto;flex-wrap:wrap;padding:.4rem .8rem}.nav{flex-wrap:wrap}.nav a{padding:.4rem .55rem;font-size:.8rem}}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/kenken/" class="brand" aria-label="GridPaw KenKen">
+        <span class="brand-logo"><img src="/assets/logo.png" alt="GridPaw cat mascot, KenKen puzzle game" width="40" height="40" /></span>
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">KenKen Puzzle Game</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <GameSwitcher />
+        <a href="/kenken/">Play KenKen</a>
+        <a href="/kenken/#tips">How to Play</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>KenKen Solver — Enter the Cages, Get the Grid</h1>
+    <p class="sub">Type in the cages and givens from any KenKen, Calcudoku, Mathdoku or NYT KenKen puzzle, press Solve, and the full grid appears. It also tells you whether the puzzle has exactly one answer.</p>
+
+    <section class="solver" aria-label="KenKen solver tool">
+      <div class="bar">
+        <label for="size-sel">Grid size</label>
+        <select id="size-sel" aria-label="Grid size">
+          <option value="3">3×3</option>
+          <option value="4" selected>4×4</option>
+          <option value="5">5×5</option>
+          <option value="6">6×6</option>
+          <option value="7">7×7</option>
+          <option value="8">8×8</option>
+          <option value="9">9×9</option>
+        </select>
+        <button class="tool-btn secondary" id="clear-btn">Clear board</button>
+        <button class="tool-btn secondary" id="example-btn">Load example</button>
+      </div>
+
+      <div class="grid-wrap"><div class="kgrid" id="grid" role="grid" aria-label="KenKen board"></div></div>
+
+      <div class="build" role="group" aria-label="Build the puzzle">
+        <div class="mode-row">
+          <button type="button" class="mode-btn active" id="mode-cage" aria-pressed="true">Cages</button>
+          <button type="button" class="mode-btn" id="mode-given" aria-pressed="false">Givens</button>
+        </div>
+        <div class="build-row">
+          <span id="op-wrap">
+            <button type="button" class="op-btn active" data-op="+" aria-pressed="true">+</button>
+            <button type="button" class="op-btn" data-op="−" aria-pressed="false">−</button>
+            <button type="button" class="op-btn" data-op="×" aria-pressed="false">×</button>
+            <button type="button" class="op-btn" data-op="÷" aria-pressed="false">÷</button>
+            <button type="button" class="op-btn" data-op="=" aria-pressed="false">=</button>
+          </span>
+          <input id="target-in" type="number" min="1" max="81" inputmode="numeric" placeholder="target" aria-label="Cage target or given digit">
+          <button type="button" class="tool-btn primary" id="add-cage">Add cage</button>
+        </div>
+        <small id="build-hint">Click cells to select them → pick the operator → type the target → Add cage. A single cell with <b>=</b> is a given digit.</small>
+      </div>
+
+      <div class="cage-list" id="cage-list" aria-live="polite"></div>
+
+      <div class="tool-row">
+        <button class="tool-btn primary" id="solve-btn">Solve</button>
+        <button class="tool-btn secondary" id="link-btn" style="display:none" title="Copy a link that contains this puzzle">🔗 Copy link</button>
+      </div>
+
+      <div class="status" id="status" role="status"></div>
+      <p class="howto-note">Everything runs in your browser — the cages never leave your device. Nothing to sign up for.</p>
+    </section>
+
+    <section class="seo-content">
+      <h2>How to Use This KenKen Solver</h2>
+      <ol>
+        <li><strong>Set the grid size.</strong> The puzzle's size is printed next to it — 4×4, 5×5, 6×6 and so on. The number of cells and the digits 1 to N follow from that.</li>
+        <li><strong>Enter one cage at a time.</strong> Click the cells of a cage (they must share edges), pick the operator that is printed in the cage, type the target number, then press <em>Add cage</em>. The cage keeps its colour on the board, so you can see at a glance which cells are still unassigned.</li>
+        <li><strong>Enter the givens.</strong> A digit printed on its own in a single cell is a one-cell cage: select that cell, choose <b>=</b>, type the digit, <em>Add cage</em>. A digit printed <em>inside</em> a bigger cage — the way the New York Times app and most KenKen games show them — is entered in <em>Givens</em> mode: switch to Givens, click that cell, type the digit, press <em>Set given</em>. Cages and givens are entered independently, so the order does not matter.</li>
+        <li><strong>Press Solve.</strong> When every cell belongs to a cage the full grid appears. If a cell is missing from every cage, the solver points it out instead of guessing.</li>
+      </ol>
+      <p>{exampleNote} Press <em>Load example</em> to see a completed entry before you start on your own puzzle.</p>
+
+      <h2>Cage Notation: What the Four Operators Mean</h2>
+      <ul>
+        <li><strong>+ (addition)</strong> — the digits in the cage add up to the target. Cages can be any size: <b>9+</b> over three cells could be 1-2-6, 1-3-5, 2-3-4 and so on.</li>
+        <li><strong>− (subtraction)</strong> — exactly two cells; the difference between them equals the target. <b>3−</b> is 4 and 1, or 5 and 2.</li>
+        <li><strong>× (multiplication)</strong> — the digits multiply to the target. <b>24×</b> over three cells is 2-3-4 in a 5×5 or larger grid.</li>
+        <li><strong>÷ (division)</strong> — exactly two cells; the larger digit divided by the smaller equals the target. <b>2÷</b> is 4 and 2, or 6 and 3.</li>
+        <li><strong>= (equal)</strong> — a one-cell cage, i.e. a given digit. Type the printed number as the target.</li>
+      </ul>
+      <p>Digits may repeat inside a cage but never within a row or a column, and the cage's own arithmetic has to hold exactly. Those three rules together make a well-made KenKen uniquely solvable — and they are the same three rules this solver applies to your entry.</p>
+
+      <h2>How the Solver Works</h2>
+      <p>The solver does two things at once. First it narrows every cage: for each cage it works out which combinations of digits can produce that target, given the digits that are already fixed. Then it places digits under the KenKen rules — no repeats in a row, no repeats in a column — always choosing the most constrained cell first, which is why boards up to 6×6 come back in milliseconds.</p>
+      <p>After the first solution is found it keeps searching for a second one. That is the part most solvers hide from you: if a second answer exists, it says so instead of presenting one arbitrary grid as <em>the</em> answer. For a puzzle taken from a newspaper or the NYT app the verdict is always "unique solution", so a "more than one solution" warning nearly always means the entry, not the puzzle.</p>
+      <p>Everything runs locally in JavaScript. There is no server round-trip and no upload: your puzzle stays in the tab, and the page works offline once it has loaded.</p>
+
+      <h2>KenKen, Calcudoku, Mathdoku, Kendoku: One Puzzle, Many Names</h2>
+      <p>The puzzle was invented by the Japanese teacher Tetsuya Miyamoto as a way to teach arithmetic without drilling it, and it became famous through the New York Times under the name <strong>KenKen</strong>. Publishers who could not use the trademark call it <strong>Calcudoku</strong>, <strong>Mathdoku</strong>, <strong>Kendoku</strong>, <strong>Newdoku</strong> or <strong>MathDoku</strong>. The cages, the four operations and the Latin-square rule are identical in all of them, so there is no separate tool to hunt down: enter the cages from your book or app here and this page solves it under any of those names. The same goes for the themed variants — cat KenKen, killer sudoku hybrids and the daily puzzles inside puzzle apps all use one-cell givens and + − × ÷ cages.</p>
+
+      <h2>Sizes and Difficulty</h2>
+      <p>The digits are always 1 to N on an N×N grid, so a 4×4 uses 1–4 and a 6×6 uses 1–6. The New York Times publishes 4×4 to 7×7; magazines and apps go from 3×3 up to 9×9. This solver covers 3×3 to 9×9. Larger boards are not harder for the solver, only slower for you to type — 9×9 KenKen puzzles have about forty cages.</p>
+
+      <h2>When the Solver Says "No Solution"</h2>
+      <p>A KenKen entry can be contradictory even though every cage looks plausible on its own. Check these, in this order:</p>
+      <ol>
+        <li><strong>A cell is in no cage</strong>, or in two. The board colours make this visible: every cell must have exactly one cage colour.</li>
+        <li><strong>A target is off by one</strong> — the most common mistake by far, especially on multiplication cages (24× vs 36×).</li>
+        <li><strong>A two-cell cage was entered as three cells</strong> (or the reverse) for − and ÷.</li>
+        <li><strong>A given is the wrong digit.</strong> Givens sit on top of a cage, so a digit that disagrees with the printed puzzle makes the cage arithmetic impossible even though the cage itself was typed correctly.</li>
+        <li><strong>A digit is impossible in this size</strong> — a 7 in a 6×6 board.</li>
+      </ol>
+
+      <h2>Why "More Than One Solution" Matters</h2>
+      <p>An ambiguous KenKen has two or more grids that satisfy every cage. That is worth knowing before you spend twenty minutes on a cell that cannot be deduced: on a genuinely ambiguous board no amount of logic will force the answer, because the puzzle does not have one. Most often it is an entry slip, but hand-made puzzles in magazines and app levels do ship with looser cage sets. The solver shows you the first solution it found and says plainly that it is not unique, so you can compare both grids against your own progress — or fix the entry and solve again.</p>
+
+      <h2>Frequently Asked Questions</h2>
+      {faqs.map(f => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </section>
+
+    <SolverTiles current="/kenken/solver/" />
+
+    <a href="/kenken/" class="play-cta">🧮 Play KenKen Online Free</a>
+
+    <footer>
+      <p><a href="/">GridPaw Shikaku</a> · <a href="/akari/">GridPaw Akari</a> · <a href="/nonogram/">GridPaw Nonogram</a> · <a href="/pictomino/">GridPaw Pictomino</a></p>
+    </footer>
+  </div>
+
+  <script is:inline src="/calcudoku-engine.js"></script>
+  <script is:inline>
+  (function () {
+    'use strict';
+    if (typeof CalcudokuEngine === 'undefined') {
+      document.getElementById('status').className = 'status err';
+      document.getElementById('status').innerHTML = '<b>The solver engine did not load.</b> Reload the page; if it keeps happening, the browser blocked a script.';
+      return;
+    }
+
+    var PALETTE = ['#FDE8D8', '#E4EEE2', '#E4ECF7', '#F6E6F0', '#FAF2D8', '#E9E6F5', '#E2F0EF', '#F7E4DE', '#EAF2DB', '#F1EAD5', '#EDE7F6', '#E0EFE9'];
+    var N = 4;
+    var cages = [];                 // { op, target, cells:[idx] }
+    var cageOf = new Int8Array(16).fill(-1);
+    var sel = {};                   // idx -> true
+    var solution = null;
+    var missing = {};               // idx -> true (unassigned, from last solve)
+    var curOp = '+';
+    var solveSrc = 'input';
+    var mode = 'cage';              // 'cage' | 'given'
+    var givenCell = -1;             // cell highlighted in Givens mode
+    var givenMap = {};              // idx -> digit, givens printed inside a bigger cage
+
+    var gridEl = document.getElementById('grid');
+    var statusEl = document.getElementById('status');
+    var cageListEl = document.getElementById('cage-list');
+    var sizeSel = document.getElementById('size-sel');
+    var targetEl = document.getElementById('target-in');
+    var linkBtn = document.getElementById('link-btn');
+    var opBtns = document.querySelectorAll('.op-btn');
+    var opWrap = document.getElementById('op-wrap');
+    var buildHint = document.getElementById('build-hint');
+    var addBtn = document.getElementById('add-cage');
+    var modeCageBtn = document.getElementById('mode-cage');
+    var modeGivenBtn = document.getElementById('mode-given');
+
+    function same(a, b) { return a >= 0 && a === b; }
+
+    /* ── Rendering ── */
+    function render() {
+      var cell = N <= 4 ? 62 : N <= 5 ? 54 : N <= 6 ? 48 : N <= 7 ? 42 : 36;
+      gridEl.style.setProperty('--cell', cell + 'px');
+      gridEl.style.gridTemplateColumns = 'repeat(' + N + ', ' + cell + 'px)';
+      var html = '';
+      for (var idx = 0; idx < N * N; idx++) {
+        var ci = cageOf[idx];
+        var r = (idx / N) | 0, c = idx % N;
+        var t = r === 0 ? 3 : (same(ci, cageOf[idx - N]) ? 1 : 3);
+        var l = c === 0 ? 3 : (same(ci, cageOf[idx - 1]) ? 1 : 3);
+        var b = r === N - 1 ? 0 : (same(ci, cageOf[idx + N]) ? 1 : 3);
+        var rt = c === N - 1 ? 0 : (same(ci, cageOf[idx + 1]) ? 1 : 3);
+        var st = 'border-style:solid;border-width:' + t + 'px ' + rt + 'px ' + b + 'px ' + l + 'px;';
+        st += 'border-color:' + (t === 3 ? '#5b463f' : '#cfc0b3') + ' '
+          + (rt === 3 ? '#5b463f' : '#cfc0b3') + ' '
+          + (b === 3 ? '#5b463f' : '#cfc0b3') + ' '
+          + (l === 3 ? '#5b463f' : '#cfc0b3') + ';';
+        if (ci >= 0) st += 'background:' + PALETTE[ci % PALETTE.length] + ';';
+        if (missing[idx]) st += 'background:#fbeeee;';
+        var picked = mode === 'given' ? givenCell === idx : !!sel[idx];
+        var cls = 'kcell' + (picked ? ' sel' : '') + (missing[idx] ? ' miss' : '');
+        var inner = '';
+        if (ci >= 0 && topLeftOf(ci) === idx) inner += '<span class="klabel">' + cageText(cages[ci]) + '</span>';
+        if (ci >= 0 && cages[ci].op === '=') {
+          inner += '<span class="kval given">' + cages[ci].target + '</span>';
+        } else if (givenMap[idx]) {
+          inner += '<span class="kval given">' + givenMap[idx] + '</span>';
+        } else if (solution && solution[idx] > 0) {
+          inner += '<span class="kval solved">' + solution[idx] + '</span>';
+        }
+        html += '<div class="' + cls + '" data-i="' + idx + '" style="' + st + '" role="gridcell" aria-label="row ' + (r + 1) + ' column ' + (c + 1) + '">' + inner + '</div>';
+      }
+      gridEl.innerHTML = html;
+    }
+    function cageText(cg) { return cg.target + (cg.op === '=' ? '' : cg.op); }
+    function topLeftOf(ci) {
+      var min = N * N;
+      for (var i = 0; i < cages[ci].cells.length; i++) if (cages[ci].cells[i] < min) min = cages[ci].cells[i];
+      return min;
+    }
+    function renderCages() {
+      if (!cages.length) {
+        cageListEl.innerHTML = '<span class="empty">No cages yet — click cells on the grid to start one.</span>';
+        return;
+      }
+      var h = '';
+      for (var i = 0; i < cages.length; i++) {
+        var cg = cages[i];
+        h += '<button type="button" class="chip" data-del="' + i + '" title="Remove this cage">'
+          + '<i style="background:' + PALETTE[i % PALETTE.length] + '"></i>'
+          + cageText(cg) + ' · ' + cg.cells.length + (cg.cells.length > 1 ? ' cells' : ' cell') + ' ✕</button>';
+      }
+      cageListEl.innerHTML = h;
+    }
+
+    function setStatus(kind, html) {
+      statusEl.className = 'status ' + kind;
+      statusEl.innerHTML = html;
+    }
+    function clearStatus() { statusEl.className = 'status'; statusEl.innerHTML = ''; }
+
+    /* ── State helpers ── */
+    function rebuild() {
+      cageOf = new Int8Array(N * N).fill(-1);
+      for (var i = 0; i < cages.length; i++) for (var j = 0; j < cages[i].cells.length; j++) cageOf[cages[i].cells[j]] = i;
+    }
+    function setSize(n) {
+      N = Math.max(3, Math.min(9, n || 4));
+      cages = []; sel = {}; solution = null; missing = {}; givenMap = {}; givenCell = -1;
+      rebuild(); render(); renderCages(); clearStatus();
+      linkBtn.style.display = 'none';
+      try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* ignore */ }
+    }
+    function cellsOfSel() {
+      var out = [];
+      for (var k in sel) if (sel[k]) out.push(parseInt(k, 10));
+      out.sort(function (a, b) { return a - b; });
+      return out;
+    }
+    function connected(cells) {
+      if (cells.length <= 1) return true;
+      var set = {}, seen = {}, stack = [cells[0]];
+      for (var i = 0; i < cells.length; i++) set[cells[i]] = true;
+      seen[cells[0]] = true;
+      while (stack.length) {
+        var cur = stack.pop();
+        var r = (cur / N) | 0, c = cur % N;
+        var nb = [r > 0 ? cur - N : -1, r < N - 1 ? cur + N : -1, c > 0 ? cur - 1 : -1, c < N - 1 ? cur + 1 : -1];
+        for (var j = 0; j < nb.length; j++) {
+          if (nb[j] >= 0 && set[nb[j]] && !seen[nb[j]]) { seen[nb[j]] = true; stack.push(nb[j]); }
+        }
+      }
+      for (var q = 0; q < cells.length; q++) if (!seen[cells[q]]) return false;
+      return true;
+    }
+    function targetProblem(op, len, target) {
+      if (op === '=') return len === 1 && target >= 1 && target <= N ? '' : '"=" is a single-cell cage with a digit from 1 to ' + N + '.';
+      if (op === '-') return len === 2 && target >= 1 && target <= N - 1 ? '' : 'Subtraction cages have exactly two cells and a target from 1 to ' + (N - 1) + '.';
+      if (op === '÷') return len === 2 && target >= 2 && target <= N ? '' : 'Division cages have exactly two cells and a target from 2 to ' + N + '.';
+      if (op === '+') return target >= len && target <= len * N ? '' : 'In this grid a ' + len + '-cell addition cage must total between ' + len + ' and ' + (len * N) + '.';
+      if (op === '×') return target >= 1 && target <= Math.pow(N, len) ? '' : 'In this grid a ' + len + '-cell multiplication cage must total between 1 and ' + Math.pow(N, len) + '.';
+      return 'Unknown operator.';
+    }
+
+    /* ── Cage building ── */
+    function addCage() {
+      var cells = cellsOfSel();
+      if (!cells.length) { setStatus('err', '<b>Select the cage cells first.</b> Click them on the grid — a cage must be one connected block.'); return; }
+      if (!connected(cells)) { setStatus('err', '<b>That selection is not one block.</b> A KenKen cage is a set of cells that share edges; click again to include the cells in between.'); return; }
+      var op = curOp;
+      if (op === '=' && cells.length !== 1) { setStatus('err', '<b>"=" is for one cell only.</b> It marks a given digit. For two or more cells pick +, −, × or ÷.'); return; }
+      if ((op === '-' || op === '÷') && cells.length !== 2) { setStatus('err', '<b>− and ÷ cages have exactly two cells.</b> Select two cells (or use + / × for bigger cages).'); return; }
+      var target = parseInt(targetEl.value, 10);
+      if (!target) { setStatus('err', '<b>Type the cage target.</b> That is the number printed after the operator inside the cage.'); return; }
+      var problem = targetProblem(op, cells.length, target);
+      if (problem) { setStatus('err', '<b>' + problem + '</b>'); return; }
+
+      cages.push({ op: op, target: target, cells: cells });
+      for (var i = 0; i < cells.length; i++) cageOf[cells[i]] = cages.length - 1;
+      sel = {}; targetEl.value = ''; solution = null; missing = {};
+      render(); renderCages();
+      var left = 0;
+      for (var u = 0; u < N * N; u++) if (cageOf[u] < 0) left++;
+      if (left) setStatus('ok', 'Cage added. <b>' + left + ' cell' + (left > 1 ? 's' : '') + '</b> still need' + (left > 1 ? '' : 's') + ' a cage.');
+      else setStatus('ok', '<b>All ' + (N * N) + ' cells are caged.</b> Add any printed givens in Givens mode, then press Solve.');
+      targetEl.focus();
+    }
+
+    function flashCage(ci) {
+      var cells = document.querySelectorAll('.kcell');
+      for (var i = 0; i < cells.length; i++) {
+        var idx = parseInt(cells[i].getAttribute('data-i'), 10);
+        if (cageOf[idx] === ci) {
+          cells[i].classList.add('flash');
+          (function (el) { setTimeout(function () { el.classList.remove('flash'); }, 700); })(cells[i]);
+        }
+      }
+      setStatus('warn', '<b>That cell already belongs to the ' + cageText(cages[ci]) + ' cage.</b> Click that cage\'s chip below to remove it, then rebuild the cell into the right cage.');
+    }
+
+    /* ── Solving ── */
+    var trackedStart = false;
+    function track(statusResult, ms) {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'kenken_solver_solve', { status: statusResult, size: N + 'x' + N, ms: ms || 0, src: solveSrc });
+      }
+      if (window.gpTrack) {
+        if (!trackedStart) { trackedStart = true; window.gpTrack('tool_start', { tool: 'kenken-solver' }); }
+        window.gpTrack('tool_action', { tool: 'kenken-solver', action: 'solve', status: statusResult, size: N + 'x' + N, ms: ms || 0, src: solveSrc });
+      }
+    }
+
+    function solve() {
+      missing = {};
+      if (!cages.length) { setStatus('err', '<b>No cages yet.</b> Enter the puzzle\'s cages first — click cells, pick the operator, type the target.'); return; }
+      var miss = [];
+      for (var i = 0; i < N * N; i++) if (cageOf[i] < 0) { miss.push(i); missing[i] = true; }
+      if (miss.length) {
+        solution = null; render();
+        setStatus('err', '<b>' + miss.length + ' cell' + (miss.length > 1 ? 's are' : ' is') + ' not in any cage.</b> The highlighted cells show where — every cell must belong to exactly one cage before the board can be solved.');
+        track('incomplete');
+        return;
+      }
+      var givens = [];
+      for (var c = 0; c < cages.length; c++) if (cages[c].op === '=') givens.push([cages[c].cells[0], cages[c].target]);
+      for (var g in givenMap) if (givenMap[g]) givens.push([parseInt(g, 10), givenMap[g]]);
+      var t0 = Date.now(), res = null;
+      try { res = CalcudokuEngine.countSolutions(N, cages, cageOf, givens, 2); }
+      catch (e) {
+        setStatus('err', '<b>The solver could not finish this board.</b> Something in the cage set sends it into an impossible corner. Re-check the targets, then try again.');
+        track('error');
+        return;
+      }
+      var ms = Date.now() - t0;
+      if (!res || !res.first) {
+        solution = null; render();
+        setStatus('err', '<b>No solution exists for this cage set.</b> A target is usually one number off, or a given got entered inside a bigger cage. The checklist below the tool covers the usual causes.');
+        track('none', ms);
+        return;
+      }
+      solution = res.first;
+      render();
+      if (res.count > 1) {
+        setStatus('warn', '<b>Solved — but this puzzle has more than one solution.</b> Showing the first grid found (' + ms + ' ms). A correct KenKen has exactly one answer, so a cage was very likely entered wrong — or the puzzle is genuinely ambiguous.');
+      } else {
+        setStatus('ok', '<b>Solved — one unique solution.</b> Every cage, row and column checks out (' + ms + ' ms).');
+      }
+      savePermalink();
+      track(res.count > 1 ? 'multi' : 'ok', ms);
+    }
+
+    /* ── Permalink ── */
+    function savePermalink() {
+      try {
+        var data = { n: N, c: cages.map(function (cg) { return [cg.op, cg.target, cg.cells]; }), g: givenMap };
+        var code = btoa(encodeURIComponent(JSON.stringify(data))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        history.replaceState(null, '', location.pathname + location.search + '#p=' + code);
+        linkBtn.style.display = '';
+      } catch (e) { /* ignore */ }
+    }
+    function loadPermalink() {
+      if (!location.hash || location.hash.indexOf('#p=') !== 0) return false;
+      try {
+        var code = location.hash.slice(3).replace(/-/g, '+').replace(/_/g, '/');
+        var data = JSON.parse(decodeURIComponent(atob(code)));
+        var n = parseInt(data.n, 10);
+        if (!(n >= 3 && n <= 9) || !data.c || !data.c.length) return false;
+        N = n; sizeSel.value = String(n);
+        cages = [];
+        for (var i = 0; i < data.c.length; i++) {
+          var e = data.c[i];
+          if (!e || !e[2] || !e[2].length) continue;
+          cages.push({ op: String(e[0]), target: parseInt(e[1], 10), cells: e[2].map(Number) });
+        }
+        sel = {}; solution = null; missing = {}; givenMap = {}; givenCell = -1;
+        var gm = data.g || {};
+        for (var k in gm) if (gm[k] >= 1 && gm[k] <= n) givenMap[parseInt(k, 10)] = gm[k];
+        rebuild(); render(); renderCages();
+        solveSrc = 'link';
+        if (cages.length) solve();
+        return true;
+      } catch (e) { return false; }
+    }
+
+    /* ── Example: 4×4 with ÷, × and three givens ── */
+    var EXAMPLE = [
+      ['×', 24, [15, 11, 10, 14]],
+      ['=', 3, [9]],
+      ['+', 4, [4, 0]],
+      ['+', 9, [3, 7, 6]],
+      ['=', 2, [5]],
+      ['+', 7, [8, 12, 13]],
+      ['÷', 4, [1, 2]]
+    ];
+    var EXAMPLE_GIVENS = [[8, 2], [11, 1], [12, 4], [13, 1]];
+
+    /* ── Events ── */
+    gridEl.addEventListener('click', function (e) {
+      var t = e.target;
+      while (t && t !== gridEl && !t.getAttribute('data-i')) t = t.parentNode;
+      if (!t || t === gridEl) return;
+      var idx = parseInt(t.getAttribute('data-i'), 10);
+      if (mode === 'given') {
+        if (cageOf[idx] >= 0 && cages[cageOf[idx]].op === '=') {
+          givenCell = -1; render();
+          setStatus('warn', '<b>That cell is already a one-cell cage, i.e. a given.</b> Click its chip below to remove it if the digit is wrong.');
+          return;
+        }
+        givenCell = givenCell === idx ? -1 : idx;
+        clearStatus(); render();
+        if (givenCell >= 0) setStatus('warn', 'Cell selected — type the digit printed on it, then press <em>Set given</em>. Leave the box empty to clear it.');
+        return;
+      }
+      if (cageOf[idx] >= 0) { flashCage(cageOf[idx]); return; }
+      if (sel[idx]) delete sel[idx]; else sel[idx] = true;
+      solution = null; missing = {};
+      clearStatus(); render();
+    });
+
+    for (var o = 0; o < opBtns.length; o++) {
+      opBtns[o].addEventListener('click', function () {
+        for (var q = 0; q < opBtns.length; q++) { opBtns[q].className = 'op-btn'; opBtns[q].setAttribute('aria-pressed', 'false'); }
+        this.className = 'op-btn active';
+        this.setAttribute('aria-pressed', 'true');
+        var v = this.getAttribute('data-op');
+        curOp = v === '−' ? '-' : v;
+      });
+    }
+
+    function setGiven() {
+      if (givenCell < 0) {
+        setStatus('err', '<b>Click the cell first.</b> In Givens mode, click the cell that carries a printed digit.');
+        return;
+      }
+      var raw = targetEl.value.trim();
+      if (!raw) {
+        delete givenMap[givenCell];
+        render(); clearStatus();
+        setStatus('ok', 'Given cleared.');
+        return;
+      }
+      var d = parseInt(raw, 10);
+      if (!(d >= 1 && d <= N)) {
+        setStatus('err', '<b>A digit in this grid runs from 1 to ' + N + '.</b>');
+        return;
+      }
+      givenMap[givenCell] = d;
+      solution = null; missing = {}; givenCell = -1;
+      targetEl.value = ''; render(); clearStatus();
+      targetEl.focus();
+    }
+
+    function setMode(m) {
+      mode = m;
+      givenCell = -1;
+      modeCageBtn.className = 'mode-btn' + (m === 'cage' ? ' active' : '');
+      modeCageBtn.setAttribute('aria-pressed', m === 'cage' ? 'true' : 'false');
+      modeGivenBtn.className = 'mode-btn' + (m === 'given' ? ' active' : '');
+      modeGivenBtn.setAttribute('aria-pressed', m === 'given' ? 'true' : 'false');
+      opWrap.style.display = m === 'given' ? 'none' : '';
+      addBtn.textContent = m === 'given' ? 'Set given' : 'Add cage';
+      buildHint.innerHTML = m === 'given'
+        ? 'Click the cell that carries a printed digit, type the digit, then <em>Set given</em>. Works inside a multi-cell cage too — that is where most apps print their givens.'
+        : 'Click cells to select them → pick the operator → type the target → Add cage. A single cell with <b>=</b> is a given digit.';
+      targetEl.placeholder = m === 'given' ? 'digit' : 'target';
+      render(); clearStatus();
+    }
+
+    addBtn.addEventListener('click', function () { if (mode === 'given') setGiven(); else addCage(); });
+    modeCageBtn.addEventListener('click', function () { setMode('cage'); });
+    modeGivenBtn.addEventListener('click', function () { setMode('given'); });
+    targetEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); addCage(); } });
+
+    cageListEl.addEventListener('click', function (e) {
+      var t = e.target;
+      while (t && t !== cageListEl && t.getAttribute('data-del') === null) t = t.parentNode;
+      if (!t || t === cageListEl) return;
+      var i = parseInt(t.getAttribute('data-del'), 10);
+      cages.splice(i, 1);
+      rebuild(); solution = null; missing = {}; render(); renderCages(); clearStatus();
+    });
+
+    document.getElementById('solve-btn').addEventListener('click', function () { solveSrc = 'input'; solve(); });
+    document.getElementById('clear-btn').addEventListener('click', function () { setSize(N); });
+    document.getElementById('example-btn').addEventListener('click', function () {
+      solveSrc = 'example';
+      N = 4; sizeSel.value = '4';
+      cages = []; sel = {}; solution = null; missing = {}; givenMap = {}; givenCell = -1;
+      for (var i = 0; i < EXAMPLE.length; i++) cages.push({ op: EXAMPLE[i][0], target: EXAMPLE[i][1], cells: EXAMPLE[i][2].slice() });
+      for (var g = 0; g < EXAMPLE_GIVENS.length; g++) givenMap[EXAMPLE_GIVENS[g][0]] = EXAMPLE_GIVENS[g][1];
+      rebuild(); render(); renderCages(); clearStatus();
+      solve();
+    });
+    sizeSel.addEventListener('change', function () { setSize(parseInt(sizeSel.value, 10)); });
+
+    linkBtn.addEventListener('click', function () {
+      var done = function () {
+        setStatus('ok', '<b>Link copied.</b> It contains the cages and the solved grid — anyone who opens it sees exactly this puzzle.');
+        if (window.gpTrack) window.gpTrack('tool_action', { tool: 'kenken-solver', action: 'share-link', size: N + 'x' + N });
+      };
+      var fail = function () { setStatus('warn', '<b>Copy the address bar instead</b> — it already contains your puzzle.'); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(location.href).then(done, fail);
+      else fail();
+    });
+
+    if (!loadPermalink()) setSize(4);
+  })();
+  </script>
+<SideAd />
+</body>
+</html>

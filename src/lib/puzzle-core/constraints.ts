@@ -107,7 +107,11 @@ export function cageReachable(cage: Cage, vals: Int8Array, N: number): boolean {
     case '=': return false; // single cell must be filled
     case '+': {
       const sum = filled.reduce((a, b) => a + b, 0);
-      return sum + empty * N <= cage.target && sum + empty * 1 >= cage.target;
+      // Reachable iff target sits inside [min, max] of what the empty cells can still add.
+      // (The bounds were inverted until 2026-11-09: any '+' cage with an unfilled cell was
+      // pruned, so countSolutions reported "no solution" on valid puzzles and the generator
+      // could never dig a '+' cage — KenKen boards shipped with too many givens.)
+      return sum + empty * 1 <= cage.target && sum + empty * N >= cage.target;
     }
     case '×': {
       const prod = filled.reduce((a, b) => a * b, 1);
