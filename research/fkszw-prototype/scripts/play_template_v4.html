@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  html,body{margin:0;padding:0;background:transparent}
+  #app{width:560px;font-family:-apple-system,'PingFang SC',sans-serif;color:var(--foreground,#333)}
+  #hdr{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--card,#fff7ec);border:1px solid var(--border,#e8dcc8);border-radius:10px 10px 0 0}
+  #hdr b{font-size:14px}
+  #prog{font-size:12px;opacity:.75;margin-left:auto}
+  /* ---- 顶置 UI 条：row1 桶排 + row2 闲置栏 ---- */
+  #topbar{background:var(--card,#fff7ec);border:1px solid var(--border,#e8dcc8);border-top:none;padding:8px 10px 7px}
+  .row{display:flex;align-items:center;gap:8px}
+  .row+.row{margin-top:7px;padding-top:7px;border-top:1px dashed var(--border,#e8dcc8)}
+  .guide{font-size:11px;font-weight:700;color:#b06a00;writing-mode:vertical-lr;letter-spacing:2px;opacity:.85;flex:none}
+  #rack{display:flex;align-items:flex-start;gap:8px;flex:1;min-width:0;overflow:visible}
+  .bucket{position:relative;width:80px;height:86px;flex:none;transition:transform .45s,opacity .45s}
+  .bucket.open1{outline:2.5px solid #e0900a;outline-offset:2px;border-radius:8px}
+  .bucket.open2b{outline:2.5px solid #4a8a3d;outline-offset:2px;border-radius:8px}
+  .bucket .bbody{position:absolute;left:7px;top:24px;width:66px;height:48px;background:linear-gradient(#8fa6b8,#5f7889);clip-path:polygon(6% 0,94% 0,82% 100%,18% 100%);border-radius:4px}
+  .bucket .brim{position:absolute;left:2px;top:18px;width:76px;height:13px;background:#9fb4c4;border:2px solid #4c6373;border-radius:8px}
+  .bucket .cnt{position:absolute;left:50%;top:34px;transform:translateX(-50%);background:rgba(20,30,40,.72);color:#fff;font-size:11px;font-weight:700;padding:1px 8px;border-radius:8px;z-index:3}
+  .bucket .bcat{position:absolute;left:50%;top:88px;transform:translateX(-50%);font-size:11px;font-weight:700;color:#5c4726;white-space:nowrap}
+  .bucket .ok{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px;opacity:0;transition:opacity .3s;z-index:4}
+  .bucket.done .ok{opacity:1}
+  .bucket.done{animation:hop .5s}
+  @keyframes hop{30%{transform:translateY(-16px) scale(1.06)}}
+  .bucket.out{transform:translateX(220px) translateY(-8px) rotate(14deg);opacity:0}
+  .bucket.in{animation:slidein .45s}
+  @keyframes slidein{from{transform:translateX(-40px);opacity:0}}
+  /* 广告解锁桶位 */
+  /* 闲置栏 */
+  .stitle{font-size:11px;font-weight:700;color:#8a6d1f;line-height:1.35;flex:none;width:56px}
+  .stitle small{display:block;font-weight:400;font-size:9.5px;color:#a33;opacity:.85}
+  #stashrow .slot{position:relative;width:50px;height:44px;flex:none;border:2px solid #d9cfba;border-radius:8px;background:#fff;
+    display:flex;align-items:center;justify-content:center;overflow:hidden}
+  #stashrow .slot img{width:38px;height:38px;object-fit:contain}
+  #stashrow .slot.locked{border-style:dashed;background:repeating-linear-gradient(45deg,#faf3e2,#faf3e2 5px,#f3e9d2 5px,#f3e9d2 10px);cursor:pointer}
+  #stashrow .slot.locked::after{content:'🔒';font-size:14px}
+  #stashrow .slot.locked .adtag{position:absolute;left:50%;bottom:2px;transform:translateX(-50%);font-size:8px;font-weight:700;color:#8a6d1f;background:#ffe9a8;border-radius:5px;padding:0 4px;white-space:nowrap}
+  #stashrow .slot.pulse{animation:slotpulse .5s}
+  @keyframes slotpulse{30%{transform:scale(1.15)}}
+  #btns{margin-left:auto;display:flex;gap:7px;align-items:center;flex:none}
+  .pbtn{padding:7px 8px;border:1px solid var(--border,#d8c9a8);border-radius:8px;background:var(--accent,#f4ede0);cursor:pointer;font-size:15px;line-height:1.1}
+  .pbtn small{font-size:10px;display:block;text-align:center}
+  .pbtn.armed{outline:2px solid #e0900a;background:#ffe9c2}
+  /* ---- 场景 ---- */
+  #scene{position:relative;width:560px;height:560px;border:1px solid var(--border,#e8dcc8);border-top:none;overflow:hidden;background:#eee;user-select:none}
+  #scene>img.bg{position:absolute;inset:0;width:100%;height:100%}
+  .it{position:absolute;cursor:pointer;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35));pointer-events:none}
+  .it.hot{filter:drop-shadow(0 3px 3px rgba(0,0,0,.35)) drop-shadow(0 0 3px rgba(255,220,120,.95))}
+  .it.deny{animation:shake .45s;filter:drop-shadow(0 0 5px #ff2d2d) drop-shadow(0 0 10px rgba(255,45,45,.7)) brightness(1.08)}
+  @keyframes shake{0%,100%{margin-left:0}20%{margin-left:-7px}40%{margin-left:6px}60%{margin-left:-4px}80%{margin-left:3px}}
+  .it.hintGlow{animation:hintPulse .8s ease-in-out 3;filter:drop-shadow(0 0 6px #ffe14d) drop-shadow(0 0 14px rgba(255,214,64,.9)) brightness(1.12)}
+  @keyframes hintPulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.08)}}
+  #fly{position:fixed;z-index:99;pointer-events:none;transition:all .4s cubic-bezier(.45,-0.25,.6,1)}
+  /* toast：场景顶部居中，永不重叠 */
+  #toast{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:rgba(30,24,12,.88);color:#ffe9c2;
+    font-size:12px;font-weight:600;padding:6px 14px;border-radius:8px;opacity:0;transition:opacity .25s;white-space:nowrap;
+    z-index:40;pointer-events:none;max-width:92%;overflow:hidden;text-overflow:ellipsis}
+  #tip{padding:6px 12px 9px;font-size:12px;opacity:.72;line-height:1.5}
+  .overlay{position:absolute;inset:0;background:rgba(20,14,6,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#fff;z-index:50}
+  .overlay h2{margin:0;font-size:30px}
+  .overlay button{padding:10px 22px;font-size:15px;border:none;border-radius:10px;background:#ffb020;color:#4a3000;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="hdr"><b>🧹 Crazy Cleanup · Level 47 Gadget Store (Full)</b><span id="prog"></span></div>
+  <div id="topbar">
+    <div class="row">
+      <span class="guide">OPEN</span>
+      <div id="rack"></div>
+      <div id="btns">
+        <button class="pbtn" id="hintbtn" title="Highlight one item you can collect right now">💡<small>Hint <span id="hcount">×3</span></small></button>
+        <button class="pbtn" id="pliers" title="Arm, then tap any item to move it out instantly">🔧<small>Pliers <span id="pcount">×3</span></small></button>
+        <button class="pbtn" id="reset" title="Restart">↺<small>Reset</small></button>
+      </div>
+    </div>
+    <div class="row" id="stashrow">
+      <div class="stitle">Tray<small>Full = Lose</small></div>
+    </div>
+  </div>
+  <div id="scene"><img class="bg" src="data:image/jpeg;base64,__BG__"><div id="toast"></div></div>
+  <div id="tip">Only the <b>open buckets</b> (orange/green) take items directly; tapping anything else parks it in the <b>tray</b> (full = lose) until its bucket opens. Items <b>buried under others can't be picked</b> — clear what's on top first. 💡 Hint shows a collectible item (×3, no refill). 🔧 Pliers force-move a buried item (×3, no refill). Tray full = restart.</div>
+</div>
+<script>
+const SPR = __SPR__;
+const ITEMS = __DATA__;
+const BUCKETS = __BUCKETS__;
+const FN = {}; BUCKETS.forEach(b=>FN[b.fam]=b.name);
+const scene = document.getElementById('scene');
+const rack = document.getElementById('rack');
+const stashrow = document.getElementById('stashrow');
+let alive, openQ, opened, done, have, pliers, forceMode, busy, collected, nextPtr, stash, stashOpen, adRunning, hints;
+const TOTAL = BUCKETS.reduce((s,b)=>s+b.need,0);
+// ---- 经济层（广告冻结，后期接入；当前 = 提示稀缺 ×3）----
+// hint：高亮一件「当前可收」的物品；开放桶家族全被压时不消耗并指向钳子
+// ---- 拾取缓冲：像素级命中（img 矩形框会截走透明边角的点击，原版手感=点到的永远是不透明像素）----
+const els = [];
+const pickCv = document.createElement('canvas');
+const pickCtx = pickCv.getContext('2d', {willReadFrequently:true});
+const maskOk = [], maskCv = [];
+function buildMask(i){
+  const it = ITEMS[i], el = els[i];
+  const w = Math.max(1, Math.round(it.w/100*scene.clientWidth));
+  const h = Math.max(1, Math.round(it.h/100*scene.clientHeight));
+  const m = document.createElement('canvas'); m.width=w; m.height=h;
+  const mc = m.getContext('2d');
+  mc.translate(w/2, h/2); mc.rotate((it.a||0)*Math.PI/180); mc.scale(it.sx, it.sy);
+  mc.drawImage(el, -w/2, -h/2, w, h);
+  mc.setTransform(1,0,0,1,0,0);
+  mc.globalCompositeOperation = 'source-in';
+  mc.fillStyle = `rgb(${(i+1)>>8},${(i+1)&255},0)`;
+  mc.fillRect(0,0,w,h);
+  maskCv[i] = m; maskOk[i] = true;
+}
+function redrawPick(){
+  pickCv.width = scene.clientWidth; pickCv.height = scene.clientHeight;
+  let pending = false;
+  for(let i=0;i<ITEMS.length;i++){
+    if(!alive[i]) continue;
+    if(!maskOk[i]){
+      if(els[i].complete){ try{ buildMask(i); }catch(e){ maskOk[i] = true; maskCv[i] = null; } }
+      else { pending = true; continue; }
+    }
+    if(!maskCv[i]) continue;
+    const it = ITEMS[i];
+    pickCtx.drawImage(maskCv[i], it.left/100*scene.clientWidth - maskCv[i].width/2,
+                                 it.top/100*scene.clientHeight - maskCv[i].height/2);
+  }
+  // 隐藏 tab 里 rAF 会停摆，重试用 setTimeout（配合测试 shim 也能跑）
+  if(pending) setTimeout(redrawPick, 60);
+}
+scene.addEventListener('click', e => {
+  if(busy || adRunning || document.getElementById('overlay')) return;
+  const r = scene.getBoundingClientRect();
+  const px = Math.floor(e.clientX - r.left), py = Math.floor(e.clientY - r.top);
+  if(px<0||py<0||px>=pickCv.width||py>=pickCv.height) return;
+  const d = pickCtx.getImageData(px, py, 1, 1).data;
+  if(d[3] < 10) return;
+  const i = (d[0]<<8 | d[1]) - 1;
+  if(i>=0 && i<ITEMS.length && alive[i]) tap(i, els[i]);
+});
+
+function init(){
+  scene.querySelectorAll('.it').forEach(e=>e.remove());
+  ITEMS.forEach((it,i)=>{
+    const el = document.createElement('img');
+    el.src = 'data:image/webp;base64,' + SPR[it.t];
+    el.className = 'it';
+    el.style.left = it.left+'%'; el.style.top = it.top+'%';
+    el.style.width = it.w+'%'; el.style.height = it.h+'%';
+    el.style.transform = `translate(-50%,-50%) rotate(${it.a}deg) scale(${it.sx},${it.sy})`;
+    el.style.zIndex = 10+i;
+    els.push(el);
+    scene.appendChild(el);
+  });
+  alive = ITEMS.map(_=>true);
+  openQ = []; opened = new Set(); done = new Set(); have = {};
+  pliers = 3; forceMode = false; busy = false; collected = 0; adRunning = false; hints = 3;
+  stash = new Array(6).fill(null); stashOpen = [true,true,true,true,true,true];
+  openNext();
+  document.getElementById('pcount').textContent = '×3';
+  document.getElementById('hcount').textContent = '×3';
+  renderRack(); renderStash(); prog();
+  redrawPick();
+}
+function prog(){
+  document.getElementById('prog').textContent = `Bucket ${Math.min(done.size+1,BUCKETS.length)}/${BUCKETS.length} · Collected ${collected}/${TOTAL}`;
+}
+function toast(m){
+  const t = document.getElementById('toast');
+  t.textContent = m; t.style.opacity = 1;
+  clearTimeout(t._h); t._h = setTimeout(()=>t.style.opacity=0, 1800);
+}
+function openBucketDOM(b, cls){
+  const d = document.createElement('div');
+  d.className = 'bucket in ' + cls;
+  d.innerHTML = `<div class="bbody"></div><div class="brim"></div>
+    <div class="cnt">0/${b.need}</div><div class="ok">✅</div>
+    <div class="bcat">${b.cat}</div>`;
+  return d;
+}
+function renderRack(){
+  rack.innerHTML = '';
+  openQ.forEach((idx,k)=>{
+    const b = BUCKETS[idx];
+    const d = openBucketDOM(b, k===0?'open1':'open2b');
+    d.querySelector('.cnt').textContent = `${have[idx]}/${b.need}`;
+    rack.appendChild(d);
+  });
+}
+function slotEl(idx){
+  const s = document.createElement('div');
+  s.className = 'slot';
+  const it = stash[idx];
+  if(it){
+    s.innerHTML = `<img src="data:image/webp;base64,${SPR[it.t]}">`;
+  }
+  return s;
+}
+function renderStash(){
+  [...stashrow.querySelectorAll('.slot')].forEach(e=>e.remove());
+  for(let i=0;i<6;i++) stashrow.appendChild(slotEl(i));
+}
+function freeSlot(){ for(let i=0;i<6;i++) if(!stash[i] && stashOpen[i]) return i; return -1; }
+// ---- Hint：高亮一件当前可收的物品（稀缺资源 ×3）----
+function useHint(){
+  if(busy || adRunning || document.getElementById('overlay')) return;
+  if(hints <= 0){ toast('No hints left — study the board'); return; }
+  const fams = new Set(openQ.map(i => BUCKETS[i].fam));
+  const cands = [];
+  ITEMS.forEach((it, i) => {
+    if(alive[i] && fams.has(it.f) && (!it.b || !it.b.some(j => alive[j]))) cands.push(i);
+  });
+  if(!cands.length){
+    const names = [...new Set(openQ.map(i => FN[BUCKETS[i].fam]))].join(', ');
+    toast(`All ${names} items are buried — use 🔧 Pliers`);
+    return;   // 答不上来就不烧提示
+  }
+  hints--; document.getElementById('hcount').textContent = '×' + hints;
+  const pick = cands[Math.floor(Math.random() * cands.length)];
+  const el = els[pick];
+  el.classList.remove('hintGlow'); void el.offsetWidth;
+  el.classList.add('hintGlow');
+  setTimeout(()=>el.classList.remove('hintGlow'), 2600);
+  toast(`💡 Try this: ${FN[ITEMS[pick].f]}`);
+}
+function fly(el, targetRect, cb){
+  busy = true;
+  const r1 = el.getBoundingClientRect();
+  const fly = document.createElement('img');
+  fly.id='fly'; fly.src = el.src;
+  Object.assign(fly.style,{left:r1.left+r1.width/2-22+'px', top:r1.top+r1.height/2-22+'px', width:'44px', height:'44px'});
+  document.body.appendChild(fly);
+  el.remove();
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    Object.assign(fly.style,{left:targetRect.left+targetRect.width/2-16+'px', top:targetRect.top+targetRect.height/2-16+'px', width:'32px', height:'32px'});
+  }));
+  setTimeout(()=>{ fly.remove(); busy = false; cb(); }, 420);
+}
+function bucketRect(idx){
+  const d = rack.querySelectorAll('.bucket')[openQ.indexOf(idx)];
+  return d ? d.getBoundingClientRect() : rack.getBoundingClientRect();
+}
+function slotRect(idx){
+  const s = stashrow.querySelectorAll('.slot')[idx];
+  return s ? s.getBoundingClientRect() : stashrow.getBoundingClientRect();
+}
+function collectArrive(i, idx, el){
+  alive[i] = false; collected++; have[idx]++;
+  const d = rack.querySelectorAll('.bucket')[openQ.indexOf(idx)];
+  if(d){
+    d.querySelector('.cnt').textContent = `${have[idx]}/${BUCKETS[idx].need}`;
+    if(have[idx] >= BUCKETS[idx].need) d.classList.add('pop');
+  }
+  if(have[idx] >= BUCKETS[idx].need){ completeBucket(idx); }
+  refreshHot(); prog(); redrawPick();
+}
+function stashArrive(i, idx, el){
+  alive[i] = false;
+  stash[idx] = {t: ITEMS[i].t, f: ITEMS[i].f, i: i};
+  const s = stashrow.querySelectorAll('.slot')[idx];
+  if(s) s.classList.add('pulse');
+  renderStash(); redrawPick();
+}
+function returnStashFor(fam, bucketIdx){
+  let returned = 0;
+  stash.forEach((s,idx)=>{ if(s && s.f === fam){ stash[idx] = null; returned++; } });
+  if(!returned) return;
+  renderStash();
+  have[bucketIdx] = have[bucketIdx] ?? 0;
+  have[bucketIdx] += returned;
+  collected += returned;
+  const d = rack.querySelectorAll('.bucket')[openQ.indexOf(bucketIdx)];
+  if(d) d.querySelector('.cnt').textContent = `${have[bucketIdx]}/${BUCKETS[bucketIdx].need}`;
+  if(have[bucketIdx] >= BUCKETS[bucketIdx].need) setTimeout(()=>completeBucket(bucketIdx), 300);
+  prog();
+}
+function completeBucket(idx){
+  const d = rack.querySelectorAll('.bucket')[openQ.indexOf(idx)];
+  done.add(idx);
+  openQ = openQ.filter(x=>x!==idx);
+  if(d){ d.classList.add('done'); }
+  if(done.size >= BUCKETS.length){ setTimeout(win, 700); return; }
+  setTimeout(()=>{
+    openNext();
+    renderRack(); refreshHot(); prog();
+    const nb = BUCKETS[openQ[openQ.length-1]];
+    if(nb) toast(`New bucket: ${nb.cat === nb.name ? nb.name : nb.cat + ' · ' + nb.name} ×${nb.need}`);
+  }, 650);
+}
+function pickNextBucket(excludeCats){
+  for(let i = 0; i < BUCKETS.length; i++){
+    if(opened.has(i) || done.has(i)) continue;
+    if(!excludeCats.has(BUCKETS[i].cat)) return i;
+  }
+  // 兜底：剩余桶全同大类，放行第一个
+  for(let i = 0; i < BUCKETS.length; i++){
+    if(!opened.has(i) && !done.has(i)) return i;
+  }
+  return -1;
+}
+function openNext(){
+  while(openQ.length < 2){
+    const cats = new Set(openQ.map(i => BUCKETS[i].cat));
+    const idx = pickNextBucket(cats);
+    if(idx < 0) break;
+    openQ.push(idx); opened.add(idx);
+    have[idx] = 0;
+    returnStashFor(BUCKETS[idx].fam, idx);
+  }
+}
+function deny(el){
+  el.classList.remove('deny'); void el.offsetWidth;
+  el.classList.add('deny');
+  toast('Buried under something — clear the top first');
+  setTimeout(()=>el.classList.remove('deny'), 500);
+}
+function refreshHot(){
+  const fams = new Set(openQ.map(i=>BUCKETS[i].fam));
+  scene.querySelectorAll('.it').forEach((el,i)=>{
+    el.classList.toggle('hot', alive[i] && fams.has(ITEMS[i].f));
+  });
+}
+function tap(i, el){
+  if(busy || adRunning || !alive[i]) return;
+  const it = ITEMS[i];
+  if(forceMode){
+    forceMode = false; document.getElementById('pliers').classList.remove('armed');
+    pliers--; document.getElementById('pcount').textContent = '×'+pliers;
+    const bIdx = openQ.find(bi=>BUCKETS[bi].fam===it.f);
+    if(bIdx !== undefined){
+      fly(el, bucketRect(bIdx), ()=>collectArrive(i, bIdx, el));
+    } else {
+      const s = freeSlot();
+      if(s < 0){ toast('Tray full — nowhere to put it'); refreshHot(); return; }
+      fly(el, slotRect(s), ()=>stashArrive(i, s, el));
+    }
+    toast('🔧 Pliers: moved one out');
+    refreshHot(); prog(); return;
+  }
+  // 原版精髓：被上层物品压住(不透明像素≥15%)的拿不出，边缘露出也没用
+  if(it.b && it.b.some(j=>alive[j])){ deny(el); return; }
+  const bIdx = openQ.find(bi=>BUCKETS[bi].fam===it.f);
+  if(bIdx !== undefined){ fly(el, bucketRect(bIdx), ()=>collectArrive(i, bIdx, el)); return; }
+  // 未开桶品类：进闲置栏（原版机制）；解锁格用尽且全满才判负
+  const s = freeSlot();
+  if(s < 0){
+    const lockedLeft = stash.some((v,i)=>!v && !stashOpen[i]);
+    if(lockedLeft){
+      toast('Tray full! ▶ Tap a locked slot to unlock more');
+      stashrow.querySelectorAll('.slot.locked').forEach(e=>e.classList.add('pulse'));
+      setTimeout(()=>stashrow.querySelectorAll('.slot.locked').forEach(e=>e.classList.remove('pulse')), 700);
+      return;
+    }
+    lose(); return;
+  }
+  toast(`No ${FN[it.f]} bucket yet — parked in tray`);
+  fly(el, slotRect(s), ()=>stashArrive(i, s, el));
+}
+function stuckCheck(){
+  if(busy || adRunning || document.getElementById('overlay')) return;
+  for(const idx of openQ){
+    const f = BUCKETS[idx].fam;
+    let rem = 0, free = 0;
+    ITEMS.forEach((it,i)=>{ if(alive[i] && it.f===f){ rem++; if(!it.b.some(j=>alive[j])) free++; } });
+    if(rem > 0 && free === 0){ toast(`All ${FN[f]} items are buried — use 🔧 Pliers`); return; }
+  }
+}
+function win(){
+  if(document.getElementById('overlay')) return;
+  const ov = document.createElement('div');
+  ov.className='overlay'; ov.id='overlay';
+  ov.innerHTML = `<h2>🎉 Level Clear!</h2><div>All ${BUCKETS.length} buckets filled · ${TOTAL} items sorted</div><button onclick="location.reload()">Play Again</button>`;
+  scene.appendChild(ov);
+}
+function lose(){
+  if(document.getElementById('overlay')) return;
+  const ov = document.createElement('div');
+  ov.className='overlay'; ov.id='overlay';
+  ov.innerHTML = `<h2>💥 Tray Full</h2><div>All 6 slots occupied — you lose</div><button onclick="location.reload()">Restart</button>`;
+  scene.appendChild(ov);
+}
+document.getElementById('reset').onclick = () => location.reload();
+document.getElementById('hintbtn').onclick = useHint;
+document.getElementById('pliers').onclick = function(){
+  if(pliers > 0){
+    forceMode = !forceMode;
+    this.classList.toggle('armed', forceMode);
+    if(forceMode) toast('Tap any item to move it out instantly');
+  } else {
+    toast('No pliers left — they don\'t refill in this build');
+  }
+};
+init(); refreshHot();
+setInterval(stuckCheck, 2000);
+</script>
+</body>
+</html>

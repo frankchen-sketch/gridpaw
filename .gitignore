@@ -25,7 +25,19 @@ public/*.txt
 og-build
 
 # R&D 原型（微信 wxapkg 解包素材，版权敏感 + 135MB，仅存盘不入库）
-research/fkszw-prototype/
+# 用 /* 而非 / —— 整目录 ignore 后内部 ! 例外无效，会把自研管线代码一起埋掉
+research/fkszw-prototype/*
+# 例外：自研管线脚本（无版权问题，可复用于下一个 game recon）
+!research/fkszw-prototype/scripts/
+!research/fkszw-prototype/scripts/*.py
+!research/fkszw-prototype/scripts/*.sh
+!research/fkszw-prototype/scripts/*.html
+# 重建报告在 build/ 下：放行目录壳但内容继续忽略，只放报告
+!research/fkszw-prototype/build/
+research/fkszw-prototype/build/*
+!research/fkszw-prototype/build/REBUILD_REPORT.md
+# 脚本目录里的一次性备份不留
+research/fkszw-prototype/scripts/*.bak
 # 过程验证快照（before 态在 git 历史可重现，不入库）
 scratch/
 

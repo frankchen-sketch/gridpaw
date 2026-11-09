@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<style>
+  html,body{margin:0;padding:0;background:transparent}
+  #app{width:560px;font-family:-apple-system,'PingFang SC',sans-serif;color:var(--foreground,#333)}
+  #hdr{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--card,#fff7ec);border:1px solid var(--border,#e8dcc8);border-radius:10px 10px 0 0}
+  #hdr b{font-size:14px}
+  #prog{font-size:12px;opacity:.75;margin-left:auto}
+  #scene{position:relative;width:560px;height:599px;border:1px solid var(--border,#e8dcc8);border-top:none;overflow:hidden;background:#eee;user-select:none}
+  #scene>img.bg{position:absolute;inset:0;width:100%;height:100%}
+  .it{position:absolute;cursor:pointer;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35))}
+  .it.hot{filter:drop-shadow(0 3px 3px rgba(0,0,0,.35)) drop-shadow(0 0 3px rgba(255,220,120,.95))}
+  .it.deny{animation:shake .45s;filter:drop-shadow(0 0 5px #ff2d2d) drop-shadow(0 0 10px rgba(255,45,45,.7)) brightness(1.08)}
+  @keyframes shake{0%,100%{margin-left:0}20%{margin-left:-7px}40%{margin-left:6px}60%{margin-left:-4px}80%{margin-left:3px}}
+  #fly{position:fixed;z-index:99;pointer-events:none;transition:all .4s cubic-bezier(.45,-0.25,.6,1)}
+  #bar{position:relative;display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--card,#fff7ec);border:1px solid var(--border,#e8dcc8);border-top:none;border-radius:0 0 10px 10px;min-height:100px}
+  #toast{position:absolute;left:50%;top:-38px;transform:translateX(-50%);background:rgba(30,24,12,.85);color:#ffe9c2;font-size:12px;padding:6px 12px;border-radius:8px;opacity:0;transition:opacity .25s;white-space:nowrap;z-index:98}
+  #rack{display:flex;align-items:flex-end;gap:9px;flex:1;min-width:0;overflow:hidden}
+  .bucket{position:relative;width:92px;height:92px;flex:none;transition:transform .45s,opacity .45s}
+  .bucket.out{transform:translateX(260px) translateY(-8px) rotate(14deg);opacity:0}
+  .bucket.in{animation:slidein .45s}
+  @keyframes slidein{from{transform:translateX(240px);opacity:0}to{transform:none;opacity:1}}
+  .bucket .bname{position:absolute;left:50%;top:-14px;transform:translateX(-50%);font-size:10px;font-weight:700;color:#5c4726;white-space:nowrap}
+  .bucket .bbody{position:absolute;left:6px;top:28px;width:80px;height:58px;background:linear-gradient(#8fa6b8,#5f7889);clip-path:polygon(6% 0,94% 0,82% 100%,18% 100%);border-radius:4px}
+  .bucket .brim{position:absolute;left:2px;top:22px;width:88px;height:14px;background:#9fb4c4;border:2px solid #4c6373;border-radius:9px}
+  .bucket .bitem{position:absolute;left:50%;top:0px;transform:translateX(-50%);width:40px;height:40px;object-fit:contain;filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
+  .bucket .cnt{position:absolute;left:50%;bottom:5px;transform:translateX(-50%);background:rgba(20,30,40,.72);color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:8px}
+  .bucket .ok{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px;opacity:0;transition:opacity .3s;z-index:3}
+  .bucket.done .ok{opacity:1}
+  .bucket.done{animation:hop .5s}
+  @keyframes hop{30%{transform:translateY(-16px) scale(1.06)}}
+  .qbucket{position:relative;width:54px;height:54px;opacity:.85;flex:none}
+  .qbucket .qbody{position:absolute;left:4px;top:15px;width:46px;height:35px;background:linear-gradient(#b9c6d0,#8fa0ad);clip-path:polygon(8% 0,92% 0,80% 100%,20% 100%);border-radius:3px}
+  .qbucket .qrim{position:absolute;left:1px;top:11px;width:52px;height:9px;background:#c2cfda;border:2px solid #71828f;border-radius:6px}
+  .qbucket img{position:absolute;left:50%;top:-5px;transform:translateX(-50%);width:28px;height:28px;object-fit:contain}
+  .qbucket .lock{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:15px}
+  .qbucket .qnum{position:absolute;left:50%;bottom:-15px;transform:translateX(-50%);font-size:9px;opacity:.55;white-space:nowrap}
+  #btns{margin-left:auto;display:flex;gap:8px;align-items:center;flex:none}
+  .pbtn{padding:8px 9px;border:1px solid var(--border,#d8c9a8);border-radius:8px;background:var(--accent,#f4ede0);cursor:pointer;font-size:15px;line-height:1.1}
+  .pbtn small{font-size:10px;display:block;text-align:center}
+  .pbtn.armed{outline:2px solid #e0900a;background:#ffe9c2}
+  #tip{padding:6px 12px 10px;font-size:12px;opacity:.72;line-height:1.5}
+  .overlay{position:absolute;inset:0;background:rgba(20,14,6,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#fff;z-index:50}
+  .overlay h2{margin:0;font-size:30px}
+  .overlay button{padding:10px 22px;font-size:15px;border:none;border-radius:10px;background:#ffb020;color:#4a3000;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="hdr"><b>🧹 疯狂收杂物 · 第 47 关 数码产品店（完整版）</b><span id="prog"></span></div>
+  <div id="scene"><img class="bg" src="data:image/jpeg;base64,__BG__"></div>
+  <div id="bar">
+    <div id="toast"></div>
+    <div id="rack"></div>
+    <div id="btns">
+      <button class="pbtn" id="pliers" title="点一下再点场景物品，直接搬走">🔧<small>万能钳 <span id="pcount">×3</span></small></button>
+      <button class="pbtn" id="reset" title="重新开始">↺<small>重来</small></button>
+    </div>
+  </div>
+  <div id="tip">34 个桶按清单排队，<b>只有当前桶的品类能收</b>（当前桶高亮+名称）。被压住的先收上面的；别的品类点了会抖动红框——等它的桶开回来再收。</div>
+</div>
+<script>
+const SPR = __SPR__;
+const ITEMS = __DATA__;
+const BUCKETS = __BUCKETS__;
+const scene = document.getElementById('scene');
+const rack = document.getElementById('rack');
+let alive, cur, have, pliers, forceMode, busy, collected;
+const TOTAL = BUCKETS.reduce((s,b)=>s+b.need,0);
+
+function init(){
+  scene.querySelectorAll('.it').forEach(e=>e.remove());
+  ITEMS.forEach((it,i)=>{
+    const el = document.createElement('img');
+    el.src = 'data:image/webp;base64,' + SPR[it.t];
+    el.className = 'it';
+    el.style.left = it.left+'%'; el.style.top = it.top+'%';
+    el.style.width = it.w+'%'; el.style.height = it.h+'%';
+    el.style.transform = `translate(-50%,-50%) rotate(${it.a}deg) scale(${it.sx},${it.sy})`;
+    el.style.zIndex = 10+i;
+    el.onclick = () => tap(i, el);
+    scene.appendChild(el);
+  });
+  alive = ITEMS.map(_=>true);
+  cur = 0; have = 0; pliers = 3; forceMode = false; busy = false; collected = 0;
+  document.getElementById('pcount').textContent = '×3';
+  renderRack(); prog();
+}
+function famRemaining(f){ return ITEMS.filter((it,i)=>alive[i] && it.f===f).length; }
+function prog(){
+  document.getElementById('prog').textContent = `第 ${Math.min(cur+1,BUCKETS.length)}/${BUCKETS.length} 桶 · 已收 ${collected}/${TOTAL}`;
+}
+function toast(m){
+  const t = document.getElementById('toast');
+  t.textContent = m; t.style.opacity = 1;
+  clearTimeout(t._h); t._h = setTimeout(()=>t.style.opacity=0, 1500);
+}
+function bucketDOM(b, big){
+  const d = document.createElement('div');
+  d.className = big ? 'bucket in' : 'qbucket';
+  if(big){
+    d.innerHTML = `<div class="bname">${b.name}</div><img class="bitem" src="data:image/webp;base64,${b.icon}">
+      <div class="bbody"></div><div class="brim"></div>
+      <div class="cnt">0/${b.need}</div><div class="ok">✅</div>`;
+  } else {
+    d.innerHTML = `<img src="data:image/webp;base64,${b.icon}"><div class="qbody"></div><div class="qrim"></div>
+      <div class="lock">🔒</div><div class="qnum">${b.name}</div>`;
+  }
+  return d;
+}
+function renderRack(){
+  rack.innerHTML = '';
+  const b = BUCKETS[cur];
+  if(!b) return;
+  const big = bucketDOM(b, true);
+  big.querySelector('.cnt').textContent = `${have}/${b.need}`;
+  rack.appendChild(big);
+  for(let i=cur+1;i<Math.min(cur+4,BUCKETS.length);i++) rack.appendChild(bucketDOM(BUCKETS[i], false));
+}
+function deny(el, msg){
+  el.classList.remove('deny'); void el.offsetWidth;
+  el.classList.add('deny');
+  setTimeout(()=>el.classList.remove('deny'), 500);
+  toast(msg);
+}
+function refreshHot(){
+  const f = BUCKETS[cur] && BUCKETS[cur].fam;
+  scene.querySelectorAll('.it').forEach((el,i)=>{
+    el.classList.toggle('hot', alive[i] && ITEMS[i].f===f);
+  });
+}
+function flyToBucket(i, el){
+  busy = true;
+  const big = rack.querySelector('.bucket');
+  const r1 = el.getBoundingClientRect(), r2 = big.getBoundingClientRect();
+  const fly = document.createElement('img');
+  fly.id='fly'; fly.src = el.src;
+  Object.assign(fly.style,{left:r1.left+r1.width/2-22+'px', top:r1.top+r1.height/2-22+'px', width:'44px', height:'44px'});
+  document.body.appendChild(fly);
+  el.remove();
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    Object.assign(fly.style,{left:r2.left+r2.width/2-16+'px', top:r2.top+10+'px', width:'32px', height:'32px'});
+  }));
+  setTimeout(()=>{
+    fly.remove();
+    alive[i] = false; collected++; have++;
+    const mini = document.createElement('img');
+    mini.src = el.src;
+    Object.assign(mini.style,{position:'absolute', left:(16+Math.random()*42)+'px', top:(2-Math.min(have,5)*7)+'px', width:'30px', height:'30px', objectFit:'contain', zIndex:2});
+    big.appendChild(mini);
+    big.querySelector('.cnt').textContent = `${have}/${BUCKETS[cur].need}`;
+    if(have >= BUCKETS[cur].need){ completeBucket(); }
+    busy = false; refreshHot(); prog();
+  }, 420);
+}
+function completeBucket(){
+  const big = rack.querySelector('.bucket');
+  big.classList.add('done');
+  if(cur >= BUCKETS.length-1){ setTimeout(win, 700); return; }
+  setTimeout(()=>{
+    big.classList.remove('done'); big.classList.add('out');
+    setTimeout(()=>{
+      cur++; have = 0; renderRack(); refreshHot(); prog();
+      toast(`开新桶：${BUCKETS[cur].name} ×${BUCKETS[cur].need}`);
+    }, 430);
+  }, 650);
+}
+function tap(i, el){
+  if(busy || !alive[i]) return;
+  const it = ITEMS[i];
+  if(forceMode){
+    forceMode = false; document.getElementById('pliers').classList.remove('armed');
+    pliers--; document.getElementById('pcount').textContent = '×'+pliers;
+    alive[i] = false;
+    if(it.f === BUCKETS[cur].fam){ collected++; have++; }
+    el.style.transition = 'transform .3s, opacity .3s';
+    el.style.transform += ' scale(0)';
+    setTimeout(()=>el.remove(), 320);
+    toast('🔧 万能钳：搬走一件');
+    if(have >= BUCKETS[cur].need) setTimeout(completeBucket, 350);
+    refreshHot(); prog(); return;
+  }
+  if(it.f !== BUCKETS[cur].fam){
+    const openAt = BUCKETS.findIndex((b,k)=>k>cur && b.fam===it.f);
+    deny(el, openAt>=0 ? `这个桶还没开（第 ${openAt+1} 桶才是它）` : '这个桶还没开');
+    return;
+  }
+  if(it.b.some(j=>alive[j])){ deny(el, '被上面的物品挡住了，先收上面的'); return; }
+  flyToBucket(i, el);
+}
+function stuckCheck(){
+  const f = BUCKETS[cur] && BUCKETS[cur].fam;
+  const open = ITEMS.filter((it,i)=>alive[i] && it.f===f && !it.b.some(j=>alive[j])).length;
+  if(open === 0 && famRemaining(f) > 0) toast('当前品类的都被压住了——用 🔧 万能钳搬开挡路的');
+}
+function win(){
+  if(document.getElementById('overlay')) return;
+  const ov = document.createElement('div');
+  ov.className='overlay'; ov.id='overlay';
+  ov.innerHTML = `<h2>🎉 过关！</h2><div>34 个桶全部收满 · 207 件入桶</div><button onclick="location.reload()">再玩一次</button>`;
+  scene.appendChild(ov);
+}
+document.getElementById('reset').onclick = () => location.reload();
+document.getElementById('pliers').onclick = function(){
+  if(pliers<=0){ toast('万能钳用完了'); return; }
+  forceMode = !forceMode;
+  this.classList.toggle('armed', forceMode);
+  if(forceMode) toast('点场景里任意一件物品直接搬走');
+};
+init(); refreshHot();
+setInterval(stuckCheck, 1500);
+</script>
+</body>
+</html>
