@@ -5,7 +5,7 @@
 // Requires site-config.ts in src/lib/ with ga4Id, clarityId, domain, brandName
 
 import { siteConfig } from '../lib/site-config';
-const { ga4Id, clarityId, posthogKey, domain, brandName } = siteConfig;
+const { ga4Id, clarityId, posthogKey, domain, brandName, umamiId, umamiSrc } = siteConfig;
 
 export interface Props {
   title: string;
@@ -135,7 +135,7 @@ const articleJsonLd = type === 'article' ? {
 </script>
 
 <!-- Analytics (GA4 + Clarity + PostHog) — 只有生产域名上报，dev/预览域静默 -->
-<script define:vars={{ ga4Id, clarityId, posthogKey }}>
+<script define:vars={{ ga4Id, clarityId, posthogKey, umamiId, umamiSrc }}>
   (function () {
     // 口径铁律：只有 gridpaw.com / www.gridpaw.com 上报。
     // localhost、127.0.0.1、局域网 IP、*.pages.dev 预览域一律静默 ——
@@ -165,6 +165,16 @@ const articleJsonLd = type === 'article' ? {
       t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + i;
       y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
     })(window, document, 'clarity', 'script', clarityId);
+
+    // Umami 自建（2026-11-08）：mini Docker → umami.gridpaw.com（CF Tunnel）。
+    // 生产域守卫已在函数开头 return 掉 dev/预览域，此处只负责加载，与 GA4 同口径。
+    if (umamiId) {
+      var u = document.createElement('script');
+      u.defer = true;
+      u.src = umamiSrc;
+      u.setAttribute('data-website-id', umamiId);
+      document.head.appendChild(u);
+    }
 
     // PostHog (quota-friendly: autocapture off, session recording off, anonymous pageview-only)
     // posthogKey 为空 = 未启用，直接跳过（避免无意义加载 CDN 脚本）
