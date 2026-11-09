@@ -8,7 +8,11 @@
 pnpm install
 pnpm run dev          # 本地开发 localhost:4321
 pnpm run build        # 构建（含引擎编译 + pagefind 索引）
-pnpm run deploy       # 部署 = wrangler pages deploy + IndexNow 提交（勿只跑裸 wrangler，会漏 IndexNow）
+pnpm run deploy:safe  # ✅ 多会话并发/日常一律用这个：前置三查（脏树 / 落后 origin/main / 其它 worktree 有游离 commit）
+                      #    → build → deploy --branch main → IndexNow → 线上 sw.js 指纹 + 4 URL 自检，全绿才 exit 0
+                      #    并发部署由锁文件串行；前置不过 exit 2（不部署），部署后自检失败 exit 4
+pnpm run deploy       # 裸版 = wrangler pages deploy + IndexNow 提交（勿只跑裸 wrangler，会漏 IndexNow）
+                      #    无前置检查、不 build —— 并发时别用
                       # ⚠️ deploy script 不含 build！先 `pnpm run build` 再 deploy，否则 wrangler 把旧 dist 重传
                       #    报 "Uploaded 0 files (N already uploaded)" 静默假成功（2026-11-02 实测：cron 10:10 的旧 dist 被当新部署）
                       # ⚠️ **wrangler 按当前 git 分支路由**：在 feature 分支跑 deploy 只生成 **preview** 部署
@@ -20,8 +24,10 @@ pnpm run deploy       # 部署 = wrangler pages deploy + IndexNow 提交（勿�
                       # `npx -y wrangler pages deploy dist --project-name gridpaw --commit-dirty=true`
                       # + `node scripts/indexnow-ping.mjs` 手动等价执行（OAuth 凭据实路径 = **~/.wrangler/config/default.toml**
                       #    ——wrangler 4.158+ 从这里读；`~/Library/Preferences/...` 是旧位置，照旧文档排障会看错文件，2026-11-09 实测）
-                      # ✅ **首选 API Token（2026-11-09 起，别再靠 OAuth）**：`gridpaw/.env.production` 存 `CLOUDFLARE_API_TOKEN`
-                      #    （用户级 token `hermes-deploy-gridpaw`，含 Pages/R2/KV/Workers/D1/Containers 编辑 + Account Settings/User Details 读，无过期）。
+                      # ✅ **首选 API Token（2026-11-09 起，别再靠 OAuth）**：`gridpaw/.env.production` 存 `CLOUDFLARE_API_TOKEN`，
+                      #    值 = `~/.hermes/secrets/cloudflare-api-token`（**11-05 就已存在的长期 token**，含 Pages/R2/KV/Workers/D1 编辑；无过期。
+                      #    今天之前全站还在用 OAuth 硬扛 → 这才是「隔几周掉一次」的真因：工具早有，没人用）。
+                      #    whoami 若不显示 email（缺 User Details:Read）不影响 deploy / d1 execute，属正常。
                       #    用法：`set -a && . ./.env.production && set +a && npx -y wrangler pages deploy dist --project-name gridpaw --branch main`
                       #    ⚠️ 设了 env var 后 wrangler **不回退 OAuth**：token 缺权限的命令直接失败（`d1 execute` 曾报 7403，补 D1:Edit 后通）。
                       #    加权限：dashboard → API 令牌 → 行末「操作」→「编辑」→「Add new policy」→「Add new Account policy」→
