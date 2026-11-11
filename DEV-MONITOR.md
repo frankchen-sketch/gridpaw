@@ -71,6 +71,8 @@
 
 - **dev 页 20-app 上限＋名字型搜索双盲区，iTunes 全量是唯一可靠枚举（2026-11-10 第二次实证）**：Oakever 46 条搜索结果里 31 条自研，dev 页只列 20 条，漏掉的 Connect Tracks（500K+ 装）比 dev 页上多数 app 都大。**巡查纪律：每周一先跑 iTunes 全量按 releaseDate 排序看增量，再拿 dev 页交叉验证；三账号巡查只做兜底**。判断「有没有新品」不能只看「dev 页 20 个 app 没变」。
 
+- **装机能抬品类词，不一定抬品牌词（Connect Tracks 2026-11-11 实证）**：`com.oakever.traintrack`（Play 500K+ 装、iOS 评分 1,538 且 +7/天）品牌词族 `connect tracks` / +game / +hints / +puzzle / +walkthrough **5 词全 null（`fromCache=false` 真新读）**，而同一台机器把品类词 `train track puzzle` 抬到 5,400/月 ⇒ **承接新品先打品类词，品牌词只在实测 0→非 0 后才建页**；T1 判据（name 族 0→非 0）不能被「装量大」替代。同期 Play `connect tracks puzzle` 搜索已出 5 款 train-tracks 专属 app（Oakever 500K+ / alexuvarov 10K+ / PuzzleMadness 1K+ / studio 1K+ / **Meow Tracks 1K+ 猫主题撞同赛道**），iOS 侧三款「Connect Tracks」撞名均晚于 08-13 上架 = 需求在变热，但 web solver 位仍空（11-11 早轮 SERP 实测）
+
 ## 历史背景
 
 2026-10-10 品类反推首次实战（用户发起「从大品类游戏反推监控哪些移动开发者」）。同日发现 arrows puzzle（进 NEWWORD-LEDGER，已 deployed）。cron 新词雷达 job 1329cf1d31a5 **已恢复运行（2026-10-10 深夜用户决策，每 180 分钟一轮，prompt 含 T1 品牌词族监控）**；发现层三路：① 品类反推（本 SOP，供给侧）② 哥飞 web.cafe 数据服务（限免期内评估中，搜索侧）③ cron 雷达（每 3h 轮换词根扫描），**分工与互补关系以 `NEWWORD-LEDGER.md` 头部的「发现层分工」表为准**（兄弟会话在维护哥飞新词服务的记录侧，本档案管移动端供给侧，两侧词级产出统一落台账防重复挖）。
