@@ -77,6 +77,10 @@
 
 - **品类词会随 App 成熟迁走（arrows 实证 2026-11-12）**：`arrows puzzle` 快照 07/08/09 连续三个月 5,400 持平（12 个月单边爬升终止）+ Trends 12m 峰值在 2026-05-10、近 13 周均值 26.8 vs 全段 40.6（-14%）、最新仅峰值 26% → 两源一致「见顶/回落」；同期同门品牌词 `amaze go` 近 13 周均值 51.8 = arrows 的 **1.93 倍**且仍在峰值 80% 以上。⇒ **T1 新品带起来的品类词，窗口在 App 增长期（约 6-9 个月），之后需求迁进品牌词**；内容页必须在品类词还在爬的时候就位，晚一年做的是「存量词」而不是「新词红利」
 
+- **竞品覆盖度要从 sitemap 数 URL，导航条只是橱窗（2026-11-12 实证，同一竞品连续两天报错）**：traintrackspuzzle.com 顶部导航只有 Daily/Variants/Leaderboard/Guides/Get the app，我据此报「可打印 PDF 是他们没做的」；抓 sitemap 才发现 **388 URL** = daily 240（60 天×4 语）+ guides 72（18×4）+ 核心页，`/printable-train-tracks-puzzles`（title 明写 Free PDF Sheets with Answers，5×5/7×7/9×9、2-12 局、带 answer key、set 号可复现，de/fr/es 各一）与 6 步 step-by-step guide 全都在，只是没进顶部导航（挂在 footer 的 Tools 组）。⇒ **判竞品「有没有做 X」必须 `curl sitemap.xml` 按 path 数族**，再按需抓具体页；只看 nav/首屏等于只看橱窗。
+
+- **品类词总量 ≠ 可承接意图，建 solver/内容页前先单量工具词本身（2026-11-12 实证）**：`train track puzzle` 5,400 + `train tracks puzzle` 1,900 看着是 7,300/月的可打盘子，但拆意图后：`train track puzzle solver` **10**、`train tracks puzzle solver` **10**、`train tracks solver` **10**、`connect tracks solver` **null**，`answers`/`hints`/`print` 全 **null**，只有 `train track puzzle online` 09=320 在爬（play 意图）。⇒ 这一族的量几乎全是「想玩」，solver 页需求侧不成立（差 3 个数量级）。**判据纪律：任何「做 solver 承接品类词」的提案，必须先量 solver 词本身的量；play 意图的盘子只能由可玩版本接**。
+
 ## 历史背景
 
 2026-10-10 品类反推首次实战（用户发起「从大品类游戏反推监控哪些移动开发者」）。同日发现 arrows puzzle（进 NEWWORD-LEDGER，已 deployed）。cron 新词雷达 job 1329cf1d31a5 **已恢复运行（2026-10-10 深夜用户决策，每 180 分钟一轮，prompt 含 T1 品牌词族监控）**；发现层三路：① 品类反推（本 SOP，供给侧）② 哥飞 web.cafe 数据服务（限免期内评估中，搜索侧）③ cron 雷达（每 3h 轮换词根扫描），**分工与互补关系以 `NEWWORD-LEDGER.md` 头部的「发现层分工」表为准**（兄弟会话在维护哥飞新词服务的记录侧，本档案管移动端供给侧，两侧词级产出统一落台账防重复挖）。
