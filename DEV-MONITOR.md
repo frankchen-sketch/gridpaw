@@ -73,6 +73,10 @@
 
 - **装机能抬品类词，不一定抬品牌词（Connect Tracks 2026-11-11 实证）**：`com.oakever.traintrack`（Play 500K+ 装、iOS 评分 1,538 且 +7/天）品牌词族 `connect tracks` / +game / +hints / +puzzle / +walkthrough **5 词全 null（`fromCache=false` 真新读）**，而同一台机器把品类词 `train track puzzle` 抬到 5,400/月 ⇒ **承接新品先打品类词，品牌词只在实测 0→非 0 后才建页**；T1 判据（name 族 0→非 0）不能被「装量大」替代。同期 Play `connect tracks puzzle` 搜索已出 5 款 train-tracks 专属 app（Oakever 500K+ / alexuvarov 10K+ / PuzzleMadness 1K+ / studio 1K+ / **Meow Tracks 1K+ 猫主题撞同赛道**），iOS 侧三款「Connect Tracks」撞名均晚于 08-13 上架 = 需求在变热，但 web solver 位仍空（11-11 早轮 SERP 实测）
 
+- **「SERP 真空」不能靠单 query 变体下结论（2026-11-12 实证，我自己报错被打回）**：11-11 用 `train tracks puzzle solver online free` 量前十、没见专用 solver 就写了「web solver 位真空」，11-12 换 `train track puzzle solver` 一搜 – traintrackspuzzle.com 排在最前：RDAP 注册 **2026-10-03**（40 天）、solver 明写兼容 Connect Tracks（4×4→9×9）+ 每日局 3 难度 + 18 篇 guides（含 `/guides/games-like-connect-tracks`）+ en/de/fr/es + App，一整套齐活。教训三条：① 判「真空」至少跑 **head 词 + solver 词** 两个变体（长尾变体前十完全不同）；② 出现的新域名一律走一次 **RDAP 看注册日**（免费，一秒出年龄）——40 天的站说明「窗口刚被人抢」，不是「没人做」；③ `domain_overview` 的 visits=0 只说明「没量化到流量」，不说明「没排名」，别拿它当排位证据。同轮还验到：DR 0.4 / 零流量 = **进场但未守**（窗口从「空的」改判「可抢但要在 4-8 周内到前 6」，参考 11-10 serp_review 给的「新站现实目标前 6 非前 3」）
+
+- **品类词会随 App 成熟迁走（arrows 实证 2026-11-12）**：`arrows puzzle` 快照 07/08/09 连续三个月 5,400 持平（12 个月单边爬升终止）+ Trends 12m 峰值在 2026-05-10、近 13 周均值 26.8 vs 全段 40.6（-14%）、最新仅峰值 26% → 两源一致「见顶/回落」；同期同门品牌词 `amaze go` 近 13 周均值 51.8 = arrows 的 **1.93 倍**且仍在峰值 80% 以上。⇒ **T1 新品带起来的品类词，窗口在 App 增长期（约 6-9 个月），之后需求迁进品牌词**；内容页必须在品类词还在爬的时候就位，晚一年做的是「存量词」而不是「新词红利」
+
 ## 历史背景
 
 2026-10-10 品类反推首次实战（用户发起「从大品类游戏反推监控哪些移动开发者」）。同日发现 arrows puzzle（进 NEWWORD-LEDGER，已 deployed）。cron 新词雷达 job 1329cf1d31a5 **已恢复运行（2026-10-10 深夜用户决策，每 180 分钟一轮，prompt 含 T1 品牌词族监控）**；发现层三路：① 品类反推（本 SOP，供给侧）② 哥飞 web.cafe 数据服务（限免期内评估中，搜索侧）③ cron 雷达（每 3h 轮换词根扫描），**分工与互补关系以 `NEWWORD-LEDGER.md` 头部的「发现层分工」表为准**（兄弟会话在维护哥飞新词服务的记录侧，本档案管移动端供给侧，两侧词级产出统一落台账防重复挖）。
