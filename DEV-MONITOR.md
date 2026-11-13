@@ -20,6 +20,19 @@
 | GamoVation | Tile Club / Mahjong Club / Sudoku | 老词盘玩家（tile club 6,600 平 + competition HIGH 95） | 2026-10-10 |
 | Pixel Art (Yunbu) | Nonogram 系 7 款 | nonogram 赛道最挤，提示我们 Nonogram 词避开正面 | 2026-10-10 |
 
+## 同型 web 站点 — 竞品站监控（2026-11-13 新增，与 app 开发者分开）
+
+同赛道的「每日逻辑谜题 + 内容页」网站。为什么单列：它们直接抢 gridpaw 的关键词族，影响比 app 新品快，且不适用 app 的 5 条收录标准。
+
+| 站点 | 注册 | 技术 / 规模 | 与 gridpaw 重叠 | 现状（2026-11-13 实测） | 监控动作 |
+|---|---|---|---|---|---|
+| **puzzledoku.com** | **2026-10-08**（RDAP；Cloudflare registrar） | Astro 静态站；sitemap **354 URL**；7 款游戏（Queens / Cat Queens / Arrows / Rotate Rings / Sliding Blocks / Train Tracks / Pixel Clearing）；EN + 繁中 + ES；每游戏 hub + daily 存档（18-31 页）+ levels（11 页）+ how-to-play / tips / solver / printable | **四族直撞**：arrows puzzle（47 URL）、queens/star battle、train tracks、meowdoku 品牌（`/queens-puzzle/games-like-meowdoku/`，2,640 词，title 直接写 "Meowdoku Online?"）；品牌截流页整套：zoodoku-alternative / games-like-linkedin-queens / games-like-connect-tracks / games-like-color-block-jam / games-like-pixel-flow / games-like-wordle | **DR 0.2**、月访问未量化（0）、**已收录**（site: 有 10+ 页）；正文 2,000-2,600 词；**无广告**（主打 free / no ads / no app）；train tracks solver 给「下一步 + 理由」 | 每月一次 `domain_overview`（2 分）看 visits；非 0 → `site_keywords` 看抢了哪些词 |
+| **traintrackspuzzle.com** | **2026-10-03**（RDAP；NameCheap） | Next.js；sitemap **388 URL** = daily 240（60 天×4 语）+ guides 72（18×4）+ printable + solver（上限 9×9） | train tracks 单品类全覆盖 | DR **0.4**、月访问未量化（0）；sitemap 停 11-03、daily 只到 11-02（站正常运营，日页未进 sitemap） | 同上；它若起量 = train tracks 品类真能撑站，届时再评 |
+
+**读法**：两站注册相隔 5 天，栈（Astro vs Next.js）与注册商（Cloudflare vs NameCheap）都不同 ⇒ **一周内两家独立团队进场，不是一人两站**——「每日谜题 + 程序化内容页」这个模型正在被复制。我方相对优势：14 款游戏、已有排名积累（meowdoku-guide 8,639 imp / 28d 是第一流量页）；相对劣势：无 es / 繁中版本，daily 存档与 levels 类程序化页规模小于它们。
+
+**判据（写死）**：任一站 `visits` 非 0，或任一目标词（arrows puzzle / meowdoku / train tracks puzzle）进前 10 → 升级为实质威胁，重开「是否加页 / 加语言」议题；达标前不因竞品存在而改站。
+
 ## 霸主层 — 参照系（不监控，SERP 里打不过的对象）
 
 - **Easybrain**（10 品类 29 席）：品类扫描占位第一，制造老词大盘
@@ -80,6 +93,8 @@
 - **竞品覆盖度要从 sitemap 数 URL，导航条只是橱窗（2026-11-12 实证，同一竞品连续两天报错）**：traintrackspuzzle.com 顶部导航只有 Daily/Variants/Leaderboard/Guides/Get the app，我据此报「可打印 PDF 是他们没做的」；抓 sitemap 才发现 **388 URL** = daily 240（60 天×4 语）+ guides 72（18×4）+ 核心页，`/printable-train-tracks-puzzles`（title 明写 Free PDF Sheets with Answers，5×5/7×7/9×9、2-12 局、带 answer key、set 号可复现，de/fr/es 各一）与 6 步 step-by-step guide 全都在，只是没进顶部导航（挂在 footer 的 Tools 组）。⇒ **判竞品「有没有做 X」必须 `curl sitemap.xml` 按 path 数族**，再按需抓具体页；只看 nav/首屏等于只看橱窗。
 
 - **品类词总量 ≠ 可承接意图，建 solver/内容页前先单量工具词本身（2026-11-12 实证）**：`train track puzzle` 5,400 + `train tracks puzzle` 1,900 看着是 7,300/月的可打盘子，但拆意图后：`train track puzzle solver` **10**、`train tracks puzzle solver` **10**、`train tracks solver` **10**、`connect tracks solver` **null**，`answers`/`hints`/`print` 全 **null**，只有 `train track puzzle online` 09=320 在爬（play 意图）。⇒ 这一族的量几乎全是「想玩」，solver 页需求侧不成立（差 3 个数量级）。**判据纪律：任何「做 solver 承接品类词」的提案，必须先量 solver 词本身的量；play 意图的盘子只能由可玩版本接**。
+
+- **品牌词护城河会被「周边页」绕开（2026-11-13 实证）**：puzzledoku.com（注册 10-08）5 周建成 354 URL，用 `games-like-meowdoku` / `zoodoku-alternative` / `Train tracks app vs browser game` 三类页从外围截品牌词与 app 意图；文案 0 次提及 gridpaw ⇒ **判「是否抄我们」不能只比文案，要比游戏组合 + 页面结构重叠度**。监控同型站固定看三件：① 有没有针对我方品牌的 games-like / alternative 页；② 有没有 app-vs-browser 这类意图转换页；③ sitemap 页族增长速度。
 
 ## 历史背景
 
