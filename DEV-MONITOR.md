@@ -33,6 +33,8 @@
 
 **判据（写死）**：任一站 `visits` 非 0，或任一目标词（arrows puzzle / meowdoku / train tracks puzzle）进前 10 → 升级为实质威胁，重开「是否加页 / 加语言」议题；达标前不因竞品存在而改站。
 
+**判据首测（2026-11-13 20:00，TabAPI Google SERP country=us ×5 查询）**：`meowdoku` / `meowdoku tips` / `meowdoku hints` / `arrows puzzle` / `train tracks puzzle` 五个 SERP 的前 10 **均无 puzzledoku.com，也均无 traintrackspuzzle.com**（target-word 层未触发）。同测结论：meowdoku 族 SERP 是平台墙（meowdoku.org 占 2-3 席 + Reddit + YouTube×2-3 + FB + nairaland），**我方 exact `meowdoku` 仅 pos 14.6 / 0 点击**、流量来自 tips/策略长尾（`meowdoku tips` 1,229 imp / 42 clk / pos 8.5，query 维度 28d）⇒ 内容站打不进品牌头部，**不投品牌防御页**；竞品的 games-like-* 页同样没进榜 = 此路对内容站无效。下次复查：每月一次 visits（两站），SERP 只在「visits 非 0 或我方排名明显下滑」时再测。
+
 ## 霸主层 — 参照系（不监控，SERP 里打不过的对象）
 
 - **Easybrain**（10 品类 29 席）：品类扫描占位第一，制造老词大盘
