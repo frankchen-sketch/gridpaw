@@ -94,7 +94,7 @@
 
 - **品类词总量 ≠ 可承接意图，建 solver/内容页前先单量工具词本身（2026-11-12 实证）**：`train track puzzle` 5,400 + `train tracks puzzle` 1,900 看着是 7,300/月的可打盘子，但拆意图后：`train track puzzle solver` **10**、`train tracks puzzle solver` **10**、`train tracks solver` **10**、`connect tracks solver` **null**，`answers`/`hints`/`print` 全 **null**，只有 `train track puzzle online` 09=320 在爬（play 意图）。⇒ 这一族的量几乎全是「想玩」，solver 页需求侧不成立（差 3 个数量级）。**判据纪律：任何「做 solver 承接品类词」的提案，必须先量 solver 词本身的量；play 意图的盘子只能由可玩版本接**。
 
-- **品牌词护城河会被「周边页」绕开（2026-11-13 实证）**：puzzledoku.com（注册 10-08）5 周建成 354 URL，用 `games-like-meowdoku` / `zoodoku-alternative` / `Train tracks app vs browser game` 三类页从外围截品牌词与 app 意图；文案 0 次提及 gridpaw ⇒ **判「是否抄我们」不能只比文案，要比游戏组合 + 页面结构重叠度**。监控同型站固定看三件：① 有没有针对我方品牌的 games-like / alternative 页；② 有没有 app-vs-browser 这类意图转换页；③ sitemap 页族增长速度。
+- **品牌词护城河会被「周边页」绕开（2026-11-13 实证）**：puzzledoku.com（注册 10-08）5 周建成 354 URL，用 `games-like-meowdoku` / `zoodoku-alternative` / `Train tracks app vs browser game` 三类页从外围截品牌词与 app 意图；文案 0 次提及 gridpaw ⇒ **判「是否抄我们」不能只比文案，要比游戏组合 + 页面结构重叠度**。监控同型站固定看三件：① 有没有针对我方品牌的 games-like / alternative 页；② 有没有 app-vs-browser 这类意图转换页；③ sitemap 页族增长速度。**同轮附一条自打脸**：核 SERP 意图别在 query 里带答案词——`"train tracks app" puzzle` 搜出全是谜题站、去掉 puzzle 全是火车追踪 App；带倾向词的搜索等于把结论喂回自己。
 
 ## 历史背景
 
