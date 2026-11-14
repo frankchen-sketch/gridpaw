@@ -86,7 +86,7 @@
 
 - **dev 页 20-app 上限＋名字型搜索双盲区，iTunes 全量是唯一可靠枚举（2026-11-10 第二次实证）**：Oakever 46 条搜索结果里 31 条自研，dev 页只列 20 条，漏掉的 Connect Tracks（500K+ 装）比 dev 页上多数 app 都大。**巡查纪律：每周一先跑 iTunes 全量按 releaseDate 排序看增量，再拿 dev 页交叉验证；三账号巡查只做兜底**。判断「有没有新品」不能只看「dev 页 20 个 app 没变」。
 
-- **装机能抬品类词，不一定抬品牌词（Connect Tracks 2026-11-11 实证）**：`com.oakever.traintrack`（Play 500K+ 装、iOS 评分 1,538 且 +7/天）品牌词族 `connect tracks` / +game / +hints / +puzzle / +walkthrough **5 词全 null（`fromCache=false` 真新读）**，而同一台机器把品类词 `train track puzzle` 抬到 5,400/月 ⇒ **承接新品先打品类词，品牌词只在实测 0→非 0 后才建页**；T1 判据（name 族 0→非 0）不能被「装量大」替代。同期 Play `connect tracks puzzle` 搜索已出 5 款 train-tracks 专属 app（Oakever 500K+ / alexuvarov 10K+ / PuzzleMadness 1K+ / studio 1K+ / **Meow Tracks 1K+ 猫主题撞同赛道**），iOS 侧三款「Connect Tracks」撞名均晚于 08-13 上架 = 需求在变热，但 web solver 位仍空（11-11 早轮 SERP 实测）
+- **装机能抬品类词，不一定抬品牌词（Connect Tracks 2026-11-11 实证）**：`com.oakever.traintrack`（Play 500K+ 装、iOS 评分 1,538 且 +7/天）品牌词族 `connect tracks` / +game / +hints / +puzzle / +walkthrough **5 词全 null（`fromCache=false` 真新读）**，而同一台机器把品类词 `train track puzzle` 抬到 5,400/月 ⇒ **承接新品先打品类词，品牌词只在实测 0→非 0 后才建页**；T1 判据（name 族 0→非 0）不能被「装量大」替代。同期 Play `connect tracks puzzle` 搜索已出 5 款 train-tracks 专属 app（Oakever 500K+ / alexuvarov 10K+ / PuzzleMadness 1K+ / studio 1K+ / **Meow Tracks 1K+ 猫主题撞同赛道**），iOS 侧三款「Connect Tracks」撞名均晚于 08-13 上架 = 需求在变热，但 web solver 位仍空（11-11 早轮 SERP 实测）**——⚠️ 该句已被推翻**：11-12 换 `train track puzzle solver` 实测，traintrackspuzzle.com 排最前（见下条教训）
 
 - **「SERP 真空」不能靠单 query 变体下结论（2026-11-12 实证，我自己报错被打回）**：11-11 用 `train tracks puzzle solver online free` 量前十、没见专用 solver 就写了「web solver 位真空」，11-12 换 `train track puzzle solver` 一搜 – traintrackspuzzle.com 排在最前：RDAP 注册 **2026-10-03**（40 天）、solver 明写兼容 Connect Tracks（4×4→9×9）+ 每日局 3 难度 + 18 篇 guides（含 `/guides/games-like-connect-tracks`）+ en/de/fr/es + App，一整套齐活。教训三条：① 判「真空」至少跑 **head 词 + solver 词** 两个变体（长尾变体前十完全不同）；② 出现的新域名一律走一次 **RDAP 看注册日**（免费，一秒出年龄）——40 天的站说明「窗口刚被人抢」，不是「没人做」；③ `domain_overview` 的 visits=0 只说明「没量化到流量」，不说明「没排名」，别拿它当排位证据。同轮还验到：DR 0.4 / 零流量 = **进场但未守**（窗口从「空的」改判「可抢但要在 4-8 周内到前 6」，参考 11-10 serp_review 给的「新站现实目标前 6 非前 3」）
 
@@ -97,6 +97,8 @@
 - **品类词总量 ≠ 可承接意图，建 solver/内容页前先单量工具词本身（2026-11-12 实证）**：`train track puzzle` 5,400 + `train tracks puzzle` 1,900 看着是 7,300/月的可打盘子，但拆意图后：`train track puzzle solver` **10**、`train tracks puzzle solver` **10**、`train tracks solver` **10**、`connect tracks solver` **null**，`answers`/`hints`/`print` 全 **null**，只有 `train track puzzle online` 09=320 在爬（play 意图）。⇒ 这一族的量几乎全是「想玩」，solver 页需求侧不成立（差 3 个数量级）。**判据纪律：任何「做 solver 承接品类词」的提案，必须先量 solver 词本身的量；play 意图的盘子只能由可玩版本接**。
 
 - **品牌词护城河会被「周边页」绕开（2026-11-13 实证）**：puzzledoku.com（注册 10-08）5 周建成 354 URL，用 `games-like-meowdoku` / `zoodoku-alternative` / `Train tracks app vs browser game` 三类页从外围截品牌词与 app 意图；文案 0 次提及 gridpaw ⇒ **判「是否抄我们」不能只比文案，要比游戏组合 + 页面结构重叠度**。监控同型站固定看三件：① 有没有针对我方品牌的 games-like / alternative 页；② 有没有 app-vs-browser 这类意图转换页；③ sitemap 页族增长速度。**同轮附一条自打脸**：核 SERP 意图别在 query 里带答案词——`"train tracks app" puzzle` 搜出全是谜题站、去掉 puzzle 全是火车追踪 App；带倾向词的搜索等于把结论喂回自己。
+
+- **train track puzzle 线结案（2026-11-14）**：按 11-12 写死的判据 **dropped 执行**——可承接意图仅 ≈390/月（online 词），solver/answers/print 全 null 或 10/月；`train tracks app`/`train track game` 两个 1,300 分别是火车追踪器与玩具/模拟意图。**不建页、不再进量监控池**；Connect Tracks 品牌词族只留 0→非0 观察（重开条件见 NEWWORD-LEDGER dropped 行）。
 
 ## 历史背景
 
