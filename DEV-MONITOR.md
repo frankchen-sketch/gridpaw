@@ -100,6 +100,8 @@
 
 - **train track puzzle 线结案（2026-11-14）**：按 11-12 写死的判据 **dropped 执行**——可承接意图仅 ≈390/月（online 词），solver/answers/print 全 null 或 10/月；`train tracks app`/`train track game` 两个 1,300 分别是火车追踪器与玩具/模拟意图。**不建页、不再进量监控池**；Connect Tracks 品牌词族只留 0→非0 观察（重开条件见 NEWWORD-LEDGER dropped 行）。
 
+- **装速是品牌词的前导指标，Play 装机桶 = 可零成本复测的仪器（2026-11-14 首建基线）**：Play details 页服务端渲染，`curl -s "https://play.google.com/store/apps/details?id=<pkg>&hl=en&gl=US"` 可直接读 installs 桶（5K+/10K+/50K+/100K+/500K+/1M+…）与 `Updated on` 日期，不需 API、不花 webcafe 积分（Google 域名须挂活代理，本机现为 **7882**）。桶粒度粗，但**跨越一档 = 显著加速**，且早于品牌词族成形 1-4 周。Oakever 7 包基线（2026-11-14，全部与 11-09 记录同桶 = 无加速）：Amaze Clear 3D `amaze3d` **10K+**（更新 11-13）/ Twindoku `pairzzle` **5K+**（10-13）/ Molesweeper `molesweeper` **5K+**（08-19）/ Light Up `akari` **10K+**（10-21）/ Sort Streak `sortparade` **100K+**（11-11）/ Connect Tracks `traintrack` **500K+**（11-12）/ Meowdoku `meowdoku` **10M+**（11-13）。用法：新品词族全 null 时先看装速动没动；动了就用**从未查过的新词**做真新读（新词天然绕开 14 天缓存）——这是缓存冻结窗口里唯一能拿到新鲜上游数据的路径。
+
 ## 历史背景
 
 2026-10-10 品类反推首次实战（用户发起「从大品类游戏反推监控哪些移动开发者」）。同日发现 arrows puzzle（进 NEWWORD-LEDGER，已 deployed）。cron 新词雷达 job 1329cf1d31a5 **已恢复运行（2026-10-10 深夜用户决策，每 180 分钟一轮，prompt 含 T1 品牌词族监控）**；发现层三路：① 品类反推（本 SOP，供给侧）② 哥飞 web.cafe 数据服务（限免期内评估中，搜索侧）③ cron 雷达（每 3h 轮换词根扫描），**分工与互补关系以 `NEWWORD-LEDGER.md` 头部的「发现层分工」表为准**（兄弟会话在维护哥飞新词服务的记录侧，本档案管移动端供给侧，两侧词级产出统一落台账防重复挖）。
