@@ -362,6 +362,69 @@ krazydad 的 top 词是 `star battle — 29,170/mo`（其站内最大词之一�
 
 **但必须同时承认**：1–2K/月 按 $0.3–1 RPM 折成年收入只有 **$5–25**，独立建站不划算。唯一合理形态是 **gridpaw 站内一条子线**（跟涨 Connect Tracks app，app 500K+ 装机且还在更新）。
 
+### 8.14 终判（2026-11-16 19:05）：关卡词实测全 null ⇒ §2.3 引擎不成立 ⇒ tt 全路径判死
+
+**触发**：法老纠正「游戏页就是凭站龄，基本没机会，除非制造热点来流量」。回查既有结论，确认这是已判死项，我上一轮提「查 star battle 为什么只 52」是拿已判死的思路重开议题。
+
+#### (a) 既有结论原文（gridpaw 内部文档，不是我新推的）
+
+`research/2026-11-05-battle-plan.md` §7「不做清单（已判死，别再提案）」：
+
+| 判死项 | 依据 |
+|---|---|
+| **用 gridpaw.com 打游戏品类头词** | 前十中位站龄 **20 年** |
+| **追刚上线的新游戏** | **Rotate Rings 11.1M 下载 → 只有 4 个 query** |
+| 攻略→可玩站内导流 | GA4 **0.1%** |
+| 扩 solver 品类 | picross 4 曝光/60d |
+
+`research/2026-11-05-next-direction.md` §2.1：shikaku 前 10 中位站龄 **20.0 年**、最短 3.3 年（EMD）；`kenken online` 前十是 bostonglobe / usatoday / scientificamerican —— **不做谜题，权重顺路占位**。⇒ **可玩层不承担获客任务。**
+
+同一份文档 §2.3 是全站唯一被反复验证的引擎：BP3 **62 点击/页**、Loop **151 点击/页**、Meowdoku 19 点击/页 —— 前提是「**有人正在搜某个具体关卡/答案**」。
+
+#### (b) 我上一轮的推理错误
+
+看到 `connecttracks.com` 铺 150 个 `/level/N/` 页 + 336 visits，我判定「§2.3 引擎可复用」。**但没有验证关卡词是否有量**——而这是 §2.3 成立的前提。
+
+#### (c) 实测：Connect Tracks 的关卡词一个都没有
+
+webcafe `keyword_volume`（`gl=us`，`fromCache=false` 真新读），8 个词：
+
+| 词 | 结果 |
+|---|---|
+| `connect tracks level 25` | **null** |
+| `connect tracks level 1` | **null** |
+| `connect tracks mega level` | **null** |
+| `connect track mega level 25` | **null** |
+| `connect tracks all levels` | **null** |
+| `connect tracks answers` | **null** |
+| `connect tracks walkthrough` | **null**（11-12 已测） |
+| `connect tracks game` / `connect the tracks` | **null** |
+
+⚠️ TabAPI 的 `top_keywords` 报 `connect track mega level 25 — 180/mo`，**与 Google Ads 口径实测矛盾**。判定：TabAPI 该数字是长尾模型估算，非实测；**以 KWP/webcafe 口径为准 → 该词无有效搜索量**。
+
+#### (d) 推论：connecttracks.com 的 336 visits 不是从 150 个关卡页来的
+
+既然关卡词全 null，**150 个 `/level/N/` 页没有词可吃**。它的 336 visits 只能来自：
+- `connect tracks` 品牌词排 **#2**（KWP 720/mo，但那是**用户截图的「所有语言」口径**，切 English 会明显更小）
+- 少量零散长尾
+
+按 336/150 ≈ **2.2 visits/页/月**，对比 BP3 的 **62 点击/页**——**差 28 倍**。⇒ 这家铺的 150 页是**铺薄**，不是 §2.3 引擎在跑。
+
+#### (e) tt 全路径判决表
+
+| 路径 | 依据 | 判决 |
+|---|---|---|
+| 品类词可玩页（train track puzzle 1,900–5,400） | §7「20 年站龄墙」+ SERP 前 5 = 3 寡头 + 2 App 商店 | **死** |
+| 追新游戏做页（Connect Tracks 本身） | §7「Rotate Rings 11.1M → 4 query」 | **死** |
+| 关卡答案页（§2.3 唯一引擎） | 8 个关卡词**全 null**，无词可吃 | **死** |
+| 品牌词页（connect tracks 720/mo） | SERP #1 = Play Store（下载意图）；且「所有语言」口径，英文盘子更小 | **死** |
+| print / book / 规则页 | 50–210；traintrackspuzzle.com 12 篇已铺满 40 天零流量 | **死** |
+| **制造热点引流** | 品类无话题性：daily train tracks 心智被 puzzlemadness 占据（其 TITLE 即 `Daily Medium Train Tracks Puzzle`）；发「又做了一个 train tracks」在社区无差异化 | **条件不具备** |
+
+**终判：train track puzzle 族全路径关闭。不是"等 10 月桶"，不是"等 2027-01 扩张窗"，是关闭。** 台账状态从 `dropped` 改为 `closed`，移出重开监控池。
+
+**唯一可复用的收获**：`connecttracks.com` 是一个反例证据——**150 页 × 零搜索量关键词 = 336 visits**，量化了「铺页不等于获客」的上限。这条应进 §2.3 引擎的适用条件：**必须先验证关卡词有量，再决定页数**。
+
 ---
 
 ## 数据源与口径声明
