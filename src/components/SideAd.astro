@@ -74,13 +74,22 @@ const SHOW = !ADSTERRA_OFF && !isPlaySurface;
 )}
 
 {SHOW && (
+<div class="gp-mf-ad">
+  <span class="gp-mf-ad__label">Advertisement</span>
+  <div class="gp-mf-ad__slot" data-gp-slot="mobilefoot"></div>
+</div>
+)}
+
+{SHOW && (
 <script is:inline>
 (function () {
-  var KEYS = { left: '309484c05af1066efb6f321317c94311', right: '9f1d682930273a58cd2e02f0cee94cc0', sticky: 'c0a7039d4910c7d761aa9df9b0c73367', top: '361fc202189557ef23683b546d7f0393' };
+  var KEYS = { left: '309484c05af1066efb6f321317c94311', right: '9f1d682930273a58cd2e02f0cee94cc0', sticky: 'c0a7039d4910c7d761aa9df9b0c73367', top: '361fc202189557ef23683b546d7f0393', mobilefoot: 'c3072bbbf851bb748d0bc833da23e21e' };
   // 右栏 2026-11-16 换成独立单元（160x300，unit 32303990）：Adsterra 同站同尺寸只能有一个 unit，
   // 所以右栏不能再用第二个 160x600，改用未占用的 160x300 拿独立 key —— 左右各一个 key，
   // 顺手验证「同一 key 在一页跑两次只出一次」的假设（旧写法左右共用 160x600 key，实测交付仅 ~20%）。
-  var DIMS = { left: [160, 600], right: [160, 300], sticky: [728, 90], top: [320, 50] };
+  // mobilefoot = 手机端正文底部第二个 300×250：Adsterra 同尺寸不能建第二个 unit，只能复用同一个 key
+  // 再调一次——**零预留高度**（未填充时整块 0 高、连 Advertisement 标签都不出），所以双位无效也不会伤 UX。
+  var DIMS = { left: [160, 600], right: [160, 300], sticky: [728, 90], top: [320, 50], mobilefoot: [300, 250] };
   var BASE = 'https://bauval.org/22/';
 
   // 内嵌模式（?embed=1）：一个广告都不出，连盒子也不留
@@ -136,6 +145,10 @@ const SHOW = !ADSTERRA_OFF && !isPlaySurface;
   }
 
   window.__gpAdChain = window.__gpAdChain || Promise.resolve();
+  function markFilled(slot) {
+    var w = slot.closest ? slot.closest('.gp-mf-ad') : null;
+    if (w && slot.querySelector('iframe')) w.classList.add('is-filled');
+  }
   function fill(name) {
     var slot = document.querySelector('[data-gp-slot="' + name + '"]');
     if (!slot) return;
@@ -150,8 +163,24 @@ const SHOW = !ADSTERRA_OFF && !isPlaySurface;
         s.addEventListener('load', resolve);
         s.addEventListener('error', resolve);
         slot.appendChild(s);
+        // 创意可能异步注入：load 后再补两次检查，命中才露出 Advertisement 标签（mobilefoot 用）
+        setTimeout(function () { markFilled(slot); }, 1200);
+        setTimeout(function () { markFilled(slot); }, 3500);
       });
     });
+  }
+
+  // 手机端正文底部第二个 300×250：挂到 <footer> 之前（DOM 里组件在 body 末尾，位置不对）
+  // ⚠ 本 script 是内联的、执行时 <footer> 可能还没解析出来 → 必须等 DOM 就绪再搬，否则 fallback 会塞进 body 中段
+  var mfAd = showTop ? document.querySelector('.gp-mf-ad') : null;
+  if (mfAd) {
+    var placeMf = function () {
+      var ft = document.querySelector('footer');
+      if (ft && ft.parentNode) ft.parentNode.insertBefore(mfAd, ft);
+      else if (document.body) document.body.appendChild(mfAd);
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', placeMf);
+    else placeMf();
   }
 
   function start() {
@@ -159,6 +188,7 @@ const SHOW = !ADSTERRA_OFF && !isPlaySurface;
     if (showRail) { fill('left'); fill('right'); }
     if (stickyAd) fill('sticky');
     if (topAd) fill('top');
+    if (mfAd) fill('mobilefoot');
   }
   if (window.__gpGeoGate) window.__gpGeoGate.then(function (allow) { if (allow) start(); });
 })();
@@ -171,7 +201,7 @@ const SHOW = !ADSTERRA_OFF && !isPlaySurface;
      ≤767 移动：只有顶部 320×50
      768–1349：只有底部 728×90 sticky
      ≥1350：只有左右 160×600 */
-  .gp-side-ad, .gp-sticky-ad, .gp-top-ad { display: none; }
+  .gp-side-ad, .gp-sticky-ad, .gp-top-ad, .gp-mf-ad { display: none; }
 
   /* —— 侧栏 160×600 —— */
   @media (min-width: 1350px) {
@@ -190,7 +220,7 @@ const SHOW = !ADSTERRA_OFF && !isPlaySurface;
     .gp-side-ad--right .gp-side-ad__slot { height: 300px; }
   }
 
-  /* —— 顶部 320×50（移动）—— */
+  /* —— 顶部 320×50 + 正文底部第二信息流（移动）—— */
   @media (max-width: 767px) {
     .gp-top-ad {
       display: block;
@@ -199,6 +229,27 @@ const SHOW = !ADSTERRA_OFF && !isPlaySurface;
       margin: 0.5rem auto 0.75rem;
     }
     .gp-top-ad__slot { width: 320px; height: 50px; margin: 0 auto; }
+    /* 正文底部第二个 300×250（复用 300×250 单元 key，见 KEYS.mobilefoot）。
+       零预留：没填充时整块高度 0、标签不显示；填充后才露出标签与 250px 创意。 */
+    .gp-mf-ad {
+      display: block;
+      width: 100%;
+      max-width: 336px;
+      margin: 0.5rem auto 0.75rem;
+      padding: 0;
+    }
+    .gp-mf-ad__slot { width: 300px; max-width: 100%; margin: 0 auto; min-height: 0; }
+    .gp-mf-ad__label { display: none; }
+    .gp-mf-ad.is-filled .gp-mf-ad__label {
+      display: block;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #C9B48F;
+      text-align: center;
+      margin-bottom: 2px;
+    }
   }
 
   /* —— 底部 sticky 728×90（平板/小笔记本）—— */
@@ -247,7 +298,8 @@ const SHOW = !ADSTERRA_OFF && !isPlaySurface;
   /* 已购去广告：三个位全部不占位 */
   html.gp-ads-free .gp-side-ad,
   html.gp-ads-free .gp-sticky-ad,
-  html.gp-ads-free .gp-top-ad { display: none !important; }
+  html.gp-ads-free .gp-top-ad,
+  html.gp-ads-free .gp-mf-ad { display: none !important; }
   html.gp-ads-free body { padding-bottom: 0 !important; }
 </style>
 )}
