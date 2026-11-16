@@ -152,9 +152,30 @@ const SHOW = !ADSTERRA_OFF && !NEVER_ADS.has(PAGE_PATH);
   }
 
   window.__gpAdChain = window.__gpAdChain || Promise.resolve();
-  function markFilled(slot) {
-    var w = slot.closest ? slot.closest('.gp-mf-ad') : null;
-    if (w && slot.querySelector('iframe')) w.classList.add('is-filled');
+  // 填充判定：只有 slot 里真的出现 iframe（Adsterra banner 创意就是 iframe）才加 is-filled，
+  // is-filled 同时控制「Advertisement 标签露不露」和「sticky 空白悬浮条撤不撤」。
+  // 注意 fill() 在 slot 里塞的是 <script>，不能拿 childElementCount 判填充。
+  function markFilled(slot, final) {
+    var box = slot.closest ? slot.closest('.gp-mf-ad, .gp-side-ad, .gp-sticky-ad, .gp-top-ad') : null;
+    if (!box) return;
+    var filled = !!slot.querySelector('iframe');
+    if (filled) {
+      box.classList.add('is-filled');
+      // 之前按空判定撤掉过 sticky，后来又填上了 → 恢复（含 body 预留，避免被压住内容）
+      if (box.dataset.gpEmpty === '1') {
+        box.dataset.gpEmpty = '';
+        box.style.display = '';
+        document.documentElement.classList.add('gp-has-sticky');
+      }
+      return;
+    }
+    // 未填充：sticky（fixed 悬浮条 + 90px 空白 + 关闭按钮）观感最差，整块撤掉并撤掉 body 预留；
+    // 其余位只靠 CSS 藏标签，盒子本身 fixed/流内零副作用（顶部位保留预留高度，避免 CLS）。
+    if (final && box.classList.contains('gp-sticky-ad') && box.dataset.gpEmpty !== '1') {
+      box.dataset.gpEmpty = '1';
+      box.style.display = 'none';
+      document.documentElement.classList.remove('gp-has-sticky');
+    }
   }
   function fill(name) {
     var slot = document.querySelector('[data-gp-slot="' + name + '"]');
@@ -170,9 +191,9 @@ const SHOW = !ADSTERRA_OFF && !NEVER_ADS.has(PAGE_PATH);
         s.addEventListener('load', resolve);
         s.addEventListener('error', resolve);
         slot.appendChild(s);
-        // 创意可能异步注入：load 后再补两次检查，命中才露出 Advertisement 标签（mobilefoot 用）
-        setTimeout(function () { markFilled(slot); }, 1200);
-        setTimeout(function () { markFilled(slot); }, 3500);
+        // 创意可能异步注入：load 后补两次检查，早一次晚一次（晚的那次负责撤空白 sticky）
+        setTimeout(function () { markFilled(slot, false); }, 1200);
+        setTimeout(function () { markFilled(slot, true); }, 3500);
       });
     });
   }
@@ -291,9 +312,9 @@ const SHOW = !ADSTERRA_OFF && !NEVER_ADS.has(PAGE_PATH);
     html.gp-has-sticky body { padding-bottom: 100px; }
   }
 
-  /* 标签：所有位统一 10px 灰字 */
+  /* 标签只在创意真的填充后才露（2026-11-16）：填充率 ~56%，未填充时不该给用户看一个孤零零的 ADVERTISEMENT */
   .gp-side-ad__label, .gp-sticky-ad__label, .gp-top-ad__label {
-    display: block;
+    display: none;
     font-size: 10px;
     line-height: 14px;
     letter-spacing: 0.06em;
@@ -301,6 +322,9 @@ const SHOW = !ADSTERRA_OFF && !NEVER_ADS.has(PAGE_PATH);
     color: #9A8B72;
     text-align: center;
   }
+  .gp-side-ad.is-filled > .gp-side-ad__label,
+  .gp-sticky-ad.is-filled > .gp-sticky-ad__label,
+  .gp-top-ad.is-filled > .gp-top-ad__label { display: block; }
 
   /* 已购去广告：三个位全部不占位 */
   html.gp-ads-free .gp-side-ad,
