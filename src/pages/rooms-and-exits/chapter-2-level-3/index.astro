@@ -1,0 +1,325 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 2 Level 3 Walkthrough: Pharmacy";
+const description = "Rooms & Exits Chapter 2 Level 3 Pharmacy walkthrough, step by step with screenshots: the pills 16, 23, 43 and 56 that make keypad code 16234356, the HEALTH word lock, the six vitamins and the 438 colour lock.";
+
+const faqs = [
+  {
+    q: "What is the keypad code in Chapter 2 Level 3 Pharmacy?",
+    a: "16234356. The four numbered pills in the white dish read 16, 23, 43 and 56, and the keypad wants them as one eight-digit run in ascending order. Type 16234356 and confirm: the glass display cabinet next to the reception desk unlocks and the VITAMIN B bottle inside it becomes takeable."
+  },
+  {
+    q: "Where is the HEALTH word lock and what does it open?",
+    a: "It is the steel panel with a QWERTY keyboard on it, on the wall side of the reception area. Tap it, type HEALTH on the on-screen keyboard and press the tick. The locker under the panel swings open and the vitamin bottles inside it can be picked up."
+  },
+  {
+    q: "How many vitamin bottles are there and where do they go?",
+    a: "Six: A, B, C, D, E and K. They come out of the two cabinets rather than off the shelves, and they all go onto the VITAMINS shelf, which has six round pads in six different colours. Each bottle stands on one pad; the multivitamin poster on the door is the sheet that tells you which colour belongs to which letter."
+  },
+  {
+    q: "What is the code on the three-digit colour lock at the end?",
+    a: "438. The lock shows three digits and each digit also carries a colour, and the bar above the display stays red until the whole thing matches. Our footage ends with 438 and a green bar. We could not read the three target colours off the recording reliably, so if the bar stays red on 438, cycle the colour on each digit rather than changing the numbers."
+  },
+  {
+    q: "What do you get for finishing the Pharmacy?",
+    a: "+50 coins. The end screen shows LEVEL COMPLETED!, a reward of +50 coins, a full efficiency bar and a level time of 7:46 in our recording, plus the usual Claim x2 advert button."
+  },
+  {
+    q: "Does the Pharmacy have a timed puzzle?",
+    a: "No. The clock in the top right is a running level timer, not a countdown, and nothing in the room fails you for being slow. The only thing that punishes you is entering a code on a keypad before you have read the clue that produces it."
+  }
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map((f) => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": { "@type": "Answer", "text": f.a }
+  }))
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-2-level-3"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 2 Level 3"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 2</a> &gt; Level 3</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 2 Level 3 Walkthrough: Pharmacy</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from a recorded playthrough of the current build. 5 minutes 33 seconds of footage, extracted at one frame per second and read at full resolution, including the level-complete screen at the end. Every number below was read twice from separate frames at original resolution, with one exception that is flagged further down: the colour assigned to each digit of the 438 lock. Where the recording cannot settle a detail, this page says so instead of guessing.</div>
+
+    <LevelSelector chapter={2} current={3} variant="jump" label="Chapter 2 · No Honor Among Thieves" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>The Pharmacy has two numeric codes and one word lock. The keypad in the middle of the room is <b>16234356</b>, the four numbered pills in the white dish (16, 23, 43, 56) in ascending order. The three-digit lock at the end is <b>438</b>. The word lock takes <b>HEALTH</b>.</p>
+      <ol>
+        <li>White handbag on the yellow chair → <b>Adhesive bandage</b>. Piece of paper → a 5×5 letter grid.</li>
+        <li>Steel QWERTY panel on the wall → type <b>HEALTH</b> → the locker opens → <b>vitamin bottles</b>.</li>
+        <li>White dish of pills → the four numbered ones read <b>16, 23, 43, 56</b>.</li>
+        <li>Keypad by the glass cabinet → <b>16234356</b> → the cabinet unlocks → the rest of the <b>vitamin bottles</b>.</li>
+        <li><b>VITAMINS</b> shelf: six coloured pads, six lettered bottles (A, B, C, D, E, K). The multivitamin poster on the door is the colour key.</li>
+        <li>Reception laptop → QWERTY password → desktop → vitamin reference app. Final three-digit colour lock → <b>438</b> → <b>+50 coins</b>.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/v9iKmXWhv6A" title="Rooms &amp; Exits Chapter 2 Level 3 Pharmacy walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/c2l3-hero-pharmacy.jpg" alt="Rooms and Exits Chapter 2 Level 3 Pharmacy: the reception desk with its laptop, the glass medicine cabinets, the yellow waiting chairs and the STORAGE door" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>The Pharmacy is one room, and it is smaller than it looks. A curved reception desk with a laptop sits in the middle, an office chair behind it; two yellow tub chairs with a white handbag on one of them make up the waiting side; glass-fronted medicine cabinets and a tall shelf of boxed stock fill the right; and a door marked STORAGE closes off the back. A blue pill poster hangs on the wall behind the counter, and a framed multivitamin advert is taped to the storage door.</p>
+    <p>That compact layout is exactly why people stall. The room gives you two different locks on the same wall, one numeric and one alphabetic, and it never tells you which order they want. It also hands you six vitamin bottles that are useless until you have all six, and a shelf with six coloured pads that does not say what the pads mean. The footage runs five and a half minutes, and almost all of that time is reading, not searching: nothing in this level is hidden, everything is lying in the open and the difficulty is entirely in matching the right clue to the right lock.</p>
+    <p>The item list you finish with is short. An adhesive bandage, a piece of paper with a letter grid on it, six vitamin bottles, and whatever the cabinets hand you on the way. The bandage is the only true red herring in the room: our recording picks it up out of the handbag in the first twenty seconds, carries it the whole level and never uses it on anything.</p>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:03</span>
+      <strong>Land in the room and read the walls first</strong>
+      The opening shot is the whole pharmacy from above the counter: reception desk and laptop centre, glass cabinets right, two yellow chairs left, STORAGE door at the back. Do not start tapping shelves. Two wall fixtures are the ones that matter later, and both are easy to walk past: the framed blue pill poster on the wall behind the counter, and the multivitamin advert taped to the storage door on the right. The advert on the door is the colour key for the vitamin shelf, and it is the sheet you will come back to in Step 11.
+      <img src="/rooms-and-exits/c2l3-hero-pharmacy.jpg" alt="The Pharmacy room in Rooms and Exits Chapter 2 Level 3, showing the reception desk, cabinets and waiting chairs" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=v9iKmXWhv6A&t=3s" target="_blank" rel="noopener">0:03</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:12</span>
+      <strong>The white handbag on the yellow chair</strong>
+      Zoom the handbag on the left-hand chair and it opens into an inventory view of what is inside. The pickup is an <b>Adhesive bandage</b>, labelled exactly that on the way into your bag. It is a box of plasters, and as far as this level is concerned it is decoration: there is no wound, no cut and no use prompt anywhere in the pharmacy. Take it if you like a full inventory, but do not spend time looking for a place to spend it.
+      <img src="/rooms-and-exits/c2l3-handbag.jpg" alt="The white handbag on the yellow chair in the Pharmacy waiting area" width="1200" height="594" loading="lazy" />
+      <img src="/rooms-and-exits/c2l3-adhesive-bandage.jpg" alt="The Adhesive bandage pickup screen after opening the handbag" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=v9iKmXWhv6A&t=12s" target="_blank" rel="noopener">0:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:34</span>
+      <strong>The piece of paper with the 5×5 letter grid</strong>
+      Somewhere in the room there is a sheet you can pick up, and it lands in the inventory as <b>Piece of paper</b>. Open it with Examine and it is a 5×5 grid of capitals, five rows of five. Row by row our frames read <b>H P Q O R</b>, <b>S T B W C</b>, <b>I M A A H</b>, <b>E U D J X</b>, <b>T V G L N</b>. The H in the top-left corner is circled in the game, which is the only mark on the sheet. It reads like a word-search starter, and it is the only paper clue in the level that is not a poster.
+      <img src="/rooms-and-exits/c2l3-paper-wordsearch.jpg" alt="The piece of paper from the inventory showing a 5x5 grid of letters in the Pharmacy" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=v9iKmXWhv6A&t=44s" target="_blank" rel="noopener">0:44</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:58</span>
+      <strong>The wall of cubbies</strong>
+      There is a 5×5 grid of open square cubbies on a wall unit, and some of them hold bottles with coloured caps. Tap it and you get a zoomed view of the whole block. Our recording moves bottles around in it for a minute and then leaves, and the footage never shows the block solving or rejecting anything, so we are not going to pretend we know the rule. What we can say is what it costs you: nothing. The level completes without this block ever giving up an item in our run.
+      <img src="/rooms-and-exits/c2l3-cubby-grid.jpg" alt="The 5x5 wall grid of cubbies with coloured bottles in the Pharmacy" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=v9iKmXWhv6A&t=58s" target="_blank" rel="noopener">0:58</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:31</span>
+      <strong>The steel QWERTY panel: HEALTH</strong>
+      This is the lock most people misread. It is a brushed steel plate with four corner screws and a full QWERTY keyboard on it, not a number pad, and it sits on the wall near the reception area. Tap the field and type <b>H E A L T H</b>, then press the tick to the right of the X. The field fills one letter at a time and there is no backspace drama: if you get it wrong, the X clears the field. In our footage the word is already reading HEALTH at 1:35 and the panel is accepted immediately after.
+      <img src="/rooms-and-exits/c2l3-health-panel.jpg" alt="The steel QWERTY word lock with HEALTH typed into its field" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=v9iKmXWhv6A&t=91s" target="_blank" rel="noopener">1:31</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:51</span>
+      <strong>The locker under the panel: vitamin bottles</strong>
+      The panel does not open a door, it releases the locker below it, and the locker is stocked rather than empty. Our frames show a purple-labelled bottle marked <b>VITAMIN C</b> sitting on the shelf inside, and it goes straight into the inventory. This is the first of the six bottles the VITAMINS shelf will want, and it is the reason the HEALTH plate matters: without it you can stand in front of the vitamin shelf with five bottles and no way to get the sixth.
+      <img src="/rooms-and-exits/c2l3-locker-vitamins.jpg" alt="The open locker under the word panel with a VITAMIN C bottle on the shelf" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=v9iKmXWhv6A&t=111s" target="_blank" rel="noopener">1:51</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 2:08</span>
+      <strong>The white dish: four pills with numbers on them</strong>
+      Behind the counter there is a shallow white dish with a blue cloth folded over one side and a dozen loose pills in it. Four of them carry numbers in black: <b>56</b> on the blue capsule, <b>43</b> on the red one, <b>16</b> on the green-and-white one and <b>23</b> on the pale blue one. This is the whole clue for the numeric keypad, and the trap is that they are not laid out in any order: they are scattered across the dish, so you have to read all four and then decide the order yourself.
+      <img src="/rooms-and-exits/c2l3-pills-numbers.jpg" alt="The white dish of pills with the four numbered pills 56, 43, 16 and 23" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=v9iKmXWhv6A&t=128s" target="_blank" rel="noopener">2:08</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 2:22</span>
+      <strong>The keypad by the glass cabinet: 16234356</strong>
+      The keypad is on the frame of the glass display cabinet beside the reception desk, and it takes an eight-digit run, not four. The code is the four pill numbers read smallest to largest and typed as one string: <b>16 · 23 · 43 · 56</b> becomes <b>16234356</b>. Type it, watch the display fill left to right, and confirm. Our frames catch the display mid-entry at 1, 162, 16234 and then 16234356, and the cabinet is open on the next cut.
+      <img src="/rooms-and-exits/c2l3-keypad-eight-digit.jpg" alt="The eight-digit keypad showing 16234356 in the Pharmacy" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=v9iKmXWhv6A&t=148s" target="_blank" rel="noopener">2:28</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 2:31</span>
+      <strong>Empty the cabinets: A, B, C, D, E, K</strong>
+      With the glass cabinet open, the vitamin bottles come out one at a time. Our frames read <b>VITAMIN B</b> on the shelf inside the glass cabinet at 2:31, and the locker bottles on the other side of the room. Six bottles in total, each with a single big letter on a purple label: <b>A, B, C, D, E and K</b>. The inventory stacks them in a row, and that row is your checklist for the next step. If the shelf refuses to complete, count the bottles before you blame the puzzle: five letters means you have not opened one of the two cabinets.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=v9iKmXWhv6A&t=151s" target="_blank" rel="noopener">2:31</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 3:12</span>
+      <strong>The VITAMINS shelf and its six coloured pads</strong>
+      The shelf is labelled <b>VITAMINS</b> in pale green across the back panel, and the moment you zoom it you can see the puzzle: six round pads on the shelf, six different colours, and space for one bottle on each. From left to right our frames read the pads as blue-cyan, lavender, green, yellow, royal blue and red. The bottles go on standing up, and the shelf fills as you place them: the recording ends with all six occupied, which is what completes it.
+      <img src="/rooms-and-exits/c2l3-vitamins-shelf.jpg" alt="The VITAMINS shelf with six vitamin bottles standing on six differently coloured pads" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=v9iKmXWhv6A&t=192s" target="_blank" rel="noopener">3:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 3:20</span>
+      <strong>The multivitamin poster: the colour key</strong>
+      This is the sheet you need in your head while you fill the shelf. Taped to the storage door, it is an advert for a bottle labelled <b>Multivitamins / Minerals</b> with pills spilling out of it, and each pill carries a letter in white: <b>Fe, C, E, B, K, A, Na and D</b>, each on a differently coloured pill. That is the link between the purple bottle labels and the coloured pads on the shelf. Read it before you place anything, because the shelf gives you no feedback about which colour is wrong.
+      <img src="/rooms-and-exits/c2l3-poster-vitamins.jpg" alt="The multivitamins minerals poster on the storage door with lettered pills in different colours" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=v9iKmXWhv6A&t=200s" target="_blank" rel="noopener">3:20</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 4:35</span>
+      <strong>The reception laptop: a word, not a number</strong>
+      The laptop on the reception desk is a second QWERTY lock, and it looks almost identical to the steel panel that took HEALTH, which is why people type the same word twice and get nowhere. It has a padlock above the field, a blue patterned wallpaper, and a tick and X under the keys. Our frames read the field filling as <b>V T I N S</b> with the padlock open and a highlight across the field, and the screen then drops to a desktop with a single app icon on it.
+      <img src="/rooms-and-exits/c2l3-laptop-password.jpg" alt="The reception laptop with its password field filled and the QWERTY keyboard open" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=v9iKmXWhv6A&t=274s" target="_blank" rel="noopener">4:34</a></div>
+    </div>
+
+    <div class="warn">
+      <b>What we could not verify:</b> the full word on the laptop. The recording cuts between keystrokes, so the field is only catchable mid-entry: our frames read VTI at 4:34, VTIN a second later and VTINS at 4:35, with the padlock already open and a green highlight across the field. We can tell you that the laptop wants letters rather than digits and that the field in our footage ends up reading VTINS, but we cannot honestly print the whole word as fact.
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 4:42</span>
+      <strong>The vitamin reference app</strong>
+      The desktop itself is a blue wallpaper with a small grid of coloured app icons in the top-left corner. Open one and the laptop switches to a vitamin reference sheet: round badges in different colours, each carrying a vitamin letter with its chemical structure drawn underneath. Letters we can make out across the sheet include <b>A, B, C, D, H and K</b>, with B-numbered variants among them. This is the last thing the room shows you before the final lock, and it is almost certainly where the lock's colour idea comes from, but see the note below before you try to copy a sequence off it.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=v9iKmXWhv6A&t=282s" target="_blank" rel="noopener">4:42</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 4:51</span>
+      <strong>The three-digit colour lock: 438</strong>
+      The last mechanism in the room is a cream panel with a black display, three digits and six round buttons, three above the display and three below. Two small icons sit to the left of the buttons, a palette at the top and the digits <b>123</b> at the bottom, and that pairing is the whole trick: you are not only setting three numbers, you are setting three colours as well. Set the digits to <b>4 3 8</b>. Our recording steps through 400, 433 and then 438 on the display, and the red bar above it turns green when the whole thing matches.
+      <img src="/rooms-and-exits/c2l3-lock-438.jpg" alt="The three-digit colour lock showing 438 with the palette and 123 mode icons" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=v9iKmXWhv6A&t=311s" target="_blank" rel="noopener">5:11</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 5:29</span>
+      <strong>Level complete: +50 coins</strong>
+      The end screen is the standard one: <b>LEVEL COMPLETED!</b> across the top, a reward panel showing a stack of coins and <b>+50</b>, a full efficiency bar, a level time of <b>7:46</b> in our run, and the green Claim button with the x2 advert beside it. There is no exit door to walk through and nothing to collect first: the level ends the moment the lock accepts.
+      <img src="/rooms-and-exits/c2l3-level-complete.jpg" alt="The Level Completed screen for Chapter 2 Level 3 Pharmacy showing a +50 coin reward" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=v9iKmXWhv6A&t=329s" target="_blank" rel="noopener">5:29</a></div>
+    </div>
+
+    <h2>The two numbers, and why one of them is eight digits<span class="accent">.</span></h2>
+    <p>The keypad code is the single most useful thing on this page, so it is worth spelling out how the room arrives at it. The clue is not a note and it is not written on a wall: it is four numbered pills sitting in a dish with a dozen unnumbered ones. Read them in the order they sit in the dish and you get 56, 43, 16, 23, which is not a code anybody would type. The keypad wants eight digits. Sort the four numbers ascending, 16 then 23 then 43 then 56, and type them as a single run:</p>
+    <ol>
+      <li><b>16</b>: the green-and-white pill.</li>
+      <li><b>23</b>: the pale blue pill.</li>
+      <li><b>43</b>: the red pill.</li>
+      <li><b>56</b>: the blue capsule.</li>
+    </ol>
+    <p>Concatenated that is <b>16234356</b>. The display on the keypad shows every digit as you press it, so you can see the string build up and check it before you confirm rather than pressing the tick on a half-typed number.</p>
+    <div class="warn">
+      <b>What we could not verify:</b> the rule itself. Our footage shows the player read the dish and then type 16234356, and the cabinet opens, but it never shows a wrong order being rejected. We can tell you the code; we cannot tell you whether the game would also accept 56431623 or some other arrangement. Type it ascending and you will not have to find out.
+    </div>
+
+    <h2>The colour lock is the part that catches people<span class="accent">.</span></h2>
+    <p>Everything before the last lock is reading. The last lock is the only one that wants a second dimension. Its display is three digits, but each digit also carries a colour, and the six round buttons above and below the display are how you change both: the palette icon on the left switches you between number and colour, and the bar across the top of the display is the only feedback the lock gives you. Red means the combination is not right yet. Green means it is.</p>
+    <p>In our recording the digits settle on <b>438</b> and the bar goes green, which is why 438 is the number on this page. What we could not pin down is the colour each digit is supposed to be: across separate frames at original resolution the colour on the third digit reads differently more than once, and we are not going to publish a colour we could not confirm twice. If the numbers are on 438 and the bar is still red, change the colour on one digit at a time rather than the number.</p>
+    <div class="warn">
+      <b>What we could not verify:</b> the exact target colours of the three digits, and which clue in the room produces 438 in the first place. The vitamin reference app on the laptop is the last thing the room shows you before the lock, so it is the obvious source, but our footage cuts from the app to a lock that already reads 400, and we cannot reconstruct the step in between. Treat 438 as the number and the colour cycling as the work.
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>Two keyboards, one word.</b> The steel HEALTH panel on the wall and the reception laptop both open a QWERTY screen that looks the same at a glance. HEALTH goes in the steel panel only. Typing HEALTH into the laptop does nothing, and that is the single most common way to lose five minutes in this room.</li>
+      <li><b>Four numbers, eight digits.</b> Players read 56, 43, 16, 23, type 56431623, and the keypad sits there. Nothing tells you to sort them. The keypad takes eight digits, not four, and the only arrangement that our footage confirms is ascending.</li>
+      <li><b>The vitamin shelf before the poster.</b> The pads are coloured and the bottles are lettered, and there is nothing on the shelf itself that maps one to the other. The multivitamin poster on the storage door is the map. Place bottles before reading it and you are guessing six times in a row.</li>
+      <li><b>Five bottles instead of six.</b> The bottles are split across two containers: the wall locker that HEALTH opens and the glass cabinet that 16234356 opens. Miss either one and the shelf will never complete, and the game will not tell you which letter you are short of.</li>
+      <li><b>The bandage.</b> It is a real pickup with a real label and it is used on nothing. Our recording carries it from the first twenty seconds to the end screen. If you are hunting for a use for it, stop.</li>
+      <li><b>The cubby wall.</b> The 5×5 block of cubbies with coloured-capped bottles looks like a required puzzle and costs nothing in our run. Do not let it eat your session before you have read the pills and the poster.</li>
+    </ul>
+
+    <h2>Chapter 2 levels<span class="accent">.</span></h2>
+    <LevelSelector chapter={2} current={3} compact={true} label="Chapter 2 · No Honor Among Thieves" />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    <details><summary>What is the keypad code in Chapter 2 Level 3 Pharmacy?</summary><p><b>16234356</b>. The four numbered pills in the white dish read 16, 23, 43 and 56, and the keypad wants them as one eight-digit run in ascending order. Type 16234356 and confirm: the glass display cabinet next to the reception desk unlocks and the VITAMIN B bottle inside it becomes takeable.</p></details>
+    <details><summary>Where is the HEALTH word lock and what does it open?</summary><p>It is the steel panel with a QWERTY keyboard on it, on the wall side of the reception area. Tap it, type HEALTH on the on-screen keyboard and press the tick. The locker under the panel swings open and the vitamin bottles inside it can be picked up.</p></details>
+    <details><summary>How many vitamin bottles are there and where do they go?</summary><p>Six: A, B, C, D, E and K. They come out of the two cabinets rather than off the shelves, and they all go onto the VITAMINS shelf, which has six round pads in six different colours. Each bottle stands on one pad; the multivitamin poster on the door is the sheet that tells you which colour belongs to which letter.</p></details>
+    <details><summary>What is the code on the three-digit colour lock at the end?</summary><p><b>438</b>. The lock shows three digits and each digit also carries a colour, and the bar above the display stays red until the whole thing matches. Our footage ends with 438 and a green bar. We could not read the three target colours off the recording reliably, so if the bar stays red on 438, cycle the colour on each digit rather than changing the numbers.</p></details>
+    <details><summary>What do you get for finishing the Pharmacy?</summary><p><b>+50 coins</b>. The end screen shows LEVEL COMPLETED!, a reward of +50 coins, a full efficiency bar and a level time of 7:46 in our recording, plus the usual Claim x2 advert button.</p></details>
+    <details><summary>Does the Pharmacy have a timed puzzle?</summary><p>No. The clock in the top right is a running level timer, not a countdown, and nothing in the room fails you for being slow. The only thing that punishes you is entering a code on a keypad before you have read the clue that produces it.</p></details>
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-2-level-2/">← Level 2. Cinemas</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits guides →</a></p>
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>
