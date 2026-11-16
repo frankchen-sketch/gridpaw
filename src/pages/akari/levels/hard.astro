@@ -100,7 +100,7 @@ import SideAd from '../../../components/SideAd.astro';
             try { solved = JSON.parse(localStorage.getItem('gridpaw-progress') || '[]'); } catch(e) {}
             document.querySelectorAll('.level-link[data-puzzle-id]').forEach(function(el) {
               if (solved.indexOf(el.dataset.puzzleId) !== -1) {
-                el.style.borderLeft = '4px solid #88C8A8';
+                el.style.boxShadow = 'inset 0 0 0 2px #88C8A8';
                 el.innerHTML = '✓ ' + el.innerHTML;
               }
             });
