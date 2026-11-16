@@ -1,0 +1,157 @@
+# train track puzzle 族 · 用户重提复核（2026-11-16）
+
+> 分支 `research/train-track-newword`（worktree `/Users/frank/workspace/gridpaw-traintrack`），**未动 main**。
+> 触发：用户报「新词铃铛扫出 Oakever 第 8 款 app `Connect Tracks: Logic Puzzle`（com.oakever.traintrack，iOS 2026-08-13，Play 500K+ / 1,531 评分 / 11-05 更新）把品类词 `train track puzzle` 从 70/月 抬到 5,400/月，KD 29.8、competition LOW，我站 GSC 28d 该族 0 曝光」。
+
+---
+
+## 结论（前置）
+
+**这不是新词——是 2026-11-10 那轮原始发现的原文重报，该线已于 2026-11-14 `dropped` 结案。本轮三项增量复核全部零变化，维持 `dropped`。**
+
+但 11-14 的结案依据里有一半已经过期，必须更正：
+
+| 11-14 依据 | 现状 | 判定 |
+|---|---|---|
+| ① 可承接意图仅 ≈390/月（solver 10、answers/hints/print 全 null） | 10 月桶未出，09 桶同值 | **不变** |
+| ② `train tracks app`/`train track game` 各 1,300 接不住 | 未复测（词面稳定） | 不变 |
+| ③ 品类需求撑不起第 15 引擎 | 拆成两半：**意图侧（只能可玩版接）不变**；**供给侧（站撑不起新引擎）已推翻**——GSC 28d 曝光 267 → **250,920**、game_start 42 → **2,297** | **一半过期** |
+
+另有一项 11-12/11-14 从未评估过的变量：**引擎复用度 = 中等偏高（Slitherlink 同构）**，实测见 §4。这使「可玩版」的边际成本比原判断低，但不足以推翻战表。
+
+---
+
+## 一、这不是新词：逐字同源核对
+
+| 用户报的 | NEWWORD-LEDGER 2026-11-10 行原文 | 一致 |
+|---|---|---|
+| 第 8 款在架 app | 「Oakever 第 8 款在架 app，历轮 dev 页巡查从未记名」 | ✓ |
+| com.oakever.traintrack / iOS 2026-08-13 | 同 | ✓ |
+| Play 500K+ 装机 / 1,531 评分 / 11-05 更新 | 同 | ✓ |
+| `train track puzzle` 70 → 5,400/月 | 12 个月 70→90→210→170→140→110→170→260→880→3,600→4,400→**5,400**（2026-09 桶） | ✓ |
+| KD 29.8 / competition LOW | KD 29.8 / competition LOW（CI 2-3） | ✓ |
+| 我站 GSC 28d 该族 0 曝光 | 11-10 实测 0 行 0 曝光 | ✓ |
+
+**逐字同源** → 用户看到的不是新扫描结果。之后的关键节点：
+
+- **11-12**：意图拆分（11 词 kwv，`fromCache=false` 真新读）→ solver 词 `train track puzzle solver` **10** / `train tracks puzzle solver` **10** / `train tracks solver` avg **10** / `connect tracks solver` **null**；answers/hints/print 全 **null**；唯一在爬的是 play 意图 `train track puzzle online`（05=90 → 09=**320**）。判定：7,300/月里几乎全是「想玩」，solver/内容页承接不成立。
+- **11-12**：「web vacuum」撤回——`traintrackspuzzle.com` RDAP 注册 **2026-10-03**，已建成 388 URL 完整站（daily 240 + guides 72 + printable + solver 4×4→9×9 + en/de/fr/es）。
+- **11-13**：SERP 首测，`train track puzzle` 前十无该站、无 puzzledoku。中性 SERP 复核：`train tracks app` 1,300 = 火车追踪器意图、`train track game` 1,300 = 玩具/模拟混合。
+- **11-14**：按 11-12 写死的判据沉默执行 **dropped**，重开条件：`train track puzzle online` 单月破 1,000 或 solver 词破 100。
+
+---
+
+## 二、2026-11-16 三项增量复核：零增量
+
+| 复核项 | 11-16 实测 | 判定 |
+|---|---|---|
+| **T1 品牌词**（`connect tracks` / `+game` / `+hints`，`fromCache=false` 真新读，扣 5 分） | **全 null** | T1 判据（name 族 0→非0）未触发，品牌页不建 |
+| **量（kwv 3 词，`fromCache=true`）** `train track puzzle` / `+online` / `+solver` | 最新月仍 **2026-09**：主词 5,400（avg 1,300）/ online 320（avg 70）/ solver 10（avg 10） | 10 月桶未出 → **重开条件无法判定（也不满足）** |
+| **竞品 sitemap** traintrackspuzzle.com | **388 URL**（自 11-03 未变；11-14 记录同为 388） | 对手未加码 |
+| **GSC 28d 该族**（10-19..11-15，query 维度 25,000 行全量拉取，`dataState=all`） | 命中 `train` 的 **14 行全是别家攻略词**（Rooms & Exits 火车站关 6 行 / Brain Puzzle 3 火车关 8 行），`train track(s) puzzle` 族 **0 行 0 曝光** | 用户口径成立 |
+
+> 口径备注：同窗口全站 imp **250,920** / clk **13,221** / 均位 **4.8**；GSC query 维度有匿名化过滤，但「0 行」是「连打标机会都没有」的强证据。
+
+---
+
+## 三、已过期的一半：站体量（11-09 → 11-16）
+
+11-14 写「品类需求撑不起第 15 引擎」时引用的是 11-09 的体量。实测已完全不同：
+
+| 指标 | 11-09 记录 | 11-16 实测（28d） | 倍数 |
+|---|---|---|---|
+| GSC 曝光 | 267 | **250,920** | ×940 |
+| GSC 点击 | 5 | **13,221** | ×2,644 |
+| GSC 均位 | 13.8 | **4.8** | — |
+| GA4 session | 231（当时仅 14 天口径，不可直比） | **15,286** | — |
+| `game_start` | 42 | **2,297** | ×55 |
+| `game_over` | — | 324 | — |
+
+**现有游戏页 game_start 分布（28d，GA4 hostName=gridpaw.com）**——这是「新游戏页能拿多少自流量」的直接标尺：
+
+| 页 | game_start | 页 | game_start |
+|---|---|---|---|
+| `/`（Shikaku） | 648 | `/star-battle/` | 52 |
+| `/meowdoku-guide/` | 532 | `/slitherlink/` | 46 |
+| `/murdoku/` | 160 | `/binary/` | 41 |
+| `/akari/` | 159 | `/nurikabe/demo` | 39 |
+| `/the-loop-puzzle/` | 83 | `/kenken/` | 35 |
+| `/meowdoku/` | 74 | `/hashi/` | 32 |
+| `/nonogram/demo` | 73 | `/kakuro/demo` | 29 |
+| `/pictomino/game` | 67 | `/akari/daily/` | 26 |
+
+⇒ 第 9-18 名独立游戏页稳定 **29-52 / 28d**。新游戏页有真实自流量，不是零。
+
+**⚠️ 但这条不能过度解释**：15,286 sessions 的大头是攻略页流量（Rooms & Exits / BP3 / Brain Puzzle 3 任务完成意图）。skill 已实测「攻略读者 97.9% 继续看攻略、进游戏 0.1%」= 帮助层流量不能当可玩层的导流池。**站变大的意义是「pSEO 内容线在跑」，不是「新引擎会自带客流」。**
+
+---
+
+## 四、从未评估过的一项：引擎复用度（Slitherlink 同构，中等偏高）
+
+11-12/11-14 直接走「solver/内容页 → 不成立 → dropped」，从未走到「可玩版怎么实现」这一步。
+
+**Train Tracks 规则（据竞品 solver 实测，非推测）**：
+- 行/列**外侧**给数字 = 该行/列中轨道段数
+- 全部线段连成**单一连通网络**，不允许孤立环
+- 有 **entrance / exit** 概念（竞品 solver 有「Set entrance / Set exit」按钮）⇒ **开放路径，不是闭合回路**
+- 盘面 4×4 → 9×9（竞品 solver 上限）
+
+**Slitherlink 引擎现状**（`src/lib/puzzle-core/slitherlink-engine.ts`，412 行）：
+
+| 已有能力 | 可复用性 |
+|---|---|
+| EdgeGrid 拓扑：`hIdx` / `vIdx` / `edgeCount` H/V 边编码 | **直接复用** |
+| 单连通生成（connected + hole-free cell set → 单回路 boundary） | **需重写**为自避免 path（entrance→exit） |
+| 唯一性 solver（DFS + vertex-completeness pruning，`countSolutions`） | **框架复用**，约束从「格内 4 边度数」改为「行列边数和 + 连通 + 端点」 |
+| `validate` / `hintLookup` / `generate` | 框架复用 |
+| EdgeGrid 渲染器（dots + edges） | 直接复用 |
+
+**成本判定**：不是 skill 里的「L2 纯配置」级（那类是把现有约束原语组合成 rules 文件），而是**「改生成器 + 换约束」**级。与 star-battle（615 行）/ binary（181 行）同类工作量，估 **2-4 天**（含唯一性调参、mobile 触控、hint 门控、GA4 埋点、分享、PWA 离线）。
+
+---
+
+## 五、决策选项
+
+| 选项 | 内容 | 成本 | 我的建议 |
+|---|---|---|---|
+| **A 维持 dropped（推荐）** | 按 STATUS「2027-01-04 前只巩固不扩张」战表执行；竞品 40 天零流量也说明「该品类能否撑站」尚未被证明 | 0 | ✅ |
+| **B 2027-01 后做** | 排在 R&E、akari solver 之后作为第 15 引擎候选 | 2-4 天 | 备选 |
+| **C 现在插队做** | 理由：KD 29.8 + LOW + 竞品 DR 0.4 未守 + 引擎同构 | 2-4 天 + 内容页 | ❌ 破坏战表，且意图盘子 390/月 撑不起 |
+
+**B 选项的真实风险（必须写明）**：traintrackspuzzle.com 388 URL 已建成完整站，DR 0.4 / 零流量 = **进场未守**。等 2 个月它可能已进前 6（11-10 serp_review 给的「新站现实目标前 6」），窗口就会关。这是「等」的机会成本，不是零。
+
+**A 选项的反向证据（也该写明）**：竞品把 388 URL（daily 240 + 18 guides × 4 语 + printable + solver）全铺完，40 天仍是 0 流量、未进主词前十。⇒ 「train tracks 单品类撑站」本身没被验证，急着投引擎可能是在给一个假盘子加库存。
+
+---
+
+## 六、新词铃铛现状：停了（与本次重报直接相关）
+
+`~/.hermes/cron` job **`1329cf1d31a5` = [GridPaw] 新词侦察（游戏赛道）**（每天 08:00 / 20:00）：
+
+| 轮次 | 状态 | 错误 |
+|---|---|---|
+| 11-15 20:00 | **failed** | `blocked_config: provider credential missing: No access token found for Nous Portal login` |
+| 11-16 08:00 | **failed** | 同上 |
+
+⇒ **铃铛本身两轮未跑**。今天用户看到的「铃铛扫出来的」不可能是这个 cron 的产出——要么是哥飞新词服务（外部 500+ 词根日扫），要么是 11-10~11-12 的旧报告。**不修的话 11-16 20:00 还会挂。**
+
+修复方向（未执行，待批）：`hermes cron edit 1329cf1d31a5 --provider <p>` 钉一个可用 provider，或给 cron 执行环境补 Nous token。
+
+---
+
+## 七、建议动作
+
+1. **台账追加本行**（状态维持 `dropped`，标明「非新词重报 + 站体量已变 + 引擎同构」三条增量）。
+2. **重开判据补第三条**：现有两条（`train track puzzle online` 单月破 1,000 / solver 词破 100）只测「量」，测不到「品类能否撑站」。建议加 **`traintrackspuzzle.com` visits 非 0**（= 单品类撑站被证明），与 DEV-MONITOR 现有判据对齐。
+3. **修 cron `1329cf1d31a5` provider**（否则铃铛持续静默失败，用户会继续被旧报告误导）。
+4. **本案不改代码、不建页、不部署**。本分支只含本研究文档与台账一行。
+
+---
+
+## 数据源与口径声明
+
+- 搜索量 / 竞争度：webcafe `keyword_volume`（Google Ads 口径，`gl=us`，14 天缓存）。本轮 3 词 `fromCache=true`、品牌词 3 词 `fromCache=false`；扣 10 分，余 1,119。
+- KD 29.8：webcafe（哥飞版），11-10 实测，未过期（<30 天）。
+- GSC：`sc-domain:gridpaw.com`，28d = 2026-10-19..2026-11-15，`dataState=all`，query 维度 25,000 行全量（非 top-N 截断）。
+- GA4：Property 552793510，28d，`hostName=gridpaw.com` 精确过滤（口径铁律 1）。
+- 竞品：sitemap `<loc>` 计数（curl 经 7882 代理）；规则与 solver 参数来自 `traintrackspuzzle.com/train-tracks-solver` 实测文本。
