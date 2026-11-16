@@ -1,0 +1,298 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 2 Level 6 Walkthrough: Candy Shop";
+const description = "Rooms & Exits Chapter 2 Level 6 walkthrough for the Candy Shop: the eight candy dispensers, the jar you fill in the right colour order, the four-wheel lock that takes 6841, and the letter board that gives the exit code G6H8.";
+const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the exit code in Rooms & Exits Chapter 2 Level 6 Candy Shop?", "acceptedAnswer": {"@type": "Answer", "text": "G6H8. The candy shop's exit is not a number pad: the panel beside the pink arched door shows four character slots, and the four characters you need are the four labelled discs on the wooden 5x5 board — G, 6, H and 8. Type them in that order and the exit icon lights up on the door."}}, {"@type": "Question", "name": "What is the four-digit code on the yellow drawer lock?", "acceptedAnswer": {"@type": "Answer", "text": "6841. The lock is the row of four digit wheels inside the yellow display drawer, and the number comes from weighing the jar of candy you fill at the dispenser wall. Our recording shows the wheels reading 6, 8, 4 and 1 on two separate frames before the drawer is opened."}}, {"@type": "Question", "name": "How do I fill the candy jar?", "acceptedAnswer": {"@type": "Answer", "text": "Take the empty jar from the present that lifts off the counter, stand it under the eight-canister dispenser wall and pull the levers in the order the game's paper clue shows. Each lever drops a layer of one colour into the jar and the layers stack bottom to top. In our recording the jar could not be emptied once a colour went in, so read the clue before you start pulling levers."}}, {"@type": "Question", "name": "How many candy dispensers are there?", "acceptedAnswer": {"@type": "Answer", "text": "Eight, in one row under a single yellow canopy. Each canister holds one colour and has its own black-topped lever underneath. They are the only place in the shop where you can add colour to the jar, and the order you pull them is the whole puzzle."}}, {"@type": "Question", "name": "What is the memory game in the Candy Shop?", "acceptedAnswer": {"@type": "Answer", "text": "A card-matching mini-game on a red board: a grid of ice-cream and cupcake tiles that you flip over in pairs. The recording plays it twice — the second play is what releases the item you need — and the grid resets face down between attempts. Nothing in the room tells you which card is which, so it is pure memory."}}, {"@type": "Question", "name": "Why can't I open the pink door?", "acceptedAnswer": {"@type": "Answer", "text": "Because the door is the last thing in the level, not the first. It opens only after the four-slot panel beside it has been filled with G6H8, and that code only exists once the labelled discs on the wooden 5x5 board have been placed. Tapping the door before then does nothing at all, and there is no message telling you why."}}]};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-2-level-6"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 2 Level 6"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 2</a> &gt; Level 6</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 2 Level 6 Walkthrough: Candy Shop</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from a recorded playthrough of the current build — 9 minutes 10 seconds of footage, extracted at one frame per second and read at full resolution. Two codes are published on this page, <b>6841</b> and <b>G6H8</b>, and each was read twice on separate frames immediately before the game acted on it. The order of the candy layers inside the jar is <b>not</b> published here: our footage shows the levers being pulled but never shows a legible clue for the sequence, so the page tells you where the clue lives instead of inventing an order.</div>
+
+    <LevelSelector chapter={2} current={6} variant="jump" label="Chapter 2 · No Honor Among Thieves" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>The Candy Shop ends with an alphanumeric code, not a number: <b>G6H8</b> goes into the four-slot panel beside the pink arched door. The only four-digit number in the room is <b>6841</b>, and it opens the yellow display drawer.</p>
+      <ol>
+        <li>Clear the <b>ice-cream memory game</b> on the red board — watch the reveal before you start flipping.</li>
+        <li>Crack the <b>pinata</b> with the candy cane and clear the <b>chocolate-box</b> symbol puzzle for the ring and the wrapped bar.</li>
+        <li>Beat the <b>4×4 sweet sudoku</b> on the cash register tray.</li>
+        <li>Lift the <b>present</b> to get the empty <b>jar</b>, then stack candy layers in it from the <b>eight dispensers</b>, following the paper clue.</li>
+        <li><b>Weigh the jar</b>, set the four wheels in the yellow drawer to <b>6841</b>, and take what the drawer holds.</li>
+        <li>Place the labelled discs on the wooden <b>5×5 board</b> to assemble <b>G, 6, H, 8</b>.</li>
+        <li>Enter <b>G6H8</b> in the panel by the pink door and walk out through the glowing exit.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/gvdYiPk_Y_w" title="Rooms &amp; Exits Chapter 2 Level 6 Candy Shop walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/c2l6-hero-candy-shop.jpg" alt="Rooms and Exits Chapter 2 Level 6 Candy Shop: pink sprinkle floor, the display shelves and the wall of candy dispensers with the pink arched door behind" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>The Candy Shop is the longest room in the first half of Chapter 2, and it is long for a structural reason rather than a difficulty one. There is no corridor and no second area: everything happens in one open shop with a pink sprinkle floor, yellow walls and a curved blue corner on the left. But the shop contains roughly a dozen separate locks, and they are chained. The present will not lift until the ring is in your bag, the jar will not fill until the present has been lifted, the scale will not give you a number until the jar is full, and the drawer will not open until the scale has given you that number. Break the chain anywhere and the room simply stops responding, with no message explaining why.</p>
+    <p>The layout is worth learning in the first ten seconds, because you will walk it twenty times. On the left: a white counter with a black cash register, a shelf of wrapped goods behind it, a cluster of balloons tied to a small gift box, and the red-and-white striped column that looks like a giant candy cane. In the middle: a yellow rubbish bin, a donkey <b>pinata</b> hanging from the ceiling, a tall yellow display stand decorated with cupcakes, the pink arched door you are leaving through, and a light blue helium tank on the floor beside it. Along the front: the wall of <b>eight candy dispensers</b> under a yellow canopy. On the right: a circular opening in the wall with three shelves of packaged candy inside it.</p>
+    <p>Two things about this room are unusual for the game. The first is that the exit code is not numeric. Chapter 2's earlier rooms hand you passcodes made of digits; the Candy Shop hands you <b>G6H8</b>, four characters that only exist as labelled discs on a wooden board. Players who have trained themselves to look for a four-digit number spend a very long time hunting for one that is not there. The second is that the jar is one-way: our footage never shows it being emptied, so every lever you pull at the dispenser wall is permanent. That is the only place in the level where a mistake actually costs you something.</p>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:00</span>
+      <strong>The level card, and the sweep that saves you twenty minutes</strong>
+      The room opens on the title card — "Level 6, Candy Shop" over a paused wide shot — and the shot is the cleanest view you will get of the whole floor. Use it. Count the dispensers along the front (eight), find the pink arched door on the far wall, and note that the pinata hangs over the left third of the room while the cash register sits on the counter at the back left. Those four landmarks are the entire map of the level; everything else is either a lock or a pickup.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gvdYiPk_Y_w&t=0s" target="_blank" rel="noopener">0:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:18</span>
+      <strong>The ice-cream memory board</strong>
+      The first puzzle the recording touches is a mini-game on a red board: a grid of tiles showing ice creams, cupcakes and popsicles, all face up for a moment, then face down. You flip them in pairs and the board clears when every pair has been matched. Our footage only catches the opening pass — the tiles reveal, then turn over — so treat it as a straight memory round: watch the reveal, then work the pairs from the corners inward. There is no clue anywhere in the shop that tells you where a card is, so this is memory and nothing else.
+      <img src="/rooms-and-exits/c2l6-memory-icecream.jpg" alt="The ice cream and cupcake card matching mini-game on a red board in the Candy Shop" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gvdYiPk_Y_w&t=18s" target="_blank" rel="noopener">0:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:48</span>
+      <strong>The pinata, the candy cane and the helium tank</strong>
+      The pinata is not decoration. It hangs from a line above the left side of the shop, it is a container, and it is part of a three-object chain: the candy cane is the tool the level gives you for it, and what comes out of it feeds the chocolate-box lid later. The helium tank standing beside the pink door belongs to the balloon chain — the balloons on the counter are tied to a gift box, and that box is the one the recording ends up lifting. Treat the whole left-back corner as one connected prop: cane, pinata, tank, balloons, present. We never got a clean frame of the pinata breaking, so if your cane will not connect, step back to the wide view and tap the pinata itself rather than the line above it.
+      <img src="/rooms-and-exits/c2l6-pinata-and-door.jpg" alt="The donkey pinata hanging above the candy shop floor with the pink arched door, helium tank and yellow bin behind" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gvdYiPk_Y_w&t=48s" target="_blank" rel="noopener">0:48</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 1:06</span>
+      <strong>The present on the counter</strong>
+      The small white gift box with the red ribbon sits on the counter beside the balloons. Early in the level it is a prop: tapping it gives you nothing but a look. Much later, once the ring and the wrapped bar are in your bag, the same box lifts and the <b>sweet jar</b> is underneath it. If you are stuck at the jar stage, this is the object you have forgotten — the jar does not come from a shelf, it comes from under the present.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gvdYiPk_Y_w&t=66s" target="_blank" rel="noopener">1:06</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:12</span>
+      <strong>The kitchen scale, sitting at zero</strong>
+      There is a white kitchen scale on the counter with a clear bowl and a small display. At 1:12 it reads <b>0</b>, which is the level telling you it is waiting for something that has weight. This is the device that eventually produces the four-digit code, but nothing you own at this point is heavy enough to matter. Leave it at zero and come back when the jar is full.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gvdYiPk_Y_w&t=72s" target="_blank" rel="noopener">1:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:36</span>
+      <strong>The piece of paper: your only written clue</strong>
+      Open the inventory and press <b>Examine</b> on the item labelled <b>Piece of paper</b>. It is a crumpled sheet covered in overlapping strips of patterned candy — some striped, some chevroned, some dotted, some with diamonds — crossing each other at angles. This sheet is the closest thing the Candy Shop has to a written answer key, and it is the clue for the candy layering. It is also easy to dismiss as texture, because it is drawn as a tangle rather than as a list. Look at the strips as a sequence, not as a picture.
+      <img src="/rooms-and-exits/c2l6-piece-of-paper.jpg" alt="The Piece of paper item examined in the inventory, covered in overlapping patterned candy strips" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gvdYiPk_Y_w&t=96s" target="_blank" rel="noopener">1:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 2:42</span>
+      <strong>The chocolate box lid: seven symbol slots</strong>
+      Zooming the chocolate box gives you a brown panel with a column of seven symbol slots down the left and a picture of dark chocolate and hazelnuts on the right. Each slot holds a shape rather than a letter — doubled chevrons, a diamond inside a square — so the puzzle is about matching shapes, not reading text. The recording works the slots until the panel accepts the arrangement, and the box then opens on a wrapped bar and a ring. Both of those go into the inventory and both are needed before the present will lift.
+      <img src="/rooms-and-exits/c2l6-chocolate-box-pattern.jpg" alt="The chocolate box lid puzzle with a column of seven symbol slots beside a picture of chocolate and hazelnuts" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gvdYiPk_Y_w&t=162s" target="_blank" rel="noopener">2:42</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 3:36</span>
+      <strong>The sweet sudoku on the cash register</strong>
+      The tray that opens at the cash register is a 4×4 grid on a mint-green candy-patterned board. The cells hold four different sweets — a lollipop, a gummy bear, a wrapped candy and a donut — and only part of the grid starts filled, leaving the empty cells for you to solve. It is a sudoku rather than a matching game: each row and each column has to hold all four sweets exactly once, so the way in is a row or column that already has three of them. Work that line first and the rest falls out; guessing a cell in an empty row is what burns the time here.
+      <img src="/rooms-and-exits/c2l6-sweet-sudoku.jpg" alt="The 4x4 sweet sudoku tray with lollipops, gummy bears, wrapped candies and donuts on a mint green board" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gvdYiPk_Y_w&t=216s" target="_blank" rel="noopener">3:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 4:30</span>
+      <strong>Duct tape, and the jar in your bag</strong>
+      Two pickups sit next to each other in the mid-game: a roll of duct tape with a label that reads "Piece of duct tape", and an empty glass container labelled simply <b>Jar</b>. The tape belongs to the repair side of the room rather than the code chain — nothing about it is numeric — while the jar is the object the second half of the level is built around. When the jar appears in the inventory you are past the halfway point whether it feels like it or not.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gvdYiPk_Y_w&t=270s" target="_blank" rel="noopener">4:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 5:18</span>
+      <strong>Filling the jar at the dispenser wall</strong>
+      Stand the jar under the dispenser wall and pull levers. Each canister drops one colour into the jar and the colours stack in layers, bottom to top, exactly in the order you pull them. Our recording fills the jar while the camera stays on the canisters, and the layers build up one at a time as the levers are pulled. This is the step where you want the <b>Piece of paper</b> open beside you: the order you pull is the whole puzzle, and the jar in our footage never came back down once a colour had gone in.
+      <img src="/rooms-and-exits/c2l6-jar-filling.jpg" alt="The jar standing under the candy dispenser wall being filled with a layer of candy" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gvdYiPk_Y_w&t=318s" target="_blank" rel="noopener">5:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 5:21</span>
+      <strong>The eight dispensers, and why they are the bottleneck</strong>
+      The dispenser wall is one row of <b>eight</b> clear canisters under a yellow canopy, each filled with a different colour and each with a black-topped lever underneath. Our footage never shows the jar being emptied — every colour that went in stayed in — so a wrong pull reads as permanent rather than as a retry, and it changes the weight you are about to read. That is the single most expensive mistake in the Candy Shop, and it is why this page tells you to read the paper before you touch a lever. If you are already carrying a wrong layer, restarting the level is the clean fix.
+      <img src="/rooms-and-exits/c2l6-eight-dispensers.jpg" alt="The row of eight candy dispensers with different coloured candy in each canister" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gvdYiPk_Y_w&t=321s" target="_blank" rel="noopener">5:21</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 5:40</span>
+      <strong>Weigh the jar, then set 6841</strong>
+      Put the filled jar on the kitchen scale. The weight is what the level turns into a code, and the code goes into the four digit wheels set into the yellow display drawer — the drawer with the "Cup Cakes Coconut" boxes underneath it. Our footage shows those wheels reading <b>6, 8, 4, 1</b> on two consecutive frames just before the drawer is pulled open, so that is the combination to set. The wheels are scroll wheels, not a keypad: each column shows the digit above and below the selected one, which makes it easy to slip one value past the number you wanted.
+      <img src="/rooms-and-exits/c2l6-lock-6841.jpg" alt="The four digit wheels in the yellow display drawer set to 6841" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gvdYiPk_Y_w&t=340s" target="_blank" rel="noopener">5:40</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 6:24</span>
+      <strong>The purple ball and the five-button panel</strong>
+      One screen near the counter shows a single pale purple sphere floating above a row of <b>five</b> round light-blue buttons, and the buttons take turns being the selected one. The recording uses it to produce the <b>purple ball</b> that other parts of the shop ask for. We could not read a rule off the footage — there is no visible clue for what each button does — so the honest advice is to press them and watch which one stays selected, exactly as the recording does.
+      <img src="/rooms-and-exits/c2l6-gumball-purple-ball.jpg" alt="A white panel showing a pale purple ball above five round light blue buttons" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gvdYiPk_Y_w&t=384s" target="_blank" rel="noopener">6:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 7:30</span>
+      <strong>The colour grid: a wall of coloured buttons</strong>
+      One wall panel is a grid of coloured round buttons — red, green, light blue, purple, pink and yellow — and the game lights them in a sequence that you have to repeat. The recording goes through it <b>three times</b>, and each pass is longer than the one before. Two practical notes from the footage: the buttons flash in order rather than all at once, so watch the whole pass before you touch anything, and the lit buttons stay inside the grid, so you can rehearse the sequence by tracing it with your eyes before you start pressing.
+      <img src="/rooms-and-exits/c2l6-colour-sequence.jpg" alt="The panel of coloured round buttons used for the light sequence puzzle" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gvdYiPk_Y_w&t=450s" target="_blank" rel="noopener">7:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 8:21</span>
+      <strong>The wooden 5×5 board: where G6H8 comes from</strong>
+      The wooden board with twenty-five round slots is the answer key to the exit. When the recording opens it, some slots already hold coloured discs and some of those discs carry a character: an orange disc with <b>G</b>, a cyan disc with <b>H</b>, a green disc with <b>6</b> and a purple disc with <b>8</b>. A small rainbow icon sits at the bottom of the board. Those four characters are the door code, in that order — and this is the single most useful thing to know about the level, because it means you are looking for letters, not digits.
+      <img src="/rooms-and-exits/c2l6-letter-board.jpg" alt="The wooden 5x5 board with coloured discs labelled G, H, 6 and 8" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gvdYiPk_Y_w&t=501s" target="_blank" rel="noopener">8:21</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 9:08</span>
+      <strong>Enter G6H8 at the pink door</strong>
+      The panel beside the pink arched door is four character slots rather than a keypad. Set them to <b>G</b>, <b>6</b>, <b>H</b>, <b>8</b> and confirm. Our footage reads the finished panel as G6H8 on the frame before the door releases, and the last slot is the one that gets fumbled — at 9:07 it is still showing a 6 where the 8 belongs, one frame before it lands. If the door does nothing, check the fourth slot first.
+      <img src="/rooms-and-exits/c2l6-door-code-g6h8.jpg" alt="The four slot code panel showing G 6 H 8 beside the pink arched door" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gvdYiPk_Y_w&t=548s" target="_blank" rel="noopener">9:08</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 17 · 9:09</span>
+      <strong>The exit icon, and out</strong>
+      With the code accepted the pink arched door stops being scenery: a white exit sign lights up over it — a figure running through a doorway — and the camera pulls back to the full shop. Tap the door and the level is done. Nothing else in the room needs to be finished first; the Candy Shop does not check whether you cleared the optional corners, only whether the code was right.
+      <img src="/rooms-and-exits/c2l6-exit-unlocked.jpg" alt="The candy shop with the exit icon lit up over the pink arched door" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gvdYiPk_Y_w&t=549s" target="_blank" rel="noopener">9:09</a></div>
+    </div>
+
+    <h2>The chain, in order<span class="accent">.</span></h2>
+    <p>Every complaint about the Candy Shop comes down to the same thing: the room has one true sequence and it never tells you where you are in it. The memory board, the pinata and the sudoku sit in front of that sequence and hand you items; the sequence itself, from the chocolate box onward, is this.</p>
+    <ol>
+      <li><b>Chocolate box → ring and wrapped bar.</b> Those two items are the key to the present.</li>
+      <li><b>Present → jar.</b> The jar is under the box, not on a shelf.</li>
+      <li><b>Dispensers → full jar.</b> Colour layers, in the paper's order, one-way.</li>
+      <li><b>Scale → four digits → 6841.</b> The weight becomes the drawer combination.</li>
+      <li><b>Yellow drawer → the discs.</b> What the drawer holds is what the wooden board is missing.</li>
+      <li><b>5×5 board → G6H8 → door.</b> The board supplies the four characters; the panel takes them.</li>
+    </ol>
+    <p>Look at that list and the shape of the level is obvious: it is two halves. Everything up to the jar is about opening containers to get objects; everything after the jar is about converting objects into information. Players who stall in the second half are almost always still hunting for an object, and players who stall in the first half are almost always trying to solve a lock before they own the item that feeds it.</p>
+
+    <div class="warn">
+      <b>What we could not verify:</b> the exact colour order for the jar. Our recording shows the levers being pulled and the layers stacking, but no frame shows a legible clue that ties each colour to a position, and we will not publish a sequence we could not read twice — nothing in the footage empties the jar again. The <b>Piece of paper</b> in your inventory is the clue the level gives you; open it with <b>Examine</b> and treat the strips as a top-to-bottom list. The same caution applies to the five-button panel: the buttons light individually and the footage never shows a rejected press, so we cannot state its rule.
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>Looking for a number at the door.</b> The exit code is G6H8. Chapter 2 trains you to expect digits, and this room breaks the pattern on purpose. If you are stuck at the pink door, you are not missing a number — you are missing a board.</li>
+      <li><b>Pulling dispenser levers early.</b> The jar never empties in our footage. Read the paper first; a wrong layer changes the weight you need for 6841, which means the drawer combination may stop being 6841 at all.</li>
+      <li><b>Tapping the present too soon.</b> The box only lifts once the ring and the wrapped bar are in the bag. Before that it reads as decoration, and players conclude the jar is in a cupboard somewhere.</li>
+      <li><b>Treating the pinata as scenery.</b> It is a container. The candy cane is the tool. Nothing in the interface points at either of them.</li>
+      <li><b>Guessing cells in the 4×4 sudoku.</b> Most of the grid starts empty and there is no undo worth using. Find the row or column that already holds three sweets and fill the fourth.</li>
+      <li><b>Sliding one wheel past the target.</b> The 6841 wheels show the digit above and below the selection, so it is genuinely easy to land on 6851 or 6831 and conclude the code is wrong. Check all four columns before you pull the drawer.</li>
+    </ul>
+
+    <h2>Chapter 2 levels<span class="accent">.</span></h2>
+    <p class="grid-note">The Candy Shop is the sixth room of Chapter 2; the list below reflects what is written up so far.</p>
+    <LevelSelector chapter={2} current={6} compact={true} label="Chapter 2 · No Honor Among Thieves" />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    <details><summary>What is the exit code in Rooms &amp; Exits Chapter 2 Level 6 Candy Shop?</summary><p><b>G6H8</b>. The exit is not a number pad: the panel beside the pink arched door shows four character slots, and the four characters you need are the four labelled discs on the wooden 5×5 board — <b>G</b>, <b>6</b>, <b>H</b> and <b>8</b>. Set them in that order and the exit icon lights up on the door.</p></details>
+    <details><summary>What is the four-digit code on the yellow drawer lock?</summary><p><b>6841</b>. The lock is the row of four digit wheels inside the yellow display drawer, and the number comes from weighing the jar of candy you fill at the dispenser wall. Our recording shows the wheels reading 6, 8, 4 and 1 on two separate frames before the drawer is opened.</p></details>
+    <details><summary>How do I fill the candy jar?</summary><p>Take the empty jar from under the present, stand it below the eight-canister dispenser wall and pull the levers in the order the game's paper clue shows. Each lever drops a layer of one colour and the layers stack bottom to top. In our recording the jar could not be emptied once a colour went in, so read the <b>Piece of paper</b> before you start pulling levers.</p></details>
+    <details><summary>How many candy dispensers are there?</summary><p><b>Eight</b>, in one row under a single yellow canopy. Each canister holds one colour and has its own black-topped lever underneath. They are the only place in the shop where you can add colour to the jar, and the order you pull them is the whole puzzle.</p></details>
+    <details><summary>What is the memory game in the Candy Shop?</summary><p>A card-matching mini-game on a red board: a grid of ice-cream and cupcake tiles that you flip over in pairs. Our footage catches the reveal at 0:18 and the grid face down again at 0:30, so the round is played on the tiles rather than being a hidden-object search. There is no clue anywhere in the room that tells you which card is which, so it is pure memory.</p></details>
+    <details><summary>Why can't I open the pink door?</summary><p>Because the door is the last thing in the level, not the first. It opens only after the four-slot panel beside it has been filled with <b>G6H8</b>, and that code only exists once the labelled discs on the wooden 5×5 board have been placed. Tapping the door before then does nothing at all, and there is no message telling you why.</p></details>
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-2-level-5/">← Chapter 2, Level 5</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-2-level-7/">Chapter 2, Level 7 →</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits guides →</a></p>
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>
