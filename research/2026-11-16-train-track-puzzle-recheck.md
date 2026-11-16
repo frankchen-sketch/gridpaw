@@ -175,6 +175,258 @@ Train Tracks 是**随机/每日生成**制，不是关卡制。⇒ 没有「leve
 
 ---
 
+## 八、竞品时间线 / 流量口径 / SERP 实测（2026-11-16 18:20 追加）
+
+### 8.1 traintrackspuzzle.com 建站时间线（sitemap lastmod + RDAP + Wayback 三源对齐）
+
+| 时间 | 事件 | 证据源 |
+|---|---|---|
+| **2026-10-03 12:29Z** | 域名注册（Cloudflare registrar） | RDAP |
+| **2026-10-03 15:58Z** | Wayback 首次快照 HTTP 200 —— **注册后约 3.5 小时就上线** | Wayback CDX（全站仅此 1 条快照） |
+| **2026-10-03** | sitemap **40 条** lastmod：EN/de/fr/es 四语主干 + daily + how-to-play + solver + printable | sitemap `<lastmod>` |
+| **2026-11-02** | **32 条** lastmod（开始批量铺） | 同上 |
+| **2026-11-03** | **316 条一次性 lastmod** → 累计 **388**（daily 存档 240 + guides 72 批量） | 同上 |
+| 11-03 → 11-16（13 天） | **零新增**，388 恒定 | 三轮实测一致 |
+
+⇒ 建站节奏：**45 天前开工 / 首日骨架全齐 / 第 31-32 天一次性铺满 / 之后 13 天停手**。当前状态是「批量铺完等 Google 消化」，不是「持续运营中」。
+
+### 8.2 流量口径（三个独立读数，全部一致）
+
+| 口径 | 供应商 / 端点 | 读数 |
+|---|---|---|
+| DR + 月访问 | web.cafe `domain_overview`（Ahrefs 类） | DR **0.4**；monthly visits 2026-08/09/10 **全 0** |
+| 月访问 | TabAPI `/domains/<d>/traffic`（Similarweb 类） | report month **2026-10：visits 0**、global_rank `None`；08/09/10 **全 0** |
+| 出词（附带） | 同上 `top_keywords` | `train tracks puzzle` **4,910/月**、`connect tracks` 1,130、`traintracks puzzle` 550、`sudoku train rails` 50 |
+
+**两个 0 都是「未达量化下限」，不是精确 0。** 用「位置 × 搜索量」把它夹死：
+
+- 它在 `train track puzzle online` 排 **#9**，该词 320/月（webcafe 口径）
+- 主词 5,400 / `train tracks puzzle` 1,900 —— **不在第一页**
+- 反推上限：拿满该词曝光 × CTR 3-5% ≈ **10-16 clicks/月**
+
+⇒ **月流量上限 10-30 sessions，低于所有第三方工具的下限，所以两个 0 一致且可信。**
+
+### 8.3 SERP 实测（TabAPI，country=us，page=1，2026-11-16 18:20）
+
+| 查询 | 有机结果数 | 竞品位置 | 前 5 |
+|---|---|---|---|
+| `train track puzzle` | 8 | **不在第一页** | 1 puzzlemadness / 2 brainbashers / 3 Play(alexuvarov) / 4 App Store / 5 krazydad |
+| `train tracks puzzle` | 9 | **不在第一页** | 同上，+9 intrologic.stanford.edu |
+| `train track puzzle online` | 10 | **#9（第一页末席）** | 1 puzzlemadness / 2 krazydad / 3 Play / 4 brainbashers / 5 App Store |
+
+### 8.4 前排竞品体量（TabAPI traffic，2026-10 report）
+
+| 站 | 月访问 | global rank | 性质 |
+|---|---|---|---|
+| puzzlemadness.co.uk | **1,695,094** | 30,847 | 综合谜题站（train tracks 只是其中一栏） |
+| brainbashers.com | 774,179 | 60,643 | 综合谜题站 |
+| krazydad.com | 495,308 | 70,539 | 综合谜题站 |
+| traintrackspuzzle.com | **0** | — | 单品类新站（45 天） |
+| gridpaw.com（我方） | ≈16,500（GA4 28d 15,286 sessions） | — | 综合谜题站 |
+
+⇒ **前排三家是体量 50-100 倍的整站谜题站，排 #1-5 靠整站权重，不是这个页面本身。** 我方进前 6 只能靠**页面匹配 + 时间**，不能靠体量。这是本次最硬的约束，比 KD 29.8 更真实。
+
+### 8.5 新信号：10 月桶已出的几个词，涨的是「书」和「在线」
+
+| 词 | 09 | 10 | 12m 趋势 |
+|---|---|---|---|
+| `train tracks puzzle book` | 170 | **260** | +533%（70→140→170→260） |
+| `train tracks puzzle online` | 70 | **90** | +600%（50→70→90） |
+| `train track game` | 320 | **320** | 持平 |
+| `train tracks puzzle printable` | 30 | 未出 | +800% |
+| `train tracks puzzle app` | 20 | 未出 | +33% |
+
+⇒ 需求没有停，但**增量跑到「书（transactional）」和「在线玩（play）」**。`book` 260/月是全新的入口信号（对应 The Times / Daily Mail 的纸本 train tracks 栏目）——但 260/月撑不起独立线，且卖书是另一种生意。
+
+### 8.6 ⚠️ 口径警示
+
+`keyword_ideas` 返回的 `kd`（如 `train tracks puzzle` kd=0）是**预筛难度**，与 web.cafe 精确 KD 29.8 差一个量级，**不可用于 KDROI**。KDROI 一律用 web.cafe 精确 KD。
+
+### 8.7 前排三家产品形态实测（2026-11-16 18:35）—— 全是可玩交互版，不是 PDF/攻略站
+
+| 站 | 形态 | 关键证据（HTML 实测） |
+|---|---|---|
+| `puzzlemadness.co.uk/traintracks/medium` | **可玩，功能最全** | `<canvas>` ×1；`Score` / `Reset` / **`Cloud Save`** / `Register FREE` / `Login` / `Print version` / Difficulty(Small·Medium·Large·Mixed) / `Archive`；**Google AdSense 在位**（`adsbygoogle` ×7）；TITLE = `Daily Medium Train Tracks Puzzle for Monday 16th November 2026 (Easy)` = 每日一题 |
+| `brainbashers.com/tracks.asp` | **可玩，轻量老式** | 无 canvas，6 个 script + DOM 交互；`Daily Tracks` + 日期选择 + Rules 说明；TITLE = `Daily Tracks - BrainBashers` |
+| `krazydad.com/play/tracks/` | **可玩，带分步提示** | `<canvas>` ×1、22 个 script；`Check answer` / `Reveal errors` / **`Show next step`**（分步解提示）/ `Printable image` / `Pause`；页面自述 "These interactive puzzles are currently down" = 维护中 |
+
+**三家都是「每日一题 + 可玩 + print 附属」结构。三家都有 print 入口，但都不是主力；没有一家是攻略站或纯 PDF 站。**
+
+### 8.8 决定性证据：三家都把 `train track puzzle` 当主力词
+
+TabAPI `top_keywords`（report 2026-10）：
+
+| 站 | `train track puzzle` 在其 top5 的位置 |
+|---|---|
+| puzzlemadness.co.uk | **第 1 位 —— 9,880/mo**（高于 samurai sudoku 6,240、thermo sudoku 1,210） |
+| brainbashers.com | **第 4 位 —— 9,880/mo**（前面是自家品牌词 + slitherlink 5,240） |
+| krazydad.com | 在 top5（前面是 star battle 29,170、killer sudoku 42,510、自家品牌词） |
+
+⚠️ 口径差：TabAPI 报 **9,880/mo**，webcafe 报 **5,400/mo（2026-09 桶 us）**。两者差近一倍，TabAPI 可能是 global 或含变体归并。**判断量级用 webcafe，判断「这词对竞品多重要」用 TabAPI 的排序——三家一致把它放进 top5，说明它是核心词而非边缘长尾。**
+
+### 8.9 SERP 结构结论
+
+`train track puzzle` 第一页 8 个有机结果：
+
+| 位 | 站 | 类型 |
+|---|---|---|
+| 1 | puzzlemadness.co.uk | **可玩网页版**（170 万月访） |
+| 2 | brainbashers.com | **可玩网页版**（77 万月访） |
+| 3 | Play Store（alexuvarov 的 app） | **App 商店** |
+| 4 | App Store | **App 商店** |
+| 5 | krazydad.com | **可玩网页版**（49 万月访） |
+| 6 | bosburyhistoryresource.org.uk | PDF/教辅类 |
+| 7 | YouTube | 视频 |
+| 8 | alexsmartbooks.com | 书/教辅 |
+
+⇒ **8 个槽：3 个可玩网页版 + 2 个 App 商店 + 0 个攻略站。** 攻略站不存在这条判断，从「help 词全 null」的**反面证据**升级为「SERP 一个攻略站都没有」的**正面证据**。
+
+⇒ 同时这也是**坏消息**：这不是蓝海新词，是**一个已由三家寡头做成成熟品类的词，被一个新 app 带火了搜索量**。我们要做的是第 4 个同构产品，体量差 50-100 倍。
+
+### 8.10 意外发现：真正的问题可能不在「加第 15 款」
+
+krazydad 的 top 词是 `star battle — 29,170/mo`（其站内最大词之一）。**我们已有 `/star-battle/` 页（28d `game_start` 仅 52）**。
+
+⇒ 差距 500 倍不是「品类没做」，是**已有页面接不住同品类寡头的流量**。在讨论「要不要加 train tracks 第 15 款」之前，更该先查清 `star battle` 为什么只拿 52。这是本报告指向的下一步，也是比 train tracks 更贵的那个问题。
+
+### 8.11 重大修正（2026-11-16 18:50）：漏掉了第二个竞品，且它证明「攻略站可行」
+
+用户提供 KWP 截图（US / 所有语言 / Google / **2025-11~2026-10**）后复查 `connect tracks` 的 SERP，发现 `connecttracks.com`。**这家把上一轮四个判断全部推翻。**
+
+#### (a) KWP 实测数据（2025-11~2026-10 年均，US）
+
+| 关键词 | 月均 | 3 月变化 | 同比 | 竞争度 | 页首出价 low–high |
+|---|---|---|---|---|---|
+| train track puzzle | **1,900** | +50% | **+9,329%** | 低 | $1.74–$4.73 |
+| connect tracks | **720** | +39% | +14% | **中** | $2.14–**$61.76** |
+| train track game | 590 | +48% | +519% | 低 | $0.84–$3.34 |
+| train puzzle game | 210 | +85% | +243% | 低 | $1.37–$7.74 |
+| railroad puzzle | 210 | +23% | +191% | 低 | $0.17–$0.91 |
+| tracks puzzle | 140 | 0% | +550% | 低 | — |
+| train track puzzle game | 110 | +129% | +1,500% | 低 | — |
+| train track puzzle online | 90 | +24% | **+∞** | 低 | — |
+| train tracks online | 70 | −29% | +25% | 低 | — |
+| train tracks puzzle book | 50 | +86% | +2,500% | 中 | $0.20–$0.39 |
+
+**口径对齐**：KWP 的「月均」= 12 个月平均。本族 2026-06 才起爆，所以年均被 2025 年低基数拉低——`train track puzzle` KWP 年均 1,900 vs webcafe 2026-09 单月 5,400，**不是矛盾，是平均值 vs 峰值月**。同比 **+9,329%** 是本轮最强的需求信号，也推翻我此前「play 需求或已停爬」的说法。
+
+#### (b) 漏掉的竞品：connecttracks.com
+
+| 项 | 读数 | 证据 |
+|---|---|---|
+| 注册 | **2026-09-28T02:04Z**（比 traintrackspuzzle.com 早 5 天） | RDAP |
+| sitemap | **全部 lastmod = 2026-09-28**，当天一次铺完 | sitemap |
+| 结构 | `/levels/` + `/levels/1-50/`·`51-100/`·`101-150/` + **`/level/1/` … `/level/150/`（150 个关卡页）** | sitemap |
+| 定位 | TITLE = `Connect Tracks — Level Walkthroughs & Play Online`；站头自称 **"THE INDEPENDENT GUIDE"** + "Get the game ↗" | 首页 |
+| 流量 | **2026-10 = 336 visits**（vs traintrackspuzzle.com **0**） | TabAPI traffic |
+| 出词 | `connect track mega level 25` **180/mo**、`connect the tracks` 150、`connect tracks` 1,130、`connect tracks game` 190 | TabAPI top_keywords |
+| 排名 | `connect tracks` SERP **#2**（#1 是 Play Store） | TabAPI SERP |
+| 变现 | 有 "Advertisement" 占位，实测 **无 AdSense 代码**（adsbygoogle 计数 0） | HTML |
+| 可玩部分 | 首页有 practice puzzle（4×4 · Easy · Mark/Undo/Reset/Hint、"Progress saved"、"Hint 0/200"） | 首页 HTML |
+
+#### (c) 关卡页真相：它自己不做 walkthrough，只嵌 YouTube
+
+`/level/25/` 实测（8,221 bytes）：
+
+- TITLE `Connect Tracks Level 25 Walkthrough & Video Guide`
+- **`<img>` 只有 1 张、`<iframe>` 2 个、youtube 提及 9 次、`<canvas>` 0**
+- 正文实质只有一句：`Watch Level 25 Video by Beyond Gamer · 2:40` + 一段通用「对照你的棋盘」提示 + 相邻关导航
+- **它自己写明**：`Source check: The public title identifies Level 25. Title, creator, duration and embedding availability were checked on September 28, 2026. **The complete move sequence has not been independently replayed.**`
+
+⇒ **150 个页面 = 150 个 YouTube 嵌入 + 模板化文案。零关卡数据、零盘面图、零步骤序列、零广告收入。** 护城河为零。
+
+---
+
+### 8.12 上一轮四项判断作废
+
+| 上轮判断 | 实际 | 状态 |
+|---|---|---|
+| 「Train Tracks 是随机/每日生成制，不是关卡制 ⇒ 无 level N 长尾」 | **Connect Tracks 是 150 关制**（YouTube "All Levels 1-50" + 竞品 150 个关卡页） | ❌ **作废** |
+| 「攻略站必死：help 词全 null，没有求助刚性」 | `connecttracks.com` 靠 150 关页排 **#2 / 336 visits**；`connect track mega level 25` **180/月** | ❌ **作废** |
+| 「只有一个竞品 traintrackspuzzle.com」 | 有两个，且 connecttracks.com 更值得看（有流量、排 #2、模式可复制） | ❌ **作废** |
+| 「品牌词 connect tracks = null ⇒ T1 判据未触发」 | KWP **720/月**（competition 中），TabAPI **1,130/月** | ❌ **作废** |
+
+**为什么错**：我把 `train tracks hints / answers / walkthrough` 全 null 解释成「品类没有攻略需求」。真正的原因是**这些词说的是品类名，不是 app 名**——用户找攻略时搜的是 **app 名 + 关卡号**（`connect track mega level 25`），不是品类名。
+
+---
+
+### 8.13 修正后的机会结构
+
+| 盘子 | 月量（KWP 口径） | 谁能吃 | 难度 |
+|---|---|---|---|
+| 品类词（train track puzzle 族） | 1,900（年均）/ 5,400（09 峰值） | 3 家寡头（170万/77万/49万月访）+ 2 个 App 商店占满前 5 | 难，要可玩版 |
+| **品牌词 + 关卡长尾（connect tracks 族）** | **720–1,130 + 180 长尾** | 一个 45 天新站（**336 visits**，纯嵌 YouTube，零壁垒） | **可打，我们技术更强** |
+| print/book/规则 | 50–210，多为 null | traintrackspuzzle.com 已铺 12 篇零流量 | 不做 |
+
+**机会描述（修正版）**：不是「小盘子无需求」，而是——**品牌+关卡这条线盘子只有 1–2K/月，但对手是一个零壁垒的 45 天新站（336 visits）。我们用一个引擎就能做出比它好的东西：真盘面图 + 求解器校验的步骤序列 + 可玩 practice。** 150 页模板与 `/meowdoku/levels/` 同构，量级可控。
+
+**但必须同时承认**：1–2K/月 按 $0.3–1 RPM 折成年收入只有 **$5–25**，独立建站不划算。唯一合理形态是 **gridpaw 站内一条子线**（跟涨 Connect Tracks app，app 500K+ 装机且还在更新）。
+
+### 8.14 终判（2026-11-16 19:05）：关卡词实测全 null ⇒ §2.3 引擎不成立 ⇒ tt 全路径判死
+
+**触发**：法老纠正「游戏页就是凭站龄，基本没机会，除非制造热点来流量」。回查既有结论，确认这是已判死项，我上一轮提「查 star battle 为什么只 52」是拿已判死的思路重开议题。
+
+#### (a) 既有结论原文（gridpaw 内部文档，不是我新推的）
+
+`research/2026-11-05-battle-plan.md` §7「不做清单（已判死，别再提案）」：
+
+| 判死项 | 依据 |
+|---|---|
+| **用 gridpaw.com 打游戏品类头词** | 前十中位站龄 **20 年** |
+| **追刚上线的新游戏** | **Rotate Rings 11.1M 下载 → 只有 4 个 query** |
+| 攻略→可玩站内导流 | GA4 **0.1%** |
+| 扩 solver 品类 | picross 4 曝光/60d |
+
+`research/2026-11-05-next-direction.md` §2.1：shikaku 前 10 中位站龄 **20.0 年**、最短 3.3 年（EMD）；`kenken online` 前十是 bostonglobe / usatoday / scientificamerican —— **不做谜题，权重顺路占位**。⇒ **可玩层不承担获客任务。**
+
+同一份文档 §2.3 是全站唯一被反复验证的引擎：BP3 **62 点击/页**、Loop **151 点击/页**、Meowdoku 19 点击/页 —— 前提是「**有人正在搜某个具体关卡/答案**」。
+
+#### (b) 我上一轮的推理错误
+
+看到 `connecttracks.com` 铺 150 个 `/level/N/` 页 + 336 visits，我判定「§2.3 引擎可复用」。**但没有验证关卡词是否有量**——而这是 §2.3 成立的前提。
+
+#### (c) 实测：Connect Tracks 的关卡词一个都没有
+
+webcafe `keyword_volume`（`gl=us`，`fromCache=false` 真新读），8 个词：
+
+| 词 | 结果 |
+|---|---|
+| `connect tracks level 25` | **null** |
+| `connect tracks level 1` | **null** |
+| `connect tracks mega level` | **null** |
+| `connect track mega level 25` | **null** |
+| `connect tracks all levels` | **null** |
+| `connect tracks answers` | **null** |
+| `connect tracks walkthrough` | **null**（11-12 已测） |
+| `connect tracks game` / `connect the tracks` | **null** |
+
+⚠️ TabAPI 的 `top_keywords` 报 `connect track mega level 25 — 180/mo`，**与 Google Ads 口径实测矛盾**。判定：TabAPI 该数字是长尾模型估算，非实测；**以 KWP/webcafe 口径为准 → 该词无有效搜索量**。
+
+#### (d) 推论：connecttracks.com 的 336 visits 不是从 150 个关卡页来的
+
+既然关卡词全 null，**150 个 `/level/N/` 页没有词可吃**。它的 336 visits 只能来自：
+- `connect tracks` 品牌词排 **#2**（KWP 720/mo，但那是**用户截图的「所有语言」口径**，切 English 会明显更小）
+- 少量零散长尾
+
+按 336/150 ≈ **2.2 visits/页/月**，对比 BP3 的 **62 点击/页**——**差 28 倍**。⇒ 这家铺的 150 页是**铺薄**，不是 §2.3 引擎在跑。
+
+#### (e) tt 全路径判决表
+
+| 路径 | 依据 | 判决 |
+|---|---|---|
+| 品类词可玩页（train track puzzle 1,900–5,400） | §7「20 年站龄墙」+ SERP 前 5 = 3 寡头 + 2 App 商店 | **死** |
+| 追新游戏做页（Connect Tracks 本身） | §7「Rotate Rings 11.1M → 4 query」 | **死** |
+| 关卡答案页（§2.3 唯一引擎） | 8 个关卡词**全 null**，无词可吃 | **死** |
+| 品牌词页（connect tracks 720/mo） | SERP #1 = Play Store（下载意图）；且「所有语言」口径，英文盘子更小 | **死** |
+| print / book / 规则页 | 50–210；traintrackspuzzle.com 12 篇已铺满 40 天零流量 | **死** |
+| **制造热点引流** | 品类无话题性：daily train tracks 心智被 puzzlemadness 占据（其 TITLE 即 `Daily Medium Train Tracks Puzzle`）；发「又做了一个 train tracks」在社区无差异化 | **条件不具备** |
+
+**终判：train track puzzle 族全路径关闭。不是"等 10 月桶"，不是"等 2027-01 扩张窗"，是关闭。** 台账状态从 `dropped` 改为 `closed`，移出重开监控池。
+
+**唯一可复用的收获**：`connecttracks.com` 是一个反例证据——**150 页 × 零搜索量关键词 = 336 visits**，量化了「铺页不等于获客」的上限。这条应进 §2.3 引擎的适用条件：**必须先验证关卡词有量，再决定页数**。
+
+---
+
 ## 数据源与口径声明
 
 - 搜索量 / 竞争度：webcafe `keyword_volume`（Google Ads 口径，`gl=us`，14 天缓存）。本轮 3 词 `fromCache=true`、品牌词 3 词 `fromCache=false`；扣 10 分，余 1,119。
