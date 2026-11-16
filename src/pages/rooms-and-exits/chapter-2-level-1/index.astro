@@ -1,0 +1,291 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 2 Level 1 Walkthrough: Cell Phone Store";
+const description = "Rooms & Exits Chapter 2 Level 1 walkthrough for the Cell Phone Store: the SIM card in the handbag, the phone lock trace, the passcode 792438, the wall keypad and the finish worth +50 coins.";
+const faqJsonLd = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the passcode in Rooms & Exits Chapter 2 Level 1?", "acceptedAnswer": {"@type": "Answer", "text": "792438. There is only one number in the Cell Phone Store and you do not find it written on a wall: the handset in the shop prints it after you unlock it. Put the SIM card into the phone, draw the trace on the 3x3 lock screen, and a white pop-up reads \"Your passcode is: 792438\". That same code goes into the keypad on the wall unit."}}, {"@type": "Question", "name": "What is the pattern to unlock the phone?", "acceptedAnswer": {"@type": "Answer", "text": "Start on the top-left dot and run along the top row: 1, 2, 3, 5 (top-left, top-middle, top-right, centre) is the part we could confirm twice from the recording. After the centre the line turns down to the bottom row; the last dots were not verifiable twice, so copy the trace from the Pattern item in the inventory (Examine), which is the exact trace the phone accepts."}}, {"@type": "Question", "name": "Where do I get the SIM card?", "acceptedAnswer": {"@type": "Answer", "text": "From the white handbag sitting on the sofa in the lounge. Tap the bag and the game hands you the item with the label \"SIM card\". Without it the phone only ever says \"No SIM Card Installed\" and the lock screen never appears."}}, {"@type": "Question", "name": "What does the keypad code open?", "acceptedAnswer": {"@type": "Answer", "text": "The keypad is mounted on the wall unit near the reception desk. Entering 792438 releases the unit and exposes a metal panel with fifteen round buttons in three rows of five. Clearing that panel opens the inner compartment, which holds the key to the front door."}}, {"@type": "Question", "name": "How do I finish the Cell Phone Store?", "acceptedAnswer": {"@type": "Answer", "text": "Take the key out of the open safe, open the inventory, select the key and press Use, then tap the green double door on the far left wall. An exit icon appears on the door, the camera pulls back and the level ends on the results screen with +50 coins."}}, {"@type": "Question", "name": "How long does the Cell Phone Store take?", "acceptedAnswer": {"@type": "Answer", "text": "The recording finishes it in 3:38 of level time, which is roughly three and a half minutes of play. Nothing in the level is timed and there is no fail state, so the only thing that can slow you down is hunting for the passcode before you have put the SIM card in the phone."}}]};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-2-level-1"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 2 Level 1"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 2</a> &gt; Level 1</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 2 Level 1 Walkthrough: Cell Phone Store</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from a recorded playthrough of the current build — 3 minutes 31 seconds of footage, extracted at one frame per second and read at full resolution. The passcode and the lock trace below were each read twice, from separate frames, and agree. Where the recording cannot settle a detail, this page says so instead of guessing.</div>
+
+    <LevelSelector chapter={2} current={1} variant="jump" label="Chapter 2 · No Honor Among Thieves" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>The only number in the Cell Phone Store is <b>792438</b>, and the level hands it to you: the handset prints it once you have unlocked it. Finish worth <b>+50 coins</b>.</p>
+      <ol>
+        <li>Tap the white <b>handbag</b> on the sofa → <b>SIM card</b>.</li>
+        <li>Use the SIM card on the <b>phone</b> that reads "No SIM Card Installed" → the lock screen appears.</li>
+        <li>Draw the trace on the lock screen — our capture confirms <b>top-left → top-middle → top-right → centre</b>, then the line drops to the bottom row. Copy the whole trace from the <b>Pattern</b> item in your inventory (Examine); the lock accepts only that exact order.</li>
+        <li>The phone prints <b>"Your passcode is: 792438"</b>.</li>
+        <li>Type <b>792438</b> into the wall <b>keypad</b> → the unit releases.</li>
+        <li>Clear the <b>fifteen-button panel</b> (three rows of five) → the safe opens with a <b>key</b> on the back wall.</li>
+        <li>Use the key on the <b>green double door</b> → results screen, <b>+50 coins</b>.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/NKFuNmJL2N8" title="Rooms &amp; Exits Chapter 2 Level 1 Cell Phone Store walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/c2l1-hero-phone-store.jpg" alt="Rooms and Exits Chapter 2 Level 1 Cell Phone Store: green and white phone shop with a display wall of handsets, a curved reception desk, grey sofas and a coffee table" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>The Cell Phone Store is the first room of Chapter 2, and it is a shop rather than a puzzle box. The layout is one open floor: a display wall running down the left with three shelves of dummy handsets in coloured cases and a row of drawers below them, a curved reception desk on the right with a big wall screen above it playing a phone advert, and a lounge in the middle — two grey sofas, two pale green chairs, a dark coffee table, an arc lamp and a small round side table. A light green double door sits on the far left wall with a security camera over it, and a second camera watches the corner by the plant.</p>
+    <p>Everything that matters is in that one room, which is exactly why people stall here. There is no corridor, no second area, and no obvious order to do things in. You can tap the display wall, open every drawer, read every magazine and still not have moved, because the level is gated on two things and neither of them is signposted: a SIM card that is sitting in a handbag, and a trace pattern that only exists on an item in your inventory.</p>
+    <p>The doorway to the whole level is the phone. Until it has a SIM card it refuses to do anything except tell you that it has no SIM card, and the lock screen that carries the passcode never appears. That single dependency is what makes the Cell Phone Store feel longer than it is. The recording finishes the room in 3:38 of level time; players who never tap the handbag can wander the same shop for twenty minutes and never see the number.</p>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:04</span>
+      <strong>Read the room before you touch anything</strong>
+      The first sweep is the only wide shot you get without a UI panel covering half the screen, so use it. Left wall: the retail display, three shelves, handset cradles, drawers underneath. Right: the curved desk, the wall screen, the tree-shaped ornament and the plant. Centre: sofas, chairs, coffee table, arc lamp, round side table. Far left: the green double door — that is the door you are leaving through, and it will not open until the very end of the level.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=NKFuNmJL2N8&t=4s" target="_blank" rel="noopener">0:04</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:08</span>
+      <strong>The round side table and its open drawer</strong>
+      The first zoom of the level is the little round table beside the sofa. A drawer is already pulled out and there is a magazine on the top. Tap it: the drawer is a prop drawer with shop clutter in it, and the magazine is a prop magazine whose cover reads "Android Tips, Tricks". Nothing here is the answer. It is worth saying plainly because this is the screen most players spend their first minute on — the game opens with a readable magazine precisely to make you think the level is going to be about reading things.
+      <img src="/rooms-and-exits/c2l1-side-table-drawer.jpg" alt="The round side table with an open drawer and an Android Tips and Tricks magazine in the Cell Phone Store" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=NKFuNmJL2N8&t=8s" target="_blank" rel="noopener">0:08</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:28</span>
+      <strong>Your first inventory screen: Handle parts, 2/2</strong>
+      The bag icon at the top right opens a grid of slots with four verbs under it — <b>Use</b>, <b>Combine</b>, <b>Dismantle</b>, <b>Examine</b>. At this point the selected item is labelled <b>Handle parts</b> and the slot shows <b>2/2</b>, which means two pieces of the same thing, not one item used twice.
+      Read the verbs now rather than later: every puzzle in this room is solved by choosing the right verb on the right item, and "Examine" is the one that turns a vague picture in your bag into an actual answer.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=NKFuNmJL2N8&t=28s" target="_blank" rel="noopener">0:28</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:40</span>
+      <strong>The phone that says "No SIM Card Installed"</strong>
+      Tap the handset early and you get a white pop-up on a blue-and-teal wallpaper: <b>"No SIM Card Installed"</b>, with a single OK button. That is the whole screen. It is not a hint that you should go and find a SIM card in the sense of a nice-to-have — it is the hard gate. The level does not open up until a SIM card goes into this phone, and the phone is not going to tell you where the card is.
+      <img src="/rooms-and-exits/c2l1-phone-no-sim.jpg" alt="The handset showing the No SIM Card Installed pop-up in the Cell Phone Store" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=NKFuNmJL2N8&t=40s" target="_blank" rel="noopener">0:40</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 0:44</span>
+      <strong>The display counter, and why its drawers are a dead end</strong>
+      The shop counter under the shelves has a row of drawers in grey and green, one of which is already pulled out with a magazine lying open on the top. Tap it and you get the same class of prop you got at the side table — another magazine cover, "MY MOBILE", more shop clutter — plus a coffee table in the lounge holding a stack of magazines and a mug. None of it is a clue. The recording opens this drawer, reads the cover, and never returns. If you are following this guide in order, you can skip the whole surface.
+      <img src="/rooms-and-exits/c2l1-display-counter.jpg" alt="The shop display counter with an open green drawer and magazines on top in the Cell Phone Store" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=NKFuNmJL2N8&t=44s" target="_blank" rel="noopener">0:44</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 0:52</span>
+      <strong>The wall keypad, and why it is a dead end right now</strong>
+      There is a metal keypad on the wall unit: digits 1 to 9, a zero, a backspace-and-x key and a tick, with a green LCD strip across the top. Tap it this early and the strip stays blank. The recording opens it three separate times between 0:52 and 1:04, checks the inventory in between, and leaves without pressing a digit — which is exactly what you should do too. There is no code in this room yet. Walking away from a lock you cannot open is a valid move.
+      <img src="/rooms-and-exits/c2l1-keypad-locked.jpg" alt="The wall keypad with a blank green display in the Cell Phone Store" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=NKFuNmJL2N8&t=52s" target="_blank" rel="noopener">0:52</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 0:56</span>
+      <strong>The Pattern item is the phone's answer key</strong>
+      Open the inventory and press <b>Examine</b> on the item called <b>Pattern</b>. You get a full-screen picture of a hand drawing on a tablet: a 3×3 dot grid with a line running across it.
+      That picture is the trace you will draw on the phone later. It is easy to dismiss as a piece of set dressing from a magazine, which is why so many players get to the lock screen and have nothing to enter.
+      <img src="/rooms-and-exits/c2l1-pattern-item.jpg" alt="The Pattern item examined in the inventory: a hand drawing a dot pattern on a tablet" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=NKFuNmJL2N8&t=56s" target="_blank" rel="noopener">0:56</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 1:41</span>
+      <strong>The display wall: three shelves of handsets</strong>
+      The retail wall is interactive. Three shelves of dummy phones sit in individual cradles, each in a different coloured case, and tapping them lights the screens. The recording spends a long, unhurried stretch here — it is the one part of the room that looks like a real puzzle rather than a lock. Treat it as scene-setting unless you are short of something to do: the clues you actually need come from the bag and the phone, not from this wall.
+      <img src="/rooms-and-exits/c2l1-phone-wall.jpg" alt="The display wall with three shelves of dummy handsets in coloured cases" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=NKFuNmJL2N8&t=101s" target="_blank" rel="noopener">1:41</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 2:04</span>
+      <strong>The handbag on the sofa: SIM card</strong>
+      This is the step the level is built around. The white bag with the dark trim is sitting on the sofa in the lounge. Tap it, and a SIM card rises out of the frame with the label <b>SIM card</b> under it. One tap. No puzzle, no lock, no cost — the single most important pickup in the room is behind the least dramatic interaction in it, which is precisely why people miss it.
+      <img src="/rooms-and-exits/c2l1-handbag-sim.jpg" alt="The SIM card being taken from the white handbag on the sofa" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=NKFuNmJL2N8&t=124s" target="_blank" rel="noopener">2:04</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 2:15</span>
+      <strong>Put the SIM card into the phone</strong>
+      Go back to the handset and use the SIM card on it. The tray slides out, the card goes in, and the "No SIM Card Installed" message stops being the whole story: the phone now boots to a lock screen with a live wallpaper and a 3×3 grid of dots. Nothing else in the level changes at this moment, but the run has just opened.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=NKFuNmJL2N8&t=135s" target="_blank" rel="noopener">2:15</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 2:26</span>
+      <strong>The lock screen: copy the trace from the Pattern item</strong>
+      The grid is the standard nine dots. What our recording confirms frame by frame is the opening: <b>top-left (1) → top-middle (2) → top-right (3) → centre (5)</b>, and then the line turns down toward the bottom row. We could not double-confirm the last dots from the footage — the drawing animation runs faster than our read of the capture — so rather than print an order we could not verify twice, use the copy the game itself gives you: the <b>Pattern</b> item in the inventory, behind <b>Examine</b>, is a photo of that exact trace. Copy it dot for dot and draw slowly; the game follows your finger, so a fast swoosh will jump dots and fail.
+      <img src="/rooms-and-exits/c2l1-phone-pattern.jpg" alt="The 3x3 pattern lock on the phone with the top row and diagonal trace drawn" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=NKFuNmJL2N8&t=146s" target="_blank" rel="noopener">2:26</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 2:36</span>
+      <strong>The phone prints the passcode: 792438</strong>
+      The trace lands and a white pop-up appears over the wallpaper: <b>"Your passcode is: 792438"</b>, with an OK button. Write it down or keep this page open, because the phone does not show it again by itself — you have to redo the trace to see it a second time. Six digits, in that order.
+      <img src="/rooms-and-exits/c2l1-passcode-popup.jpg" alt="The phone pop-up reading Your passcode is 792438" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=NKFuNmJL2N8&t=156s" target="_blank" rel="noopener">2:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 2:43</span>
+      <strong>Type 792438 into the wall keypad</strong>
+      Back to the keypad you abandoned in step 6. The digits show in the green strip as you press them, left to right, so you can check the display against the code before you commit. When the strip reads <b>792438</b>, press the tick. If you press a digit wrong, the backspace key clears one character at a time — you do not have to start the whole entry again.
+      <img src="/rooms-and-exits/c2l1-keypad-code.jpg" alt="The keypad with 792438 entered in the green display" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=NKFuNmJL2N8&t=167s" target="_blank" rel="noopener">2:47</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 3:00</span>
+      <strong>The fifteen-button panel, three rows of five</strong>
+      Clearing the keypad exposes a brushed metal face plate holding <b>fifteen round buttons in three rows of five</b>, with a screw at each corner. Pressing a button makes it light up cyan, and the panel shows you a whole row lit at certain points. Work the grid until the panel accepts the arrangement; the recording clears it here and the plate then swings free.
+      <img src="/rooms-and-exits/c2l1-button-panel.jpg" alt="The metal panel with fifteen round buttons in three rows of five, one lit blue" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=NKFuNmJL2N8&t=180s" target="_blank" rel="noopener">3:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 3:20</span>
+      <strong>The safe opens: a key on the back wall</strong>
+      The compartment swings open on a grey interior and there is a single key hanging against the back plate, pale blue bow, silver blade. Tap it and it goes straight into the inventory — the recording does not even open the bag to confirm. From here there is nothing left to solve, only a door.
+      <img src="/rooms-and-exits/c2l1-safe-key.jpg" alt="The opened wall safe with a key hanging on the back wall" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=NKFuNmJL2N8&t=200s" target="_blank" rel="noopener">3:20</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 3:30</span>
+      <strong>Use the key and leave: +50 coins</strong>
+      Open the inventory, select <b>Key</b>, press <b>Use</b>, then tap the green double door on the far left wall. An exit icon appears on the door, the camera pulls back to the wide room, and the level ends on the results panel: <b>+50 coins</b> and a completion time of <b>3:38</b>. Nothing carries over except the coins.
+      <img src="/rooms-and-exits/c2l1-level-complete.jpg" alt="The Level Completed screen for Chapter 2 Level 1 with a +50 coin reward" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=NKFuNmJL2N8&t=210s" target="_blank" rel="noopener">3:30</a></div>
+    </div>
+
+    <h2>The two locks, in order<span class="accent">.</span></h2>
+    <p>People get lost in this room because they treat the keypad as the first lock and the phone as scenery. It is the other way round. The keypad cannot be opened at all until the phone has told you the number, and the phone cannot be unlocked until it has a SIM card, and the SIM card is an item that only exists in a handbag nobody has any reason to tap.</p>
+    <ol>
+      <li><b>Bag → phone.</b> The SIM card from the white handbag activates the handset. Until then the phone is a one-message prop.</li>
+      <li><b>Pattern → passcode.</b> The trace on the lock screen is the one printed on the Pattern item in your inventory. It pays out 792438.</li>
+      <li><b>Passcode → plate.</b> 792438 clears the wall keypad and exposes the fifteen-button plate.</li>
+      <li><b>Plate → key.</b> The plate is the last puzzle; behind it the safe holds the key.</li>
+      <li><b>Key → door.</b> The green double door is the exit and it opens with nothing else.</li>
+    </ol>
+    <p>Looked at that way the level has exactly one real puzzle — the trace — and three dependency checks. That is not a criticism, it is just what the room is: a chain where each link is a separate object on a separate wall, and the whole thing collapses if you miss the first one.</p>
+
+    <div class="warn">
+      <b>What we could not verify:</b> the rule behind the fifteen-button panel. The recording presses single buttons that light up one at a time and at two separate moments shows an entire row lit, then the safe releases — but it never shows a wrong arrangement being rejected, so we cannot tell you what the panel is actually checking. Press buttons and watch what the plate shows you; we have deliberately not written a rule we could not read off the footage. The same goes for the display wall: the handsets light up when tapped, and we could not establish what, if anything, that feeds.
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>The handbag.</b> It looks like decoration on a sofa. It is the start of the level. If the phone still says "No SIM Card Installed" and you have searched the shelves twice, you have not tapped the bag.</li>
+      <li><b>The phone before the SIM.</b> The lock screen does not exist until the card is in. Players who tap the phone, see the pop-up and walk away often conclude the lock screen is somewhere else in the room. It is not — it is the same phone, one step later.</li>
+      <li><b>The Pattern item.</b> It is behind <b>Examine</b>, not behind <b>Use</b>. The picture is the only place the trace is written down, and it is a photo of a hand on a tablet rather than a diagram, so it reads as set dressing until you look at the dots.</li>
+      <li><b>The keypad at the start.</b> Opening it before you have the code and pressing random digits wastes the most time of anything in this room. The green strip stays blank when you first find it, and that is the game telling you to come back later.</li>
+      <li><b>The trace itself.</b> Dragging fast between the top-right dot and the centre will skip dots and reset the grid. Draw it dot by dot in the order above, and finish on the middle-left dot rather than lifting early on the bottom row.</li>
+      <li><b>The door.</b> The exit is the green double door, not the phone, not the safe and not the shop front behind the counter. Use the key from the inventory first — tapping the door with the key still in the bag does nothing.</li>
+    </ul>
+
+    <h2>Chapter 2 levels<span class="accent">.</span></h2>
+    <p class="grid-note">Chapter 2 opens with the Cell Phone Store and runs twenty-six rooms; the list below reflects what is written up so far.</p>
+    <LevelSelector chapter={2} current={1} compact={true} label="Chapter 2 · No Honor Among Thieves" />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    <details><summary>What is the passcode in Rooms &amp; Exits Chapter 2 Level 1?</summary><p><b>792438</b>. There is only one number in the Cell Phone Store and you do not find it written on a wall: the handset in the shop prints it after you unlock it. Put the SIM card into the phone, draw the trace on the 3×3 lock screen, and a white pop-up reads "Your passcode is: 792438". That same code goes into the keypad on the wall unit.</p></details>
+    <details><summary>What is the pattern to unlock the phone?</summary><p>Start on the top-left dot and run along the top row: <b>1 → 2 → 3 → 5</b> (top-left, top-middle, top-right, centre) is the part our capture confirms twice. After the centre the line turns down to the bottom row; we could not verify the last dots twice from our recording, so instead of printing an order we are not sure of, copy the trace from the <b>Pattern</b> item in the inventory with <b>Examine</b> — that photo is the exact trace the phone accepts.</p></details>
+    <details><summary>Where do I get the SIM card?</summary><p>From the white handbag sitting on the sofa in the lounge. Tap the bag and the game hands you the item with the label <b>SIM card</b>. Without it the phone only ever says "No SIM Card Installed" and the lock screen never appears.</p></details>
+    <details><summary>What does the keypad code open?</summary><p>The keypad is mounted on the wall unit near the reception desk. Entering 792438 releases the unit and exposes a metal panel with fifteen round buttons in three rows of five. Clearing that panel opens the inner compartment, which holds the key to the front door.</p></details>
+    <details><summary>How do I finish the Cell Phone Store?</summary><p>Take the key out of the open safe, open the inventory, select the key and press <b>Use</b>, then tap the green double door on the far left wall. An exit icon appears on the door, the camera pulls back and the level ends on the results screen with <b>+50 coins</b>.</p></details>
+    <details><summary>How long does the Cell Phone Store take?</summary><p>The recording finishes it in 3:38 of level time, which is roughly three and a half minutes of play. Nothing in the level is timed and there is no fail state, so the only thing that can slow you down is hunting for the passcode before you have put the SIM card in the phone.</p></details>
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-1-level-11/">← Chapter 1, Level 11</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits guides →</a></p>
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>
