@@ -157,6 +157,7 @@ GSC 近 28 天（08-20~09-16）**267 曝光 / 5 点击**，均位 13.8。按设�
 - 首轮双帖（10-09）：[dailygames dev log](https://lemmy.zip/post/72921573) + [自有社区](https://lemmy.zip/post/72921575)
 - **遗留待办**：漏斗周报 cron `53f2a4b531f1` deliver=all 投递坏（10-04 结果丢失）→ 待改 deliver 目标
 - 新游戏收录（10-09 实测）：5 页（slitherlink/star-battle/kenken/hashi/binary）GSC URL Inspection **5/5 Submitted and indexed**，无孤岛（首页+akari 双入口内链），UV 基线：近 7 天 178 UV / 日均 ~30
+- 最近一轮（2026-11-16）：[!dailygames dev log](https://lemmy.zip/post/75101841)（角度=11-05 win-overlay 六页矮视口修复，changelog 已 backfill 该条 `438391e`）+ [自有社区转发](https://lemmy.zip/post/75101844)；`/akari/daily/` win-overlay 仍未修（P1 第 11 天，daily 页 CSS 仍 `justify-content:center`+`overflow:hidden`），帖文如实写「daily 页 next，不称 fixed」
 
 ---
 
