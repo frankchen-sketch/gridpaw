@@ -242,6 +242,53 @@ Train Tracks 是**随机/每日生成**制，不是关卡制。⇒ 没有「leve
 
 `keyword_ideas` 返回的 `kd`（如 `train tracks puzzle` kd=0）是**预筛难度**，与 web.cafe 精确 KD 29.8 差一个量级，**不可用于 KDROI**。KDROI 一律用 web.cafe 精确 KD。
 
+### 8.7 前排三家产品形态实测（2026-11-16 18:35）—— 全是可玩交互版，不是 PDF/攻略站
+
+| 站 | 形态 | 关键证据（HTML 实测） |
+|---|---|---|
+| `puzzlemadness.co.uk/traintracks/medium` | **可玩，功能最全** | `<canvas>` ×1；`Score` / `Reset` / **`Cloud Save`** / `Register FREE` / `Login` / `Print version` / Difficulty(Small·Medium·Large·Mixed) / `Archive`；**Google AdSense 在位**（`adsbygoogle` ×7）；TITLE = `Daily Medium Train Tracks Puzzle for Monday 16th November 2026 (Easy)` = 每日一题 |
+| `brainbashers.com/tracks.asp` | **可玩，轻量老式** | 无 canvas，6 个 script + DOM 交互；`Daily Tracks` + 日期选择 + Rules 说明；TITLE = `Daily Tracks - BrainBashers` |
+| `krazydad.com/play/tracks/` | **可玩，带分步提示** | `<canvas>` ×1、22 个 script；`Check answer` / `Reveal errors` / **`Show next step`**（分步解提示）/ `Printable image` / `Pause`；页面自述 "These interactive puzzles are currently down" = 维护中 |
+
+**三家都是「每日一题 + 可玩 + print 附属」结构。三家都有 print 入口，但都不是主力；没有一家是攻略站或纯 PDF 站。**
+
+### 8.8 决定性证据：三家都把 `train track puzzle` 当主力词
+
+TabAPI `top_keywords`（report 2026-10）：
+
+| 站 | `train track puzzle` 在其 top5 的位置 |
+|---|---|
+| puzzlemadness.co.uk | **第 1 位 —— 9,880/mo**（高于 samurai sudoku 6,240、thermo sudoku 1,210） |
+| brainbashers.com | **第 4 位 —— 9,880/mo**（前面是自家品牌词 + slitherlink 5,240） |
+| krazydad.com | 在 top5（前面是 star battle 29,170、killer sudoku 42,510、自家品牌词） |
+
+⚠️ 口径差：TabAPI 报 **9,880/mo**，webcafe 报 **5,400/mo（2026-09 桶 us）**。两者差近一倍，TabAPI 可能是 global 或含变体归并。**判断量级用 webcafe，判断「这词对竞品多重要」用 TabAPI 的排序——三家一致把它放进 top5，说明它是核心词而非边缘长尾。**
+
+### 8.9 SERP 结构结论
+
+`train track puzzle` 第一页 8 个有机结果：
+
+| 位 | 站 | 类型 |
+|---|---|---|
+| 1 | puzzlemadness.co.uk | **可玩网页版**（170 万月访） |
+| 2 | brainbashers.com | **可玩网页版**（77 万月访） |
+| 3 | Play Store（alexuvarov 的 app） | **App 商店** |
+| 4 | App Store | **App 商店** |
+| 5 | krazydad.com | **可玩网页版**（49 万月访） |
+| 6 | bosburyhistoryresource.org.uk | PDF/教辅类 |
+| 7 | YouTube | 视频 |
+| 8 | alexsmartbooks.com | 书/教辅 |
+
+⇒ **8 个槽：3 个可玩网页版 + 2 个 App 商店 + 0 个攻略站。** 攻略站不存在这条判断，从「help 词全 null」的**反面证据**升级为「SERP 一个攻略站都没有」的**正面证据**。
+
+⇒ 同时这也是**坏消息**：这不是蓝海新词，是**一个已由三家寡头做成成熟品类的词，被一个新 app 带火了搜索量**。我们要做的是第 4 个同构产品，体量差 50-100 倍。
+
+### 8.10 意外发现：真正的问题可能不在「加第 15 款」
+
+krazydad 的 top 词是 `star battle — 29,170/mo`（其站内最大词之一）。**我们已有 `/star-battle/` 页（28d `game_start` 仅 52）**。
+
+⇒ 差距 500 倍不是「品类没做」，是**已有页面接不住同品类寡头的流量**。在讨论「要不要加 train tracks 第 15 款」之前，更该先查清 `star battle` 为什么只拿 52。这是本报告指向的下一步，也是比 train tracks 更贵的那个问题。
+
 ---
 
 ## 数据源与口径声明
