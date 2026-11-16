@@ -124,18 +124,23 @@
 
 ---
 
-## 六、新词铃铛现状：停了（与本次重报直接相关）
+## 六、附带发现（比本案严重）：cron 全系统 11-15 16:05 ~ 11-16 18:04 停摆 ≈26 小时
 
-`~/.hermes/cron` job **`1329cf1d31a5` = [GridPaw] 新词侦察（游戏赛道）**（每天 08:00 / 20:00）：
+排查铃铛时发现这不是单个 job 的问题：
 
-| 轮次 | 状态 | 错误 |
-|---|---|---|
-| 11-15 20:00 | **failed** | `blocked_config: provider credential missing: No access token found for Nous Portal login` |
-| 11-16 08:00 | **failed** | 同上 |
+| 证据 | 读数 |
+|---|---|
+| 受影响 job | `executions.db` 里 **20+ 个不同 job_id** 报同一错误（含新词雷达 `1329cf1d31a5`、外链投递 `d957f6a6cdb4`（11 轮失败）、Furriq 日报 `e85a22c363cf`、GSC 系列） |
+| 起止 | 最早 **2026-11-15 16:05** → 最晚 **2026-11-16 12:05**；11-14 及之前大量 `completed` |
+| 错误原文 | `[blocked_config] provider credential missing: No access token found for Nous Portal login. [profile 'default', HERMES_HOME /Users/frank/.hermes]`；代码侧 `AuthError ... nous_auth_missing_access_token, relogin=True` |
+| 根因 | `~/.hermes/auth.json` 的 `providers.nous` OAuth token 失效（`auth_method=oauth_device_code`，`expires_in=3599`=1 小时寿命，靠 refresh 续） |
+| 恢复 | `auth.json` mtime **11-16 18:04**（重新 device-code 登录，`obtained_at=10:04:32Z`、`last_status=ok`、`request_count=5`）；18:13 实测 `hermes chat -q "reply PONG"` **2 秒返回 PONG** = 新进程认证已通 |
 
-⇒ **铃铛本身两轮未跑**。今天用户看到的「铃铛扫出来的」不可能是这个 cron 的产出——要么是哥飞新词服务（外部 500+ 词根日扫），要么是 11-10~11-12 的旧报告。**不修的话 11-16 20:00 还会挂。**
+⇒ **用户今天看到的「铃铛扫出 train track」不可能是今天的数据**——铃铛当天 08:00 那轮是 failed。这正是「旧账被当成新机会」的机械原因。
 
-修复方向（未执行，待批）：`hermes cron edit 1329cf1d31a5 --provider <p>` 钉一个可用 provider，或给 cron 执行环境补 Nous token。
+**风险未除**：access token 只有 1 小时寿命，若 refresh 链再断一次，全部自动化会再静默停摆且无告警（门铃本身依赖 cron）。建议（待批）：
+1. 给关键 job 钉稳定 provider：`hermes cron edit <id> --provider apineed`（`.env` 里 `APINEED_API_KEY` 在，`config.yaml` 已配 `providers.apineed`），把 OAuth 单点换掉；
+2. 或加一个「cron 自检」job：每小时读 `executions.db` 最近失败数，>0 发 Gmail（门铃不能自己值班）。
 
 ---
 
