@@ -110,6 +110,28 @@
 
 ---
 
+## 四·五、形态选择：游戏站 vs 攻略站（2026-11-16 补测，回答「tt 做哪种」）
+
+**结论：只有游戏站有需求，攻略站在这个品类上不存在。**
+
+| 路线 | 需求侧实测 | 供给成本 | 竞品现状 | 判定 |
+|---|---|---|---|---|
+| **攻略站 / help 页** | `train tracks hints` **null** / `train tracks answers` **null** / `train tracks walkthrough` **null** / `connect tracks walkthrough` **null**（本次 4 词 `fromCache=false` 真新读） | 低（纯内容页） | 竞品已铺 **12 篇规则/策略 guides × 多语言**：how-to-solve / strategy / for-beginners / faster-daily-times / puzzle-rules / clue-numbers-explained / medium-7x7 / hard-9x9 / common-mistakes / advanced-techniques / daily-how-it-works / vs-other-logic-puzzles / kids-and-classrooms —— 注册 40 天**仍是零流量** | ❌ **双杀**：自己没需求，对手把能写的全写了也没量 |
+| **游戏站（可玩）** | `train track puzzle` 5,400（09 桶）+ `train tracks puzzle` 1,900（09，880→1,300→1,900 连续三月爬）+ `train track puzzle online` 320（09）+ `train track game` **10=320**（本次唯一拿到 10 月桶的词，09=320 → 10=320 **持平**） | 2-4 天（Slitherlink 同构） | 有 daily + solver，DR 0.4 / 未守 | ✅ **唯一有量入口** |
+| 独立 EMD 游戏站 | 同上 | 高（388 URL 级） | EMD 位已被 traintrackspuzzle.com 占 40 天 | ⚠️ 晚入场，且该站证明这条路 40 天起不来 |
+
+**攻略站为什么必死（机制层，不是量的问题）**：
+Train Tracks 是**随机/每日生成**制，不是关卡制。⇒ 没有「level N solution」型长尾（对照 Rooms & Exits 105 关占攻略竞品 etv 60%，因为卡关即无法推进、求助刚性）；规则 6 步讲完，竞品 12 篇已覆盖全部可写主题。攻略站唯一的产品是 hints/answers，而这两个词的搜索量是 **null**。
+
+**若做游戏站，形态 = gridpaw 站内页 `/train-tracks-puzzle/`**，不是独立域名：
+- 复用现有域权重（GSC 28d 均位 4.8 / 250,920 曝光），新 EMD 则要从零开域龄闸
+- 一页同时承接 play 意图（可玩）+ rules 段（长尾，null 级但零成本）+ printable
+- 与现有 14 游戏共用 hint 门控 / share / PWA / GA4 埋点
+
+**新增待验点**：`train track puzzle` 主词 10 月桶未出（`fromCache=true`，缓存未滚动）。`train track game` 10 月持平说明 play 需求**可能已停止爬升**——若主词 10 月见顶（<5,400），本线价值进一步下降。
+
+---
+
 ## 五、决策选项
 
 | 选项 | 内容 | 成本 | 我的建议 |
@@ -134,7 +156,7 @@
 | 起止 | 最早 **2026-11-15 16:05** → 最晚 **2026-11-16 12:05**；11-14 及之前大量 `completed` |
 | 错误原文 | `[blocked_config] provider credential missing: No access token found for Nous Portal login. [profile 'default', HERMES_HOME /Users/frank/.hermes]`；代码侧 `AuthError ... nous_auth_missing_access_token, relogin=True` |
 | 根因 | `~/.hermes/auth.json` 的 `providers.nous` OAuth token 失效（`auth_method=oauth_device_code`，`expires_in=3599`=1 小时寿命，靠 refresh 续） |
-| 恢复 | `auth.json` mtime **11-16 18:04**（重新 device-code 登录，`obtained_at=10:04:32Z`、`last_status=ok`、`request_count=5`）；18:13 实测 `hermes chat -q "reply PONG"` **2 秒返回 PONG** = 新进程认证已通 |
+| 恢复 | `auth.json` mtime **11-16 18:04**（重新 device-code 登录，`obtained_at=10:04:32Z`、`last_status=ok`）；18:13 实测 `hermes chat -q "reply PONG"` **2 秒返回 PONG**；18:15 复查 `executions.db`：**18:00 之后 failed = 0**，`9c168db925db`/`2736b04bf8d4`/`4dd8b22f7490` 全部 completed、外链投递 `d957f6a6cdb4` running = **兄弟会话已修复，闭环** |
 
 ⇒ **用户今天看到的「铃铛扫出 train track」不可能是今天的数据**——铃铛当天 08:00 那轮是 failed。这正是「旧账被当成新机会」的机械原因。
 
