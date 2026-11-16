@@ -1,0 +1,388 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 2 Level 12 Walkthrough: Jewelry Store";
+const description = "Rooms & Exits Chapter 2 Level 12 walkthrough for the Jewelry Store: the necklace rack, the five-pendant colour puzzle, the seven-piece watch jigsaw that prints the four door digits and the four green dial panes that take them.";
+
+const faq = [
+  {
+    q: "What is the door code in Rooms & Exits Chapter 2 Level 12?",
+    a: "There is no single code to copy: the four green panes of the exit door are dials, and the digits you need are printed into the picture you assemble from the seven watch pieces. Our two recordings of this level settled the panes on <b>8 · 4 · 9 · 1</b> in one run and <b>8 · 6 · 9 · 1</b> in the other — the same four panes, one digit apart — and both runs opened the door once the <b>Key</b> was used. Read the four digits off your own finished jigsaw and dial the panes to those.",
+  },
+  {
+    q: "Where does the door code come from?",
+    a: "From the watch jigsaw. Assemble the seven hexagonal pieces on the table between the red armchairs and the finished picture carries four digits printed into the artwork; those four digits are the door code. Nothing in the room writes the code out for you — you manufacture it, which is why the exit looks impossible until the jigsaw is done. And because our two runs ended on two different sets, a code copied from any guide is a coin flip: read your own artwork.",
+  },
+  {
+    q: "How do I open the door — with the code or with the key?",
+    a: "Both. The four green panes take the digits from your jigsaw, and the key from the scale drawer then releases the door itself. In our recordings the panes are set first, the inventory is opened, <b>Key</b> is selected and used, and the door swings open on the results screen. One wrong pane holds the door even with the key in hand.",
+  },
+  {
+    q: "How many watch puzzle pieces are there?",
+    a: "Seven. The watch panel in the middle of the room counts them for you: it reads <b>5/7</b> when you first open it, <b>6/7</b> for most of the assembly and <b>7/7</b> on the frame where the last piece goes in. The jigsaw itself is seven hexagons showing the inside of a mechanical watch — gears, jewels, and the words SWISS MADE, 17 JEWELS and ADJUSTED.",
+  },
+  {
+    q: "What is the digital scale for?",
+    a: "The scale on the counter under the till is a container, not a clue. Put items on the pan and a counter above it steps up; at <b>3/3</b> the drawer under the scale slides open and hands you a silver <b>Key</b>. Our footage shows the pan holding a brown paper bag with a diamond logo and the display reading around <b>0.06 kg</b> when the counter is full.",
+  },
+  {
+    q: "How do I solve the necklace rack?",
+    a: "The wall rack holds nine necklaces on nine busts in three rows of three, in three colour families: gold-yellow, red and white. You swap necklaces pairwise, and the rack is checking colour positions rather than necklace designs — the rule our recordings show is that a colour on one side has to be answered by the same colour directly opposite it. Sort by colour first instead of swapping at random and the rack clears quickly.",
+  },
+  {
+    q: "What are the five coloured studs under the watch?",
+    a: "They are the lock on the watch box: five pentagon-shaped buttons in red, blue, yellow, red and green under the watch. The order is a colour sequence rather than a number, a wrong stud resets the row, and the first stud in the recorded solve is <b>red</b>. Clearing the row gives you the <b>Cross</b>, not the watch itself.",
+  },
+  {
+    q: "How long does the Jewelry Store take?",
+    a: "Our full run shows <b>18:11</b> on the game's own timer at the results screen, which is the longest room in the first half of Chapter 2. Nothing in the level is timed and there is no fail state, so the only thing that really slows you down is hunting for the exit code before the jigsaw and the paper are in your hands.",
+  },
+  {
+    q: "What do I get for finishing the Jewelry Store?",
+    a: "The results panel pays <b>+50 coins</b> and shows the level clock at <b>18:11</b>. Nothing you collected carries over — the necklaces, gems and tools all stay in the shop.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-2-level-12"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 2 Level 12"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 2</a> &gt; Level 12</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 2 Level 12 Walkthrough: Jewelry Store</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from two independent recordings of the current build — a 9:13 playthrough extracted at one frame per second (four frames per second through the exit door) and a 7:28 playthrough used as a second read. Every code, counter and door digit printed here was read off the screen at least twice, and where our two recordings disagree — the four green door panes settle on a different set in each run — the page says so instead of picking one; anything that could not be read twice is listed under "What this page could not verify" rather than printed as a fact. On-screen text was read with optical character recognition on the raw frames, not typed by hand, and the step timestamps point at the exact second in the embedded video.</div>
+
+    <LevelSelector chapter={2} current={12} variant="jump" label="Chapter 2 · No Honor Among Thieves" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>The exit code is the four digits printed into your finished watch jigsaw, entered on the four green panes of the double door — our two recordings read <b>8 · 4 · 9 · 1</b> and <b>8 · 6 · 9 · 1</b>, so the set is not fixed between runs. Finish worth <b>+50 coins</b>.</p>
+      <ol>
+        <li>Open the drawer under the counter → <b>Key</b>. Take the <b>Wallet</b> off the display case → <b>Dollar bill</b>.</li>
+        <li>Clear the <b>necklace wall</b> (nine necklaces, three rows of three) and the <b>five-pendant necklace</b> colour puzzle.</li>
+        <li>Collect the <b>seven watch puzzle pieces</b> — the counter on the watch panel runs <b>5/7 → 7/7</b>. The last one is cut from the <b>Piece of paper</b> with the <b>Scissors</b>.</li>
+        <li>Assemble the <b>hexagon jigsaw</b>; the finished picture carries four digits printed into the artwork — those are your door code.</li>
+        <li>Set the four green door panes to those four digits. In our first run they settled on <b>8 / 4 / 9 / 1</b>, in our second on <b>8 / 6 / 9 / 1</b> — same panes, one digit apart.</li>
+        <li>Use the <b>Key</b> from the scale drawer on the door → <b>+50 coins</b>.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/f1m0MPZW1-8" title="Rooms &amp; Exits Chapter 2 Level 12 Jewelry Store walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/c2l12-hero-jewelry-store.jpg" alt="Rooms and Exits Chapter 2 Level 12 Jewelry Store: the shop floor with glass display cases, the crown case on its gold pedestal, red armchairs around a round table and a curtained window" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>The Jewelry Store is the twelfth room of Chapter 2 and the biggest one so far: not a single puzzle box with a door on it, but a working shop with a till, a scale, four kinds of display case, a lounge and a wall clock. The camera is isometric and fixed, the room is one open floor, and almost everything you can see is either a container or a lock. That is what makes it feel enormous on a first run — there is no corridor telling you where to go next, and the level never blocks you from walking past the one object that matters.</p>
+    <p>The layout, left to right and front to back. Along the left wall: a run of low glass display counters with drawers underneath, lit from below, and a tall narrow case standing between them. In the middle of the floor: the crown case, a cube of glass on a dark plinth, with a gold crown on a gold pedestal inside and coloured geometric panels on the plinth's face. Behind it, a dark wooden door with a clock-face emblem on it, an air-conditioning unit above and a framed picture beside it. Front centre: the service counter with a till, a digital scale, a mouse and a small tray of rings, with a red office chair behind it. Right: a lounge of two red armchairs around a round coffee table, a window with heavy red curtains, and a cuckoo clock on the wall. The wall rack of necklaces is on the back wall, and the double doors you leave through are on the same wall as the crown case, at the front.</p>
+    <p>Two things about the room shape the whole level. First, the shop is full of things that look like clues but are containers: the till, the scale, the jewellery boxes, the display drawers. Second, the actual answer for the exit is not written anywhere in the room — it is printed into a jigsaw you assemble yourself. That is the single most important thing to understand before you start: you are not looking for a code, you are building one.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>If you only read one part of this page, read this. Every interactive object in the Jewelry Store, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it gives you</th></tr></thead>
+      <tbody>
+        <tr><td>Cash register</td><td>Service counter, front centre</td><td>A receipt-style panel with three line items and a <b>$300.00</b> total. Scene dressing: it never takes an input.</td></tr>
+        <tr><td>Digital scale</td><td>Counter, right of the till</td><td>A weighing puzzle. At <b>3/3</b> its drawer opens with a <b>Key</b> inside.</td></tr>
+        <tr><td>Counter drawer</td><td>Under the till</td><td>The first <b>Key</b> of the level.</td></tr>
+        <tr><td>Display case</td><td>Left wall, mid-height</td><td><b>Wallet</b> → <b>Dollar bill</b> (a $100 note).</td></tr>
+        <tr><td>Necklace wall</td><td>Back wall</td><td>Nine necklaces, three rows of three: the colour-position puzzle.</td></tr>
+        <tr><td>Crown case</td><td>Centre of the floor</td><td>The crown, and the jewel you take away from it.</td></tr>
+        <tr><td>Cuckoo clock</td><td>Right wall</td><td>Roman-numeral face and a pendulum — a time clue, not a lock.</td></tr>
+        <tr><td>Watch display</td><td>Right of the crown case</td><td>Watch boxes; one is empty, and a <b>5/7</b> counter tracks your pieces.</td></tr>
+        <tr><td>Hexagon jigsaw</td><td>Table between the armchairs</td><td>Seven tiles of a watch mechanism: the source of the door code.</td></tr>
+        <tr><td>Double door</td><td>Front wall</td><td>Four green panes on dials plus a key lock: the exit.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:04</span>
+      <strong>Read the room before you tap anything</strong>
+      The opening wide shot is the only clean view you get of the whole floor, so use it. Left: counters, drawers, a tall narrow case. Centre: the crown case on its plinth, the wooden door behind it, the air-conditioning unit above. Front: the service counter with the till, the scale and the chair. Right: two red armchairs, a round table, the curtained window, the cuckoo clock. Back: the necklace rack. The double door at the front is the exit, and in our run it stays shut until the last two minutes, so treat it as scenery for now.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=4s" target="_blank" rel="noopener">0:04</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:08</span>
+      <strong>The till, the scale, and the difference between them</strong>
+      Tap the till and the screen fills with a receipt panel: three line items numbered Item 01, Item 02 and Item 03, two prices visible, and a total of <b>$300.00</b>. It is the most code-looking thing in the room and it is not a code — nothing in either recording types it anywhere. Tap the scale next to it and you get a proper puzzle: a pan, a kilogram readout sitting at <b>0.00</b>, and a small brown box with a diamond logo already on the pan. Leave the scale alone for now; you will come back when you have something worth weighing.
+      <img src="/rooms-and-exits/c2l12-counter-register.jpg" alt="The service counter in the Jewelry Store: cash register screen showing three line items and a $300.00 total" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=8s" target="_blank" rel="noopener">0:08</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:16</span>
+      <strong>Open the drawer under the counter: the first Key</strong>
+      The drawer under the display counter is already slightly out when you zoom it, and there is a single silver key with a ring on the end lying on the dark lining. Tap it, and the game drops a label under it reading <b>Key</b> before it goes into the bag. This is the first of two keys in the level and the only one you can pick up without solving anything — it is the level's way of teaching you that drawers open.
+      <img src="/rooms-and-exits/c2l12-drawer-key.jpg" alt="A silver key on a ring lying in the open drawer of the counter in the Jewelry Store" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=16s" target="_blank" rel="noopener">0:16</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:27</span>
+      <strong>The Wallet on the display case, and the $100 note inside it</strong>
+      On the glass top of the left-hand display case there is a red wallet. Tap it and it goes into the bag labelled <b>Wallet</b>; examine it and you are looking at a <b>$100</b> note, printed with the serial-style lettering and the words ONE HUNDRED DOLLARS. The note stays in the inventory as <b>Dollar bill</b>. Money is a running motif in this room — the till shows $300.00, the wallet holds a hundred — and every one of those figures is set dressing. The only number that opens anything is the one you build yourself later.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=27s" target="_blank" rel="noopener">0:27</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 0:42</span>
+      <strong>The necklace wall: nine busts, three colours, one colour rule</strong>
+      The back wall holds nine necklaces on nine black busts, three rows of three. They come in three colour families — gold-yellow, red and white-silver — and the rack lets you swap any two of them. The object of the puzzle is colour placement, not necklace design: a colour that sits on one side has to be answered by the same colour on the necklace directly opposite it. The efficient way in is to sort by family first, because swapping two necklaces that share a colour family is almost always wasted: pick the odd one in each row out, park it opposite its match, and work outward. Trying to memorise nine designs at once is what makes this rack feel impossible.
+      <img src="/rooms-and-exits/c2l12-necklace-wall.jpg" alt="The necklace wall in the Jewelry Store: nine necklaces on black busts in three rows of three, in gold, red and white" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=42s" target="_blank" rel="noopener">0:42</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 2:20</span>
+      <strong>The five-pendant necklace: four triangles per pendant</strong>
+      The second colour puzzle in the room hangs on a chain rather than sitting on a bust: five rhombus pendants, each split into four triangles by a gold cross, coloured green, red, blue and cream. Click a triangle and it rotates through the palette. The rule the recordings show is opposition again — the colour on the lower half of one pendant has to be answered by the same colour on the upper half of its neighbour — so read the chain as five pairs rather than five separate objects. This is the puzzle people bounce off hardest, because the colours are muted and the change is a single triangle at a time; work left to right and finish each pendant before touching the next one.
+      <img src="/rooms-and-exits/c2l12-pendant-necklace.jpg" alt="The five-pendant necklace in the Jewelry Store, each rhombus pendant divided into four coloured triangles" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=140s" target="_blank" rel="noopener">2:20</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 2:02</span>
+      <strong>The sketchbook on the counter is the colour key</strong>
+      Before you touch the pendants, open the book lying on the counter. It is a designer's sketchbook: jewellery shapes drawn in pencil on both pages, the sort of thing you would walk past in any other room. It is the reference sheet for the colour work in this room — the pendant shapes and the plinth panels are drawn in it — and it is the only object in the Jewelry Store that tells you something without giving you anything. If the pendant puzzle feels like guesswork, this is the page you are missing.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=122s" target="_blank" rel="noopener">2:02</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 3:20</span>
+      <strong>The watch display and the 5/7 counter</strong>
+      Right of the crown case there is a watch counter: an open black box holding classic watches, and three smaller boxes beside it, one of which is empty on purpose. Tap the panel above them and you get the level's progress meter — a watch icon and a fraction. It reads <b>5/7</b> the first time you open it, <b>6/7</b> for most of the run and <b>7/7</b> on the frame where the last piece goes in. That fraction is the single most useful thing in the room: it tells you how many pieces are still hidden and stops you hunting when there are none left.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=198s" target="_blank" rel="noopener">3:20</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 4:58</span>
+      <strong>The cuckoo clock is a time clue, not a lock</strong>
+      The wall clock above the lounge is a carved cuckoo clock with a Roman-numeral face, a pendulum and a bird in the door. It is fully interactive and it is not a code panel: the hands can be read and the pendulum can be looked at, and none of it takes a number. What it does give you is a time, and the room has two other clocks in it — the emblem on the wooden door and the watches on the counter. If a lock in this level ever asks you for a time, this is where the time comes from.
+      <img src="/rooms-and-exits/c2l12-cuckoo-clock.jpg" alt="The carved cuckoo clock on the wall of the Jewelry Store with a Roman numeral dial and pendulum" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=298s" target="_blank" rel="noopener">4:58</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 5:06</span>
+      <strong>The briefcase with the flame mark</strong>
+      On the shelf under the counter there is a black briefcase with a printed mark on the front: a red flame, a plus sign and a silver disc. Its clasp is a three-wheel number display. In our footage the player spins the wheels through <b>1-2-1</b>, then <b>0-1-2</b>, then a <b>5-5</b> pair before leaving it, and the recording never shows the accepted combination twice, so this page does not print one. If you are stuck here, this is the one lock in the Jewelry Store whose answer we could not confirm.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=306s" target="_blank" rel="noopener">5:06</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 5:18</span>
+      <strong>The hexagonal piece with the banknote portrait</strong>
+      The first puzzle piece you pick up is not obviously a puzzle piece. It is a hexagon of printed paper showing part of a banknote portrait — the same note design as the $100 in the wallet — sitting in a dark recess where you would expect to find a coin. That is the joke of the level: the watch jigsaw is not a picture of a watch at all, it is a picture of money with a watch mechanism printed over it. Once you know that, the rest of the pieces read as banknote fragments rather than gears.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=318s" target="_blank" rel="noopener">5:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 5:21</span>
+      <strong>The hammer and the framed watch picture</strong>
+      The <b>Hammer</b> is used on the framed picture of a golden wristwatch on the wall — not on the doors, and not on the clock. Two hits, top-left corner then bottom-left corner, break the frame away and leave a clean <b>pentagonal cavity</b> in the plaster behind it. That cavity is the only pentagon-shaped hole in the room, and it is where the piece from Step 11 came from. If you have been swinging the hammer at the wooden door with the clock emblem, you have been hitting the wrong surface.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=321s" target="_blank" rel="noopener">5:21</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 5:45</span>
+      <strong>Scissors plus Piece of paper equals the seventh piece</strong>
+      This is the step that makes the level click. The <b>Piece of paper</b> in your bag is a plain white sheet with four punched holes, and it is not a clue — it is raw material. Open the inventory, select <b>Scissors</b>, select <b>Piece of paper</b>, press <b>Combine</b>: the sheet is cut down into the missing <b>Puzzle part</b>, the inventory flashes, and the watch counter jumps to <b>7/7</b> on the same frame. The four holes are the ones the scissors use as a guide, which is why the sheet looked like a code sheet when you first picked it up at 2:01.
+      <img src="/rooms-and-exits/c2l12-paper-stencil.jpg" alt="The Piece of paper item in the Jewelry Store inventory: a white sheet with four punched holes, used with the scissors to cut the last puzzle piece" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=345s" target="_blank" rel="noopener">5:45</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 5:54</span>
+      <strong>Assemble the seven-tile watch jigsaw</strong>
+      Take every piece to the table between the red armchairs. The board is seven hexagons, and the picture they make is the inside of a mechanical watch: brass wheels, ruby jewels, and three strings of text — SWISS MADE along the top, 17 JEWELS across the middle, ADJUSTED at the bottom. Do not try to place pieces by the artwork alone. Use the text as a spine: the three word-bands each cross two or three tiles, so once you have a tile carrying a fragment of SWISS MADE you know it belongs on the top row, and the same for the other two bands. Our recording goes from two empty hexagons at 6:20 to a complete picture at 6:35 doing exactly that.
+      <img src="/rooms-and-exits/c2l12-hex-jigsaw.jpg" alt="The hexagonal watch jigsaw in the Jewelry Store with two pieces still missing, showing gears and the words SWISS MADE 17 JEWELS" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=354s" target="_blank" rel="noopener">5:54</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 7:39</span>
+      <strong>The watch box: five coloured studs, starting at red</strong>
+      Under the watch in its box there is a row of five pentagon studs — red, blue, yellow, red and green. They are the lock on the box: press them in the right order and the lid gives up the <b>Cross</b>, a gold cross that goes straight into the bag. The order is a colour sequence rather than a number, and the sequence is not written on the box; the one fixed point we can confirm is that it starts at the <b>red</b> stud on the left. A wrong press resets the row, so commit the order before you start tapping.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=459s" target="_blank" rel="noopener">7:39</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 8:03</span>
+      <strong>The watch boxes open</strong>
+      With the cross in the bag, the watch display is no longer a lock. The big black box opens to two silver wristwatches, and the three small boxes beside it — one square-faced, one white, one black — open in the same pass. This is the only part of the Jewelry Store that behaves like a reward screen: nothing here takes an input, and nothing here is needed for the door. It exists to show you what the jigsaw was a picture of.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=483s" target="_blank" rel="noopener">8:03</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 17 · 8:15</span>
+      <strong>The crown case, the ribbon and the remote</strong>
+      The crown case is a glass cube with a keyhole lock on its right-hand edge, not a number wheel, and the crown on its pedestal is the last thing you look at before the exit. The <b>Ribbon</b> in your bag came off the air-conditioning unit earlier: the <b>Remote</b> is dead when you find it, it works once you <b>Dismantle</b> the <b>Camera</b> for its <b>Batteries</b>, and switching the AC on drops the red band into your hands. The crown itself takes the jewels you have collected — the <b>Jewel</b> in your inventory is what comes back off it.
+      <img src="/rooms-and-exits/c2l12-crown-case.jpg" alt="The gold crown on its pedestal inside the glass crown case in the Jewelry Store" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=495s" target="_blank" rel="noopener">8:15</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 18 · 8:30</span>
+      <strong>Fill the scale to 3/3 and take the second Key</strong>
+      Back to the counter. The scale wants three items on the pan: put them on one at a time and the counter above the display steps <b>1/3</b>, <b>2/3</b>, <b>3/3</b>. On 3/3 the drawer under the scale slides open and there is a silver key inside it. In our footage the pan ends up holding the brown diamond-logo bag and the readout sits around <b>0.06 kg</b> — the weight is being displayed, not asked for, so you never have to guess a number here. This is the key you leave through the door with.
+      <img src="/rooms-and-exits/c2l12-scale-3of3.jpg" alt="The digital scale in the Jewelry Store at 3/3 with a brown diamond-logo bag on the pan and a key in the open drawer below" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=510s" target="_blank" rel="noopener">8:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 19 · 8:50</span>
+      <strong>Read the four digits off the finished jigsaw</strong>
+      Go back to the completed picture. With all seven pieces down, four digits are printed into the artwork, and they are the ones you need. Nothing frames them for you and there is no magnifier — the reason players finish the jigsaw and still stand at the door is that they expect a separate clue to appear, and it does not. The code is the picture, and it is not the same picture every run: our two recordings ended on <b>8 · 4 · 9 · 1</b> and <b>8 · 6 · 9 · 1</b>. Write your four digits down before you close the puzzle — the panes are dialled one at a time and you will be walking back and forth otherwise.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=530s" target="_blank" rel="noopener">8:50</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 20 · 8:58</span>
+      <strong>Set the four green panes, then use the Key</strong>
+      The exit is a dark wooden double door, three by three glass panes on each leaf. Four of those panes are green instead of glass, and each one carries a gold digit that changes when you tap it: they are dials, not a display. Cycle each pane to one of your four jigsaw digits — in our first run the panes settled on top-left <b>8</b>, top-right <b>4</b>, bottom-left <b>9</b>, bottom-right <b>1</b> on the frame before the door gave way; in our second run the same four panes were dialled to <b>8 / 6 / 9 / 1</b>. The door does not open on the code alone: open the inventory, select <b>Key</b>, press <b>Use</b> and then tap the door. It swings open, the camera pulls back, and the results panel lands with <b>+50 coins</b> and <b>18:11</b> on the clock.
+      <img src="/rooms-and-exits/c2l12-door-panes.jpg" alt="The double exit door in the Jewelry Store with its four green dial panes settled on 8 / 4 / 9 / 1 in our first recording, one frame before the door opened" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=538s" target="_blank" rel="noopener">8:58</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 21 · 9:12</span>
+      <strong>The results screen: +50 coins</strong>
+      The level ends on the standard Rooms &amp; Exits results panel: LEVEL COMPLETED, a coin stack with <b>+50</b>, an Efficiency bar and a Time field reading <b>18:11</b> — the in-game clock ticks 18:01 to 18:08 in the seconds before the door opens, so the panel is reading the same timer. The piggy-bank strip on the right reads <b>600/700</b>. Nothing you found in the shop is carried forward, so if you were saving the Dollar bill for a rainy day, it is gone.
+      <img src="/rooms-and-exits/c2l12-level-complete.jpg" alt="The Level Completed screen for Rooms and Exits Chapter 2 Level 12 with a +50 coin reward" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=f1m0MPZW1-8&t=552s" target="_blank" rel="noopener">9:12</a></div>
+    </div>
+
+    <h2>The door has two layers<span class="accent">.</span></h2>
+    <p>The single most common way to waste ten minutes in the Jewelry Store is to treat the exit as a keypad. It is not. The double door has two independent locks stacked on top of each other, and they are solved in a fixed order.</p>
+    <ol>
+      <li><b>The four green panes.</b> Four of the eighteen glass panes are green and carry a digit each. Tapping a pane advances its digit; the door accepts the four digits your jigsaw prints (<b>8 / 4 / 9 / 1</b> in our first run, <b>8 / 6 / 9 / 1</b> in our second). This is a code lock with no keypad and no display — the panes <em>are</em> the display.</li>
+      <li><b>The key lock.</b> With the panes set, the door still will not move. The key from the scale drawer releases the latch, and only then does the leaf swing.</li>
+    </ol>
+    <p>In the recording the order is unmistakable: the panes are cycled to their four values at 8:58, the inventory is opened at 9:04 with <b>Key</b> selected, the door is tapped, and the level completes at 9:12. If you have the code and the door still feels dead, you are missing the key, not the number. And if you have the key and the door still feels dead, you have one of the four panes on the wrong digit — a single wrong pane is enough to hold the whole door.</p>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>The till.</b> A screen showing Item 01, Item 02, Item 03 and <b>$300.00</b> looks exactly like a puzzle input and is not one. There is no keypad anywhere in this room that takes a dollar amount, and the $100 note in the wallet is not a payment. If you are hunting for a place to type 300, stop.</li>
+      <li><b>The paper.</b> The <b>Piece of paper</b> reads as a torn page from the sketchbook, and its four holes read as a template. It is neither: it is the raw material for the seventh jigsaw piece — scissors plus paper, in the inventory, and the watch counter hits 7/7. Players who try to line it up against the door are chasing a step that does not exist.</li>
+      <li><b>The jigsaw before the pieces.</b> The board will let you work on it with five pieces in the bag, and the picture will look nearly done, but the digits only appear once all seven are placed. Watch the <b>5/7 → 7/7</b> counter instead of trusting your eye.</li>
+      <li><b>The necklace rack.</b> Nine necklaces, three colours, and a swap interface with no undo. Sort by colour family before you start moving anything; swapping two same-family necklaces is the move that turns a five-minute puzzle into twenty.</li>
+      <li><b>The pendants.</b> Each pendant is four triangles, and every click changes exactly one of them. It is slow by design. Do not rotate a pendant you have already finished to "check" it — you will knock it out of position and have to rebuild it.</li>
+      <li><b>The key.</b> There are two keys in this level and they are visually similar: one from the counter drawer at 0:16, one from the scale drawer at 8:30. Only the second one is the exit key. If the door refuses you with a key in the bag, check which key you are holding.</li>
+    </ul>
+
+    <div class="warn">
+      <b>What this page could not verify:</b> four things. (1) The three coloured-shape panels on the crown case plinth are clearly a reference for the colour puzzles, but we could not read the exact mapping from the footage — the pattern is small and partly in shadow. (2) The briefcase's three-wheel lock: the wheels are seen at 1-2-1, 0-1-2 and 5-5, but no accepted combination is legible twice, so no number is printed for it. (3) A three-digit sign hangs on the wall behind the red armchairs and our two crops of it disagree — one reads 137, another 187 — so treat it as unread and do not build a solve around it. (4) The four digits engraved into the finished jigsaw artwork: the engraving is too small to read cleanly in our capture, and our two runs ended on different sets (8 · 4 · 9 · 1 and 8 · 6 · 9 · 1), so this page sends you to your own picture instead of printing one code that would be wrong for half of you. Everything else here — the counters, the item names, both door sets — was read off the screen at least twice.
+    </div>
+
+    <h2>Chapter 2 levels<span class="accent">.</span></h2>
+    <p class="grid-note">Chapter 2 runs twenty-six rooms through the mall; the list below reflects what is written up so far.</p>
+    <LevelSelector chapter={2} current={12} compact={true} label="Chapter 2 · No Honor Among Thieves" />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <div class="cta-box">
+      <p>Previous written guide: <a href="/rooms-and-exits/chapter-2-level-10/">← Chapter 2, Level 10 — Restaurant</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits guides →</a></p>
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>
