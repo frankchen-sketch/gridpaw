@@ -19,9 +19,11 @@ const BASE = 'https://bauval.org/22/';
 // 任何一起跳转投诉=当天撤，不辩护。
 const ADSTERRA_OFF = false;
 
-// 2026-11-07 法老拍板（方案①）：play surface 零广告。
-// 命中即整组件不输出——AdGate、三个 slot、CSS 全不出，连空盒子都不留。
-// 判据是路径白名单（去尾斜杠比较）；新增游戏页/解题器页必须同步加进来。
+// play surface（棋盘页/解题器/单关页）2026-11-16 起从「零广告」改为「只开桌面侧栏」：
+//   ≥1350 的左右 160×600 / 160×300 落在 840px 内容列之外的空白 gutter ——
+//   29 个 play surface 逐页 elementFromPoint 采样实测（1440/1350 两档），棋盘格、按钮、文字零命中。
+//   手机端顶部位 / 平板 sticky / 手机底部第二信息流仍然一个都不出（顶部抢首屏、sticky 压控件）。
+//   判据仍是路径白名单（去尾斜杠比较）；新增游戏页/解题器页必须同步加进来。
 const PLAY_SURFACES = new Set([
   '/',
   '/akari', '/binary', '/crazy-cleanup', '/hashi', '/kakuro', '/kenken',
@@ -36,11 +38,16 @@ const PLAY_SURFACES = new Set([
 ]);
 // 按目录整片收：单关棋盘页（/akari/puzzle/puzzle-001 … /meowdoku/levels/1 …）
 const PLAY_PREFIXES = ['/akari/puzzle/', '/meowdoku/levels/'];
+// 永久零广告（连侧栏都不出）：
+//   /murdoku、/murdoku/trail —— main 是 1152px 全宽（2026-10-14 「侧栏吞点击」那次事故的同一个布局债），
+//     侧栏会落在网格上；实测 25/25 采样点命中 main.main。要么先把它收到 840，要么继续全零。
+//   /unlock-all、/ad-free —— 售卖页，用户是来买/关广告的。
+const NEVER_ADS = new Set(['/murdoku', '/murdoku/trail', '/unlock-all', '/ad-free']);
 const PAGE_PATH = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const isPlaySurface =
   PLAY_SURFACES.has(PAGE_PATH) || PLAY_PREFIXES.some((p) => PAGE_PATH.startsWith(p));
 
-const SHOW = !ADSTERRA_OFF && !isPlaySurface;
+const SHOW = !ADSTERRA_OFF && !NEVER_ADS.has(PAGE_PATH);
 ---
 {SHOW && <AdGate />}
 
@@ -58,7 +65,7 @@ const SHOW = !ADSTERRA_OFF && !isPlaySurface;
 </div>
 )}
 
-{SHOW && (
+{SHOW && !isPlaySurface && (
 <div class="gp-sticky-ad" id="gpStickyAd">
   <span class="gp-sticky-ad__label">Advertisement</span>
   <button class="gp-sticky-ad__close" type="button" aria-label="Close advertisement">×</button>
@@ -66,14 +73,14 @@ const SHOW = !ADSTERRA_OFF && !isPlaySurface;
 </div>
 )}
 
-{SHOW && (
+{SHOW && !isPlaySurface && (
 <div class="gp-top-ad">
   <span class="gp-top-ad__label">Advertisement</span>
   <div class="gp-top-ad__slot" data-gp-slot="top"></div>
 </div>
 )}
 
-{SHOW && (
+{SHOW && !isPlaySurface && (
 <div class="gp-mf-ad">
   <span class="gp-mf-ad__label">Advertisement</span>
   <div class="gp-mf-ad__slot" data-gp-slot="mobilefoot"></div>
@@ -94,7 +101,7 @@ const SHOW = !ADSTERRA_OFF && !isPlaySurface;
 
   // 内嵌模式（?embed=1）：一个广告都不出，连盒子也不留
   if (new URLSearchParams(location.search).has('embed')) {
-    var all = document.querySelectorAll('.gp-side-ad, .gp-sticky-ad, .gp-top-ad');
+    var all = document.querySelectorAll('.gp-side-ad, .gp-sticky-ad, .gp-top-ad, .gp-mf-ad');
     for (var i = 0; i < all.length; i++) all[i].style.display = 'none';
     return;
   }
