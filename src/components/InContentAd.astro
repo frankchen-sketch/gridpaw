@@ -7,20 +7,28 @@
 // 串行注入（set atOptions → append invoke.js → 等 load），否则后注入方的尺寸会覆盖先注入方。
 // 2026-10-22 起注入前过 AdGate（geo 黑名单 CN/HK + bot UA，fail-open）。
 import AdGate from './AdGate.astro';
+import NativeAd from './NativeAd.astro';
+import { NATIVE_TEST_PATHS } from '../data/native-test-pages';
 // 2026-11-07 恢复：法老拍板「先恢复 Adsterra 做收益」，站点转向攻略站。
 // 只恢复静态 banner 类（本组件 300x250 iframe / SideAd 160x600 iframe）；
 // AdSlot 的 Native 门保持 false（Native 卡片是 10-15 投诉的直接来源，不恢复）。
 // 恢复闸：/changelog/ 公告 → 邮件 Peter(DLES.gg) → 才上线；任何一起跳转投诉=当天撤。
 const ADSTERRA_OFF = false;
+
+// 2026-11-16 起：格式对账实验。命中清单的页把 300×250 iframe 换成 Native Banner（无 iframe）。
+// 清单/分组/回滚方式见 src/data/native-test-pages.ts；实验结束清空数组即全站回 iframe。
+const PAGE_PATH = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const useNative = NATIVE_TEST_PATHS.has(PAGE_PATH);
 ---
 {!ADSTERRA_OFF && <AdGate />}
-{!ADSTERRA_OFF && (
+{!ADSTERRA_OFF && useNative && <NativeAd />}
+{!ADSTERRA_OFF && !useNative && (
 <div class="gp-incontent-ad" aria-hidden="true">
   <span class="gp-incontent-ad__label">Advertisement</span>
   <div class="gp-incontent-ad__slot"></div>
 </div>
 )}
-{!ADSTERRA_OFF && (
+{!ADSTERRA_OFF && !useNative && (
 <script is:inline>
 (function () {
   if (new URLSearchParams(location.search).has('embed')) return;

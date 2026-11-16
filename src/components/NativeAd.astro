@@ -1,0 +1,84 @@
+---
+// NativeAd — Adsterra **Native Banner**（unit 31317669 / key da224f8ab8a18845cf7b27479830ecfb）。
+// 与站上其它四个单元的本质区别：**没有 iframe**——创意以 `<a><img>` 直接内联进本页 DOM。
+// 它和 banner 不是同一个 demand pool，CPM 结构也不同（10 月历史：Native $3.08-3.21 vs Banner $0.227）。
+//
+// 用途：2026-11-16 起的格式对账实验（法老要求验「去掉 iframe 收益更高」），启用页 = src/data/native-test-pages.ts。
+// ⚠ 它是 10-15 Reddit 投诉 / 10-29 第二次跳转投诉的直接形态来源，AdSlot 的 native 门到今天仍钉死 false。
+//   本组件只给「有限页 + 限时」实验用，不进 AdSlot、不进 SideAd。任何跳转投诉 = 清空清单当天回滚。
+//
+// 依赖：调用方页面必须已渲染 <AdGate />（提供 window.__gpGeoGate + bot/geo 闸），本组件不自带 AdGate。
+// 注入纪律与 InContentAd 相同：embed 跳过 / 付费去广告跳过 / geo 闸放行后才注入 / 走 __gpAdChain 串行
+// （同页 SideAd 的 banner 单元也读全局 atOptions，串行避免互踩）。
+const KEY = 'da224f8ab8a18845cf7b27479830ecfb';
+// invoke 域会轮换；现值以后台 API GET /api/placements/6063560/extended 的 codes[0].code 为准（2026-11-07 实测）。
+// 历史域 pl31418168.profitableratecpmnetwork.com 已作废，勿照抄旧档。
+const SRC = 'https://bauval.org/21/' + KEY;
+const CONTAINER_ID = 'container-' + KEY;
+---
+
+<div class="gp-native-ad" aria-hidden="true">
+  <span class="gp-native-ad__label">Advertisement</span>
+  <div class="gp-native-ad__slot" id={CONTAINER_ID}></div>
+</div>
+
+<script is:inline>
+(function () {
+  if (new URLSearchParams(location.search).has('embed')) return;
+  var free = false;
+  try { free = !!localStorage.getItem('gp_ads_free'); } catch (e) {}
+  if (free) { document.documentElement.classList.add('gp-ads-free'); return; }
+  var SRC = 'https://bauval.org/21/da224f8ab8a18845cf7b27479830ecfb';
+  var slot = document.getElementById('container-da224f8ab8a18845cf7b27479830ecfb');
+  if (!slot || slot.childElementCount > 0) return;
+  window.__gpAdChain = window.__gpAdChain || Promise.resolve();
+  function chain() {
+    window.__gpAdChain = window.__gpAdChain.then(function () {
+      return new Promise(function (resolve) {
+        if (!slot.isConnected || slot.childElementCount > 0) return resolve();
+        var s = document.createElement('script');
+        s.async = false;            // 串行：必须排在 __gpAdChain 队内，避免打乱 banner 侧 atOptions 的时序
+        s.setAttribute('data-cfasync', 'false'); // 绕开 CF Rocket Loader，否则 loader 会被推迟到不可预期的时机
+        s.src = SRC;
+        s.addEventListener('load', resolve);
+        s.addEventListener('error', resolve);
+        slot.appendChild(s);
+      });
+    });
+  }
+  if (window.__gpGeoGate) window.__gpGeoGate.then(function (allow) { if (allow) chain(); });
+  else chain();
+})();
+</script>
+
+<style>
+  /* 预留盒子：填充前不闪白、未填充也不留白块。高度比 banner 的 250 略高（native 4:1 widget 换行后
+     通常 260-320），但**不 overflow:hidden**——裁掉创意会同时裁掉收入，宁可盒子跟着内容长高。 */
+  .gp-native-ad {
+    max-width: 640px;
+    min-height: 260px;
+    margin: 0.9rem auto;
+    background: #FFF8E6;
+    border: 1.5px dashed #E8D5B5;
+    border-radius: 10px;
+    position: relative;
+    padding: 22px 8px 8px;
+    box-sizing: border-box;
+  }
+  .gp-native-ad__label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #C9B48F;
+    background: #FBF1DC;
+    padding: 2px 7px;
+    border-radius: 0 0 6px 0;
+    z-index: 1;
+  }
+  .gp-native-ad__slot { min-height: 228px; }
+  html.gp-ads-free .gp-native-ad { display: none !important; }
+</style>
