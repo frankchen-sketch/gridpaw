@@ -19,7 +19,8 @@ export const FUNNEL_EVENT_LIST: string[] = [
   // 2026-11-09 BP3 头部「Unlock all」付费意向测试（与 funnel-track.ts 同步）
   'unlock_click',
   // 2026-10-19 全站清扫补录（与 funnel-track.ts 同步；详见该文件注释）
-  'onboard_start', 'onboard_step', 'rules_overlay_open', 'rules_overlay_close',
+  // 2026-11-17 补录：onboard_complete/onboard_skip 客户端已在发，此处此前未收（400 丢弃）
+  'onboard_start', 'onboard_step', 'onboard_complete', 'onboard_skip', 'rules_overlay_open', 'rules_overlay_close',
   'hint_used', 'puzzle_mistake', 'puzzle_complete', 'level_fail', 'board_dead', 'hp_loss',
   'fog_peek', 'fog_block_unlocked', 'guide_shown', 'guide_done',
   'paywall_shown', 'paywall_convert', 'auth_error', 'share', 'share_image',

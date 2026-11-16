@@ -22,7 +22,9 @@ export const FUNNEL_EVENTS = [
   // 2026-11-09 BP3 头部「Unlock all」付费意向测试（10 页，见 UnlockBar.astro）
   'unlock_click',
   // 2026-10-19 全站清扫补录：此前 fired-but-not-whitelisted，一直在被 400 静默丢弃（paywall_shown/hunt 漏斗等）
-  'onboard_start', 'onboard_step', 'rules_overlay_open', 'rules_overlay_close',
+  // 2026-11-17 补录：onboard_complete/onboard_skip 一直 fired-but-not-whitelisted（被 400 静默丢弃，
+  // 导致引导完成率永远读不到，只有 start/step 两级）
+  'onboard_start', 'onboard_step', 'onboard_complete', 'onboard_skip', 'rules_overlay_open', 'rules_overlay_close',
   'hint_used', 'puzzle_mistake', 'puzzle_complete', 'level_fail', 'board_dead', 'hp_loss',
   'fog_peek', 'fog_block_unlocked', 'guide_shown', 'guide_done',
   'paywall_shown', 'paywall_convert', 'auth_error', 'share', 'share_image',
