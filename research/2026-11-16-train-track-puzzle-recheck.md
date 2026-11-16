@@ -289,6 +289,79 @@ krazydad 的 top 词是 `star battle — 29,170/mo`（其站内最大词之一�
 
 ⇒ 差距 500 倍不是「品类没做」，是**已有页面接不住同品类寡头的流量**。在讨论「要不要加 train tracks 第 15 款」之前，更该先查清 `star battle` 为什么只拿 52。这是本报告指向的下一步，也是比 train tracks 更贵的那个问题。
 
+### 8.11 重大修正（2026-11-16 18:50）：漏掉了第二个竞品，且它证明「攻略站可行」
+
+用户提供 KWP 截图（US / 所有语言 / Google / **2025-11~2026-10**）后复查 `connect tracks` 的 SERP，发现 `connecttracks.com`。**这家把上一轮四个判断全部推翻。**
+
+#### (a) KWP 实测数据（2025-11~2026-10 年均，US）
+
+| 关键词 | 月均 | 3 月变化 | 同比 | 竞争度 | 页首出价 low–high |
+|---|---|---|---|---|---|
+| train track puzzle | **1,900** | +50% | **+9,329%** | 低 | $1.74–$4.73 |
+| connect tracks | **720** | +39% | +14% | **中** | $2.14–**$61.76** |
+| train track game | 590 | +48% | +519% | 低 | $0.84–$3.34 |
+| train puzzle game | 210 | +85% | +243% | 低 | $1.37–$7.74 |
+| railroad puzzle | 210 | +23% | +191% | 低 | $0.17–$0.91 |
+| tracks puzzle | 140 | 0% | +550% | 低 | — |
+| train track puzzle game | 110 | +129% | +1,500% | 低 | — |
+| train track puzzle online | 90 | +24% | **+∞** | 低 | — |
+| train tracks online | 70 | −29% | +25% | 低 | — |
+| train tracks puzzle book | 50 | +86% | +2,500% | 中 | $0.20–$0.39 |
+
+**口径对齐**：KWP 的「月均」= 12 个月平均。本族 2026-06 才起爆，所以年均被 2025 年低基数拉低——`train track puzzle` KWP 年均 1,900 vs webcafe 2026-09 单月 5,400，**不是矛盾，是平均值 vs 峰值月**。同比 **+9,329%** 是本轮最强的需求信号，也推翻我此前「play 需求或已停爬」的说法。
+
+#### (b) 漏掉的竞品：connecttracks.com
+
+| 项 | 读数 | 证据 |
+|---|---|---|
+| 注册 | **2026-09-28T02:04Z**（比 traintrackspuzzle.com 早 5 天） | RDAP |
+| sitemap | **全部 lastmod = 2026-09-28**，当天一次铺完 | sitemap |
+| 结构 | `/levels/` + `/levels/1-50/`·`51-100/`·`101-150/` + **`/level/1/` … `/level/150/`（150 个关卡页）** | sitemap |
+| 定位 | TITLE = `Connect Tracks — Level Walkthroughs & Play Online`；站头自称 **"THE INDEPENDENT GUIDE"** + "Get the game ↗" | 首页 |
+| 流量 | **2026-10 = 336 visits**（vs traintrackspuzzle.com **0**） | TabAPI traffic |
+| 出词 | `connect track mega level 25` **180/mo**、`connect the tracks` 150、`connect tracks` 1,130、`connect tracks game` 190 | TabAPI top_keywords |
+| 排名 | `connect tracks` SERP **#2**（#1 是 Play Store） | TabAPI SERP |
+| 变现 | 有 "Advertisement" 占位，实测 **无 AdSense 代码**（adsbygoogle 计数 0） | HTML |
+| 可玩部分 | 首页有 practice puzzle（4×4 · Easy · Mark/Undo/Reset/Hint、"Progress saved"、"Hint 0/200"） | 首页 HTML |
+
+#### (c) 关卡页真相：它自己不做 walkthrough，只嵌 YouTube
+
+`/level/25/` 实测（8,221 bytes）：
+
+- TITLE `Connect Tracks Level 25 Walkthrough & Video Guide`
+- **`<img>` 只有 1 张、`<iframe>` 2 个、youtube 提及 9 次、`<canvas>` 0**
+- 正文实质只有一句：`Watch Level 25 Video by Beyond Gamer · 2:40` + 一段通用「对照你的棋盘」提示 + 相邻关导航
+- **它自己写明**：`Source check: The public title identifies Level 25. Title, creator, duration and embedding availability were checked on September 28, 2026. **The complete move sequence has not been independently replayed.**`
+
+⇒ **150 个页面 = 150 个 YouTube 嵌入 + 模板化文案。零关卡数据、零盘面图、零步骤序列、零广告收入。** 护城河为零。
+
+---
+
+### 8.12 上一轮四项判断作废
+
+| 上轮判断 | 实际 | 状态 |
+|---|---|---|
+| 「Train Tracks 是随机/每日生成制，不是关卡制 ⇒ 无 level N 长尾」 | **Connect Tracks 是 150 关制**（YouTube "All Levels 1-50" + 竞品 150 个关卡页） | ❌ **作废** |
+| 「攻略站必死：help 词全 null，没有求助刚性」 | `connecttracks.com` 靠 150 关页排 **#2 / 336 visits**；`connect track mega level 25` **180/月** | ❌ **作废** |
+| 「只有一个竞品 traintrackspuzzle.com」 | 有两个，且 connecttracks.com 更值得看（有流量、排 #2、模式可复制） | ❌ **作废** |
+| 「品牌词 connect tracks = null ⇒ T1 判据未触发」 | KWP **720/月**（competition 中），TabAPI **1,130/月** | ❌ **作废** |
+
+**为什么错**：我把 `train tracks hints / answers / walkthrough` 全 null 解释成「品类没有攻略需求」。真正的原因是**这些词说的是品类名，不是 app 名**——用户找攻略时搜的是 **app 名 + 关卡号**（`connect track mega level 25`），不是品类名。
+
+---
+
+### 8.13 修正后的机会结构
+
+| 盘子 | 月量（KWP 口径） | 谁能吃 | 难度 |
+|---|---|---|---|
+| 品类词（train track puzzle 族） | 1,900（年均）/ 5,400（09 峰值） | 3 家寡头（170万/77万/49万月访）+ 2 个 App 商店占满前 5 | 难，要可玩版 |
+| **品牌词 + 关卡长尾（connect tracks 族）** | **720–1,130 + 180 长尾** | 一个 45 天新站（**336 visits**，纯嵌 YouTube，零壁垒） | **可打，我们技术更强** |
+| print/book/规则 | 50–210，多为 null | traintrackspuzzle.com 已铺 12 篇零流量 | 不做 |
+
+**机会描述（修正版）**：不是「小盘子无需求」，而是——**品牌+关卡这条线盘子只有 1–2K/月，但对手是一个零壁垒的 45 天新站（336 visits）。我们用一个引擎就能做出比它好的东西：真盘面图 + 求解器校验的步骤序列 + 可玩 practice。** 150 页模板与 `/meowdoku/levels/` 同构，量级可控。
+
+**但必须同时承认**：1–2K/月 按 $0.3–1 RPM 折成年收入只有 **$5–25**，独立建站不划算。唯一合理形态是 **gridpaw 站内一条子线**（跟涨 Connect Tracks app，app 500K+ 装机且还在更新）。
+
 ---
 
 ## 数据源与口径声明
