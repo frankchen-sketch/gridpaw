@@ -76,8 +76,11 @@ const SHOW = !ADSTERRA_OFF && !isPlaySurface;
 {SHOW && (
 <script is:inline>
 (function () {
-  var KEYS = { left: '309484c05af1066efb6f321317c94311', right: '309484c05af1066efb6f321317c94311', sticky: 'c0a7039d4910c7d761aa9df9b0c73367', top: '361fc202189557ef23683b546d7f0393' };
-  var DIMS = { left: [160, 600], right: [160, 600], sticky: [728, 90], top: [320, 50] };
+  var KEYS = { left: '309484c05af1066efb6f321317c94311', right: '9f1d682930273a58cd2e02f0cee94cc0', sticky: 'c0a7039d4910c7d761aa9df9b0c73367', top: '361fc202189557ef23683b546d7f0393' };
+  // 右栏 2026-11-16 换成独立单元（160x300，unit 32303990）：Adsterra 同站同尺寸只能有一个 unit，
+  // 所以右栏不能再用第二个 160x600，改用未占用的 160x300 拿独立 key —— 左右各一个 key，
+  // 顺手验证「同一 key 在一页跑两次只出一次」的假设（旧写法左右共用 160x600 key，实测交付仅 ~20%）。
+  var DIMS = { left: [160, 600], right: [160, 300], sticky: [728, 90], top: [320, 50] };
   var BASE = 'https://bauval.org/22/';
 
   // 内嵌模式（?embed=1）：一个广告都不出，连盒子也不留
@@ -183,6 +186,8 @@ const SHOW = !ADSTERRA_OFF && !isPlaySurface;
     .gp-side-ad--left { left: max(8px, calc((100vw - 840px) / 2 - 192px)); }
     .gp-side-ad--right { right: max(8px, calc((100vw - 840px) / 2 - 192px)); }
     .gp-side-ad__slot { width: 160px; height: 600px; }
+    /* 右栏是 160x300 独立单元（2026-11-16），高度必须跟着换，否则留 600px 空气且广告贴顶错位 */
+    .gp-side-ad--right .gp-side-ad__slot { height: 300px; }
   }
 
   /* —— 顶部 320×50（移动）—— */
