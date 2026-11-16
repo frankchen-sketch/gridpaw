@@ -175,6 +175,75 @@ Train Tracks 是**随机/每日生成**制，不是关卡制。⇒ 没有「leve
 
 ---
 
+## 八、竞品时间线 / 流量口径 / SERP 实测（2026-11-16 18:20 追加）
+
+### 8.1 traintrackspuzzle.com 建站时间线（sitemap lastmod + RDAP + Wayback 三源对齐）
+
+| 时间 | 事件 | 证据源 |
+|---|---|---|
+| **2026-10-03 12:29Z** | 域名注册（Cloudflare registrar） | RDAP |
+| **2026-10-03 15:58Z** | Wayback 首次快照 HTTP 200 —— **注册后约 3.5 小时就上线** | Wayback CDX（全站仅此 1 条快照） |
+| **2026-10-03** | sitemap **40 条** lastmod：EN/de/fr/es 四语主干 + daily + how-to-play + solver + printable | sitemap `<lastmod>` |
+| **2026-11-02** | **32 条** lastmod（开始批量铺） | 同上 |
+| **2026-11-03** | **316 条一次性 lastmod** → 累计 **388**（daily 存档 240 + guides 72 批量） | 同上 |
+| 11-03 → 11-16（13 天） | **零新增**，388 恒定 | 三轮实测一致 |
+
+⇒ 建站节奏：**45 天前开工 / 首日骨架全齐 / 第 31-32 天一次性铺满 / 之后 13 天停手**。当前状态是「批量铺完等 Google 消化」，不是「持续运营中」。
+
+### 8.2 流量口径（三个独立读数，全部一致）
+
+| 口径 | 供应商 / 端点 | 读数 |
+|---|---|---|
+| DR + 月访问 | web.cafe `domain_overview`（Ahrefs 类） | DR **0.4**；monthly visits 2026-08/09/10 **全 0** |
+| 月访问 | TabAPI `/domains/<d>/traffic`（Similarweb 类） | report month **2026-10：visits 0**、global_rank `None`；08/09/10 **全 0** |
+| 出词（附带） | 同上 `top_keywords` | `train tracks puzzle` **4,910/月**、`connect tracks` 1,130、`traintracks puzzle` 550、`sudoku train rails` 50 |
+
+**两个 0 都是「未达量化下限」，不是精确 0。** 用「位置 × 搜索量」把它夹死：
+
+- 它在 `train track puzzle online` 排 **#9**，该词 320/月（webcafe 口径）
+- 主词 5,400 / `train tracks puzzle` 1,900 —— **不在第一页**
+- 反推上限：拿满该词曝光 × CTR 3-5% ≈ **10-16 clicks/月**
+
+⇒ **月流量上限 10-30 sessions，低于所有第三方工具的下限，所以两个 0 一致且可信。**
+
+### 8.3 SERP 实测（TabAPI，country=us，page=1，2026-11-16 18:20）
+
+| 查询 | 有机结果数 | 竞品位置 | 前 5 |
+|---|---|---|---|
+| `train track puzzle` | 8 | **不在第一页** | 1 puzzlemadness / 2 brainbashers / 3 Play(alexuvarov) / 4 App Store / 5 krazydad |
+| `train tracks puzzle` | 9 | **不在第一页** | 同上，+9 intrologic.stanford.edu |
+| `train track puzzle online` | 10 | **#9（第一页末席）** | 1 puzzlemadness / 2 krazydad / 3 Play / 4 brainbashers / 5 App Store |
+
+### 8.4 前排竞品体量（TabAPI traffic，2026-10 report）
+
+| 站 | 月访问 | global rank | 性质 |
+|---|---|---|---|
+| puzzlemadness.co.uk | **1,695,094** | 30,847 | 综合谜题站（train tracks 只是其中一栏） |
+| brainbashers.com | 774,179 | 60,643 | 综合谜题站 |
+| krazydad.com | 495,308 | 70,539 | 综合谜题站 |
+| traintrackspuzzle.com | **0** | — | 单品类新站（45 天） |
+| gridpaw.com（我方） | ≈16,500（GA4 28d 15,286 sessions） | — | 综合谜题站 |
+
+⇒ **前排三家是体量 50-100 倍的整站谜题站，排 #1-5 靠整站权重，不是这个页面本身。** 我方进前 6 只能靠**页面匹配 + 时间**，不能靠体量。这是本次最硬的约束，比 KD 29.8 更真实。
+
+### 8.5 新信号：10 月桶已出的几个词，涨的是「书」和「在线」
+
+| 词 | 09 | 10 | 12m 趋势 |
+|---|---|---|---|
+| `train tracks puzzle book` | 170 | **260** | +533%（70→140→170→260） |
+| `train tracks puzzle online` | 70 | **90** | +600%（50→70→90） |
+| `train track game` | 320 | **320** | 持平 |
+| `train tracks puzzle printable` | 30 | 未出 | +800% |
+| `train tracks puzzle app` | 20 | 未出 | +33% |
+
+⇒ 需求没有停，但**增量跑到「书（transactional）」和「在线玩（play）」**。`book` 260/月是全新的入口信号（对应 The Times / Daily Mail 的纸本 train tracks 栏目）——但 260/月撑不起独立线，且卖书是另一种生意。
+
+### 8.6 ⚠️ 口径警示
+
+`keyword_ideas` 返回的 `kd`（如 `train tracks puzzle` kd=0）是**预筛难度**，与 web.cafe 精确 KD 29.8 差一个量级，**不可用于 KDROI**。KDROI 一律用 web.cafe 精确 KD。
+
+---
+
 ## 数据源与口径声明
 
 - 搜索量 / 竞争度：webcafe `keyword_volume`（Google Ads 口径，`gl=us`，14 天缓存）。本轮 3 词 `fromCache=true`、品牌词 3 词 `fromCache=false`；扣 10 分，余 1,119。
