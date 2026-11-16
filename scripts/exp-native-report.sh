@@ -26,7 +26,7 @@ const out = await page.evaluate(async () => {
   ]);
   return { pl: pl.data, dt: dt.data };
 });
-const want = ["31317669", "31836413", "31688449", "32144309", "32144316"];
+const want = ["31317669", "31836413", "31688449", "32144309", "32144316", "32303990"];
 console.log("PLACEMENT（unit | imp | CPM | net）");
 for (const it of out.pl.items) {
   const tag = want.some((k) => it.name.includes(k));
