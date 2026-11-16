@@ -42,7 +42,9 @@ const CONTAINER_ID = 'container-' + KEY;
         s.src = SRC;
         s.addEventListener('load', resolve);
         s.addEventListener('error', resolve);
-        slot.appendChild(s);
+        // 脚本挂在 body 上、不塞进 slot 内部——与官方贴码的 DOM 关系一致（script 是 container 的兄弟节点），
+        // 避免 loader 若改写/清空容器时把自己的 script 一起抹掉。
+        document.body.appendChild(s);
       });
     });
   }
