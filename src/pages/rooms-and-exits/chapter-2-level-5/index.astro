@@ -1,0 +1,358 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 2 Level 5 Walkthrough: Gym";
+const description = "Rooms & Exits Chapter 2 Level 5 walkthrough for the Gym: the shape panel 1-6-5, the floor-mat keypad 6098, the bike console 3516, the arrow sequence, the red yoga poses, the chalked climbing wall and the +50 coin finish.";
+
+const faqs = [
+  {
+    q: "What are the codes in Rooms & Exits Chapter 2 Level 5?",
+    a: "Four of them. The three-screen shape panel on the metal plate takes 1 (square), 6 (triangle), 5 (circle). The keypad on locker 1 takes 6098, the four digits printed on the yellow floor mats. The exercise bike console takes 3516, which is the colour count from the weight rack read in the console's own dot order (green, red, blue, yellow). The treadmill wants the seven-step arrow sequence Up, Up, Down, Left, Left, Down, Up."
+  },
+  {
+    q: "How do I open locker 1 in the Gym?",
+    a: "Locker 1 has a four-digit keypad with a green strip across the top. The code is 6098, taken from the four yellow mats on the floor. Read the mats starting at the one nearest the treadmill and work back toward the climbing wall: 6, 0, 9, 8. The isometric camera mirrors the digits, so the same row scans as 8-6-0-9 if you read the screen left to right, which is the order that gets rejected. Inside locker 1 is a rolled Mat."
+  },
+  {
+    q: "What is the shape panel answer in the Gym?",
+    a: "1, 6 and 5. The panel has three small screens framed by a square, a triangle and a circle, and each screen counts how often that shape appears in the framed picture of the flexing strongman on the back wall. Square 1, triangle 6, circle 5. Solving it hands you the Pedal part, which is what the exercise bike is missing."
+  },
+  {
+    q: "What is the colour code on the exercise bike?",
+    a: "3516. The weight rack on the back wall carries a hint board that reads Blue: 1, Red: 5, Green: 3, Yellow: 6. The bike console has four buttons in the order green, red, blue, yellow, so you type the value for each button in that order: 3, 5, 1, 6. The console's status light turns green when the code lands."
+  },
+  {
+    q: "What is the arrow sequence on the treadmill?",
+    a: "Up, Up, Down, Left, Left, Down, Up. The treadmill console shows four direction buttons and a list of seven words beside them; enter the words with the matching buttons in the order written. The same seven-step list is also shown on the panel by the arrow pad, so you can check your reading against both displays."
+  },
+  {
+    q: "How do I finish the Gym and how long does it take?",
+    a: "After you chalk the climbing wall you get the phrase \"From up Into Down\", and the exit door beside the shower sign is the last thing you touch. The recording opens it at 8:03 of level time and the results screen pays +50 coins. Nothing in the level is timed and there is no fail state."
+  }
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map((f) => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": { "@type": "Answer", "text": f.a }
+  }))
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-2-level-5"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 2 Level 5"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; }
+    .seo-section th, .seo-section td { text-align: left; padding: 0.45rem 0.55rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .seo-section th { background: #FFF0D4; color: #8A3B00; font-weight: 800; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 2</a> &gt; Level 5</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 2 Level 5 Walkthrough: Gym</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from a recorded playthrough of the current build — 4 minutes 34 seconds of footage, extracted at one frame per second and re-read at four frames per second wherever a digit mattered. Every code on this page was read twice from separate frames and agrees: 1-6-5 on the shape panel, 6098 on the locker keypad, 3516 on the bike console, and the seven-word arrow list. Two things in this room could not be pinned down twice — the purpose of the rolled Mat and the rule behind the exit door panel — and this page says so instead of inventing an answer.</div>
+
+    <LevelSelector chapter={2} current={5} variant="jump" label="Chapter 2 · No Honor Among Thieves" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>The Gym has four codes and one hidden item: <b>1-6-5</b> on the shape panel, <b>6098</b> on locker 1, <b>3516</b> on the exercise bike and <b>Up, Up, Down, Left, Left, Down, Up</b> on the treadmill. Finish worth <b>+50 coins</b>.</p>
+      <ol>
+        <li>Count the shapes in the framed <b>strongman picture</b> → set <b>square 1, triangle 6, circle 5</b> on the three-screen plate → <b>Pedal part</b>.</li>
+        <li>Read the four <b>yellow mats</b> → type <b>6098</b> into the keypad on <b>locker 1</b> → <b>Mat</b>.</li>
+        <li>Fit the Pedal part to the <b>exercise bike</b> → its console wakes up.</li>
+        <li>Count the plates on the <b>weight rack</b> (Blue 1, Red 5, Green 3, Yellow 6) → type <b>3516</b> on the bike console.</li>
+        <li>Enter <b>Up, Up, Down, Left, Left, Down, Up</b> on the <b>treadmill</b> pad.</li>
+        <li>Copy the <b>red yoga poses</b> from the wall poster into the four-slot panel → <b>locker 4</b> opens → <b>Key</b>.</li>
+        <li>Use the Key on the <b>shower-sign door</b> → changing room → solve the <b>key board</b> → <b>Ladder</b> + <b>Bag of chalk</b>.</li>
+        <li>Stand the Ladder at the <b>climbing wall</b>, chalk the top holds, then open the <b>EXIT</b> door → <b>+50 coins</b>.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/4KgqqyTIsfE" title="Rooms &amp; Exits Chapter 2 Level 5 Gym walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/c2l5-gym-overview.jpg" alt="Rooms and Exits Chapter 2 Level 5 Gym: brick room with a GYM sign, red punching bags, five grey lockers, a wooden climbing wall, two weight racks and four numbered yellow mats on the blue floor" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>The Gym is the fifth room of Chapter 2 and it is the first one in the chapter that behaves like a proper hub rather than a corridor. Everything sits in a single blue-floored room with grey brick walls: a red heavy bag and a speed bag on a black stand under a glowing <b>GYM</b> sign on the left, five grey lockers with yellow tops along the back wall and a couple of coloured exercise balls on the shelf above them, a wooden <b>climbing wall</b> with grey holds in the middle of the back wall, and two weight racks on the right — one loaded with coloured plates, one with black dumbbells — under a framed picture of a flexing strongman built out of geometric shapes.</p>
+    <p>Along the floor runs the level's signature: four yellow mats, each printed with a single black digit. On the right wall there are two doors, one carrying a blue circular sign with a figure on it (the changing room) and one under a yellow <b>EXIT</b> sign. Between them, an <b>exercise bike</b> with a tablet on its handlebars and a <b>treadmill</b> whose console shows a grid of stick figures. That is the whole room, and every puzzle in it is a read-and-carry: a clue on one object, a lock on another, and no line drawn between them.</p>
+    <p>What makes the Gym feel long is that four different locks are live at the same time from the moment you walk in. The three-screen plate on the metal panel, the keypad on locker 1, the bike console and the treadmill pad can all be opened in almost any order, and three of them need nothing but a number you can read off a wall. The fourth — the yoga panel — is the one that gates the changing room, and the changing room is what gates the exit. The recording clears the room in 8:03 of level time, and about two of those minutes are spent walking between the mats and the lockers.</p>
+
+    <h2>The four locks at a glance<span class="accent">.</span></h2>
+    <table>
+      <thead>
+        <tr><th>Lock</th><th>Answer</th><th>Where the clue is</th><th>What it gives</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Three-screen plate (square / triangle / circle)</td><td><b>1 · 6 · 5</b></td><td>Framed strongman picture, back wall</td><td>Pedal part</td></tr>
+        <tr><td>Keypad on locker 1</td><td><b>6098</b></td><td>Four yellow floor mats</td><td>Mat</td></tr>
+        <tr><td>Exercise bike console (4 colour buttons)</td><td><b>3516</b></td><td>Weight rack colour counts</td><td>Green status light</td></tr>
+        <tr><td>Treadmill arrow pad</td><td><b>Up · Up · Down · Left · Left · Down · Up</b></td><td>Word list beside the pad</td><td>Unlocks the yoga step</td></tr>
+      </tbody>
+    </table>
+    <p class="grid-note">The colours on the bike console are in the order green, red, blue, yellow — which is not the order the weight-rack board lists them in. That mismatch is the whole trick of that lock.</p>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:00</span>
+      <strong>Read the room before you touch a lock</strong>
+      The opening sweep is the only wide shot you get without a UI panel over half the screen, so use it. Left: the GYM sign, the heavy bag and the speed bag on their stand, a blue exercise ball on the floor. Back wall, left to right: the five lockers, the wooden climbing wall, the plate rack, the dumbbell rack, the framed picture. Right wall: the two doors with the bike and treadmill in front of them. Floor: the four numbered mats.
+      Note what is <em>not</em> here — no keypad on the exit door, no code written on a wall, no note. Every number in the Gym is a count, and every count is of something already drawn in the room.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4KgqqyTIsfE&t=0s" target="_blank" rel="noopener">0:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:20</span>
+      <strong>Zoom the framed picture and actually count</strong>
+      The framed picture above the dumbbell rack is a line drawing of a flexing strongman assembled out of geometric shapes: one large square block as the base, a run of triangles through the torso and the arms, and circles forming the head and the weights. This is the clue for the plate on the metal panel, and the panel is asking you to count each shape family — nothing else in the room uses a square, a triangle or a circle as a label.
+      Count them yourself rather than trusting a number off a page; the shapes overlap on the arms and it is easy to be one out. Our capture ends on <b>square 1, triangle 6, circle 5</b>, and the panel accepted exactly that.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4KgqqyTIsfE&t=20s" target="_blank" rel="noopener">0:20</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:43</span>
+      <strong>The three-screen plate: 1, 6, 5 → Pedal part</strong>
+      The metal plate at the centre of the room has three small screens, each framed by a yellow outline: a square on the left, a triangle in the middle, a circle on the right. Each screen shows a single green digit that you dial up and down. Set the square to <b>1</b>, the triangle to <b>6</b> and the circle to <b>5</b>.
+      A useful tell from the footage: the recording reaches <b>1 · 6 · 4</b> first, sits there, and the circle screen then ticks up to <b>5</b> — so if your count lands on 4 for the circles, recount the head and the two end weights before you decide the panel is broken. Clearing it hands you the <b>Pedal part</b>.
+      <img src="/rooms-and-exits/c2l5-shape-panel.jpg" alt="The three-screen metal panel in the Gym: a square-framed screen showing 1, a triangle-framed screen showing 6, and a circle-framed screen still stepping up toward 5" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4KgqqyTIsfE&t=43s" target="_blank" rel="noopener">0:43</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:46</span>
+      <strong>Take the Pedal part — the bike is missing exactly this</strong>
+      The reward pops out as a highlighted object with the label <b>Pedal part</b>. Tap it into the bag. You now hold the only piece of gym equipment in the room that is visibly incomplete: the exercise bike in front of the right-hand doors has a bare crank arm on its near side where a pedal should be.
+      This is the one dependency in the Gym that is not a number — the bike console physically will not light up until the pedal is fitted, and there is no other pedal anywhere in the room.
+      <img src="/rooms-and-exits/c2l5-pedal-part.jpg" alt="The Pedal part reward popup in front of the Gym lockers" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4KgqqyTIsfE&t=46s" target="_blank" rel="noopener">0:46</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:20</span>
+      <strong>The floor mats: four digits, one direction that works</strong>
+      Four yellow mats lie in a diagonal line across the blue floor, each stamped with one black digit. Because the camera is isometric the digits are drawn at an angle, and a <b>6</b> and a <b>9</b> look almost identical — this is where most players lose the code.
+      Read the row <b>starting at the mat nearest the treadmill</b> and work back toward the climbing wall: <b>6, 0, 9, 8</b>. If you scan the screen from left to right instead you will read 8-6-0-9, and that is the order the locker keypad rejects. Keep the treadmill end as the start.
+      <img src="/rooms-and-exits/c2l5-floor-mats.jpg" alt="The four yellow floor mats with black digits laid out across the Gym floor, with the lockers and climbing wall behind" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4KgqqyTIsfE&t=80s" target="_blank" rel="noopener">1:20</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:41</span>
+      <strong>Locker 1 keypad: 6098</strong>
+      Locker 1, the leftmost of the five, has a keypad mounted on its door: a numeric pad with a backspace and a tick, and a narrow green strip across the top that shows what you have typed. Enter <b>6098</b>.
+      The recording arrives at <b>6098</b> across all four cells of the strip; that exact four-digit state was re-read at four frames per second and agrees every time. If your pad keeps refusing the code, you have almost certainly read the mats in screen order rather than treadmill order; reverse the row.
+      <img src="/rooms-and-exits/c2l5-locker-keypad.jpg" alt="The keypad on locker 1 in the Gym with 6098 typed into its green display strip" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4KgqqyTIsfE&t=101s" target="_blank" rel="noopener">1:41</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 1:43</span>
+      <strong>Locker 1 holds a rolled Mat</strong>
+      The door swings open on an empty interior and a rolled yellow <b>Mat</b> floats out with the usual highlight and label. Take it. Locker 1 is the only locker with a keypad on it, which is worth remembering when you are staring at lockers 2 to 5 later and wondering why they do not respond.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4KgqqyTIsfE&t=103s" target="_blank" rel="noopener">1:43</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 1:52</span>
+      <strong>Fit the Pedal part and wake the console</strong>
+      Select the <b>Pedal part</b> in the inventory, press <b>Use</b>, and tap the exercise bike. The bike is a white and grey machine with a heavy flywheel and a tablet clipped to the handlebars; with the pedal on, the tablet lights up and becomes the colour-button console.
+      Two things to notice on the frame: the bike's frame carries a maker's decal in white lettering, and the console's four round buttons are coloured <b>green, red, blue, yellow</b>, left to right. That order is the key to the next step and it is easy to walk past.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4KgqqyTIsfE&t=112s" target="_blank" rel="noopener">1:52</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 2:12</span>
+      <strong>The weight rack is a counting board</strong>
+      Turn to the plate rack on the back wall. Beside it, an overlay lists the four colours with a number against each: <b>Blue: 1</b>, <b>Red: 5</b>, <b>Green: 3</b>, <b>Yellow: 6</b>. That is the count of plates of each colour stacked on the rack, and it is the only place in the room where colour is written down as a number.
+      The trap is the order. The board lists blue first; the bike console does not.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4KgqqyTIsfE&t=132s" target="_blank" rel="noopener">2:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 2:24</span>
+      <strong>Bike console: 3516, not 1536</strong>
+      On the console, each of the four coloured buttons owns one cell of a four-digit display. Read the buttons in the console's own order — green, red, blue, yellow — and type the value the rack gave each colour: green <b>3</b>, red <b>5</b>, blue <b>1</b>, yellow <b>6</b>. The display reads <b>3516</b> and the status light beside it turns green.
+      This is the single most common wrong answer in the level. Typing the numbers in the order the board lists them (blue, red, green, yellow) gives 1-5-3-6 and the console stays dark. Match the buttons, not the list.
+      <img src="/rooms-and-exits/c2l5-bike-console.jpg" alt="The exercise bike console in the Gym showing the code 3516 with four colour buttons green, red, blue and yellow" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4KgqqyTIsfE&t=144s" target="_blank" rel="noopener">2:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 2:36</span>
+      <strong>Treadmill: Up, Up, Down, Left, Left, Down, Up</strong>
+      The treadmill's handlebar pad has four silver direction buttons in a cross — up, left, right, down — and a panel beside it lists seven words in a column: <b>Up, Up, Down, Left, Left, Down, Up</b>. Press the matching button for each word, in order. The panel reprints the whole list beside the pad while you work, so you can check each press without going back.
+      The same list appears twice in the footage — once on the treadmill console and once on the wider panel view — and both readings agree word for word. Get it right and the pad stops asking.
+      <img src="/rooms-and-exits/c2l5-arrow-sequence.jpg" alt="The directional arrow pad in the Gym with the seven-step list Up, Up, Down, Left, Left, Down, Up printed beside it" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4KgqqyTIsfE&t=156s" target="_blank" rel="noopener">2:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 2:44</span>
+      <strong>The yoga poster: follow the red ones</strong>
+      On the wall beside the punching bags hangs a framed poster of nine yoga poses in a 3×3 grid, and above the four-slot panel the game writes the instruction plainly: <b>Follow Red Yoga</b>. Four of the nine figures are drawn in red; the rest are in pink and blue. Those four, in the order they appear on the poster (left to right, top to bottom), are what the four slots want.
+      <img src="/rooms-and-exits/c2l5-yoga-poster.jpg" alt="The Follow Red Yoga poster in the Gym showing nine poses in a three by three grid, four of them drawn in red" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4KgqqyTIsfE&t=164s" target="_blank" rel="noopener">2:44</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 2:51</span>
+      <strong>Fill the four pose slots → locker 4 opens → Key</strong>
+      The pose panel is a metal strip with four recessed slots. Tap a slot, choose a pose, repeat. Each correct pose lands as a small green figure; when all four are in, the strip closes and the camera swings to the lockers with <b>locker 4</b> highlighted and sparkling. Open it and you get a <b>Key</b>.
+      This is the only door-opener in the room, and it is the reason the yoga detour exists at all: lockers 2 to 5 have no keypads, because the game wants you to earn the key rather than dial for it.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4KgqqyTIsfE&t=171s" target="_blank" rel="noopener">2:51</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 3:07</span>
+      <strong>Use the Key on the shower-sign door</strong>
+      The left-hand door on the right wall carries a blue circular sign with a figure on it. Select the <b>Key</b>, press <b>Use</b>, tap the door. It swings inward on a white-tiled room: six grey lockers with slatted vents, a long yellow bench with a folded stack of coloured clothes on it, two cardboard boxes on the shelf above the lockers, a blue bucket and a bottle of cleaning fluid in the corner, and two shower stalls behind a pale green partition with a red spoked valve wheel on the silver pipe.
+      Nothing in the first room can be finished without coming through here, and there is no second key — if you skipped the yoga panel you cannot get in.
+      <img src="/rooms-and-exits/c2l5-changing-room.jpg" alt="The changing room in the Gym with grey lockers, a yellow bench with folded clothes, a blue bucket and two shower stalls behind a green partition" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4KgqqyTIsfE&t=187s" target="_blank" rel="noopener">3:07</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 3:36</span>
+      <strong>The key board: match every key to its silhouette</strong>
+      The changing room's puzzle is a wooden board of key-shaped cutouts. A collection of keys sits around it — a heavy brass key with a ringed bow, a pair of purple keys, a silver key with a decorative bow, a small plain silver key and a pair of gold keys — and each one has exactly one silhouette on the board. Drag a key onto its outline and it seats with a click; wrong keys simply will not sit.
+      Work by bow shape rather than by colour: the board's cutouts are outlines only, and two of the keys are the same purple. Clearing the board pays out two items at once, a <b>Ladder</b> and a <b>Bag of chalk</b>.
+      <img src="/rooms-and-exits/c2l5-key-board.jpg" alt="The wooden key-matching board in the Gym with key-shaped cutouts on the board and loose keys of several shapes around it" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4KgqqyTIsfE&t=216s" target="_blank" rel="noopener">3:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 4:12</span>
+      <strong>Ladder, chalk, climbing wall: "From up Into Down"</strong>
+      Back in the gym, stand the <b>Ladder</b> against the wooden climbing wall. It has a scatter of grey holds over the wooden panel in no obvious grid, and the top ones are out of reach from the floor — that is what the ladder is for. Climb, then use the <b>Bag of chalk</b> on the top holds.
+      Chalking the wall reveals the phrase <b>"From up Into Down"</b> across the panel. Treat it as the wall's own instruction: the route the chalk marks out runs from the top of the board down. This is the last clue the level gives you before the exit.
+      <img src="/rooms-and-exits/c2l5-climbing-wall.jpg" alt="The wooden climbing wall in the Gym with grey holds and the chalked phrase From up Into Down" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4KgqqyTIsfE&t=252s" target="_blank" rel="noopener">4:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 17 · 4:29</span>
+      <strong>Open the EXIT door: +50 coins</strong>
+      The right-hand door under the yellow <b>EXIT</b> sign carries a panel of round buttons across its face. Work it in the up-and-down order the chalked wall gave you, and the door swings open. The camera pulls back to the wide room and the level ends on the results panel: <b>LEVEL COMPLETED!</b>, <b>Reward! +50</b>, an efficiency bar filled to eight of ten, and <b>Time: 8:03</b>.
+      <img src="/rooms-and-exits/c2l5-complete.jpg" alt="The Level Completed screen for Chapter 2 Level 5 Gym with a +50 coin reward and a time of 8:03" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4KgqqyTIsfE&t=269s" target="_blank" rel="noopener">4:29</a></div>
+    </div>
+
+    <h2>How the Gym is wired<span class="accent">.</span></h2>
+    <p>The room looks like five unrelated locks; it is really two chains and a side branch. The first chain is the one that gets you out of the building: <b>picture → shape panel → Pedal part → bike console → colour code → arrow pad → yoga panel → locker 4 → Key → changing room → key board → Ladder and chalk → climbing wall → EXIT</b>. Every link in that chain is compulsory, and each one is physically gated on the item the previous link produced. No pedal, no console. No key, no changing room. No ladder, no chalk, no exit code.</p>
+    <p>The second chain is the one that looks compulsory and is not: <b>floor mats → locker 1 keypad → Mat</b>. It costs you two minutes and, in our footage, the Mat never comes back out of the bag. It is the only reward in the room that does not feed the exit chain, and it is also the only lock that punishes a careless read, because the mat digits are mirrored by the camera angle.</p>
+    <p>The side branch is the colour count. The plate rack, the dumbbell rack and the framed picture all sit on the same back wall and all three exist only to feed a lock somewhere else — the rack feeds the bike, the picture feeds the plate. Nothing on that wall opens anything by itself, which is why players who camp there feel stuck.</p>
+
+    <div class="warn">
+      <b>What we could not verify:</b> two things. First, the <b>Mat</b> from locker 1 — the recording takes it at 1:43 and never uses it again before the exit, so we cannot tell you what it is for; treat it as optional unless your build asks for it. Second, the <b>EXIT door panel</b> — the footage shows the panel releasing the door at 8:03 right after the chalked wall clue, but it never shows a wrong entry being rejected, so we have described the order of operations rather than inventing a rule. If your panel does not respond to the up-and-down order, read the chalked wall again in-game: the pattern is drawn on the holds, and it is the only statement of it the level makes.
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>The mats' direction.</b> Nearly every wrong answer in this room is 8609. The digits are 8, 6, 0 and 9 read across the screen, but the keypad wants them from the treadmill end, which is 6098. If the pad refuses, you read the row backwards.</li>
+      <li><b>The colour order.</b> The rack lists Blue, Red, Green, Yellow. The bike console is Green, Red, Blue, Yellow. Transcribing the rack's list straight across gives 1536 and nothing happens. The console wants 3516.</li>
+      <li><b>The bike before the pedal.</b> The console is invisible until the Pedal part is fitted. Players who tap the bike first see a plain tablet and assume the colour puzzle is somewhere else in the room.</li>
+      <li><b>Locker 5.</b> It is numbered and it is shut, and it stays shut — the keypad is on locker 1, and the only other locker that opens is 4. Do not spend time hunting a code for 5.</li>
+      <li><b>The yoga count.</b> The instruction is <em>Follow Red Yoga</em>, not "follow the poses". Four figures are red; copying the first four poses in the grid, or the three most athletic-looking ones, fills the panel with the wrong figures and nothing seats.</li>
+      <li><b>The key board.</b> Two keys are purple and two are gold; matching by colour instead of by bow outline gets you stuck on the last two slots. The cutouts are shapes, not colours.</li>
+      <li><b>The ladder.</b> It goes to the climbing wall, not to the shelf over the lockers. The balls on the shelf are decoration and the top holds are the only thing in the room you cannot reach from the floor.</li>
+    </ul>
+
+    <h2>Chapter 2 levels<span class="accent">.</span></h2>
+    <p class="grid-note">Chapter 2 opens with the Cell Phone Store and runs twenty-six rooms; the list below reflects what is written up so far.</p>
+    <LevelSelector chapter={2} current={5} compact={true} label="Chapter 2 · No Honor Among Thieves" />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    <details><summary>What are the codes in Rooms &amp; Exits Chapter 2 Level 5?</summary><p>Four of them. The three-screen shape panel on the metal plate takes 1 (square), 6 (triangle), 5 (circle). The keypad on locker 1 takes 6098, the four digits printed on the yellow floor mats. The exercise bike console takes 3516, which is the colour count from the weight rack read in the console's own dot order (green, red, blue, yellow). The treadmill wants the seven-step arrow sequence Up, Up, Down, Left, Left, Down, Up.</p></details>
+    <details><summary>How do I open locker 1 in the Gym?</summary><p>Locker 1 has a four-digit keypad with a green strip across the top. The code is 6098, taken from the four yellow mats on the floor. Read the mats starting at the one nearest the treadmill and work back toward the climbing wall: 6, 0, 9, 8. The isometric camera mirrors the digits, so the same row scans as 8-6-0-9 if you read the screen left to right, which is the order that gets rejected. Inside locker 1 is a rolled Mat.</p></details>
+    <details><summary>What is the shape panel answer in the Gym?</summary><p>1, 6 and 5. The panel has three small screens framed by a square, a triangle and a circle, and each screen counts how often that shape appears in the framed picture of the flexing strongman on the back wall. Square 1, triangle 6, circle 5. Solving it hands you the Pedal part, which is what the exercise bike is missing.</p></details>
+    <details><summary>What is the colour code on the exercise bike?</summary><p>3516. The weight rack on the back wall carries a hint board that reads Blue: 1, Red: 5, Green: 3, Yellow: 6. The bike console has four buttons in the order green, red, blue, yellow, so you type the value for each button in that order: 3, 5, 1, 6. The console's status light turns green when the code lands.</p></details>
+    <details><summary>What is the arrow sequence on the treadmill?</summary><p>Up, Up, Down, Left, Left, Down, Up. The treadmill console shows four direction buttons and a list of seven words beside them; enter the words with the matching buttons in the order written. The same seven-step list is also shown on the panel by the arrow pad, so you can check your reading against both displays.</p></details>
+    <details><summary>How do I finish the Gym and how long does it take?</summary><p>After you chalk the climbing wall you get the phrase "From up Into Down", and the exit door beside the shower sign is the last thing you touch. The recording opens it at 8:03 of level time and the results screen pays +50 coins. Nothing in the level is timed and there is no fail state.</p></details>
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-2-level-4/">← Chapter 2, Level 4</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-2-level-6/">Chapter 2, Level 6 →</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits guides →</a></p>
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

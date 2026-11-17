@@ -1,0 +1,421 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 2 Level 22 Walkthrough: Print Shop";
+const description = "Rooms & Exits Chapter 2 Level 22 walkthrough for the Print Shop: the four jersey numbers behind the till code 133951, the CD in the cash drawer, the ink cartridge that unfreezes the big printer, the six-segment wheel whose missing number is 54, and the printed sheet that feeds the exit door — whose keypad takes a different one of its six numbers in every playthrough.";
+
+const faq = [
+  {
+    q: "What is the code for the cash register in Rooms & Exits Chapter 2 Level 22?",
+    a: "Type <b>133951</b> on the register's touchscreen. The digits are the four jersey numbers hanging around the shop — HARRY <b>3</b>, NERO <b>13</b>, JACOB <b>9</b>, DANNY <b>51</b> — read as 13 · 3 · 9 · 51. Our two full recordings of the current build both end with <b>133951</b> on the register display, and both open the cash drawer and hand over the CD. The wall's left-to-right order, <b>313951</b>, is typed on screen at 3:00 in our long run and rejected — the field clears and the drawer stays shut — so do not just copy the jerseys in the order they hang.",
+  },
+  {
+    q: "Where does the CD come from?",
+    a: "The cash drawer under the register. Once <b>133951</b> is accepted the drawer slides open and holds three things: a stack of small clear bags on the left, a small red object in the middle and a single iridescent <b>CD</b> on the right. The CD is the only one you need; tap it and it goes into the bag as <b>CD</b>.",
+  },
+  {
+    q: "What do I do with the CD?",
+    a: "Use it on the desktop computer, not the printer. The PC sits on the L-shaped counter under the yellow DANNY 51 jersey, with a tower beside the monitor. Put the CD in the tower and the monitor changes to a printer icon with a red cross and the line <b>Nothing can be printed before the printer is fixed!</b> That message is the level telling you the print job exists but the hardware is not ready yet.",
+  },
+  {
+    q: "Why does the big printer say it is missing something?",
+    a: "Because it has no ink. Tap the floor-standing printer on the right-hand wall and it reports <b>The printer is missing something in order to work!</b> Select an <b>Ink cartridge</b> in the inventory, press <b>Use</b>, and tap the printer: the cartridge goes in, the panel lights up with its colour rows and the print job unlocks. The cartridge itself is a fat orange block with a small code printed on the side; the first one in our run comes out of the low cabinet under the left-hand mug and plate display at 1:39.",
+  },
+  {
+    q: "What is the answer to the six-segment wheel?",
+    a: "<b>54</b>. The wheel on the computer monitor carries 8, 13, 18, 24, 39 and one question mark, and the numbers sit in opposite pairs that triple: <b>8 × 3 = 24</b> and <b>13 × 3 = 39</b>, so <b>18 × 3 = 54</b>. Type 54 on the monitor's two-row keypad (1 2 3 4 5 over 6 7 8 9 0) and press <b>PRINT</b> — the field does not submit itself. Both of our full recordings type 54 and both get <b>PRINTING</b> on the copier within seconds.",
+  },
+  {
+    q: "How do I get the Printed picture?",
+    a: "Solve the wheel, press PRINT, then wait for the floor printer to finish. Its panel reads <b>PRINTING</b> and a sheet lands on the output tray; collect it and the item is in your bag as <b>Printed picture</b> — a six-slice colour wheel with 8, 13, 18, 24, 39 and 54 printed into the slices. Do not skip the pickup: the exit keypad stays dead until the sheet is in your inventory, and the sheet itself is the door's code list.",
+  },
+  {
+    q: "What is the door code in the Print Shop?",
+    a: "There is no single door code. The exit keypad wants one of the six numbers printed on the <b>Printed picture</b> — 8, 13, 18, 24, 39 or 54 — and which one it accepts changes between playthroughs: our three recordings opened on <b>8</b>, <b>18</b> and <b>24</b>, and 8 was refused outright in the run that opened on 24. Type them one at a time, clearing with the X key between attempts, until the door swings. It is a single number each time, not the six run together, and the keypad does nothing at all until the sheet is in your bag.",
+  },
+  {
+    q: "Is there a key in Level 22?",
+    a: "There is a keyhole — an oval lock plate under the exit keypad — but we never see a key in it or a key being picked up in any of the three recordings, and every run finishes on the keypad code alone. So no, you do not need to hunt for a key to leave the Print Shop. If a key exists in this level, it is not what opens this door.",
+  },
+  {
+    q: "How long does the Print Shop take, and what does it pay?",
+    a: "Two of our three recordings end on the same results screen: <b>+50 coins</b> under Reward and <b>9:52</b> on the results clock in the full run. The third, a 2:55 run of the same shop, shows a different panel — a +5 efficiency figure and no coin reward — which we treat as a build difference rather than a level rule. Nothing is timed and there is no fail state — the clock is scoring, not pressure — so the only things that really cost you minutes are typing the till code in the wrong order and working through six door candidates at the end.",
+  },
+  {
+    q: "What difficulty is Chapter 2 Level 22?",
+    a: "The level-select card lists <b>Level 22: Print Shop</b> as <b>Very Hard</b>, inside the Chapter 2 block <i>No Honor Among Thieves</i>. That rating is about the number of separate locks rather than any one hard puzzle: a till code, a CD, a cartridge, a wheel and a door, and every one of them gates the next.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-2-level-22"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 2 Level 22"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .warn h2 { font-size: 1.2rem; margin: 0.2rem 0 0.5rem; color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 2</a> &gt; Level 22</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 2 Level 22 Walkthrough: Print Shop</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Built from three independent recordings of this room: a 10:40 full run extracted at one frame per second, a 2:55 quick run of the same shop used as a second read, and a 4:44 run used as a third opinion and as a tie-breaker. Every number this page prints — <b>133951</b> on the till, <b>54</b> on the wheel, the four jersey numbers, the six numbers on the printed sheet, <b>+50</b> and <b>9:52</b> on the results panel — was read off the screen twice or more, and the till code was read from two different videos. The exit door is the one place the recordings disagree in a way that matters: each run typed a different number and each run opened on a different one, so the page gives you all six candidates and says so plainly instead of inventing a single code. On-screen text was read with optical character recognition on the raw frames and then checked by eye on magnified crops, not typed from memory, and every timestamp below points at the exact second of the embedded run.</div>
+
+    <LevelSelector chapter={2} current={22} variant="jump" label="Chapter 2 · No Honor Among Thieves" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Print Shop is a chain of locks, and the numbers you need are <b>133951</b> for the till, <b>54</b> for the printing wheel, and then one of the six numbers on the sheet you print for the door. The exit is the grey-framed glass door on the back wall; its keypad refuses some of those numbers and accepts one, and it is not the same one every time — our three runs opened on <b>8</b>, <b>18</b> and <b>24</b>, so work through 8 · 13 · 18 · 24 · 39 · 54 until the door swings. Finish worth <b>+50 coins</b>.</p>
+      <ol>
+        <li>Read the four jerseys: HARRY <b>3</b>, NERO <b>13</b>, JACOB <b>9</b>, DANNY <b>51</b>.</li>
+        <li>Type the till code <b>133951</b> → cash drawer opens → take the <b>CD</b>.</li>
+        <li>Use the <b>CD</b> on the desktop tower beside the monitor (this produces <i>Nothing can be printed before the printer is fixed!</i> in one recording; our long run skips it).</li>
+        <li>Take an <b>Ink cartridge</b> (the first sits in the low cabinet under the left-hand mug display at 1:39) and use it on the big floor printer → <i>The printer is missing something in order to work!</i> clears.</li>
+        <li>On the monitor, solve the wheel: 8 · 13 · 18 · 24 · 39 · ? triple in opposite pairs → type <b>54</b> → <b>PRINT</b>.</li>
+        <li>Wait for <b>PRINTING</b>, then take the <b>Printed picture</b> from the bag.</li>
+        <li>Tap the keypad on the glass door and type the numbers from the printed sheet until one is accepted — 8, 18 and 24 each worked in one of our runs → <b>+50 coins</b>.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/CoU_2oFwxbI" title="Rooms &amp; Exits Chapter 2 Level 22 Print Shop walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/c2l22-hero-print-shop.jpg" alt="Rooms and Exits Chapter 2 Level 22 Print Shop: the shop floor with the mug and plate shelves on the left, the HARRY 3 and NERO 13 jerseys beside the glass door, the JACOB 9 jersey on the orange corner wall, the L-shaped counter with two monitors and a printer, and the DANNY 51 jersey above the big floor copier" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>The Print Shop is level 22 on the map and the level-select card files it as <b>Very Hard</b> — which is the right rating for the wrong reason. There is no single brutal puzzle here. What makes it heavy is that the room is a production line: every lock feeds the next one, and most of them are gated behind an object you have to carry from one end of the shop to the other. You cannot shortcut the till to get to the wheel, and you cannot print anything until the printer has ink.</p>
+    <p>The fiction is a custom merchandise shop: jerseys printed with names and numbers, mugs and plates with cartoon bears, caps, framed photos, cushions, and two clothing racks of blanks in the foreground. The shop is one open isometric floor with a fixed camera. Along the back wall, left to right: a shelving unit stacked with mugs on top and plates below, with a low wooden cabinet underneath; the blue <b>HARRY 3</b> jersey and the green <b>NERO 13</b> jersey; the grey-framed glass door you eventually leave through; an orange accent corner holding the red <b>JACOB 9</b> jersey, more mugs and caps; then the L-shaped service counter with two monitors, a desktop tower and a small white printer. On the right-hand wall hangs the yellow <b>DANNY 51</b> jersey, and under it the big floor-standing copier that does the actual print job. Front of house is the blue-lit sales counter with the till, and two clothing racks sitting in the middle of the floor.</p>
+    <p>Everything you can see is either merchandise or a container, and the game is unusually strict about which is which. The mugs, plates, caps and cushions are scenery. The low cabinet, the till drawer, the desktop tower, the printer's cartridge bay and the shopping bag are the containers. Learning that split early saves you ten minutes of tapping crockery.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>If you only read one part of this page, read this table. Every object in the Print Shop that does something, and what it does.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it gives you</th></tr></thead>
+      <tbody>
+        <tr><td>Jerseys</td><td>Back wall and right wall</td><td>HARRY <b>3</b> (blue), NERO <b>13</b> (green), JACOB <b>9</b> (red), DANNY <b>51</b> (yellow). The digits for the till code.</td></tr>
+        <tr><td>Cash register</td><td>Front sales counter, centre</td><td>A touchscreen that opens a full QWERTY overlay. Takes the six-digit code and opens the drawer.</td></tr>
+        <tr><td>Cash drawer</td><td>Under the till</td><td>Clear bags, a small red object and the <b>CD</b>.</td></tr>
+        <tr><td>Desktop computer</td><td>Counter, under DANNY 51</td><td>Monitor + tower. Takes the CD and shows the print-job warning — though one of our runs finishes without ever using the disc.</td></tr>
+        <tr><td>Big floor printer</td><td>Right wall, under DANNY 51</td><td>Takes the ink cartridge. Its panel shows <b>PRINTING</b> and feeds out the sheet.</td></tr>
+        <tr><td>Low cabinet</td><td>Under the left-hand mug display</td><td>First <b>Ink cartridge</b> of the level.</td></tr>
+        <tr><td>Mug and plate shelves</td><td>Back-left wall</td><td>Scenery. Six mugs with coloured handles, plates below. Nothing to solve here.</td></tr>
+        <tr><td>Caps and cushions</td><td>Orange corner unit</td><td>Scenery. The caps are the same three colours as some jerseys and mean nothing.</td></tr>
+        <tr><td>Paper bag</td><td>Floor in front of the counter</td><td>The shop's branded bag — a container, not a clue.</td></tr>
+        <tr><td>Clothing racks</td><td>Centre of the floor</td><td>Blank shirts, front and centre. Scenery.</td></tr>
+        <tr><td>Exit door</td><td>Back wall, beside NERO 13</td><td>Grey frame, blue glass, 3×3 keypad and a keyhole below it. The keypad takes one number from the printed sheet — the way out.</td></tr>
+        <tr><td>Wall clock</td><td>Orange corner</td><td>A photo-face clock. Decorative.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>The timestamps below are the embedded run's clock, so you can scrub straight to the frame. The room's own timer sits about half a minute behind the video — the intro and the level card eat that — so do not be alarmed when the HUD and the video disagree by a few seconds.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:01</span>
+      <strong>The level card tells you the reward before you start</strong>
+      The run opens on the level-select card: a hexagonal thumbnail of a shop with a printer and two shirts, the name <b>Print Shop</b>, a coin stack marked <b>+50</b>, and a green play button. The card is worth a second's attention for two reasons. First, it confirms the payout before you commit. Second, the level number under the icon and the <b>Very Hard</b> tag on the selected node are the game's own difficulty call — and it is honest about it, because this room has more moving parts than any of the three levels before it.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=1s" target="_blank" rel="noopener">0:01</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:22</span>
+      <strong>Read the room before you tap anything</strong>
+      The opening wide shot is the only clean look you get at the whole floor. Fix it in your head in this order: shelves and low cabinet on the back-left, the two jerseys and the glass door along the back wall, the orange corner with a third jersey, the L-shaped counter with two monitors and a small printer, the yellow jersey and the big copier on the right wall, the till on the front counter, and the clothing racks in the middle of the floor. The one thing to notice is how much distance there is between the till and the printer: this level is designed around walking a CD and a cartridge across that floor, and the camera will make you do it more than once.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=22s" target="_blank" rel="noopener">0:22</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:50</span>
+      <strong>The jerseys are the only code in the room — copy all four numbers</strong>
+      The back wall carries two printed jerseys under spotlights: blue <b>HARRY 3</b> and green <b>NERO 13</b>. Pan right and the orange corner holds red <b>JACOB 9</b>; pan again and the right wall has yellow <b>DANNY 51</b>, in blue lettering that reads cleanly from across the shop. Four names, four numbers, and they are the only digits in the room that are not part of a screen or a label. Write all four down before you touch the till, because the entry field is far from the wall and you will not be able to read the jerseys while the code overlay is open.
+      <img src="/rooms-and-exits/c2l22-jerseys-harry-nero-jacob.jpg" alt="The back wall of the Print Shop with the blue HARRY 3 jersey and the green NERO 13 jersey under spotlights, the mug and plate shelves on the left and the red JACOB 9 jersey on the orange corner wall to the right" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=50s" target="_blank" rel="noopener">0:50</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 1:39</span>
+      <strong>The first ink cartridge comes out of the low cabinet</strong>
+      Under the mug and plate shelves on the back-left wall there is a low wooden cabinet. Open it and the game throws a fat orange ink cartridge up into the middle of the screen with the name <b>Ink cartridge</b> printed beneath it, and a burst of sparks behind the counter. The cartridge is squarish with a red top and a small code printed on its side; it is the first of the consumables this level runs on. It is also the single most skippable step in the room — a lot of players walk straight past it and only come back when the printer refuses to work twenty minutes later.
+      <img src="/rooms-and-exits/c2l22-ink-cartridge.jpg" alt="An orange ink cartridge lifted out of a cabinet in the Print Shop, with the item label Ink cartridge underneath and two printed mugs visible in the cabinet behind" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=99s" target="_blank" rel="noopener">1:39</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:52</span>
+      <strong>The right wall: DANNY 51 and the machine that does the work</strong>
+      The yellow <b>DANNY 51</b> jersey hangs above the biggest object in the room — a floor-standing copier with a document feeder on top, a light-blue control panel on its face and a paper tray at the bottom. This is the printer every warning in the level is talking about, and it is also the fourth jersey number, so the two things you need on this wall are in the same frame. Under the counter to its left sits the desktop computer that becomes important once you have the CD: monitor, tower, and a small white printer that is scenery.
+      <img src="/rooms-and-exits/c2l22-jerseys-jacob-danny.jpg" alt="The Print Shop floor with the red JACOB 9 jersey on the orange wall, the L-shaped counter with a monitor and tower, the yellow DANNY 51 jersey above the large floor copier on the right and the glass exit door on the far left" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=112s" target="_blank" rel="noopener">1:52</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 2:00</span>
+      <strong>Look at the exit door now, so you recognise its locks later</strong>
+      The grey-framed door on the back wall has a tall blue glass panel, a vertical handle, a 3×3 keypad with an LCD sitting on the frame, and a keyhole in an oval plate underneath the keypad. In this recording the player opens the keypad at 2:00 and taps <b>45</b> — the LCD lights up, holds both digits, then clears and he walks away without an enter press. That thirty-second detour is the most useful thing in the run for a first-time player: it shows that the keypad is live, that it takes multi-digit numbers, and that a guessed number gets you nothing. Leave it and come back once the printout is in the bag.
+      <img src="/rooms-and-exits/c2l22-exit-door-keypad.jpg" alt="The grey-framed exit door in the Print Shop with a black 3x3 keypad and a lit LCD showing a single digit, and a keyhole in an oval plate below the keypad" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=120s" target="_blank" rel="noopener">2:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 2:30</span>
+      <strong>The till is a touchscreen, and it opens a full keyboard</strong>
+      Tap the black register on the front counter and the camera pushes in on its monitor. The register's own screen shows a small on-screen keyboard; tap a key and the game throws a big blue overlay across the middle of the display: an entry field on top, a full QWERTY keyboard with a number row underneath, a backspace arrow bottom-right and a left-pointing arrow bottom-left. This is the only text-entry surface in the level. If you were expecting a numeric keypad for a shop till, that is the trap — the code goes in through a computer keyboard, so you will be hunting for digits along the top row rather than tapping a 3×3.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=150s" target="_blank" rel="noopener">2:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 3:00</span>
+      <strong>The wrong order: 313951 is rejected on screen</strong>
+      This is worth watching once because it is the mistake almost everyone makes. The player types the four jersey numbers in the order they hang on the wall — <b>3</b>, <b>13</b>, <b>9</b>, <b>51</b> — which reads <b>313951</b>. The field fills to six digits, the keyboard sits there, and then the entry clears with nothing opened. No error message, no red flash: the overlay simply resets. In an escape room that silence is the rejection. If you have typed six digits and the drawer has not moved, you have the right numbers in the wrong order.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=180s" target="_blank" rel="noopener">3:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 3:59</span>
+      <strong>The working order: 133951 opens the cash drawer</strong>
+      Go back to the till and type <b>133951</b>. The register display settles on those six digits in yellow, the drawer kicks open, and the camera holds on it long enough to see what is inside: a stack of small clear bags in the left compartment, a small red object in the middle and a single iridescent <b>CD</b> on the right. That is the same six digits the 4:44 recording types at 4:05, in a completely different video, so this is the one code on the page you can trust without checking your own jerseys. Take the CD; the bags and the red object are not used by anything.
+      <img src="/rooms-and-exits/c2l22-till-code-133951.jpg" alt="The cash register in the Print Shop with 133951 shown in yellow on its screen and the drawer pulled open, holding clear bags, a small red object and a CD in the right-hand compartment" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=239s" target="_blank" rel="noopener">3:59</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 4:20</span>
+      <strong>The desktop tower, the CD, and a live disagreement between our recordings</strong>
+      The computer on the L-shaped counter is a monitor, a tower with an optical bay on its face, and a small white printer that is scenery. In our 4:44 recording the CD goes into that tower and the monitor answers with a printer icon struck through, a green <b>PRINT</b> button and the line <b>Nothing can be printed before the printer is fixed!</b> In our long run the monitor stays black at 4:20 and the CD never leaves the bag, yet the same wheel still appears once the printer has ink — so treat the CD as the safe move rather than a hard gate. Try it on the tower first; if the monitor does not change, stop worrying about it and go and feed the printer.
+      <img src="/rooms-and-exits/c2l22-computer-cd-warning.jpg" alt="The desktop computer in the Print Shop with the monitor showing a printer icon struck through and the message Nothing can be printed before the printer is fixed, and the tower's CD drive beside it" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=260s" target="_blank" rel="noopener">4:20</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 4:26</span>
+      <strong>The printer says what it wants before you give it anything</strong>
+      Tap the floor copier with nothing in hand and a banner appears across the top of the screen: <b>The printer is missing something in order to work!</b> It is a deliberately vague line, and the level leans on it: the machine will keep saying it until you feed it an ink cartridge, no matter what else you have done. Note what is on the panel while you are here — a row of colour swatches on the left of the control panel, a small screen in the middle, a numeric keypad on the right and a big green start button beside an orange stop. The swatches are the cartridge slots, and the screen is where the print job will report itself later.
+      <img src="/rooms-and-exits/c2l22-printer-missing-something.jpg" alt="The large floor printer in the Print Shop with a banner reading The printer is missing something in order to work, and the yellow DANNY 51 jersey on the wall beside it" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=266s" target="_blank" rel="noopener">4:26</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 4:52</span>
+      <strong>Feed the printer an ink cartridge — and watch the panel wake up</strong>
+      Open the inventory, select <b>Ink cartridge</b>, press <b>Use</b>, and tap the floor copier. The cartridge disappears into the machine, the colour swatches on the left of the control panel light up in their own colours, and the small screen in the middle comes alive. That is the whole fix: no animation, no confirmation dialogue, just a dead panel that is suddenly lit. If you have more than one cartridge in the bag, this is the moment to notice that the panel has a colour row rather than a single slot — the machine is showing you where ink goes without telling you how many it wants.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=292s" target="_blank" rel="noopener">4:52</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 5:10</span>
+      <strong>The monitor fills with the six-segment wheel</strong>
+      Go back to the computer and the print job is now readable. The monitor splits in two: a six-slice wheel on the left carrying <b>8</b>, <b>13</b>, <b>18</b>, <b>24</b>, <b>39</b> and a question mark, and on the right a two-row numeric keypad — <b>1 2 3 4 5</b> over <b>6 7 8 9 0</b> — an input line, an X to clear it, a printer icon and a green <b>PRINT</b> button. Six slices, five numbers, one blank. That is the entire puzzle statement, and it is the only puzzle in the room that is not a code you carry from somewhere else.
+      <img src="/rooms-and-exits/c2l22-wheel-puzzle.jpg" alt="The Print Shop computer monitor showing a six-segment wheel with the numbers 8, 13, 18, 24, 39 and a question mark, next to a two-row keypad and a green PRINT button" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=310s" target="_blank" rel="noopener">5:10</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 8:02</span>
+      <strong>Type 54 and press PRINT</strong>
+      The answer is <b>54</b>, and the reason is that opposite slices triple: 8 faces 24, 13 faces 39, and 18 therefore faces 54. Type it on the two-row keypad so it lands on the input line, then tap <b>PRINT</b>. This is one of the few places in the game where you can type a number and nothing happens until you press a separate confirm button, so if the wheel is still sitting there with 54 in the field and no print, look for the green button rather than the X.
+      <img src="/rooms-and-exits/c2l22-wheel-answer-54.jpg" alt="The Print Shop computer monitor with 54 typed in the input field beside the two-row keypad, the six-segment wheel on the left and the green PRINT button below the printer icon" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=482s" target="_blank" rel="noopener">8:02</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 8:36</span>
+      <strong>PRINTING: the job moves to the machine</strong>
+      Once PRINT is pressed the computer view drops and the floor copier's panel reads <b>PRINTING</b> in white on a dark screen, with the paper tray below it. In our run there is a full thirty seconds between typing 54 at 8:02 and the machine actually starting, because the field just sits there until the green button is tapped — do not read that pause as a wrong answer. Nothing else on the machine changes and there is no progress bar worth watching; the status word is the whole animation. Do not walk away assuming the sheet is already in the bag either: the item only appears once the print finishes, and the printer goes quiet again afterwards.
+      <img src="/rooms-and-exits/c2l22-printing.jpg" alt="The floor printer in the Print Shop with PRINTING shown on its control panel display and the yellow DANNY 51 jersey on the wall behind it" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=516s" target="_blank" rel="noopener">8:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 9:26</span>
+      <strong>Take the Printed picture out of the bag</strong>
+      The sheet lands on the printer's output tray at 9:20 and is in the inventory by 9:26, where the game labels it <b>Printed picture</b> and offers Use, Combine, Dismantle and Examine. What comes out is a six-slice colour wheel on white paper, each slice a different colour, each carrying one of the numbers you just worked with — red 8, yellow 13, green 18, blue 24, purple 39 and orange <b>54</b>. This is not a souvenir of the wheel puzzle: it is the <b>door's code list</b>. Six numbers, one of which the exit keypad will accept, and the six are the only thing the sheet is for. In our full run this is the last item picked up before the door opens.
+      <img src="/rooms-and-exits/c2l22-printed-picture.jpg" alt="The Printed picture item in the Print Shop inventory: a six-slice colour wheel on white paper showing 8, 13, 18, 24, 39 and 54" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=560s" target="_blank" rel="noopener">9:20</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 17 · 9:44</span>
+      <strong>Examine the sheet: six numbers, no pointer</strong>
+      This is the step where the shape of the ending becomes clear. Open the inventory, hit <b>Examine</b> on the Printed picture and the game blows the wheel up to full screen — 8, 13, 18, 24, 39 and 54 in six coloured slices. Our run sits in that close-up from 9:44 and backs out at 9:48, and what it establishes is the thing that matters: the sheet gives you the candidate list and <b>gives you no way to tell which one the door wants</b>. There is no marked slice, no arrow, no difference in weight or outline. Photograph it or write the six numbers down, because you are about to type them one at a time.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=584s" target="_blank" rel="noopener">9:44</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 18 · 9:58</span>
+      <strong>Back to the glass door: try the six numbers from the sheet</strong>
+      With the printout in the bag, walk to the grey-framed glass door on the back wall and tap the keypad. Type the numbers from the printed sheet one at a time, clearing with X in between. Our long run burns two wrong guesses first — <b>54</b> at 9:58 clears silently, <b>39</b> at 10:17 turns the LCD red — and then <b>8</b> at 10:23 opens the door. The other two recordings get there with <b>18</b> and with <b>24</b>, which is why this page tells you to work through the list rather than trust a single code.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=598s" target="_blank" rel="noopener">9:58</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 19 · 10:28</span>
+      <strong>The results panel: +50 coins, 9:52 on the clock</strong>
+      The level ends on the standard Rooms &amp; Exits results panel — <b>LEVEL COMPLETED!</b>, a coin stack labelled <b>+50</b>, a ten-segment Efficiency bar filled nine-tenths of the way across, and <b>Time: 9:52</b>. There is a green Claim button with a film-strip icon and an <b>x2</b> ad option beside it, and a faint Continue underneath if you would rather not watch anything. Nothing you collected carries over: the cartridge, the CD and the printout all stay in the shop.
+      <img src="/rooms-and-exits/c2l22-level-complete.jpg" alt="The Level Completed panel for Rooms and Exits Chapter 2 Level 22 Print Shop, showing a reward of plus 50 coins, nine of ten efficiency segments filled and a time of 9:52" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=CoU_2oFwxbI&t=628s" target="_blank" rel="noopener">10:28</a></div>
+    </div>
+
+    <h2>The locks, and why order matters<span class="accent">.</span></h2>
+    <p>Print Shop is not a room with a puzzle in it; it is a chain of dependencies with a shop painted on top. Once you see it that way, the level stops being a hunt and becomes a checklist, and the checklist has an order because each step consumes the output of the one before it — with exactly one optional link in the middle.</p>
+    <ol>
+      <li><b>The jerseys feed the till.</b> Four numbers on the wall — 3, 13, 9, 51 — become the six-digit till code <b>133951</b>. Nothing else in the room produces those digits, and no other lock accepts letters or names, so the jerseys have exactly one consumer.</li>
+      <li><b>The till feeds the CD.</b> There is no other way into the cash drawer. The drawer is shut until the code lands, and the CD inside it is the only disc in the level.</li>
+      <li><b>The CD feeds the computer — in one of our runs.</b> In the 4:44 recording the disc goes into the tower's bay and the monitor answers with the struck-through printer and the print-job warning. In the long run the CD stays in the bag and the wheel appears anyway once the printer has ink, so we are not going to pretend this link is mandatory. It is the difference between knowing why the print job is blocked and simply unblocking it.</li>
+      <li><b>The cartridge feeds the printer.</b> The floor copier will not move until it has ink, and while it is dry the computer refuses to print. This is the one step that is easy to do out of order, because the cartridge is found in a cabinet on the opposite side of the room from both machines.</li>
+      <li><b>The wheel feeds the printout.</b> 54 on the monitor, PRINT, PRINTING on the panel, and the sheet lands on the printer's tray and goes into the bag.</li>
+      <li><b>The printout feeds the door.</b> This is the part most guides get wrong. The Printed picture is not a souvenir of the wheel puzzle — it is the door's code list, six numbers laid out on one sheet, and the keypad wants one of them. Which one is not fixed: our three runs opened with <b>8</b>, <b>18</b> and <b>24</b>, and 8 was refused outright in the run that opened with 24.</li>
+    </ol>
+    <p>The practical consequence is that most "dead ends" in this level are steps attempted too early. The printer saying it is missing something is the cartridge step, not a separate puzzle; the wheel screen refusing to advance is the missing ink; the door rejecting a number is simply the wrong one of six. If you are stuck for more than five minutes in the Print Shop, the useful question is rarely "what is the code" — it is "which object is still sitting in my bag unused".</p>
+    <p>There is a second, subtler structure worth noticing: the level hands you the numbers before it hands you the locks. The jerseys are readable from the first second of the run, and the wheel is fully visible from 5:10 — nearly three minutes before the recording types 54. This is a game that expects you to write things down, and the ending makes that literal: the door code is a number you are holding on a piece of paper. Anyone playing without a notepad ends up walking the floor twice, and the route between the till, the computer and the copier is the longest walk in the shop.</p>
+
+    
+<h2>The wheel: how 8, 13, 18, 24, 39 give you 54<span class="accent">.</span></h2>
+    <p>The wheel is the only genuine puzzle in the Print Shop, and it is gentler than it looks. Six slices, five numbers, one question mark, laid out so that each number has a partner directly across the circle. Read the pairs rather than the sequence and the rule falls out immediately:</p>
+    <ul>
+      <li><b>8</b> sits opposite <b>24</b>, and 8 × 3 = 24.</li>
+      <li><b>13</b> sits opposite <b>39</b>, and 13 × 3 = 39.</li>
+      <li><b>18</b> sits opposite the question mark, so the blank is 18 × 3 = <b>54</b>.</li>
+    </ul>
+    <p>Two independent pairs is enough to fix a single rule, and the third pair confirms it: this is not a sequence puzzle where you have to guess whether the step is +5 or +6, it is a pairing puzzle where the same operation has to hold twice before you commit. That is also why the numbers look scrambled going round the circle — 8, 13, 18, 24, 39 is not an arithmetic series in order, and players who try to read it clockwise as one sequence spend a long time on differences that do not matter.</p>
+    <p>The answer is confirmed twice over in our footage. In the full run the value 54 is typed at 8:02 and the copier reports PRINTING at 8:36; in the second recording the same 54 goes in and the same PRINTING follows within seconds. The sheet afterwards does double duty: it shows the whole wheel with the blank filled in, so you can check your own answer, and it is the list you take to the door. One puzzle, two uses, which is a tidier bit of design than it first looks.</p>
+    <p>One detail that trips people up: the keypad on the monitor is not a phone pad. It is two rows of five, <b>1 2 3 4 5</b> on top and <b>6 7 8 9 0</b> underneath, so the digits of 54 are not where your thumb expects them. The input line sits between the keypad and the PRINT button, and the X beside it clears the field — useful, because there is no backspace on this pad and a mistyped first digit otherwise means cancelling out of the whole screen and starting again.</p>
+
+    <h2>The exit door: the sheet is the code list<span class="accent">.</span></h2>
+    <p>The way out is the grey-framed door on the back wall with the tall blue glass panel. It carries a <b>3×3 keypad</b> with an LCD on the frame — 1 to 9 in three rows, then <b>X</b>, <b>0</b> and a return arrow — and a <b>keyhole</b> in an oval plate directly underneath. The keypad is the lock that ends the level, and the clue for it is the thing you just printed.</p>
+    <p>Here is what three different players typed, and what happened. In the full run: <b>54</b> at 9:58, which clears the display and does nothing; <b>39</b> at 10:17, which turns the LCD red and clears it; then <b>8</b> at 10:23, which opens the door at 10:24. In the 2:55 recording: <b>54</b> at 2:29, red and cleared; <b>8</b> at 2:37, which flashes green; then <b>18</b> at 2:44, which opens the door. In the 4:44 recording: <b>8</b> at 4:20, red and cleared; <b>392</b> at 4:32, wrong and cleared; then <b>24</b> at 4:35, which opens the door.</p>
+    <p>Three runs, three different accepted values — <b>8</b>, <b>18</b>, <b>24</b> — and every one of them is one of the six numbers printed on the sheet in your bag. The rejected entries are instructive too: 54 is refused in the full run <i>and</i> in the 2:55 run, 39 is refused in the full run, and 8 is refused in the 4:44 run but accepted in the full run. A code that is right in one recording and wrong in another is not a code, it is a random draw. The door picks one of the six slices and you have to find which.</p>
+    <p>So the ending is a short brute force, and the sheet is the list to brute force from. Type <b>8</b>, then <b>13</b>, then <b>18</b>, then <b>24</b>, then <b>39</b>, then <b>54</b>, clearing with X between attempts, until the door swings. The panel tells you which attempt failed: a rejected number turns the LCD red, and the run that opened on 18 saw 8 flash green on the way in, so the display is not purely binary. The door opening is unmissable either way, because the camera drops straight back to the shop floor. In our three runs it never took more than three attempts, but that is luck rather than a rule: any of the six can be the answer on a given playthrough.</p>
+    <p>One more thing worth knowing before you get here: the level will not open the door until the <b>Printed picture</b> is actually in your inventory, not merely sitting on the printer's output tray. In the full run the sheet is collected at 9:26 and the door is opened at 10:24; in the 2:55 run the sheet is collected at 2:16 and the door opens at 2:45. If you have tried all six numbers and nothing works, check the bag first — you may be typing at a door that has not been armed yet.</p>
+    <p>The keyhole is still a loose end. There is an oval lock plate under the keypad in every run, and in none of them is there a key in it or a key picked up anywhere on camera — the level finishes on the keypad number alone. Whatever the cylinder is for, it is not part of the solution we recorded.</p>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>The till code order.</b> The wall reads HARRY 3, NERO 13, JACOB 9, DANNY 51, so the natural entry is 313951 — and it is rejected. The working code is <b>133951</b>, which leads with NERO's 13. This page cannot explain why 13 comes first: alphabetical order by name (DANNY, HARRY, JACOB, NERO) gives 513913, shirt-colour order gives the wall order, ascending gives 391351 and descending gives 511393, and none of them is 133951. Treat the code as the answer and the derivation as the level's one piece of unexplained design.</li>
+      <li><b>Typing digits on a QWERTY.</b> The till's overlay is a computer keyboard, not a number pad. The digits live on the top row, and the number row is small on a phone screen. Two of the three recordings fumble here — one of them types 313951 first and has to clear the field.</li>
+      <li><b>Using the CD on the printer.</b> The disc belongs in the desktop tower, not the copier, and the two machines sit on opposite sides of the room with drive-like slots on both. Our long run never uses the CD at all and still finishes, so if the monitor stays black when you Use it, you have not broken anything — go and put ink in the printer instead.</li>
+      <li><b>Ignoring the cabinet.</b> The first ink cartridge is in the low cabinet under the mug shelves, which reads as display furniture rather than storage. Players who skip it reach the printer, get the "missing something" banner, and go looking for a code instead of a consumable.</li>
+      <li><b>Treating the wheel as a sequence.</b> Read clockwise, 8, 13, 18, 24, 39 looks like it is building towards something and then breaks at the jump to 39. It is not a series; it is three pairs across the circle. Count the differences and you will be there for the full three minutes the reference run spends on this screen.</li>
+      <li><b>Typing one door number and quitting.</b> The keypad on the exit door is where most of the frustration in this level lives, and it is not because the code is hard. It is because there are six candidates and no pointer. All three of our recordings type at least one number that turns the LCD red. If the door does not move, try the next number from the sheet — do not go looking for a seventh clue, because there is not one.</li>
+      <li><b>Assembling the six numbers into one long code.</b> A very natural mistake given that the till code is a concatenation: type 81318243954, or 8-13-18-24-39-54 in some order, and watch it fail. The door wants a single number from the sheet, not the sheet as a sequence. In our footage the accepted entries are 8, 18 and 24 — one, two and three digits respectively.</li>
+      <li><b>Arriving at the door without the sheet.</b> The keypad is dead until the Printed picture is in your inventory. It is not enough that the printer has finished; you have to open the tray output and take it. If every number fails, that is the first thing to check.</li>
+      <li><b>Assuming the mugs matter.</b> Six mugs with coloured handles on the back-left shelves, in the same colour families as the jerseys, sitting directly above the cabinet that holds a cartridge — they look like a colour-order puzzle and they are not. Our run spends nearly a minute tapping around that shelf, and nothing there changes state.</li>
+    </ul>
+
+    
+<h2>Chapter 2 levels<span class="accent">.</span></h2>
+    <p class="grid-note">Chapter 2 keeps going past this room; the list below reflects what is written up so far.</p>
+    <LevelSelector chapter={2} current={22} compact={true} label="Chapter 2 · No Honor Among Thieves" />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <div class="cta-box">
+      <p>Next room in the chapter: <a href="/rooms-and-exits/chapter-2-level-23/">Chapter 2, Level 23 — Bakery →</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits guides →</a></p>
+    </div>
+
+    <div class="warn">
+      <h2>What this page could not verify</h2>
+      <p><b>1. How the exit door picks its number.</b> The keypad accepts one number from the printed sheet, and it is a different one in each recording: <b>8</b> in the full run, <b>18</b> in the 2:55 run, <b>24</b> in the 4:44 run — with 8 refused outright in the run that took 24. That is enough to rule out a fixed code, but not enough to say whether the game draws at random, keys the answer to something in the room we have not identified, or varies by build. What we can say is that all three accepted values appear on the sheet, that a rejected entry turns the LCD red, and that six attempts cover every candidate we have ever seen accepted.</p>
+      <p><b>2. Why the till code starts with 13.</b> The digits are the four jersey numbers and the accepted order is 13 · 3 · 9 · 51, but no ordering rule we tested reproduces it. The code itself is solid — read twice, in two different videos — but the logic behind the order is not something this page can explain.</p>
+      <p><b>3. How many ink cartridges the printer wants.</b> We see four separate cartridge pickups in the full run (1:39, 2:10, 4:04 and 4:39) and two in the 4:44 recording, and the printer's panel has a full row of colour swatches rather than one slot. Whether the machine needs one cartridge or several before it wakes up, we could not confirm: in every run the panel lights up on the first Use we can see clearly, and the inventory count is ambiguous because it doubles as the bag's slot counter.</p>
+      <p><b>4. The keyhole.</b> Every recording shows an oval keyhole plate under the exit keypad; none shows a key in it, and none shows a key being picked up. The level finishes on the keypad number alone in all three runs. What the cylinder is for remains unexplained — it may be that the game simply reuses a door prop that normally takes a key.</p>
+      <p><b>5. One reward panel we cannot reconcile.</b> Two recordings end on the same results screen — <b>+50</b> coins, nine of ten efficiency segments, <b>Time: 9:52</b> in the full run. A third, 2:55 recording of the same shop, clearly made on a different build or account, ends on a panel with an efficiency figure of <b>+5</b>, no coin reward and a piggy-bank prompt. We could not establish what separates the two, so the page quotes the +50 that two independent runs agree on and treats the 2:55 panel as an outlier.</p>
+      <p><b>6. The mug shelf.</b> Six mugs, six handle colours, a cabinet underneath holding a cartridge. Our long run spends 48 seconds on that shelf and the frames show no reliable state change — brightness shifts on individual mugs are consistent with a hover highlight following the finger, not with a solved puzzle. If the mugs are a puzzle, we could not read its rule.</p>
+      <p><b>7. Whether the CD is required at all.</b> The 4:44 recording puts the CD in the desktop tower and gets the print-job warning; our long run never uses it and reaches the same wheel and the same printout. Two recordings, two behaviours, and no third run that settles it — so the page presents the CD as the safe move and not as a gate.</p>
+      <p>Everything else on this page — the four jersey numbers, <b>133951</b> on the till display, the CD in the open drawer, both warning lines, the six wheel numbers, <b>54</b>, <b>PRINTING</b>, the six numbers on the printed sheet, <b>+50</b> and <b>9:52</b> — was read off the screen at least twice, from at least two different recordings where the number mattered.</p>
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

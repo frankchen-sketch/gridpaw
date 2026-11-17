@@ -1,0 +1,406 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 2 Level 21 Walkthrough: Household Appliances";
+const description = "Rooms & Exits Chapter 2 Level 21 walkthrough for the Household Appliances showroom: the note that counts circles, the TV that prints 1286, the pink four-dial lock, the key it hides and the exit worth +50 coins.";
+
+const faq = [
+  {
+    q: "What is the exit code in Rooms & Exits Chapter 2 Level 21?",
+    a: "<b>1286</b>. It is shown on one of the televisions in the electronics corner of the showroom: four large digits in a row, each with a small symbol underneath. The digits are printed on the screen; the symbols tie them to the pictogram buttons of the remote that sits in the same corner. All three recordings we broke down show the same four digits, and the pink four-dial lock accepts them.",
+  },
+  {
+    q: "Where exactly does 1286 come from?",
+    a: "The television, not the remote. A purple screen in the TV wall shows <b>1 2 8 6</b>, with a different small pictogram under each digit. The remote in the same corner carries those pictograms instead of numbers, which is how the level ties the screen to its buttons. What this page can vouch for is the digits themselves: all three recordings agree on 1-2-8-6, and the pink four-dial lock accepts them.",
+  },
+  {
+    q: "What does the four-dial lock open?",
+    a: "A small compartment, not the door. The lock is a pink panel with four purple tumblers and two padlock icons — red closed, green open. Turn the tumblers to <b>1 2 8 6</b> and the padlock flips to green; the panel then opens on a pink-lined box with a single silver <b>Key</b> inside. Take the key and the box is empty.",
+  },
+  {
+    q: "What do I do with the key?",
+    a: "Use it on the exit. Open the inventory, select <b>Key</b>, press <b>Use</b>, then tap the white door with the red <b>EXIT</b> sign on the far left wall of the showroom. That is the last action of the level; the camera pulls back and the results panel appears.",
+  },
+  {
+    q: "What is the coin reward for Household Appliances?",
+    a: "<b>+50 coins</b>. The results panel reads <i>Reward! +50</i> next to a pile of gold coins, with an efficiency bar of ten squares and a completion time. On the longest of our three recordings the clock reads <b>21:34</b>, and the reward is the same +50 the level card advertises before you start.",
+  },
+  {
+    q: "What does the note with 6636, 8118 and 2212 mean?",
+    a: "Count the closed loops in each group of digits. <b>6636</b> has three loops (each 6 is one), so it reads 3. <b>8118</b> has four (each 8 is two), so it reads 4. <b>2212</b> has none, so it reads 0. That gives <b>8688 = 7</b> (2+1+2+2) and <b>5971 = 1</b> (the 9 is the only loop). The note never asks you to type the answers anywhere we could find — it is a clue, not a keypad.",
+  },
+  {
+    q: "How long does the Household Appliances level take?",
+    a: "The slowest of our three recordings finished in <b>21:34</b> of in-game time; a tighter run cleared the same room in about nine minutes of real time. Nothing in the level is timed and there is no fail state, so the only thing that stretches it is the number of separate locks standing between you and the door — this is one of the densest rooms in Chapter 2.",
+  },
+  {
+    q: "Do I need the mixer and its beaters?",
+    a: "Not in any run we captured. The yellow-and-grey hand <b>Mixer</b> is a real pickup with a real label and two chrome beaters, and one recording's caption ties the beaters to a clock-face mechanism on a door. Our own completing run never uses them: it takes the key out of the 1286 compartment and finishes. Treat the mixer as optional unless your build shows you a socket for it.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-2-level-21"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 2 Level 21"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 2</a> &gt; Level 21</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 2 Level 21 Walkthrough: Household Appliances</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from three recordings of the current build: a <b>9:10</b> playthrough extracted at one frame per second and used for every screenshot below, an <b>8:03</b> edit whose on-screen clock reads <b>14:39</b> at the end, and a <b>12:56</b> edit whose clock reads <b>21:34</b> and which is the only one that reaches the LEVEL COMPLETED panel. The two long videos are time-compressed, so every timestamp in the step cards points at the second in the embedded 9:10 video, not at an in-game clock. The four digits on the television and the four digits on the lock were each read off the raw frames at least twice and agree across all three runs; the circle puzzle's five lines were read three times. Anything that could not be read twice is listed under <a href="#could-not-verify">What this page could not verify</a> instead of being printed as a fact.</div>
+
+    <LevelSelector chapter={2} current={21} variant="jump" label="Chapter 2 · No Honor Among Thieves" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>The Household Appliances showroom ends on the four-digit code <b>1286</b>, printed on a television in the electronics corner and dialled into the pink four-tumbler lock in the laundry half. Finish worth <b>+50 coins</b>.</p>
+      <ol>
+        <li>Read the <b>television</b> in the TV wall: four digits, <b>1 2 8 6</b>, each with a symbol underneath.</li>
+        <li>Note the small <b>symbol under each digit</b> — the same pictograms are what you press on the <b>remote</b> in the same corner.</li>
+        <li>Turn the <b>four-dial lock</b> to <b>1286</b>; the red padlock flips green.</li>
+        <li>Take the silver <b>Key</b> out of the compartment it opens.</li>
+        <li>Inventory → <b>Key</b> → <b>Use</b> → tap the white <b>EXIT</b> door on the far left wall.</li>
+        <li>Results panel: <b>+50 coins</b>.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/j59wdARa584" title="Rooms &amp; Exits Chapter 2 Level 21 Household Appliances walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/c2l21-hero-showroom.jpg" alt="Rooms and Exits Chapter 2 Level 21 Household Appliances: the showroom wide shot with microwaves and ranges along the left wall, a row of refrigerators at the back, washing machines on the right, the checkout counter in the foreground and the white EXIT door on the far left" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>Household Appliances is the twenty-first room of Chapter 2, one door past the Furniture Store and one before the Print Shop. It is not a shop with a puzzle in it; it is a shop made almost entirely of puzzles. The room you land in is a white-goods showroom, brightly lit, with red structural columns and a blue back wall, and it is laid out like a real floor: five microwaves on a high shelf with five ranges standing underneath them, a row of five refrigerators on the back wall, a laundry wall with four washing machines over a toaster shelf, a low island carrying three more machines with slippers and toy irons on the shelf above them, and an L-shaped checkout counter jutting into the foreground with a cash register on one arm and a small alarm clock on the other.</p>
+    <p>Then the room keeps going. Past the laundry wall the floor turns into the small-appliance and electronics half: a TV wall with two shelves of flat screens, a speaker display with seven cabinets of different heights, shelves of blenders, kettles and stand mixers, and a framed <b>HOUSEHOLD ITEMS</b> board covered in pictograms. There is a white door in the back wall of that half that opens into a second room the wide shot never shows — a staff room with a sink and mirror, a water cooler, a standing fan, a radiator and a bank of green lockers. Both halves are one level, and the exit is back where you started, on the far left wall.</p>
+    <p>That is why the level feels longer than its number suggests. There is no corridor and no enforced order: you can clear the ring maze before you have found the room it belongs to, or spend ten minutes on the price catalogue before you have looked at a single television. The recording above finishes in about nine minutes of real time; the longest run we captured took <b>21:34</b>. The difference is entirely how long you spend tapping locks that are not on the critical path.</p>
+    <p>The critical path is short. One television carries the number, one lock takes it, and one key ends the level. Everything else in the showroom — the hexagon rosette, the mixer, the blenders, the speakers, the circuit board, the ring maze, the lockers, the catalogue — is either a clue for those three objects or a container holding an item you will not need. Knowing which is which is the whole guide.</p>
+
+    <img class="hero" src="/rooms-and-exits/c2l21-back-room.jpg" alt="The staff room behind the showroom: a sink with a mirror and tiled splashback, a water cooler, an open vanity cupboard, a standing fan, a door with three glass panels and a stepped bank of green lockers under a ventilation duct" width="1200" height="594" loading="lazy" />
+    <p>The second room is the part people miss. It is reached through the plain white door in the back wall of the small-appliance half, it comes up dark the first time you open it, and it contains a completely separate set of locks — the ring maze, the lockers with the red-cross panel, and the sink vanity. None of them is on the critical path, which is why a player who never opens that door can still finish the level and a player who opens it first can lose half an hour.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Every object in Household Appliances that takes an input or hands you something, in one table. If you read only one section of this page, read this one — the level is large enough that most of the lost time is spent tapping a container and expecting a lock.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it gives you</th></tr></thead>
+      <tbody>
+        <tr><td>Microwaves</td><td>High shelf, left wall (five units)</td><td>One door is already open with a <b>white plate on the turntable</b> and a metal rack above it. The control panels carry dials and a digital display but no code we could read twice.</td></tr>
+        <tr><td>Ranges and ovens</td><td>Floor, left wall (five units)</td><td>Oven doors open on empty interiors. The knobs are the only interactive part; no lock follows from them in any run we captured.</td></tr>
+        <tr><td>Refrigerators</td><td>Back wall (five units)</td><td>The refrigeration corner carries the <b>note with the circle puzzle</b>, and an <b>Open</b> keypad stands in front of the fridges. Both are in the same corner of the room.</td></tr>
+        <tr><td>Washing machines</td><td>Right wall (four) and a low island (three)</td><td>Standard front-loaders: detergent drawer, program buttons, cycle dial, round door. Doors open on bare steel drums. The island units are the ones with a different colour in the drum — orange, grey and purple — the only colour coding the laundry half gives you.</td></tr>
+        <tr><td>Toaster shelf</td><td>Above the laundry wall</td><td>A row of toasters in different colours. Decoration, as far as our footage shows.</td></tr>
+        <tr><td>Checkout counter</td><td>Foreground, L-shaped</td><td>Cash register with a screen, a printer and a small <b>alarm clock</b>. The counter front is set with a 2×2 grid of coloured icon tiles and a 3×3 symbol grid holding a circle, a cross, a square and a triangle.</td></tr>
+        <tr><td>Exit door</td><td>Far left wall</td><td>A white door with a red <b>EXIT</b> sign, a vent at the bottom and a plain knob. This is the finish line.</td></tr>
+        <tr><td>HOUSEHOLD ITEMS board</td><td>Right half, framed on the wall</td><td>A poster of pictograms — TV, speaker, computer, mixer, kettle — with the category name across the top. It is a sign, not a lock.</td></tr>
+        <tr><td>TV wall</td><td>Electronics corner, two shelves</td><td>One purple screen shows <b>1 2 8 6</b> with a symbol under each digit. This is the level's number.</td></tr>
+        <tr><td>Remote control</td><td>Beside the TV wall</td><td>A grid of pictograms instead of number keys. Matching them to the TV's symbols is the actual puzzle.</td></tr>
+        <tr><td>Speaker display</td><td>Blue panel, electronics corner</td><td>Seven cabinets of different heights on one shelf. An ordering puzzle; nothing in our footage shows what it releases.</td></tr>
+        <tr><td>Blender shelf</td><td>Centre display, right half</td><td>Five blenders, each with one large dial whose knob points to a different hour. A position puzzle.</td></tr>
+        <tr><td>Hand mixer</td><td>Floating pickup, shelf near the door</td><td>Labelled <b>Mixer</b> on pickup: yellow body, dark grey head, two chrome beaters.</td></tr>
+        <tr><td>Circuit board</td><td>Electronics corner, green panel</td><td>A PCB-shaped grid with coloured cable runs — red, blue, yellow, white — running from terminals around the edge. A route puzzle.</td></tr>
+        <tr><td>Ring maze</td><td>Staff room, close-up panel</td><td>Five concentric rings, blue walls, a white dot on the outermost ring and a bullseye in the middle.</td></tr>
+        <tr><td>Green lockers</td><td>Staff room, right wall</td><td>Seven doors, most with a key already in the lock. The tall unit carries a dark panel with a <b>red cross</b> and four buttons around it.</td></tr>
+        <tr><td>Price catalogue</td><td>Wall-mounted, hangs over the laundry half</td><td>Nine small appliances in a 3×3 grid, each with a product code and a price. The most code-shaped object in the room, and not a lock.</td></tr>
+        <tr><td>Four-dial lock</td><td>Laundry half, pink pop-up panel</td><td>Four purple tumblers, a red closed and a green open padlock. Takes <b>1286</b> and opens a compartment holding the <b>Key</b>.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:02</span>
+      <strong>Read the room before you touch anything</strong>
+      The opening wide shot gives you the whole floor in one frame. Left wall, top to bottom: five microwaves, five ranges, and the white EXIT door with its red sign at the far end. Back wall: five refrigerators, including a black double-door unit. Right wall: a laundry display with four machines over a shelf of coloured toasters. Centre: a low white island carrying three more machines — orange, grey and purple drums — with a shelf of slippers and toy irons above them. Foreground: the L-shaped checkout counter, cash register on the short arm, alarm clock on the long one. What the wide shot does <i>not</i> show is the second half of the room, and it does not show the staff room behind it.
+      <img src="/rooms-and-exits/c2l21-showroom-wide.jpg" alt="The Household Appliances showroom from the checkout counter: EXIT door and microwave shelf on the red wall to the left, open refrigerators and a spilled bag on the floor in the centre, washing machines and a tablet display to the right" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=j59wdARa584&t=2s" target="_blank" rel="noopener">0:02</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:29</span>
+      <strong>The laundry wall: doors that open on nothing</strong>
+      Tap any machine on the laundry wall and the camera closes on the two nearest units. They are standard front-loaders — a detergent drawer, two rows of square program buttons and a large cycle dial on the control panel, a round glass door on a chrome hinge — and the doors open. Behind them the drums are bare steel with nothing inside, which is worth knowing early: the laundry wall looks like a container puzzle and is not one. The one thing it does give you is a clean read of the control panels, and the machine on the left is the clearest of the four.
+      <img src="/rooms-and-exits/c2l21-laundry-drums.jpg" alt="Close view of the laundry display in Household Appliances: two white front-loading washing machines inside the white zoom brackets, with detergent drawers, button rows and cycle dials, their doors open on empty steel drums" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=j59wdARa584&t=29s" target="_blank" rel="noopener">0:29</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 1:07</span>
+      <strong>The open microwave is already open</strong>
+      One of the five microwaves on the left shelf has its door swung out from the first second of the level, and inside is a white plate sitting on the turntable with a wire rack above it. There is no puzzle here — the plate is scenery, not an item. The control panels beside it carry a digital display, a large dial and a column of buttons, and they are the most convincing fake lock in the room: nothing in any of our three runs types a number into a microwave.
+      <img src="/rooms-and-exits/c2l21-microwave-row.jpg" alt="Two microwaves on the shelf in Household Appliances: the left one open with a white plate on the turntable and a metal rack above it, the right one closed" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=j59wdARa584&t=67s" target="_blank" rel="noopener">1:07</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 1:24</span>
+      <strong>The note in the refrigeration corner: count the circles</strong>
+      In front of the fridges there is a white note, and tapping it brings up a paper with five lines on it: <b>6636 | 3</b>, <b>8118 | 4</b>, <b>2212 | 0</b>, <b>8688 | ?</b>, <b>5971 | ?</b>. The rule is not arithmetic, it is typographic — you count the closed loops inside each group of digits. Three sixes and a three make three loops, so 6636 is 3. Two eights and two ones make four, so 8118 is 4. Three twos and a one make nothing, so 2212 is 0. That leaves <b>8688 = 7</b> (8, 6, 8, 8 → 2+1+2+2) and <b>5971 = 1</b> (only the 9 has a loop).
+      <img src="/rooms-and-exits/c2l21-fridge-paper.jpg" alt="The white note in the Household Appliances refrigeration corner: five lines reading 6636 with 3, 8118 with 4, 2212 with 0, 8688 with a question mark and 5971 with a question mark" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=j59wdARa584&t=84s" target="_blank" rel="noopener">1:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:30</span>
+      <strong>The keypad that only says Open</strong>
+      The keypad that stands in front of the fridges has only one word on it: <b>Open</b>. It uses a telephone layout — 1 to 9 in three rows with the 0 centred underneath — and the input strip above the digits fills with dots as you press. In our frames a single dot is entered and the 3 key is lit, which tells you two things: the code is longer than one digit, and the game highlights what you have pressed rather than scrambling the pad. We never read the accepted code twice, so this page does not print one.
+      <img src="/rooms-and-exits/c2l21-open-keypad.jpg" alt="The Open keypad in Household Appliances: a telephone-style 1 to 9 grid with 0 underneath, one dot entered in the display strip and the 3 key highlighted" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=j59wdARa584&t=90s" target="_blank" rel="noopener">1:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 3:00</span>
+      <strong>The hexagon rosette on the laundry wall</strong>
+      A square panel with a teal, papery background holds a symmetrical rosette of coloured hexagons sitting on interwoven dark-blue circles — a flower-of-life lattice with a coloured tile dropped into some of the intersections. Tapping a hexagon selects it and cycles its colour. Our frames show the board mid-solve rather than solved, so this page describes the mechanism and leaves the arrangement alone; the coloured drum linings on the island display are the nearest reference the room offers.
+      <img src="/rooms-and-exits/c2l21-hexagon-lock.jpg" alt="The hexagon rosette puzzle in Household Appliances: coloured hexagonal tiles set into an interwoven blue flower-of-life line pattern on a teal panel" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=j59wdARa584&t=180s" target="_blank" rel="noopener">3:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 3:30</span>
+      <strong>The Mixer is an item, not a puzzle</strong>
+      A yellow hand mixer with a dark grey head and two chrome beaters floats off a shelf in the small-appliance half with the label <b>Mixer</b> under it. Tap it and it goes into the bag; there is no lock attached to it and no socket in the shelf. The beaters are the part that confuses people, because one recording's caption ties them to a clock-face mechanism on a door. Our completing run never uses them, and the level finishes without them.
+      <img src="/rooms-and-exits/c2l21-mixer-item.jpg" alt="The Mixer item in Household Appliances: a yellow hand mixer with a dark grey head and two chrome beaters floating above a shelf with its name label underneath" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=j59wdARa584&t=210s" target="_blank" rel="noopener">3:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 3:48</span>
+      <strong>Five blenders, five knob positions</strong>
+      The blender shelf is a position puzzle and it is unusually readable: five machines in a row, yellow, charcoal, silver, red, silver, and each one has a single large dial with an oval knob. The knobs do not all point the same way — in our frames they sit at roughly one o'clock, nine o'clock, one o'clock, one o'clock and nine o'clock, with <b>OFF</b> and <b>PULSE</b> printed around the fifth dial. Copy the positions, not the machines: the puzzle is asking where the knobs point, so a photograph of the shelf is worth more than a note of the colours.
+      <img src="/rooms-and-exits/c2l21-blender-row.jpg" alt="Five blenders on a white shelf in Household Appliances, bases in yellow, charcoal, silver, red and silver, each with a single dial whose knob points to a different hour" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=j59wdARa584&t=228s" target="_blank" rel="noopener">3:48</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 4:12</span>
+      <strong>Seven speakers, seven heights</strong>
+      The speaker display is the cleanest ordering puzzle in the room. Seven cabinets stand on one white shelf against a blue panel, and they are deliberately mismatched: a tall wooden tower with a yellow-coned tweeter, a medium black two-way, the shortest unit in the set, the tallest five-driver tower, a second wooden tower slightly shorter than the first, a black two-way on a two-post stand, and a small pale cabinet with a single yellow driver. The tall five-driver tower is the tallest of the seven and the short dark cabinet is the smallest; the rest sit in between at four clearly different heights. The display wants them sorted by height, and nothing in our footage shows what it releases.
+      <img src="/rooms-and-exits/c2l21-speaker-display.jpg" alt="The speaker display in Household Appliances: seven cabinets of different heights on a white shelf against a blue panel, from a tall five-driver tower to a short single-driver cabinet" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=j59wdARa584&t=252s" target="_blank" rel="noopener">4:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 4:30</span>
+      <strong>The circuit board is a routing puzzle</strong>
+      A green panel shaped like a printed circuit board — expansion slots on one edge, a coin-cell battery, a CPU socket on the other — has a grid of raised tiles in the middle. Four coloured cable runs, red, blue, yellow and white, leave terminals spaced around the perimeter and stop in the grid. Each tile carries a straight or an L-bend; rotating them to join the matching terminals is the whole task. It looks like a code and it is not one: nothing here produces digits.
+      <img src="/rooms-and-exits/c2l21-cable-board.jpg" alt="The circuit board puzzle in Household Appliances: a green PCB panel with expansion slots and a CPU socket around a grid of tiles carrying red, blue, yellow and white cable runs" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=j59wdARa584&t=270s" target="_blank" rel="noopener">4:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 5:18</span>
+      <strong>The white door opens a second room</strong>
+      In the back wall of the small-appliance half there is a plain white door. It is not the exit and it is not locked: tap it and it swings inward on a room that comes up dark the first time, then lights. This is the staff room, and it is a completely separate set of puzzles — the sink vanity, the ring maze, the lockers. Nothing on the critical path needs it. If you are following this guide for the code, you can skip it; if you are stuck on a lock you cannot identify, the lock is probably in here.
+      <img src="/rooms-and-exits/c2l21-staff-room-dark.jpg" alt="The staff room on the first visit in Household Appliances, dimly lit: a sink unit with a dark countertop against a green-tiled wall with a mirror above it, a standing fan, stepped green lockers on the right, and a pop-up window in the centre showing a circular gear mechanism" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=j59wdARa584&t=318s" target="_blank" rel="noopener">5:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 6:00</span>
+      <strong>The ring maze: start from the outside</strong>
+      A close-up panel in the staff room holds a circular maze of five concentric rings. The walls are drawn in dark blue, with short pale radial dividers between them, and a single white dot sits on the outermost ring near the bottom. The bullseye in the middle is the goal. The trap is that people try to read the maze from the centre outward; it only resolves the other way, because each ring's gap is only usable once you know which gap in the ring outside it you came through.
+      <img src="/rooms-and-exits/c2l21-circular-maze.jpg" alt="The ring maze in Household Appliances: five concentric blue-walled rings inside a gold frame, with a white dot on the outermost ring and a bullseye at the centre" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=j59wdARa584&t=360s" target="_blank" rel="noopener">6:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 6:36</span>
+      <strong>The lockers, and the panel with the red cross</strong>
+      The staff room's right wall holds a stepped bank of green metal lockers — seven doors, several of them already hanging open with a key left in the lock, one with the sparkle effect the game uses to mark something interactive. The tall unit at the end is the one that matters: its door carries a dark square panel with a <b>red cross</b> at the centre and four buttons arranged around it, one above, one below, one left, one right. It is a four-way combination, not a keypad, and it is the only lock in the room shaped like that.
+      <img src="/rooms-and-exits/c2l21-green-lockers.jpg" alt="The green lockers in the staff room of Household Appliances, several with keys left in the locks, and the tall unit's dark panel with a red cross and four buttons around it" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=j59wdARa584&t=396s" target="_blank" rel="noopener">6:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 7:41</span>
+      <strong>The television prints 1286</strong>
+      Back in the electronics corner, one screen in the TV wall is not showing a picture: it is purple and carries four large digits, <b>1 2 8 6</b>, with a small pictogram under each one. This is the level's number and it is not hidden — the game puts it on a screen at eye level. What is hidden is the mapping: the remote in the same corner carries the same pictograms instead of numbers, so the screen is telling you the order to press them, not the digits to type. One recording's caption calls them <i>component symbols</i>, which is as close to the game's own name for them as our footage gets. Read the screen, then read the remote.
+      <img src="/rooms-and-exits/c2l21-tv-code.jpg" alt="The television in the Household Appliances electronics corner showing four large digits 1 2 8 6 on a purple screen, each digit with a small symbol beneath it" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=j59wdARa584&t=461s" target="_blank" rel="noopener">7:41</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 8:31</span>
+      <strong>The catalogue is a price list, not a code sheet</strong>
+      A wall-mounted sheet in the laundry half shows nine small appliances in a 3×3 grid, each with a product code and a price: <b>EP894 $410.00</b>, <b>EP841 $240.00</b>, <b>GC2671 $320.00</b> across the top row; <b>HT2836 $220.00</b>, <b>EP8060 $180.00</b>, <b>HTS643 $110.00</b> in the middle; <b>IR2201 $290.00</b>, <b>HT4128 $160.00</b>, <b>GC3581 $200.00</b> along the bottom. The shelf units carry matching price cards, so the codes are consistent across the room. They are also, as far as three recordings can tell, pure decoration: nothing in this level types a product code or a price anywhere.
+      <img src="/rooms-and-exits/c2l21-price-catalog.jpg" alt="The price catalogue in Household Appliances: nine small appliances in a three by three grid, each with a product code such as EP894, GC2671 and HT2836 and a dollar price" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=j59wdARa584&t=511s" target="_blank" rel="noopener">8:31</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 9:01</span>
+      <strong>The four-dial lock takes 1286</strong>
+      The lock is a pink panel with four purple tumblers, each turning through the digits vertically, and two padlock icons at the side: a red closed one above, a green open one below. Turn the tumblers to <b>1 2 8 6</b>, left to right, and the red padlock is replaced by the green. Our frames catch the tumblers mid-turn — 1200, then 1270, then 1280, then <b>1286</b> — which is exactly what you want to see if you are unsure whether a wheel has landed: the game only flips the padlock on the fourth correct digit.
+      <img src="/rooms-and-exits/c2l21-dial-lock.jpg" alt="The pink four-dial lock in Household Appliances with the four tumblers reading 1 2 8 6, a green open padlock below and a red closed padlock above" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=j59wdARa584&t=541s" target="_blank" rel="noopener">9:01</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 17 · 9:04</span>
+      <strong>Take the Key and leave: +50 coins</strong>
+      The lock opens on a pink-lined compartment that holds one item — a silver <b>Key</b>. Tap it, open the inventory, select the key and press <b>Use</b>, then tap the white EXIT door on the far left wall. That is the last action of the level: the camera pulls back to the wide room and the results panel comes up with <b>Reward! +50</b>, a ten-square efficiency bar and the completion time. On the run that shows the panel, that time is <b>21:34</b>.
+      <img src="/rooms-and-exits/c2l21-key-inventory.jpg" alt="The inventory in Household Appliances with the silver Key in the first slot and the four action buttons below it: Use, Combine, Dismantle and Examine" width="1200" height="594" loading="lazy" />
+      <img src="/rooms-and-exits/c2l21-level-complete.jpg" alt="The Level Completed panel for Chapter 2 Level 21 Household Appliances: Reward +50 coins, a ten-square efficiency bar and a completion time of 21:34" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=j59wdARa584&t=544s" target="_blank" rel="noopener">9:04</a> · key on screen 9:03 · results panel <a href="https://www.youtube.com/watch?v=s6rDi03ZrhE&t=770s" target="_blank" rel="noopener">12:50 in the second recording</a></div>
+    </div>
+
+    <h2>The code chain, in order<span class="accent">.</span></h2>
+    <p>The showroom holds about a dozen locks and only three of them are in series. Written out, the chain is almost embarrassingly short:</p>
+    <ol>
+      <li><b>Television → digits.</b> The purple screen gives you 1, 2, 8, 6 and four pictograms. Without the screen there is no number anywhere in the room.</li>
+      <li><b>Remote → the same pictograms.</b> The symbols under the digits reappear on the remote in the same corner, so the screen doubles as the remote's legend. This page does not spell out the press order — see the notes below for why.</li>
+      <li><b>1286 → Key.</b> The pink four-tumbler lock accepts the number and opens a compartment with a silver key in it.</li>
+      <li><b>Key → door.</b> The white EXIT door on the far left wall is the finish line, and the key is the only thing that opens it.</li>
+    </ol>
+    <p>Everything else is parallel. The hexagon rosette, the blenders, the speakers, the circuit board, the ring maze, the lockers and the catalogue are all real interactions and none of them is required. That is not a bug in the design so much as the shape of Chapter 2's late rooms: the game gives you a shop full of machinery and lets you decide which machines are load-bearing.</p>
+    <p>One consequence is worth stating plainly, because it is where most of the frustration in this level comes from. The number is on a screen in the electronics half, and the lock is in the laundry half. Players who work one half methodically and then the other will find one of the two and have no idea what it is for. If you have the number and cannot find a lock, walk back to the washing machines; if you have the lock and no number, walk into the TV corner.</p>
+
+    <img class="hero" src="/rooms-and-exits/c2l21-exit-door.jpg" alt="The exit door of the Household Appliances level: a plain white door on the far left wall under a red EXIT sign, with a vent at the bottom, seen from the wide room view" width="1200" height="594" loading="lazy" />
+    <p>The door itself is deliberately plain: white, a red EXIT sign above the middle, a ventilation grille at the bottom, a round knob and no dial, no pane and no reader. That is the point. Every other lock in the showroom is dressed up as something, and the one that ends the level is a door with a keyhole in a wall you have been walking past since the first second.</p>
+
+    <h2>Why the note counts circles<span class="accent">.</span></h2>
+    <p>The paper with 6636, 8118 and 2212 is the level's one genuine logic puzzle, and it is worth understanding rather than copying, because the same rule shows up in other Rooms &amp; Exits rooms. The right-hand column is not a sum, a difference or a digit count. It is the number of closed regions the left-hand digits enclose when you draw them the way the game's font draws them.</p>
+    <ul>
+      <li><b>6</b> has one closed loop; <b>8</b> has two; <b>9</b> has one; <b>0</b> has one. <b>1, 2, 3, 4, 5, 7</b> have none.</li>
+      <li><b>6636</b> → 6 (one) + 6 (one) + 3 (none) + 6 (one) = <b>3</b>. The note agrees.</li>
+      <li><b>8118</b> → 8 (two) + 1 (none) + 1 (none) + 8 (two) = <b>4</b>. The note agrees.</li>
+      <li><b>2212</b> → four digits with no loops = <b>0</b>. The note agrees.</li>
+      <li><b>8688</b> → 8 (two) + 6 (one) + 8 (two) + 8 (two) = <b>7</b>.</li>
+      <li><b>5971</b> → 9 (one) = <b>1</b>.</li>
+    </ul>
+    <p>So the two question marks are <b>7</b> and <b>1</b>. What the note does with them is the part this page will not invent: we never see 7 or 1 typed into a two-digit lock, and no keypad in the level has a two-character display. Treat the note as a worked example of a rule the room uses elsewhere — the hexagon rosette and the counter panels are both pattern-copying tasks in the same spirit — rather than as a password.</p>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>Treating the price catalogue as a code.</b> Nine product codes and nine prices in a neat grid is exactly what a puzzle clue looks like, and it is the single biggest time sink in the room. No keypad in Household Appliances accepts a product code, and the four-dial lock takes digits 1-2-8-6, not a price.</li>
+      <li><b>Hunting the number in the laundry half.</b> The lock lives with the washing machines; the number lives with the televisions. If you have been turning tumblers for ten minutes without a number, you are in the wrong half of the shop.</li>
+      <li><b>Reading the TV as the whole answer.</b> 1286 is printed, so it feels like the puzzle is already solved — and for the four-dial lock it is. What the screen does not do is tell you which symbol maps to which button on the remote, and our footage could not settle that mapping either. If a press order is what the game is asking for, the digits alone will not get you through it.</li>
+      <li><b>Opening the staff-room door late.</b> The second room is dark on the first visit and contains four or five locks of its own. It is optional. If you are on the critical path, leave it alone until the level is finished.</li>
+      <li><b>Expecting the mixer to matter.</b> It is a labelled pickup with two beaters and no socket. One recording's caption suggests a clock-face use; our completing run never touches it.</li>
+      <li><b>Trying to type into the microwave.</b> The microwave control panels have a display, a dial and a column of buttons, and they never light up in any run we captured. They are the room's best decoy.</li>
+      <li><b>Forgetting the key before the door.</b> The EXIT door does not need to be examined, unlocked or tapped twice: select the key in the inventory, press Use, then tap the door. Tapping the door with the key still in the bag does nothing at all.</li>
+    </ul>
+
+    <h2 id="could-not-verify">What this page could not verify<span class="accent">.</span></h2>
+    <p>This room is large, the camera moves constantly, and half its locks are pattern-copying tasks whose target is only on screen for a second. Everything below is something we could not read twice, listed rather than guessed. None of it is printed elsewhere on this page as a fact.</p>
+    <ul>
+      <li><b>The remote's exact button layout.</b> We read the four pictograms under the digits on the television, and a remote covered in pictograms sits in the same corner, but no frame holds the remote and the screen together at a readable size, and one recording's caption speaks of <i>two</i> component symbols rather than four. The digits 1286 are solid; the press order on the remote is not something this page can spell out.</li>
+      <li><b>The code that opens the "Open" keypad.</b> We can see the keypad, its telephone layout and a single entered dot, but no run holds the accepted code on screen. No number is printed for it here.</li>
+      <li><b>What the fridge keypad unlocks.</b> It sits in the refrigeration corner beside the circle note, and the fridges open in our footage — but we never catch the moment the keypad accepts a code, so the link between the two is inference, not evidence.</li>
+      <li><b>The hexagon rosette's solved arrangement.</b> The board is on screen for several seconds in two recordings, but never in a finished state — we can see that tiles are coloured and selectable, not which colour belongs where. The coloured drum linings on the island display are the only other colour code in the room, and no frame ties the two together.</li>
+      <li><b>The blender knob sequence as a solution.</b> The positions are readable (roughly one o'clock, nine, one, one, nine), but no run shows the panel accepting them, so we print the observation, not a solve order.</li>
+      <li><b>What the speaker display, the circuit board and the ring maze release.</b> All three are real puzzles with real interactions, and none of our recordings shows an item, a counter or an opened compartment at the end of them. They may feed locks we never saw solved; they may be optional.</li>
+      <li><b>The four-button panel on the tall locker.</b> A red cross with a button on each side is a distinctive lock and we can describe it precisely, but no accepted press order is legible in our footage.</li>
+      <li><b>The last product code in the catalogue.</b> Two captures of the same sheet disagree by one digit — <b>HTS643</b> in one, <b>HT5643</b> in the other. The price, $110.00, agrees. Given that nothing in the level consumes product codes, we have left the ambiguity visible rather than pick a reading.</li>
+      <li><b>The efficiency score.</b> The bar has ten squares and it fills as the panel animates in, so different frames show different numbers lit — seven, eight and all ten all appear across our captures. The reward (+50) and the time (21:34) are steady; the bar is not, so no efficiency grade is quoted.</li>
+      <li><b>Whether the beaters open anything.</b> One recording's caption reads <i>set beaters like this to open the door</i> over a bronze clock face with numbers 1 to 12 and two spring hands at roughly 9 and 6. We could not reproduce that mechanism in our own runs, and the run that completes does it with the key from the 1286 compartment. Do not treat the beaters as the exit condition on the strength of one caption.</li>
+      <li><b>The exact in-game timestamps of the two compressed recordings.</b> Their clocks run faster than real time, so the 14:39 and 21:34 readings are the game's own timer, not wall-clock minutes. The step timestamps above all point at the 9:10 video for that reason.</li>
+    </ul>
+
+    <h2>Chapter 2 levels<span class="accent">.</span></h2>
+    <p class="grid-note">Chapter 2 runs twenty-six rooms through the mall; the list below reflects what is written up so far.</p>
+    <LevelSelector chapter={2} current={21} compact={true} label="Chapter 2 · No Honor Among Thieves" />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <div class="cta-box">
+      <p>Previous written guide: <a href="/rooms-and-exits/chapter-2-level-20/">← Chapter 2, Level 20 — Furniture Store</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits guides →</a></p>
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

@@ -1,0 +1,410 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 2 Level 24 Walkthrough: Toy Store";
+const description = "Rooms & Exits Chapter 2 Level 24 walkthrough for the Toy Store: the block train, the semaphore chart that spells TRAIN, the heart-box colour grid, the balloon tunnel gate and the key that opens the exit.";
+
+const faq = [
+  {
+    q: "How do you complete Rooms & Exits Chapter 2 Level 24, the Toy Store?",
+    a: "There is no keypad and no door code. The exit is the double wooden door under the red <b>EXIT</b> banner, and it opens with a <b>Key</b> taken from a wardrobe in the dollhouse corner. Everything before that is feeding the room: the 3x3 shape panel on the toy dump truck, the semaphore chart and the toy typewriter that takes the word <b>TRAIN</b>, the fruit stand matched to the dolls' dresses, the heart-shaped box whose lid hides a colour grid, the four-by-four colour panel, the dollhouse lights, the balloon wall that opens the tunnel gate and the block train assembled from the <b>2-5</b> reference card.",
+  },
+  {
+    q: "What word do you type on the toy typewriter?",
+    a: "<b>TRAIN</b>. The typewriter has a full alphabet plus a piano-style number row, and its display fills in one letter at a time as you press keys. Our two independent recordings both end on <b>TRAIN</b>, read straight off the device's display, so this is the one word in the level we are willing to print as fixed.",
+  },
+  {
+    q: "What is the exit code for the Toy Store?",
+    a: "There isn't one. The exit door in this level has no dials, no panes and no digits — our recordings show the inventory opened with <b>Key</b> selected, the key used on the door, and the level completing immediately after. If you are hunting for a four-digit code, you are thinking of the Jewelry Store two chapters of rooms earlier.",
+  },
+  {
+    q: "How do I open the tunnel gate in the Toy Store?",
+    a: "With the hot-air balloons on the left wall. The game's own hint card says the balloons are an arrangement puzzle and that arranging them opens the tunnel gate, and a second recording's hint phrases it the same way. Five balloons hang above the tree-shaped shelf; tap them and put them in the order the hint shows.",
+  },
+  {
+    q: "What does the 3x3 panel on the dump truck do?",
+    a: "It releases the truck. The panel sits on the dump truck's bed and shows a three-by-three grid of shapes — diamonds, circles and triangles — with a white ball marking one cell. Clear the grid and the green tailgate swings up; inside the bed is a small metal crank key. The panel is the lock, the truck bed is the container.",
+  },
+  {
+    q: "What is the heart-shaped box for?",
+    a: "The heart box on the shelf is a clue container. Its lid holds a small grid picture that is too grubby to read until you wipe it: combine the <b>Towel</b> with the <b>Cleaning spray</b> to make a <b>Wet towel</b>, then use it on the inside of the lid and a grid of coloured squares comes up. That grid is what the four-by-four colour panel on the wall is asking you to reproduce.",
+  },
+  {
+    q: "What does '2-5' mean on the card next to the train?",
+    a: "It is the reference card for the block train. The card shows a finished train built from coloured blocks with the numbers <b>2</b> to <b>5</b> marking positions, and the loose blocks on the floor are the pieces. Build the train to match the card. If you leave a piece out, the game tells you plainly: <i>The train doesn't seem complete. It won't run yet.</i>",
+  },
+  {
+    q: "How long does the Toy Store take, and what is the reward?",
+    a: "The results panel on our main recording pays <b>+50 coins</b> and shows <b>21:31</b> on the in-game clock, with nine of ten efficiency segments lit. A second recording reaches the exit with <b>12:56</b> on the clock, so a clean second run is much faster — the level is long because of the number of separate locks, not because any one of them is slow.",
+  },
+  {
+    q: "Do I need the hair dryer, the pliers and the cable?",
+    a: "We could not prove that any of them is required. All three are picked up in the first twenty seconds of our main recording and all three can be combined or examined, but the footage never shows them used on a lock, and the level completes without a visible payoff for them. If you are stuck and short of inventory space, they are the first things to ignore.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-2-level-24"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 2 Level 24"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 2</a> &gt; Level 24</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 2 Level 24 Walkthrough: Toy Store</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from three recordings of the current build: a 9:55 edit (the game's own clock reads <b>21:31</b> at the results screen), a 6:58 edit (clock <b>12:56</b> at the exit) and an 11:04 run that ends on LEVEL COMPLETED. Both long videos are time-compressed, so every timestamp below points at the second in the embedded video, not at the in-game clock. Text on screen was read with optical character recognition on the raw frames and then checked against the image; the puzzle goals are quoted from the game's own hint cards; the one word the level asks you to type was read off the device's display in two separate recordings. Anything we could not read twice is listed under <a href="#could-not-verify">What this page could not verify</a> rather than printed as a fact.</div>
+
+    <LevelSelector chapter={2} current={24} variant="jump" label="Chapter 2 · No Honor Among Thieves" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>The Toy Store has <b>no keypad and no door code</b>. The exit is the double wooden door under the red <b>EXIT</b> banner, and it opens with a <b>Key</b> from the wardrobe in the dollhouse corner. Finish worth <b>+50 coins</b>.</p>
+      <ol>
+        <li>Clear the <b>3x3 shape panel</b> on the toy dump truck → the bed opens with a metal crank key inside.</li>
+        <li>Read the <b>semaphore chart</b>, then type <b>TRAIN</b> on the toy typewriter.</li>
+        <li>Clear the corner pattern puzzles: the <b>fruit stand</b> matched to the dolls' dresses, the <b>dollhouse lights</b> and the <b>picture board</b>.</li>
+        <li>Make a <b>Wet towel</b> (Towel + Cleaning spray), wipe the inside of the <b>heart-shaped box</b> lid, and copy the colour grid onto the <b>4x4 colour panel</b>.</li>
+        <li>Arrange the <b>five balloons</b> on the left wall → the <b>tunnel gate</b> opens.</li>
+        <li>Build the <b>block train</b> to the <b>2-5</b> reference card until the “won't run yet” message stops, then take the <b>Key</b> from the wardrobe and use it on the exit door.</li>
+      </ol>
+    </div>
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/VxjJYo-rN2s" title="Rooms &amp; Exits Chapter 2 Level 24 Toy Store walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/c2l24-hero-toy-store.jpg" alt="Rooms and Exits Chapter 2 Level 24 Toy Store: the shop floor with a tree-shaped bookshelf, a round plush display, a green till counter, hot-air balloons on the left wall and the red EXIT banner over the doors on the right" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>The Toy Store is the twenty-fourth room of Chapter 2, one door past the Bakery, and the game files it under <b>Very Hard</b> on the level card. The card's reward line reads <b>+50</b>, the same coin figure the results panel pays out at the end. What makes it Very Hard is not a single brutal puzzle: it is that the room contains roughly a dozen separate locks, they are all visible from the first second, and almost none of them tells you what it wants. There is no corridor, no sequence of doors, no chapter of the room that unlocks the next. You stand in the middle of a shop floor and everything is already there.</p>
+    <p>The shape of the room, from the opening wide shot. On the left: a tall rounded wooden door, a tree-trunk shelf with <b>TOYS</b> blocks at its foot, a beach ball, and a wall shelf holding an old telephone. Five hot-air balloons hang from the ceiling above that shelf. Along the back wall: a big bookshelf cut into the shape of a tree, packed with plush toys, and to its right a small three-drawer dresser with a gold statuette on top. In the middle of the floor: a round blue display table covered in teddy bears and rabbits, and a stepped wooden display holding blocks, cars and toy planes. Front left: a green, irregularly shaped counter with a black cash register and a potted plant — the till. Right: the double wooden door with the red <b>EXIT</b> banner above it, which is where you are trying to get to. And behind and beside all of that, the corners the camera only shows when you walk into them: the dollhouse shelves, the tricycles, the fruit stand, the toy kitchen on the low counter, the typewriter, the semaphore chart, the tunnel mouth with a train track running into it.</p>
+    <p>That is the thing to internalise before your first tap: <b>this is a shop, not a puzzle box</b>. The room is one continuous floor with several distinct corners, and the game will happily let you solve a corner you do not need yet. Our own recording does exactly that — it opens with twenty seconds of picking up a hair dryer, a pair of pliers and a cable, none of which it ever visibly uses. The walkthrough below follows the order our recording actually took, because that order works and the dependencies are real; but if you solve the train before the balloons, or the colour panel before the fruit, nothing breaks.</p>
+
+    <img class="hero" src="/rooms-and-exits/c2l24-dollhouse-corner.jpg" alt="The dollhouse corner of the Toy Store: three dollhouses on a cubby shelf, three tricycles on the floor, a low counter of pink toy kitchen pieces and the red-framed tunnel arch" width="1200" height="594" loading="lazy" />
+    <p>The corner that gives the level its second half is easy to miss on the way in: three dollhouses on a cubby shelf, three tricycles parked on the floor in a curve, an L-shaped counter of pink toy kitchen pieces, and the red-framed arch the tunnel runs through. The wardrobe with the key stands in this corner, and the dollhouse with the light puzzle sits on that shelf — so if you have been hunting the whole shop for the exit key, you have been hunting in the wrong half of it.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Every object in the Toy Store that takes an input or gives you something, and what it is for. If you only read one section of this page, read this one — nine tenths of the time lost in this room is spent tapping a container and expecting a lock.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it gives you</th></tr></thead>
+      <tbody>
+        <tr><td>Cash register</td><td>Green counter, front left</td><td>A till screen. In our footage it never takes an input — it is the one code-shaped thing in the room that is scenery.</td></tr>
+        <tr><td>Toy dump truck</td><td>Stepped display, centre right</td><td>A <b>3x3 shape panel</b> on its bed. Clearing the grid swings the tailgate up and reveals a metal crank key in the bed.</td></tr>
+        <tr><td>Block shelves</td><td>Stepped display, front</td><td>Loose <b>Toy part</b> blocks — the red block our recording picks up at 0:22 is one of them.</td></tr>
+        <tr><td>Balloon wall</td><td>Left wall, above the tree shelf</td><td>Five hot-air balloons. Arranging them opens the <b>tunnel gate</b>.</td></tr>
+        <tr><td>Semaphore chart</td><td>Framed white board, centre</td><td>The alphabet in flag positions, A to Z, seven letters to a row. The source of the level's word.</td></tr>
+        <tr><td>Toy typewriter</td><td>Low table, right of centre</td><td>Full alphabet plus a piano-style number row. Takes the word <b>TRAIN</b>.</td></tr>
+        <tr><td>Fruit stand</td><td>Back corner, two shelves of four</td><td>Pear, blackberries, paprika and more, in compartments under a framed board. Matched to the dolls' dresses.</td></tr>
+        <tr><td>Doll shelf</td><td>Beside the fruit stand</td><td>Three dolls in coloured dresses — the reference for the fruit stand.</td></tr>
+        <tr><td>Heart-shaped box</td><td>Shelf on the right, beside two round pink boxes</td><td>A music box. Its lid hides a colour grid under grime: <b>Wet towel</b> on the lid, grid comes up.</td></tr>
+        <tr><td>4x4 colour panel</td><td>Pink heart-framed panel, wall</td><td>Sixteen squares, a few already coloured. The colour lock the lid clue feeds.</td></tr>
+        <tr><td>Dollhouse</td><td>Dollhouse corner, left of the tricycles</td><td>A three-storey, six-room miniature with a <b>lights</b> puzzle; the <b>Lever</b> stands in front of it.</td></tr>
+        <tr><td>Wardrobe</td><td>Dollhouse corner</td><td>An open wardrobe with the <b>Key</b> hanging inside — the exit key.</td></tr>
+        <tr><td>Tunnel gate</td><td>Back wall, red-framed arch</td><td>A train track runs into it. Closed until the balloons are arranged.</td></tr>
+        <tr><td>Block train</td><td>Floor by the blue shelf, back</td><td>Two part-built cars plus loose blocks, and a <b>2-5</b> reference card. The train is the last lock before the door.</td></tr>
+        <tr><td>Exit door</td><td>Right wall, under the EXIT banner</td><td>Double wooden door with a key lock. No dials, no panes, no digits.</td></tr>
+      </tbody>
+    </table>
+    <h2>Step by step<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:00</span>
+      <strong>Read the level card before you press play</strong>
+      The recording opens on the Chapter 2 level grid, then on the card for this room: <b>Toy Store</b>, difficulty <b>Very Hard</b>, and a reward line that already says <b>+50</b>. That number is worth remembering, because it is the same +50 the results panel pays at the end — the level is not hiding a bonus, and there is nothing to collect for extra coins. The grid around it is a useful orientation too: it lists Level 19 Bookstore, Level 21 Household Appliances, Level 23 Bakery and Level 25 on the same screen, which is how you know you are one room past the Bakery and one short of the Restroom.
+      <img src="/rooms-and-exits/c2l24-level-card.jpg" alt="The Chapter 2 level screen in Rooms and Exits with the Toy Store card showing Very Hard difficulty and a +50 reward" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=0s" target="_blank" rel="noopener">0:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:04</span>
+      <strong>Take the wide shot seriously — it is the only map you get</strong>
+      The camera pulls back to the whole shop floor and holds there for a few seconds. Use them. Left: the tall rounded door, the tree-trunk shelf with the <b>TOYS</b> blocks, the beach ball, the telephone on its wall shelf, and five hot-air balloons hanging above. Back: the tree-shaped bookshelf and the little dresser with the gold statuette. Centre: the round plush table and the stepped display. Front left: the green till counter. Right: the double door under the red <b>EXIT</b> banner, with a sparkle effect playing over it — that is the game telling you the door is live but locked. Everything else in this page is a corner of this one room.
+      <img src="/rooms-and-exits/c2l24-hero-toy-store.jpg" alt="The opening wide shot of the Toy Store: tree bookshelf, round plush display, green till counter, balloons on the left wall and the EXIT doors on the right" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=4s" target="_blank" rel="noopener">0:04</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:08</span>
+      <strong>The opening sweep: hair dryer, pliers, cable</strong>
+      The first twenty seconds are a pick-up sweep and nothing else. A white <b>Hair dryer</b> is lifted from in front of the plush display — the game labels it with an arrow, and it trails a pink coiled cord. A pair of <b>Pliers</b> and a <b>Cable</b> follow it into the bag. All three are real inventory items and the inventory will let you combine them, but our footage never shows any of them used on a lock, and the level completes without a visible payoff. Treat this as a warm-up for the tap interface rather than a puzzle step: if you skip them entirely, nothing downstream changes.
+      <img src="/rooms-and-exits/c2l24-hair-dryer.jpg" alt="The white hair dryer labelled Hair dryer, held in front of the plush toy display in the Toy Store" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=8s" target="_blank" rel="noopener">0:08</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:22</span>
+      <strong>Take the red Toy part off the wooden truck</strong>
+      On the stepped display at the front, a wooden toy truck is sitting part-built — yellow hexagonal cab, red wheels, flat bed — with a couple of coloured blocks already loaded on it. The red triangular prism in front of it is labelled <b>Toy part</b>, and taking it puts a block in your inventory. The label matters: this level has more than one “toy part” and more than one truck, and mixing up the wooden block truck on the display with the plastic dump truck that holds the shape panel is the first easy mistake in the room.
+      <img src="/rooms-and-exits/c2l24-toy-part-truck.jpg" alt="The red Toy part block held in front of the part-built wooden toy truck on the display shelf" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=22s" target="_blank" rel="noopener">0:22</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 0:49</span>
+      <strong>The five balloons are a lock, not decoration</strong>
+      Above the tree-trunk shelf on the left wall hang five hot-air balloons in different colours. They look exactly like shop dressing, and that is the trap: this room's hint card tells you to arrange the balloons <i>like this</i> in order <i>to open the tunnel gate</i>, and the second recording's hint says the same thing in different words — <i>The balloons seem to open the train tunnel somehow.</i> Two separate recordings, two hint cards, same claim. Tap the balloons and put them in the order the hint shows; that opens the red-framed tunnel mouth at the back, which is where the train track runs.
+      <img src="/rooms-and-exits/c2l24-balloons.jpg" alt="Five hot-air balloons in different colours hanging from the ceiling above the tree shelf in the Toy Store" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=49s" target="_blank" rel="noopener">0:49</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:04</span>
+      <strong>The 3x3 shape panel on the dump truck's bed</strong>
+      The plastic dump truck on the display has a green panel set into its bed: a three-by-three grid of shapes — diamonds, circles and triangles — with a white ball sitting in one cell. This is the level's first proper puzzle. The game's instruction for it is the shortest hint in the room, <i>Set the position like this</i>, which means you are copying a target arrangement, not deducing one: the shapes move, and the board is checking their positions against a layout you are shown. Work shape by shape rather than tapping at random — the grid is small enough that a systematic pass takes under a minute and a random one can take ten.
+      <img src="/rooms-and-exits/c2l24-shape-panel.jpg" alt="The green 3x3 panel on the toy dump truck's bed with diamond, circle and triangle tiles and a white ball marker" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=64s" target="_blank" rel="noopener">1:04</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 2:09</span>
+      <strong>The truck bed opens — take the crank key</strong>
+      Clear the grid and the dump truck answers immediately: the green tailgate swings up and back, and the bed is now an open container with a single metal object lying in it — a small crank key with a round head and a flat shaft. The camera zooms in and holds on it, which is the game's way of saying “this is the reward”. Take it. This is the pattern for the whole room: a puzzle clears, a container opens, and the thing inside is a tool rather than a key to the exit. The exit key does not come from here.
+      <img src="/rooms-and-exits/c2l24-truck-bed-open.jpg" alt="The toy dump truck with its green tailgate open and a metal crank key lying in the yellow bed" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=129s" target="_blank" rel="noopener">2:09</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 3:15</span>
+      <strong>The semaphore chart: A to Z, seven letters to a row</strong>
+      The framed white board in the middle of the shop is a semaphore chart — the alphabet rendered as stick figures holding two flags each, red and yellow, seven letters to a row. The game's hint calls the next step <i>Remember the semaphore code movement</i> and then <i>Arrange the words from the semaphore code</i>, which tells you what the chart is for: a pose you have seen somewhere in the room encodes letters, and the letters make a word. Do not try to read the whole chart into memory. Find the pose, read its letter, and come back — the board will still be there.
+      <img src="/rooms-and-exits/c2l24-semaphore-chart.jpg" alt="The framed semaphore chart in the Toy Store showing the alphabet as flag positions with letters A to Z in rows" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=195s" target="_blank" rel="noopener">3:15</a></div>
+    </div>
+    <div class="step-card">
+      <span class="step-num">Step 9 · 3:41</span>
+      <strong>Type TRAIN on the toy typewriter</strong>
+      The typewriter sits on a low table in the middle of the shop: three rows of letter keys plus a piano-style number row below them, and a display window at the back that fills in as you press. The recording types five letters and the display steps through <b>T</b>, <b>TR</b>, <b>TRA</b>, <b>TRAI</b>, <b>TRAIN</b>. This is the one answer in the level we can state as fixed, because it is not a guess: our main recording shows the finished word on the display, and a completely separate 11:04 recording of the same room ends on the same five letters. The piano keys are not part of the word — they are there so the device reads as a toy, and nothing in either recording presses them.
+      <img src="/rooms-and-exits/c2l24-typewriter-train.jpg" alt="The toy typewriter with the word TRAIN filled in on its display, above its letter keyboard and piano-style number row" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=221s" target="_blank" rel="noopener">3:41</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 4:19</span>
+      <strong>Checkpoint: what your bag should look like by now</strong>
+      By the middle of the run the inventory is a useful diagnostic. Ours holds six items in an eighteen-slot grid: the crank-shaped <b>Handle</b> (dark metal, yellow tip, highlighted in the frame), a red apple, a crumpled paper with a grid pattern, a small dark-haired doll, a torn paper with four circles drawn on it, and a yellow pear. If your bag looks nothing like this you have skipped a container rather than a puzzle — the level hands out items generously and almost every one of them comes out of something you opened. The four-circle paper is the one to watch: four slots on a scrap of paper is the shape of a four-part answer, and it is not the train.
+      <img src="/rooms-and-exits/c2l24-handle-item.jpg" alt="The inventory in the Toy Store with six items, the crank-shaped Handle selected, and a torn paper with four circles among them" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=259s" target="_blank" rel="noopener">4:19</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 4:59</span>
+      <strong>The fruit stand, and the dolls it is checking you against</strong>
+      In the back corner stands a wooden fruit stand: two shelves, four compartments each, with fruit slotted into some of them — a pear, blackberries, a red paprika and others — and a framed board hanging above it. The game's hint card is explicit about the rule: <i>Arrange the position of the fruit to match the color of the clothes on the doll.</i>      So the answer is not on the stand. It is on the dolls: three of them, on the shelf beside it, each in a differently coloured dress. Put each fruit in the compartment that answers its colour, and read the dolls before you start moving fruit around.
+      <img src="/rooms-and-exits/c2l24-fruit-stand.jpg" alt="The wooden fruit stand in the Toy Store with two shelves of four compartments holding a pear, blackberries and a red paprika, and a framed board above" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=299s" target="_blank" rel="noopener">4:59</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 6:17</span>
+      <strong>The Key is hanging in an open wardrobe</strong>
+      In the dollhouse corner, past the tricycles, a wardrobe stands open with the <b>Key</b> hanging inside it — blue-green, ordinary, and completely unceremonious for the object that ends the level. It is standing open when you walk up — no puzzle in front of it, nothing to clear. Take the key. If you have been saving inventory space or expecting the exit key to drop out of the train, this is the moment to stop looking: the train is a lock, the wardrobe is the key, and they are two different errands.
+      <img src="/rooms-and-exits/c2l24-key-wardrobe.jpg" alt="The open wardrobe in the Toy Store's dollhouse corner with the blue-green exit Key hanging inside" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=377s" target="_blank" rel="noopener">6:17</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 7:19</span>
+      <strong>Wipe the heart-shaped box and the colour grid appears</strong>
+      The heart-shaped music box on the shelf — pink outside, purple inside, a little figurine standing in it — has a picture fixed to the inside of its lid. It is filthy, and the grid on it is unreadable until you clean it. The recording makes a <b>Wet towel</b> first (Towel plus Cleaning spray, combined in the inventory) and then uses it on the lid, and a grid of coloured squares comes up through the grime. The game's hint for this stretch calls the surface a mirror — <i>The colors in the mirror are the keys to open the door</i> — but the thing our footage actually wipes is the inside of this lid, so treat the hint's “mirror” as the lid's shiny inner face.
+      <img src="/rooms-and-exits/c2l24-music-box.jpg" alt="The open heart-shaped music box with a grid picture fixed to the inside of its lid, ready to be cleaned with a wet towel" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=439s" target="_blank" rel="noopener">7:19</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 7:29</span>
+      <strong>Copy the grid onto the 4x4 colour panel</strong>
+      Ten seconds later the same recording is at a pink heart-framed panel with a four-by-four grid of squares set into it. Most cells are grey and empty; a handful are already filled — blue, purple, red, green — and those pre-filled cells are your anchor, because they tell you the panel is checking a colour layout rather than asking you to invent one. Read the cleaned lid, then fill the empty cells to match it. A four-by-four grid means sixteen cells, so write the layout down before you start tapping, exactly as you would for a door code.
+      <img src="/rooms-and-exits/c2l24-heart-panel.jpg" alt="The pink heart-framed 4x4 colour panel in the Toy Store with several cells already filled in blue, purple, red and green" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=449s" target="_blank" rel="noopener">7:29</a></div>
+    </div>
+    <div class="step-card">
+      <span class="step-num">Step 15 · 8:24</span>
+      <strong>The tunnel gate, and why the train has somewhere to go</strong>
+      At the back of the shop a red-framed arch opens into a tunnel, and a train track runs out of the room and straight into it. When the balloons are arranged the gate is open; until then this mouth is shut. It is worth walking over and looking at it even before you have the balloons, because it explains the level's last third: the train is not a display piece, it has a track and a destination, and the gate is what stands between the two. Nothing else in the room looks like this — a genuine passage rather than a container — and that is your cue that the train is the endgame and the wardrobe key is the errand that finishes it.
+      <img src="/rooms-and-exits/c2l24-tunnel-gate.jpg" alt="The red-framed tunnel mouth at the back of the Toy Store with a toy train track running into it" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=504s" target="_blank" rel="noopener">8:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 8:47</span>
+      <strong>The 2-5 reference card next to the train</strong>
+      Beside the track there is a picture card showing a finished block train, with the numbers <b>2</b> to <b>5</b> marking positions on it. This is the whole instruction for the train puzzle: the game's hint card says <i>Set the train like this 2-5</i>, and the card is the “this”. The card is not a code and the numbers are not a combination — they are labels on the drawing, telling you which block belongs where. Compare the card to what is already built on the floor before you touch anything: two cars are part-finished, and the gap between them and the card is the job.
+      <img src="/rooms-and-exits/c2l24-train-reference.jpg" alt="The reference card beside the block train in the Toy Store showing a finished train with the numbers 2 to 5 marking block positions" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=vxjJYo-rN2s&t=527s" target="_blank" rel="noopener">8:47</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 17 · 9:16</span>
+      <strong>Build the train out of the loose blocks</strong>
+      The build itself is gentle: two blue chassis with green wheels sit on the track, a handful of blocks float above them waiting to be placed, and every block snaps to a stud. Yellow, red, green and blue 2x4s, plus a smaller green piece with a white circular detail. Match the card car by car rather than block by block — get the left car right, then the right one — and use the rotate button under the board when a block will not seat. The camera stays close for the whole assembly, which is why our crop of this step is the clearest look you will get at the block palette.
+      <img src="/rooms-and-exits/c2l24-train-assembly.jpg" alt="The block train under construction in the Toy Store: two blue chassis with green wheels on the track and loose yellow, red, green and blue blocks floating above" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=556s" target="_blank" rel="noopener">9:16</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 18 · 9:28</span>
+      <strong>“The train doesn't seem complete. It won't run yet.”</strong>
+      The game tells you when the train is wrong, in as many words: <i>The train doesn't seem complete. It won't run yet.</i> We have this line in two separate recordings, so it is not a one-off glitch — it is the level's feedback for an unfinished build. Treat it as a checklist rather than a failure: a block is missing, a block is on the wrong stud, or a car is facing the wrong way. The message clears when the build matches the card, and not before. If you have blocks left over in the tray when the message appears, that is your answer.
+      <img src="/rooms-and-exits/c2l24-train-message.jpg" alt="The message 'The train doesn't seem complete. It won't run yet.' over the block train in the Toy Store" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=568s" target="_blank" rel="noopener">9:28</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 19 · 9:51</span>
+      <strong>Open the inventory, select Key, use it on the exit door</strong>
+      The last move is almost anticlimactic. The inventory opens with four items left in it — two papers, a grid picture and the <b>Key</b>, which is selected and outlined in green — and the <b>EXIT</b> door is visible behind the panel. Select the key, press <b>Use</b>, tap the double door. There is no second lock, no code to enter first, no pane to dial. If the door refuses you, the problem is that you are holding a different item: the door wants the blue-green key from the wardrobe, not the crank from the truck bed and not the Handle you picked up earlier.
+      <img src="/rooms-and-exits/c2l24-key-inventory.jpg" alt="The Toy Store inventory with the blue-green Key selected, the EXIT doors visible behind the panel" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=591s" target="_blank" rel="noopener">9:51</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 20 · 9:55</span>
+      <strong>The results panel: +50 coins, 21:31 on the clock</strong>
+      The door opens, the camera pulls back, and the results panel lands: LEVEL COMPLETED, a coin stack reading <b>+50</b>, an efficiency bar with nine of its ten segments lit, and <b>Time: 21:31</b>. The piggy-bank strip underneath offers the usual purchase prompt. Nothing you collected in the Toy Store carries forward — the key, the crank, the fruit and the papers all stay in the shop — so there is no reason to hold anything back on the way out.
+      <img src="/rooms-and-exits/c2l24-level-complete.jpg" alt="The Level Completed screen for Rooms and Exits Chapter 2 Level 24 showing +50 coins, nine of ten efficiency segments and a time of 21:31" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VxjJYo-rN2s&t=595s" target="_blank" rel="noopener">9:55</a></div>
+    </div>
+    <h2>Why the room feels impossible: four locks, one gate, no code<span class="accent">.</span></h2>
+    <p>Strip away the toys and the Toy Store is a short chain wearing a very long coat. There are four real locks, one gate, and a key — and none of the four locks produces a number you type into a door. That last point is the one that undoes most first runs. Rooms &amp; Exits trains you, room after room, to expect a keypad, and this level has deliberately not given you one.</p>
+    <ol>
+      <li><b>The spatial lock</b> — the 3x3 shape panel on the dump truck. You copy a target layout. The board answers by opening the truck's bed, which is a container, which holds a crank. Solve, open, take.</li>
+      <li><b>The word lock</b> — the semaphore chart and the toy typewriter. The hint asks you to remember a semaphore movement and arrange the words that come out of it; the typewriter is where the word goes, and the word both of our recordings type is <b>TRAIN</b>.</li>
+      <li><b>The colour lock</b> — the heart-shaped box and the 4x4 panel. The lid hides a grid, the Wet towel reveals it, and the panel takes it. Two surfaces, one answer, no digits anywhere.</li>
+      <li><b>The train lock</b> — the block train and its 2-5 card. Physical assembly, checked against a picture, with a spoken failure message.</li>
+      <li><b>The gate</b> — the balloons. Not a lock in the reward sense: arranging them opens the tunnel, and the tunnel is what the train is for.</li>
+    </ol>
+    <p>Notice the shape of every one of those: <b>a puzzle opens a container, and the container holds a tool</b>. The shape panel opens the truck bed and hands you a crank. The heart box opens and hands you a colour grid. The wardrobe was never locked and hands you the key. Once you see that pattern, the room stops being a wall of mystery and becomes a list of containers to open, in any order you like, with one exception: the door needs the key, and the key is in the wardrobe, so the wardrobe is not optional.</p>
+    <p>There is one more habit worth forming for this level: <b>read the game's own hint cards</b>. They are the only place in the room where a puzzle states its rule in words, and they are unusually direct — <i>Set the position like this</i>, <i>Arrange the words from the semaphore code</i>, <i>Arrange the position of the fruit to match the color of the clothes on the doll</i>, <i>The colors in the mirror are the keys to open the door</i>, <i>Set the train like this 2-5</i>. Every quote in this paragraph is verbatim from the hint overlay in our recordings. If a puzzle in your run looks different from what this page describes, the hint card for it will still be accurate, because it is the game talking about itself.</p>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>Hunting for a door code that does not exist.</b> The exit is a plain double door with a key lock. There are no dials, no coloured panes, no four-digit display. The only door code in this part of Chapter 2 belongs to the Jewelry Store, twelve rooms earlier. If you are counting digits, you are in the wrong room.</li>
+      <li><b>Treating the balloons as decoration.</b> Five balloons hanging above a shelf read as shop dressing, and they stay unread for the whole level unless you happen to tap one. Both of our recordings' hint cards connect them to the tunnel gate, so if the gate is shut and the train is built, the balloons are the missing move.</li>
+      <li><b>Confusing the two trucks.</b> The wooden block truck on the front display holds the red <b>Toy part</b>. The plastic dump truck on the stepped display holds the 3x3 shape panel and, once cleared, the crank key. They are different objects with different jobs, and the labels in this level do not distinguish them for you.</li>
+      <li><b>Reading the semaphore chart as the puzzle.</b> The chart is a dictionary, not a lock. Nothing in the room accepts letters typed off the chart directly. The chart exists so you can decode a pose and carry the word to the typewriter — and the word the game wants is <b>TRAIN</b>.</li>
+      <li><b>Typing letters into the typewriter and walking away.</b> The device shows you the word forming as you press: <b>T</b>, <b>TR</b>, <b>TRA</b>, <b>TRAI</b>, <b>TRAIN</b>. If your display is stuck on two letters, you have not finished the input — the level is waiting on the fifth key, not on a validation step.</li>
+      <li><b>Building the train without the card.</b> The loose blocks are enough to build something that looks like a train and is not the train. The game's failure message is explicit — <i>The train doesn't seem complete. It won't run yet.</i> — and it appears in two separate recordings, so it is the intended feedback, not a bug. Compare against the 2-5 card car by car.</li>
+      <li><b>Expecting the train to give you the key.</b> It does not. The key is hanging in an open wardrobe in the dollhouse corner, and it is there from the start of the level. Players who save the last five minutes for “the train reward” end up standing at an unlocked door with the wrong item in hand.</li>
+      <li><b>Carrying the opening sweep in your head.</b> The hair dryer, the pliers and the cable are picked up in the first twenty seconds and never visibly used. If you are stuck on a lock and convinced one of them is the answer, you are probably wrong — check the hint card for the lock instead, and treat those three as optional pickups.</li>
+    </ul>
+
+    <h2 id="could-not-verify">What this page could not verify<span class="accent">.</span></h2>
+    <p>This level is unusually hard to document because it is large, the camera moves constantly, and several of its puzzles are copy-a-pattern tasks whose target is on screen for less than a second. Below is everything we could not read twice, listed rather than guessed. Nothing in this list is printed elsewhere on the page as a fact.</p>
+    <ul>
+      <li><b>The balloon order.</b> We can prove the balloons open the tunnel gate — both recordings' hint cards say so — but neither recording holds the arranged balloons still long enough to read the final order off the wall. We are not printing a sequence for it.</li>
+      <li><b>The dollhouse light pattern.</b> The hint card reads <i>Turn on the lights in the miniature house room like this</i>, and the dollhouse is a three-storey, six-room miniature, but the exact set of lit windows is never held steady in our footage. No pattern is given here.</li>
+      <li><b>The picture board.</b> The card <i>Arrange the pictures like this on the board</i> refers to a board whose pictures are small and, in our crops, partly blurred. We could not read the arrangement twice, so no layout is printed.</li>
+      <li><b>The solved 4x4 colour panel.</b> We can read the panel's starting state — sixteen cells, several already coloured blue, purple, red and green — but the camera leaves before the finished grid is held still. The page tells you where the answer comes from (the cleaned lid) rather than inventing the layout.</li>
+      <li><b>The fruit stand's correct arrangement.</b> The rule is quotable; the finished stand is not. Our footage never holds a solved stand, so we cannot print which fruit goes in which compartment.</li>
+      <li><b>What the hair dryer, the pliers and the cable unlock.</b> They are picked up and they can be combined, but no recording shows a use, and the level completes without one. It is possible they feed a puzzle we never saw solved; it is also possible they are red herrings.</li>
+      <li><b>The Handle's destination.</b> The crank-shaped Handle is a real inventory item with a real label, but our footage never shows it used on a specific object, so we cannot say which lock it belongs to.</li>
+      <li><b>Whether the typewriter prints anything.</b> The display fills to TRAIN, and that is the last thing we can read on the device. Any physical output — a slip of paper, a drawer — is not visible in our frames.</li>
+      <li><b>The exact number of train blocks.</b> The loose blocks floating above the two chassis are countable in a single frame, but they change between frames as the build progresses, so we are not printing a count.</li>
+      <li><b>The second recording's in-game time.</b> The 11:04 run ends on LEVEL COMPLETED without the results panel, so we have no clock reading for it. Only the 21:31 on our main recording is verified.</li>
+    </ul>
+
+    <h2>Chapter 2 levels<span class="accent">.</span></h2>
+    <p class="grid-note">Chapter 2 runs twenty-six rooms through the mall; the list below reflects what is written up so far.</p>
+    <LevelSelector chapter={2} current={24} compact={true} label="Chapter 2 · No Honor Among Thieves" />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <div class="cta-box">
+      <p>Previous written guide: <a href="/rooms-and-exits/chapter-2-level-19/">← Chapter 2, Level 19 — Bookstore</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits guides →</a></p>
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

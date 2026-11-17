@@ -1,0 +1,477 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 2 Level 25 Walkthrough: Restroom";
+const description = "Rooms & Exits Chapter 2 Level 25 walkthrough for the Restroom: the drain ring that has to total 61, the four grid papers and the twenty-nine clicks they add up to, the two restrooms on either side of the corridor, and the +50 coin finish.";
+
+const faq = [
+  {
+    q: "How do you complete Rooms & Exits Chapter 2 Level 25, the Restroom?",
+    a: "Take the <b>Key</b> out of the potted plant in the corridor and open the men's door. Inside, the room hands you a chain of small tools, and every one of them is spent on a different fixture: the <b>Hook</b> fishes a key out of the floor drain, the <b>Soap</b> and a <b>Towel</b> clean the mirrors, a <b>Light bulb</b> relights one of them, and a <b>Utensil</b> digs a second key out of the plant in the corridor. The drain lid is the level's one arithmetic puzzle — <b>each of its four sides must total 61</b> — and the exit is a 4x4 mosaic panel beside the doorway that wants a fixed number of clicks per cell, written on four <b>Piece of paper</b> items. Solve the panel and the level ends on <b>+50 coins</b>.",
+  },
+  {
+    q: "What is the rule for the drain puzzle in Level 25?",
+    a: "Each side of the circular drain cover must add up to <b>61</b>, and the numbers are two-digit tiles whose digits are added separately — the game's own instruction text says a tile reading 78 counts as <b>7 + 8</b>, not as seventy-eight. The centre of the lid is fixed at <b>61</b> and does not rotate; the concentric rings around it do. Read every tile on one side, add the digits, and rotate the rings until that side reaches 61. Work side by side rather than ring by ring: a single ring turn changes four sides at once.",
+  },
+  {
+    q: "What are the numbers for the 4x4 panel at the exit?",
+    a: "The panel wants this many clicks per cell, top row to bottom row: <b>3, 0, 2, 1 / 2, 4, 0, 0 / 3, 1, 3, 0 / 2, 2, 2, 4</b>. That is twenty-nine clicks in all, and four cells that are never touched. The game's own instruction under the panel reads <i>Click on each cell / As mentioned on papers</i>, and the four papers in the inventory between them mark exactly twelve cells — the twelve non-zero values above.",
+  },
+  {
+    q: "Where do the four grid papers come from?",
+    a: "They are not in one place. One is dismantled out of the <b>Crumpled piece of paper</b> that comes out of the sink basin, another out of the <b>Rolled piece of paper</b> in the wall compartment behind the torn <b>PIPES</b> poster, and the rest are ordinary pick-ups around the two restrooms. Every one is labelled <b>Piece of paper</b> once it is flat, and the four we could read cleanly in both recordings are the ones that produce the click table on this page.",
+  },
+  {
+    q: "How much does Chapter 2 Level 25 pay out?",
+    a: "<b>+50 coins</b>, with the results screen reading <b>Time: 9:01</b> underneath an efficiency meter whose segment count we could not read consistently enough to print. A second reward panel below it shows <b>200</b> with the piggy bank text — that is the bank filling up, not a second payout for this level.",
+  },
+  {
+    q: "Do I have to solve both restrooms?",
+    a: "Both rooms are part of the level and the items are split between them, but the order is yours. The men's room holds the drain, the sink, the soap dispenser and the cleaning cart; the women's room holds the pouch, the trash can, the wall lamp and the hand dryer. The light switch in the corridor is what lets you see the women's side properly, so most players flip it before they go in.",
+  },
+  {
+    q: "Is there a keypad code in the Restroom level?",
+    a: "No. There is no number pad anywhere in Level 25. The only written numbers are the <b>61</b> in the middle of the drain and the digits on the four papers, and neither is typed into anything — one is a target sum, the other is a click count. If you are hunting for a four- or six-digit code, you are thinking of a different room.",
+  },
+  {
+    q: "How long does the Restroom take?",
+    a: "The recording this guide is built from finishes in <b>9:01</b> of level time, and the drain ring alone eats about eighty seconds of it. Nothing in the level is timed and there is no fail state, so the only real cost is walking back and forth between the two restrooms because a tool was left behind.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-2-level-25"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 2 Level 25"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    .matrix { border-collapse: separate; border-spacing: 4px; margin: 0.8rem auto; font-family: 'Nunito', sans-serif; }
+    .matrix td { width: 46px; height: 46px; text-align: center; vertical-align: middle; font-weight: 800; font-size: 1.05rem; border-radius: 8px; background: #FFF6E8; color: #8A3B00; border: 1.5px solid #F0DFAE; }
+    .matrix td.zero { background: #EFE7DC; color: #B4A697; border-color: #E3D8C9; font-weight: 700; }
+    .matrix-cap { font-size: 0.85rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.9rem; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } .matrix td { width: 38px; height: 38px; font-size: 0.95rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 2</a> &gt; Level 25</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 2 Level 25 Walkthrough: Restroom</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <p>Level 25 drops you in a corridor between two restrooms and asks two real questions: can you make every side of the floor-drain lid add up to <b>61</b>, and can you turn four paper grids into a click pattern on a 4x4 panel? Everything else — and there is a lot of everything else — is a tool hunt across both rooms, and the order you do it in is the difference between a nine-minute level and a very long one.</p>
+
+    <div class="verify-note">Rebuilt from two independent recordings of the current build: a 9:16 playthrough of Level 25, extracted at one frame per second and re-read at four frames per second around the drain, the papers and the exit, and a 6:34 second run used as a cross-check. The first video's clock reads 9:01 at the results screen and the file runs 9:16, so the two are close enough that the timestamps below point at the video rather than at the in-game clock. Every number printed here was read at least twice: the <b>61</b> in the centre of the drain, the four paper grids, the <b>+50</b> and the <b>9:01</b>. Item names are the game's own labels, pulled off the raw frames with optical character recognition. Where the footage cannot settle something, the page says so at the bottom instead of filling the gap in.</div>
+
+    <LevelSelector chapter={2} current={25} variant="jump" label="Chapter 2 · No Honor Among Thieves" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>No keypad, no letter code: Level 25 is a drain lid that has to total <b>61</b> and a 4x4 panel that has to be clicked <b>29</b> times in a fixed pattern. Finish worth <b>+50 coins</b>.</p>
+      <ol>
+        <li>Tap the <b>potted plant</b> in the corridor → <b>Key</b>. Use it on the door with the <b>male symbol</b>.</li>
+        <li>In the men's room take the <b>Gloves</b> off the counter, the <b>Plunger</b> off the cleaning cart, and the <b>Hook</b> that a red wall button pays out in the end stall.</li>
+        <li>Solve the <b>floor drain</b>: every side of the circular lid must add up to <b>61</b>, with two-digit tiles counted as separate digits. Then <b>Hook</b> the key out of the open drain.</li>
+        <li>Clear the <b>sink</b> for a <b>Crumpled piece of paper</b> → <b>Dismantle</b> → <b>Piece of paper</b> + <b>Key</b>. Clean the mirrors with soap and a towel; a good <b>Light bulb</b> over the right-hand mirror lights it and pays out another paper.</li>
+        <li>Take the <b>Utensil</b> from the women's room back to the corridor plant to dig out a second key, and break the <b>PIPES</b> poster for a <b>Rolled piece of paper</b>.</li>
+        <li>Feed the 4x4 panel beside the exit doorway: <b>3 0 2 1 / 2 4 0 0 / 3 1 3 0 / 2 2 2 4</b> clicks per cell.</li>
+        <li>The panel completes, the camera cuts to the corridor, and the level ends on <b>+50 coins</b> and <b>Time: 9:01</b>.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/uopc_Ls173Q" title="Rooms &amp; Exits Chapter 2 Level 25 Restroom walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/c2l25-hero-hallway.jpg" alt="Rooms and Exits Chapter 2 Level 25: the corridor outside the restrooms, with a locked door on the left, the men's door in the middle, the women's door on the right and a tall potted plant between them" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>Level 25 is called <b>Restrooms</b> on the game's own title card — plural, and that is the whole design of the room. You start in a short corridor with a striped floor and three doors: a plain door on the left carrying a small lock panel, the <b>men's</b> door in the middle, and the <b>women's</b> door on the right, with a tall potted plant standing between the two labelled ones. Behind those two doors are two separate restrooms, and the level is spread across both of them plus the corridor that joins them.</p>
+    <p>The men's room is the bigger of the two: a row of green stalls against the left wall, three urinals on the back wall under a run of exposed pipes, a long green counter with three basins and a wide mirror on the right, a cleaning cart parked in the middle of the floor, and the door back to the corridor in the far corner with a male figure on it. The women's room is a different palette — yellow stall doors, four basins on a purple counter, no urinals at all — and it is where the level hides its smaller pick-ups: a pink pouch, a pedal bin, a caged wall lamp and a hand dryer with a hole where its button should be.</p>
+    <p>What makes the room feel longer than nine minutes is that almost nothing is where the thing that opens it is. The key to the men's door is in a plant in the corridor. The key that opens the drain is inside the drain, on a string, and you cannot reach it until you have solved the lid. The paper that tells you the exit pattern is in the wall behind a poster, in a compartment that only opens once the poster is broken. The level is a chain of small tools, each one spent on a different fixture, and the two puzzles that actually stop people — the drain arithmetic and the 4x4 click panel — are at opposite ends of it.</p>
+    <p>It is also, for the record, one of the few Chapter 2 rooms with no numeric code at all. There is no keypad, no safe dial, no four-digit lock. Every number in the level is either a target sum or a count of clicks, which is why a guide that just hands you "the code" is no help here.</p>
+
+    <h2>The room, fixture by fixture<span class="accent">.</span></h2>
+    <p>Before the steps, here is the map we wish we had on the first run. Everything in the level is one of these objects, and each one belongs to exactly one step.</p>
+    <table class="item-table">
+      <thead>
+        <tr><th>Object</th><th>Where</th><th>What it is for</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Potted plant</td><td>Corridor, between the two restroom doors</td><td>Two separate pay-outs. First tap gives the <b>Key</b> for the men's door; a later tap with the <b>Utensil</b> digs out a second key.</td></tr>
+        <tr><td>Locked door</td><td>Corridor, left wall</td><td>A small panel rather than a handle. Stays shut for the whole level.</td></tr>
+        <tr><td>Mosaic panel</td><td>Corridor, beside the exit doorway</td><td>The 4x4 click grid. The last lock in the level.</td></tr>
+        <tr><td>Cleaning cart</td><td>Men's room, centre of the floor</td><td>Three tools over the run: <b>Plunger</b>, <b>Spray bottle</b>, <b>Towel</b>.</td></tr>
+        <tr><td>Counter and sinks</td><td>Men's room, right wall</td><td><b>Gloves</b> on the counter; standing water in one basin; the <b>Soap</b> dispenser is on the tiled wall beside them.</td></tr>
+        <tr><td>Floor drain</td><td>Men's room, floor by the cart</td><td>The arithmetic ring. Centre reads <b>61</b>; solving it lifts the square lid.</td></tr>
+        <tr><td>End stall</td><td>Men's room, left wall</td><td>A red button on the tiled wall pays out the <b>Hook</b>.</td></tr>
+        <tr><td>PIPES poster</td><td>Men's room, blue tiled wall over the sinks</td><td>Covers a recessed compartment. Bears the number <b>23919</b> in a red oval, which is signage, not a code.</td></tr>
+        <tr><td>Wall lamp and mirrors</td><td>Women's room, over the basins</td><td>A caged lamp holding a <b>Light bulb</b>, and mirrors that stay dark until one is lit.</td></tr>
+        <tr><td>Pouch and pedal bin</td><td>Women's room, counter and floor</td><td><b>Nail file</b> from the pouch, <b>Box of food</b> from the bin, <b>Utensil</b> from dismantling the box.</td></tr>
+        <tr><td>Hand dryer</td><td>Women's room, wall by the door</td><td>A socket where a <b>Machine button</b> goes. Fitting it pays out a paper.</td></tr>
+        <tr><td>Light switch</td><td>Corridor, beside the women's door</td><td>A white rocker with a strip panel next to it. Flips the corridor lighting.</td></tr>
+      </tbody>
+    </table>
+    <h2>Step by step<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:01</span>
+      <strong>The level card: "Level 25 / Restrooms"</strong>
+      The recording opens on the card that names the room, and it is worth ten seconds of attention because it settles two things players argue about. It says <b>Level 25</b>, and it calls the room <b>Restrooms</b>, plural — the level is not a single washroom but the pair behind the corridor. It also confirms there is no difficulty badge and no reward preview other than the standard <b>+50</b> that every Chapter 2 room pays.
+      <img src="/rooms-and-exits/c2l25-level-card.jpg" alt="The Level 25 Restrooms title card in Rooms and Exits, over the dimmed corridor with three doors and a potted plant" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=1s" target="_blank" rel="noopener">0:01</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:03</span>
+      <strong>The corridor, and the one thing you can already touch</strong>
+      The card lifts and you get the only clean wide shot of the level. Left: a plain door with a small panel on it instead of a handle — that is a lock you will not open today. Middle: the <b>men's</b> door, male figure at eye height. Right: the <b>women's</b> door, female figure. Between the two labelled doors stands the <b>potted plant</b>, and the striped floor runs from the bottom of the frame to the exit doorway on the right.
+      Nothing in this shot looks interactive, and the plant looks like decoration. It is not. It is the first move of the level, and the corridor is also where the level ends, so memorise the exit doorway now — the 4x4 panel you finish on sits right beside it.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=3s" target="_blank" rel="noopener">0:03</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:04</span>
+      <strong>Tap the plant: the first Key is in the soil</strong>
+      Tap the plant and the camera zooms into the pot against the brick wall. Tap it a second time and the plant gives the key up; by 0:12 the wide shot is back and the inventory has a new slot labelled <b>Key</b>. It is the plainest interaction in the level — no tool, no combine, no puzzle — which is exactly why it is the one people skip.
+      This is the single most-missed interaction in the room, because it is a plant. Two taps, no puzzle, and it gates the entire men's side of the level.
+      <img src="/rooms-and-exits/c2l25-plant-key.jpg" alt="The potted plant in the corridor of Level 25, zoomed in against the brick wall, with the dark soil visible around its stems" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=4s" target="_blank" rel="noopener">0:04</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:14</span>
+      <strong>Use the Key on the men's door</strong>
+      Back in the corridor, select the <b>Key</b>, press <b>Use</b>, then tap the middle door. The door swings in and the camera follows it into the men's room. If you tap the door with the key still in the bag, or tap the women's door, nothing happens — and the women's door is not opened by this key at all, so do not stand there trying it.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=14s" target="_blank" rel="noopener">0:14</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 0:18</span>
+      <strong>Gloves on the counter, and the shape of the room</strong>
+      Inside, the first pick-up is a pair of <b>Gloves</b> lying on the green counter beside the sinks. Take them. They are the level's answer to "this fixture is filthy": the urinals and the drain both want a hand you are willing to put in them, and the gloves are what the game counts as that hand.
+      While you are here, read the room properly. The green stalls are on the left with one door hanging open; the three urinals are straight ahead under the pipes; the sinks and the big mirror are on the right; the cleaning cart is parked in the middle of the floor; and the floor drain sits between the cart and the counter. That drain is where the level's only arithmetic lives.
+      <img src="/rooms-and-exits/c2l25-men-restroom.jpg" alt="The men's restroom in Level 25: green stalls on the left with one door open, three urinals under exposed pipes on the back wall, three basins under a wide gold-framed mirror, a cleaning cart mid-floor and the corridor door with a male figure on it" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=18s" target="_blank" rel="noopener">0:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 0:25</span>
+      <strong>The cleaning cart is a three-item shelf</strong>
+      The cart carries more than it looks. The <b>Plunger</b> comes off it on the first visit, at 0:25. The <b>Spray bottle</b> and the <b>Towel</b> are still on it, and the recording does not take them until 5:21 and 5:27, on its way back through the room — which is why so many players finish the drain, look at an empty bag and assume they have missed a step.
+      Take all three now if you prefer. The plunger and the towel are both spent on the sink and the mirror, and the spray bottle is the carrier for the soap you will get later. Nothing on the cart is a red herring, which is unusual for this chapter.
+      <img src="/rooms-and-exits/c2l25-cleaning-cart.jpg" alt="The restroom cleaning cart in Level 25 zoomed in, with a blue mop bucket, toilet rolls, spray bottles and cloths on its shelves" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=25s" target="_blank" rel="noopener">0:25</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 0:34</span>
+      <strong>The sinks: running water, dirty mirrors, and the soap dispenser</strong>
+      The three basins on the green counter have their taps running, and one of them is holding standing water with something pale under the surface. Above them the wide mirror is smeared and grey — deliberately, because a clean mirror is a puzzle reward later, not scenery. On the tiled wall between the sink run and the stalls hangs a grey <b>Soap</b> dispenser with a keyhole in its face.
+      Note the keyhole and leave it. The dispenser does not open by tapping; it opens with a key, and the key is at the bottom of the drain. This is the first of the level's two long round-trips.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=34s" target="_blank" rel="noopener">0:34</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 0:55</span>
+      <strong>The end stall: a red button on the tiles pays out the Hook</strong>
+      In the last stall, mounted on the tiled wall beside the cistern, there is a small <b>red button</b>. Press it and the game hands over the <b>Hook</b> — a short bent metal hook, the kind of thing you would fish a chain out of a plughole with. It is not a tool you combine or dismantle; it is used directly, on the drain, and only there.
+      If you have already opened the drain and are wondering why nothing happens, you are probably holding the wrong item. The hook is used from the inventory with <b>Use</b>, not tapped on the lid from the room view.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=55s" target="_blank" rel="noopener">0:55</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 1:08</span>
+      <strong>The drain lid: every side has to total 61</strong>
+      Tap the floor drain and the whole screen fills with a circular lid: concentric rings of two-digit tiles around a fixed centre that reads <b>61</b>. The rings rotate, the centre does not, and the game's own instruction — captured word for word in our second recording — is that <b>each side must total 61</b>, with the digits of each tile added separately, so a tile reading <b>78</b> counts as <b>7 + 8</b>.
+      That is the entire rule, and it is the only reason people stall here: the tiles look like two-digit numbers, so players add seventy-eight and immediately overshoot. Add digits. Then rotate ring by ring and check all four sides after every turn, because one ring rotation moves tiles on four sides at once and it is very easy to fix the bottom and break the left.
+      The recording spends about eighty seconds on this lid, from 1:08 to roughly 2:28, and it is the longest single interaction in the level.
+      <img src="/rooms-and-exits/c2l25-drain-ring.jpg" alt="The circular drain-cover puzzle in Level 25: concentric rings of two-digit tiles rotating around a fixed centre reading 61" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=68s" target="_blank" rel="noopener">1:08</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 1:52</span>
+      <strong>The lid lifts, and the Hook gets the key out</strong>
+      When the four sides agree the square lid releases and leans back on its hinge, showing the solved ring plate on its underside and a dark opening below it. Take the <b>Hook</b> from the bag, press <b>Use</b> and tap the drain: the hook goes down, catches the cord the key is hanging from, and the key comes up into the inventory.
+      This is the key that opens the soap dispenser, not a door. A lot of players take it to the corridor and try the women's door with it, which is a wasted trip — the women's door is dealt with by the light switch, not by this key.
+      <img src="/rooms-and-exits/c2l25-drain-open.jpg" alt="The floor drain in Level 25 with its square lid lifted and leaning back, showing the solved concentric rings on its underside and the dark opening below" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=112s" target="_blank" rel="noopener">1:52</a></div>
+    </div>
+    <div class="step-card">
+      <span class="step-num">Step 11 · 3:55</span>
+      <strong>The soap dispenser will not open yet</strong>
+      Back at the grey dispenser on the tiled wall, the camera gives you a long, deliberate close-up: a two-tone box, charcoal on top and chrome below, with a small keyhole in the metal face and a push-button underneath for the soap. This is the game pointing at a lock, not at a puzzle. Tapping it does nothing. It wants the key you just fished out of the drain, and until you use that key from the inventory it stays a box.
+      Our recording visits it here, at 3:55, leaves, does the sink, and only comes back at 5:15 — which is worth knowing if you are following along in real time and wondering whether the footage skipped something. It didn't. The dispenser is simply the next stop after the drain, and the sink is on the way.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=235s" target="_blank" rel="noopener">3:55</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 5:02</span>
+      <strong>The sink basin: a Crumpled piece of paper</strong>
+      One of the three basins is holding a pool of standing water with a pale lump under the surface. Clear it and the game hands you a <b>Crumpled piece of paper</b>, which is exactly what it sounds like: a ball of paper, not a readable clue. Open the inventory, select it, press <b>Dismantle</b>, and it flattens into a <b>Piece of paper</b> — and a <b>Key</b> comes out with it.
+      The flat paper is one of the four grids that drive the exit panel. This is the first one most players find, and it is the reason the panel looks impossible on arrival: you are meant to be carrying a partial answer before you ever see it.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=302s" target="_blank" rel="noopener">5:02</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 5:15</span>
+      <strong>Open the dispenser: Soap, then a soapy towel</strong>
+      Use the drain key on the dispenser and its front panel drops open on a green <b>Soap</b> pouch. Take it. Now go into the inventory and combine: the <b>Soap</b> goes into the <b>Spray bottle</b> from the cart, and that bottle is then combined with the <b>Towel</b> to make a soapy cloth. There is no separate puzzle here — it is a three-item crafting chain, and the game will not let you wipe the mirror with a dry towel.
+      Wipe the smeared mirror over the sinks with the soapy towel. It clears, and what was a grey slab becomes a usable mirror. Nothing pops out of it at this point; the mirror is a surface, not a container, and what it is for becomes obvious two steps later when a light is put behind it.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=315s" target="_blank" rel="noopener">5:15</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 5:47</span>
+      <strong>The lights go out, and the corridor becomes the puzzle</strong>
+      Walk back into the men's room or the corridor and the lighting changes: the restroom drops into gloom, the corridor is lit only as far as the doorway, and the women's side is dark. This is not a bug and it is not a timer running out — it is the level switching you from "plumbing" to "electrics", and in our recording it coincides with the men's side being finished.
+      It is also the moment the corridor stops being a corridor. The plant, the switch and the exit panel are all in this space, and in the dark they are the only things that read.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=347s" target="_blank" rel="noopener">5:47</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 6:04</span>
+      <strong>The light switch beside the women's door</strong>
+      On the corridor wall there are two fittings side by side: a white square rocker switch in a white frame, and a grey panel of horizontal strips with a red lamp at the top and a green one below. Press the rocker and the corridor comes up; press it again and it goes back down. That much is unmistakable in the footage and it is the whole visible interaction — our recording flips it twice, at 6:04 and again at 6:08, and the second press is the one that leaves the lights on and opens the women's side up.
+      What the strip panel and its two lamps are checking, we could not establish. Neither recording ever shows the strips being set or rejected; they sit grey with the red lamp lit and the green one dark, in both runs, before and after the switch is pressed. Treat the rocker as the switch and the strip panel as decoration until something tells you otherwise.
+      <img src="/rooms-and-exits/c2l25-light-switch.jpg" alt="The corridor light switch in Level 25: a white rocker in a white frame beside a grey panel of horizontal strips with a red indicator lamp lit and a green one dark" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=364s" target="_blank" rel="noopener">6:04</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 6:20</span>
+      <strong>The women's restroom: four basins, yellow stalls, no urinals</strong>
+      With the lights on, the right-hand door opens onto a room that is deliberately the mirror image of the men's. Yellow stall doors instead of green. Four basins on a purple counter instead of three on a green one. No urinals at all. The cleaning cart is here too, but it is a green bucket-and-mop setup rather than the blue trolley from the men's side, and the mop handle leans against the wall.
+      Do not hunt for a second drain in here. The women's room has no drain, no soap dispenser and no sinks that hold water. Its four pick-ups are all small and all on the surface: a pouch, a bin, a lamp and a hand dryer.
+      <img src="/rooms-and-exits/c2l25-womens-restroom.jpg" alt="The women's restroom in Level 25: yellow stall doors, a purple counter with four basins, framed mirrors and a green mop bucket" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=380s" target="_blank" rel="noopener">6:20</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 17 · 6:29</span>
+      <strong>Pouch, bin and box: Nail file, then Utensil</strong>
+      The pink pouch on the counter is the first thing that sparkles when the room lights up. Tap it and you get a <b>Nail file</b> — a thin metal file, and one of the two tools in this level that is used on something other than a lock. The pedal bin beside the counter has its lid open and a red box inside: that is the <b>Box of food</b>, printed with a burger and fries. Take it, then <b>Dismantle</b> it in the inventory and it gives you a <b>Utensil</b> — a fork in the recording, and the tool that digs the second key out of the corridor plant.
+      Both of these are easy to walk past because neither is on a fixture. The pouch reads as make-up, and a pedal bin is the last thing anyone taps in a restroom.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=389s" target="_blank" rel="noopener">6:29</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 18 · 6:54</span>
+      <strong>The caged lamp gives up a Light bulb</strong>
+      Above the mirrors, a wall lamp with a bell-shaped shade hangs over the basins. The <b>Nail file</b> is what opens it: use the file on the lamp's cage, the cover comes free, and the <b>Light bulb</b> inside goes into the bag. The lamp goes dark, which is the point — you have just taken the only working bulb in the room.
+      Now look at the mirrors. The right-hand one has a bulb holder above it with nothing in it. Put the <b>Light bulb</b> in and the mirror lights up, and the lit mirror pays out a <b>Piece of paper</b> — the second of the four grids. The sequence is worth stating plainly because it is the one place in the level where a tool (the file) and a reward (the bulb) are separated by a whole room: you take the bulb out of one fitting to feed another.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=414s" target="_blank" rel="noopener">6:54</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 19 · 7:21</span>
+      <strong>The hand dryer's missing button</strong>
+      By the women's door there is a chrome wall-mounted hand dryer, and its face has a circular hole where the push button used to be — a coiled spring and a short red cord are hanging out of it, which is as clear a "this is missing a part" as the game ever gives you. The <b>Machine button</b> in your bag is that button. Fit it and the dryer runs, and a <b>Piece of paper</b> comes out of the slot — the third grid.
+      This is the level's cheapest puzzle and its most easily missed: nothing in the room tells you the dryer is broken, and the button itself is picked up earlier without any fanfare. If you are one paper short at the exit panel, this is almost always the one you are missing.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=441s" target="_blank" rel="noopener">7:21</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 20 · 7:32</span>
+      <strong>Back to the plant with the Utensil</strong>
+      Out in the corridor, the plant gives a second time. Use the <b>Utensil</b> on the pot and it digs in the soil and turns up a <b>Key</b> — a different key from the one the first tap produced, and the last key in the level. The recording does this at 7:32, after the women's room, but there is nothing stopping you doing it on the way past with the fork in your pocket.
+      If the plant refuses to give anything up, check that you are using the fork and not just tapping the pot. A bare tap on a plant that has already been emptied does nothing at all, which is exactly what it should do.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=452s" target="_blank" rel="noopener">7:32</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 21 · 7:46</span>
+      <strong>The PIPES poster: 23919 is not a code</strong>
+      Over the sinks in the men's room hangs a blue poster with the word <b>PIPES</b> and <b>23919</b> in a red oval. Every instinct says type it somewhere. Do not — there is nothing in this level to type it into, and the number is brand signage on a plumbing advert. What the poster actually is, is a cover: its lower corner is already torn, and behind the tear there is a recessed wall compartment with a small metal door.
+      Break the poster open and the compartment is exposed. Inside is a <b>Rolled piece of paper</b>; <b>Dismantle</b> it in the inventory and it flattens into the fourth <b>Piece of paper</b>. That is the set.
+      <img src="/rooms-and-exits/c2l25-poster-23919.jpg" alt="The blue PIPES poster in the men's restroom of Level 25, torn open to reveal a recessed wall compartment, with the number 23919 in a red oval" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=466s" target="_blank" rel="noopener">7:46</a></div>
+    </div>
+    <div class="step-card">
+      <span class="step-num">Step 22 · 8:04</span>
+      <strong>The 4x4 panel beside the exit doorway</strong>
+      Out in the corridor, on the wall next to the doorway, there is a square panel of sixteen grey cells in a four-by-four grid. The game prints its instruction underneath in plain words: <i>Click on each cell / As mentioned on papers</i>. Each click cycles that cell through a set of decorative mosaic patterns, and the panel does not care about the picture — it is counting clicks.
+      This is where the four papers pay off, and it is the only place in Level 25 where the inventory is the answer key. The panel is not timed and it does not reset what you have already done if you leave, so you can walk away mid-solve, go and re-read a paper, and come back.
+      <img src="/rooms-and-exits/c2l25-mosaic-panel.jpg" alt="The 4x4 mosaic panel in the corridor of Level 25 mid-solve, with six cells showing decorative patterns and ten still plain grey" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=484s" target="_blank" rel="noopener">8:04</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 23 · 9:10</span>
+      <strong>The panel completes and the level ends on +50</strong>
+      Finish the last cell and the panel holds for a beat, then the camera cuts back to the corridor, the whole scene fades, and the results screen comes up: <b>LEVEL COMPLETED!</b>, <b>Reward! +50</b>, an efficiency meter, and <b>Time: 9:01</b>. A second panel below it shows the piggy bank at <b>200</b> — that is the bank filling up, not a second payout for this room.
+      There is no door to open and no key to use at the end. Solving the panel is the exit; the level takes over from there. If you are standing in front of a door at 9:10 waiting for an exit icon, you have finished the puzzle and the game is already ahead of you.
+      <img src="/rooms-and-exits/c2l25-level-complete.jpg" alt="The Level Completed screen for Chapter 2 Level 25, showing Reward +50 coins, Time 9:01 and the piggy bank counter at 200" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=uopc_Ls173Q&t=550s" target="_blank" rel="noopener">9:10</a></div>
+    </div>
+
+    <h2>The exit panel, cell by cell<span class="accent">.</span></h2>
+    <p>This is the part of the level that no amount of exploring will solve on its own, so here is the whole grid. Rows run top to bottom as the panel is mounted; columns run left to right. A number is the count of clicks that cell wants; a greyed <b>0</b> is a cell no paper mentions and which you should leave alone.</p>
+
+    <table class="matrix">
+      <tbody>
+        <tr><td>3</td><td class="zero">0</td><td>2</td><td>1</td></tr>
+        <tr><td>2</td><td>4</td><td class="zero">0</td><td class="zero">0</td></tr>
+        <tr><td>3</td><td>1</td><td>3</td><td class="zero">0</td></tr>
+        <tr><td>2</td><td>2</td><td>2</td><td>4</td></tr>
+      </tbody>
+    </table>
+    <p class="matrix-cap">Clicks per cell, top row first — twenty-nine clicks in total.</p>
+
+    <img src="/rooms-and-exits/c2l25-mosaic-complete.jpg" alt="The finished 4x4 mosaic panel in Level 25 with twelve patterned cells and four cells left plain grey" width="1200" height="594" loading="lazy" />
+
+    <p>Where each number comes from matters, because if your copy of the level differs the table is only as good as the papers behind it. Four pieces of paper are needed, each of which marks three cells and leaves the rest blank. Read as a set, the twelve marked cells account for every non-zero value above, and the four cells that no paper marks are the four zeros.</p>
+
+    <table class="item-table">
+      <thead>
+        <tr><th>Paper</th><th>Cells it marks</th><th>Values</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Paper A</td><td>Row 1 col 3 · Row 2 col 1 · Row 3 col 3</td><td>2 · 2 · 3</td></tr>
+        <tr><td>Paper B</td><td>Row 1 col 4 · Row 3 col 1 · Row 4 col 2</td><td>1 · 3 · 2</td></tr>
+        <tr><td>Paper C</td><td>Row 2 col 2 · Row 4 col 1 · Row 4 col 3</td><td>4 · 2 · 2</td></tr>
+        <tr><td>Paper D</td><td>Row 1 col 1 · Row 3 col 2 · Row 4 col 4</td><td>3 · 1 · 4</td></tr>
+      </tbody>
+    </table>
+    <p>The letters are ours, not the game's — the items are all just labelled <b>Piece of paper</b>, so the only way to tell them apart in the bag is to open each one and look at which cells are shaded. Paper B is the one we are most confident about, because it appears in both recordings and reads identically in each: a 1 in the top-right corner, a 3 in the third row on the left, and a 2 on the bottom row second from the left.</p>
+    <p>Two practical notes. First, clicking a cell more than its number does not lock the panel — it cycles, so you can carry on clicking until the right pattern comes round. Second, the four unmarked cells are meant to stay plain: a finished panel is not a full mosaic, it is twelve patterned tiles and four grey ones, which is exactly what the recording shows at 9:10.</p>
+
+    <h2>How the level is built: five locks in a row<span class="accent">.</span></h2>
+    <p>Strip away the taps and Level 25 is five gates in a line, and every one of them is fed by something from a different room. Seen in order, the dependencies are:</p>
+    <ol>
+      <li><b>Plant → men's door.</b> Two taps on the corridor plant produce the first key. Without it the whole men's side of the level is sealed.</li>
+      <li><b>Drain → soap.</b> The lid is arithmetic (four sides, 61 each, digit sums). The key inside it opens the soap dispenser, and the soap is what makes the towel able to clean a mirror.</li>
+      <li><b>Lamp → mirror → paper.</b> The nail file opens the caged lamp, the bulb from that lamp goes into the empty holder over the right-hand mirror, and the lit mirror pays out a paper. A tool and its reward sit in different rooms, which is the one genuinely confusing hop in the level.</li>
+      <li><b>Button → dryer → paper.</b> The machine button fits the hand dryer's empty socket and the dryer dispenses another paper. Nothing signposts the dryer as broken.</li>
+      <li><b>Papers → panel.</b> Four grids, twelve marked cells, twenty-nine clicks. Solving it ends the level outright — there is no sixth gate.</li>
+    </ol>
+    <p>Everything else in the two rooms is either a tool for one of those gates or scenery. The gloves, the plunger, the spray bottle, the towel, the hook, the nail file, the utensil and the machine button all feed one of the five; the urinals, the toilet paper, the mop and the framed mirrors do not feed anything we could see.</p>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>The plant.</b> It is the level's first move and it looks like decoration. If the men's door will not open and you have not tapped the pot twice, that is why.</li>
+      <li><b>Adding the tiles as two-digit numbers.</b> The drain says 61 for a reason: every side has to reach sixty-one by adding the individual digits. Add 78 as seventy-eight and every side overshoots by design.</li>
+      <li><b>Looking for a code.</b> The <b>23919</b> on the PIPES poster is the loudest number in the level and it opens nothing. So is the moment you realise there is no keypad anywhere — this room does not have one.</li>
+      <li><b>The missing paper.</b> Three papers are obvious pick-ups; the fourth is behind a poster, inside a wall compartment, rolled up. Players who have three grids and cannot make the panel work are usually short the one from the hand dryer instead.</li>
+      <li><b>Trying to clean the mirror with a dry towel.</b> The towel has to go through the soap and the spray bottle first. A dry towel on a dirty mirror does nothing and gives no feedback at all.</li>
+      <li><b>Waiting for a door at the end.</b> The panel is the last interaction. There is no exit key, no door icon and no final tap — the results screen arrives by itself.</li>
+      <li><b>Walking the women's room before the lights.</b> In the dark most of its pick-ups do not sparkle, and the pouch in particular is easy to miss when the room is grey.</li>
+    </ul>
+
+    <h2>Chapter 2 levels<span class="accent">.</span></h2>
+    <p class="grid-note">Chapter 2 opens with the Cell Phone Store and runs twenty-six rooms; the list below reflects what is written up so far.</p>
+    <LevelSelector chapter={2} current={25} compact={true} label="Chapter 2 · No Honor Among Thieves" />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      <b>Eight things, all of them stated plainly rather than guessed at:</b>
+      <ul>
+        <li><b>The drain's ring layout.</b> The centre <b>61</b> and the rule — each side totals 61, digits added separately, a 78 counting as 7+8 — were read twice and are solid. What we did not reconstruct is a ring-by-ring solution map: the tiles rotate faster than one frame per second resolves, so printing "put this tile here" would mean inventing the layout. The rule is enough to solve it; a position map from us would not be.</li>
+        <li><b>Whether the four unnumbered cells are exactly the four that stay plain.</b> The papers mark twelve cells and the finished panel shows twelve patterned tiles with four plain, which lines up. But at the resolution of the recordings we could not map each plain tile to a specific row and column with confidence, so the instruction to leave the unnumbered cells alone is an inference from the papers rather than a frame-by-frame read of the solved board.</li>
+        <li><b>Which tool clears the sink.</b> Both recordings show an item leaving the bag while the basin is zoomed and the water draining, but not which one — the footage is ambiguous between the plunger and the pipe at that moment. What is not ambiguous is the payout: a <b>Crumpled piece of paper</b>, which dismantles into a paper and a key.</li>
+        <li><b>What the light switch's strip panel is for.</b> The rocker is unambiguous and the corridor lights respond to it. The grey strips and the red and green lamps beside it are never touched in either recording, and we never see a wrong state rejected, so this page does not pretend to know what they check.</li>
+        <li><b>The wall compartment behind the PIPES poster.</b> We can see the torn poster, the recessed panel and the rolled paper coming out. We never see the panel being unlocked, so we cannot say whether it needs a key or simply opens once the poster is broken — the level's keys and locks do not map one-to-one anywhere in this room.</li>
+        <li><b>Which door the 4x4 panel belongs to.</b> It sits beside the exit doorway in the corridor, and solving it ends the level directly — no door swings, no exit icon appears, the camera simply cuts. Anything beyond "the panel is the exit" would be our reading of the set dressing rather than something the footage shows.</li>
+        <li><b>The efficiency meter's value.</b> The results screen has a segmented efficiency bar and we could not read it consistently: three separate passes over the same frame counted seven, eight and ten filled segments. The bar exists, it is not printed as a number anywhere on screen, and we would rather say that than pick the reading we liked best. The reward itself — <b>+50</b>, <b>Time: 9:01</b>, bank at <b>200</b> — was confirmed three times.</li>
+        <li><b>Two item pick-ups.</b> The wrench and the machine button both appear in the inventory between frames, with the camera on something else at the time. Their uses are visible — the wrench on the pipework, the button in the hand dryer's socket — but the exact fixture each one is taken from is not.</li>
+      </ul>
+      Everything else on this page — the three doors and their symbols, the plant's two pay-outs, the cart's three tools, the drain opening, the four paper grids, the panel's instruction text, the <b>+50</b> and the <b>9:01</b> — was read at least twice, from two recordings, and agrees.
+    </div>
+
+    <p>The honest summary is that Level 25 is a good room with two real puzzles and a lot of small errands, and the errands are what make it feel unfair. The drain and the paper grid are both fair; the plant, the lamp, the dryer and the poster are all hidden in plain sight, and none of them announces itself. If you take one thing from this page, take the order: plant, drain, soap, lamp, dryer, papers, panel.</p>
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-2-level-24/">← Chapter 2, Level 24 (Toy Store)</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits guides →</a></p>
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

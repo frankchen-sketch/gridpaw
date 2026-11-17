@@ -1,0 +1,340 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 2 Level 9 Walkthrough: Indoor Playground";
+const description = "Rooms & Exits Chapter 2 Level 9 walkthrough for the Indoor Playground: the four coloured balls, the ball pit and slide, the six-by-six pipe puzzle that pays out the blue key, the shoelace-and-magnet rod, and the code 3764 on the chest that hands you the exit key.";
+
+const faqs = [
+  {
+    q: "What is the code in Rooms & Exits Chapter 2 Level 9 Indoor Playground?",
+    a: "3764. It is written on the piece of paper hidden in the base of the tall lime-green clock in the dollshouse part of the level, the section you reach through the tunnel behind the pulley plank. Set the four wheels of the chest lock to 3764 and the chest opens onto the exit key. We read the paper twice, from two separate recordings, and both agree on 3764."
+  },
+  {
+    q: "Where do I find the four coloured balls?",
+    a: "You need four, in red, green, blue and yellow, and the inventory tracks them as Ball with a counter such as 3/4. Our recording takes one out of the play area around the ball pit and one out of the gumball machine. The other two are in the same playground frame on tappable props: the blue hopper balls on the floor, the painted red flowers on the wall and the teddy bear sitting on the cubbies. Tap everything loose until the counter reads 4/4."
+  },
+  {
+    q: "How does the pipe puzzle work?",
+    a: "The board has four glass cups along the top, one per colour, a grid of yellow pipe segments and four matching colour slots along the bottom. Drop each ball into the cup of its colour, then tap the pipe segments to rotate them until every colour has an unbroken run to the slot of the same colour. When all four are home, the glass dome on the right opens and the blue key is yours."
+  },
+  {
+    q: "What do I do with the shoelace, the magnet and the fishing rod?",
+    a: "Dismantle the sneakers to get the shoelace, then combine the shoelace with the magnet to make a tied magnet, and combine that with the fishing rod to make the fishing rod with magnet. Use the rod on the ball pit: it fishes out a second key, and that key opens the cubby that holds the backpack."
+  },
+  {
+    q: "Where is the blue key used?",
+    a: "On the stack of coloured cubbies beside the EXIT door. One of the purple doors is the one the blue key from the pipe puzzle opens: inside is the pair of sneakers. The sneakers are not an exit item, they are a source of laces, which is why players who try to leave with them get nowhere."
+  },
+  {
+    q: "How do I finish the Indoor Playground level?",
+    a: "Take the key out of the open chest in the dollshouse, walk back through the tunnel to the playground, open the inventory, select the key, press Use and tap the door marked EXIT on the left wall. The level ends on the results panel with +50 coins; our recording clocked 9:42 of level time."
+  }
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map((f) => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": { "@type": "Answer", "text": f.a }
+  }))
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-2-level-9"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 2 Level 9"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 2</a> &gt; Level 9</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 2 Level 9 Walkthrough: Indoor Playground</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from a recorded playthrough of the current build — 9 minutes 59 seconds of footage, extracted at one frame per second and read at full resolution, cross-checked against a second recording of the same level. The code was read twice, from two separate recordings, and both agree. Everything on this page comes from that footage: where the recording cannot settle a detail, the page says so instead of guessing.</div>
+
+    <LevelSelector chapter={2} current={9} variant="jump" label="Chapter 2 · No Honor Among Thieves" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>The only code in the Indoor Playground is <b>3764</b>, and you do not find it in the playroom at all: it is written on a piece of paper inside the tall clock in the dollshouse section, which you reach through the tunnel behind the pulley plank. Finish worth <b>+50 coins</b>.</p>
+      <ol>
+        <li>Collect the <b>four coloured balls</b> — the inventory counts them as <b>Ball 4/4</b>.</li>
+        <li>Load them into the <b>four glass cups</b> of the pipe board and rotate the pipes until every colour reaches its matching slot.</li>
+        <li>The dome opens: take the <b>blue key</b>.</li>
+        <li>Use it on the <b>purple cubby</b> by the EXIT door → <b>sneakers</b> → <b>Dismantle</b> → <b>shoelace</b>.</li>
+        <li>Combine <b>shoelace + magnet</b> → <b>tied magnet</b>, then <b>tied magnet + fishing rod</b> → <b>fishing rod with magnet</b>.</li>
+        <li>Fish the second key out of the <b>ball pit</b> and open the cubby with the <b>backpack</b>; it holds the <b>light bulb</b>.</li>
+        <li>Light the dark side room, read the paper in the clock: <b>3764</b>.</li>
+        <li>Set the <b>chest lock</b> to <b>3764</b>, take the key, use it on the <b>EXIT</b> door.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/gLDR-7kVwR4" title="Rooms &amp; Exits Chapter 2 Level 9 Indoor Playground walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/c2l9-hero-playground.jpg" alt="Rooms and Exits Chapter 2 Level 9 Indoor Playground: the playroom with the painted palm-tree walls, the yellow slide dropping into the ball pit, the gumball machine, the cubby lockers and the toy boat on the painted pond" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>The Indoor Playground is a single soft-play hall dressed as a garden: sky and clouds painted across the top of the wall, hills and palm trees below, a wooden floor with a yellow path winding through it and a blue painted pond holding a toy boat. The centre of the room is one big climbing frame — red steps, yellow picket fencing, a walkway, a little playhouse with a blue shingled roof and a pinwheel, and a yellow slide that empties into a green-rimmed ball pit. Around the edges you get the props that matter: a stack of coloured cubby lockers with a teddy bear sitting on top, a gumball machine on a lime-green base, a whiteboard with magnets on it, three wooden stools, an abacus, three blue hopper balls on the floor and a pulley with a rope and hook up on the right wall.</p>
+    <p>It is a playground, not an arcade: there are no reflex games and no coin-op cabinets to beat. The arcade-style toys in the room — the gumball machine with its dials, the abacus, the boat with its life rings — are actually the clue hardware, and the level is a chain of three long puzzles that each hand you a key. What makes it feel much longer than it is, is that the playroom never tells you which prop is furniture and which is a lock. Everything looks equally decorative, so people tap the slide, the boat and the abacus for ten minutes and never touch the cubbies.</p>
+    <p>The other half of the problem is that the level has a second area at all. Behind the plank on the right wall there is a tunnel — the pulley lifts the plank, the dark opening shows an upward arrow, and the corridor beyond runs to a dollshouse street of little shopfronts. Inside those shopfronts are the desk room, the tall clock and the chest with four digit wheels. If you never find the tunnel you can finish the pipe puzzle, open both cubbies, take the backpack and still have no idea where the code is, because the code is not in the playground. It is in the clock.</p>
+    <p>Counting it honestly, the room has two real puzzles and one real code. The puzzles are the pipe board and the gumball dials; the code is 3764; everything else is a dependency check that exists to make you hunt for an item. That is not a complaint, it is just what the level is, and it explains why the walkthroughs that only list steps leave people stuck at the same two doors.</p>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:02</span>
+      <strong>Read the room before you touch anything</strong>
+      Take the wide shot seriously, because the interface panel never covers it this cleanly again. Left wall: the cubby stack with the teddy on top, then the brown door with EXIT above it, then a small cabinet. Centre: the climbing frame, the slide, the ball pit. Right: the whiteboard and stools, the abacus, the three hopper balls and the pulley with its rope and hook. Floor: the yellow path and the painted pond with the boat.
+      The EXIT door is the door you leave through, and it will not open until the very end of the level. The pulley rope on the right wall is the thing almost nobody taps, and it is the entrance to the second half of the level.
+      <img src="/rooms-and-exits/c2l9-hero-playground.jpg" alt="The wide view of the Indoor Playground room with the climbing frame, slide, ball pit, gumball machine and cubby lockers" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gLDR-7kVwR4&t=2s" target="_blank" rel="noopener">0:02</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:09</span>
+      <strong>The fishing rod is leaning by the whiteboard</strong>
+      The first pickup of the run is the rod. It is propped between the left stool and the whiteboard on the green wall, and tapping it drops the label <b>Fishing rod</b> under it. It goes straight into the bag and then sits there for most of the level — you cannot use it on anything until you have made a magnet for the end of it, which is why the rod looks like a red herring for the first five minutes.
+      The same board gives you two more items in the same sweep: the red disc, which the game labels <b>Magnet</b>, and the sheet of paper with a maze drawn on it, labelled <b>Drawing</b>.
+      <img src="/rooms-and-exits/c2l9-whiteboard-fishing-rod.jpg" alt="The fishing rod being taken from beside the stool and whiteboard in the Indoor Playground" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gLDR-7kVwR4&t=9s" target="_blank" rel="noopener">0:09</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:19</span>
+      <strong>The four balls: red, green, blue and yellow</strong>
+      The pipe board wants four balls and the room only hands them out one at a time. The inventory slot shows them as <b>Ball</b> with a counter — 3/4 means you are one short — and only when it reads <b>4/4</b> is the puzzle actually solvable. Our recording takes one out of the play area and one out of the gumball machine; the rest come off the loose props in the same frame.
+      This is the single most common place to stall, because nothing in the room says "four". You can open the pipe board, see four empty cups, walk away and never connect the empty cups to the toys you have been ignoring.
+      <img src="/rooms-and-exits/c2l9-ball-pit-red-ball.jpg" alt="A coloured ball being picked up with the Ball item label in the Indoor Playground" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gLDR-7kVwR4&t=19s" target="_blank" rel="noopener">0:19</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:57</span>
+      <strong>The gumball machine and its three dials</strong>
+      The gumball machine is not just a dispenser. Under the glass globe its lime-green base carries <b>three round dials</b>, each with a pointer and a small coloured indicator, plus the chute underneath. The dials are the lock; the chute is where the ball comes out once they are right.
+      The clue for them is in the room, not on the machine: the toy boat floating on the painted pond has three life rings along its side, and each ring carries a thin red mark at a different clock position. Copy the three positions from the rings onto the three dials — left ring to left dial, middle to middle, right to right — and the machine pays out.
+      We deliberately do not print the three angles here. Our capture is not sharp enough to read them twice with certainty, and a wrong angle is worse than no angle. Look at the rings, not at a screenshot.
+      <img src="/rooms-and-exits/c2l9-gumball-dials.jpg" alt="The gumball machine with three dials on its base in the Indoor Playground" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gLDR-7kVwR4&t=57s" target="_blank" rel="noopener">0:57</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:32</span>
+      <strong>The pipe board: four cups, one colour each</strong>
+      The pipe puzzle is mounted in the wardrobe-like panel between the doors. It has four glass cups along the top — red, green, blue, yellow, left to right — a blue board filled with yellow pipe segments, four colour slots along the bottom, and a glass dome on the right with a blue key sitting on top of it.
+      Load the balls into the cups first. Each cup takes the ball of its own colour, and the counter in the bag drops as you place them; if you are at 3/4 you cannot finish the board no matter how well you route the pipes.
+      <img src="/rooms-and-exits/c2l9-pipe-puzzle-start.jpg" alt="The pipe puzzle board with four coloured cups at the top and a glass dome holding a blue key on the right" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gLDR-7kVwR4&t=92s" target="_blank" rel="noopener">1:32</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 3:30</span>
+      <strong>Rotate the pipes until every colour lands</strong>
+      Tap a pipe segment to turn it, and work one colour at a time rather than trying to see the whole board at once. A ball only travels when its run is unbroken from cup to slot, so a single wrong corner anywhere along the route quietly stops it — and because four balls share the same board, fixing one route can break another. The recording spends nearly four minutes on this board, and that is normal: it is the longest single puzzle in the level.
+      When a colour is home it sits in its slot at the bottom and stays there. Use the settled slots as your progress bar.
+      <img src="/rooms-and-exits/c2l9-pipe-puzzle-mid.jpg" alt="The pipe board mid-solve with coloured balls part way down the yellow pipe routes" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gLDR-7kVwR4&t=210s" target="_blank" rel="noopener">3:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 5:14</span>
+      <strong>The dome opens: blue key</strong>
+      With all four balls in their matching slots the glass dome on the right lifts and the blue key becomes takeable. It is the only thing the pipe board gives you, and it is the first of the level's three keys — which is why players who expect a code out of this puzzle spend a long time staring at the vessel looking for one.
+      <img src="/rooms-and-exits/c2l9-pipe-solved-blue-key.jpg" alt="The glass dome open above the solved pipe board with the blue key available" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gLDR-7kVwR4&t=314s" target="_blank" rel="noopener">5:14</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 5:26</span>
+      <strong>Blue key → the purple cubby → sneakers</strong>
+      Take the key to the stack of coloured cubbies beside the EXIT door and open the purple door with it. Inside is a pair of <b>sneakers</b>, and this is the moment most players try to leave: shoes look like an exit item, the EXIT sign is right there, and the door does nothing.
+      The sneakers are not for walking. They are raw material.
+      <img src="/rooms-and-exits/c2l9-locker-sneakers.jpg" alt="The pair of sneakers taken from the open purple cubby locker in the Indoor Playground" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gLDR-7kVwR4&t=326s" target="_blank" rel="noopener">5:26</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 5:30</span>
+      <strong>Dismantle the sneakers, then combine twice</strong>
+      Open the inventory on the sneakers and press <b>Dismantle</b>. The shoes come apart into a <b>shoelace</b>, which is the only reason they exist. Then chain the two combines in this order: <b>shoelace + magnet</b> gives a <b>tied magnet</b>, and <b>tied magnet + fishing rod</b> gives the <b>fishing rod with magnet</b>. Order matters — the rod will not take the bare magnet, and the lace will not take the rod.
+      Read the verbs on the inventory screen once and remember them, because this level uses all four: <b>Use</b>, <b>Combine</b>, <b>Dismantle</b>, <b>Examine</b>. Most of the "the item does nothing" reports in this room are a wrong verb, not a wrong item.
+      <img src="/rooms-and-exits/c2l9-tied-magnet-inventory.jpg" alt="The inventory screen showing the tied magnet and the fishing rod being combined in the Indoor Playground" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gLDR-7kVwR4&t=339s" target="_blank" rel="noopener">5:39</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 5:52</span>
+      <strong>Fish the second key out of the ball pit</strong>
+      Use the fishing rod with magnet on the ball pit under the slide. The line goes into the balls and comes back with an ornate key — the level's second key, and the one nobody expects, because the ball pit reads as scenery rather than a container.
+      This is also the step that proves the rod is not decoration. If your rod is still plain, your magnet is still a disc, or your sneakers are still shoes, the pit gives you nothing.
+      <img src="/rooms-and-exits/c2l9-rod-ball-pit-key.jpg" alt="The fishing rod with magnet reaching into the ball pit and lifting a key out" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gLDR-7kVwR4&t=352s" target="_blank" rel="noopener">5:52</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 6:00</span>
+      <strong>The second key opens the cubby with the backpack</strong>
+      Back to the same stack of cubbies: the key from the ball pit opens the door holding the <b>backpack</b>. Inside the backpack is the <b>light bulb</b>, and that bulb is the last tool the level gives you — there is no shop, no second room and no other source for it.
+      <img src="/rooms-and-exits/c2l9-backpack.jpg" alt="The backpack being taken out of a cubby locker in the Indoor Playground" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gLDR-7kVwR4&t=360s" target="_blank" rel="noopener">6:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 7:40</span>
+      <strong>Through the tunnel behind the pulley plank</strong>
+      The second half of the level is behind the right-hand wall. Pull the plank with the pulley, and the opening underneath shows an upward arrow: that is a corridor, not a decoration. Walk it and you come out in a dollshouse street of little shopfronts — green, yellow, blue and purple fronts, sitting on the same wooden floor with the same yellow path running past their doors.
+      Nothing in the playground points at this tunnel. That is the design flaw that costs people the most time in this level, and it is worth saying plainly: if you have two keys, a backpack and no code, you have not finished the first half, you have not found the second.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gLDR-7kVwR4&t=460s" target="_blank" rel="noopener">7:40</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 8:24</span>
+      <strong>Light the side room, then read the clock</strong>
+      One of the shopfronts opens into a small room with horizontal panelling, a desk with a window behind it and a hanging lamp. This is where the level hides its only code, but you cannot read it while the room is dark: tap the desk and the character says the line that tells you what is wrong — <b>"If only I could see better..."</b> The light bulb from the backpack is what fixes that; get the room lit and the detail comes back.
+      What you are looking for is the tall lime-green clock standing against the wall. Its base has a compartment, and inside it is a piece of paper with four digits on it: <b>3764</b>.
+      <img src="/rooms-and-exits/c2l9-dark-side-room.jpg" alt="The side room in the dollshouse with the desk, window, light switch and hanging lamp, where the code is hidden" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gLDR-7kVwR4&t=504s" target="_blank" rel="noopener">8:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 9:15</span>
+      <strong>The paper reads 3764</strong>
+      The paper is an inventory item — <b>Piece of paper</b> — and the number is printed on it in four clean digits, left to right: <b>3 7 6 4</b>. It is the only code in the level, and it is the one number you should write down before you leave the room, because the clock keeps it and there is no second copy.
+      <img src="/rooms-and-exits/c2l9-clock-paper.jpg" alt="The tall clock in the side room with the compartment where the piece of paper is found" width="1200" height="594" loading="lazy" />
+      <img src="/rooms-and-exits/c2l9-piece-of-paper-3764.jpg" alt="The piece of paper showing the four digit code 3764" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gLDR-7kVwR4&t=555s" target="_blank" rel="noopener">9:15</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 9:35</span>
+      <strong>Set the chest to 3764 and take the key</strong>
+      The lock is on the wooden chest in the dollshouse, not on the EXIT door. It has four digit wheels in a row on a red face plate with a button underneath; set them left to right to <b>3 7 6 4</b> and confirm. The lid lifts and there is a single key inside.
+      Do not walk back to the playground without it. The chest does not hand the key out twice, and the EXIT door will not move for anything else in your inventory.
+      <img src="/rooms-and-exits/c2l9-chest-code-lock.jpg" alt="The open chest in the dollshouse with the exit key inside after the four wheel lock is set to 3764" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gLDR-7kVwR4&t=575s" target="_blank" rel="noopener">9:35</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 9:52</span>
+      <strong>Use the key on the EXIT door: +50 coins</strong>
+      Walk back through the tunnel to the playground, open the inventory, select the key, press <b>Use</b>, then tap the brown door with EXIT written over it on the left wall. The camera pulls back and the level ends on the results panel: <b>LEVEL COMPLETED</b>, <b>+50 coins</b> and a time of <b>9:42</b> in our recording (a second, faster run of the same level finished at 6:39).
+      <img src="/rooms-and-exits/c2l9-level-complete.jpg" alt="The Level Completed screen for Rooms and Exits Chapter 2 Level 9 with a plus 50 coin reward" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=gLDR-7kVwR4&t=592s" target="_blank" rel="noopener">9:52</a></div>
+    </div>
+
+    <h2>The three chains, in order<span class="accent">.</span></h2>
+    <p>People get lost in the Indoor Playground because they treat the room as one puzzle with one answer. It is three chains that only touch at the cubby lockers, and each chain ends in something you can hold.</p>
+    <ol>
+      <li><b>Balls → pipe board → blue key.</b> Four coloured balls, four cups, four routes. Nothing else on the board matters until all four are loaded, and the board will not pay out until all four routes are clean.</li>
+      <li><b>Blue key → sneakers → shoelace → magnet → rod.</b> The only reason the sneakers exist is to be destroyed, and the only reason the magnet exists is to be tied to the lace. The rod is the tool that turns the ball pit from scenery into a container.</li>
+      <li><b>Rod → second key → backpack → bulb → paper → chest → EXIT.</b> This is the chain that hides the code, and it is the one that makes the level feel twice as long as it is, because it crosses into a second area that the playroom never advertises.</li>
+    </ol>
+    <p>Looked at that way the level has exactly two puzzles — the pipe board and the gumball dials — and one number. Everything else is a dependency check dressed as furniture, which is why the same three questions come up under every video of this room: where are the balls, what is the second key for, and where is the code.</p>
+
+    <div class="warn">
+      <b>What we could not verify:</b> the three angles on the gumball dials. The boat's life rings carry thin red marks at three different clock positions and the dials repeat them, but our capture is too small to read the rings twice with certainty, so this page does not print the angles — read them off the boat yourself. We also could not double-confirm which two props give the last two balls: our recording clearly shows the ball being taken out of the play area and out of the gumball machine, and the counter reaching <b>4/4</b>, but the other two pickups happen too fast to pin to a single prop. And the light bulb fitting itself is a two-second beat in the footage; the room going from dark to lit is clear, the exact tap is not.
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>The four balls.</b> The pipe board shows four empty cups and the room never says "four". The inventory counter is the only progress bar you get: 3/4 means keep tapping props, 4/4 means go back to the board.</li>
+      <li><b>The boat.</b> The life rings on the toy boat are the clue for the gumball dials, and the boat is small, low and easy to walk past. If the dials make no sense, you have not looked at the rings.</li>
+      <li><b>The sneakers.</b> They look like an exit item because they are shoes and the EXIT sign is two metres away. They are not: <b>Dismantle</b> them.</li>
+      <li><b>The combine order.</b> Lace first, then magnet, then rod. Trying to put the bare magnet on the rod does nothing, and the game gives you no error message — it just does not combine.</li>
+      <li><b>The ball pit.</b> The rod with the magnet goes into the pit, not into the pond, the drain or the hoppers. The pit is the only container in the room with something metal in it.</li>
+      <li><b>The tunnel.</b> The plank on the right wall lifts on the pulley and the opening under it is a corridor. Players who never pull it finish the first half of the level and then hunt for a code that is in a different room entirely.</li>
+      <li><b>The chest.</b> The four-wheel lock is on the chest in the dollshouse, not on the EXIT door. Entering 3764 on the door does nothing because the door has no lock of its own — it wants the key the chest gives you.</li>
+    </ul>
+
+    <h2>Chapter 2 levels<span class="accent">.</span></h2>
+    <p class="grid-note">Chapter 2 opens with the Cell Phone Store and runs twenty-six rooms; the list below reflects what is written up so far. The Indoor Playground sits between the Pet Shop and the Restaurant.</p>
+    <LevelSelector chapter={2} current={9} compact={true} label="Chapter 2 · No Honor Among Thieves" />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    {faqs.map((f) => (
+      <details><summary>{f.q}</summary><p>{f.a}</p></details>
+    ))}
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-2-level-8/">← Chapter 2, Level 8: Pet Shop</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-2-level-10/">Chapter 2, Level 10: Restaurant →</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits guides →</a></p>
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

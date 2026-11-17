@@ -1,0 +1,379 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 2 Level 20 Walkthrough: Furniture Store";
+const description = "Rooms & Exits Chapter 2 Level 20 walkthrough for the Furniture Store: the four carpet parts and the round rug, the yellow safe that takes 693, the oven panel that takes 12:08, the tangram board that yields the Mirror, the mirrored paper that turns 12850 into the till code 02851, and the ID card that opens the exit.";
+
+const faq = [
+  {
+    q: "How do I open the exit door in Rooms & Exits Chapter 2 Level 20?",
+    a: "With a card, not a code. The exit is the grey door on the right-hand wall with a keyhole on the left leaf and a card reader on the right; insert the <b>ID card</b> into the reader and its indicator goes from <b>red to green</b>, then the door swings open. Our second recording shows the whole sequence: red at 14:10, card in at 14:11, green at 14:12, door open at 14:13. There is nothing to type at the door — no keypad, no dials, no pane digits.",
+  },
+  {
+    q: "What is the till code in the Furniture Store?",
+    a: "<b>02851</b>, five digits. It is not written anywhere: the <b>Piece of paper</b> in your bag reads <b>12850</b>, and once you have combined it with the <b>Mirror</b> into the <b>Mirrored piece of paper</b>, the reflection reads <b>02851</b>. Type that into the till keypad at the reception desk and the register prints a receipt. Our footage shows the display rolling 0 → 0285 → 02851 on consecutive frames and the receipt appearing four seconds later.",
+  },
+  {
+    q: "What is the safe code?",
+    a: "<b>693</b>. The yellow safe panel in the kitchen display has a five-spoke dial and three digit windows tinted white, green and brown. Our run walks the windows through 695, 699, 692 and stops on <b>693</b>, and the door gives up a pair of <b>Batteries</b>. We never find the clue that produces 693 in any of our four recordings, so treat it as a number to try rather than a number to understand.",
+  },
+  {
+    q: "What time does the digital clock want?",
+    a: "<b>12:08</b>. The panel is the oven's control display in the kitchen showroom — a yellow-green readout with hour chevrons on the left, minute chevrons on the right and an <b>OK</b> button between them. Set 12:08 and press OK, and the oven door drops open on a baking tray with two crescent-shaped bakes on it. Our footage reads 12:06 one frame before the accepted 12:08, which is the frame everyone screenshots.",
+  },
+  {
+    q: "What are the four Carpet parts for?",
+    a: "They build the round rug in the living-room display. Four rolled carpet pieces are scattered around the showroom floor, and the inventory counts them up as you take them — the counter reads <b>3/4</b> on the frames just before the last one goes in. Lay them around the coffee table and the circular rug assembles itself into the patterned disc you can see in every wide shot afterwards. It is the level's opening chore, not a lock.",
+  },
+  {
+    q: "Where does the Mirror come from?",
+    a: "The tangram board. A white tablet-shaped board with coloured geometric pieces and four controls down its right edge — rotate left, rotate right, flip horizontally, flip vertically — takes up the middle of the level from about 10:00. Clear it and the <b>Mirror</b> goes into the bag at 10:33. Without the mirror the paper is just a five-digit number that fits nothing in the room.",
+  },
+  {
+    q: "What is the receipt for?",
+    a: "It is the printout from the till after you enter 02851, and it is a reward rather than a clue: six stars at the top, the date <b>21/02</b>, a <b>15:11</b> timestamp, seven grocery lines — Milk 1.59, Apple 1.63, Juice 1.23, Sausage 4.67, Bread 0.4x, Cheese 2.99, Carrot 3.45 — and a barcode at the bottom. The moment it prints, the showroom lights up with new hotspots; our run picks the ID card off the reception desk seven seconds later.",
+  },
+  {
+    q: "How long does the Furniture Store take?",
+    a: "Our fastest full recording finishes in <b>11:13</b> and the only run that reaches the results panel shows <b>14:10</b> on the level clock. Nothing is timed and there is no fail state, so the difference is entirely how long you spend looking for a code at the door that does not exist.",
+  },
+  {
+    q: "What do I get for finishing Chapter 2 Level 20?",
+    a: "The results panel we captured pays <b>+5 coins</b> with a Time field of <b>14:10</b> and an efficiency bar about seven tenths full. That panel comes from a build that numbers this room <b>Level 24</b> rather than 20, so the first-clear payout on the current build may well be larger — the +5 is what we could actually read, and it is printed here as read rather than as a guess.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-2-level-20"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 2 Level 20"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 2</a> &gt; Level 20</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 2 Level 20 Walkthrough: Furniture Store</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from four independent recordings of this room. The spine of the page is <b>0bjDzEAfVD4</b> (11:13, a build that labels the room <b>Level 20</b>), extracted at one frame per second with four frames per second through the safe, the oven panel, the tangram, the till and the door; <b>sB3xaPYVX0o</b> (14:25, the same room under a build that labels it Level 24) is the second read and the only recording that reaches the results panel; <b>mVSBFVHz6bc</b> and <b>LdbQZM4eaoA</b> were used only to check the order of the ending. Every code on this page — 693, 12:08, 02851 and the 12850 that produces it — was read off the screen at least twice, and the numbers that could not be confirmed are named under "What this page could not verify" instead of being printed as facts. On-screen text was read with optical character recognition on the raw frames, never typed from memory, and every step timestamp points at the exact second of the clip it came from.</div>
+
+    <LevelSelector chapter={2} current={20} variant="jump" label="Chapter 2 · No Honor Among Thieves" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>The exit is a <b>card reader</b>, not a keypad: put the <b>ID card</b> into the reader on the right leaf of the grey door and the light goes <b>red → green</b>, then the door opens. Three numbers carry the rest of the level — <b>693</b> opens the yellow safe, <b>12:08</b> opens the oven, and <b>02851</b> is the till code you read out of the mirror (the paper says <b>12850</b>; the reflection says <b>02851</b>). Finish worth <b>+5 coins</b> on the completion panel we captured, with <b>14:10</b> on the level clock.</p>
+      <ol>
+        <li>Pick up the four <b>Carpet parts</b> and lay the round rug in the living-room display.</li>
+        <li><b>Pliers</b> on the <b>Hanger</b> makes the <b>Modified hanger</b>; the <b>Screwdriver</b> and the loose <b>Screws</b> are the second tool pair.</li>
+        <li>Yellow safe, three windows and a dial → <b>693</b> → <b>Batteries</b>.</li>
+        <li>Oven panel in the kitchen display → <b>12:08</b> → OK → the oven opens on a tray of crescent bakes.</li>
+        <li>Tangram board → <b>Mirror</b>. Combine it with the <b>Piece of paper</b> → reflection reads <b>02851</b>.</li>
+        <li>Till at the reception desk → <b>02851</b> → receipt. Take the <b>ID card</b> off the desk, put it in the door reader → <b>+5 coins</b>.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/0bjDzEAfVD4" title="Rooms &amp; Exits Chapter 2 Level 20 Furniture Store walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/c2l20-hero-showroom.jpg" alt="Rooms and Exits Chapter 2 Level 20 Furniture Store: the showroom floor with a grey sectional sofa, patterned armchairs, a coffee table and the reception desk under a yellow accent wall" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>The Furniture Store is the twentieth room of Chapter 2, and it is not a shop so much as a showroom with the walls taken out. You get one isometric floor, lit like a catalogue shoot, laid out as a series of furnished displays: a living-room set with a grey sectional and a white half-wall behind it, a lounge corner with a sunburst mirror and a row of numbered plant stands, a kitchen set with blue and green cabinets and an island, and a dining set with a long table and yellow chairs. The reception desk sits under a yellow accent wall at the top left, and the door you leave through is a plain grey slab on the right-hand wall, wedged between two displays as if it were part of the furniture.</p>
+    <p>That last detail is the whole problem of the level. In most Rooms &amp; Exits rooms the exit announces itself — a double door with panes, a vault, a gate. Here the exit looks like a service door, and the two things bolted to it read as scenery until you are standing in front of them: a keyhole on the left leaf and a small grey card reader on the right, with an indicator bar that sits <b>red</b> until you feed it an ID card. Players spend ten minutes hunting for a four-digit code for a door that never asks for one.</p>
+    <p>The other thing to understand early is that this room has two halves that barely talk to each other. The first half is furniture assembly and tool work — carpets, hangers, screws, a picture frame, a bag of loose pieces — and it hands you items without ever asking for a number. The second half is three number locks (a safe, an oven panel, a till) that only make sense once you have the paper and the mirror in the same bag. If you are stuck, the question is almost never "what is the code"; it is "which half am I in".</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Every object in the Furniture Store that takes an input or gives you something, and what it is for. Everything else in the showroom — the sofas, the dining sets, the wall art, the numbered plant stands — is decoration.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Rolled carpets</td><td>Scattered on the showroom floor</td><td>Four <b>Carpet parts</b>; they assemble the round rug in the living-room display. Counter reads <b>3/4</b> before the last one.</td></tr>
+        <tr><td>Reception till</td><td>Curved desk, yellow wall, top left</td><td>A five-digit keypad. Takes <b>02851</b> and prints a receipt.</td></tr>
+        <tr><td>Picture frame</td><td>Showroom wall, middle of the level</td><td>A sliding-tile puzzle with one tile missing; three artworks, one of them with a hidden number.</td></tr>
+        <tr><td>Pliers</td><td>Living-room display, low shelf</td><td>Pairs with the <b>Hanger</b> to make the <b>Modified hanger</b>.</td></tr>
+        <tr><td>Hanger</td><td>Wardrobe display</td><td>Raw material for the modified hanger.</td></tr>
+        <tr><td>Screwdriver / Screws</td><td>Kitchen and dining displays</td><td>A tool pair: four loose screws, one screwdriver. Neither is used alone.</td></tr>
+        <tr><td>Catalogue pages</td><td>Counter and wall racks</td><td>Printed furniture prices — sofas, armchairs, recliners. Scene dressing, not a lock.</td></tr>
+        <tr><td>Nine-button panel</td><td>Kitchen display wall</td><td>Weather pictograms (fan, sun, snowflake, cloud, moon, star) with digits under them. Lights up as you press; no confirmed reward.</td></tr>
+        <tr><td>Yellow safe</td><td>Kitchen display, low cabinet</td><td>Dial plus three digit windows. <b>693</b> → <b>Batteries</b>.</td></tr>
+        <tr><td>Oven panel</td><td>Kitchen display, built into the cabinets</td><td>Yellow-green clock with hour and minute chevrons and OK. <b>12:08</b> → the oven opens.</td></tr>
+        <tr><td>Tangram board</td><td>Dining display, on a stand</td><td>Coloured shapes with rotate and flip controls → <b>Mirror</b>.</td></tr>
+        <tr><td>Piece of paper</td><td>Dropped in the showroom</td><td>Reads <b>12850</b>; combine with the Mirror to make the <b>Mirrored piece of paper</b>.</td></tr>
+        <tr><td>Exit door</td><td>Right-hand wall</td><td>Keyhole (left) plus card reader (right). <b>ID card</b> in the reader turns it green and opens the door.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p class="grid-note">Timestamps are video time on the embedded run, not the game's level clock. Where a step only exists in the second recording it is marked.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:03</span>
+      <strong>Read the floor before you touch anything</strong>
+      The opening wide shot is the cleanest view of the showroom you will get, so spend a few seconds on it. Top left: the curved reception desk under the yellow wall, with the till on it and the two framed prints behind. Centre: the living-room set — grey sectional, white half-wall, a modular shelf with yellow cubbies. Right: a teal sofa against dark panelling, a sunburst mirror on the grey wall, and a line of plant stands with numbers painted on their black tins. Bottom: the dining set with its long table and yellow chairs, and a pink wing chair beside a floor lamp. The grey slab on the right-hand wall, between the teal sofa and the dining set, is the door.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0bjDzEAfVD4&t=3s" target="_blank" rel="noopener">0:03</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:06</span>
+      <strong>Four rolled carpets, four Carpet parts</strong>
+      The first pickup is almost invisible because it is furniture: rolled carpets standing on end next to the sofa, looking like stock. Tap one and a label drops under it reading <b>Carpet part</b> before it goes into the bag. There are <b>four</b> of them around the showroom floor, and the inventory keeps score for you — on the frames before the last one goes in, the slot reads <b>3/4</b>. Do not walk past these thinking they are scenery; the level will not progress its first puzzle without all four.
+      <img src="/rooms-and-exits/c2l20-carpet-part.jpg" alt="A rolled patterned carpet standing on the showroom floor in the Furniture Store with the Carpet part label under it" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0bjDzEAfVD4&t=6s" target="_blank" rel="noopener">0:06</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:18</span>
+      <strong>The till is a keypad, and it is not ready for you</strong>
+      Open the till at the reception desk and you get a proper point-of-sale keypad: 7-8-9 across the top, 4-5-6, 1-2-3, then <b>0</b>, <b>00</b> and a comma along the bottom, with a red backspace, a red clear and a green confirm down the right-hand side. Above them sits an empty yellow display. This is the single most misleading object in the room on a first run, because it looks like the thing you are supposed to solve and the display gives you nothing to solve it with. Close it and walk away. You come back with five digits at 10:52.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0bjDzEAfVD4&t=18s" target="_blank" rel="noopener">0:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:36</span>
+      <strong>Lay the carpet tiles around the coffee table</strong>
+      With all four parts in the bag, the showroom floor in the living-room display opens into a placement puzzle: square carpet tiles printed with circular and half-circular patterns, laid out around a white coffee table, with one position still empty. This is a matching job, not a code — you are rebuilding the round rug that the rest of the level keeps showing you in its wide shots. Get the last tile down and the disc completes at 0:38, and every subsequent wide shot shows the finished rug under the sofa. There is no item reward here; the reward is that the room stops nagging you.
+      <img src="/rooms-and-exits/c2l20-rug-tiles.jpg" alt="The loose carpet tiles in the Furniture Store laid around the coffee table with circular patterns, one position still empty" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0bjDzEAfVD4&t=36s" target="_blank" rel="noopener">0:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 0:48</span>
+      <strong>The picture frame is a sliding-tile puzzle</strong>
+      The framed art on the showroom wall is not art: it is a <b>3×3 slider</b> with one tile missing, and the tiles carry fragments of three different pictures. Tap a tile next to the gap and it slides in; the aim is to rebuild the image. The frame also pages: the recording cycles through a night sky with a crescent moon, a sunset with a heart-shaped glare on the water, and a clover-and-stars panel, each with a number in its corner. That numbering is the reason players assume the frame is a code source — it is a slider with three pages, and the numbers are how the game labels the pages rather than an answer you type anywhere.
+      <img src="/rooms-and-exits/c2l20-picture-slider.jpg" alt="The sliding tile picture puzzle in the Furniture Store: a framed 3x3 art panel with one tile missing" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0bjDzEAfVD4&t=48s" target="_blank" rel="noopener">0:48</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 0:57</span>
+      <strong>Tools come in pairs in this room</strong>
+      The <b>Pliers</b> are the first tool you find, lying on a low shelf in the living-room display, and they are useless on their own. The <b>Hanger</b> comes later out of the wardrobe display, and the two only become interesting in the inventory: select one, select the other, press <b>Combine</b>, and the pair turns into the <b>Modified hanger</b> at 1:56. The second pair works the same way — a <b>Screwdriver</b> at 2:42 and loose <b>Screws</b> from the dining display later on. If a panel in this showroom refuses you, check you are holding both halves of the pair rather than hunting for a code.
+      <img src="/rooms-and-exits/c2l20-modified-hanger.jpg" alt="The Furniture Store inventory with the Hanger and the Pliers selected together; combining them produces the Modified hanger" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0bjDzEAfVD4&t=57s" target="_blank" rel="noopener">0:57</a> · hanger 1:53 · modified hanger 1:56</div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 5:00</span>
+      <strong>The catalogue is a price list, not a code sheet</strong>
+      The showroom is full of printed catalogue pages: a sale poster on a stand, a price list on the counter, and product cards on the wall racks. They carry real furniture names and real figures — occasional chairs, wingbacks, recliners, sofas, a TV stand — and they are the most code-shaped objects in the room after the till. They are not a lock. Nothing in any of our four recordings types a catalogue price into anything, and there is no keypad in this level that takes a currency amount. Read them once for the pleasure of it and move on.
+      <img src="/rooms-and-exits/c2l20-catalogue-prices.jpg" alt="A furniture catalogue page in the Furniture Store showing sofas and armchairs with printed prices" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0bjDzEAfVD4&t=300s" target="_blank" rel="noopener">5:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 6:50</span>
+      <strong>The nine-button panel on the kitchen wall</strong>
+      A dark 3×3 panel, each button holding a small weather pictogram above a digit: a half-filled circle, a starburst, vertical bars, a clover, a diamond, a plain disc, and so on, with <b>5</b>, <b>3</b>, <b>2</b>, <b>8</b>, <b>9</b>, <b>4</b> under them. Press a button and it lights; press a few and the pattern of lit buttons starts to look like a sequence. Our recording spends about six seconds on it, presses, and walks away — no item, no counter, no open compartment follows. Treat it as an optional flourish unless you have a clue we never found.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0bjDzEAfVD4&t=410s" target="_blank" rel="noopener">6:50</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 8:23</span>
+      <strong>The yellow safe: three windows, one dial, 693</strong>
+      Low in the kitchen display there is a bright yellow panel with a five-spoke safe handle on the left and three digit windows on the right, tinted white, green and brown. Each window is a wheel: tap it and the digit rolls. Our recording walks them through <b>6-9-5</b>, <b>6-9-9</b>, <b>6-9-2</b> and stops on <b>6-9-3</b>, and on that frame the centre of the handle is green. The door drops and there is a pair of <b>Batteries</b> inside. That is the only thing the safe gives you, and the batteries are not optional — the oven panel in the next step does not run without them.
+      <img src="/rooms-and-exits/c2l20-safe-code-693.jpg" alt="The yellow safe panel in the Furniture Store with its five-spoke dial and three digit windows reading 6 9 3" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0bjDzEAfVD4&t=503s" target="_blank" rel="noopener">8:23</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 8:56</span>
+      <strong>The oven panel takes 12:08 and gives you a tray of bakes</strong>
+      The clock everyone calls a digital clock is the control display of the oven built into the blue kitchen cabinets: a yellow-green seven-segment readout, hour chevrons on the left, minute chevrons on the right, <b>OK</b> in the middle. Set it to <b>12:08</b> and press OK. The door swings down on a baking tray with two crescent-shaped bakes on it — croissant-shaped, darker at the tips. Our footage reads <b>12:06</b> one frame before the accepted <b>12:08</b>, which is why half the screenshots of this panel on the internet show 12:06; that frame is a miss, not the answer.
+      <img src="/rooms-and-exits/c2l20-clock-1208.jpg" alt="The oven's digital clock panel in the Furniture Store reading 12:08 with hour and minute chevrons and an OK button" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0bjDzEAfVD4&t=536s" target="_blank" rel="noopener">8:56</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 9:59</span>
+      <strong>The tangram board, and the Mirror at the end of it</strong>
+      On a stand in the dining display there is a white tablet-shaped board holding a tangram: triangles, a diamond and a parallelogram in yellow, magenta, green, orange and red, with no target picture to copy from. Down the right edge sit four controls — rotate clockwise, rotate anticlockwise, flip horizontally, flip vertically — and that is the whole interface. Place a piece, rotate it with the buttons rather than by tapping, and work from the biggest pieces inward. Clear it and the board gives up a <b>Mirror</b> at 10:33, a hand mirror with an ornate silver handle. This is the single most important item in the room and it is easy to walk past, because the board looks like a toy rather than a lock.
+      <img src="/rooms-and-exits/c2l20-tangram-board.jpg" alt="The tangram board in the Furniture Store with coloured geometric pieces and rotate and flip controls down its right edge" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0bjDzEAfVD4&t=599s" target="_blank" rel="noopener">9:59</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 10:45</span>
+      <strong>Mirror plus paper: 12850 becomes 02851</strong>
+      This is the moment the level turns. The <b>Piece of paper</b> you have been carrying reads <b>12850</b> in a blocky seven-segment font, on a sheet shaded with pencil scribbles. On its own it is a number that fits nothing. Select the paper and the <b>Mirror</b>, press <b>Combine</b>, and you get the <b>Mirrored piece of paper</b> — an examine view showing the sheet and the mirror side by side, with the reflection carrying <b>02851</b>. Read it left to right in the mirror: zero, two, eight, five, one. That five-digit string is the till code, and it is the only number in this room that is generated rather than found.
+      <img src="/rooms-and-exits/c2l20-mirror-code.jpg" alt="The Mirrored piece of paper in the Furniture Store: the sheet reads 12850 and the hand mirror reflects 02851" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0bjDzEAfVD4&t=645s" target="_blank" rel="noopener">10:45</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 10:52</span>
+      <strong>The till takes 02851</strong>
+      Back to the reception desk. The display you left empty at 0:18 now takes five digits: <b>0</b>, <b>2</b>, <b>8</b>, <b>5</b>, <b>1</b>. Our footage rolls it exactly the way you would expect a keypad to roll — "0" at 10:50, "0285" at 10:51, "02851" at 10:52 — and the green confirm is pressed on the frame after. There is a comma and a double-zero on this keypad, which is a red herring: the till is not asking for a price, it is asking for a code, and the code has no decimal point in it.
+      <img src="/rooms-and-exits/c2l20-till-code.jpg" alt="The till keypad in the Furniture Store with the five-digit code 02851 in its yellow display" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0bjDzEAfVD4&t=651s" target="_blank" rel="noopener">10:52</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 10:55</span>
+      <strong>The receipt prints, and the room wakes up</strong>
+      The register prints a receipt: six stars, the date <b>21/02</b>, a <b>15:11</b> timestamp, seven grocery lines and a barcode. It is a reward, not a clue — nothing on it is typed anywhere — but it is also the level's trigger. The frame after the receipt closes shows the showroom covered in sparkles: new interaction points on the sofa, the coffee table, the chairs and the desk. That is the point where the room stops being a furniture display and starts handing you the last two items.
+      <img src="/rooms-and-exits/c2l20-receipt.jpg" alt="The printed receipt from the till in the Furniture Store with the date 21/02, seven grocery lines and a barcode" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0bjDzEAfVD4&t=655s" target="_blank" rel="noopener">10:55</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 11:02</span>
+      <strong>The ID card is lying on the reception desk</strong>
+      Among the new hotspots is the reception desk itself, and on it a white card with <b>ID</b> printed on the face and a barcode down one side — the same card the receptionist would swipe to get in. Tap it and it goes into the bag with the label <b>ID card</b>. At that point the inventory is down to a single item, which is the game's polite way of telling you that you are finished collecting.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0bjDzEAfVD4&t=662s" target="_blank" rel="noopener">11:02</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 11:08</span>
+      <strong>The door: keyhole on the left, card reader on the right</strong>
+      The exit is the grey slab on the right-hand wall. Zoom it and you get a clean close-up of two locks side by side: a keyhole on the left leaf and a small grey reader on the right with an indicator bar above it. The bar sits <b>red</b>. Put the <b>ID card</b> in the reader and it turns <b>green</b>, and the door swings open. No key is used in the ending we captured, and no number is typed — the keyhole beside the reader stays empty through the whole sequence. If you are standing at this door looking for a four-digit code, that is the mistake this level is built around.
+      <img src="/rooms-and-exits/c2l20-exit-door.jpg" alt="The exit door in the Furniture Store with a keyhole on the left leaf and an ID card reader on the right" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0bjDzEAfVD4&t=668s" target="_blank" rel="noopener">11:08</a> · card accepted in the second recording: <a href="https://www.youtube.com/watch?v=sB3xaPYVX0o&t=849s" target="_blank" rel="noopener">14:09</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 17 · 14:18</span>
+      <strong>The results panel: +5 coins, 14:10</strong>
+      The only recording of ours that reaches the results screen shows the standard Rooms &amp; Exits panel: LEVEL COMPLETED, a coin stack reading <b>+5</b>, an Efficiency bar about seven tenths filled, and <b>Time: 14:10</b>. The piggy-bank strip underneath reads <b>0</b> with the standard "fill the piggy bank by completing levels and achievements" blurb. Nothing you collected in the showroom carries over.
+      <img src="/rooms-and-exits/c2l20-level-complete.jpg" alt="The Level Completed screen for Rooms and Exits Chapter 2 Level 20 showing a +5 coin reward, an efficiency bar and a Time field of 14:10" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=sB3xaPYVX0o&t=857s" target="_blank" rel="noopener">14:18</a></div>
+    </div>
+
+    <h2>The three numbers, and what each one is for<span class="accent">.</span></h2>
+    <p>Almost every wrong turn in this level comes from mixing these three up, because they are all somewhere in the showroom at the same time and only one of them is generated by the player.</p>
+    <ol>
+      <li><b>693 — the yellow safe.</b> Three wheels, a dial, no derivation. Nothing in the room writes it out for you, and none of our four recordings shows where the number comes from; the run simply walks the wheels until the handle goes green. It is the one code on this page you may have to brute-force, and three wheels is a small enough space that brute force is cheap. It pays out <b>Batteries</b>.</li>
+      <li><b>12:08 — the oven panel.</b> A time, not a code, entered with chevrons and confirmed with OK. It pays out an open oven and a tray of bakes. The <b>12:06</b> frame that shows up in most captures is the step before the accepted value.</li>
+      <li><b>02851 — the till.</b> The only derived number: the paper says 12850, the mirror reverses it to 02851, the till takes it. Five digits, no decimal, green confirm. It pays out the receipt and, through the receipt, the ID card.</li>
+    </ol>
+    <p>Notice what is missing from that list: there is no code for the exit. The door takes an object. That inversion — three number locks that are not the exit, and an exit that is not a number — is the level's actual design idea, and once you see it the room stops feeling unfair.</p>
+
+    <h2>The receipt, line by line<span class="accent">.</span></h2>
+    <p>The receipt is worth reading once because it is the only place in the level where the game writes anything down, and players keep trying to turn it into a code. Here is what is actually printed on it, transcribed from the zoomed frames:</p>
+    <ul>
+      <li>Six dark stars across the top, in two rows of three — the shop's logo, not a rating.</li>
+      <li>Date <b>21/02</b>, timestamp <b>15:11</b>.</li>
+      <li><b>Milk 1.59</b>, <b>Apple 1.63</b>, <b>Juice 1.23</b>, <b>Sausage 4.67</b>, <b>Bread 0.4x</b>, <b>Cheese 2.99</b>, <b>Carrot 3.45</b>.</li>
+      <li>A barcode block at the bottom.</li>
+    </ul>
+    <p>Seven lines, no total, no subtotal, no tax line. That absence is the tell: a real till receipt ends with a total, and this one does not, because it is not meant to be arithmetic. If you add the seven figures up you get a number that opens nothing in this room — we tried the arithmetic against every lock and it fits none of them. The receipt's job is to exist: printing it is the event that spawns the ID card.</p>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>Hunting for a door code.</b> The door has no keypad, no dials and no digit panes. The keyhole and the reader are the whole interface, and only the reader matters. Players burn ten minutes here because every previous chapter taught them that the exit is a number.</li>
+      <li><b>Reading the paper without the mirror.</b> <b>12850</b> on its own is a five-digit number that fits nothing — the till wants five digits but rejects 12850. The paper has to be combined with the <b>Mirror</b> first. If the till is refusing you, check whether your paper is still the plain <b>Piece of paper</b> in the inventory rather than the <b>Mirrored piece of paper</b>.</li>
+      <li><b>Setting the oven to 12:06.</b> It looks right and it is one click short. The accepted value is <b>12:08</b>, and the panel only opens when you press <b>OK</b> on that value — the display does not auto-confirm.</li>
+      <li><b>Treating the catalogue as a clue sheet.</b> Prices, product names, sale stickers, and none of it feeds a lock. The same goes for the numbers painted on the plant stands and the six stars on the receipt.</li>
+      <li><b>Missing the fourth carpet.</b> The counter reads <b>3/4</b> and the floor puzzle looks solvable with three tiles placed. It is not. Sweep the whole showroom floor, including the area behind the reception desk, before you start laying tiles.</li>
+      <li><b>Ignoring the tangram.</b> It reads as a decoration because it sits on a stand in a dining display. No mirror, no till code, no receipt, no ID card — the tangram is the head of the entire second half of the level.</li>
+    </ul>
+
+    <h2>Chapter 2 levels<span class="accent">.</span></h2>
+    <p class="grid-note">Chapter 2 runs twenty-six rooms through the mall; the list below reflects what is written up so far.</p>
+    <LevelSelector chapter={2} current={20} compact={true} label="Chapter 2 · No Honor Among Thieves" />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <div class="cta-box">
+      <p>Previous written guide: <a href="/rooms-and-exits/chapter-2-level-17/">← Chapter 2, Level 17 — Shoe Store</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits guides →</a></p>
+    </div>
+
+    <div class="warn">
+      <b>What this page could not verify:</b> four things. (1) Where <b>693</b> comes from. The safe accepts it in every recording that gets that far, and the handle goes green on exactly that value, but none of our four videos shows the clue that produces it — the numbers on the plant stands are the obvious candidate and the mapping is never demonstrated. (2) What the <b>nine-button weather panel</b> at 6:50 is for. It lights up, the pictograms are legible, and no item, counter or compartment follows in any recording; we are not going to invent a rule for it. (3) What the <b>Modified hanger</b> and the <b>Screwdriver</b> are actually used on. Both go into the bag and both are still there at the end, so the only honest statement is that they are a pair the game hands you without showing you the target. (4) The payout. The <b>+5 coins</b> and <b>14:10</b> come from a recording whose build labels this room <b>Level 24</b> — the same furniture, the same codes, different numbering — so the first-clear reward on the Level 20 build may be larger than +5. Everything else here — 693, 12:08, 12850, 02851, the receipt lines, the red-to-green reader and the item names — was read off the screen at least twice.
+    </div>
+
+
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>
