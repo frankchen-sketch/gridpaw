@@ -265,7 +265,7 @@ var SlitherEngine = (() => {
       }
       return { introduced };
     };
-    const undoCell = (applied, r, c, mask) => {
+    const undoCell = (applied, r, c, _mask) => {
       if (!applied) return;
       const eIdx = [cellTop(r, c), cellBottom(r, c), cellLeft(r, c), cellRight(r, c)];
       const introducedSet = new Set(applied.introduced);

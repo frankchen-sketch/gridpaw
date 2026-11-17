@@ -177,7 +177,6 @@ var CalcudokuEngine = (() => {
   var OPS_PAIR = ["+", "-", "\xD7", "\xF7"];
   function makeLatinSquare(N, rng) {
     const vals = new Int8Array(N * N).fill(-1);
-    const rows = Array.from({ length: N }, () => []);
     const usedCol = Array.from({ length: N }, () => Array(N).fill(false));
     const digits = Array.from({ length: N }, (_, i) => i + 1);
     const rowFill = (r) => {
