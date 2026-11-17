@@ -96,6 +96,22 @@ function urlsFromGit(ref) {
       if (!p.startsWith('/')) p = `/${p}`;
       if (!p.endsWith('/')) p = `${p}/`;
       urls.add(`${appUrl}${p}`);
+    } else if (f.startsWith('public/') && f.endsWith('.html')) {
+      // public/ 下的 HTML 被原样拷进 dist，URL 就是文件路径本身——这类页面
+      // 不在 src/pages 里，早先版本完全漏判（2026-11-17 实测：改
+      // public/pictomino/index.html 后 IndexNow 报 "no page-level changes"）。
+      // index.html 收敛成目录 URL（/pictomino/），其余保留 .html 后缀。
+      // noindex 页不进 IndexNow：提交它们只浪费抓取配额。
+      let body = '';
+      try {
+        body = readFileSync(join(repoRoot, f), 'utf8');
+      } catch {
+        continue; // 已删除的文件等
+      }
+      if (/<meta\s+name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(body)) continue;
+      let p = f.slice('public'.length);
+      if (p.endsWith('/index.html')) p = p.slice(0, -'index.html'.length);
+      urls.add(`${appUrl}${p}`);
     } else if (/^src\/(components|layouts|lib)\//.test(f)) {
       sharedChanged = true;
     }
