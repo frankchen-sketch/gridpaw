@@ -317,6 +317,30 @@ GSC 近 28 天（08-20~09-16）**267 曝光 / 5 点击**，均位 13.8。按设�
 
 ---
 
+## 2026-11-17 首页 hub 改版（分支 `feat/home-hub`，**冻令期内未上线**）
+
+**已完成 2 commits（停在分支，未 merge 未部署）**：
+- `40b7fd9` 三簇工具区 `src/components/HomeTools.astro`：Solvers 大簇（`/solver/` 索引条跨列 + Akari/Hashi/KenKen/Nonogram 4 个真实 solver）+ Walkthroughs 4 + Help 7 = **16 项，逐个核对 `src/pages` 全部命中，零 404**
+- `5c5bcbd` Meowdoku 品牌图标 `public/assets/game-icons/meowdoku.webp`（128×128、4× 超采样、5×5 棋盘 + 5 色分区 + 中心猫头 + 双爪印）+ GameHub 收录 → 全站宫格 **13→14 款**（此前 Meowdoku 只在 GameSwitcher/GameNav 以 🧠 emoji 出现，无品牌图标所以从未进宫格）
+
+**设计决策（法老定稿）**：
+- 版式 = 三簇（大簇 Solvers 2 列 + 右侧 Walkthroughs/Help 小簇）。原话「不像 v1 版那么拥挤，更有规划感」
+- **两套图标体系不得混用**：游戏入口 = 站点原生 webp 插画；solver/工具 = 自绘工具系线稿 SVG（「solver 的各个图标 icon 过于随意了，不能用这版图标形象」）
+- 无限画布方案已否决（布局被采纳，方案本身弃用）
+- 文案全英文、不写死数量（加游戏/工具 = 数组加一条）
+
+**⚠️ 冻令约束**：本改动属「改页面结构」，只能停在分支，**须等 2026-11-24 核心更新结束**才可合入上线。上线前必须从 clean 树重新 `pnpm run build`（否则 SW `CACHE_VERSION` 带 `-dirty` 后缀）。
+
+**解冻后上线顺序（用户已批）**：
+1. **合 `feat/home-hub` 两个 commit** — 纯增量（新增组件 + 新增图标 + 加一行数组），风险最低
+2. **建 `/shikaku/` 独立页 + 迁走首页棋盘** — 首屏变纯 hub 的前提；同时解决「完整 Shikaku 棋盘截不到图」的配图缺口（现在 `/shikaku/` 404、首页只有 3 格教学关、Skip 按钮无效）
+3. **补 6 个缺失 solver 页**（Shikaku / Kakuro / Nurikabe / Pictomino / Star Battle / Slitherlink）— 站上真实只有 4 个 solver，v3 预览里的 10 个有 6 个是虚构
+4. **首屏重排**（挑战卡 + 宫格前移、棋盘降级）— DOM 顺序依赖引擎 script 与元素 ID，风险最高，务必放最后
+
+**验收基线（已实测，解冻后重跑同项）**：533 页 build 通过 · 16 链接零 404 · 三簇 5/4/7 · `All solvers` 跨 2 列无落单 · 14 款图标 128×128 全加载无 broken · 无横向溢出。
+
+---
+
 ## 历史事件档案
 
 2026-09-21 ~ 2026-11-08 的全部按日期事件段（51 段，部署记录 / 事故复盘 / 验收数据）已搬至 `STATUS-ARCHIVE.md`「三、按日期事件段」。
