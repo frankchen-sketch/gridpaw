@@ -68,12 +68,12 @@
 | `takuzu` | 260 | `/binary/`（子目录） | **7.9** |
 | `murder sudoku` | KWP 未覆盖（KD 44.7） | `/murdoku/`（子目录） | **8.6** |
 | `binary puzzle` | 1,900 | `/binary/` | 22.2 |
-| `nonogram` | 数千 | `/nonogram/` | 47.7 |
+| `nonogram` | 未实测（solver 族合并桶 2,400） | `/nonogram/` | 47.7 |
 | `slitherlink` | — | `/slitherlink/` | 33.2 |
 | `kakuro` | — | `/kakuro/` | 56.5 |
 | `cat sudoku` | 6,600 | `/meowdoku/` | **0 行 0 曝光** |
 
-⇒ **位次随词量单调走弱**：几百/月进前 10，1,900/月掉到 22 位，数千/月掉到 30-60 位，6,600/月直接零。子目录排 head 词是常态（`murder sudoku` 甚至在 murdoku.com DR45 首页眼皮底下坐 8.6）。**`cat sudoku` 特殊在 SERP 顶部被 meowdoku.app（DR56）/ meowdoku.org（DR39）两个「品牌名=关键词」的 5 个月 EMD 首页霸占**，属赛道占位，不是形态劣势。
+⇒ **位次随词量单调走弱**：几百/月进前 10，1,900/月掉到 22 位，未实测量级的 4-6 词掉到 30-60 位，6,600/月直接零。子目录排 head 词是常态（`murder sudoku` 甚至在 murdoku.com DR45 首页眼皮底下坐 8.6）。**`cat sudoku` 特殊在 SERP 顶部被 meowdoku.app（DR56）/ meowdoku.org（DR39）两个「品牌名=关键词」的 5 个月 EMD 首页霸占**，属赛道占位，不是形态劣势。
 
 **这条修正的实务含义**：开 catsudoku 新域名不等于「抢到就赢」——新域名起点 DR 0，与现有整站 DR 4.5 相比并不天然更优；meowdoku.app 五个月到 DR 56 靠的是持续内容+外链。B 方案真实工期 **3-6 个月**，不是按周计的窗口。EMD 被抢是事实，但抢到 ≠ 排上。
 
