@@ -682,6 +682,28 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
   <div class="daily-status" id="dailyStatus"></div>
   <!-- P0 结构修复：H1 提到全部 H2 section 之前（sr-only，不改变游戏区视觉；SEO 区原位降级为 h2.seo-h1 保持同款样式） -->
   <h1 class="sr-only">GridPaw: Free <span class="accent">Shikaku</span>Puzzle Game Online</h1>
+
+  <section class="seo-content" id="daily-leaderboard" style="max-width:520px;margin:1.5rem auto;padding:0 1rem">
+    <!-- 方案 A：空排行榜位 → Today's Challenge 卡（有真实上榜数据时 JS 自动切回排行榜） -->
+    <div class="challenge-card" id="challengeCard">
+      <div class="challenge-grid-mini" aria-hidden="true"><i class="fill"></i><i></i><i class="fill"></i><i></i><i class="fill"></i><i></i><i></i><i></i><i class="fill"></i></div>
+      <div class="challenge-meta">
+        <div class="challenge-title">Daily Challenge · 6×6</div>
+        <div class="challenge-sub">🔥 Keep your streak alive</div>
+      </div>
+      <a class="challenge-play" href="#play" id="challengePlayNow">Play Now</a>
+    </div>
+    <div class="daily-leaderboard-panel" id="dailyLeaderboardPanel" style="display:none">
+      <h2 style="text-align:center;font-size:1.25rem;margin:.8rem 0 .3rem">🏆 Today's Leaderboard</h2>
+      <p id="leaderboard-hint" style="text-align:center;font-size:.85rem;margin:0 0 1rem;color:var(--gp-brown-600)">Sign in and solve today's Daily Challenge to appear here!</p>
+      <div id="leaderboard-list"></div>
+    </div>
+  </section>
+
+<GameHub active="/" />
+
+<HomeTools />
+
   <section class="game-card" id="play" aria-label="GridPaw game">
     <div class="game-topbar">
       <div class="level-info" style="margin:0;padding:0">
@@ -760,22 +782,6 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
   </div>
 
 
-  <section class="seo-content" id="daily-leaderboard" style="max-width:520px;margin:1.5rem auto;padding:0 1rem">
-    <!-- 方案 A：空排行榜位 → Today's Challenge 卡（有真实上榜数据时 JS 自动切回排行榜） -->
-    <div class="challenge-card" id="challengeCard">
-      <div class="challenge-grid-mini" aria-hidden="true"><i class="fill"></i><i></i><i class="fill"></i><i></i><i class="fill"></i><i></i><i></i><i></i><i class="fill"></i></div>
-      <div class="challenge-meta">
-        <div class="challenge-title">Daily Challenge · 6×6</div>
-        <div class="challenge-sub">🔥 Keep your streak alive</div>
-      </div>
-      <a class="challenge-play" href="#play" id="challengePlayNow">Play Now</a>
-    </div>
-    <div class="daily-leaderboard-panel" id="dailyLeaderboardPanel" style="display:none">
-      <h2 style="text-align:center;font-size:1.25rem;margin:.8rem 0 .3rem">🏆 Today's Leaderboard</h2>
-      <p id="leaderboard-hint" style="text-align:center;font-size:.85rem;margin:0 0 1rem;color:var(--gp-brown-600)">Sign in and solve today's Daily Challenge to appear here!</p>
-      <div id="leaderboard-list"></div>
-    </div>
-  </section>
 </div>
 
 {bannerEntry && (
@@ -799,10 +805,6 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     });
   })();
 </script>
-
-<GameHub active="/" />
-
-<HomeTools />
 
 <DetectiveWall game="shikaku" limit={4} />
 
