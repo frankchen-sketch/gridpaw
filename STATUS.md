@@ -344,6 +344,64 @@ GSC 近 28 天（08-20~09-16）**267 曝光 / 5 点击**，均位 13.8。按设�
 
 ---
 
+## 2026-11-17 首屏重排上线（`0325ca8`）+ `/shikaku/` 计划取消
+
+法老审完 hub 版拍板「不做折中，直接部署到生产」，当日上线。
+
+### 做了什么
+
+**首屏从「棋盘占满」改成「hub 视图」**——纯 DOM 块移动，零脚本改动：
+
+```
+改前：header → 账号 → 棋盘(#play, 占满首屏) → 挑战卡 → 宫格 → 工具区
+改后：header → 账号 → h1 → 挑战卡 → 宫格(14款) → 工具区(16项) → 棋盘(#play) → 胜利层
+```
+
+主脚本全部走 `getElementById`/`querySelector` 取元素，与位置无关；`#victory`/`#boardPopup` 是 fixed 覆盖层留原位。diff 仅 +22/-20。棋盘没消失，降到 `#play` 锚点下方，挑战卡 `Play Now` 一点就滚过去开玩。
+
+### 线上实测（`https://gridpaw.com/` 直读）
+
+| 项 | 值 |
+|---|---|
+| DOM 顺序（body 内偏移） | 挑战卡 9259 → 宫格 10547 → 工具区 21989 → 棋盘 32804 → 胜利层 36506 ✅ |
+| 宫格游戏 | **14 个 img**（含 Meowdoku） |
+| 工具区 | 21 个 `gp-tool` 卡 / 16 条真实链接 |
+| 脚本依赖 DOM | 20/20 id 全部存在 |
+| 关键 URL | `/` `/solver/` `/akari/solver/` `/meowdoku/` `/how-to-play-shikaku/` `/tips/` `meowdoku.webp` 全 200 |
+| 引擎 | 棋盘渲染 100 格、计时器走动、`0/100 cells · 21 cats left` |
+| SW 指纹 | `0325ca8`（**clean，无 -dirty**） |
+
+### 为什么取消 `/shikaku/` 建页
+
+原计划第②步要建 `/shikaku/` 并迁走首页棋盘，实测发现架构冲突：
+
+- `src/pages/de/shikaku.astro` 的 hreflang 已声明 `en → https://gridpaw.com/`、`x-default → /`——**站点早已定义英文版 Shikaku 就是首页**
+- 复制首页建 `/shikaku/` = 99% 重复内容 + 打破 hreflang 闭合 + 自我蚕食
+- 内容词已全覆盖：`/how-to-play-shikaku/`（玩法）`/help/shikaku/`（帮助）`/tips/`（技巧）三页在打
+- 首页 title 就是 `Shikaku Online: Play Free Cat Logic Puzzles`，`shikaku online` 在 GSC 有 188 曝光、均位 7.1 挂在首页
+
+复制版已移入 `.trash/2026-11-17_shikaku-index-copy.astro`，未提交。
+
+### 顺手修掉的真 bug：stamp-sw 脏判定
+
+`scripts/stamp-sw.mjs` 原来用 `git status --porcelain`（**含 untracked**）判 dirty → 并行采集任务往 `research/loop-answers/` 写一个 JSON，就把线上 `CACHE_VERSION` 打成 `<sha>-dirty`，指纹不可复现。诱因实例：线上曾出现 `0578983-dirty`。
+
+**已改为**：已跟踪文件有改动，或 `src/`、`public/` 下有 untracked（会进 dist），才算脏。口径与 `deploy.sh` 前置检查一致。修复后重建得 `0325ca8`。
+
+### 待办（原计划剩余）
+
+- ~~②建 `/shikaku/` + 迁棋盘~~ **已取消**（架构冲突，见上）
+- ~~④首屏重排~~ **已完成上线**
+- ③补 6 个缺失 solver 页（Shikaku / Kakuro / Nurikabe / Pictomino / Star Battle / Slitherlink）——站上真实只有 4 个 solver
+
+### 遗留观察
+
+整站仍在 GSC 降权期，首页首屏从棋盘改 hub 会影响 `shikaku online`（均位 7.1）的停留/跳出信号，需观察 3-7 天。若数据恶化可单 commit 回滚：`git revert 0578983`（重排本身）。
+
+**并行会话提醒**：2026-11-17 14:01 另一会话（loop-answers 采集线）曾直接 `wrangler pages deploy` 上线 535 files，把当时的 `-dirty` 构建带上了生产。多会话并行时，部署前必查线上指纹与本地 HEAD 是否对得上。
+
+---
+
 ## 历史事件档案
 
 2026-09-21 ~ 2026-11-08 的全部按日期事件段（51 段，部署记录 / 事故复盘 / 验收数据）已搬至 `STATUS-ARCHIVE.md`「三、按日期事件段」。
