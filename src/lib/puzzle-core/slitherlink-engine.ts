@@ -91,8 +91,6 @@ export function makeLoop(rows: number, cols: number, rng: () => number, minLen: 
         }
       }
     }
-    // re-flood: everything is one comp now IF bridges worked; simple check
-    s = s; // (verified below via boundary check; scatter retry handles failures)
   }
 
   // fill holes: any zero-region not touching the outer border becomes 1

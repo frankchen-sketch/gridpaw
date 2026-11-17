@@ -41,7 +41,6 @@ function makeLatinSquare(N: number, rng: () => number): Int8Array {
     }
     for (const v of digits) {
       if (usedCol[v - 1][r]) continue;
-      vals[r * N + r] === -1; // noop; index math below
     }
     // backtracking over columns
     const usedRow = new Set<number>();

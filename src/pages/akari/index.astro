@@ -1637,7 +1637,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     document.getElementById('undo-btn').addEventListener('click', undo);
     document.getElementById('redo-btn').addEventListener('click', redo);
     document.addEventListener('keydown', e => {
-      if ((e.ctrlKey||e.metaKey) && e.key==='z') { e.preventDefault(); e.shiftKey ? redo() : undo(); }
+      if ((e.ctrlKey||e.metaKey) && e.key==='z') { e.preventDefault(); if (e.shiftKey) redo(); else undo(); }
       if ((e.ctrlKey||e.metaKey) && e.key==='y') { e.preventDefault(); redo(); }
     });
     document.getElementById('win-next').addEventListener('click', () => { track('level_up', { level: level, difficulty: getDifficulty(level).label }); if ([1,3,5,7,9,10,12,13,15,20,25,30].indexOf(level) !== -1) { track('level_complete_' + level, { difficulty: getDifficulty(level).label }); } winOverlay.classList.remove('show'); if (window.GPBadges) GPBadges.next(); newPuzzle(); });

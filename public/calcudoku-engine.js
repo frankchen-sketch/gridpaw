@@ -187,7 +187,6 @@ var CalcudokuEngine = (() => {
       }
       for (const v of digits) {
         if (usedCol[v - 1][r]) continue;
-        vals[r * N + r] === -1;
       }
       const usedRow = /* @__PURE__ */ new Set();
       const fillCol = (c) => {

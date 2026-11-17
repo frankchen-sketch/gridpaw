@@ -96,7 +96,6 @@ var SlitherEngine = (() => {
           }
         }
       }
-      s = s;
     }
     const outside = new Uint8Array(N);
     const stack = [];
