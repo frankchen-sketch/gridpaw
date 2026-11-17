@@ -1,0 +1,382 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 2 Level 19 Walkthrough: Bookstore";
+const description = "Rooms & Exits Chapter 2 Level 19 walkthrough for the Bookstore: the poster counts Pink 1, Red 6, Purple 4, Yellow 3 that open the back-room door, the four plates E=5 X=8 I=3 T=1 that spell 5831 on the EXIT keypad, and the +50 coin finish.";
+
+const faq = [
+  {
+    q: "What is the exit code in Rooms & Exits Chapter 2 Level 19?",
+    a: "<b>5831</b>. The Bookstore does not hide a number anywhere: it hands you four plates that each carry a letter and its value — <b>E=5</b>, <b>X=8</b>, <b>I=3</b>, <b>T=1</b> — and the four letters spell <b>EXIT</b>. Read them in that order and type 5-8-3-1 on the keypad beside the blue EXIT sign. Both of our recordings end on the same four digits.",
+  },
+  {
+    q: "What is the colour keypad code in the Bookstore?",
+    a: "The door to the back room takes a colour and a number for each of its four slots, and the four pairs settle on <b>pink 01, yellow 03, red 06, purple 04</b> — the display reads <b>01 · 03 · 06 · 04</b> on the frame before the door gives way, in both of our runs. The numbers are the four counts printed on the note beside the motivational poster: <b>Pink 1, Red 6, Purple 4, Yellow 3</b>.",
+  },
+  {
+    q: "How does the colour keypad actually work?",
+    a: "It is a two-part entry, not a four-digit code. The panel has a normal 1-9 keypad on the left and four round colour buttons on the right — pink, yellow, red and purple, top to bottom — and the game prints the instruction <b>\"Click into color Button firstly\"</b> across the screen when you open it. Press a colour, then type the two-digit number that belongs to that colour. The display at the top has four segments, each with its own colour dot, which is how you check your work before you commit.",
+  },
+  {
+    q: "Where do the four colour counts come from?",
+    a: "From the framed poster above the desk: a mint-green print reading <b>EVERY great DREAM BEGINS with a DREAMER</b>, with two strings of triangular bunting flags across the top in pink, red, purple and yellow. The note beside it lists the four counts — Pink: 1, Red: 6, Purple: 4, Yellow: 3 — and those counts are what the back-room lock wants. Our independent recount of the tiny flags disagreed with the note by one on the purple string, so the figures printed here are the ones the lock accepted, not our own count.",
+  },
+  {
+    q: "Where is the E=5 note?",
+    a: "It starts life as a <b>Folded paper</b> in your inventory. Open the bag, select it and use <b>Examine</b>: the fold opens into a torn sheet with <b>E=5</b> written on it in a serif hand, and the item renames itself <b>Piece of paper</b>. That is the first of the four letter plates and the one players most often walk past, because a folded scrap in the bag reads like junk until you examine it.",
+  },
+  {
+    q: "Where do X=8, I=3 and T=1 come from?",
+    a: "<b>X=8</b> is on a parchment in the desk drawer on the shop floor — the drawer also holds a green book, and the parchment is marked with a large X and an arrow. <b>I=3</b> is a <b>Metal plate</b> found in the back room. <b>T=1</b> is a second <b>Piece of paper</b>, and it comes out of the padlocked chest that stands on the red rug, opened with the <b>Key</b>. Together with E=5 they spell EXIT in numbers.",
+  },
+  {
+    q: "What does the key open?",
+    a: "The small riveted wooden chest with the heart-shaped padlock, standing on the red rug in the back room in front of the sofa, with a round green stool just to its right. The key does not open the exit door — the exit is a keypad, not a lock — and it does not open the wooden door to the back room either, which is the colour keypad. If you are standing at the EXIT door holding a key, you are holding the wrong solution.",
+  },
+  {
+    q: "How do I get the key in the Bookstore?",
+    a: "Cut open the <b>Teddy bear</b>. With the <b>Knife</b> in the bag, use the knife on the bear: the item's label changes to <b>Key part</b>, the knife is consumed, and the part turns into the <b>Key</b>. It is the nastiest step in the level because a plush toy does not read as a container, and the game gives you no prompt that the knife is meant for it.",
+  },
+  {
+    q: "What do I get for finishing Chapter 2 Level 19?",
+    a: "The results panel reads <b>LEVEL COMPLETED!</b> with <b>+50 coins</b>, an Efficiency bar of segmented blocks, and <b>+1</b> playing card — the Ace of Hearts in the run we captured. No time field appears on this panel in the build we recorded, so the only clock is the in-game timer in the top corner, which reads <b>7:16</b> as the last keypad is being typed in our first recording.",
+  },
+  {
+    q: "How long does the Bookstore take?",
+    a: "Our first recording finishes in <b>4:58</b> of footage with the in-game clock at about <b>7:16</b> when the exit keypad is filled; the second run, played by someone who already knew the level, finishes in <b>3:33</b>. Nothing here is timed and there is no fail state. The two things that cost the most time are not knowing that the colour buttons come before the digits, and not realising that the four plates spell a word.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-2-level-19"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 2 Level 19"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 2</a> &gt; Level 19</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 2 Level 19 Walkthrough: Bookstore</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from two independent recordings of the current build — a 4:58 playthrough extracted at one frame per second and read at full resolution, plus a 3:33 second run used as a cross-check. Both locks were read twice and both agree: the colour keypad settles on <b>01 · 03 · 06 · 04</b> and the EXIT keypad on <b>5831</b> in each run, and the four letter plates read E=5, X=8, I=3, T=1 in both. Where the capture cannot settle a detail — the tile layout of the cover-matching board, the exact pickup that produces the X=8 note, and the meaning of the A6467 and 430 wall pieces — this page says so under "What this page could not verify" instead of guessing. On-screen text was read with optical character recognition on the raw frames and then checked by eye, and every timestamp points at the second in the embedded video.</div>
+
+    <LevelSelector chapter={2} current={19} variant="jump" label="Chapter 2 · No Honor Among Thieves" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Two locks, two codes. The door to the back room takes the four poster counts as colour-plus-number pairs — <b>pink 1, yellow 3, red 6, purple 4</b>, display <b>01 · 03 · 06 · 04</b>. The exit door takes <b>5831</b>, which is the word <b>EXIT</b> spelled with the four plates E=5, X=8, I=3, T=1. Finish worth <b>+50 coins</b>.</p>
+      <ol>
+        <li>Read the framed poster above the desk: the note beside it lists <b>Pink: 1, Red: 6, Purple: 4, Yellow: 3</b>.</li>
+        <li>Clear the <b>book-cover matching board</b> and pick up the <b>green Book</b> whose cover carries a key symbol.</li>
+        <li>Take the <b>Folded paper</b> from the bag, <b>Examine</b> it → <b>E=5</b>.</li>
+        <li>On the wooden door's keypad press <b>a colour, then its count</b>: pink 01, yellow 03, red 06, purple 04 → the door opens.</li>
+        <li>In the back room: the desk drawer gives <b>X=8</b>, the <b>Metal plate</b> gives <b>I=3</b>.</li>
+        <li>Use the <b>Knife</b> on the <b>Teddy bear</b> → <b>Key part</b> → <b>Key</b>; the Key opens the chest on the red rug → <b>T=1</b>.</li>
+        <li>Type <b>5831</b> into the keypad beside the blue <b>EXIT</b> sign → results panel, <b>+50 coins</b>.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/fM0EQM6E7ZY" title="Rooms &amp; Exits Chapter 2 Level 19 Bookstore walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/c2l19-hero-bookstore.jpg" alt="Rooms and Exits Chapter 2 Level 19 Bookstore: a reddish-brown bookcase stacked with books in the centre, a striped rug and a ladder against the back shelves, and a pale counter with an antique till and a red SALE bag on the right" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>The Bookstore is the nineteenth room of Chapter 2, and it is the first level in this chapter that gives you two rooms to work in rather than one. The shop floor is a proper little bookshop: a big reddish-brown bookcase packed with hardbacks stands in the middle of the floor with more stacks piled around its base, a green-and-red striped runner lies over the dark wooden boards, a rolling ladder leans against the built-in shelves that run across the back wall, and a pale counter on the right carries an antique crank till, a stack of notebooks and a red <b>SALE</b> bag leaning against its front. A desk with a candle and a hutch of framed pictures sits in the back corner, a red <b>FOR SALE</b> placard is clipped to the shelf beside the EXIT door, and the wall above the desk carries the green motivational poster that half this level hangs on.</p>
+    <p>The second room is behind the wooden door next to the tall narrow cabinet, and it is a different kind of space entirely: a living room with an olive-green sofa, a red rug, a coffee table, a bookcase with glass doors, a window with mustard curtains and a wall clock. It is not an exit and it is not a bonus area — it is where three of the four letter plates live, which means the level's real answer is split across both rooms. Players who never open that door will finish the shop floor and stand at the EXIT keypad with one digit in their head.</p>
+    <p>Two structural facts explain almost every way this level goes wrong. First, the exit door is in the shop, not in the back room, and it is a keypad rather than a lock — so the chest, the key and the teddy bear are not the way out, they are the way to the last digit. Second, the door between the two rooms is a colour lock, not a key lock, and it wants a colour <em>and</em> a number for each of its four slots. Both of those things are unusual for this game, and both of them are why the Bookstore gets searched for a key that was never needed and typed at with digits that were never enough.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Every object in the Bookstore that takes an input or gives you something, in the order you are likely to meet it.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Motivational poster</td><td>Wall above the desk, back corner of the shop</td><td>Mint-green print, <b>EVERY great DREAM BEGINS with a DREAMER</b>, with bunting flags in four colours. The note beside it gives the counts <b>1 / 6 / 4 / 3</b>.</td></tr>
+        <tr><td>Book-cover board</td><td>Shop floor, centre</td><td>The level's matching puzzle, titled <b>Matching The Same Symbols</b>: ornate covers with embossed symbols.</td></tr>
+        <tr><td>Green Book</td><td>Bookcase, left wall</td><td>An inventory item stamped with a <b>key symbol</b> on the cover. A pointer, not a tool.</td></tr>
+        <tr><td>Desk drawer</td><td>Desk in the back corner</td><td>Holds a green book and a parchment marked with a large <b>X</b> — the <b>X=8</b> note.</td></tr>
+        <tr><td>Wooden door keypad</td><td>Wooden door, left of the desk</td><td>Four colour buttons plus a 1-9 pad. Opens the back room. Display <b>01 · 03 · 06 · 04</b>.</td></tr>
+        <tr><td>Framed wall</td><td>Back room, above the sofa</td><td>Posters <b>Perfume</b> and <b>WILDE</b>, a California plate <b>A6467</b>, a plaque <b>430</b> and a single letter <b>I</b>. Decor, as far as either recording shows.</td></tr>
+        <tr><td>Teddy bear</td><td>Back room</td><td>Cut it with the <b>Knife</b> and the item relabels itself <b>Key part</b>.</td></tr>
+        <tr><td>Padlocked chest</td><td>Back room, on the red rug in front of the sofa</td><td>Heart-shaped padlock. The <b>Key</b> opens it; the <b>T=1</b> note is inside.</td></tr>
+        <tr><td>EXIT door keypad</td><td>Shop, right wall, under the blue EXIT sign</td><td>Plain four-digit pad. <b>5831</b>.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:04</span>
+      <strong>Read the shop floor before you touch anything</strong>
+      The opening sweep is the only clean wide shot you get; after this the camera starts zooming and the UI panels start covering things. What matters on the first pass: the poster above the desk in the back corner, the wooden door and its keypad immediately left of that desk, the tall narrow cabinet beside the door that looks like a second door and is not, the book-cover board in the middle of the floor, and the EXIT door on the right wall with the blue sign over it. Everything else — the till, the SALE bag, the stacks on the floor, the cat — is scenery. Note where the two doors are, because that is the whole geography of the level: one door goes to the back room, one door leaves.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fM0EQM6E7ZY&t=4s" target="_blank" rel="noopener">0:04</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:32</span>
+      <strong>The green Book with the key on its cover</strong>
+      By the half-minute mark the bag already holds one item, and it is a small green volume labelled simply <b>Book</b>. Examine it and the cover carries an embossed <b>key symbol</b> — no title, no number, just a key. It is the level's first piece of signposting and it is deliberately misleading: the picture says "find a key", and there is a key in this level, but the key opens a chest in the back room and has nothing to do with the exit. If you spend the next ten minutes hunting a keyed door on the shop floor, this book is why.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fM0EQM6E7ZY&t=32s" target="_blank" rel="noopener">0:32</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:52</span>
+      <strong>The poster, the bunting and the four colour counts</strong>
+      Tap the framed print on the wall above the desk and the camera pushes in on a mint-green motivational poster: <b>EVERY great DREAM BEGINS with a DREAMER</b>, with an orange crescent, a dark hand reaching up, and two strings of triangular bunting flags across the top in pink, red, purple and yellow. The flags are the puzzle. Beside the poster, four lines are printed in white: <b>Pink: 1</b>, <b>Red: 6</b>, <b>Purple: 4</b>, <b>Yellow: 3</b>. Those four numbers belong to the keypad on the door across the room, and the order they are listed in is <em>not</em> the order the keypad's buttons sit in — which is the first trap of the level.
+      <img src="/rooms-and-exits/c2l19-poster-colour-counts.jpg" alt="The motivational poster in the Bookstore with the note beside it reading Pink 1, Red 6, Purple 4, Yellow 3" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fM0EQM6E7ZY&t=52s" target="_blank" rel="noopener">0:52</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 1:00</span>
+      <strong>"Matching The Same Symbols" — the book-cover board</strong>
+      The board on the shop floor is the level's only conventional puzzle and the game labels it for you: <b>Matching The Same Symbols</b>. The white caption sits on the left of the screen and the board is the pile of ornate covers on the right: each one is embossed with a single emblem — a puzzle piece, a crescent, a treble clef, a butterfly, a triskelion, a starburst, an ornate diamond — and you pair covers that carry the same emblem. The covers are stacked and overlapping rather than laid out in a clean grid, so part of the puzzle is simply seeing what is underneath. Work it by symbol, not by cover colour: the covers repeat their colours across different symbols, so a red cover with a butterfly and a red cover with a puzzle piece are not a pair, and treating colour as the match is what turns a two-minute board into a ten-minute one.
+      <img src="/rooms-and-exits/c2l19-book-cover-puzzle.jpg" alt="The book-cover matching board in the Bookstore with the white caption Matching The Same Symbols on the left, and ornate covers carrying a treble clef, a butterfly, a triskelion and a starburst" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fM0EQM6E7ZY&t=60s" target="_blank" rel="noopener">1:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:39</span>
+      <strong>The Folded paper opens into E=5</strong>
+      Open the bag and there is a <b>Folded paper</b> in it. Select it, press <b>Examine</b>, and the fold opens into a torn sheet with <b>E=5</b> written on it in a serif hand; the item renames itself <b>Piece of paper</b> and stays in the bag as a permanent clue. This is the first of four letter plates and the most important thing on the page to understand: the Bookstore is not collecting numbers, it is collecting letters. E, X, I, T, in that order, are the exit. A player who reads E=5 as "the letter E is worth five points" and moves on has the right idea and the wrong scale.
+      <img src="/rooms-and-exits/c2l19-note-e5.jpg" alt="The Piece of paper item examined in the Bookstore inventory, showing E=5 written on a torn sheet" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fM0EQM6E7ZY&t=99s" target="_blank" rel="noopener">1:39</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:57</span>
+      <strong>The colour keypad: a colour first, then its number</strong>
+      The wooden door left of the desk has a panel that looks like a normal keypad until you look at the right-hand side: four round buttons in <b>pink, yellow, red and purple</b>, top to bottom, next to the usual 1-9 grid with an X and an enter key. The display across the top is split into <b>four segments, each with its own colour dot</b>. When the panel opens, the game prints the instruction across the screen in plain English: <b>"Click into color Button firstly"</b> — and that sentence is the entire difficulty of the lock. You are not typing a four-digit code. You press a colour, and then you type that colour's two-digit count, once per colour, four times.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fM0EQM6E7ZY&t=117s" target="_blank" rel="noopener">1:57</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 2:31</span>
+      <strong>01 · 03 · 06 · 04 and through the door</strong>
+      Fill the four segments: <b>pink 01</b>, <b>yellow 03</b>, <b>red 06</b>, <b>purple 04</b>. The display reads <b>01 · 03 · 06 · 04</b> with a colour dot sitting over each of the four pairs, and that is the state to check against the poster note before you commit: one pink, three yellow, six red, four purple, in the order the buttons sit rather than the order the note lists them. Press enter and the door swings in on a dark back room. If the lock refuses, the usual cause is a number typed without its colour — the digits alone go nowhere, and the display will not move at all, which reads like a broken panel rather than a wrong entry.
+      <img src="/rooms-and-exits/c2l19-colour-keypad.jpg" alt="The colour keypad in the Bookstore with its display filled to 01, 03, 06 and 04 beside pink, yellow, red and purple buttons" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fM0EQM6E7ZY&t=151s" target="_blank" rel="noopener">2:31</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 2:33</span>
+      <strong>Through the door: the room that looks like the exit and is not</strong>
+      The doorway between the two rooms is a dark panelled door in a moulded frame, and the game frames the moment with a white arrow so you know it is a transition rather than a wall. Beyond it the shop is still visible — the FOR SALE shelf, the desk with its lit candle, the green poster — which is a useful reminder of the geography: you are not leaving the shop, you are stepping into the room behind it. The back room has no door out, no second keypad, no hatch, no window you can open. What it does have is the level's remaining three clue sources and its one locked container, laid out in a way that pulls you straight past them: a sofa and a coffee table that read as furniture, a glass-fronted bookcase that reads as bookshelf dressing, and a small riveted chest that reads as a prop. Every one of those is either a clue or a lock.
+      <img src="/rooms-and-exits/c2l19-door-ajar-back-room.jpg" alt="The panelled doorway between the Bookstore's two rooms standing open, with the shop's FOR SALE shelf, candle-lit desk and the motivational poster visible beyond it" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fM0EQM6E7ZY&t=153s" target="_blank" rel="noopener">2:33</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 2:37</span>
+      <strong>The back room, object by object</strong>
+      Pan the room once and mark what is actually there. The olive-green two-seater sofa sits against the left wall under the framed pictures, with cream, orange and red cushions and a red throw over one arm. The tall glass-fronted bookcase stands in the corner where the two walls meet, with a floor lamp beside it. The back wall is dominated by a big multi-paned window with mustard curtains, potted plants on the sill and a wooden pendulum clock to its right. A dark wicker chair sits to the left of the window, and in the middle of the room a dark carved coffee table stands on a red rug with a vase of white flowers, a stack of red books and loose papers on top; a round green upholstered stool and a square cube ottoman are on the rug beside it. Cardboard boxes and stacks of books are piled along the right-hand floor. Nothing here is scenery: our runs take a Bottle, a Cork and the Metal plate that carries I=3 out of this room, and the chest that holds the last plate is here too.
+      <img src="/rooms-and-exits/c2l19-back-room.jpg" alt="The back room in Rooms and Exits Chapter 2 Level 19 Bookstore: olive-green sofa, glass-fronted bookcase, wicker chair, coffee table on a red rug, and a window with mustard curtains and potted plants" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fM0EQM6E7ZY&t=157s" target="_blank" rel="noopener">2:37</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 3:00</span>
+      <strong>The framed wall is a red herring</strong>
+      Zoom on the wall above the sofa and it is a wall of false leads, eight pieces in two rows: a blank framed sheet, the California plate reading <b>A6467</b>, a <b>Perfume — The Story of a Murderer</b> poster, a yellow <b>WILDE</b> poster with a big black arrow, a black-and-white group photograph, a framed piece of wrought-iron scrollwork, a wooden plaque reading <b>430</b>, and a freestanding letter <b>I</b> mounted on the wall at the end of the row. It looks exactly like a code wall — a plate number, a street number, a lone letter — and both of our recordings walk up to it, examine it, and leave without entering any of it anywhere. Nothing in the level takes a seven-character plate or a three-digit number. Treat the wall as texture, and spend the time on the desk drawer instead.
+      <img src="/rooms-and-exits/c2l19-wall-book-covers.jpg" alt="The framed wall above the sofa in the back room: a blank frame, the California plate A6467, Perfume and WILDE posters, a black-and-white photograph, framed scrollwork, a plaque reading 430 and a freestanding letter I" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fM0EQM6E7ZY&t=180s" target="_blank" rel="noopener">3:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 3:07</span>
+      <strong>The desk drawer and the parchment marked X</strong>
+      Back on the shop floor, the desk's drawer pulls open and there are two things inside: a <b>green book</b> standing on end and a <b>rolled parchment</b> with a quill lying across it, marked with a large <b>X</b> and a hand-drawn arrow. A few seconds later the bag shows a new note reading <b>X=8</b>. That is the second plate, and it is the one the level is quietest about — no popup, no caption, just a new slot in the inventory. Our capture never gets a legible pickup label on the parchment, so the drawer-to-X=8 link is the reading of the sequence rather than a promise printed by the game; see the note at the bottom of the page.
+      <img src="/rooms-and-exits/c2l19-desk-drawer.jpg" alt="The open desk drawer in the Bookstore holding a green book and a rolled parchment marked with a large X and a quill" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fM0EQM6E7ZY&t=187s" target="_blank" rel="noopener">3:07</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 3:28</span>
+      <strong>The bottle, the cork and the metal plate that reads I=3</strong>
+      The back room's sideboard and bookcase give up three small items in a row: a <b>Bottle</b>, a <b>Cork</b>, and a <b>Metal plate</b>. The plate is the third letter: examine it and it is engraved <b>I=3</b>, and it sits in the bag as a metal tag rather than a paper note, which is why it is easy to miss when you are scanning the inventory for paper. The bottle and the cork look like a container pair — a cork, a bottle, an obvious fit — but neither of our recordings gives a clean read of what the pair finally produces, so this page stops at the two items rather than inventing the middle of the chain. It is a bonus branch, not a gate: the three plates you need are on the drawer, the plate itself and the chest, and none of them goes through the bottle.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fM0EQM6E7ZY&t=208s" target="_blank" rel="noopener">3:28</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 3:53</span>
+      <strong>The Knife, and the one thing in the room it is for</strong>
+      By 3:53 the bag holds a <b>Knife</b>. It is a small clasp knife with a bone handle, it is not used on the chest, the bottle, the bookcase or the sofa, and the game never prompts you towards its target. Its target is soft, sewn shut and waiting somewhere in the back room, and the game never zooms you onto it. If you have been carrying it for two minutes and everything else in the room has refused it, that is the level telling you the answer without telling you.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fM0EQM6E7ZY&t=233s" target="_blank" rel="noopener">3:53</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 4:19</span>
+      <strong>Cut the Teddy bear → Key part → Key</strong>
+      Select the <b>Teddy bear</b>, use the <b>Knife</b> on it, and the inventory does something this game rarely does: the item's own label changes. The bear stays selected, but it is now called <b>Key part</b>, the knife disappears from the bag, and a moment later the part resolves into a <b>Key</b>. Read that sequence carefully, because it is the level's craft step and it is the only one: bear plus knife equals key part, and key part equals key. There is no separate combine screen to hunt for and no third ingredient. The whole transformation happens in the item slot.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fM0EQM6E7ZY&t=259s" target="_blank" rel="noopener">4:19</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 4:25</span>
+      <strong>The Key and the heart-shaped padlock</strong>
+      The chest is the large riveted wooden box with the dark metal handle, standing on the red rug in front of the sofa with a round green stool just to its right, and it is shut with a dark grey <b>heart-shaped padlock</b> on the front clasp. Select the <b>Key</b>, press <b>Use</b>, and the lid comes up. This is the one place in the level where the key belongs — not the wooden door, not the EXIT door, not the bookcase. If the game refuses the key somewhere, you are at the wrong lock.
+      <img src="/rooms-and-exits/c2l19-key.jpg" alt="The Bookstore inventory with the Key selected, and the E=5, I=3 and X=8 clue plates in the top row" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fM0EQM6E7ZY&t=265s" target="_blank" rel="noopener">4:25</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 4:39</span>
+      <strong>T=1: the fourth plate, and the word completes</strong>
+      Inside the chest is a second <b>Piece of paper</b>, and this one reads <b>T=1</b>. That is the last of the four. Line them up in the order they arrive — <b>E=5</b>, <b>X=8</b>, <b>I=3</b>, <b>T=1</b> — and the plates are not a set of numbers at all, they are a word with a value under each letter. E, X, I, T. The exit door is on the other side of the shop, and it is asking you to spell it.
+      <img src="/rooms-and-exits/c2l19-clue-notes-inventory.jpg" alt="The Bookstore inventory holding the E=5, I=3 and X=8 clue plates along with the Teddy bear and the Knife" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fM0EQM6E7ZY&t=279s" target="_blank" rel="noopener">4:39</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 17 · 4:46</span>
+      <strong>5831 on the EXIT door</strong>
+      Cross the shop to the right-hand wall. The door there has a blue <b>EXIT</b> sign above it, a red <b>FOR SALE</b> placard on the bookcase beside it, and a plain keypad at hand height with a four-digit display and the digits 1-9, a 0, an X and an enter key — no colour buttons, no letter slots, nothing to press but numbers. Type <b>5831</b> and press enter. The display holds <b>5831</b>, the door unlocks, and the level ends on the results panel.
+      <img src="/rooms-and-exits/c2l19-exit-keypad.jpg" alt="The EXIT door keypad in the Bookstore with 5831 on its display, blue EXIT sign above and a FOR SALE placard to the left" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fM0EQM6E7ZY&t=286s" target="_blank" rel="noopener">4:46</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 18 · 4:55</span>
+      <strong>+50 coins and a card</strong>
+      The panel reads <b>LEVEL COMPLETED!</b> over a green tick, then <b>Reward!</b> with <b>+50</b> beside a coin stack, an Efficiency bar of about ten segments with roughly half of them filled, and a <b>+1</b> beside a playing card — the <b>Ace of Hearts</b> in the run we captured. There is no time field on this panel in the build we recorded; the only clock is the in-game timer in the top corner, which reads <b>7:16</b> as the exit keypad is being typed in our first recording. Tap through and the level closes back to the chapter map.
+      <img src="/rooms-and-exits/c2l19-level-complete.jpg" alt="The Rooms and Exits level complete panel for the Bookstore showing LEVEL COMPLETED, +50 coins, an Efficiency bar and a +1 Ace of Hearts card" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=fM0EQM6E7ZY&t=295s" target="_blank" rel="noopener">4:55</a></div>
+    </div>
+
+    <h2>The mechanism, taken apart<span class="accent">.</span></h2>
+
+    <h3>Two locks that teach two different habits</h3>
+    <p>Most rooms in Rooms &amp; Exits hand you one code with one input. The Bookstore hands you two locks that look alike — both are dark panels with a display, both sit on doors — and then asks you to use your hands two completely different ways. The first lock is a <b>paired entry</b>: a colour, then a count, four times, in the order the colour buttons are stacked. The second is a <b>straight substitution</b>: a letter-value table that turns a word into four digits, typed in one run. If you carry the habit from the first lock into the second, you will look for something to colour-code on the EXIT door and find nothing; if you carry the habit from the second into the first, you will try to type 1-6-4-3 as a plain number and the display will sit there and do nothing.</p>
+
+    <h3>Why the exit spells a word instead of a number</h3>
+    <p>The four plates are not a set of digits with letters attached — they are a set of letters with digits attached, and the letters are the message. Look at what the level actually gives you: <b>E=5</b>, <b>X=8</b>, <b>I=3</b>, <b>T=1</b>. Four letters that only make sense in one order, and that order is printed above the door you are trying to open. The digits then fall out mechanically: 5, 8, 3, 1. This is why every plate matters and no plate is optional — three of them give you 5-8-3 and a hole where the last digit goes, and the hole is exactly where the level puts the chest, the key, the bear and the knife. The chest is not a reward, it is the fourth digit.</p>
+    <p>Notice also how the values are chosen. E=5, X=8, I=3, T=1 gives 5831, a code with no repeats and no zero, which is a small mercy: every digit is a different keypress on a pad where 0 sits at the bottom, and no two plates can be confused for each other by a player reading a photograph of their inventory at an angle. Compare that with the colour lock, where two of the four numbers repeat a colour family and the display's dots are the only thing separating a pink 1 from a red 6 at a glance.</p>
+
+    <h3>The poster is a counting puzzle wearing a quote</h3>
+    <p>The mint-green print is doing double duty. As decor it is a motivational poster — <b>EVERY great DREAM BEGINS with a DREAMER</b>, a crescent moon, a silhouetted hand reaching up. As a puzzle it is a tally sheet: two strings of triangular bunting run across the top of the print in pink, red, purple and yellow, and the counts of each colour are the four numbers the back-room lock wants. The note beside the poster prints the answer as four lines — <b>Pink: 1, Red: 6, Purple: 4, Yellow: 3</b> — so you never have to count under pressure, but the counting is the intended solve and it explains why the numbers are so oddly distributed: one pink flag, six red, four purple, three yellow, which is what a real string of bunting looks like when someone hangs it by eye.</p>
+    <p>The sting is the ordering. The note lists the colours pink, red, purple, yellow. The keypad's buttons are stacked pink, yellow, red, purple. The display fills from left to right in <em>button</em> order, which is why the accepted state reads 01 · 03 · 06 · 04 and not 01 · 06 · 04 · 03. Two runs, two different players, same result — this is not a coin flip, it is a lock that maps each colour slot independently and shows you the four dots so you can see which slot is which.</p>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>Typing digits at the colour lock.</b> The panel is 80% a normal keypad, and the four round buttons on the right read as decoration until you press one. The game's own caption — "Click into color Button firstly" — is the hint, and it is on screen the whole time you are failing.</li>
+      <li><b>Hunting a key for the wooden door.</b> There is a key in this level and it does not go in that door. The wooden door is the colour lock; the key goes in the chest. The green Book with a key on its cover is the reason half of this confusion exists.</li>
+      <li><b>Never examining the Folded paper.</b> A folded scrap in the bag looks like clutter. It is E — a quarter of the answer — and it only becomes E after you press Examine.</li>
+      <li><b>Reading the framed wall as a code.</b> A6467, 430, and a lone I on a wall above a sofa is exactly the shape of a puzzle, and it is not one. Nothing in either recording enters any of it anywhere.</li>
+      <li><b>Treating the back room as the exit.</b> There is no way out of it. Once the colour door is open, the back room is a treasure room: three plates, a chest, a bear, a knife.</li>
+      <li><b>Missing the Metal plate because it is not paper.</b> E, X and T are paper. I is a metal tag. If you scan the inventory for "notes", you will count three and wonder where the fourth letter went.</li>
+      <li><b>Looking for a fourth digit in the wrong place.</b> T=1 is inside the chest, and the chest needs the key, and the key needs the bear, and the bear needs the knife. That is a four-link chain for one digit, and it is the longest chain in the level.</li>
+      <li><b>Assuming the codes rotate.</b> They do not. Both of our recordings, played independently, end on the same 01 · 03 · 06 · 04 and the same 5831. The Bookstore is a fixed-code level; if a code is refused, it is a wrong entry, not a reroll.</li>
+    </ul>
+
+    <div class="warn">
+      <b>What this page could not verify.</b> Four things, plus one caveat about the numbers themselves, stated plainly rather than papered over. <b>(1)</b> The layout of the book-cover board: our frame reads disagree on how many covers are on it — nine in one pass, twelve or more in another — so this page describes the matching rule and not the grid. <b>(2)</b> The exact pickup that produces <b>X=8</b>: the desk drawer opens and the note appears in the bag a few seconds later, but no legible pickup label ties the two together on camera. <b>(3)</b> The <b>A6467</b> plate, the <b>430</b> plaque and the single letter <b>I</b> mounted on the wall: they are on the wall, they look like a code, and neither recording enters them anywhere — but "not used" is an observation from two runs, not a guarantee about every build. <b>(4)</b> The bottle-and-cork chain: both runs pick up a <b>Bottle</b> and a <b>Cork</b>, and neither gives a clean read of what the pair produces, so the page stops at the items and does not invent a step. One more honesty note: our independent recount of the poster's tiny bunting flags came out one flag different from the note on the purple string, so the figures printed here are the ones both locks accepted, not our own tally.
+    </div>
+
+    <h2>Chapter 2, level by level<span class="accent">.</span></h2>
+    <p class="grid-note">The Bookstore is level 19 of 26 in Chapter 2, "No Honor Among Thieves" — between the Sports Store and the Furniture Store. Written guides for the other rooms in this chapter:</p>
+    <LevelSelector chapter={2} current={19} compact={true} />
+
+    <h2>Frequently asked<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <div class="cta-box">
+      <p>Stuck on the room before this one?</p>
+      <p><a href="/rooms-and-exits/chapter-2-level-17/">Chapter 2 Level 17 — Shoe Store walkthrough →</a></p>
+    </div>
+
+    <p>One last thing worth saying about the Bookstore: it is a level about reading the room rather than about solving anything hard. Both locks are simple once you know what they want — four colour-and-count pairs, four letter values — and everything difficult about it is a matter of misreading an object's role. The poster is a tally sheet. The book with the key on it is a lie. The wall of frames is wallpaper. The teddy bear is a container. The chest is a digit. Once those five sentences are in your head, the level is fifteen minutes of walking, and most of that is the walk between the two rooms.</p>
+  </main>
+
+  <AdSlot />
+  <SideAd />
+  <InContentAd />
+</body>
+</html>

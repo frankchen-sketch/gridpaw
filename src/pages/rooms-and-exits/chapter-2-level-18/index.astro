@@ -1,0 +1,396 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 2 Level 18 Walkthrough: Sports Store";
+const description = "Rooms & Exits Chapter 2 Level 18 walkthrough for the Sports Store: the seven cap colours that give the till passcode 6273519, the gym slide puzzle that drops a Key, the hoodie-and-ball icon puzzle and the five billiard balls 8-4-3-7-1 that set the exit keypad to 84371.";
+
+const faq = [
+  {
+    q: "What is the exit code in Rooms & Exits Chapter 2 Level 18?",
+    a: "<b>84371</b>. The keypad on the stand beside the glass ball display takes five digits, and the display itself is the clue: five billiard balls in a row, left to right <b>8 · 4 · 3 · 7 · 1</b>. Our two recordings of this level both finish with the same five balls in the same order and both type <b>84371</b>, so on the evidence this is a fixed display and not something you assemble yourself.",
+  },
+  {
+    q: "What is the till passcode in the Sports Store?",
+    a: "<b>6273519</b>, seven digits, typed into the blue ENTER PASSCODE screen on the checkout monitor. Both recordings enter the same seven digits, and our frame-by-frame read of the input field agrees across four separate readings. The digits come from the wall of baseball caps: seven caps left to right, their colours matched to the seven coloured keys of the twelve-key pad on the counter.",
+  },
+  {
+    q: "How do the caps give the passcode?",
+    a: "There are seven caps on the slatwall above the folded shirts, and seven coloured keys on the twelve-key pad beside the counter. Read the caps left to right — red, orange, yellow, blue, green, pink, pale blue — and press the matching colour on the pad: red is <b>6</b>, orange is <b>2</b>, yellow is <b>7</b>, blue is <b>3</b>, green is <b>5</b>, pink is <b>1</b>, pale blue is <b>9</b>. That reads <b>6-2-7-3-5-1-9</b>. The grey keys (4, 8, 0) are not used, which is the tell that the mapping is colours, not positions.",
+  },
+  {
+    q: "Where does the exit code 84371 come from?",
+    a: "From the billiard balls. Five numbered balls sit in a glass-fronted display on a wooden stand in the shop, and the keypad is bolted to the same stand. Read the balls the way they sit — <b>8, 4, 3, 7, 1</b> — and type that into the keypad. Our second recording shows the display filling ball by ball during the run and ending in exactly that order, which is why we treat it as a fixed arrangement rather than a puzzle you solve.",
+  },
+  {
+    q: "How many billiard balls are in the level?",
+    a: "Six. The inventory counter runs <b>5/6</b> when you first open the bag at 1:55 and reaches <b>6/6</b> at 5:26 after the last one is cut out of the base of the punching bag with the Knife. The display that gives the exit code only uses five of them, so the sixth is spare — do not keep hunting for a sixth slot once the counter reads 6/6.",
+  },
+  {
+    q: "What does the gym picture puzzle give me?",
+    a: "A <b>Key</b>. The square panel on the gym wall is a scrambled picture of the gym floor with one empty square — a sliding-block puzzle. Rearrange it until the picture is whole and a silver Key goes into the bag at 5:18. In our footage we never see that key turn a lock: the exit takes the five-digit code, not a key, so treat the Key as a collectible rather than the way out.",
+  },
+  {
+    q: "How long does the Sports Store take, and what do I get?",
+    a: "The results panel in our first recording reads <b>Time: 8:39</b> and pays <b>+5 coins</b>, with a full Efficiency bar and the piggy bank at <b>600/700</b>. It is one of the shorter Chapter 2 rooms — there is no timer, no fail state and no penalty for wandering, so the only thing that really costs you minutes is hunting for the exit code before the ball display makes sense.",
+  },
+  {
+    q: "Why does my title card say Level 22?",
+    a: "Because the build in our first recording prints <b>Level 22 — Sports Store</b> on the title card, while the game's own level list and this site's chapter index call the same room Level 18. The room, its layout and both codes are identical across our recordings, so treat the number on the card as numbering drift between builds rather than a different level.",
+  },
+  {
+    q: "Do I need the tennis racket count?",
+    a: "Only for the four-dial panel on the shop floor, which our second recording settles on <b>5216</b> — one count per colour bay. The game's own hint for that panel reads \"Count the courts\", and the panel takes the count of rackets in each of the four bays, red through green. Our first recording sets the same panel without a hint and we could not read its readout, so <b>5216</b> is printed here as that player's answer, not as a constant we confirmed twice.",
+  },
+  {
+    q: "What are the eight letters on the skate display?",
+    a: "A strip of eight letters — <b>FDEOMZYH</b> — runs along the top of the inline-skate display at 6:14. We read it twice off the same frame (optical character recognition and a visual pass) and it agreed, but we never saw it typed anywhere in either recording, so we cannot tell you what it unlocks. If your room shows a different string, trust your screen, not this page.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-2-level-18"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 2 Level 18"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section p.lede { font-size: 1.02rem; color: #4A3B31; font-weight: 600; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 2</a> &gt; Level 18</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 2 Level 18 Walkthrough: Sports Store</h1>
+
+    <p class="lede">The Sports Store is a shop, a gym and a billiards corner in one open floor, and it hides both of its codes in plain sight — seven cap colours on a wall for the till, five numbered billiard balls for the exit. Read it in the order the room wants: sweep the floor for tools, build the drill, read the caps, then walk to the back and count the balls. The whole run is under nine minutes if you know where to look, and most of that time is a sliding-block puzzle you do not actually need.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from two independent recordings of the current build — a full 8:57 playthrough extracted at one frame per second, with four frames per second through the last two door attempts, and a second complete playthrough of the same room used as a second read. Every code printed here was read off the screen at least twice: the till passcode <b>6273519</b> agrees across four separate readings (two per recording), and the exit code <b>84371</b> is read from the ball display and again from the keypad in both runs. One number on this page — the racket count <b>5216</b> — comes from a single recording and is labelled as such rather than presented as a constant. Anything we could not read twice is listed under "What this page could not verify" instead of being printed as fact. On-screen text was read with optical character recognition on the raw frames, not typed by hand, and every step timestamp points at the exact second in the embedded video.</div>
+
+    <LevelSelector chapter={2} current={18} variant="jump" label="Chapter 2 · No Honor Among Thieves" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>The exit keypad takes <b>84371</b>, read straight off the five billiard balls in the glass display beside it — <b>8 · 4 · 3 · 7 · 1</b>. The till on the shop floor takes <b>6273519</b>, built from the seven cap colours on the wall. Finish pays <b>+5 coins</b> with the clock at <b>8:39</b>.</p>
+      <ol>
+        <li>Take the loose gear on the floor: <b>Football</b>, <b>Fastening tool</b>, <b>Screw</b>, <b>Billiard balls</b>. Combine the tool and the bit, then the screw, into a <b>Fastening tool with a screw</b>.</li>
+        <li>Read the <b>seven caps</b> on the slatwall (red, orange, yellow, blue, green, pink, pale blue) and press the same colours on the <b>keypad</b> beside the counter → <b>6273519</b>.</li>
+        <li>Type the code into the checkout monitor's <b>ENTER PASSCODE</b> screen; the counter pays out its blue "done" screen.</li>
+        <li>Clear the <b>gym slide puzzle</b> (a scrambled picture with one empty square) → <b>Key</b>. Cut the last billiard ball out of the <b>punching bag</b> base with the <b>Knife</b> (counter 5/6 → 6/6).</li>
+        <li>Match the <b>hoodie icons</b> to the <b>six icon balls</b> — "Look at the icons not colour" is the game's own hint — and deal with the <b>bottle</b> colour order.</li>
+        <li>Read the <b>five billiard balls</b> in the display: <b>8 · 4 · 3 · 7 · 1</b>. Type <b>84371</b> into the keypad on the same stand, press the green tick, and walk out.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/IG5w4lWVk3I" title="Rooms &amp; Exits Chapter 2 Level 18 Sports Store walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/c2l18-hero-store.jpg" alt="Rooms and Exits Chapter 2 Level 18 Sports Store: the shop floor with mannequins in the window, a checkout counter under the red wall, a cap display on the partition and a tall shoe rack on the right" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>The Sports Store is the eighteenth room of Chapter 2, and it is the first room in the chapter that behaves like a shop rather than a corridor. Instead of one locked box in the middle of the floor, you get a working retail space: a window full of mannequins, a checkout counter with a live till, a cap display on a partition wall, a shoe wall, a gym bolted onto the back of the shop and a billiards corner in the last stretch by the exit. The camera is isometric and fixed. There are no corridors, no loading breaks and no way to get lost — which is exactly why people stall here, because nothing funnels you toward the object that matters.</p>
+    <p>The room is laid out in one open plan. Front left: the shop window, with five mannequins on red plinths and a glass partition that you can see straight through. Left wall: folded stock on wooden shelves, then the checkout desk under the textured red wall, with a monitor, a keyboard, a receipt printer, a barcode scanner and a white telephone, with the twelve-key pad mounted on the wall beside the desk. Right of the desk: a yellow partition carrying the cap rack at the top and folded hoodies underneath. Behind that partition: the fitting-room doorway with a white arrow over it. Far right: a tall shoe rack in yellow and wood, four red stools, and four recessed display niches. Back: the gym, which is a whole second room stitched onto the shop — benches, treadmills, an elliptical, two cable machines, a punching bag on a stand, and a square picture panel on the wall. Then the billiards corner: a pool table with a rack, a display stand with a glass-fronted ball case, the exit keypad bolted to the same stand, and the shop's double doors.</p>
+    <p>Three things about the shape of this level are worth understanding before you touch anything. First, the shop floor is dense with pickups and almost none of them are locked: the football, the drill, the screw and the first billiard balls are all just lying there, and every one of them is either a tool, a component or a counter that ticks up. Second, the level is a chain of small locks, not one big one — the till, the gym panel, the icon puzzle, the bottles and finally the exit keypad — and each one hands you something the next one wants. Third, the exit code is not hidden: it is printed, in billiard balls, on the stand the keypad is screwed to. People miss it because they read the balls as decoration.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>If you only read one part of this page, read this. Every interactive object in the Sports Store, and what it is actually for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it gives you</th></tr></thead>
+      <tbody>
+        <tr><td>Loose gear on the floor</td><td>Shop floor, front half</td><td><b>Football</b>, <b>Fastening tool</b> and <b>Screw</b> in the first twenty seconds, then a scatter of <b>Billiard balls</b>.</td></tr>
+        <tr><td>Colour keypad</td><td>Wall panel beside the checkout counter</td><td>Twelve round keys, seven of them coloured. The cap colours are pressed here.</td></tr>
+        <tr><td>Checkout monitor</td><td>Checkout desk</td><td>The blue <b>ENTER PASSCODE</b> screen. Takes <b>6273519</b>.</td></tr>
+        <tr><td>Cap rack</td><td>Yellow partition, above the hoodies</td><td>Seven caps in a fixed left-to-right colour order: the source of the till code.</td></tr>
+        <tr><td>Tennis racket bays</td><td>Shop floor, near the shoe wall</td><td>Four bays of rackets in red, blue, yellow and green — the count behind the four-dial panel.</td></tr>
+        <tr><td>Four-dial panel</td><td>Shop floor, wall-mounted</td><td>Four coloured dials and dot rows. Settled on <b>5216</b> in our second recording only.</td></tr>
+        <tr><td>Gym picture panel</td><td>Gym, back wall</td><td>Sliding-block puzzle of a gym scene with one empty square → <b>Key</b>.</td></tr>
+        <tr><td>Punching bag</td><td>Gym, on a weighted base</td><td>The <b>Knife</b> cuts a billiard ball out of the base. Takes the counter to <b>6/6</b>.</td></tr>
+        <tr><td>Skate display</td><td>Gym wall, sales side</td><td>Sixteen inline skates in four rows of four, with an eight-letter strip <b>FDEOMZYH</b> above them.</td></tr>
+        <tr><td>Hoodie rack</td><td>Yellow partition, under the caps</td><td>Seven patterned hoodies: the icon reference for the ball puzzle.</td></tr>
+        <tr><td>Icon balls</td><td>Red-striped case, billiards corner</td><td>Six sports balls, each printed with an icon instead of a number.</td></tr>
+        <tr><td>Bottle shelf</td><td>Shop floor, near the counters</td><td>Coloured bottles that need ordering. The game's hint reads "Follow the colors to order Bottels".</td></tr>
+        <tr><td>Ball display</td><td>Billiards corner, wooden stand</td><td>Five billiard balls in a row: <b>8 · 4 · 3 · 7 · 1</b>. This is the exit code.</td></tr>
+        <tr><td>Exit keypad</td><td>Bolted to the ball-display stand</td><td>Five-digit grey keypad with a green display. Takes <b>84371</b>.</td></tr>
+        <tr><td>Double doors</td><td>Front of the shop</td><td>The way out. Opens once the keypad accepts the code.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:04</span>
+      <strong>Read the room before you tap anything</strong>
+      The opening wide shot is the only clean view you get of the whole floor, so use it. Front left: five mannequins in the window on red plinths, seen through a glass partition. Left wall: folded stock on shelves. Centre-left: the checkout desk under the red wall, with the monitor, keyboard, receipt printer, scanner and a white telephone, with the coloured keypad panel on the wall beside them. Centre-right: the yellow partition with caps at the top and folded hoodies below, and the fitting-room doorway beside it. Right: the tall shoe rack, the four red stools and four display niches. The gym and the billiards corner are behind all of this and only come into frame once you have walked through, which is why the room feels much larger at the two-minute mark than it does at the four-second mark.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=4s" target="_blank" rel="noopener">0:04</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:05</span>
+      <strong>Sweep the floor: football, drill, screw, billiard balls</strong>
+      The level hands you its toolkit in the first twenty seconds and does not make you work for any of it. At <b>0:05</b> a <b>Football</b> goes into the bag. At <b>0:12</b> the <b>Fastening tool</b> — a cordless drill body — follows it. At <b>0:13</b> the first <b>Billiard balls</b> are picked up, and at <b>0:17</b> the <b>Screw</b>. Two more footballs surface at 0:32 and 0:40, which is the level's way of telling you that footballs are a collectible counter, not a puzzle: you will keep finding them and they will keep stacking.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=5s" target="_blank" rel="noopener">0:05</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:44</span>
+      <strong>Open the bag and meet the counters</strong>
+      Tap the backpack at <b>0:44</b> and you get the inventory screen every Rooms &amp; Exits room uses: a grid of items on the left, and <b>Use</b>, <b>Combine</b>, <b>Dismantle</b> and <b>Examine</b> down the right. Two things on this first screen matter for the rest of the level. There is a <b>Pack of tennis balls</b>, which is a decoy — nothing in the room takes tennis balls, and the only tennis that counts is the rackets on the wall. And there is a small stack icon with a fraction under it: <b>5/6</b>. That is the billiard-ball counter, and it is the single most useful number in the room, because it tells you how many balls are still out there. When it reads <b>6/6</b> at 5:26 you are done hunting balls, and the five in the display are all you need.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=44s" target="_blank" rel="noopener">0:44</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:53</span>
+      <strong>Rugby ball, tape, knife, wallet, pass card</strong>
+      Between 0:53 and 1:56 the shop gives up the rest of its loose items in one long sweep. A <b>Rugby ball</b> at 0:53. A roll of <b>Tape</b> at 1:41. A <b>Knife</b> at 1:48 — this is the important one, it is the tool that gets the sixth billiard ball out of the punching bag later. A <b>Wallet</b> at 1:52, and a <b>PASS CARD</b> at 1:56, which is an ID card with a photo and a printed number. The card is scene dressing: there is no card reader anywhere in the Sports Store, and nothing in either recording swipes it. Take it, examine it if you like, and forget it.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=53s" target="_blank" rel="noopener">0:53</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:20</span>
+      <strong>Build the Fastening tool with a screw</strong>
+      This is the only crafting step in the level and it is easy to miss because the drill looks finished when you pick it up. At <b>1:20</b> a <b>Bit</b> goes into the bag. Open the inventory, select the <b>Fastening tool</b>, select the <b>Bit</b>, press <b>Combine</b>: the item renames itself to <b>Fastening tool with a bit</b> at 1:24. Then select that and the <b>Screw</b> and press <b>Combine</b> again — at <b>1:27</b> it becomes a <b>Fastening tool with a screw</b>. Two combines, one item, and the name tells you exactly how far you have got. If your inventory still says "Fastening tool" at the two-minute mark, you have neither combine yet, and no amount of tapping the wall will help.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=80s" target="_blank" rel="noopener">1:20</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 2:24</span>
+      <strong>The cap rack: seven caps, seven colours</strong>
+      The yellow partition above the folded hoodies carries seven baseball caps on individual pegs, and their order never changes: <b>red, orange, yellow, blue, green, pink, pale blue</b>, left to right. That is the whole clue. There is no number printed anywhere near them and no arrow telling you which end to start from — the game assumes you will read them the way you read everything else in the room, left to right.
+      <img src="/rooms-and-exits/c2l18-caps-wall.jpg" alt="The cap display in the Sports Store: seven baseball caps on a slatwall above folded hoodies, in red, orange, yellow, blue, green, pink and pale blue" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=144s" target="_blank" rel="noopener">2:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 2:28</span>
+      <strong>The coloured keypad is the colour key</strong>
+      The twelve-key pad mounted beside the checkout counter has seven coloured keys and five grey ones: <b>1</b> is pink, <b>2</b> is orange, <b>3</b> is blue, <b>5</b> is green, <b>6</b> is red, <b>7</b> is yellow and <b>9</b> is pale blue, while 4, 8, 0, star and hash stay grey. That is the tell: a keypad meant to be read by position would not colour seven keys and leave five blank. Read the caps left to right and press the matching colour, and the seven keys you press spell <b>6 · 2 · 7 · 3 · 5 · 1 · 9</b>.
+      <img src="/rooms-and-exits/c2l18-colour-keypad.jpg" alt="The twelve-key pad in the Sports Store, with seven round keys coloured: 1 pink, 2 orange, 3 blue, 5 green, 6 red, 7 yellow and 9 pale blue, the rest grey" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=148s" target="_blank" rel="noopener">2:28</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 2:39</span>
+      <strong>ENTER PASSCODE: 6273519 on the till</strong>
+      With the colour order in hand, tap the checkout monitor. The screen fills with a blue panel: a padlock, the words <b>ENTER PASSCODE</b>, an input field, and a twelve-key pad with a backspace arrow on the left and an enter arrow on the right. Type <b>6273519</b> and press enter. The panel closes, the monitor switches to a blue screen with a download-style arrow and a burst of sparkles, and the counter is done — that flourish is the game's way of telling you the till has given up everything it had. Both of our recordings type exactly these seven digits, and our read of the input field agrees at every stage — 62, then 627351, then the full 6273519 — so this is one of the most solid numbers in the room.
+      <img src="/rooms-and-exits/c2l18-passcode-6273519.jpg" alt="The ENTER PASSCODE screen at the Sports Store checkout with 6273519 typed into the input field" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=159s" target="_blank" rel="noopener">2:39</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 3:00</span>
+      <strong>Into the gym: the Triangle rack and the punching bag</strong>
+      Walk through the fitting-room arch and the shop gives way to the gym: two treadmills, two recumbent bikes, an elliptical, a rowing machine, a bench press, two cable machines and a free-standing punching bag. Two things here are interactive and only one of them looks it. The <b>Triangle rack</b> at 3:04 is a billiards rack and goes straight into the bag; you will need it at the pool table later. The punching bag at 3:11 is the one people walk past: select the <b>Knife</b>, use it on the weighted base, and a billiard ball comes out. That is the sixth ball, and the inventory counter flips to <b>6/6</b> a few minutes later once the game catches up.
+      <img src="/rooms-and-exits/c2l18-gym-room.jpg" alt="The gym area of the Sports Store: treadmills, cable machines, a bench press and the free-standing punching bag on its weighted base" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=180s" target="_blank" rel="noopener">3:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 3:52</span>
+      <strong>The gym picture panel: a sliding-block puzzle with one hole</strong>
+      The square panel on the gym wall is not a jigsaw you drag pieces onto — it is a sliding-block puzzle. The picture is a busy gym scene, the tiles are scrambled, and there is one empty square that the others slide into. Work it the way you work any 15-puzzle: build the top row first and never break a finished row to fix something below it, because every slide you make to "check" a tile costs you two moves to undo. Our recording grinds on this panel for close to a minute and a half — 3:52 to 5:06 — which is by far the longest single interaction in the level, and it is the reason the run time sits at 8:39 rather than six minutes.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=232s" target="_blank" rel="noopener">3:52</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 5:18</span>
+      <strong>The Key the picture pays out</strong>
+      Finish the slide puzzle and a silver <b>Key</b> goes into the bag at <b>5:18</b>. This is the only key in the Sports Store, and — this is the part that trips people — we never see it open anything. The exit is a five-digit keypad, not a lock, and both recordings finish the level with the key still in the bag. Take it, keep it, and do not spend ten minutes walking the room looking for a keyhole: on the evidence of two runs there isn't one that matters.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=318s" target="_blank" rel="noopener">5:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 6:14</span>
+      <strong>The skate display and the eight-letter strip</strong>
+      On the sales side of the gym wall there is a grey slatwall carrying sixteen inline skates in four rows of four, each in a different colourway. Above them runs a strip of eight letters — <b>FDEOMZYH</b> — which is the sort of thing that looks like a code and behaves like nothing at all in our footage. We read it twice off the same frame and it agreed both times, but neither recording types it anywhere, and there is no eight-key input in the room. If your build shows a different string, trust your screen; if it shows the same one and you find what it opens, you know something we do not.
+      <img src="/rooms-and-exits/c2l18-skates-letters.jpg" alt="The inline skate display in the Sports Store: sixteen skates in four rows of four with an eight-letter strip reading FDEOMZYH above them" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=374s" target="_blank" rel="noopener">6:14</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 7:28</span>
+      <strong>The hoodie rack: "Look at the icons not colour"</strong>
+      Under the caps, on the same yellow partition, hangs a row of patterned hoodies — green with pale flowers, blue with yellow stars, terracotta with light-blue swirls, purple with a green motif, cyan with lightning bolts, beige with pink petals, and a dark one whose pattern barely reads at all. The game's own hint banner for this rack reads <b>"Look at the icons not colour"</b>, and it is the most useful sentence in the level: the colours are there to distract you, the printed icons are the data. Copy the icon order off the hoodies, not the colour order.
+      <img src="/rooms-and-exits/c2l18-hoodies.jpg" alt="The hoodie rack in the Sports Store with seven patterned hoodies and the game's hint banner reading Look at the icons not color" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=448s" target="_blank" rel="noopener">7:28</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 7:39</span>
+      <strong>Six balls, six icons, no numbers</strong>
+      The matching set sits in a red-striped case in the billiards corner: six sports balls, each printed with an icon rather than a number — a football, a ball with a star, two with the same boxed symbol in different colours, one with a net pattern, one with a spiral. Read them as a set against the hoodies and the puzzle is a straight pattern match; read them as billiard balls and you will spend the rest of the level looking for a number that is not there. Note that these are <b>not</b> the balls that give the exit code — the exit balls live in the glass display on the keypad stand and they are real numbered billiards.
+      <img src="/rooms-and-exits/c2l18-icon-balls.jpg" alt="Six sports balls in a red-striped display case in the Sports Store, each printed with an icon instead of a number" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=459s" target="_blank" rel="noopener">7:39</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 8:05</span>
+      <strong>15/15, the Triangle rack and the Cue stick</strong>
+      By <b>8:05</b> the collection counter reads <b>15/15</b>, and that is the game telling you the shop floor is finished — every hidden item is in the bag. Open the inventory and you will find the <b>Triangle rack</b> you picked up in the gym and a <b>Cue stick</b> that comes out of the billiards corner at 8:15. Neither is a puzzle input: the rack and the cue are the tools that set the pool table up, and the table then hands you the last thing you need, which is the order of the balls.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=485s" target="_blank" rel="noopener">8:05</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 8:26</span>
+      <strong>The five balls in the display: 8 · 4 · 3 · 7 · 1</strong>
+      Here is the answer the whole level has been walking toward, and it is sitting in plain sight on a wooden stand. A glass-fronted case holds five billiard balls in a single row, and the keypad is bolted to the same stand at eye level. Read them left to right: <b>8</b>, <b>4</b>, <b>3</b>, <b>7</b>, <b>1</b>. Our first recording settles on that row at <b>8:26</b>; our second recording shows the case filling ball by ball during the run and ends on the same five in the same order, which is why this page prints one code instead of sending you to your own screen. If your display ever shows a different order, the balls on your stand win — but we have two runs and no disagreement.
+      <img src="/rooms-and-exits/c2l18-ball-rack-84371.jpg" alt="The glass ball display in the Sports Store holding five billiard balls reading 8, 4, 3, 7 and 1 from left to right" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=506s" target="_blank" rel="noopener">8:26</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 17 · 8:36</span>
+      <strong>Type 84371 and press the green tick</strong>
+      Tap the keypad and a grey panel fills the screen: a green display at the top, a nine-key grid, then a red cross on the left, the <b>0</b> in the middle and a green tick on the right. The display shows your digits as you press them, so there is no hidden state — <b>8437</b> after four presses, <b>84371</b> after five. Then press the green tick. If you have been typing <b>8437</b> and waiting, you are one digit short, and the keypad will sit there looking broken; that is the single most common miss on this lock.
+      <img src="/rooms-and-exits/c2l18-door-keypad-84371.jpg" alt="The exit keypad in the Sports Store with 84371 on its green display, one frame before the door opened" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=516s" target="_blank" rel="noopener">8:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 18 · 8:44</span>
+      <strong>The door opens and you walk out</strong>
+      The keypad panel closes, the double doors at the front of the shop swing open, and the camera pulls back to the isometric view while the character walks out through them. There is no second lock and no key turn — the five digits are the whole exit. The walk-out takes a few seconds and then the results panel lands.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=524s" target="_blank" rel="noopener">8:44</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 19 · 8:46</span>
+      <strong>The results screen: +5 coins, 8:39</strong>
+      The level ends on the standard Rooms &amp; Exits panel: <b>LEVEL COMPLETED!</b>, a coin stack labelled <b>Reward!</b> with <b>+5</b>, an <b>Efficiency</b> bar and a <b>Time</b> field reading <b>8:39</b>. The piggy-bank strip in the bottom left reads <b>0/700</b> behind the reward box, with the panel text explaining that you fill it by completing levels. Five coins is a thin payout compared with the jewellery store's fifty, which is fair enough — this room is half the length and most of it is pickups rather than puzzles.
+      <img src="/rooms-and-exits/c2l18-level-complete.jpg" alt="The Level Completed screen for Rooms and Exits Chapter 2 Level 18 with a +5 coin reward and a time of 8:39" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=IG5w4lWVk3I&t=526s" target="_blank" rel="noopener">8:46</a></div>
+    </div>
+
+    <h2>The one lock we can only half vouch for<span class="accent">.</span></h2>
+    <p>Between 1:09 and 1:22, on the shop floor near the shoe wall, there are two objects that belong together and that our two recordings treat differently. The first is a red-framed rack with four bays, each holding tennis rackets in a single colourway — red and white, blue and white, yellow and white, green and white. The second is a wall panel with four coloured columns, each carrying a dial and a row of six indicator dots; the panels are identical in shape to the dot-and-dial puzzle our first recording opens at 1:19 and abandons without finishing.</p>
+    <p>What we can say with confidence is the rule, because our second recording buys the game's own hint for it: <b>"Count the courts"</b>. You count the rackets in each of the four bays, one count per colour, and set the four dials to those four counts. What we cannot say with confidence is the four-digit answer as a constant, because only one of our two runs gives us a readable value — <b>5216</b>, red through green — and the other run leaves the panel without a legible readout. So this page prints <b>5216</b> as that player's answer and tells you the rule instead of swearing to the number: count your own rackets, in the order red, blue, yellow, green, and dial what you see. If your screen reads 5216, you are in company.</p>
+    <img src="/rooms-and-exits/c2l18-racket-display.jpg" alt="The tennis racket display in the Sports Store: four red-framed bays of rackets in red, blue, yellow and green colourways" width="1200" height="594" loading="lazy" />
+    <p>One detail worth knowing: this panel is optional. Neither recording needs it to leave — the exit is the five-digit keypad in the billiards corner — so if the dials fight you, walk away. It is the only lock in the Sports Store you can simply decline.</p>
+
+    <h2>The mechanics, stripped down<span class="accent">.</span></h2>
+    <p>Four kinds of lock sit in this room, and knowing which is which saves you the most time.</p>
+    <h3>1. A colour-code lock with no numbers on it</h3>
+    <p>The till is the level's signature puzzle and it never shows you a digit. Seven caps encode an order of colours; the twelve-key pad encodes a digit per colour; the answer is the intersection of the two. This is worth spelling out because the failure mode is so specific: players stand at the till trying to type cap colours that are not on any keypad, or they count the caps and type <b>7</b>. The caps are not a count, they are a sequence, and the sequence is only readable because seven of the pad's twelve keys are coloured. When a Rooms &amp; Exits room colours part of a keypad and leaves the rest grey, that is always the invitation.</p>
+    <h3>2. A picture puzzle that pays an item</h3>
+    <p>The gym panel is a pure sliding-block puzzle: no clue, no code, no reference sheet anywhere in the room. It exists to convert your time into a <b>Key</b>, and the Key never gets used. That is not a bug in our reading — it is a pattern this game uses to make a room feel bigger than its solution. If you are short on patience, the panel costs you ninety seconds and buys you nothing you need; the exit does not care whether you solved it.</p>
+    <h3>3. A pattern-match between two sets</h3>
+    <p>The hoodies and the icon balls are one puzzle split across two walls. The game's hint — <b>"Look at the icons not colour"</b> — is doing real work here, because both sets are aggressively colourful and the colours are the one thing that does <em>not</em> line up. Match the printed symbols and ignore the fabric.</p>
+    <h3>4. A code printed on the furniture</h3>
+    <p>The exit is the simplest lock in the room once you see it, and the hardest to see: the five balls and the keypad share a stand, so the clue is physically attached to the lock. There is no puzzle to solve, no arithmetic, no reference — you read five digits off five balls in the order they sit. The only thing that can go wrong is reading three of them and pressing the tick, which is exactly what our first recording does on its first attempt.</p>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>The caps as a count.</b> Seven caps does not mean the code starts with 7. It means there are seven positions to convert, one per coloured key. Players who type 7 first are one keystroke into a dead end.</li>
+      <li><b>The grey keys.</b> 4, 8, 0, star and hash are grey on the keypad, and that is not a graphics shortcut — it is the puzzle telling you which keys are part of the mapping. If you find yourself pressing 4 or 8, you have mis-read a cap.</li>
+      <li><b>The drill.</b> The <b>Fastening tool</b> looks complete and is not. It needs two combines — bit, then screw — before its name settles. An inventory entry that still reads "Fastening tool" is the tell that you have skipped the crafting step entirely.</li>
+      <li><b>The punching bag.</b> A billiard ball inside a weighted base is not somewhere anyone looks. If your counter is stuck at <b>5/6</b>, the missing ball is in the gym, and the <b>Knife</b> from the shop floor is the tool.</li>
+      <li><b>The key that opens nothing.</b> The Key from the slide puzzle is the level's biggest red herring. The exit is a keypad. Do not go looking for a keyhole.</li>
+      <li><b>Four digits instead of five.</b> The keypad takes five. Our own recording types 8437, pauses, and then adds the 1. If the tick does nothing, count your digits before you doubt the code.</li>
+      <li><b>The icon balls versus the billiard balls.</b> Two different ball sets, thirty seconds apart, doing two different jobs. The icons match the hoodies; the numbered billiards give the exit code. Mixing them up is the most common mid-level confusion in this room.</li>
+    </ul>
+
+    <div class="warn">
+      <b>What this page could not verify:</b> five things. (1) The four-dial panel on the shop floor is settled on <b>5216</b> in our second recording, with the game's own hint reading "Count the courts" — but our first recording sets the same panel without a hint and we could not read its readout, so <b>5216</b> is printed as that player's answer, not as a twice-confirmed constant. (2) The eight-letter strip on the skate display reads <b>FDEOMZYH</b> in our footage, twice off the same frame, but it is never typed anywhere, so we cannot tell you what it unlocks. (3) The billiard-ball counter reaches <b>6/6</b> while the exit display shows only five balls; we never establish what the sixth is for. (4) The bottle-ordering puzzle near the counters is visible with its hint ("Follow the colors to order Bottels") but the order itself is never legible twice, so no sequence is printed. (5) The Efficiency bar on the results panel is full in our run but carries no legible percentage. Everything else on this page — both codes, the counters, the item names, the reward and the clock — was read off the screen at least twice, across two recordings.
+    </div>
+
+    <h2>Chapter 2 levels<span class="accent">.</span></h2>
+    <p class="grid-note">Chapter 2 runs twenty-six rooms through the mall; the list below reflects what is written up so far.</p>
+    <LevelSelector chapter={2} current={18} compact={true} label="Chapter 2 · No Honor Among Thieves" />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <div class="cta-box">
+      <p>Previous written guide: <a href="/rooms-and-exits/chapter-2-level-17/">← Chapter 2, Level 17 — Shoe Store</a></p>
+      <p>Next written guide: <a href="/rooms-and-exits/chapter-2-level-19/">Chapter 2, Level 19 — Bookstore →</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits guides →</a></p>
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

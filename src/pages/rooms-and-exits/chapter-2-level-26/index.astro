@@ -1,0 +1,398 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 2 Level 26 Walkthrough: Parking";
+const description = "Rooms & Exits Chapter 2 Level 26 walkthrough for Parking: the paperclip and the lift hatch, the three plates 1876 / 3542 / 2002 on floor -2, the five-fader panel, the C B A D keypad that takes 0243, and the ride to P that ends Chapter 2.";
+
+const faq = [
+  {
+    q: "What is the code in Rooms & Exits Chapter 2 Level 26 Parking?",
+    a: "There are two, and they do different jobs. The <b>C B A D</b> keypad on the service box takes <b>0 · 2 · 4 · 3</b> — the parking-bay numbers of cars C, B, A and D, read off the locator board on floor -1. The twelve-button panel on floor -2 takes three four-digit rows: <b>1876</b>, <b>3542</b> and <b>2002</b>, the plates of the cars parked at bays E6, G1 and H3. Both sets were read twice, in two separate recordings.",
+  },
+  {
+    q: "Where does 0243 come from?",
+    a: "From the car-locator board mounted on the wall of floor -1, next to the <b>-1</b> sign. It has four colour rows — A red, B cyan, C green, D yellow — and a red seven-segment column reading <b>4, 2, 0, 3</b> top to bottom. That gives A=4, B=2, C=0, D=3. The service-box keypad is labelled <b>C B A D</b>, so you read the same board in that order: C=0, B=2, A=4, D=3, which is <b>0243</b>.",
+  },
+  {
+    q: "Where do 1876, 3542 and 2002 come from?",
+    a: "From the <b>Piece of paper</b> in your bag. It is a photograph of a vintage car with three bay codes written on it: <b>E6</b>, <b>G1</b> and <b>H3</b>. On floor -2 the wall plaque spells the same thing out — <i>Car at E parking: 1876</i>, <i>G: 3542</i>, <i>H: 2002</i> — and the three cars at those bays carry exactly those plates. The twelve-button panel has three rows of four digits for those three numbers.",
+  },
+  {
+    q: "How do I get down to floor -2?",
+    a: "With the lift's own keyhole. The floor panel inside the elevator has <b>3, 2, 1, P, -1 and -2</b>, and the <b>-2</b> button is the one with a keyhole beside it. The key that clears it is the one you pick up in the course of the level; once it is in the bag the lift will take you down. Our footage shows the key being collected and then the ride to -2, but not the moment the key turns in the lock, so treat the keyhole as the gate rather than a separate puzzle.",
+  },
+  {
+    q: "How do I solve the five-fader panel?",
+    a: "It is not a code and it does not want a number. The panel has five vertical faders and one indicator lamp above each; a lamp turns green when its fader sits at the right height, and the puzzle is finished when all five are green at the same time. In our recordings the lamps come on one at a time as each fader is set, and the panel is left with five green lamps before the player returns to the lift. Move one fader at a time and watch its own lamp — the faders do not appear to reset each other.",
+  },
+  {
+    q: "How do I actually finish the level?",
+    a: "Restore the power, then ride the lift to <b>P</b>. The service box on floor -1 has a red toggle switch under the keypad; with <b>0243</b> accepted the switch can be thrown, and the lift's floor panel then lights <b>P</b>. Press P, ride up, and the level ends on the results panel with <b>+50 coins</b> and <b>6:13</b> on the clock in the run we captured.",
+  },
+  {
+    q: "What do I get for finishing Parking?",
+    a: "The standard results panel pays <b>+50 coins</b>, shows a full ten-block Efficiency bar and reads <b>Time: 6:13</b> in our recording. The piggy-bank strip underneath reads <b>200</b> and there is a <b>Claim ×2</b> button in the corner. The panel does not mention your items; the only thing it reports is the reward, the clock and the efficiency bar.",
+  },
+  {
+    q: "Is Parking the last level of Chapter 2?",
+    a: "Yes. Chapter 2, <i>No Honor Among Thieves</i>, runs twenty-six rooms and Parking is number 26 — the level list in the game's own data ends here. What that means in practice surprised us: the results panel after Parking is the same LEVEL COMPLETED card as every other room, with no chapter-summary screen, no story card and no next-level button in the footage we captured.",
+  },
+  {
+    q: "Do I need the paperclip at the start?",
+    a: "Yes — it is the first lock of the level. The paperclip is clipped to the fast-food poster on the right wall of the lift you start in. Take it, examine it, and it becomes a <b>Modified paperclip</b>: a pick. That pick opens the small hatch under the handrail, and the hatch is what exposes the bank of round buttons that opens the lift doors.",
+  },
+  {
+    q: "Do I need the wrench?",
+    a: "For the service box, yes. The wrench is the tool that engages the bolt on the metal service panel — our close-up shows the wrench head on the bolt with the cover partly swung. You can walk the whole garage without it, but the C B A D keypad and the red power switch sit behind that cover.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-2-level-26"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 2 Level 26"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 2</a> &gt; Level 26</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 2 Level 26 Walkthrough: Parking</h1>
+
+    <p>Parking is the twenty-sixth and final room of Chapter 2, and it is one of the biggest single levels in the chapter: a two-floor car park, a lift you will ride a dozen times, and two independent code systems. This walkthrough gives you the route, both codes, and an honest account of what the ending screen actually says.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from two independent recordings of the same level — a 6:13 run that reaches the results panel, and a longer 11:28 run sampled at one frame per second that shows the floor -2 section in more detail. The numbers this page prints were each read at least twice: the plate set <b>1876 / 3542 / 2002</b> from the cars themselves in both recordings plus the wall plaque, the code <b>0243</b> from the keypad display in both recordings plus the locator board, and the reward and clock from the results panel. Where a detail could only be read once, it is listed under "What this page could not verify" instead of being stated as fact. On-screen text was read with optical character recognition on raw frames and then checked against the frame by eye, not typed from memory.</div>
+
+    <LevelSelector chapter={2} current={26} variant="jump" label="Chapter 2 · No Honor Among Thieves" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Parking is room 26 of 26 — the last level of Chapter 2. Two code locks, one power switch, one lift ride: <b>1876 / 3542 / 2002</b> on the three-row panel on floor -2, <b>0243</b> on the C B A D keypad on floor -1, then press <b>P</b>. Finish worth <b>+50 coins</b>.</p>
+      <ol>
+        <li>Take the <b>Paperclip</b> from the food poster in the lift, examine it into a <b>Modified paperclip</b>, and pick the hatch under the handrail.</li>
+        <li>Clear the bank of round buttons behind the hatch — the lift doors open onto <b>floor -1</b>.</li>
+        <li>Collect the <b>Piece of paper</b> (E6 · G1 · H3), the <b>Package</b>, the <b>Glass shard</b>, the <b>Wrench</b> and, in time, the <b>Key</b>.</li>
+        <li>Use the wrench on the bolted <b>service box</b>. Its keypad is labelled <b>C B A D</b>.</li>
+        <li>Read the locator board on floor -1: <b>A=4, B=2, C=0, D=3</b>. Enter <b>0 · 2 · 4 · 3</b> and throw the red switch.</li>
+        <li>Ride to <b>-2</b> with the key, read the three plates at bays E6 / G1 / H3, and set the twelve-button panel to <b>1876 / 3542 / 2002</b>.</li>
+        <li>Set the five faders until all five lamps are green, go back up, press <b>P</b> — <b>LEVEL COMPLETED, +50 coins</b>.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/zj9Z9OSkzXo" title="Rooms &amp; Exits Chapter 2 Level 26 Parking walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <p class="video-cap">The full 6:13 run used for this page. It reaches the results panel; the second recording is linked where it shows a puzzle this one skips past.</p>
+
+    <img class="hero" src="/rooms-and-exits/c2l26-hero-parking-garage.jpg" alt="Rooms and Exits Chapter 2 Level 26 Parking: the floor -1 garage with pillars marked A in red, B in blue, C in green and D in orange, several parked cars and the exit barrier on the right" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>Parking is the last room of Chapter 2 and it does not behave like a room at all. There is no single suite you are locked into: the level is a working multi-storey car park with two basement floors, a lift that connects them, and a handful of locked services scattered across both. You begin inside the lift, you spend most of the level on floor -1, you go down to floor -2 for the second half, and you finish by riding the lift back up to <b>P</b>. The camera is isometric, the floors are open, and the only thing telling you which floor you are on is the blue <b>-1</b> or <b>-2</b> sign painted on a wall.</p>
+    <p>That structure is why the level feels bigger than it is. Floor -1 is one long rectangle: the lift on the back wall, four parking zones marked by pillars lettered <b>A</b>, <b>B</b>, <b>C</b> and <b>D</b> in red, blue, green and orange, a row of parked cars, a motorcycle, a pedestrian door with an arrow, a barrier exit on the right, a toilet block, and a wall-mounted service box with a keypad. Floor -2 is the same concrete language with different furniture: bays lettered <b>E</b>, <b>F</b>, <b>G</b> and <b>H</b>, three cars with readable plates, a wall plaque that lists them, a twelve-button panel, and a five-fader service panel in a recess.</p>
+    <p>Two things shape the solve. First, the level is gated by <em>power</em>, not by a door: the lift will not take you where you need to go until the service box on -1 has been opened, coded and switched. Second, the two codes are printed in the world rather than hidden behind a puzzle minigame — one on a locator board, one on a piece of paper and a plaque. If you are stuck, you are almost certainly missing a read, not a mechanic.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Every interactive object that matters, and the floor it lives on.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Floor / where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Food poster</td><td>Lift interior, right wall</td><td>Holds the <b>Paperclip</b>. No other function.</td></tr>
+        <tr><td>Hatch under the handrail</td><td>Lift interior, left wall</td><td>Picked with the modified paperclip; exposes the round-button bank.</td></tr>
+        <tr><td>Round-button bank</td><td>Behind the hatch</td><td>Sequence lock; opens the lift doors onto -1.</td></tr>
+        <tr><td>Locator board</td><td>-1, beside the <b>-1</b> sign</td><td>Four colour rows A–D with digits <b>4 / 2 / 0 / 3</b>: the source of 0243.</td></tr>
+        <tr><td>Service box</td><td>-1, concrete wall</td><td>Bolted cover, <b>C B A D</b> keypad, red power toggle.</td></tr>
+        <tr><td>Piece of paper</td><td>Carried item</td><td>Car photo with <b>E6</b>, <b>G1</b>, <b>H3</b> — the three bays to visit on -2.</td></tr>
+        <tr><td>Restroom</td><td>-1, rear corner</td><td>Tiled room where the <b>Package</b> is found.</td></tr>
+        <tr><td>Green car, rear</td><td>-1</td><td>Smashed taillight; the <b>Glass shard</b>, and the <b>Wrench</b> nearby.</td></tr>
+        <tr><td>Lift floor panel</td><td>Inside the lift</td><td><b>3 · 2 · 1 · P · -1 · -2</b>; -2 carries the keyhole.</td></tr>
+        <tr><td>Wall plaque</td><td>-2, above the twelve-button panel</td><td><i>Car at E parking: 1876 / G: 3542 / H: 2002</i>.</td></tr>
+        <tr><td>Twelve-button panel</td><td>-2, wall</td><td>Three rows of four digits: 1876 / 3542 / 2002.</td></tr>
+        <tr><td>Five-fader panel</td><td>-2, recess</td><td>Five sliders, five lamps; all green to clear.</td></tr>
+        <tr><td>Results panel</td><td>After pressing P</td><td>LEVEL COMPLETED, +50 coins, 6:13, full Efficiency bar.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>The order below follows the 6:13 recording, with the longer recording used where it shows a panel or an item pickup more clearly. Timestamps are the game's own clock; the links jump to the matching second of the video.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:00</span>
+      <strong>Start in the lift, not in a room</strong>
+      The level opens on the title card <b>Level 26 / Parking</b> and then on the inside of a service lift: wood-panelled walls, brushed-steel doors, a handrail on the left, a vertical floor panel beside the doors and a small food poster stuck to the right wall. This is the only room you get, and it is also the level's hub — everything you do on -1 and -2 brings you back here. Before you touch anything, note the two things on these walls: the poster on the right and the recessed hatch under the handrail on the left. They are the first lock and the first tool of the level, in that order.
+      <img src="/rooms-and-exits/c2l26-elevator-interior-start.jpg" alt="The inside of the lift at the start of Rooms and Exits Chapter 2 Level 26 Parking, with metal doors, a floor panel on the left and the food poster on the right wall" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zj9Z9OSkzXo&t=1s" target="_blank" rel="noopener">0:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:03</span>
+      <strong>Take the Paperclip off the food poster</strong>
+      The poster is a fast-food advert — burger, fries, a red drink cup, a hot dog — taped to the wood above the handrail. Sitting on its bottom edge is a paperclip, highlighted with the usual sparkle. Tap it and the game labels it <b>Paperclip</b>. It reads like scenery: a clip on a poster in a lift. It is not. This is the level's opening move and the only item you can pick up before the lift will let you out.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zj9Z9OSkzXo&t=5s" target="_blank" rel="noopener">0:03</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:09</span>
+      <strong>Examine it: Paperclip becomes Modified paperclip</strong>
+      Open the inventory, select the paperclip and press <b>Examine</b>. The item in the bag changes name to <b>Modified paperclip</b> — the clip has been straightened into a pick. Rooms &amp; Exits does this in a lot of rooms, but here it is unusually load-bearing: there is no other tool in the lift, and the hatch will not open for a plain paperclip. If the hatch refuses you, check the name on the item in the bag rather than hunting for a second clip.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zj9Z9OSkzXo&t=11s" target="_blank" rel="noopener">0:09</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:14</span>
+      <strong>Pick the hatch, then clear the round-button bank</strong>
+      Under the handrail on the left wall there is a small square hatch with a keyhole. Use the modified paperclip on it and the cover drops away to reveal a light-grey panel carrying a bank of round buttons in three rows, each with a small dark centre. Press them and they light green; the set you have already lit stays lit, and the puzzle opens the lift doors once the bank is satisfied. The walkthrough recording carries a caption over this panel that reads <i>Try to get the correct order</i>, which is the best description of it we have: it is a sequence, not a code, and there is no display to tell you the sequence. The panel is small and the lights are the only feedback, so work in one direction and do not tap twice.
+      <img src="/rooms-and-exits/c2l26-elevator-button-panel.jpg" alt="The button bank behind the lift hatch in Parking: three rows of round buttons, several lit green" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zj9Z9OSkzXo&t=16s" target="_blank" rel="noopener">0:14</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 0:20</span>
+      <strong>The doors open onto floor -1</strong>
+      When the bank clears, the steel doors part and the camera pulls back into the garage. Floor -1 is the level's main stage: yellow-and-grey concrete, white bay lines, a blue <b>-1</b> sign on the far wall, four pillar zones lettered <b>A</b> (red), <b>B</b> (blue), <b>C</b> (green) and <b>D</b> (orange), a line of parked cars, a motorcycle, a pedestrian door with a white arrow, a barrier exit on the right and a toilet block in the rear corner. Walk out and take the room in before you start tapping: the four pillar letters are the alphabet the service-box keypad will ask you to spell.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zj9Z9OSkzXo&t=21s" target="_blank" rel="noopener">0:20</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 0:54</span>
+      <strong>Find the Piece of paper: E6, G1, H3</strong>
+      The first clue on floor -1 is a scrap of paper you can pick up and examine. It is a black-and-white photograph of a vintage saloon car with three bay codes written across it in blue biro: <b>E6</b> at the top, <b>G1</b> in the middle, <b>H3</b> at the bottom. That is the whole clue, and it is easy to read the wrong way. The letters are not a code and the numbers are not a code either: they are three parking bays on the floor below, and the numbers after the letters are the bay numbers inside each zone. You will match each bay to the car parked in it and read that car's plate. Nothing in the room tells you this outright — the plaque on -2 is what confirms it.
+      <img src="/rooms-and-exits/c2l26-piece-of-paper.jpg" alt="The Piece of paper clue in Parking: a black and white photo of a vintage car with E6, G1 and H3 written over it in blue" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zj9Z9OSkzXo&t=57s" target="_blank" rel="noopener">0:54</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 2:52 · detailed run</span>
+      <strong>The restroom and the Package</strong>
+      Off the garage there is a tiled restroom — white square tiles, a toilet, a metal bin — and it is worth a proper look because the recording opens the inventory in there with two items in the bag: the <b>Piece of paper</b> and a rectangular <b>Package</b> wrapped in brown paper and tied with white string. The package is the one item in the level whose contents the footage never shows. It goes into the bag, it sits there, and the level finishes without it being opened. Take it anyway; the restroom is a dead end otherwise, and the inventory screen is the only place the game names it.
+      <div class="ts">Watch (detailed run): <a href="https://www.youtube.com/watch?v=yFd3hN7mBGM&t=116s" target="_blank" rel="noopener">2:52</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 3:01 · detailed run</span>
+      <strong>The green car's broken taillight, the Glass shard and the Wrench</strong>
+      At 3:01 the camera pushes in on the rear of a green car and holds on a smashed red taillight with a piece missing from the middle. Seconds later the inventory gains a <b>Glass shard</b> and then a <b>Wrench</b>. The shard is a curved piece of that red lens, not a window fragment — the colour in the inventory icon is the giveaway. The wrench is the tool the level actually needs: the grey service box on the concrete wall is held shut by corner bolts, and the close-up at 3:05 catches the open end of the wrench on a bolt with the cover swinging free. Behind that cover is the <b>C B A D</b> keypad and the red power switch.
+      <div class="ts">Watch (detailed run): <a href="https://www.youtube.com/watch?v=yFd3hN7mBGM&t=121s" target="_blank" rel="noopener">3:01</a> · <a href="https://www.youtube.com/watch?v=yFd3hN7mBGM&t=131s" target="_blank" rel="noopener">3:05</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 2:29</span>
+      <strong>Bay E: the red car reads 1876</strong>
+      Take the lift down to <b>-2</b> and start with the first line of the paper. Bay <b>E6</b> holds a red sports car with a white plate on its tail reading <b>1876</b>, parked on the concrete beside a pillar painted <b>E</b>. That is the first of the three plate numbers, and it is the one the wall plaque spells out first as well: <i>Car at E parking: 1876</i>. Read it off the car yourself rather than trusting a guide — the plate is legible in the world and it is the only thing in the bay that matters.
+      <img src="/rooms-and-exits/c2l26-car-plate-1876.jpg" alt="The red car at bay E on floor -2 in Parking, its white licence plate reading 1876 beside a pillar marked E" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zj9Z9OSkzXo&t=153s" target="_blank" rel="noopener">2:29</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 2:51</span>
+      <strong>Bay G1: the second plate reads 3542</strong>
+      Bay <b>G1</b> is the middle line of the paper, and it is the one people walk past. The car there is a compact hatchback, not a sports car, and its plate is angled away from the aisle; you have to stand on the near side of the bay to read it. It reads <b>3542</b>. Two things make this bay worth slowing down for. First, the digits are in the same seven-segment style as everything else in the level, so a <b>3</b> can look like an <b>8</b> at a glance; check the top and middle bars rather than the outline. Second, this is the number that ends up in the middle row of the twelve-button panel, and if you transpose two digits there you will be standing at a dead panel with no error message.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zj9Z9OSkzXo&t=175s" target="_blank" rel="noopener">2:51</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 3:21</span>
+      <strong>Bay H3: the third plate reads 2002</strong>
+      Bay <b>H3</b> is the back of the floor, past the pillar painted <b>H</b>. The car there carries <b>2002</b> — a number that is easy to second-guess because it looks like a year, and because the middle two digits are both <b>0</b>. Read it left to right off the plate: two, zero, zero, two. With that you have all three rows: <b>1876</b>, <b>3542</b>, <b>2002</b>, in the order the paper lists them (E, G, H) — which is also the order the plaque lists them, and the order the panel expects, top row to bottom.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zj9Z9OSkzXo&t=206s" target="_blank" rel="noopener">3:21</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 3:40</span>
+      <strong>The plaque confirms it, and the twelve-button panel takes it</strong>
+      On the wall of -2 there is a white plaque that ends the argument. It reads, over five lines: <b>Car at E</b> / <b>parking: 1876</b> / <b>G: 3542</b> / <b>H:</b> / <b>2002</b>. The layout is ugly — "parking" wraps onto the second line and the H's value sits two lines below its letter — but every digit matches what is on the cars. Beside it is the panel: twelve rectangular buttons in three rows of four, and each row's four buttons <em>are</em> the display. You are not typing into a screen; you are setting each button in the row to a digit, top row to <b>1876</b>, middle to <b>3542</b>, bottom to <b>2002</b>. When all twelve match, the panel clears and the fader recess on the same floor becomes the next thing to deal with.
+      <img src="/rooms-and-exits/c2l26-clue-plaque-e-g-h.jpg" alt="The plaque on floor -2 in Parking reading Car at E parking 1876, G 3542, H 2002, next to the twelve-button panel with its top row set to 1876" width="1200" height="594" loading="lazy" />
+      <img src="/rooms-and-exits/c2l26-plate-panel-3542-2002.jpg" alt="The lower two rows of the twelve-button panel in Parking set to 3542 and 2002" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zj9Z9OSkzXo&t=220s" target="_blank" rel="noopener">3:40</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 3:54</span>
+      <strong>Five faders, five lamps: get them all green</strong>
+      The last puzzle on -2 is a service panel in a wall recess: five vertical sliders in a row, each with a small lamp above it, and a row of tiny car silhouettes printed down the left edge. It is not a number puzzle. Each fader has its own correct height, and its lamp turns green when the fader is close enough; the panel is done when all five lamps are green at once. In the recording the player works left to right, nudging each fader until its lamp flips, and the lamps stay green once earned — the faders do not knock each other out of position. Do not look for a pattern in the car icons; they are decoration, and the lamps are the only feedback that matters.
+      <img src="/rooms-and-exits/c2l26-slider-panel-green.jpg" alt="The five-fader service panel on floor -2 in Parking with five vertical sliders and green indicator lamps" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zj9Z9OSkzXo&t=234s" target="_blank" rel="noopener">3:54</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 5:32</span>
+      <strong>Back up to -1: read the locator board for A, B, C and D</strong>
+      Ride back to -1. Beside the blue <b>-1</b> sign, mounted on the concrete, is the board the whole first half of the level has been pointing at: four horizontal rows, each with a colour, a letter and a red seven-segment digit. Top to bottom it reads <b>A · red · 4</b>, <b>B · cyan · 2</b>, <b>C · green · 0</b>, <b>D · yellow · 3</b>. The colours match the pillar paint in the garage exactly, which is how you know you are reading the right board and not a decorative chart. Write the pairs down in the order they appear: A=4, B=2, C=0, D=3. The next lock asks for them in a different order, and that is the only trick in this part of the level.
+      <img src="/rooms-and-exits/c2l26-car-locator-board.jpg" alt="The car locator board on floor -1 in Parking: four colour rows lettered A B C D with red seven-segment digits 4, 2, 0 and 3" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zj9Z9OSkzXo&t=347s" target="_blank" rel="noopener">5:32</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 5:54</span>
+      <strong>The C B A D keypad takes 0243 — then throw the switch</strong>
+      The service box's keypad is not labelled with numbers. It is labelled with four letters along the top — <b>C</b>, <b>B</b>, <b>A</b>, <b>D</b> — with a four-digit seven-segment display beneath them and a green 0–9 pad under that, five keys to a row. Read the locator board in the keypad's order and you get <b>C=0</b>, <b>B=2</b>, <b>A=4</b>, <b>D=3</b>: the display should show <b>0 · 2 · 4 · 3</b>. That is the code. It is not 4203 and it is not a four-digit number you find anywhere else in the level; the board gives you the pairs and the keypad gives you the order. With the code accepted, the red toggle switch above the keypad can be thrown, and the power comes back — which is what the lift has been waiting for.
+      <img src="/rooms-and-exits/c2l26-cbad-keypad-0243.jpg" alt="The C B A D keypad in Parking with four red seven-segment digits reading 0243 and the red power toggle above it" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zj9Z9OSkzXo&t=361s" target="_blank" rel="noopener">5:54</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 6:07</span>
+      <strong>Press P and ride up</strong>
+      Get back in the lift and look at the floor panel: <b>3, 2, 1, P, -1, -2</b> top to bottom, with <b>P</b> at the bottom of the positive floors and <b>-2</b> behind the keyhole. With the switch thrown, <b>P</b> is live and lights when you press it. The lift rises, the doors open on the parking level at the top of the building, and the level ends — there is no extra action on the roof, no final item to place, and no exit to walk through. If P refuses to light, the switch on -1 did not take; go back and check that the keypad still shows 0243 rather than having reset.
+      <img src="/rooms-and-exits/c2l26-elevator-floor-panel.jpg" alt="The lift floor panel in Parking showing buttons 3, 2, 1, P, -1 and -2, with P, -1 and -2 lit" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zj9Z9OSkzXo&t=374s" target="_blank" rel="noopener">6:07</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 17 · 6:13</span>
+      <strong>LEVEL COMPLETED: +50 coins, 6:13, full efficiency</strong>
+      The results panel is the standard one: <b>LEVEL COMPLETED!</b> in gold across the top, a trophy, <b>Reward +50</b> with a coin, five gold stars, a ten-block <b>Efficiency</b> bar filled to ten of ten, and <b>Time: 6:13</b> under a clock. The piggy-bank strip along the bottom reads <b>200</b>, and there is a <b>Claim ×2</b> button in the corner if you want to double the coins against an advert. That is the whole payoff — see the next section for what is and is not on this screen, because "last level of the chapter" does not get the send-off you might expect.
+      <img src="/rooms-and-exits/c2l26-level-complete.jpg" alt="The LEVEL COMPLETED results panel after Parking: Reward +50 coins, ten of ten efficiency, time 6:13 and a piggy bank reading 200" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zj9Z9OSkzXo&t=382s" target="_blank" rel="noopener">6:13</a></div>
+    </div>
+
+    <h2>How the level gates you<span class="accent">.</span></h2>
+    <p>Parking is built out of three kinds of lock, and knowing which one you are looking at saves a lot of wandering.</p>
+    <p><b>The pick lock.</b> The hatch in the lift is a pure item gate: no code, no sequence, just the right tool in the bag. The paperclip is on the poster six feet away, and examining it is the step people skip. If the hatch will not open, the answer is almost always the item name — <i>Paperclip</i> is not <i>Modified paperclip</i>.</p>
+    <p><b>The sequence lock.</b> The button bank behind the hatch is the only puzzle in the level with no printed clue anywhere. It is also the only one where the feedback is purely visual: each correct press leaves a green light, and the doors open when the pattern is complete. Our recordings do not preserve the order that was pressed, so this page does not print one — see the verification note at the end. The caption the recorder left on the clip calls it "the correct order", which is as much as we can honestly say.</p>
+    <p><b>The read-and-enter locks.</b> Everything else in the level is a two-step: find a number written in the world, then type it into a panel. The piece of paper gives you bays; the cars give you plates; the plaque repeats them; the locator board gives you letter-digit pairs; the keypad asks for them in the order C B A D. None of these locks is a puzzle in the usual sense. They are reading comprehension with a keypad attached, and every failure we saw in the footage came from entering a number in the wrong order rather than from misreading it.</p>
+    <p>The power switch is the hinge between the two halves. Before it is thrown, the lift will run to -1 and -2 but <b>P</b> stays dark; after it, P lights and the level can end. That is why the C B A D keypad matters even though it sits on the first floor you visit: it is not a side puzzle, it is the level's main switch, and the code for it is on the same floor, six paces away.</p>
+    <p>There is one more panel in the garage that looks like a puzzle and is not one of these locks: a wide brown display carrying the equation <b>8+4+6 = 6+7+4</b>, with small marks under three of the digits and a five-digit readout to its right. In both recordings the players walk up to it, look at it, and leave without solving anything, and the level completes without it. Treat it as scenery until something in the level asks you for a number it could produce.</p>
+    <img src="/rooms-and-exits/c2l26-equation-panel.jpg" alt="The equation display in Parking reading 8+4+6 = 6+7+4 with small marks under three digits and a five-digit readout beside it" width="1200" height="594" loading="lazy" />
+    <p class="grid-note">The equation panel on floor -1. Neither recording interacts with it, and the level finishes without it — which is why this page does not offer a solution.</p>
+
+    <div class="cta-box">
+      <p>Second recording (detailed run): <a href="https://www.youtube.com/watch?v=yFd3hN7mBGM" target="_blank" rel="noopener">watch it on YouTube</a></p>
+      <p class="grid-note">Sampled at one frame per second. It is the one that shows the twelve-button panel and the fader recess most clearly (panel at 4:49, faders at 5:03); its on-screen clock runs at roughly double the video time. It is linked rather than embedded because the uploader has embedding switched off.</p>
+    </div>
+
+    <h2>The chapter ending: what is actually on screen<span class="accent">.</span></h2>
+    <p>This is the part of the page we rewound the most, because Parking is room 26 of 26 and "last level" usually means a send-off. Here is exactly what the footage shows.</p>
+    <p>Pressing <b>P</b> plays a short lift ride, the doors open on the top parking level, and the results panel comes up. It is the same panel the game uses for every room: <b>LEVEL COMPLETED!</b>, a trophy, <b>Reward +50</b>, five stars, a ten-block Efficiency bar at ten of ten, and <b>Time: 6:13</b>. Under it, the piggy-bank strip reads <b>200</b> and there is a <b>Claim ×2</b> button. There is no chapter title card, no "Chapter 2 complete" banner, no cutscene of the thieves, no letter, no newspaper, and no next-level button in the panel itself. The second recording ends on the same card, with the same layout; only its clock differs.</p>
+    <p>So the honest answer to "what happens at the end of Chapter 2" is: the level ends, the chapter does not announce itself. If there is an epilogue, it plays after the results panel — behind the Claim button or on a continue prompt that neither recording presses — and we cannot describe it. What we can say is that the room count is 26, Parking is 26, and the results card after Parking is a normal results card.</p>
+    <p>That is worth knowing before you play it, because it changes how you read the level. Parking is not a finale in structure: it is a bigger, two-floor room that reuses every idea Chapter 2 has taught — an item gate, a sequence panel, a locator board, a plate puzzle, a fader panel — and then stops. The story beat, if the game has one, is not in this room.</p>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>The hatch does not respond.</b> Check the item, not the hatch. The paperclip has to be examined into a <b>Modified paperclip</b> before the keyhole will take it. This is the single most common place to stall, because the clip is already in the bag and nothing on screen tells you to examine it.</p>
+    <p><b>The button bank resets.</b> The bank keeps its green lights between presses, but the pattern is order-sensitive. If you have lit most of the panel and the doors still will not open, you are not missing a button — you pressed two of them in the wrong order somewhere. Start the pattern again from the first button rather than hunting for an unlit one.</p>
+    <p><b>The twelve-button panel will not accept a row.</b> Each row is four digits and there is no screen: the buttons themselves display the digits. If a row will not settle, check the digit you are setting against the plate, not against the plaque's line breaks. The plaque puts "parking: 1876" on its own line and "H:" two lines above "2002", and reading it as a single column of numbers is the classic mistake.</p>
+    <p><b>3 or 8 on the G1 plate.</b> The seven-segment 3 is open on the left; an 8 is closed. At the distance the camera sits, the difference is a few pixels. 3542 is the reading that survives both recordings and the plaque, so use it as the tie-breaker if you are unsure.</p>
+    <p><b>P stays dark.</b> That means the switch on -1 did not take, or the keypad reset when you left the box. Go back, re-check that the display still reads <b>0243</b>, and throw the switch again before riding up.</p>
+    <p><b>The fader lamps will not all go green.</b> Work one fader at a time and watch its own lamp. The panel gives no other feedback, and the car silhouettes on the left edge are decoration — they do not encode the heights.</p>
+
+
+
+    <h2>Where Parking sits in Chapter 2<span class="accent">.</span></h2>
+    <p>Chapter 2 is <i>No Honor Among Thieves</i>, and its twenty-six rooms run through a town's worth of small businesses before they end in this car park: sports store, bookstore, furniture store, household appliances, print shop, bakery, toy store, restroom, and then Parking. The last stretch is worth keeping in mind because Parking reuses their grammar — a picked lock, a sequence panel, a plate puzzle, a fader board — without reusing their props. Nothing you carried out of the toy store or the restroom follows you in here; Parking starts you with an empty bag in a lift.</p>
+    <p>If you are working through the chapter in order, the two rooms immediately before this one are <b>24 Toy Store</b> and <b>25 Restroom</b>. Parking is a step up in size from both: two floors instead of one, two independent code systems instead of one, and a lift you will ride a dozen times. Budget ten to fifteen minutes for a first run if you read the clues yourself, and six if you follow the route above.</p>
+
+    <LevelSelector chapter={2} current={26} compact={true} label="Chapter 2 · No Honor Among Thieves" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-2-level-25/">Chapter 2 Level 25 — Restroom</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Four things, stated plainly so you know which parts of the page are reconstruction and which are reads.
+      <br><br>
+      <b>1. The button-bank sequence.</b> We can see the panel, the green lights and the doors opening, but neither recording preserves which button was pressed in which order, and the game gives no printed clue. No order is printed here because any order we gave you would be invented.
+      <br><br>
+      <b>2. The equation panel.</b> The display <b>8+4+6 = 6+7+4</b> with marks under three digits is visible and readable, but neither player interacts with it and the level completes without it. Whether it is a red herring, an optional sequence, or the input for something we never found, we do not know.
+      <br><br>
+      <b>3. The Glass shard and the Package.</b> Both are picked up, both are labelled in the inventory, and neither is used in any shot we captured. The obvious guess is that the shard cuts the package open, and that the package holds the key — but neither recording shows either action, so it is a guess, not a read, and it is not printed as a step.
+      <br><br>
+      <b>4. The chapter epilogue.</b> The results panel after room 26 is the standard one, with no chapter card in either recording. If the game plays a Chapter 2 epilogue after the panel, it happens behind a button neither recording pressed.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

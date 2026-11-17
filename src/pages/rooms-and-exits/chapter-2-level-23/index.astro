@@ -1,0 +1,396 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 2 Level 23 Walkthrough: Bakery";
+const description = "Rooms & Exits Chapter 2 Level 23 walkthrough for the Bakery: the two three-window drawer locks (421 on the coloured dial, 693 from the slip of paper in the cake case), the cupcake recipe at 35 minutes and 250 degrees, the six-switch fuse box, and the silver stand that hands you the exit key for +50 coins.";
+
+const faq = [
+  {
+    q: "What are the codes in Rooms & Exits Chapter 2 Level 23?",
+    a: "There are two, and they are on the same piece of furniture. The drawer with the <b>green, red and orange</b> windows takes <b>4 · 2 · 1</b> — our two recordings both dial it there and the drawer releases. The drawer with the three plain windows takes <b>6 · 9 · 3</b>, which is written on the <b>Piece of paper</b> you pick up inside the cake display case. Both codes were read off the screen twice, in two separate playthroughs.",
+  },
+  {
+    q: "Where do I find the 693 code?",
+    a: "In the cake display case on the shop floor. The case holds six small cakes on two shelves; tap through them and a folded slip appears on the middle shelf. Take it and the label reads <b>Piece of paper</b>, with <b>693</b> handwritten on it in black. In the second recording the same slip is sitting in the inventory with the same three digits, so this one is fixed.",
+  },
+  {
+    q: "Which drawer does 421 open, and what is inside?",
+    a: "The left drawer of the wooden console against the brick wall — the one whose three windows are framed in <b>green, red and orange</b>. Dial <b>4 · 2 · 1</b> and it slides out. In our main recording the drawer gives up the <b>Recipe</b> card for cupcakes; in the second recording the same drawer is opened and a screwdriver comes out of it first. Treat the drawer as a container you empty, not as a single fixed reward.",
+  },
+  {
+    q: "What does the cupcake recipe say?",
+    a: "The card is titled <b>Cupcakes</b> and lists five illustrated ingredients: <b>3</b> eggs, <b>1/3</b> of a block of butter, <b>4 tbs</b> of flour, <b>2 tbs</b> of sugar and <b>0,6 l</b> of milk. Under the list it prints the bake: <b>35'</b> and <b>250°</b>. Those two numbers are the ones the oven panel wants, and the card is the only place in the level where they are written down.",
+  },
+  {
+    q: "How do I work the oven?",
+    a: "The oven panel has a <b>TIMER</b> button, a green digital display, a big ring marked <b>OFF, 100, 150, 200, 250, 300, 350, 400</b>, and a <b>START</b> button. Set the display to <b>35</b> and turn the ring to the temperature the card prints (<b>250</b>), then press START. One honest caveat: in our main recording the ring ends up reading nearer <b>350</b> on the frame before the bake and the cupcakes still come out, so the timer is clearly the value that matters most.",
+  },
+  {
+    q: "What is the six-switch panel in the kitchen for?",
+    a: "It is the fuse box that brings the kitchen back to life. Open the grey door on the tiled wall and you get two rows of three coloured toggle switches — <b>red, green, red</b> on top and <b>blue, yellow, blue</b> underneath — wired down to a small unit with a red and a green indicator light. The inside of the door has a photo of a cupcake taped to it, which is the only hint in the room. The recording works the toggles until the panel is live; we could not derive a rule that ties the switch colours to the photo, so this page does not pretend there is one.",
+  },
+  {
+    q: "How many cupcakes do I have to bake?",
+    a: "Three. You collect three silicone <b>Baking cups</b> around the level — the stack in the inventory reads <b>2/3</b> for most of the run and <b>3/3</b> once the last one is picked up. Combining the <b>Bowl with mixed ingredients</b> with the cups produces <b>Filled baking cups</b> (purple, green and red), and those are what go into the oven. The finished cupcakes are green, red and purple.",
+  },
+  {
+    q: "What is the silver stand on the counter for?",
+    a: "It is the delivery point. Once the cupcakes are baked, place them on the empty single-tier silver stand on the shop counter — next to the two-tier stand of pastries. When the stand is filled the counter rewards you: sparkles, a <b>Key</b> on the wood, and the drawer below sliding open. That key is the exit key.",
+  },
+  {
+    q: "How long does the Bakery take, and what is the reward?",
+    a: "The results panel reads <b>Time: 4:54</b> with a full ten-segment efficiency bar and <b>+50 coins</b>. That is the shortest Chapter 2 room we have recorded so far — the level is small and the puzzles are two locks, one fuse box and one bake, so once you know the two codes there is almost no walking.",
+  },
+  {
+    q: "Do I need the key from the bread shelf for anything?",
+    a: "Yes — it opens the <b>Kitchen</b> door. The key is hidden in a loaf on the bread shelf: the loaf with the X scored into its crust sparkles when you get close, and tapping it hands you <b>Bread</b> first and then the <b>Key</b>. Without it the kitchen door stays shut, and the whole second half of the level — the fuse box, the oven, the actual baking — is behind that door.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-2-level-23"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 2 Level 23"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; <a href="/rooms-and-exits/">Chapter 2</a> &gt; Level 23</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 2 Level 23 Walkthrough: Bakery</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from two independent recordings of the current build — a 4:57 playthrough extracted at one frame per second (and at four frames per second through both drawer locks, the recipe card, the oven panel and the results screen) plus a 7:51 second playthrough used as a cross-check. Every code printed here was read twice: <b>4 · 2 · 1</b> appears on the coloured dial in both videos, and <b>6 · 9 · 3</b> is legible on the paper in both videos and on the same drawer's dial immediately before it opens. On-screen text was read with optical character recognition on the raw frames and then re-read by eye on enlarged crops; item names and numbers are quoted as the game prints them. Where the two recordings disagree about what a container holds, this page says so instead of picking one version, and everything we could not read twice is listed at the bottom under “What this page could not verify”.</div>
+
+    <LevelSelector chapter={2} current={23} variant="jump" label="Chapter 2 · No Honor Among Thieves" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Two drawer codes, one recipe, one fuse box, one bake. Dial the coloured drawer to <b>4 · 2 · 1</b>, read <b>6 · 9 · 3</b> off the slip in the cake case and dial the plain drawer to it, bake three cupcakes at <b>35′ / 250°</b>, put them on the silver stand, then unlock the EXIT with the key it drops. Finish worth <b>+50 coins</b>.</p>
+      <ol>
+        <li>Pick up the <b>Baking cups</b> on the shop floor, then open the <b>cake display case</b> and take the <b>Piece of paper</b> — it reads <b>693</b>.</li>
+        <li>On the wooden console, dial the <b>green / red / orange</b> windows to <b>4 · 2 · 1</b> → the drawer with the <b>Recipe</b> card. Read it: <b>35′</b>, <b>250°</b>.</li>
+        <li>Dial the plain three windows to <b>6 · 9 · 3</b> → the second drawer, holding a folded floral cloth and a jar of white powder.</li>
+        <li>Tap the sparkling loaf on the bread shelf → <b>Bread</b> and then the <b>Key</b>. Use the key on the <b>Kitchen</b> door.</li>
+        <li>In the kitchen: reset the six-switch <b>fuse box</b>, collect flour, sugar, eggs, milk and butter, mix them into a <b>Bowl with mixed ingredients</b>, combine with the cups → <b>Filled baking cups</b>.</li>
+        <li>Bake at <b>35</b> minutes, then place the cupcakes on the silver stand on the shop counter → the stand drops the <b>Key</b> and opens the drawer. Use it on the EXIT.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/tFaxHZNKuvY" title="Rooms &amp; Exits Chapter 2 Level 23 Bakery walkthrough" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <img class="hero" src="/rooms-and-exits/c2l23-01-bakery-room.jpg" alt="Rooms and Exits Chapter 2 Level 23 Bakery: the shop floor with the bread shelves, the Today's Sweet Special sign, the curved cake display case, bar stools and the EXIT door on the right" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>The Bakery splits into two rooms joined by a locked door, which is worth knowing before you start: half of the level is behind a key. The shop you start in is the small, warm half: bread on the back shelves, a curved glass cake case on the left, three bar stools, two little café tables with red and yellow bentwood chairs, a wooden console against the brick, and a glass-panelled EXIT door on the right. The kitchen behind the back door is the working half: steel counters, a stand mixer, a fridge, a range with a proper control panel, and a fuse box on the tiled wall. Almost everything that matters in the first half is a container, and almost everything in the second half is a step in a recipe.</p>
+    <p>What makes the Bakery unusual is that there is no exit code to type on the door. The two three-digit locks in this level are on <em>drawers</em>, not on the exit, and the exit itself eats a key. So the level is not a code hunt, it is a supply chain: paper → drawer → recipe → bread → key → kitchen → fuse → ingredients → batter → cups → oven → stand → key → door. Break any link and the door is a piece of scenery. That is why so many people get stuck at the very end with a bag full of ingredients: they have everything except the one object that was generated by finishing the bake.</p>
+    <p>It is also short. Our main run finishes at <b>4:54</b> on the game's own clock, well under half the time our other Chapter 2 recordings take. Nothing in the Bakery is timed and there is no fail state, so the only cost of getting it wrong is wandering. The two things that actually waste time are (a) not realising there are <em>two</em> three-window locks on the same console, and (b) assuming the “Today's Sweet Special” sign is the cupcake clue. It is not — it is wallpaper, and it shows four cupcakes while the level only ever wants three.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>If you only read one section of this page, read this one. Every interactive object in the Bakery, in the order you will want them.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it gives you</th></tr></thead>
+      <tbody>
+        <tr><td>Baking cups</td><td>Shop floor — one on the counter near the display case, others further round the room</td><td>A stack of three silicone cups (purple, green, red). The inventory counts <b>2/3</b> then <b>3/3</b>.</td></tr>
+        <tr><td>Curved cake case</td><td>Left of the shop, in front of the counter</td><td>Six small cakes on two shelves. Tap through them and the <b>Piece of paper</b> appears — <b>693</b>.</td></tr>
+        <tr><td>Cake Menu panel</td><td>Overlay when you tap the case</td><td>Four decorated cakes in a menu strip (blue, yellow, green, pink). Reference art, not a lock.</td></tr>
+        <tr><td>Wooden console, left drawer</td><td>Right side of the shop, against the brick wall, under the fruit bowl and green plates</td><td>Three windows framed in <b>green, red, orange</b>. Code <b>4 · 2 · 1</b>. Holds the <b>Recipe</b>.</td></tr>
+        <tr><td>Wooden console, right drawer</td><td>Same console, right-hand drawer</td><td>Three plain metal windows. Code <b>6 · 9 · 3</b>. The second drawer of the pair.</td></tr>
+        <tr><td>Bread shelf</td><td>Back wall, above the “Today's Sweet Special” sign</td><td>Round scored loaves. The loaf marked with an X sparkles: gives <b>Bread</b>, then the <b>Key</b>.</td></tr>
+        <tr><td>Kitchen door</td><td>Back wall, right of the bread shelves</td><td>Glass-panelled door with a small “Kitchen” sign. Needs the <b>Key</b>.</td></tr>
+        <tr><td>Fuse box</td><td>Kitchen, tiled wall left of the range</td><td>Six coloured toggles and a cupcake photo taped inside the door. Brings the kitchen's power up.</td></tr>
+        <tr><td>Fridge and counters</td><td>Kitchen, left and back walls</td><td>Butter, milk, eggs, flour, sugar — the five recipe ingredients.</td></tr>
+        <tr><td>Oven panel</td><td>Kitchen, front of the range</td><td><b>TIMER</b> / display / temperature ring / <b>START</b>. The bake.</td></tr>
+        <tr><td>Silver stand</td><td>Shop counter, right of the pastry stand</td><td>Where the cupcakes go. Drops the <b>Key</b> and opens the drawer underneath.</td></tr>
+        <tr><td>EXIT door</td><td>Right-hand wall of the shop</td><td>Glass-panelled door with a green EXIT sign. Key only — no keypad.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:01</span>
+      <strong>Take the baking cups before you touch anything else</strong>
+      The very first frame of the level drops a <b>Baking cup</b> label on the shop floor, and it is easy to walk straight past because the camera is still settling. Grab it. The cups are the one item in the level you cannot substitute: the recipe needs a container, the batter needs something to sit in, and the oven only accepts <b>Filled baking cups</b>, not a bowl of batter. The inventory shows the stack with a fraction under it, <b>2/3</b>, which is the game telling you there are three in total and you are one short already. You will find the third in the kitchen much later, so do not stand in the shop hunting for a cup that is not there.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=1s" target="_blank" rel="noopener">0:01</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:26</span>
+      <strong>The cake case looks like a menu and behaves like a drawer</strong>
+      Tapping the curved glass case on the left of the shop opens a <b>Cake Menu</b> strip across the bottom of the screen: four decorated cakes, each with its own colour scheme and topping, arranged like a shop menu. It reads like a clue and it is not one — nothing in either recording types those colours anywhere, and the case holds six physical cakes, not the handful the menu shows. What the case <em>is</em> for is the slip of paper hidden between them, which you cannot reach until you have tapped through the cakes themselves. So treat the menu as decoration, close it, and work along the shelves.
+      <img src="/rooms-and-exits/c2l23-02-cake-display.jpg" alt="The cake display case in the Bakery with the Cake Menu overlay showing four decorated cakes" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=26s" target="_blank" rel="noopener">0:26</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:44</span>
+      <strong>The coloured drawer: 4 · 2 · 1</strong>
+      The wooden console against the brick wall — fruit bowl and green plates on top, two drawers below — is the single most important object in the level, and it carries <em>two</em> locks. The left drawer's lock is three little windows with coloured frames: <b>green, red, orange</b>. Tap a window and it scrolls through 0–9. Dial <b>4</b>, then <b>2</b>, then <b>1</b>. The drawer slides out immediately, with no confirm button. Our two recordings both end on exactly those three digits, four minutes apart in one video and an hour apart in the other, so this is a fixed code and not a random roll.
+      <img src="/rooms-and-exits/c2l23-03-drawer-lock-421.jpg" alt="The coloured three-window drawer lock in the Bakery reading 4-2-1 in green, red and orange frames" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=44s" target="_blank" rel="noopener">0:44</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:56</span>
+      <strong>Read the recipe card properly — it is the whole second half</strong>
+      Inside the opened drawer is a cream card with brown scrollwork in the corners, titled <b>Cupcakes</b>. It lists five illustrated ingredients: <b>3</b> eggs, <b>1/3</b> of a block of butter, <b>4 tbs</b> flour, <b>2 tbs</b> sugar, <b>0,6 l</b> milk. Under the list, in the same handwriting, it prints the bake: <b>35'</b> and <b>250°</b>. Those five ingredients are exactly what the kitchen holds, and those two numbers are exactly what the oven panel takes. If you close this card without reading it you will spend the next two minutes guessing at an oven dial with no reference at all — and the card does not come back once the drawer is empty, so read it now.
+      <img src="/rooms-and-exits/c2l23-04-recipe-card.jpg" alt="The Cupcakes recipe card in the Bakery listing 3 eggs, 1/3 butter, 4 tbs flour, 2 tbs sugar, 0.6 l milk and the bake at 35 minutes and 250 degrees" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=56s" target="_blank" rel="noopener">0:56</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:21</span>
+      <strong>The bread shelf hides the kitchen key</strong>
+      The back wall is stacked with bread: long loaves on the top shelf, round scored loaves below. The loaves are not decoration — one of them is a container. The round loaf with an X cut into its crust sparkles the moment the camera gets close, and tapping it hands you <b>Bread</b> first and the <b>Key</b> a second later. That key is the only way through the <b>Kitchen</b> door on the same wall, and the kitchen is where the entire second half of the level lives. If you are standing in the shop wondering why there is nothing left to do, you have not opened the bread.
+      <img src="/rooms-and-exits/c2l23-05-bread-shelf.jpg" alt="The bread shelf in the Bakery with round scored loaves, the X-scored loaf sparkling where the kitchen key is hidden" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=81s" target="_blank" rel="noopener">1:21</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:50</span>
+      <strong>Clear the cakes out of the display case</strong>
+      Back to the curved case: the six cakes sit on its shelves in pairs, each one a different colour with its own topping. Tap them in turn and the shelf empties, and once the middle of the case is clear a folded slip of paper is sitting where a cake used to be. There is no puzzle here and no order to the taps — this is a hidden-object beat dressed as a display case. The only thing to be careful about is that the slip sits <em>behind</em> the cakes: if you tap the glass and nothing happens, you are tapping the frame rather than the shelf.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=110s" target="_blank" rel="noopener">1:50</a></div>
+    </div>
+    <div class="step-card">
+      <span class="step-num">Step 7 · 2:02</span>
+      <strong>The paper says 693</strong>
+      The slip is a torn page of lined notebook paper with three digits written on it in black: <b>6 · 9 · 3</b>. Tap it and the label under it reads <b>Piece of paper</b> before it goes into the bag. This is the only written code in the Bakery, and it belongs to the second drawer on the console you already opened — the one with three plain metal windows instead of coloured ones. Photograph it mentally now, because the console is at the other end of the shop and the windows are small. In the second recording the same slip is sitting in the inventory with the same three digits, so this one does not change between runs.
+      <img src="/rooms-and-exits/c2l23-06-paper-693.jpg" alt="The torn slip of lined paper from the cake display case in the Bakery with 693 handwritten on it in black" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=122s" target="_blank" rel="noopener">2:02</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 2:05</span>
+      <strong>The plain drawer: 6 · 9 · 3</strong>
+      Back to the console. The right-hand drawer's lock is the same mechanism but with no colour in the frames, which is exactly why people miss it: the coloured lock screams “puzzle” and the grey one looks like a handle. Tap the three windows, scroll each to <b>6</b>, <b>9</b> and <b>3</b>, and the drawer releases. In our main recording the dial passes through 692 on the frame before it settles, which is a useful sanity check — if you see 690 or 600, you are still one or two clicks away rather than on a different code. The drawer contains a folded cloth with a blue floral print and a glass jar of white powder; take everything it will give you.
+      <img src="/rooms-and-exits/c2l23-07-drawer-lock-693.jpg" alt="The second drawer lock in the Bakery with three plain metal windows settled on 6-9-3" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=125s" target="_blank" rel="noopener">2:05</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 2:14</span>
+      <strong>Empty the second drawer before you leave it</strong>
+      The drawer does not hold one item. Inside there is a folded white cloth with a blue floral print, and beside it a small glass jar with a white lid and a pale powder inside — the kind of container the kitchen uses for sugar. Both sparkle, both are takeable, and the cloth in particular is easy to leave behind because it reads as drawer lining rather than as an object. Tap everything that glitters before you walk away: this level rewards emptying containers completely, and a half-emptied drawer is how people reach the oven short of an ingredient.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=134s" target="_blank" rel="noopener">2:14</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 2:27</span>
+      <strong>Unlock the Kitchen door</strong>
+      The kitchen door is set into the back wall to the right of the bread shelves: a dark wooden door with glass panes and a small sign above it reading <b>Kitchen</b>. Tap it with the <b>Key</b> from the bread loaf selected and it swings inward onto the second room. This is the level's halfway point, and the game does not warn you that you are about to change rooms — the camera simply cuts to a steel kitchen. From here on the shop is only a place you come back to in order to deliver cupcakes.
+      <img src="/rooms-and-exits/c2l23-08-kitchen-room.jpg" alt="The kitchen in the Bakery level: steel counters, a red stand mixer on the island, the range with its oven panel, the fridge and shelves of bread" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=147s" target="_blank" rel="noopener">2:27</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 2:46</span>
+      <strong>The fuse box: six toggles and a photo of a cupcake</strong>
+      On the tiled wall at the left of the range there is a grey electrical cabinet. Open the door and the inside has two rows of three coloured toggle switches — <b>red, green, red</b> across the top, <b>blue, yellow, blue</b> underneath — wired down to a small unit with a red indicator and a green indicator. Taped to the inside of the door is a photograph of a cupcake with pink frosting, a cherry and two green sticks, with a little string of red bunting above and below it. The photo is the only hint the panel offers. Work the toggles until the panel is live — the recording flips several of them, and the colours in the photo are the theme, not a labelled legend. This page does not pretend to know a rule that maps the photo to the switches, because we could not prove one; the panel is small, the puzzle is short, and brute-forcing six toggles is faster than theorising.
+      <img src="/rooms-and-exits/c2l23-09-fuse-panel.jpg" alt="The Bakery kitchen fuse box: six coloured toggle switches in two rows of three, with a photo of a cupcake taped inside the door" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=166s" target="_blank" rel="noopener">2:46</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 3:05</span>
+      <strong>Collect the five ingredients the card asks for</strong>
+      The recipe is a shopping list and the kitchen is the shop. <b>Butter</b> comes off the wooden board on the left counter, <b>milk</b> and <b>eggs</b> out of the fridge, <b>flour</b> from the labelled jar and <b>sugar</b> from the tin on the shelves — the same white-powder jar family you saw in the drawer. Pick up all five before you start mixing: the bowl will not accept a partial set, and running back across the room for the last tablespoon is the most common way to lose a minute. While you are here, grab the third <b>Baking cup</b> — the inventory stack flips from <b>2/3</b> to <b>3/3</b> when you do.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=185s" target="_blank" rel="noopener">3:05</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 3:20</span>
+      <strong>Mix: the bowl is a combination lock with no code</strong>
+      The red stand mixer on the kitchen island is the work surface. With the five ingredients in the bag, open the inventory, select the ingredients and press <b>Combine</b>: the game produces a <b>Bowl with mixed ingredients</b>. It is worth understanding what just happened, because the inventory in this level is doing the puzzle rather than the room. There is no order to the ingredients, no measuring mini-game, and no chance of failing — the only requirement is that you are holding all five at once. If <b>Combine</b> is greyed out, you are missing an ingredient, not standing in the wrong place.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=200s" target="_blank" rel="noopener">3:20</a></div>
+    </div>
+    <div class="step-card">
+      <span class="step-num">Step 14 · 4:02</span>
+      <strong>Fill the cups — you are not baking a cake</strong>
+      With the bowl of batter and the three baking cups in the bag, combine the <b>Bowl with mixed ingredients</b> with the <b>Baking cups</b>. The result is a single item called <b>Filled baking cups</b>: three ridged silicone cups, one purple, one green and one red, each filled level with batter. This is the step people skip past because they expect a cake tin, and then stand in front of the oven with a bowl that the oven will not take. The oven's input is <em>filled cups</em>, full stop. If the inventory still shows a bowl and a separate cup stack, you have not combined them yet.
+      <img src="/rooms-and-exits/c2l23-13-filled-cups.jpg" alt="The Filled baking cups item in the Bakery inventory: three ridged silicone cups in purple, green and red, filled with batter" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=242s" target="_blank" rel="noopener">4:02</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 4:15</span>
+      <strong>The oven panel: TIMER, ring, START</strong>
+      The range at the back of the kitchen has a control panel with four separate elements: a <b>TIMER</b> button on the left, a green digital display in the middle, a big temperature ring marked <b>OFF, 100, 150, 200, 250, 300, 350, 400</b> clockwise from the top, and a <b>START</b> button on the right. The recipe card gives you two numbers, so use both: press TIMER until the display reads <b>35</b>, turn the ring to the printed temperature (<b>250</b>), then START. One honest caveat, because it matters more than it should: in our main recording the ring is sitting much higher on the dial on the frame where the bake begins — the panel reads nearer <b>350</b> — and the cupcakes still come out. That tells us the timer is the number the game actually checks and the ring is more forgiving than the card implies. Set 250 first; if the bake does not start, nudge the ring up and press START again.
+      <img src="/rooms-and-exits/c2l23-10-oven-panel.jpg" alt="The Bakery oven control panel: TIMER button, green display reading 35, temperature ring marked OFF to 400 and the START button" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=255s" target="_blank" rel="noopener">4:15</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 4:30</span>
+      <strong>Take the cupcakes out</strong>
+      The bake resolves on a short wait and then the oven hands back the finished item. In our recording three cupcakes come out — <b>green</b>, <b>red</b> and <b>purple</b> — each with its own frosting swirl, and they sit in the inventory as separate objects rather than as a single stack. That matters, because the stand on the shop counter takes them one at a time. If you only see two, you lost one somewhere between the cup stack and the oven: check that all three cups went into the <b>Filled baking cups</b> item before you baked.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=270s" target="_blank" rel="noopener">4:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 17 · 4:36</span>
+      <strong>The fruit in the bag is garnish — do not stall on it</strong>
+      Along the way you will pick up a <b>Strawberry</b>, a <b>Kiwi</b> and a bowl of <b>Blueberries</b>: they sit in the inventory next to the cupcakes for the rest of the level, and in the finished cupcakes you can see the toppings they correspond to — a green slice on the green cupcake, a red berry on the red one, blueberries on the purple one. What our two recordings never show is a dedicated decorating step: there is no prompt that asks you to combine fruit with cupcake, and the level completes with the cupcakes as the oven delivered them. Treat the fruit as flavour, not as a gate. If your cupcakes are already on the stand and nothing has happened, the missing step is the oven timer, not the fruit.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=276s" target="_blank" rel="noopener">4:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 18 · 4:44</span>
+      <strong>Deliver to the silver stand</strong>
+      Back through the kitchen door to the shop. On the counter, right of the two-tier stand of pastries and chocolates, there is a small empty single-tier silver stand. That is the delivery point: select a <b>Cupcake</b>, press <b>Use</b>, tap the stand, and repeat. Each cupcake lifts out of the inventory and settles on the stand, and when the set is complete the counter rewards you with a burst of sparkles, a <b>Key</b> lying on the wood, and the drawer under the counter sliding open. This is the moment the level turns: the door you have been staring at since the first frame finally has a key in the world.
+      <img src="/rooms-and-exits/c2l23-11-cupcake-stand.jpg" alt="The cupcakes delivered to the silver stand on the Bakery counter, with the key appearing on the wood and the drawer below sliding open" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=284s" target="_blank" rel="noopener">4:44</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 19 · 4:51</span>
+      <strong>Take the key and open the EXIT</strong>
+      The key on the counter goes into the bag labelled <b>Key</b>. Walk to the glass-panelled door on the right-hand wall — the one under the green <b>EXIT</b> sign — select the key, press <b>Use</b>, and tap the door. There is no keypad on this door, no pane to dial and no code to enter: the two three-digit locks in this level were both on drawers. The door swings open, the camera pulls back to the wide shot of the shop, and the results panel lands.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=291s" target="_blank" rel="noopener">4:51</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 20 · 4:54</span>
+      <strong>Results: +50 coins, 4:54</strong>
+      The panel reads <b>LEVEL COMPLETED!</b>, a coin stack with <b>+50</b>, an efficiency bar with all ten segments lit, and <b>Time: 4:54</b>. Nothing you collected carries over — the cupcakes you spent four minutes on are gone with the room. For reference, that is one of the shortest Chapter 2 clears in our recordings; the big retail rooms run to fifteen or eighteen minutes, so if the Bakery felt small, it is.
+      <img src="/rooms-and-exits/c2l23-12-level-complete.jpg" alt="The Level Completed screen for Rooms and Exits Chapter 2 Level 23 Bakery showing +50 coins and a time of 4:54" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=tFaxHZNKuvY&t=296s" target="_blank" rel="noopener">4:54</a></div>
+    </div>
+
+    <h2>Two locks on one console<span class="accent">.</span></h2>
+    <p>The thing that stops more people in this level than anything else is not a code — it is the assumption that a piece of furniture has one lock. The wooden console against the brick wall has <b>two drawers</b>, and each drawer carries its own three-window dial on its front face. The frames are the tell: the left drawer's windows are set in <b>green, red and orange</b>, and the right drawer's windows are plain metal with no colour at all.</p>
+    <ol>
+      <li><b>The coloured dial takes 4 · 2 · 1.</b> It is the one that announces itself as a puzzle, because the coloured frames read as a colour code. They are not — the colours are decoration around a plain three-digit dial, and the code is simply the three numbers. Our two recordings both land on <b>4 · 2 · 1</b>, one at 0:53 and one at 1:24 in a completely different run.</li>
+      <li><b>The plain dial takes 6 · 9 · 3.</b> This is the lock that hides, because it looks like hardware. Its code is the only written number in the level, on the slip of lined paper you find in the cake display case. If you opened the paper and did not connect it to this drawer, you are not alone — it is the single most common dead end in the Bakery.</li>
+    </ol>
+    <p>There is a neat piece of design in the pairing: the clue for lock two is behind lock one's <em>room</em>, not behind lock one. The coloured drawer gives you the recipe, which sends you to the kitchen, which sends you back through the shop, and the paper that opens the plain drawer is sitting in a case you walk past on the way. The level is teaching you to re-search the shop after every new item, and if you skip that habit you will finish the kitchen with a full inventory and a locked drawer.</p>
+
+    <h2>The bake is the only real gate<span class="accent">.</span></h2>
+    <p>Everything else in the Bakery is a fetch: find cups, find paper, find key, find ingredients. The bake is the one place where the game checks that you have understood something, and it checks three separate things in sequence.</p>
+    <p><b>First, the container.</b> The oven will not take a bowl. It takes <b>Filled baking cups</b>, which only exists after you combine the mixed bowl with the cup stack. That is why the cup fraction matters: <b>2/3</b> means the combine will fail, and the third cup is in the kitchen, not the shop.</p>
+    <p><b>Second, the numbers.</b> The recipe card prints <b>35'</b> and <b>250°</b>, and the panel has a timer display and a ring that goes up to 400. The trap is that the panel looks like a two-dial safe and players try to find a second written number for the ring — there isn't one, the card supplies both. Set the timer to 35 and the ring to 250.</p>
+    <p><b>Third, the delivery.</b> Finished cupcakes are not the win condition; cupcakes <em>on the stand</em> are. The stand is in the other room, on the counter you have walked past a dozen times, and it is the only object in the shop that accepts a baked item. Delivering there is what spawns the key.</p>
+    <p>Put together, the chain is: <b>cups → paper → two drawers → recipe → bread key → kitchen → fuse → five ingredients → bowl → filled cups → oven → stand → exit key → door</b>. Thirteen beats, two codes, one bake. If you are stuck, find the last beat you completed and do the next one in that list — in our experience of the footage, nobody gets stuck in the middle of this chain, they get stuck believing they have finished it.</p>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <ul>
+      <li><b>“There is only one lock on the drawers.”</b> There are two, side by side, and the second one is grey. Look at both drawer fronts, not just the one with colour.</li>
+      <li><b>“The sign says four cupcakes.”</b> The <b>Today's Sweet Special</b> board behind the counter shows four cupcakes, and the level only ever wants three. It is wallpaper. The numbers that matter are on the recipe card and the slip of paper.</li>
+      <li><b>“The Cake Menu must be the flavour order.”</b> The menu strip shows four decorated cakes in blue, yellow, green and pink. Nothing in either recording uses those colours as an input. It is shop dressing over a container.</li>
+      <li><b>“The oven won't take my bowl.”</b> Correct — it takes <b>Filled baking cups</b>. Combine the bowl with the three cups first.</li>
+      <li><b>“The oven won't start.”</b> Check the timer display actually reads <b>35</b> before you press START, and check the ring is not still on OFF. The display and the ring are separate controls and both have to move.</li>
+      <li><b>“I baked the cupcakes and nothing happened.”</b> They are still in your bag. The stand on the shop counter is the delivery point; the level does not end at the oven.</li>
+      <li><b>“The EXIT door wants a code.”</b> It doesn't. It is a key lock. Every three-digit lock in this level is on a drawer.</li>
+      <li><b>“I can't find the third baking cup.”</b> It is in the kitchen, not the shop. The counter sits at <b>2/3</b> until you get there.</li>
+    </ul>
+
+    <h2>Chapter 2 levels<span class="accent">.</span></h2>
+    <p class="grid-note">Chapter 2 has twenty-six rooms; the list below reflects what is written up so far.</p>
+    <LevelSelector chapter={2} current={23} compact={true} label="Chapter 2 · No Honor Among Thieves" />
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <div class="cta-box">
+      <p>Previous written guide: <a href="/rooms-and-exits/chapter-2-level-12/">← Chapter 2, Level 12 — Jewelry Store</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits guides →</a></p>
+    </div>
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      <b>Five things</b>, stated plainly rather than smoothed over. (1) <b>The 421 clue source.</b> We can prove the code — the coloured dial reads 4 · 2 · 1 on the frame before the drawer opens, in two separate recordings — but neither recording shows the player reading a “421” anywhere in the room first, so we cannot tell you which object taught them the number. (2) <b>The oven temperature.</b> The card prints 250° and we read it twice on enlarged crops, but the ring in our main recording is nearer 350 when the bake begins and the cupcakes still come out; we do not know whether the game checks the ring at all, so the page gives you the card's number first and the recording's fallback second. (3) <b>The fuse-box rule.</b> Six coloured toggles and a cupcake photo taped inside the door is clearly a designed puzzle, but the mapping between photo and switches is not legible in either recording, so no “correct” switch pattern is printed here. (4) <b>What the coloured drawer contains.</b> Our main run takes the <b>Recipe</b> from it; the second run takes a <b>screwdriver</b> from the same drawer before anything else. Both are real, so the page describes the drawer as a container to empty rather than promising one specific item. (5) <b>The fruit.</b> Strawberry, kiwi and blueberries are collected and appear as toppings on the finished cupcakes, but no recording shows a decorating action, so we cannot say whether they are required or decorative. Everything else on this page — both codes, the recipe quantities, the oven's 35, the fuse layout, the +50 reward and the 4:54 clock — was read off the screen at least twice.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>
