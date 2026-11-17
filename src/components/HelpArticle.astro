@@ -6,6 +6,7 @@
 // Styles reuse the site's amber/cream tokens from the game pages.
 import SEOHead from './SEOHead.astro';
 import GameNav from './GameNav.astro';
+import SolverTiles from './SolverTiles.astro';
 
 export interface Props {
   title: string;
@@ -15,6 +16,7 @@ export interface Props {
   faqs?: { q: string; a: string }[];
   gameHref?: string; // CTA destination, e.g. "/akari/"
   ctaText?: string; // CTA label, e.g. "Play Akari free in your browser →"
+  solverCurrent?: string; // pass "/help/" on the help index so SolverTiles skips its self-link
 }
 
 const {
@@ -25,6 +27,7 @@ const {
   faqs = [],
   gameHref = '/',
   ctaText = '',
+  solverCurrent = '',
 } = Astro.props;
 
 const faqJsonLd = {
@@ -121,6 +124,7 @@ import SideAd from './SideAd.astro';
     {ctaText !== '' && (
       <a class="play-cta" href={gameHref}>{ctaText}</a>
     )}
+    <SolverTiles current={solverCurrent} />
   </main>
 
   <footer class="help-foot">
