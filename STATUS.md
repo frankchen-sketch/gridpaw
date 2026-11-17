@@ -402,6 +402,61 @@ GSC 近 28 天（08-20~09-16）**267 曝光 / 5 点击**，均位 13.8。按设�
 
 ---
 
+## 2026-11-17 内链整固 + IndexNow 精确提交（**已上线 `af89954`**）
+
+用户口径：**先不看流量，把现有页面之间的关联和内链补齐**。不建新 solver 页。
+
+### 实测缺口（3 处，其余原本已通）
+
+| 缺口 | 证据 |
+|---|---|
+| `/hashi/` → `/hashi/solver/` | 0 链（akari 3 处、kenken/nonogram 各 1 处，仅 hashi 漏）|
+| 7 个 `/help/*` 页 → SolverTiles | 全 0，各自孤岛 |
+| kakuro / nonogram / nurikabe → 各自 `/help/` | 0 链（仅 akari 原有 1 处）|
+
+**先前的误判**：静态 grep `href="/solver/"` 得出「4 个 solver 页零互链」是错的——互链在 `SolverTiles.astro` 组件里，组件已用于 5 个 solver 页 + 2 个攻略页。**grep 页面文件看不到组件内链接**。
+
+### 修法
+
+1. `src/pages/hashi/index.astro` — tips 段照 kenken 的 `cta-line` 模式补 solver 入口
+2. `src/components/HelpArticle.astro` — 内渲染 `<SolverTiles />`，一处改 7 个 help 页全生效；新增 `solverCurrent` prop 供索引页排自链
+3. `src/components/SolverTiles.astro` — 增加 `/help/` 条目反哺工具簇
+4. 三个游戏页 `<ol class="rules">` 后加 `/help/<game>/` 链接
+
+**commit**：`bbe30ae`（help 簇 + hashi）、`af89954`（三游戏页）
+
+### 内链终态（构建实测 + 线上复核）
+
+| 页面 | SolverTiles 条数 | → 游戏页 | → help 页 |
+|---|---|---|---|
+| `/solver/` | 7 | ✓ | ✓ |
+| 4 个 solver 页 | 各 7 | ✓ | ✓ |
+| `/help/` 索引 | 7（无自链）| ✓ | ✓ |
+| 6 个 `/help/*` 子页 | 各 8 | ✓ | ✓ |
+| `/hashi/` | — | ✓ | 新增 |
+
+GameHub 14 款游戏线上全 200。
+
+### IndexNow 改造（`2e28379`，脚本不入 dist 故无需部署）
+
+原脚本每次只提交 `sitemap-index.xml` 一条——等于告诉 Bing「站上有些东西变了」，而 IndexNow 的价值恰恰是指明**哪个 URL** 变了。
+
+新增 `--from-git <ref>`：`src/pages/**/*.astro` → 精确页面 URL；命中共享组件（`components/` `layouts/` `lib/`）或动态路由时自动追加 sitemap-index 兜底（那些页面具体 URL 不在 diff 里）。默认无参数行为不变。
+
+**顺手修掉两个真 bug**：
+- `explicitKey` 原判据「非 URL 且不以 `--` 开头」→ `--from-git HEAD~1` 的 `HEAD~1` 被当 key 发给 Bing（静默失败）。改为 `KEY_RE` 白名单 + 排除 flag 值
+- 无 `--dry-run`，改脚本只能靠真发请求验证
+
+`deploy.sh` 第 4 步已改用 `--from-git HEAD~1`。
+
+### pictomino 架构事实（旧站不在 Astro 体系）
+
+`/pictomino/` 由 `public/pictomino/`（18 个文件）直出，**不是 Astro 页面**：无 `src/pages/pictomino/`、`git ls-files` 无记录、HTML 无 Astro 生成标记、含 Grow.me 注入。改 Astro 组件不会影响它。它的 footer 已有 `/help/pictomino/`，内链不缺，但站点风格与新版脱节——以后考虑迁移或下线。
+
+### worktree 清场（2026-11-17）
+
+删除 `gridpaw-hub`（`feat/home-hub`，已并入 `a562036`）。审计确认 `gridpaw-bp3fix`（`fix/bp3-internallinks-hreflang`）与 `gridpaw-rooms`（`feat/rxe-ch2`）均无未跟踪文件、无未结束会话、分支内容已在 main——一并清场。
+
 ## 历史事件档案
 
 2026-09-21 ~ 2026-11-08 的全部按日期事件段（51 段，部署记录 / 事故复盘 / 验收数据）已搬至 `STATUS-ARCHIVE.md`「三、按日期事件段」。
