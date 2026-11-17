@@ -40,6 +40,17 @@ if [ -n "$DIRTY" ] && [ "$ALLOW_DIRTY" -eq 0 ]; then
   die "工作区有未提交的已跟踪改动。先 commit 或 stash（确需带脏上线：--allow-dirty）"
 fi
 
+# ①b src/ 下不允许有未跟踪文件
+#    build 会把它们一起编译进 dist 上线。① 只查已跟踪文件，多会话并行时
+#    "新建组件/页面但没 git add" 的半成品会静默漏网 —— 这条专治这种漏网。
+if [ "$ALLOW_DIRTY" -eq 0 ]; then
+  UNTRACKED_SRC=$(git status --porcelain --untracked-files=all -- src | awk '$1=="??"{print $2}')
+  if [ -n "$UNTRACKED_SRC" ]; then
+    printf '%s\n' "$UNTRACKED_SRC" >&2
+    die "src/ 下有未跟踪文件（新建但没 git add）：build 会把它们编译进 dist 带上线。先 commit 或挪出工作区"
+  fi
+fi
+
 # ② 不能落后 origin/main（落后 = 你的快照缺别人的东西）
 git fetch origin main --quiet
 BEHIND=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
