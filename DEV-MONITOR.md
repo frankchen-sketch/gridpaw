@@ -61,16 +61,16 @@
 
 #### ⚠️ 上条「缺的是形态」已被同站对照组修正（2026-11-17 20:00）
 
-上一版把「子目录 vs 域名首页」当成主因。同站对照组（同一域名、同一 GSC 口径、28d exact query）证明**真闸门是整站权重，不是页面形态**：
+上一版把「子目录 vs 域名首页」当成主因。同站对照组（同一域名、同一 GSC 口径、28d 10-19..11-16 exact query）证明**真闸门是整站权重，不是页面形态**：
 
 | exact query | US 月量 | 我方落点 | pos |
 |---|---|---|---|
-| `takuzu` | 260 | `/binary/`（子目录） | **7.9** |
-| `murder sudoku` | KWP 未覆盖（KD 44.7） | `/murdoku/`（子目录） | **8.6** |
-| `binary puzzle` | 1,900 | `/binary/` | 22.2 |
-| `nonogram` | 未实测（solver 族合并桶 2,400） | `/nonogram/` | 47.7 |
-| `slitherlink` | — | `/slitherlink/` | 33.2 |
-| `kakuro` | — | `/kakuro/` | 56.5 |
+| `takuzu` | 260 | `/binary/`（子目录） | **7.9（133 imp / 3 clk）** |
+| `murder sudoku` | KWP 未覆盖（KD 44.7） | `/murdoku/`（子目录） | **8.6（214 imp / 5 clk）** |
+| `binary puzzle` | 1,900 | `/binary/` | 22.2（8 imp） |
+| `nonogram` | 未实测（solver 族合并桶 2,400） | `/nonogram/` | 54.5（13 imp） |
+| `slitherlink` | — | `/slitherlink/` | 32.0（37 imp） |
+| `kakuro` | — | `/kakuro/` | 56.5（2 imp） |
 | `cat sudoku` | 6,600 | `/meowdoku/` | **0 行 0 曝光** |
 
 ⇒ **位次随词量单调走弱**：几百/月进前 10，1,900/月掉到 22 位，未实测量级的 4-6 词掉到 30-60 位，6,600/月直接零。子目录排 head 词是常态（`murder sudoku` 甚至在 murdoku.com DR45 首页眼皮底下坐 8.6）。**`cat sudoku` 特殊在 SERP 顶部被 meowdoku.app（DR56）/ meowdoku.org（DR39）两个「品牌名=关键词」的 5 个月 EMD 首页霸占**，属赛道占位，不是形态劣势。
