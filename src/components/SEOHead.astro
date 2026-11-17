@@ -5,7 +5,7 @@
 // Requires site-config.ts in src/lib/ with ga4Id, clarityId, domain, brandName
 
 import { siteConfig } from '../lib/site-config';
-const { ga4Id, clarityId, posthogKey, domain, brandName, umamiId, umamiSrc } = siteConfig;
+const { ga4Id, clarityId, posthogKey, domain, brandName, umamiId, umamiSrc, pvuvSite } = siteConfig;
 
 export interface Props {
   title: string;
@@ -141,7 +141,7 @@ const articleJsonLd = type === 'article' ? {
 </script>
 
 <!-- Analytics (GA4 + Clarity + PostHog) — 只有生产域名上报，dev/预览域静默 -->
-<script define:vars={{ ga4Id, clarityId, posthogKey, umamiId, umamiSrc }}>
+<script define:vars={{ ga4Id, clarityId, posthogKey, umamiId, umamiSrc, pvuvSite }}>
   (function () {
     // 口径铁律：只有 gridpaw.com / www.gridpaw.com 上报。
     // localhost、127.0.0.1、局域网 IP、*.pages.dev 预览域一律静默 ——
@@ -172,14 +172,15 @@ const articleJsonLd = type === 'article' ? {
       y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
     })(window, document, 'clarity', 'script', clarityId);
 
-    // Umami 自建（2026-11-08）：mini Docker → umami.gridpaw.com（CF Tunnel）。
-    // 生产域守卫已在函数开头 return 掉 dev/预览域，此处只负责加载，与 GA4 同口径。
-    if (umamiId) {
-      var u = document.createElement('script');
-      u.defer = true;
-      u.src = umamiSrc;
-      u.setAttribute('data-website-id', umamiId);
-      document.head.appendChild(u);
+    // pvuv.ai（2026-11-18 起，接手 Umami）：真人访问 + bot/爬虫分层。
+    // 口径真源：~/workspace/research/2026-11-18-data-caliber-and-human-detection.md
+    if (pvuvSite) {
+      var pv = document.createElement('script');
+      pv.defer = true;
+      pv.src = 'https://www.pvuv.ai/f.js';
+      pv.setAttribute('data-api', 'https://in.pvuv.ai');
+      pv.setAttribute('data-site', pvuvSite);
+      document.head.appendChild(pv);
     }
 
     // PostHog (quota-friendly: autocapture off, session recording off, anonymous pageview-only)

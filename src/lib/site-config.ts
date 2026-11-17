@@ -9,6 +9,9 @@ export const siteConfig = {
   // PostHog
   posthogKey: '',
 
+  // pvuv.ai（2026-11-18 接手 Umami）：真人口径统计，site_id 见 pvuv 后台
+  pvuvSite: '8QUacZ9f',
+
   // Umami 自建已停（2026-11-18：容器 down，数据已 pg_dump 备份到 ~/umami/backups/）。
   // 留空 = 不加载脚本；真人口径改由 pvuv.ai 接手。
   umamiId: '',
