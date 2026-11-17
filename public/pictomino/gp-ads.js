@@ -14,6 +14,10 @@
  * 要挂得先改文案，没动。
  */
 (function () {
+  // ⚠️ 2026-11-17 法老撤除（全站零广告）：验证 Adsterra 是否伤排名。
+  //    SideAd.astro / InContentAd.astro 的 ADSTERRA_OFF 同步为 true；恢复时三处一起改回 false。
+  var ADSTERRA_OFF = true;
+  if (ADSTERRA_OFF) return;
   if (window.__gpPictoAds) return;
   window.__gpPictoAds = 1;
 
