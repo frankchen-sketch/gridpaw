@@ -74,7 +74,7 @@ pnpm run deploy       # 裸版 = wrangler pages deploy + IndexNow 提交（勿�
 - SEOHead：`src/components/SEOHead.astro`（从 site-config.ts 读 GA4/Clarity）
 - 搜索：pagefind
 - llms.txt：索引 `public/llms.txt` 手维护；`public/llms-full.txt` = `scripts/gen-llms-full.mjs` 构建期生成（build 链内 astro build 前跑，`public/*.txt` 忽略规则已盖，不入库）
-- IndexNow：`scripts/indexnow-ping.mjs`（key 自动从 `public/<key>.txt` 探测，不硬编码；Bing Webmaster 已注册）
+- IndexNow：`scripts/indexnow-ping.mjs`（key 自动从 `public/<key>.txt` 探测，不硬编码；Bing Webmaster 已注册）。默认提交 sitemap-index；**`--from-git <ref>` 按 git diff 推精确变更页**（`src/pages/**/*.astro` → 页面 URL，共享组件/动态路由改动自动追加 sitemap 兜底），部署脚本已接入；`--dry-run` 只打印不发请求。判据：改动来源若含 `components/` `layouts/` `lib/`，具体受影响页不在 diff 里，靠 sitemap + `sitemap-lastmod.mjs` 的 lastmod 引导抓取
 - 部署：Cloudflare Pages（域名 gridpaw.com）
 
 ## 关键约定
