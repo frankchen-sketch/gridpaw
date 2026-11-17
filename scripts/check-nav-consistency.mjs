@@ -19,3 +19,25 @@ if (missing.length) {
   process.exit(1);
 }
 console.log(`✓ 导航一致：GameSwitcher ${new Set(sw).size} 游戏 ⊆ GameNav ${new Set(gn).size} 游戏`);
+
+// pictomino 是 public/ 下的手写 HTML 旧站，它的 game-switcher 是 GameSwitcher 的手写复制品。
+// 2026-11-17 实测它只链 3 款（新版已 14 款），玩家在 /pictomino/ 看不到 11 款游戏。
+// 这里做单向提示而非 fail：旧站欠账不该卡整个构建，但新游戏上线时漏同步必须被看见。
+const PICTOMINO_HTML = 'public/pictomino/index.html';
+try {
+  const pmHtml = readFileSync(PICTOMINO_HTML, 'utf8');
+  const menu = pmHtml.match(/<div class="game-switcher-menu">([\s\S]*?)<\/div>/);
+  if (menu) {
+    const pmHrefs = new Set([...menu[1].matchAll(/href="([^"]+)"/g)].map((m) => m[1]));
+    const pmMissing = [...new Set(sw)].filter((h) => !pmHrefs.has(h));
+    if (pmMissing.length) {
+      console.warn(`⚠ pictomino 导航缺 ${pmMissing.length} 款游戏（/pictomino/ 的 127 users/28d 看不到这些）：`);
+      for (const h of pmMissing) console.warn(`    ${h}`);
+      console.warn(`  同步进 ${PICTOMINO_HTML} 的 game-switcher-menu（手写复制品，不会自动跟着 Astro 组件变）。`);
+    } else {
+      console.log(`✓ pictomino 导航一致：${new Set(sw).size} 款全在 hand-written menu 里`);
+    }
+  }
+} catch {
+  // pictomino 站不存在或结构变了：不阻塞，交给人工注意
+}
