@@ -33,6 +33,32 @@
 
 **判据（写死）**：任一站 `visits` 非 0，或任一目标词（arrows puzzle / meowdoku / train tracks puzzle）进前 10 → 升级为实质威胁，重开「是否加页 / 加语言」议题；达标前不因竞品存在而改站。
 
+### EMD 抢注层 — 品牌/品类直拼域名首页（2026-11-17 新增）
+
+比「同型内容站」更硬的一层：**域名直拼目标词、首页承接**。哥飞方法论原话（knowledge_ask 2026-11-17，教程 2024-08-13）：「主关键词用域名首页来做，二级关键词用子目录来做」+「先找搜索量小、竞争度低的词做站」。**这类站不是竞品站，是「同一盘位的更优形态」——它们的 DR 往往很低但排在前十，因为 EMD 首页 = 全站权重聚焦在一个词上。**
+
+实测谱系（2026-11-17，RDAP + TabAPI DR/traffic）：
+
+| 域名 | 注册 | DR | 月访（2026-10） | 承接词 | 状态 |
+|---|---|---|---|---|---|
+| **meowdoku.app** | 2026-06-02 | **55** | **231,118**（4.1 页/访，跳出 47%） | `meowdoku` #1 / `cat sudoku` #1 / `cat sudoku online` #1 | 头部在位，五个月做到 23 万 |
+| **meowdoku.org** | 2026-06-01 | 40 | **491,072**（2.3 页/访，跳出 55%） | `meowdoku` #1 / `cat sudoku` #8 | sitemap 349 URL，含 /ja /pt-br /zh-tw；写 fan-made / not affiliated，无授权痕迹 |
+| meowdoku.games | —（RDAP 无 registration） | 6 | 3,407 | — | 有 /ko /es |
+| meowdoku.us | 2026-08-03 | 0 | 458 | — | 有 /ru /pt |
+| meowdoku.online | 2026-06-01 | 0 | **0**（9 月 604 → 归零） | — | **做废判例**：site: 仅 1 页，流量归零 |
+| meowdokuonline.net | 2026-07-29 | 未测 | 未量化 | — | 在 `meowdoku online` 前 20 见到 |
+| **catsudoku.org** | **2026-10-14** | 3.5 | 267 | `cat sudoku` | 一个月前抢注，site: 已收录 3 页（/ /how-to-play/ /games-like-cat-sudoku/） |
+| **catsudoku.net** | **2026-11-15** | 未测 | 未测 | `cat sudoku` | **两天前刚抢注**，19KB 首页，title 直写 "Cat Sudoku: Play the Cat Logic Puzzle Free Online" |
+| catsudoku.app | 2026-08-03 | 未测 | 无响应 | — | 已注未启用 |
+| catsudoku.com | 2019-01-12 | — | — | — | 被无关站占（Sunrise Tornado），非赛道 |
+| catsudoku.io / meowdokupuzzle.com | **未注册（RDAP 404，2026-11-17 实测）** | — | — | — | 仍空 |
+
+**读法（写死）**：
+1. **同一周双站开跑 = 团队行为不是偶然**：meowdoku.app 与 meowdoku.org 注册差 1 天、双双五个月做到 23 万 / 49 万月访。**「EMD 首页 + 内容站」在 meowdoku 系已被证明跑通**，不是理论。
+2. **窗口按周计不按月计**：`cat sudoku` 词族的 EMD 在 2026-10-14（.org）与 2026-11-15（.net）两次被抢，间隔仅一个月。任何「先看看再说」在这个词族上等于放弃。
+3. **我方形态劣势已定量**：`/meowdoku/` 是通用谜题站（整站 DR 4.5）的子目录，title/H1/H2/H3/FAQ 全部织入 `cat sudoku`（10-30 上线，线上 curl 逐条验到），但 GSC **90d 精确词 `cat sudoku` = 0 曝光**、词族全量仅 57 imp。**on-page 满分 + 排名为零 = 缺的是形态（域名首页）不是文案。**
+4. **判据**：`cat sudoku` 词族是否开独立域名首页 = **战略决策（破「2027-01-04 前只巩固不扩张」战表），必须法老拍板**；本文件只记证据，不预设结论。可注册状态每月复核一次（RDAP 免费）。
+
 **判据首测（2026-11-13 20:00，TabAPI Google SERP country=us ×5 查询）**：`meowdoku` / `meowdoku tips` / `meowdoku hints` / `arrows puzzle` / `train tracks puzzle` 五个 SERP 的前 10 **均无 puzzledoku.com，也均无 traintrackspuzzle.com**（target-word 层未触发）。同测结论：meowdoku 族 SERP 是平台墙（meowdoku.org 占 2-3 席 + Reddit + YouTube×2-3 + FB + nairaland），**我方 exact `meowdoku` 仅 pos 14.6 / 0 点击**、流量来自 tips/策略长尾（`meowdoku tips` 1,229 imp / 42 clk / pos 8.5，query 维度 28d）⇒ 内容站打不进品牌头部，**不投品牌防御页**；竞品的 games-like-* 页同样没进榜 = 此路对内容站无效。下次复查：每月一次 visits（两站），SERP 只在「visits 非 0 或我方排名明显下滑」时再测。
 
 ## 霸主层 — 参照系（不监控，SERP 里打不过的对象）
