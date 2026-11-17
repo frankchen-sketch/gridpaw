@@ -94,7 +94,11 @@ if grep -qE "Deployment alias URL: https://[a-z0-9-]+\.gridpaw\.pages\.dev" /tmp
 fi
 
 say "── 4/5 IndexNow ──"
-node scripts/indexnow-ping.mjs 2>&1 | tail -2 || say "⚠ IndexNow 失败（不阻塞上线）"
+# --from-git HEAD~1：只提交本次真正改动的页面，而不是笼统的 sitemap index。
+# 共享组件（components/layouts/lib）或动态路由有改动时，脚本会自动追加 sitemap
+# index 兜底——那些页面的具体 URL 不在 diff 里。多 commit 合并成一次部署时，
+# HEAD~1 只覆盖最后一个 commit，其余页面靠 sitemap 兜底，属预期。
+node scripts/indexnow-ping.mjs --from-git HEAD~1 2>&1 | tail -8 || say "⚠ IndexNow 失败（不阻塞上线）"
 
 say "── 5/5 线上自检（证明生产跑的是这份构建）──"
 CB="$RANDOM$RANDOM"
