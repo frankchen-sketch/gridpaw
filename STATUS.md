@@ -10,12 +10,14 @@
 | 优先级 | 事项 | 入口 |
 |---|---|---|
 | **P0** | BP3 L54-136（英 83 关，1 关/页）+ 德语 L31-137 | `research/2026-11-08-bp3-expansion-plan.md` |
-| **P1** | R&E Ch1 L12-31（约 20 关，等 BP3 铺完再开） | `research/2026-11-08-rxe-recheck.md` |
+| **P1** | R&E Ch1 L12-31（约 20 关，Ch2 已铺满后的下一条铺关线） | `research/2026-11-08-rxe-recheck.md` |
 | — | 2027-01-04 前只巩固不扩张（第一枪 R&E、第二枪 akari solver） | `research/2026-11-05-battle-plan.md` |
 | — | 方向定义 | `research/2026-11-05-next-direction.md` |
 | — | 0924 横向拓展前置验证（GamePix 供给侧 + DR 差距） | `research/2026-09-24_横向拓展前置验证_GamePix供给侧与DR差距.md` |
 
 ## 现役状态摘要（截至 2026-11-09）
+
+- **R&E Chapter 2 全 26 关上线（2026-11-17 部署，生产指纹 `9991008`）**：Chapter 2「No Honor Among Thieves」26 关攻略全 live（L1-L3 早前并入，L4-L26 本次一次上线），合并 commit `9991008`（分支 `feat/rxe-ch2` → `2d1da0d`）。逐关 4.0k-6.3k 词、12-21 张 1200×594 图、FAQ 8-10 条；hub 26 条 ch2 链接、计数 26 of 26（ch1 仍 11 of 11）、title 改「Chapter 1 & 2 Level Guides (2026)」；build 533 页、sitemap 26 关全收录、IndexNow 推 23 个新 URL。线上 26/26 全 200。**两个随机码判例**：L12 门格（两次运行 8·4·9·1 vs 8·6·9·1）、L22 出口键盘（三条录像分别用 8/18/24 开门）——页面一律不印单一码，改为「读你自己的拼图/逐个试候选」，竞品全部写死一个码。**验收纪律**：数字必须回 1080p 原帧放大复核（L23 纸片在 1200×594 成品图上两读都像 699，原帧 8 倍确认是 693）；配图逐张 vision 对账（子 agent 前三批共 4 张假图）。制作配方 + 铁律 1-13 → skill `game-guide-page-playbook`
 
 - **广告（Adsterra，2026-11-07 恢复）**：banner 四档互斥（桌面左 160×600 / **右 160×300（11-16 起独立单元）** / 平板 728×90 / 移动 320×50）+ 正文 300×250（**11-16 起手机端多一个底部第二信息流，零预留高度**）；`PLAY_SURFACES` 白名单（104 页 play surface）**2026-11-16 起从「零广告」改为「只出 ≥1350 桌面侧栏」**——手机顶部位/平板 sticky/手机底部第二信息流在 play surface 上一个都不出；`NEVER_ADS` 全零四页 = `/murdoku`·`/murdoku/trail`（main 1152px 布局债，侧栏会盖网格）+ 售卖页 `/unlock-all`·`/ad-free`。**新增游戏页/解题器页/单关页必须同步加进 PLAY_SURFACES 或 PLAY_PREFIXES**。依据：29 页 ×1440/1350 两档 `elementFromPoint` 采样，侧栏矩形内棋盘格/按钮/文字零命中；dist 实测侧栏 477 页、sticky·顶部·mf 各 372 页、无 SideAd 12 页；`/crazy-cleanup` 11-16 已接入 SideAd（meta 的 "no ads" 改 "no sign-up"），`/pictomino` 走静态副本 `public/pictomino/gp-ads.js`（只桌面侧栏，只挂 game.html + index.html，那 6 页正文写着 no ads 的未挂）。**未填充不发标签**：`is-filled` 只在 slot 出现 iframe 时加，未填充时侧栏只留空白 gutter、sticky 整块撤掉并撤 body padding。**铁律：任何一起跳转投诉=当天撤不辩护**。Journey 上线前必须先撤 Adsterra 并清 ads.txt 的 google 行。Native 卡片不恢复（例外：**11-16 起 8 个主力流量页限时对账实验**）。**Adsterra 约束：同站同格式同尺寸只能有一个 unit**——想加第二个位只能挑没用过的尺寸（160×300/468×60 等），同 key 二次调用效果待验。机制与实测见 AGENTS.md「广告现役状态」+ skill `ad-network-monetization`
 - **文案一致性（2026-11-17 清偿）**：全站 159 处「no ads」不实承诺已改（29 页文案 + 149 处 Akari 促销卡 → no sign-up / no paywall / no download）；现存「no ads」只剩三种真话：首页「no ads inside the puzzle」、Akari 页「no ads over the board」（侧栏在 gutter 不压棋盘）、/unlock-all 的「every answer in one page, no ads」，以及 pictomino 那 6 个确实无广告的页。**以后再开任何新广告位，先 `grep -rn 'no ads' src/pages`**。
@@ -111,9 +113,9 @@ GSC 近 28 天（08-20~09-16）**267 曝光 / 5 点击**，均位 13.8。按设�
 | 优先级 | 事项 | 状态 / 入口 |
 |---|---|---|
 | **P0** | BP3 L54-136 英 83 关 + 德语 L31-137 | 见「现役执行入口」 |
-| **P1** | R&E Ch1 L12-31（约 20 关，等 BP3 铺完再开） | `research/2026-11-08-rxe-recheck.md` |
+| **P1** | R&E Ch1 L12-31（约 20 关，Ch2 已铺满后的下一条铺关线） | `research/2026-11-08-rxe-recheck.md` |
 | **实验中** | **BP3「Unlock all」支付意向测试**：top10 关卡页挂横条 + `/unlock-all/` 落地页（**价格未定**——展示 "One-time purchase / price announced at launch"，mailto 收集意向、未接支付），埋 `unlock_click` 四通道。**判决规则：14 天内 ≥2% 点击 → 建支付；<0.5% → 永久放弃** | **已上线（2026-11-09）**，worktree/分支已清理并入 main；主 commit `454f1a8` + 文案 `25d3323`；测算依据 `research/2026-11-09-gridpaw-subscription-model.md`。**判定日 2026-11-23**，查数 `SELECT count(DISTINCT guest_id), count(*) FROM gp_event WHERE event_name='unlock_click'`（D1 表 `gp_event`） |
-| **待上线** | **BP3 葡语（巴西）top12 关卡页**：按巴西 GSC 曝光排序 6/33/17/16/31/45/3/42/24/40/21/22（覆盖 68% 巴西 BP3 曝光），数据驱动模板 `src/pages/pt-br/brain-puzzle-3-level-[level].astro` + `src/data/bp3-ptbr-levels.json`，12 个英文页补 hreflang=pt-BR 回程链，`/pt-br/` 首页加专区 | 分支 `feat/pt-br-bp3`（commit `b34b663`），**未 push 未部署**，等母语审读 + 事实核验两道门；细节见 NEWWORD-LEDGER。**上线后三步**：① IndexNow 自动（`deploy.sh` 内含）② 把 12 个 pt URL 插进 GSC 收录队列队首 `~/.hermes/scripts/state/gsc-index-gridpaw.json`（**别在部署前插，会 404 白烧配额**）③ 上线 2 周后查巴西葡语 query CTR（现在 3.3%，判据 ≥5%） |
+| **已上线** | **BP3 葡语（巴西）30 关全铺**（首批 top12 + 第二批 18 关，按巴西 GSC 关号热度选关）：数据驱动模板 `src/pages/pt-br/brain-puzzle-3-level-[level].astro` + `src/data/bp3-ptbr-levels.json`，英文页补 hreflang=pt-BR 回程链，`/pt-br/` 首页专区 | **2026-11-17 已部署**（`8186ea0` 已并入 main，生产指纹 `9991008` 自检通过）；线上 `/pt-br/` 36 条内链、200。**待办**：① 把 pt URL 插进 GSC 收录队列队首 `~/.hermes/scripts/state/gsc-index-gridpaw.json` ② 上线 2 周后查巴西葡语 query CTR（原来 2.37%，判据 ≥5%） |
 | 待办 | 对账 Pages 报告 27 条「已发现不抓取」× sitemap 68 条（GSC UI 导出，API 不出清单） | §二 |
 | 待办 | **Pictomino 实现 easy/hard 模式**（2026-09-28 拍板）：落地页宣传 3×3 + 7 命，`game.html` 只实现 `mode=daily` | `public/pictomino/game.html` + `help-docs/pictomino.md` |
 | 待办 | **Phase 2 裁决点 = 11-10**（月度体检 cron `1041dc2740c8`）：takuzu / hashiwokakero 词位若动了 → 补 blog/glossary 页型 | §六 |
