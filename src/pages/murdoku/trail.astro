@@ -918,7 +918,7 @@ const description = "Five linked murder sudoku cases, one Cat Burglar. Solve eac
     });
     document.getElementById("wordBtn").addEventListener("click", submitWord);
     document.getElementById("wordInput").addEventListener("keydown", function (e) {
-      if (e.key === "Enter") submitWord();
+      if (e.key === "Enter" && !e.isComposing && e.keyCode !== 229) submitWord();
     });
 
     function closeWin() {
