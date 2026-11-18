@@ -33,7 +33,16 @@
   }
   function looksLikeBot() {
     var ua = navigator.userAgent || '';
-    return !ua || /bot|crawl|spider|headless|python|curl|wget|monitor/i.test(ua);
+    if (!ua || /bot|crawl|spider|headless|python|curl|wget|monitor/i.test(ua)) return true;
+    // 2026-11-18 补：无头/服务器浏览器 tz 恒为 'UTC'，真人几乎不会（英国 Europe/London、
+    // 冰岛 Atlantic/Reykjavik 都不是裸 UTC）。11-16/17 有 634/756 个伪装成
+    // "X11; Linux x86_64 … Chrome/148" 的爬虫 UA 无 bot 关键词，全靠这条识别：
+    // 每个 guest_id 只发 1 条 visit、referrer 空、tz=UTC、集中爬 R&E chapter-2 关卡。
+    // 与 src/lib/funnel-track.ts 保持同构。
+    try {
+      if (Intl.DateTimeFormat().resolvedOptions().timeZone === 'UTC') return true;
+    } catch (e) { /* Intl 不可用：宁可不判，避免误伤 */ }
+    return false;
   }
   // 自测标记（2026-10-19）：站长设备 localStorage.setItem('gp_selftest','1') 后全事件带
   // metadata.selftest=true，分析查询一律排除。与 src/lib/funnel-track.ts 保持同构。
@@ -66,7 +75,9 @@
     } catch (e) {}
     var fresh = 'anon-' + (window.crypto && crypto.randomUUID
       ? crypto.randomUUID()
-      : Date.now() + '-' + Math.random().toString(36).slice(2));
+      // toString(36) 会产出 g-z，被服务端 /^anon-[0-9a-fA-F-]{6,70}$/ 拒收
+      // 后每请求签发新 UUID → 身份碎片化（2026-11-18 修）
+      : Date.now().toString(16) + '-' + Math.random().toString(16).slice(2, 10));
     try { localStorage.setItem('gp_anon_id', fresh); }
     catch (e) {
       try { sessionStorage.setItem('gp_anon_id', fresh); } catch (e2) {}

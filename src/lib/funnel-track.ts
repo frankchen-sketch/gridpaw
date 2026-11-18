@@ -56,9 +56,21 @@ export function referrerHost(): string {
 }
 
 // 轻度 bot 标记：gridpaw 约一半会话来自机房（STATUS.md），先记后滤
+// 2026-11-18 补：UA 里没有 bot 关键词的伪装爬虫靠时区识别。无头/服务器浏览器
+// resolvedOptions().timeZone 恒为 'UTC'，真人几乎不会（英国是 Europe/London，
+// 冰岛是 Atlantic/Reykjavik，都不是裸 'UTC'）。实测 11-16/17 出现 634/756 个
+// "X11; Linux x86_64 … Chrome/148 … Safari/537.36" 访客：每个 guest_id 只发 1 条
+// visit、referrer 为空、tz=UTC、集中爬 /rooms-and-exits/chapter-2-level-*。
+// 不加这条它们会被当日活，把 Direct 撑到 64%、掩盖真实跌幅（2026-11-18 对账实锤）。
 function looksLikeBot(): boolean {
   const ua = navigator.userAgent || '';
-  return !ua || /bot|crawl|spider|headless|python|curl|wget|monitor/i.test(ua);
+  if (!ua || /bot|crawl|spider|headless|python|curl|wget|monitor/i.test(ua)) return true;
+  try {
+    if (Intl.DateTimeFormat().resolvedOptions().timeZone === 'UTC') return true;
+  } catch {
+    /* Intl 不可用：宁可不判，避免误伤真实用户 */
+  }
+  return false;
 }
 
 // 自测标记（2026-10-19）：站长自己的设备在 gridpaw.com 控制台执行
@@ -91,9 +103,12 @@ export function getAnonId(): string {
     const ss = sessionStorage.getItem('gp_anon_id');
     if (ss) { memAnonId = ss; return ss; }
   } catch { /* 存储被拒，降级 */ }
+  // fallback 必须符合服务端 /^anon-[0-9a-fA-F-]{6,70}$/：toString(36) 会产出 g-z，
+  // 正则拒收后服务端每请求签发新 UUID，身份彻底碎片化（2026-11-18 修；随机性对
+  // 访客去重足够，不需要加密强度）
   const fresh = 'anon-' + (typeof crypto !== 'undefined' && crypto.randomUUID
     ? crypto.randomUUID()
-    : Date.now() + '-' + Math.random().toString(36).slice(2));
+    : Date.now().toString(16) + '-' + Math.random().toString(16).slice(2, 10));
   try { localStorage.setItem('gp_anon_id', fresh); }
   catch {
     try { sessionStorage.setItem('gp_anon_id', fresh); }
