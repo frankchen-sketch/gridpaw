@@ -517,6 +517,31 @@ GameHub 14 款游戏线上全 200。
 - **入口覆盖（同日修正）**：`pnpm lint` 本身已含 `lint:changed`。起因是验证时发现全量 lint 为存量关了 `no-unused-vars`，新增文件里的未用变量只有手动跑 `verify` 才查——而 `deploy` 前置的是 `lint`，等于线上路径漏检。现在 lint / deploy / verify 三个入口一致
 - 依据与踩坑：`~/workspace/research/2026-11-18-lauren-tan-agent-coding-spec.md`
 
+## 2026-11-18 深夜 · YouTube facade 上线 + R&E Chapter 3 开工
+
+### 性能：裸 iframe 全部改 click-to-load facade（`7085556`）
+
+实测链（R&E L6 线上）：裸 iframe 页面 load **9,462ms / 65 请求** → CDP 屏蔽第三方 **931ms / 28 请求**。拆解：YouTube iframe 7,260ms + Grow by Mediavine 1,775ms + pvuv/Clarity/gtag 各 ~1.7s。改 facade 后 live **4.5s**。
+
+改动范围：`SEOHead.astro` 加全局 CSS + 事件委托脚本（一份，全站生效）；**322 个静态页**批量替换（`gp_yt_replace.py` 正则抓 `<iframe ... youtube ...>` 提 11 位 videoId）；2 个动态模板手工改（`RoomGuideLayout.astro`、`pt-br/brain-puzzle-3-level-[level].astro`）。dist 验证：552 HTML / 352 facade / **0 YouTube iframe**；CSS 实为 Astro 内联进每页 HTML，**4,199 字符**。
+
+**三硬约束（已入 AGENTS.md）**：① 缩略图 `loading="lazy"` + 显式 width/height；② 必须 `onerror` 回退 `hqdefault.jpg`（实测 3 个视频里 1 个没 maxres）；③ `data-yt` 只填 11 位 videoId。另：时间戳链接必须 `youtube.com/watch` —— **`youtube-nocookie.com` 不支持 `/watch` 路径**（de 两页曾整批写错，8 处已修）。外部 iframe 一律先问「能否改成点击加载」。
+
+### R&E：Chapter 3 开工（`a5a07a2`）
+
+关卡表钉死（levelsolve.com 全表核对）：游戏 **105 关**；Ch1「Wicked Games」L1–11；Ch2「No Honor Among Thieves」L12–37；**Ch3「Murder Dressed in White」L38 起、共 15 关**；Ch4 已存在（GSC query `chapter 4 level 1` 信号）。
+
+**「铺到 50」口径 = Ch3 前 13 关**（37 页 + 13 = 50）。第 1 关 **Dining Room 已上线**：2:42 录像（`bLoW8bODdeg`）1fps 抽 165 帧 → 6s 步长扫读网格定位谜题 → 两个关键码各两次独立读数（3 位锁 **358** = 算式 13×3×9−2+9；4 位保险箱 **8563** = 皱纸片）→ 9 张 1200×594 出图 → 326 行页面（FAQ 10 + 物品表 13 行 + 10 step-card + 两节诚实标注）。
+
+`rooms-and-exits-levels.json` 已加 Chapter 3（1 live + 14 pending，pending 只渲染 span 不生成死链）。hub 加 Chapter 3 区块。
+
+### 口径备忘
+
+- R&E 38 页 IndexNow 已推（hub + ch1 11 + ch2 26，HTTP 200）
+- 素材产线自给：`research/2026-11-07-rxe-level-recipe.md`（yt-dlp → ffmpeg 抽帧 → PIL 出图），不需要外部素材
+- 原帧尺寸是 **1920×864**（不是 1080，上下有黑边），出图 `crop(0,0,1920,864) → 1200×594`
+- 12 关并行制作中（4 个子 agent × 3 关）
+
 ## 历史事件档案
 
 2026-09-21 ~ 2026-11-08 的全部按日期事件段（51 段，部署记录 / 事故复盘 / 验收数据）已搬至 `STATUS-ARCHIVE.md`「三、按日期事件段」。
