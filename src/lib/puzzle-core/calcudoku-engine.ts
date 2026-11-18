@@ -29,7 +29,6 @@ const OPS_PAIR: Cage['op'][] = ['+', '-', '×', '÷'];
 // ── Latin square generation (randomized backtracking) ───────────────────────
 function makeLatinSquare(N: number, rng: () => number): Int8Array {
   const vals = new Int8Array(N * N).fill(-1);
-  const rows: number[][] = Array.from({ length: N }, () => []);
   const usedCol: boolean[][] = Array.from({ length: N }, () => Array(N).fill(false));
   const digits = Array.from({ length: N }, (_, i) => i + 1);
 
@@ -41,7 +40,6 @@ function makeLatinSquare(N: number, rng: () => number): Int8Array {
     }
     for (const v of digits) {
       if (usedCol[v - 1][r]) continue;
-      vals[r * N + r] === -1; // noop; index math below
     }
     // backtracking over columns
     const usedRow = new Set<number>();

@@ -91,8 +91,6 @@ export function makeLoop(rows: number, cols: number, rng: () => number, minLen: 
         }
       }
     }
-    // re-flood: everything is one comp now IF bridges worked; simple check
-    s = s; // (verified below via boundary check; scatter retry handles failures)
   }
 
   // fill holes: any zero-region not touching the outer border becomes 1
@@ -231,7 +229,7 @@ export function countSolutions(puzzle: SlitherPuzzle, limit = 2): { count: numbe
     return { introduced };
   };
 
-  const undoCell = (applied: { introduced: number[] } | null, r: number, c: number, mask: number) => {
+  const undoCell = (applied: { introduced: number[] } | null, r: number, c: number, _mask: number) => {
     if (!applied) return;
     const eIdx = [cellTop(r, c), cellBottom(r, c), cellLeft(r, c), cellRight(r, c)];
     const introducedSet = new Set(applied.introduced);

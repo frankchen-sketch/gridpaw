@@ -6,12 +6,18 @@
     "dev": "astro dev",
     "build": "node scripts/check-nav-consistency.mjs && node scripts/check-indexnow-key.mjs && node scripts/gen-build-info.mjs && node scripts/gen-llms-full.mjs && node scripts/bundle-engine.mjs && astro build && node scripts/stamp-sw.mjs && node scripts/fix-sitemap.mjs && node scripts/sitemap-lastmod.mjs",
     "preview": "astro preview",
-    "deploy": "npx -y wrangler pages deploy dist --project-name gridpaw --commit-dirty=true && node scripts/indexnow-ping.mjs --from-git HEAD~1",
+    "deploy": "pnpm lint && npx -y wrangler pages deploy dist --project-name gridpaw --commit-dirty=true && node scripts/indexnow-ping.mjs --from-git HEAD~1",
+    "lint": "oxlint src scripts --deny-warnings && node scripts/lint-conventions.mjs",
+    "lint:fix": "oxlint src scripts --fix",
+    "lint:changed": "node scripts/lint-changed.mjs",
     "bundle-engine": "node scripts/bundle-engine.mjs",
     "deploy:safe": "bash scripts/deploy.sh"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
     "astro": "^5.0.0"
+  },
+  "devDependencies": {
+    "oxlint": "1.94.0"
   }
 }
