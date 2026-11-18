@@ -488,7 +488,7 @@ GameHub 14 款游戏线上全 200。
 
 ## 2026-11-18 · agent 写码闸门（oxlint + 约定检查）
 
-已入 main：`1978b68`（合 `20aed97` 装闸门 + `93bc828` lint:changed）；`ee034f0`/`ad6847f`（verify + 基准修正）在 `chore/lint-baseline` 待合。
+已入 main 并推送：`1978b68`（合 `20aed97` 装闸门 + `93bc828` lint:changed）→ `1ee459b`（verify + 基准修正）→ `8343032`（lint 入口并上 lint:changed）。worktree 与分支已清场。
 
 - 提交前 `pnpm verify`；`deploy` 已前置 `pnpm lint`
 - 只开 `correctness` 类；`no-unused-vars` 只对**改动文件**生效（`scripts/lint-changed.mjs`），存量不阻塞——动到哪个文件，哪个文件必须干净
