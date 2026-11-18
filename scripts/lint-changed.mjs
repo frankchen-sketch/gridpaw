@@ -3,6 +3,7 @@
 // 这是 Lauren Tan 的「只对新增报错」：存量不清也不挡开发，但动到哪个文件，哪个文件就必须干净。
 // 跑法：pnpm lint:changed    （可设 LINT_BASE=<ref> 换基准，默认 origin/HEAD）
 import { execSync } from 'node:child_process';
+import { join, relative } from 'node:path';
 
 const SRC = /\.(ts|tsx|js|jsx|mjs|cjs|astro)$/;
 // 只放能挡真错误的规则。no-useless-escape / no-useless-catch / no-this-alias 是风格规则，
@@ -21,7 +22,14 @@ const touched = [
   ...git('git ls-files --others --exclude-standard'),
 ];
 
-const files = [...new Set(touched.filter((f) => f && SRC.test(f) && !SKIP.test(f)))];
+const gitRoot = (git('git rev-parse --show-toplevel')[0] || '').trim();
+// git 返回相对仓库根的路径；仓库根不在当前目录时要换算（hexa 的仓库根在 site/ 上一层）
+const files = [...new Set(
+  touched
+    .filter((f) => f && SRC.test(f) && !SKIP.test(f))
+    .map((f) => (gitRoot ? relative(process.cwd(), join(gitRoot, f)) : f))
+    .filter((f) => f && !f.startsWith('..') && !f.startsWith('/')),
+)];
 if (!files.length) {
   console.log('lint:changed — 无改动的源码文件，跳过');
   process.exit(0);
