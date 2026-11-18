@@ -493,6 +493,7 @@ GameHub 14 款游戏线上全 200。
 - 提交前 `pnpm verify`；`deploy` 已前置 `pnpm lint`
 - 只开 `correctness` 类；`no-unused-vars` 只对**改动文件**生效（`scripts/lint-changed.mjs`），存量不阻塞——动到哪个文件，哪个文件必须干净
 - 风格规则永久 off（`no-useless-escape` / `no-useless-catch` / `no-this-alias` / `no-new-array`）：挡不了 bug，只会逼人关闸门
+- **入口覆盖（同日修正）**：`pnpm lint` 本身已含 `lint:changed`。起因是验证时发现全量 lint 为存量关了 `no-unused-vars`，新增文件里的未用变量只有手动跑 `verify` 才查——而 `deploy` 前置的是 `lint`，等于线上路径漏检。现在 lint / deploy / verify 三个入口一致
 - 依据与踩坑：`~/workspace/research/2026-11-18-lauren-tan-agent-coding-spec.md`
 
 ## 历史事件档案
