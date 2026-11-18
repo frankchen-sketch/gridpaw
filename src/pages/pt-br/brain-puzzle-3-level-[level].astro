@@ -130,7 +130,13 @@ const cardGroups = d.stepCards || [];
     <h2>Veja a solução completa<span class="accent">.</span></h2>
     <p>{d.videoIntro}</p>
     <div class="video-wrap" id="video">
-      <iframe src={`https://www.youtube-nocookie.com/embed/${d.videoId}`} title={`Brain Puzzle 3 nível ${d.level} — vídeo da solução`} allowfullscreen></iframe>
+      <div class="yt-facade" data-yt={d.videoId} data-title={`Brain Puzzle 3 nível ${d.level} — vídeo da solução`}
+           role="button" tabindex="0" aria-label={`Assistir vídeo: Brain Puzzle 3 nível ${d.level}`}>
+        <img src={`https://i.ytimg.com/vi/${d.videoId}/maxresdefault.jpg`}
+             alt={`Brain Puzzle 3 nível ${d.level} — vídeo da solução`}
+             loading="lazy" decoding="async" width="1280" height="720"
+             onerror={`this.onerror=null;this.src='https://i.ytimg.com/vi/${d.videoId}/hqdefault.jpg'`} />
+      </div>
     </div>
 
     <h2>Passo a passo do nível {d.level}: cada movimento na ordem<span class="accent">.</span></h2>

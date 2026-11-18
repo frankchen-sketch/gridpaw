@@ -234,6 +234,60 @@ const articleJsonLd = type === 'article' ? {
   }
   trackVisit(location.pathname);
 </script>
+<!-- YouTube click-to-load facade（2026-11-18 性能修复，实测省 7.2s/页）
+     背景：324 个攻略页各嵌一个 YouTube iframe，实测 load 9,462ms 里 7,260ms 是 YouTube
+     （iframe 拉起的 Mediavine/Reco/Snowplow 等 30+ 第三方请求）。改成缩略图 + 点击才载 iframe。
+     用法：<div class="yt-facade" data-yt="VIDEO_ID" data-title="标题"><img ...></div>
+     约束：缩略图走 i.ytimg.com（YouTube CDN），必须 loading="lazy" + 显式宽高（防 CLS）。 -->
+<style is:global>
+  .yt-facade {
+    position: relative; display: block; width: 100%; aspect-ratio: 16 / 9;
+    background: #0b0b0f; overflow: hidden; border-radius: 12px; cursor: pointer;
+    border: 0; padding: 0; margin: 0; text-align: inherit;
+  }
+  .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+  .yt-facade img { display: block; width: 100%; height: 100%; object-fit: cover; opacity: 0.88; transition: opacity 0.15s; }
+  .yt-facade:hover img, .yt-facade:focus-visible img { opacity: 1; }
+  .yt-facade::after {
+    content: ""; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: 68px; height: 48px; border-radius: 12px; background-color: rgba(0,0,0,0.72);
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 68 48'%3E%3Cpath fill='%23fff' d='M26 34V14l18 10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: center; background-size: contain;
+    pointer-events: none;
+  }
+  .yt-facade:hover::after, .yt-facade:focus-visible::after { background-color: #d33; }
+  .yt-facade iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+  .yt-facade.is-loaded::after { display: none; }
+</style>
+<script>
+  // 事件委托：一次绑定覆盖全站 all facade
+  (function () {
+    function load(el) {
+      if (!el || el.dataset.loaded) return;
+      var id = el.getAttribute('data-yt');
+      if (!id) return;
+      el.dataset.loaded = '1';
+      el.classList.add('is-loaded');
+      var ifr = document.createElement('iframe');
+      ifr.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0';
+      ifr.title = el.getAttribute('data-title') || 'Video walkthrough';
+      ifr.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+      ifr.setAttribute('allowfullscreen', '');
+      ifr.setAttribute('frameborder', '0');
+      el.replaceChildren(ifr);
+    }
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('.yt-facade') : null;
+      if (el) load(el);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      var el = e.target;
+      if (el && el.classList && el.classList.contains('yt-facade')) { e.preventDefault(); load(el); }
+    });
+  })();
+</script>
+
 <script is:inline src="/hof-banner.js"></script>
 
 <!-- Service Worker registration (PWA: offline daily + install prompt). Prod-HTTPS only;

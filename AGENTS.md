@@ -80,6 +80,19 @@ pnpm run deploy       # 裸版 = wrangler pages deploy + IndexNow 提交（勿�
 
 ## 关键约定
 - **Astro 内联 script 不被 Vite 打包**——引擎必须用 `<script is:inline src="...">` 加载
+- **YouTube 嵌入一律用 click-to-load facade，禁止裸 `<iframe>`**（2026-11-18 性能修复，`perf/youtube-facade`）
+  - 实测：裸 iframe 让页面 load 从 931ms 涨到 9,462ms（YouTube 自身 7,260ms + 拉起的 Mediavine/Reco/Snowplow 等 30+ 第三方请求），全站 352 页受影响
+  - facade 的 CSS/JS 在 `src/components/SEOHead.astro`（一份全局，事件委托，全站生效），页面只需写 HTML：
+    ```html
+    <div class="yt-facade" data-yt="VIDEO_ID" data-title="标题" role="button" tabindex="0" aria-label="Play video: 标题">
+      <img src="https://i.ytimg.com/vi/VIDEO_ID/maxresdefault.jpg" alt="标题"
+           loading="lazy" decoding="async" width="1280" height="720"
+           onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/VIDEO_ID/hqdefault.jpg'">
+    </div>
+    ```
+  - 三条硬约束：① 缩略图必须 `loading="lazy"` + 显式 `width/height`（防 CLS，也防抢首屏带宽）；② 必须带 `onerror` 回退到 `hqdefault.jpg`（部分视频没有 maxres，实测 3 个里有 1 个 404）；③ `data-yt` 只填 11 位 videoId，不要带域名
+  - 时间戳跳转链接写 `https://www.youtube.com/watch?v=ID&t=13s`——**`youtube-nocookie.com` 不支持 `/watch` 路径**（de 两个页面曾整批写错，2026-11-18 修）
+- **外部 iframe 一律视为性能风险**：任何 `<iframe src="https://...">` 引入前先问「能否改成点击加载」，YouTube/Vimeo/地图全部适用。实测数据见 STATUS.md 2026-11-18 节。
 - **trailingSlash: 'always'**——所有 URL 带尾斜杠
 - **首页支持 ?embed=1**——隐藏 header/footer，用于内容页内嵌游戏 iframe
 - **游戏卡内容列 ≤840px（52.5rem）**——SideAd 契约：160×600 侧栏广告盖在 840px 内容列之外，超宽页面（如 .main 72rem 全宽）棋盘右列会被广告层吃掉真实点击（murdoku 2026-10-14 Playwright 逐格实测）；游戏组件必须收窄居中（kenken 棋盘 496-784 即范式）

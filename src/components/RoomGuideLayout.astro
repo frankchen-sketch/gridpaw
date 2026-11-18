@@ -109,11 +109,15 @@ const faqJsonLd = {
 
     {video && (
       <div class="video-wrap">
-        <iframe
-          src={`https://www.youtube-nocookie.com/embed/${video}`}
-          title={`Rooms & Exits Chapter 1 Level ${n} ${name} walkthrough`}
-          allowfullscreen
-          loading="lazy"></iframe>
+        <div class="yt-facade" data-yt={video}
+             data-title={`Rooms & Exits Chapter 1 Level ${n} ${name} walkthrough`}
+             role="button" tabindex="0"
+             aria-label={`Play video: Rooms & Exits Chapter 1 Level ${n} ${name} walkthrough`}>
+          <img src={`https://i.ytimg.com/vi/${video}/maxresdefault.jpg`}
+               alt={`Rooms & Exits Chapter 1 Level ${n} ${name} walkthrough video`}
+               loading="lazy" decoding="async" width="1280" height="720"
+               onerror={`this.onerror=null;this.src='https://i.ytimg.com/vi/${video}/hqdefault.jpg'`} />
+        </div>
       </div>
     )}
 
