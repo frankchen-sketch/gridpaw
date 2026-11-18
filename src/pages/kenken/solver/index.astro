@@ -599,7 +599,7 @@ const exampleNote = "The example is a 4×4 KenKen with a division cage, a multip
     addBtn.addEventListener('click', function () { if (mode === 'given') setGiven(); else addCage(); });
     modeCageBtn.addEventListener('click', function () { setMode('cage'); });
     modeGivenBtn.addEventListener('click', function () { setMode('given'); });
-    targetEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); addCage(); } });
+    targetEl.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.isComposing && e.keyCode !== 229) { e.preventDefault(); addCage(); } });
 
     cageListEl.addEventListener('click', function (e) {
       var t = e.target;
