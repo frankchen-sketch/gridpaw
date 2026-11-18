@@ -1,0 +1,348 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 9 Walkthrough: Backyard";
+const description = "Rooms & Exits Chapter 3 Level 9 walkthrough for Backyard: the chair-star count that takes 13 on the two star fields, the pillow order 3-1-5-6-2 read off the newspaper and entered bottom-up, plus the balance-weight, gear, grill-button, steak and fruit-wreath puzzles and the three-letter lock we could not read cleanly.";
+
+const faq = [
+  {
+    q: "What is the code in Rooms & Exits Chapter 3 Level 9 Backyard?",
+    a: "Two, and they are different kinds of lock. The <b>star fields on the white storage bench</b> take the answer to <b>ENTER THE NUMBER OF STARS IN THE CHAIR</b>, which is <b>13</b>. The <b>pillow lock</b> takes the sequence <b>3 · 1 · 5 · 6 · 2</b>, which is the order of the numbers printed in the newspaper, entered starting from the bottom pillow. Both were read off screen in more than one frame.",
+  },
+  {
+    q: "Where does 13 come from?",
+    a: "From a chair in the backyard. The bench front carries two star-shaped fields with a digit each, and the instruction above them reads <b>ENTER THE NUMBER OF STARS IN THE CHAIR</b>. Counting the stars on the chair gives <b>13</b>. We read the two fields showing <b>00</b> before entry at 9:46 and <b>1</b> and <b>3</b> after entry at 9:51, and we read the same pair again from a zoomed crop of that frame.",
+  },
+  {
+    q: "How is the pillow order entered?",
+    a: "From the <b>bottom</b> of the stack, not the top. The numbers in the newspaper give the pillow order as <b>3, 1, 5, 6, 2</b>, and the recording applies them bottom-up: the bottom pillow is the third one in the newspaper order, the next up is the first, then the fifth, the sixth and the second. It is the single most common mistake in this room, because reading the same sequence top-down gives a different arrangement that the lock refuses.",
+  },
+  {
+    q: "What is the balance puzzle?",
+    a: "A scale with weights and a set of instructions written as ordinal pairs: <b>9TH + 5TH + 1ST</b>, then <b>8TH + 4TH + 3RD</b>, then <b>7TH + 6TH + 2ND</b>. Read literally, each line groups weights by their position in a row rather than by their size, which is the trick of the puzzle. The lines were legible in three separate frames, so the wording is reliable even though the exact weight values are not something this page prints.",
+  },
+  {
+    q: "What do I do with the Lighter, Tongs, Steak and Candle?",
+    a: "They are the barbecue chain. The <b>Lighter</b> is picked up at 0:10 and the <b>Tongs</b> at 0:17; the <b>Steak</b> arrives at 1:01, the <b>Candle</b> at 1:38 and becomes a <b>Lit candle</b> at 1:49 once the lighter is used on it. The tongs are what lets you work the grill. The grill itself has a control panel whose instruction concerns the position of each button, so the food and the fire are two halves of the same puzzle rather than separate tasks.",
+  },
+  {
+    q: "Where are the Gears and Buttons used?",
+    a: "The <b>Gears</b> go into a mechanism on the outdoor kitchen wall; the recording shows four gear slots and the counter sitting at 4/4 once they are all in. The <b>Buttons</b> are collected in two passes, at 1:09 and 1:29, and belong to a panel that wants them placed rather than pressed in a sequence. Neither hands you a number you type anywhere, so this page does not print a code for them.",
+  },
+  {
+    q: "What is the fruit wreath on the door?",
+    a: "The instruction reads <b>TO ARRANGE THE FRUIT ON THE DOOR, PAY ATTENTION TO THE COLOR OF THE FRUIT</b>. A wreath of twigs on a pale blue door holds a half lemon, a kiwi slice, a strawberry, a raspberry, a small pumpkin and clusters of red berries, and the puzzle is to order them by colour rather than by fruit type. It is a drag arrangement with no digits involved.",
+  },
+  {
+    q: "Is there a telescope in the Backyard?",
+    a: "Yes, and it is a star-counting puzzle. The recording spends time at the telescope around 4:35 and the constellation pattern it reveals is what the room's star-themed locks hang on. This is also why the bench asks for the number of stars in the chair: the room repeats its star motif across two different objects so that you read one as the clue for the other.",
+  },
+  {
+    q: "What is the reward for finishing Backyard?",
+    a: "We do not print one. The recording ends at 5:55 on a THANKS FOR WATCHING card with no level-complete panel, no coin total and no scene of the exit door opening. The last interactive state we can see is the pillow arrangement at 5:33, so treat the room's payout as unseen rather than as something this page is withholding.",
+  },
+  {
+    q: "Where does Backyard sit in Chapter 3?",
+    a: "Chapter 3 is <i>Murder Dressed in White</i> and Backyard is room <b>9 of 15</b>. It follows Kids Playroom and precedes Garden. The level's own title card in this recording reads <b>Level 9</b>, and the room is the chapter's first outdoor scene, which is why it has a different palette — brick, lawn and pool water instead of painted interiors.",
+  },
+  {
+    q: "How long does Backyard take?",
+    a: "The recording runs <b>5:56</b> and covers roughly nine distinct puzzles, several of them chained. It is longer than Kids Playroom and much less linear: the balance, the gears and the grill can be worked in any order, while the pillow order depends on the newspaper and the star fields depend on finding the chair.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-9"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 9"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 9</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 9 Walkthrough: Backyard</h1>
+
+    <p>Backyard is room 9 of Chapter 3, <i>Murder Dressed in White</i>, and it is the chapter's first outdoor scene. Instead of four walls and a keypad, you get a brick patio, a pool, an outdoor kitchen with a working pizza oven, and roughly nine puzzles that are not on the same chain — some feed each other, some do not, and the room is happy to let you work them in whatever order you like.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt from a 5:56 recording sampled at one frame per second, with a text-recognition pass across all 356 frames and zoomed visual reads on the panels that matter. The star answer <b>13</b> was read at 9:51 in the entered state and again from a 2x crop. The pillow order <b>3-1-5-6-2</b> appears in the newspaper and in the arrangement shown at 5:33. The three-letter lock is the one value on this page we could not pin down, and it is called out as unverified rather than filled in.</div>
+
+    <LevelSelector chapter={3} current={9} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Backyard is room 9 of 15 in Chapter 3. Two answers: <b>13</b> on the two star fields of the white bench (the number of stars in the chair) and <b>3 · 1 · 5 · 6 · 2</b> on the pillow lock, entered from the bottom up.</p>
+      <ol>
+        <li>Collect as you sweep: <b>Lighter</b> at 0:10, <b>Tongs</b> at 0:17, <b>Steak</b> at 1:01, <b>Buttons</b> at 1:09 and 1:29, <b>Gears</b> at 1:15, <b>Candle</b> at 1:38 — use the lighter on it for a <b>Lit candle</b> at 1:49 — and a <b>Shovel</b> at 2:03.</li>
+        <li>Weigh the scale: the panel gives three lines, <b>9TH + 5TH + 1ST</b>, <b>8TH + 4TH + 3RD</b> and <b>7TH + 6TH + 2ND</b>. They group weights by position, not by size.</li>
+        <li>Fit the <b>Gears</b> into the wall mechanism until all four slots read 4/4, then set the grill's control buttons by position.</li>
+        <li>On the white bench, count the stars on the chair and enter <b>13</b> in the two star fields — 00 before entry at 9:46, 1 and 3 after at 9:51.</li>
+        <li>For the pillows, take the newspaper order <b>3, 1, 5, 6, 2</b> and apply it from the bottom of the stack: third, first, fifth, sixth, second.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="03PqExVzIxE" data-title="Rooms &amp; Exits Level 9 Backyard Walkthrough Murder Dressed in White Chapter 3"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 9 Backyard Walkthrough">
+        <img src="https://i.ytimg.com/vi/03PqExVzIxE/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 9 Backyard walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/03PqExVzIxE/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The 5:56 run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l9-hero-backyard.jpg" alt="Rooms and Exits Chapter 3 Level 9 Backyard: a brick patio with a stone outdoor kitchen and pizza oven, a rustic dining table under string lights, a green lawn, and a rectangular swimming pool" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span>.</h2>
+    <p>A backyard built for a party that is not happening. The patio is red brick, laid in a running bond, and it steps down across two levels. On the left stand a light stone pillar and an outdoor kitchen: a stone surround with a lit pizza oven, a built-in grill with a control panel of knobs, and a small fridge set into the counter. Behind it runs a wooden slatted privacy screen. On the lower level sits a round fire pit with four cushions on the curved bench beside it — orange, yellow, red and lime green.</p>
+    <p>To the right, a rustic picnic table is laid for a meal with plates, drinks and a bottle, hung over with a string of globe lights on a wooden pole. Beyond it the lawn runs to a rectangular pool with pale coping and blue water, with a wicker chair and a couple of potted plants at the near corner, a tree dropping autumn leaves, and a pump lying on the grass. A wooden fence closes the far side; a pale blue door with a wreath on it stands at the back of the house.</p>
+    <p>Structurally this room is looser than Kids Playroom. There is no single master lock; instead there are about nine stations, and three of them can be finished before you have found the clue for the other six. The star motif is what ties it together — the telescope reveals a constellation, the bench asks for the number of stars in the chair, and the two are meant to be read against each other.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l9-balance-weights.jpg" alt="The BALANCE USING WEIGHTS puzzle in Backyard, with a scale and three ordinal instructions written beneath it" width="1200" height="594" loading="lazy" />
+
+    <h2>The map: what is where<span class="accent">.</span>.</h2>
+    <p>Every interactive object we could place, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Balance scale</td><td>On the lower patio</td><td>Titled <b>BALANCE USING WEIGHTS</b>. Three instructions: 9TH+5TH+1ST, 8TH+4TH+3RD, 7TH+6TH+2ND.</td></tr>
+        <tr><td>Pizza oven</td><td>Stone surround, left of the kitchen</td><td>Lit; consumes wood from the stack below it.</td></tr>
+        <tr><td>Grill</td><td>Built into the stone counter</td><td>Control panel of knobs; puzzle concerns the position of each button.</td></tr>
+        <tr><td>Mini fridge</td><td>Set into the counter, right of the grill</td><td>Opens for the steak chain.</td></tr>
+        <tr><td>Gear mechanism</td><td>Wall of the outdoor kitchen</td><td>Four gear slots; reads 4/4 when complete.</td></tr>
+        <tr><td>White storage bench</td><td>Against the house, front panel</td><td>Two star fields asking for the number of stars in the chair. Answer <b>13</b>.</td></tr>
+        <tr><td>Wicker chair</td><td>Lawn, near the pool</td><td>The chair whose stars you count for 13.</td></tr>
+        <tr><td>Telescope</td><td>Patio, aimed at the sky</td><td>Reveals a constellation; the room's star clue.</td></tr>
+        <tr><td>Letter lock</td><td>Green metal box, three wheels</td><td><b>PUT THE LETTERS TO UNLOCKED</b>. Three letters — unverified on this page.</td></tr>
+        <tr><td>Pillow stack</td><td>Curved bench by the fire pit</td><td>Four-colour cushions; ordered by the newspaper numbers, bottom-up <b>3-1-5-6-2</b>.</td></tr>
+        <tr><td>Fruit wreath</td><td>Pale blue door at the back</td><td><b>TO ARRANGE THE FRUIT ON THE DOOR, PAY ATTENTION TO THE COLOR OF THE FRUIT</b>.</td></tr>
+        <tr><td>Newspaper</td><td>Carried/read</td><td>Prints the numbers behind the pillow order.</td></tr>
+        <tr><td>Lighter → Lit candle</td><td>Carried</td><td>Lighter at 0:10; candle at 1:38; lit at 1:49.</td></tr>
+        <tr><td>Tongs</td><td>Carried</td><td>For handling food on the grill.</td></tr>
+        <tr><td>Steak ×2</td><td>Carried</td><td>Counter shows 2/3 when both are held.</td></tr>
+        <tr><td>Buttons and Gears</td><td>Carried</td><td>Buttons in two passes; gears fill four slots.</td></tr>
+        <tr><td>Shovel</td><td>Carried</td><td>Collected at 2:03; no visible use in this recording.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span>.</h2>
+    <p>The order below follows the recording. Timestamps are video time; the links jump to the matching second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:03</span>
+      <strong>Sweep the patio, the lawn and the pool edge</strong>
+      The level opens on its title card — <b>Level 9</b> — and then holds on the backyard. Read the space in three passes: the patio with the pizza oven, grill and fridge on the left; the dining table, lawn and pool on the right; and the house wall behind you, where the bench, the door and the wreath sit. Most of the room's stations are visible from this one angle, which is unusual for the chapter and makes the sweep worth the twenty seconds.
+      <img src="/rooms-and-exits/c3l9-hero-backyard.jpg" alt="The Backyard at the start of Level 9, with the outdoor kitchen, dining table, lawn and pool in view" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=03PqExVzIxE&t=3s" target="_blank" rel="noopener">0:03</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:10 to 1:03 · the barbecue chain</span>
+      <strong>Lighter, Tongs, Steak</strong>
+      Three pickups in the first minute set up the grill. The <b>Lighter</b> comes first at 0:10, then the <b>Tongs</b> at 0:17 — you will need both before the food. The <b>Steak</b> arrives at 1:01 from the fridge, and the inventory shows it as <b>2/3</b>, so there is a third piece somewhere in the room. None of this is a code; it is the room's longest item chain and it exists to make you walk the patio.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=03PqExVzIxE&t=10s" target="_blank" rel="noopener">0:10</a> · <a href="https://www.youtube.com/watch?v=03PqExVzIxE&t=17s" target="_blank" rel="noopener">0:17</a> · <a href="https://www.youtube.com/watch?v=03PqExVzIxE&t=61s" target="_blank" rel="noopener">1:01</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:26 · the scale</span>
+      <strong>BALANCE USING WEIGHTS</strong>
+      The first real puzzle is a balance scale on the lower patio. The panel is titled <b>BALANCE USING WEIGHTS</b>, and the instructions underneath are not arithmetic — they are ordinals. This is the moment to stop thinking in numbers: the scale is asking about the position of a weight in a row, not about its mass.
+      <img src="/rooms-and-exits/c3l9-balance-weights.jpg" alt="The balance scale puzzle in Backyard with the BALANCE USING WEIGHTS title" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=03PqExVzIxE&t=26s" target="_blank" rel="noopener">0:26</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:36 to 0:50 · the three lines</span>
+      <strong>9TH + 5TH + 1ST · 8TH + 4TH + 3RD · 7TH + 6TH + 2ND</strong>
+      The scale's three instructions arrive one after another, and they are legible in three separate frames: <b>9TH + 5TH + 1ST</b>, then <b>8TH + 4TH + 3RD</b>, then <b>7TH + 6TH + 2ND</b>. Read them as a grouping of nine weights into three sets of three, ordered by rank rather than by value. The three lines cover all nine positions exactly once, which is how you know the interpretation is right.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=03PqExVzIxE&t=36s" target="_blank" rel="noopener">0:36</a> · <a href="https://www.youtube.com/watch?v=03PqExVzIxE&t=43s" target="_blank" rel="noopener">0:43</a> · <a href="https://www.youtube.com/watch?v=03PqExVzIxE&t=47s" target="_blank" rel="noopener">0:47</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:09 to 1:35 · gears and buttons</span>
+      <strong>Four gear slots, then the control panel</strong>
+      The <b>Buttons</b> come in two passes, at 1:09 and 1:29, and the <b>Gears</b> follow at 1:15. Both belong to the outdoor kitchen wall: the gears drop into four slots and the counter reads <b>4/4</b> when the set is complete, and the buttons belong to a panel that wants them placed by position rather than pressed in an order. This is the same idea as the scale, applied to hardware — where a thing sits is the answer, not what it is.
+      <img src="/rooms-and-exits/c3l9-gears-puzzle.jpg" alt="The gear mechanism on the outdoor kitchen wall in Backyard, with gear slots being filled" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=03PqExVzIxE&t=75s" target="_blank" rel="noopener">1:15</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:38 and 1:49 · fire</span>
+      <strong>Candle, then Lit candle</strong>
+      A <b>Candle</b> is collected at 1:38 and becomes a <b>Lit candle</b> at 1:49, which is the recording's way of showing the lighter being used on it. Eleven seconds apart is a useful detail: if you have the candle and cannot light it, you have not yet picked up the lighter, and the two do not combine until both are in the bag. The lit candle is the room's only light source that you carry, and it is used somewhere dark indoors.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=03PqExVzIxE&t=98s" target="_blank" rel="noopener">1:38</a> · <a href="https://www.youtube.com/watch?v=03PqExVzIxE&t=109s" target="_blank" rel="noopener">1:49</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 3:11 · the grill panel</span>
+      <strong>Position of each button</strong>
+      The grill's control panel is a row of knobs with a labelled instruction about the position of each button. Getting this right is what lets the steak cook rather than burn, and the panel will not accept a plausible-looking arrangement — it wants the one the clue describes. The recording works it around 3:11 and comes back to the grill later.
+      <img src="/rooms-and-exits/c3l9-grill-buttons.jpg" alt="The grill control panel in Backyard with a row of knobs and an instruction about button positions" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=03PqExVzIxE&t=191s" target="_blank" rel="noopener">3:11</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 3:50 · the letter box</span>
+      <strong>PUT THE LETTERS TO UNLOCKED</strong>
+      A green metal box with three little cylindrical letter wheels and a three-word instruction: <b>PUT THE LETTERS TO UNLOCKED</b>. The wheels are stacked vertically and each shows one letter in a window with its neighbours above and below. This is a genuine word lock and the only letter puzzle in the room — and it is the one value we could not read off the footage with any consistency, so no three-letter answer is printed here.
+      <img src="/rooms-and-exits/c3l9-letter-lock.jpg" alt="The green letter lock in Backyard with three stacked letter wheels and the instruction PUT THE LETTERS TO UNLOCKED" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=03PqExVzIxE&t=230s" target="_blank" rel="noopener">3:50</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 4:35 to 4:56 · the telescope, then the bench</span>
+      <strong>Count the stars, then enter 13</strong>
+      The telescope reveals a constellation, and the white storage bench is where that motif pays off. Its front panel carries two star-shaped fields with a digit each, and the instruction above them reads <b>ENTER THE NUMBER OF STARS IN THE CHAIR</b>. At 9:46 both fields sit at <b>00</b>; by 9:51 they read <b>1</b> and <b>3</b>. Count the stars on the wicker chair and you get the same two digits — <b>13</b>.
+      <img src="/rooms-and-exits/c3l9-stars-chair-13.jpg" alt="The white storage bench in Backyard with two star-shaped fields showing the digits 1 and 3" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=03PqExVzIxE&t=298s" target="_blank" rel="noopener">4:58</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 5:17 · the wreath</span>
+      <strong>Arrange the fruit by colour</strong>
+      The wreath on the pale blue door is the room's prettiest puzzle and one of its fiddliest: <b>TO ARRANGE THE FRUIT ON THE DOOR, PAY ATTENTION TO THE COLOR OF THE FRUIT</b>. A half lemon, a kiwi slice, a strawberry, a raspberry, a small pumpkin and clusters of red berries are pinned around a twig wreath. Sort by colour — yellows, then greens, then reds, with the pale pumpkin closing the set — rather than by fruit type or size.
+      <img src="/rooms-and-exits/c3l9-fruit-wreath.jpg" alt="The fruit wreath on the door in Backyard, with a lemon slice, kiwi, strawberry, raspberry, pumpkin and red berries" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=03PqExVzIxE&t=317s" target="_blank" rel="noopener">5:17</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 5:22 · the pillows</span>
+      <strong>3 · 1 · 5 · 6 · 2, from the bottom up</strong>
+      The cushions on the bench by the fire pit are the room's last lock. The newspaper prints an order of numbers, and the sequence is <b>3, 1, 5, 6, 2</b>. The half that people get wrong is the direction: it is applied from the <b>bottom</b> of the stack, so the bottom cushion is the third in the newspaper's order, the one above it the first, then the fifth, the sixth and the second. The recording settles it at 5:33.
+      <img src="/rooms-and-exits/c3l9-pillow-order.jpg" alt="The coloured cushions by the fire pit in Backyard arranged in the order given by the newspaper numbers" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=03PqExVzIxE&t=322s" target="_blank" rel="noopener">5:22</a> · <a href="https://www.youtube.com/watch?v=03PqExVzIxE&t=333s" target="_blank" rel="noopener">5:33</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 5:55 · the end of the run</span>
+      <strong>THANKS FOR WATCHING, with no results panel</strong>
+      The last frames of the recording are a black card reading <b>THANKS FOR WATCHING</b> over a red <b>LIKE, COMMENT, SUBSCRIBE</b> strip. There is no level-complete panel, no coin count and no shot of the exit opening. If you are checking your own run against this one, the final interactive state to compare is the pillow arrangement at 5:33, not anything after it.
+      <img src="/rooms-and-exits/c3l9-end-card.jpg" alt="The THANKS FOR WATCHING end card at the close of the Backyard walkthrough" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=03PqExVzIxE&t=355s" target="_blank" rel="noopener">5:55</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span>.</h2>
+    <p><b>The pillow lock rejects a correct-looking arrangement.</b> Direction. The newspaper order 3-1-5-6-2 is applied from the bottom cushion upward. If you read the same five numbers top-down you get a mirrored arrangement that looks tidy and is wrong. Set the bottom cushion first and work up.</p>
+    <p><b>The star fields will not take 13.</b> Check that you are at the bench and not at the telescope, and that both fields are active — the left digit caps at 1 and the right at 3 for this answer. If only one field is selectable, you tapped the star outline rather than the digit.</p>
+    <p><b>The scale looks like arithmetic and is not.</b> <b>9TH + 5TH + 1ST</b> is not nine plus five plus one. The lines group nine weights into three sets of three by their position in a row. Trying to balance the scale numerically will keep you there indefinitely.</p>
+    <p><b>The candle will not light.</b> You need the Lighter in the bag first — it is collected at 0:10, more or less the first thing in the room, and the candle only turns into a Lit candle at 1:49 in the recording. A candle that stays unlit means the lighter is missing, not that the candle is the wrong object.</p>
+    <p><b>The steak stops at 2/3.</b> There is a third piece and the recording shows the counter still at 2/3 when the grill comes up. Do not expect the grill chain to resolve with two.</p>
+    <p><b>The letter box will not open.</b> So far as the footage shows, the box opens somewhere around 4:00 and the recording does not linger on the wheels in a solved state long enough for a reliable read. If you are stuck here, work the other stations first — this value is not printed on this page precisely because we could not read it.</p>
+
+    <h2>Where Backyard sits in Chapter 3<span class="accent">.</span>.</h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i>, and Backyard is room <b>9 of 15</b>. It follows Kids Playroom and precedes Garden. The chapter has been indoor and painted until now; this is the point where it opens out, and the puzzle design changes with it — more stations, fewer enforced sequences, and a lot more walking between clues.</p>
+    <p>If you are running the chapter in order, the useful thing to carry out of Kids Playroom is the habit of writing down every number you see. Backyard gives you three ordinal clues, a newspaper, a constellation and a chair, and none of them announce themselves as part of a code until you are standing at the lock that wants them.</p>
+
+    <LevelSelector chapter={3} current={9} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-3-level-8/">Chapter 3 Level 8 — Kids Playroom</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-3-level-10/">Chapter 3 Level 10 — Garden</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span>.</h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span>.</h2>
+    <div class="warn">
+      <b>1. The three letters on the green box.</b> We cropped the wheels at 2x and 4x across three consecutive frames and got three different readings — nothing like each other. On this resolution the stylised letters bleed into the wheel edges. No word is printed here. If you have the answer from your own copy, trust yours.
+      <br><br>
+      <b>2. The weight values on the scale.</b> The three ordinal lines are legible and repeated across frames, so the wording is solid. The individual weights themselves are small and were never in focus long enough to read, which is why this page explains the method rather than listing nine numbers.
+      <br><br>
+      <b>3. The reward and the exit.</b> The recording ends on a THANKS FOR WATCHING card at 5:55, before any completion panel. We have not seen the coin payout or the door animation, so neither is stated.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

@@ -1,0 +1,346 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 4 Walkthrough: Guest Toilet";
+const description = "Rooms & Exits Chapter 3 Level 4 walkthrough for Guest Toilet: the eight-digit safe combination 34617058 built from the door plate 346, the Piece of paper marked 17 and the 8 on the toilet roll, plus the picture-frame clue that tells you the combination starts with 3 and ends with 8.";
+
+const faq = [
+  {
+    q: "What is the safe code in Rooms & Exits Chapter 3 Level 4 Guest Toilet?",
+    a: "The wall safe inside the vanity cabinet takes <b>34617058</b> — eight digits, typed in that order on the keypad. We reconstructed it frame by frame from the recording at 30 frames per second: the keys light up one at a time and the eight lit keys are <b>3, 4, 6, 1, 7, 0, 5, 8</b> in that order, with the safe unlocking immediately after the eighth press. It is also consistent with the room's own clue, which says the combination starts with 3 and ends with 8.",
+  },
+  {
+    q: "Where does 346 come from?",
+    a: "It is written on the <b>exit door</b> — the white door on the left wall carries <b>346</b> on its upper panel, above and to the left of the handle. It supplies the first three digits of the safe combination. The door itself has no code lock: you open it with the <b>key</b> that comes out of the safe, so 346 is a clue, not something you type at the door.",
+  },
+  {
+    q: "Where does 17 come from?",
+    a: "From the <b>Piece of paper</b> in your inventory. It is a hexagonal scrap of paper with a printed pattern and two white characters on it: a <b>1</b> near the top and a <b>7</b> below it. Those are the fourth and fifth digits of the safe combination. We read the item twice, in two separate frames of the inventory screen, and got the same two characters both times.",
+  },
+  {
+    q: "Where does the last 8 come from?",
+    a: "The <b>empty cardboard toilet roll</b> on the holder next to the toilet has a single hand-drawn <b>8</b> on it in black. The roll is a clue, not an item you collect: after the paper is removed from the holder the bare core is what you examine. That 8 is the last digit of the combination, and it agrees with the picture-frame clue.",
+  },
+  {
+    q: "What does the picture frame on the shelf tell you?",
+    a: "Examining the framed portrait above the toilet triggers a text overlay: <b>THIS CLUE MEAN: THE NUMBER COMBINATION START WITH NUMBER 3 AND END WITH NUMBER 8</b>. That is the game's own wording, grammar included. It tells you the safe's code begins with 3 and ends with 8 — which is exactly how 34617058 is built — but it does not tell you the length, so it is not enough on its own.",
+  },
+  {
+    q: "How many digits does the safe take?",
+    a: "Eight. The keypad is a plain 12-key grid — 1 2 3 / 4 5 6 / 7 8 9 / A 0 B — with no display anywhere on the safe, so there is no on-screen counter to tell you how many characters it wants. In the recording eight separate keys are pressed in a row and the door of the safe pops open right after the eighth. If you stop early the safe just sits there, which is why people assume the code is four digits and give up.",
+  },
+  {
+    q: "What are the A and B keys on the keypad for?",
+    a: "We could not establish it. The keypad has <b>A</b> at the bottom left and <b>B</b> at the bottom right, with 0 between them, and in the recording neither A nor B is pressed at any point — the eight digits sit between them and the safe opens by itself. They are most likely enter/clear keys, but because we never see them used in this level we do not state that as fact.",
+  },
+  {
+    q: "Where is the safe?",
+    a: "Inside the <b>vanity cabinet</b> under the sink, top-left compartment. The cabinet has two doors and four compartments: the safe sits top left, folded grey towels sit bottom left, and the two right-hand compartments are empty. You have to open the cabinet doors before the safe is even visible — it is not on a wall.",
+  },
+  {
+    q: "Is there anything in the toilet bowl or the cistern?",
+    a: "No. The recording opens the toilet lid and looks straight down into the bowl and there is nothing inside — no item, no floating clue. The flush plate above the toilet is a dual-flush panel and we never see it used. The only thing on the toilet side of the room that matters is the toilet roll with the 8 on it.",
+  },
+  {
+    q: "What do I do after the safe opens?",
+    a: "The <b>Key</b> is already in your bag by <b>0:55</b> — it is picked up while the vanity cabinet is standing open, and the inventory shows it selected with the <i>Key</i> label. Then go to the white door on the left wall, use it there at about 2:07, and the door opens. That is the exit — there is no second code lock anywhere in this room. What the safe itself contained we could not pin down: at 2:03 its door is open, the interior is empty and the sparkles come from inside it, but no item name appears, so we do not claim the key came out of the safe.",
+  },
+  {
+    q: "How long is Guest Toilet, and where does it sit in Chapter 3?",
+    a: "Guest Toilet is room <b>4 of 15</b> in Chapter 3, <i>Murder Dressed in White</i>. The recording we worked from runs <b>2:13</b> and finishes on a THANKS FOR WATCHING card at 2:12 without a results panel, so it is one of the shortest rooms in the chapter — a single small bathroom with one safe and one key.",
+  },
+  {
+    q: "Is the door code 346?",
+    a: "No. <b>346</b> is painted on the door, but the door has no keypad and no dial — it is a plain lever handle with an escutcheon plate, and the level ends by using the key from the safe on it. 346 is the seed for the safe combination, not a door code. Anyone telling you to type 346 at the door is describing a different level.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-4"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 4"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 4</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 4 Walkthrough: Guest Toilet</h1>
+
+    <p>Guest Toilet is room 4 of Chapter 3, <i>Murder Dressed in White</i>, and it is the smallest room in the chapter so far: one narrow bathroom with a toilet on the back wall, a vanity and mirror on the right, a shelf of ornaments above the toilet, and a door on the left. There is exactly one lock in it — a keypad safe hidden inside the vanity cabinet — plus a key that opens the exit door. This page gives you the safe combination, shows you where every digit of it comes from, and is explicit about the two digits we could not trace to a prop.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt from a single 2:13 recording. The safe combination was read a different way from every other code on this site: the keypad has no display, so we pulled the six seconds of keypad footage at <b>30 frames per second</b> and measured which button changes brightness in each frame. Eight separate presses came out, each localised to one key, in the order <b>3 4 6 1 7 0 5 8</b>, and the safe opens right after the eighth. Every other number on this page (346 on the door, 17 on the paper, 8 on the toilet roll, the clue sentence) was read twice from separate frames, once whole-frame and once from a 2× to 5× crop.</div>
+
+    <LevelSelector chapter={3} current={4} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Guest Toilet is room 4 of 15 in Chapter 3. One lock, one key: the cabinet safe takes <b>34617058</b>, and the number painted on the door is <b>346</b>.</p>
+      <ol>
+        <li>Open the two doors of the <b>vanity cabinet</b> under the sink. The safe is in the top-left compartment; the towels are below it.</li>
+        <li>Read the clues. The <b>exit door</b> carries <b>346</b>. The <b>Piece of paper</b> in your bag carries <b>1</b> and <b>7</b>. The empty <b>toilet roll</b> carries an <b>8</b>. The <b>framed portrait</b> tells you the combination "START WITH NUMBER 3 AND END WITH NUMBER 8".</li>
+        <li>Set <b>3 4 6 1 7 0 5 8</b> on the safe keypad, in that order. It is eight digits, not four — the safe opens after the eighth key.</li>
+        <li>Find the <b>Key</b> while the vanity cabinet is open (it is in your bag by 0:55) and use it on the white door at about 2:07. That is the exit; the door has no code lock.</li>
+        <li>The recording ends at 2:12 on a THANKS FOR WATCHING card, before any results panel — so no reward figure is printed here.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="kOUEh4F0Y5A" data-title="Rooms &amp; Exits Level 4 Guest Toilet Walkthrough Murder Dressed in White Chapter 3"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 4 Guest Toilet Walkthrough">
+        <img src="https://i.ytimg.com/vi/kOUEh4F0Y5A/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 4 Guest Toilet walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/kOUEh4F0Y5A/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The 2:13 run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l4-hero-guest-toilet.jpg" alt="Rooms and Exits Chapter 3 Level 4 Guest Toilet: a narrow bathroom with a white toilet against dark grey tiles, a wooden shelf with vases and a framed portrait above it, a white vanity and mirror on the right, and a door on the left" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>One bathroom, and it is genuinely small — the whole thing fits in a single camera view. The back wall is split: dark grey tiles at the bottom, warm wood panelling at the top, with a long wooden shelf running between them. On the shelf sit a two-tone vase, a soap dispenser, a bar of soap, the framed portrait, a small round pot and a marble-patterned vase holding a snake plant. Below the shelf is the toilet with a white flush plate above it, a toilet roll holder to its left and a toilet brush to its right. On the right wall: a mirror over a white vanity cabinet with a wooden top and a vessel basin. On the left: the white exit door.</p>
+    <p>The floor is the noisiest thing in the room — a grey, white and black patterned tile that looks like it should be a puzzle and is not. We looked at it repeatedly and there is nothing on it; it is decoration.</p>
+    <p>Structurally the level is a three-part chain and one lock. Three props hand you digits — the door, the paper, the toilet roll — the portrait tells you how they are ordered at the two ends, and the safe inside the cabinet consumes the result. Then the key from the safe opens the door. That is the whole level, and it took the recording 2:13.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Every object we could identify, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Exit door</td><td>Left wall</td><td>Carries <b>346</b> on the upper panel. Plain lever handle, no keypad. Opened with the key from the safe.</td></tr>
+        <tr><td>Vanity cabinet</td><td>Right wall, under the basin</td><td>Two doors, four compartments. The safe is top left, folded grey towels bottom left.</td></tr>
+        <tr><td>Keypad safe</td><td>Top-left compartment of the cabinet</td><td>12-key pad: 1 2 3 / 4 5 6 / 7 8 9 / A 0 B. No display. Code <b>34617058</b>.</td></tr>
+        <tr><td>Framed portrait</td><td>On the shelf, on the wood panelling</td><td>Examining it shows the clue text about the combination starting with 3 and ending with 8.</td></tr>
+        <tr><td>Toilet roll</td><td>Holder left of the toilet</td><td>Empty cardboard core with a hand-drawn <b>8</b> in black.</td></tr>
+        <tr><td>Toilet</td><td>Centre of the back wall</td><td>Opens; the bowl is empty. Flush plate above it is never used in the recording.</td></tr>
+        <tr><td>Mirror</td><td>Above the basin</td><td>Reflects the room; we found no interaction.</td></tr>
+        <tr><td>Toilet brush</td><td>Right of the toilet</td><td>Scenery — a hotspot in some rooms, but nothing comes of it here.</td></tr>
+        <tr><td>Piece of paper</td><td>Carried item</td><td>Hexagonal scrap with a pattern and two white characters: <b>1</b> and <b>7</b>.</td></tr>
+        <tr><td>Key</td><td>Cabinet / carried item</td><td>Silver key. In the bag by 0:55 while the cabinet is open; opens the exit door at 2:07.</td></tr>
+        <tr><td>Powder bottle</td><td>Cabinet / carried item</td><td>Blue bottle that ends up in the bag; we never see it used on anything.</td></tr>
+        <tr><td>Patterned floor</td><td>Whole room</td><td>Decoration. It looks like a clue and is not one.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>The order below follows the recording. Timestamps are video time; the links jump to the matching second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:00</span>
+      <strong>Sweep the room before touching anything</strong>
+      The level opens on the title card and cuts straight into the bathroom. Read it left to right: door on the left wall, toilet and shelf dead ahead, vanity and mirror on the right. There are only five things here that do anything — the door, the cabinet, the framed portrait, the toilet roll and the toilet itself — so the sweep takes ten seconds and saves you opening the same cabinet twice.
+      <img src="/rooms-and-exits/c3l4-hero-guest-toilet.jpg" alt="The Guest Toilet room at the start of Rooms and Exits Chapter 3 Level 4: toilet, shelf, portrait, vanity, mirror and door" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kOUEh4F0Y5A&t=0s" target="_blank" rel="noopener">0:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:12</span>
+      <strong>Open the vanity cabinet — that is where the safe lives</strong>
+      The cabinet under the basin has two doors. Open them and the interior splits into four: the <b>safe</b> in the top left, a stack of four folded grey towels in the bottom left, and two empty compartments on the right. The safe is not visible until you do this, which is why people hunt the walls for it. It is a dark grey box with a circular handle on the left and a keypad on the right.
+      <img src="/rooms-and-exits/c3l4-cabinet-towels.jpg" alt="The open vanity cabinet in the Guest Toilet showing folded grey towels and the dark safe in the top-left compartment" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kOUEh4F0Y5A&t=12s" target="_blank" rel="noopener">0:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:18</span>
+      <strong>The toilet bowl is empty</strong>
+      The lid goes up and the camera looks straight down into the bowl. There is water and nothing else — no item floating in it, no marking on the porcelain. Do not spend time here. The recording does exactly this once and moves on.
+      <img src="/rooms-and-exits/c3l4-toilet-bowl.jpg" alt="Looking down into the open toilet bowl in the Guest Toilet level" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kOUEh4F0Y5A&t=18s" target="_blank" rel="noopener">0:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:32</span>
+      <strong>The toilet roll carries an 8</strong>
+      The holder beside the toilet has a roll on it. Take the paper and you are left with the bare cardboard core, and the core has a single hand-drawn digit on it in black: <b>8</b>. It is the last digit of the safe combination, and it is the only digit in the room that arrives without any other context — no label, no arrow, just an 8 on a toilet roll.
+      <img src="/rooms-and-exits/c3l4-toilet-roll-eight.jpg" alt="The empty cardboard toilet roll in the Guest Toilet with a hand-drawn 8 on it" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kOUEh4F0Y5A&t=32s" target="_blank" rel="noopener">0:32</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:36</span>
+      <strong>The framed portrait gives you the rule</strong>
+      Examine the portrait on the shelf and the game puts a text box over the room: <b>THIS CLUE MEAN: THE NUMBER COMBINATION START WITH NUMBER 3 AND END WITH NUMBER 8</b>. That is the wording exactly as it appears, grammar and all. It is the only sentence in the level and it is doing a lot of work: it tells you the combination is ordered, that it opens on 3 and closes on 8, and therefore that 346 (door), 17 (paper) and 8 (roll) are not three separate codes but one sequence.
+      <img src="/rooms-and-exits/c3l4-picture-clue-text.jpg" alt="The clue text over the Guest Toilet room: THIS CLUE MEAN THE NUMBER COMBINATION START WITH NUMBER 3 AND END WITH NUMBER 8" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kOUEh4F0Y5A&t=96s" target="_blank" rel="noopener">1:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:16 · the door plate</span>
+      <strong>346 is painted on the door</strong>
+      The white door on the left wall has <b>346</b> on its upper panel, above and to the left of the lever handle. It reads as a room number, and that is almost certainly what it is — but in this level it is also the first three digits of the safe combination, because the clue tells you the combination starts with 3 and 346 is the only 3-leading number in the room. The door itself has no keypad and no dial.
+      <img src="/rooms-and-exits/c3l4-door-number-346.jpg" alt="The white exit door in the Guest Toilet with the number 346 painted on the upper panel" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kOUEh4F0Y5A&t=76s" target="_blank" rel="noopener">1:16</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 1:46 · the paper</span>
+      <strong>The Piece of paper carries 1 and 7</strong>
+      Open the inventory and select the <b>Piece of paper</b>. It is a hexagonal scrap with a printed grid pattern and two white characters on it: a <b>1</b> towards the top and a <b>7</b> below it. Those are digits four and five of the combination. There is nothing else on the paper — we checked at 4× and the texture behind the two characters is pattern, not small print.
+      <img src="/rooms-and-exits/c3l4-piece-of-paper-17.jpg" alt="The Piece of paper item in the Guest Toilet inventory, a hexagonal scrap marked with 1 and 7" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kOUEh4F0Y5A&t=106s" target="_blank" rel="noopener">1:46</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 1:54 · the keypad</span>
+      <strong>Twelve keys, no display, eight digits</strong>
+      Zoom in on the safe and the keypad fills the frame: four rows of three, <b>1 2 3 / 4 5 6 / 7 8 9 / A 0 B</b>. There is no screen anywhere on the safe — nothing tells you how many characters it wants, and nothing echoes back what you have typed. The circular handle on the left is the door release, not a dial.
+      <img src="/rooms-and-exits/c3l4-safe-keypad.jpg" alt="The keypad on the safe in the Guest Toilet: three columns of 1 to 9 and a bottom row of A, 0, B" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kOUEh4F0Y5A&t=114s" target="_blank" rel="noopener">1:54</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 1:55–1:59 · the sequence</span>
+      <strong>Type 3 4 6 1 7 0 5 8</strong>
+      Eight keys, in this order: <b>3</b> at 1:54.4, <b>4</b> at 1:55.2, <b>6</b> at 1:55.8, <b>1</b> at 1:56.4, <b>7</b> at 1:57.0, <b>0</b> at 1:58.3, <b>5</b> at 1:58.7, <b>8</b> at 1:59.2. Each key lights up on press and dims again immediately, which is why a one-frame-per-second sampling misses almost all of it — we had to go to 30 frames per second to catch them. The safe pops open right after the 8. Note the shape of it: 346 from the door, 1 and 7 from the paper, 8 from the roll, with 0 and 5 in between.
+      <img src="/rooms-and-exits/c3l4-safe-keypad.jpg" alt="The safe keypad during code entry in the Guest Toilet" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kOUEh4F0Y5A&t=115s" target="_blank" rel="noopener">1:55</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 2:03</span>
+      <strong>The safe opens — and the footage stops being helpful</strong>
+      The safe door swings at 2:03 and the interior is <b>empty</b>, with a burst of sparkles coming from inside it. The sparkle is the game's "something was just collected" effect, but no item name appears anywhere on screen in this run, so we cannot tell you what the safe paid out. The two candidates are coins or a second key — and we are not printing either as fact.
+      <img src="/rooms-and-exits/c3l4-safe-open.jpg" alt="The open, empty safe in the Guest Toilet vanity cabinet with sparkles coming from inside it" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kOUEh4F0Y5A&t=123s" target="_blank" rel="noopener">2:03</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 2:07</span>
+      <strong>Use the Key on the door and leave</strong>
+      Back to the white door with the 346 on it. The <b>Key</b> is already in your bag — the inventory at 0:55 shows it selected, and it is picked up while the cabinet is standing open — and it is used on the door at about 2:07. No code, no dial. The recording does not linger: the door gives, the room view comes back, and the video ends on a THANKS FOR WATCHING card at 2:11.
+      <img src="/rooms-and-exits/c3l4-key-in-cabinet.jpg" alt="The Key in the Guest Toilet vanity cabinet, picked up while the doors are open" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=kOUEh4F0Y5A&t=127s" target="_blank" rel="noopener">2:07</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>"The code is four digits and nothing works."</b> It is eight. The clue on the portrait only constrains the two ends — starts with 3, ends with 8 — and the keypad has no display, so there is nothing in the room that tells you the length. If you are typing four digits and the safe just sits there, that is expected: keep going.</p>
+    <p><b>"I typed 3468 and it did not open."</b> 3468 is the door plate plus the toilet-roll digit, and it looks like the whole answer. It is not — it skips the 1 and 7 on the paper and both middle keys. The full order is 346 1705 8.</p>
+    <p><b>"I cannot find 17 anywhere."</b> The Piece of paper is an inventory item, not a wall clue. If your bag is empty, you have not picked up the hexagonal scrap yet; open the inventory and select it to see the two characters enlarged. If the bag is empty and the paper is not in the room, you have not opened the cabinet.</p>
+    <p><b>"The door wants a code."</b> It does not. There is no keypad on the door, no dial, no escutcheon keypad — just a lever handle. 346 is painted there as a room number and doubles as the seed for the safe. The door opens with the <b>Key</b> that is already in your bag by 0:55, and with nothing else.</p>
+    <p><b>"The toilet and the floor must do something."</b> Neither does. The bowl is empty and the patterned floor is decoration. The only thing on that side of the room that matters is the cardboard roll.</p>
+    <p><b>"A and B must be enter and clear."</b> Probably, but the recording never presses either of them: the eight digits go in and the safe releases on its own. If your safe needs a confirmation key, try A — that is the most common layout — but we cannot confirm it from this footage.</p>
+
+    <h2>Where Guest Toilet sits in Chapter 3<span class="accent">.</span></h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i>, and Guest Toilet is room <b>4 of 15</b>, right after Study Room. It is the smallest room in the chapter's opening run and the first one where the puzzle chain is entirely made of printed digits rather than mechanisms: no sliding panels, no colour sequences, no wiring. Three props, one clue sentence, one keypad.</p>
+    <p>It also breaks the pattern the first three rooms set, where the code is a clean four or five digits. Here the keypad takes eight, and the only way to know that is to count the keys being pressed. If you are working through the chapter in order, that is the habit worth carrying forward: on a safe with no display, count the presses rather than assuming a length.</p>
+
+    <LevelSelector chapter={3} current={4} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-3-level-3/">Chapter 3 Level 3 — Study Room</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-3-level-5/">Chapter 3 Level 5 — Workshop</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Five things, stated plainly so you know which parts of this page are reads and which are reconstruction.
+      <br><br>
+      <b>1. What the safe contained.</b> At 2:03 the safe is open, its interior is empty and the sparkles come from inside it — the game's "collected" effect — but no item name appears on screen in this run. The <b>Key</b> is already in the bag at 0:55, well before the safe is opened, so we cannot say the key came out of it. What the safe paid out is a genuine gap.
+      <br><br>
+      <b>2. Where the 0 and the 5 come from.</b> We can see both keys being pressed — 0 at 1:58.3 and 5 at 1:58.7 — and we can see the safe open afterwards, but we could not find a prop in the room that carries either digit. They are not on the door (346), the paper (17) or the roll (8). If a later revision of this page finds their source, the combination stays the same; we are flagging it because it is the one part of the code we cannot derive, only observe.
+      <br><br>
+      <b>3. What A and B do.</b> The keypad has them and the recording never touches them. Enter and clear are the obvious guesses and we have not printed either as fact.
+      <br><br>
+      <b>4. The powder bottle and the mirror.</b> A blue bottle ends up in the bag and the mirror is interactive-looking, but we never see either used. They are listed as objects, not steps.
+      <br><br>
+      <b>5. The reward and the results panel.</b> The recording ends at 2:11 on a THANKS FOR WATCHING card. There is no level-complete card and no coin figure in the footage, so this page prints none.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

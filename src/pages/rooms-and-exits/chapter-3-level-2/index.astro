@@ -1,0 +1,329 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 2 Walkthrough: Living Room";
+const description = "Rooms & Exits Chapter 3 Level 2 Living Room walkthrough: the 3x3 sliding-tile lid on the bookshelf box opens to give the Key at 2:03, and that Key opens the white door at 5:53 — this level has no numeric keypad, and the run finishes with +50 at a 10:29 in-game time.";
+
+const faq = [
+  {
+    q: "Does the Living Room have a number code or a keypad?",
+    a: "No. We checked all 358 frames of the run and there is no keypad, dial or numeric lock anywhere in the room. Chapter 3 Level 2 is a mechanical level: a <b>3x3 sliding-tile puzzle</b> built into a wooden box lid, a shelf of labelled bottles, a decoder-style <b>Ring with numbers</b> item, and finally a <b>Key</b> used on the white door. If you are hunting for a four-digit code in this room, it does not exist — that is why nothing you type works.",
+  },
+  {
+    q: "How do I open the wooden box on the bookshelf?",
+    a: "The box sits on the tall dark-wood bookshelf next to the door, and its lid is a <b>3x3 grid of nine wooden tiles</b> with one tile carrying a small knob. Treat it as a sliding-tile puzzle: slide the tiles with the knob until the pattern resolves, and the box opens. In the run the player starts on it at <b>1:50</b> and has it open by <b>2:03</b>, which is <b>13 seconds</b> of sliding — it is the quickest puzzle in the level.",
+  },
+  {
+    q: "What is inside the box?",
+    a: "The <b>Key</b>. At 2:03 the item name <b>Key</b> appears over the open box with the usual sparkle, and the box interior is empty afterwards. That key is the one that ends the level: it is used on the white door on the left wall at <b>5:53</b> and the level completes four seconds later.",
+  },
+  {
+    q: "What is the Ring with numbers for?",
+    a: "It is an inventory item you pick up at about <b>1:08</b>, labelled <b>Ring with numbers</b>. It is a ring with digits printed around its circumference — the game's own label says so — and it functions as a decoder rather than a lock. The recording never uses it on anything, so we cannot tell you which prop it decodes. It is not needed to finish the level: the door opens with the Key alone.",
+  },
+  {
+    q: "What are the bottles on the shelf?",
+    a: "Five bottles on the narrow shelf unit on the right wall, each with a printed label. Four are legible in the footage: <b>CARA</b>, <b>ICO</b>, <b>ANTARES</b> and <b>PANIAN</b>. The fifth reads as something like <b>CHT ALE</b> and we could not settle it. The player handles them between <b>2:39</b> and <b>3:06</b> — around 27 seconds of picking up, reading and putting back — but nothing opens as a result within the run.",
+  },
+  {
+    q: "What is written on the books on the shelf?",
+    a: "Three spines are readable: <b>Impressionism</b>, <b>NCE DE DAMPIERRE</b> (the tail of a longer French title, read consistently in every frame from 0:33 to 0:52), and <b>ci. Genius is made, not born.</b> There are also books printed <b>Wiseman</b> / <b>WISEMAN GROUP.</b>, <b>Dreaming of Sweden</b> and <b>The Future that Disappeared</b>. These are set dressing with real titles, not a cipher — nothing in the level refers back to them.",
+  },
+  {
+    q: "What is on the coffee table?",
+    a: "A <b>scribbled note</b> — a sheet of white paper covered in dense dark scribble — plus a marble tray with dark biscuits and green grapes and a folded newspaper. Examining the note at about <b>4:00</b> is where the run spends most of its second half, and the characters showing through the scribble are not reliably readable; we tried at 4x and got a different answer every frame.",
+  },
+  {
+    q: "How long is the level and what is the reward?",
+    a: "The recording runs <b>5:58</b>. The LEVEL COMPLETED card appears at <b>5:57</b> with <b>Reward +50</b> coins and <b>Time: 10:29</b> on the in-game clock. The level is marked <b>Hard</b> on the chapter map. That 10:29 is the game's own timer, not the video length — the player had already been in the room before the capture started.",
+  },
+  {
+    q: "Where is the exit door?",
+    a: "On the <b>left wall</b>, next to the tall bookshelf — a plain white panelled door with a lever handle and no keypad, no dial and no number plate. It is opened with the Key from the bookshelf box and nothing else.",
+  },
+  {
+    q: "What do the window blinds do?",
+    a: "Nothing, as far as this run shows. The back wall has a wide window with horizontal blinds and the player examines it at <b>1:44</b>, but the blinds do not move and nothing is hidden behind them. They are the one big piece of scenery in the room that is not interactive.",
+  },
+  {
+    q: "Do I need the glass of water?",
+    a: "A <b>Glass of water</b> is in the inventory at <b>1:21</b>, and the inventory strip reads Use / Combine / Dismantle / Examine. We never see it used on anything in the footage — no plant, no fire, no powder. Treat it as a carried item, not a step.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-2"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 2"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 2</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 2 Walkthrough: Living Room</h1>
+
+    <p>The Living Room is room 2 of Chapter 3, <i>Murder Dressed in White</i>, and it is the odd one out in the chapter: there is <b>no number code</b> in it. No keypad, no dial, no drawer with four digits. Instead you get a 3x3 sliding-tile puzzle set into a box lid, a shelf of labelled bottles, a decoder ring, and a key that opens a door. This page walks the whole 5:58 run in order, marks every puzzle with its timestamp, and is explicit up front about the two things people waste the most time on: the code that does not exist, and the note that cannot be read.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Built from one 5:58 recording, one frame per second (358 frames). Every written character on this page was cross-checked with macOS Vision OCR across <b>all 358 frames</b> and then confirmed on full-size frames, so names like <i>Impressionism</i>, <i>NCE DE DAMPIERRE</i>, <i>CARA</i>, <i>ANTARES</i> and <i>Ring with numbers</i> are transcribed, not guessed. The two exceptions — the scribbled note and the fifth bottle label — are called out as unreadable rather than filled in.</div>
+
+    <LevelSelector chapter={3} current={2} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Living Room is room 2 of 15 in Chapter 3, marked <b>Hard</b>. There is no numeric code in this level. Two things finish it:</p>
+      <ol>
+        <li>The <b>3x3 tile lid</b> on the wooden box on the tall bookshelf is a sliding-tile puzzle. Solve it (in the run: 1:50 to 2:03) and the box opens on a <b>Key</b>.</li>
+        <li>Use that <b>Key</b> on the <b>white door on the left wall</b> at 5:53. The level completes at 5:57 with <b>Reward +50</b> and <b>Time: 10:29</b>.</li>
+      </ol>
+      <p>Nothing else in the room is a lock. The bottles, the ring, the blinds and the scribbled note are all either decoration or optional.</p>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="9-YCawaFD_0" data-title="Rooms &amp; Exits Level 2 Living Room Walkthrough Murder Dressed in White Chapter 3"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 2 Living Room Walkthrough">
+        <img src="https://i.ytimg.com/vi/9-YCawaFD_0/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 2 Living Room walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/9-YCawaFD_0/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The 5:58 run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l2-hero-living-room.jpg" alt="Rooms and Exits Chapter 3 Level 2 Living Room: mint-green walls, yellow sofa and dark coffee table on a patterned rug, white door and tall bookshelf on the left, fireplace with a gallery wall, console with white drawers and a window with blinds behind" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>A modern living room, and a good-looking one: mint-green walls, a dark grey fireplace wall hung with a gallery of small framed prints, dark wood floor under a pale patterned rug, a long yellow sofa, a low dark coffee table, a grey swivel armchair, a tall floor lamp, two white ottomans under the window and a narrow shelf unit of bottles on the right. On the left wall, a plain white door with a tall dark-wood bookshelf beside it.</p>
+    <p>Structurally it is the loosest level in the chapter. The chain that actually finishes the room is short — <b>solve the box on the bookshelf, take the key, open the door</b> — and everything else is optional content: five labelled bottles to pick up and read, a ring with digits on it, a sheet of paper scribbled over so heavily that its message is buried, and a set of windows with blinds.</p>
+    <p>That is why the level feels longer than it is. The recording spends <b>13 seconds</b> on the box lid and almost <b>two minutes</b> on the scribbled note, and the note is not required. If you only want out of the room, read steps 4, 5 and 9 below and skip the rest.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Every object the run interacts with or clearly identifies, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>White door</td><td>Left wall, beside the bookshelf</td><td>The exit. Lever handle, no keypad, no number. Opened with the Key at 5:53.</td></tr>
+        <tr><td>Tall bookshelf</td><td>Left wall, beside the door</td><td>Books with real printed titles; the wooden box with the tile lid sits on it.</td></tr>
+        <tr><td>Wooden box, tiled lid</td><td>On the bookshelf</td><td>3x3 sliding-tile puzzle. Solving it opens the box and yields the <b>Key</b>.</td></tr>
+        <tr><td>Fireplace</td><td>Dark grey accent wall</td><td>White mantel, gallery wall above, shattered glass and logs inside. Nothing to solve.</td></tr>
+        <tr><td>Console with white drawers</td><td>Back wall, under the window</td><td>Drawers pull open; the run opens and closes them, nothing found.</td></tr>
+        <tr><td>Window with blinds</td><td>Back wall</td><td>Examined at 1:44. Blinds do not move; nothing behind them.</td></tr>
+        <tr><td>Yellow sofa / coffee table</td><td>Centre of the room</td><td>The <b>scribbled note</b>, a marble tray of biscuits and grapes, a newspaper.</td></tr>
+        <tr><td>Bottle shelf</td><td>Right wall</td><td>Five labelled bottles: <b>CARA</b>, <b>ICO</b>, <b>ANTARES</b>, <b>PANIAN</b>, plus one label we could not read.</td></tr>
+        <tr><td>Ring with numbers</td><td>Carried item, found ~1:08</td><td>Digits around a ring — a decoder. Never used on anything in this run.</td></tr>
+        <tr><td>Glass of water</td><td>Carried item, seen 1:21</td><td>In the bag with Use / Combine / Dismantle / Examine. No observed use.</td></tr>
+        <tr><td>Key</td><td>Inside the bookshelf box</td><td>Opens the white door. The only item that ends the level.</td></tr>
+        <tr><td>Scribbled note</td><td>Coffee table</td><td>Paper covered in dense scribble. Characters show through but are not reliably readable.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>Order follows the recording. Timestamps are video time; the links jump to the matching second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:00</span>
+      <strong>Let the intro clear, then read the room</strong>
+      The capture opens on the chapter map — the hex grid of rooms with <i>Living Room</i> marked <b>Hard</b> and <i>Level 3 Study Room</i> still locked — then loads the room. The full view arrives at about 0:12 and the timer starts at 0:00. Sweep it left to right and you have seen everything that matters in five seconds: door and bookshelf left, fireplace and console centre-back, window behind, bottle shelf right, seating in the middle.
+      <img src="/rooms-and-exits/c3l2-hero-living-room.jpg" alt="The Living Room at the start of Chapter 3 Level 2, fully loaded, with the timer at 0:00" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=9-YCawaFD_0&t=0s" target="_blank" rel="noopener">0:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:33 · the bookshelf</span>
+      <strong>Read the book spines — then ignore them</strong>
+      Zooming the bookshelf gives you real printed spines: <b>Impressionism</b>, <b>NCE DE DAMPIERRE</b> (the tail of a longer French title), <b>ci. Genius is made, not born.</b>, and further along <b>Wiseman</b> / <b>WISEMAN GROUP.</b>, <b>Dreaming of Sweden</b>, <b>The Future that Disappeared</b>. They look like a cipher and they are not: nothing in the level ever refers to a title. What matters on this shelf is the wooden box.
+      <img src="/rooms-and-exits/c3l2-bookshelf-tile-box.jpg" alt="The tall bookshelf in the Living Room with printed book spines and the wooden box with a 3x3 tiled lid" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=9-YCawaFD_0&t=33s" target="_blank" rel="noopener">0:33</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 1:08 · the ring</span>
+      <strong>Pick up the Ring with numbers</strong>
+      An item goes into the bag labelled <b>Ring with numbers</b> — a ring with digits printed around it. It is the level's decoder, and if you are the sort of player who wants the note on the coffee table explained, this is the item that probably does it. In this run it is never used, and the level finishes without it, so do not stall here.
+      <img src="/rooms-and-exits/c3l2-ring-with-numbers.jpg" alt="The Ring with numbers item being picked up in the Living Room level" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=9-YCawaFD_0&t=68s" target="_blank" rel="noopener">1:08</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 1:50 · the box lid</span>
+      <strong>Slide the 3x3 tiles</strong>
+      Zoom the box on the bookshelf and the lid is a <b>3x3 grid of nine wooden tiles</b> — light and dark wood in a chequer pattern, one tile fitted with a small knob. That knob is the tile you slide; the empty slot lets the rest move. It is a straight sliding-tile puzzle, not a code, so there is nothing to type and nothing to look up. Restore the pattern and the lid releases.
+      <img src="/rooms-and-exits/c3l2-tile-puzzle.jpg" alt="The 3x3 sliding-tile lid on the wooden box in the Living Room, with one knobbed tile and an empty slot" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=9-YCawaFD_0&t=110s" target="_blank" rel="noopener">1:50</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 2:03 · the key</span>
+      <strong>The box opens on a Key</strong>
+      Thirteen seconds after starting the tiles the box is open, the item name <b>Key</b> appears, and the interior is empty. That is the only thing in the box and the only key in the room. Everything from here to the end of the run is optional.
+      <img src="/rooms-and-exits/c3l2-box-open-key.jpg" alt="The open wooden box on the Living Room bookshelf with the Key inside" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=9-YCawaFD_0&t=123s" target="_blank" rel="noopener">2:03</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 2:39 · the bottles</span>
+      <strong>Five bottles, four readable labels</strong>
+      The narrow shelf on the right wall holds five bottles, each with a printed label. Four read clearly — <b>CARA</b>, <b>ICO</b>, <b>ANTARES</b>, <b>PANIAN</b> — and the fifth reads as something like <b>CHT ALE</b> and stayed unstable across every frame we tried. The player lifts, reads and replaces them for about <b>27 seconds</b>. Nothing opens as a result in this run, so treat this as optional reading rather than a puzzle with a payoff.
+      <img src="/rooms-and-exits/c3l2-bottles-shelf.jpg" alt="The five labelled bottles on the shelf unit in the Living Room" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=9-YCawaFD_0&t=159s" target="_blank" rel="noopener">2:39</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 4:00 · the note</span>
+      <strong>The scribbled note is the room's time sink</strong>
+      On the coffee table, next to a marble tray of dark biscuits and green grapes and a folded newspaper, there is a sheet of white paper covered in dense dark scribble. Characters show through it and the game clearly wants you to decode them — that is what the <b>Ring with numbers</b> is for. We could not read them: at 4x, three separate frames gave three different strings, so this page prints none of them.
+      <img src="/rooms-and-exits/c3l2-scribbled-note.jpg" alt="The scribbled note on the Living Room coffee table beside a marble tray of biscuits and grapes" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=9-YCawaFD_0&t=240s" target="_blank" rel="noopener">4:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 1:44 · the window</span>
+      <strong>The blinds do not open</strong>
+      The back wall window is examined at 1:44 — three panes, horizontal blinds half down, a blurry exterior beyond. Nothing moves, nothing is taped to the glass, nothing is behind the blinds. It is the biggest piece of non-interactive scenery in the room and it wastes a good thirty seconds if you expect it to be a puzzle.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=9-YCawaFD_0&t=104s" target="_blank" rel="noopener">1:44</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 5:53 · the door</span>
+      <strong>Use the Key on the white door and you are out</strong>
+      Back to the left wall, the white door, the Key from the box. No code is entered — there is nothing on the door to enter it into. The door gives, the room view comes back, and the level closes out.
+      <img src="/rooms-and-exits/c3l2-door-with-key.jpg" alt="The white exit door in the Living Room, opened with the Key from the bookshelf box" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=9-YCawaFD_0&t=353s" target="_blank" rel="noopener">5:53</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 5:57 · the card</span>
+      <strong>LEVEL COMPLETED: +50, 10:29</strong>
+      The completion card prints <b>Reward +50</b> coins, a three-dot efficiency meter, and <b>Time: 10:29</b>. That time is the game's own clock, not the video length — the capture is 5:58 because the player had already been in the room for roughly five minutes before recording started.
+      <img src="/rooms-and-exits/c3l2-level-completed.jpg" alt="The LEVEL COMPLETED card for Living Room showing Reward +50 and Time 10:29" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=9-YCawaFD_0&t=357s" target="_blank" rel="noopener">5:57</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>"I cannot find the code."</b> There is no code. This is the single most common dead end in the level: Chapter 3 opens with Dining Room, which does have numeric locks, so everyone arrives expecting a keypad. The Living Room finishes on a sliding-tile puzzle and a key. Stop looking for a number.</p>
+    <p><b>"The tile lid will not open."</b> It is a sliding puzzle, so treat it as one: only the knobbed tile moves, one step at a time, into the empty slot. Do not tap the tiles expecting them to rotate. In the recording it takes 13 seconds of steady sliding — if you have been on it for five minutes, you are probably trying to make a picture that is not the target; the goal is the chequer pattern the lid already half-shows.</p>
+    <p><b>"The key does not fit anything."</b> It fits the white door on the left wall and nothing else. Not the console drawers, not the fireplace, not the bottle shelf.</p>
+    <p><b>"The note is unreadable."</b> It is meant to be read through the scribble, and the Ring with numbers is the tool for it. We could not recover the characters either, at 4x, from three different frames — so we are not going to sell you a guess.</p>
+    <p><b>"The bottles must be an order puzzle."</b> Maybe, but nothing in this run opens after 27 seconds of handling them, and the level completes without them. If you want to try, the four legible labels are CARA, ICO, ANTARES and PANIAN.</p>
+    <p><b>"The blinds and the drawers are hiding something."</b> Neither hides anything in this footage. The drawers open, are looked into, and are closed again.</p>
+
+    <h2>Where Living Room sits in Chapter 3<span class="accent">.</span></h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i>. Living Room is room <b>2 of 15</b>, after Dining Room and before Study Room, and it is labelled <b>Hard</b> on the chapter map. The map screen also shows <i>Level 3 Study Room</i> sitting behind an <b>Unlock</b> button while you are in Level 2.</p>
+    <p>Its shape is worth knowing before you go in: it is the chapter's item-hunting level. Where Level 1 is numeric locks and Level 4 is a single eight-digit safe, Level 2 makes you find and combine things — a tile lid, a decoder ring, a key — and punishes you for assuming every room in the chapter follows the same rule. If you are working through in order, take that as the hint: check whether a room has a keypad at all before you go hunting for digits.</p>
+
+    <LevelSelector chapter={3} current={2} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-3-level-1/">Chapter 3 Level 1 — Dining Room</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-3-level-3/">Chapter 3 Level 3 — Study Room</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Four things, so you know exactly which parts of this page are reads and which are gaps.
+      <br><br>
+      <b>1. The scribbled note.</b> This is the level's real puzzle and we could not read it. Characters are visible through the scribble, but three separate 4x crops from three different frames produced three different transcriptions, which means none of them is trustworthy. If you solve it with the Ring with numbers, you know something this page does not.
+      <br><br>
+      <b>2. What the Ring with numbers decodes.</b> The item exists and its label is confirmed at 1:08. It is never used in the recording, so we cannot tell you which prop it points at — we assume the note, and we have not printed that as fact.
+      <br><br>
+      <b>3. The fifth bottle label.</b> Four of the five labels read cleanly (CARA, ICO, ANTARES, PANIAN). The fifth OCRs as CHT ALE across frames and we could not settle whether that is a real name, so we have not put it in the guide as one.
+      <br><br>
+      <b>4. The bottles and the glass of water.</b> Both are handled in the run and neither produces anything visible. We do not know whether they are a puzzle that was abandoned mid-run or pure decoration, and we have not invented a purpose for them.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

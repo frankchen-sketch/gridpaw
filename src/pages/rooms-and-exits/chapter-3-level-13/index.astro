@@ -1,0 +1,354 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 13 Walkthrough: Kids Bedroom 1";
+const description = "Rooms & Exits Chapter 3 Level 13 walkthrough for Kids Bedroom 1: the wooden box whose green panels read 74 and 4, the desk calculator that turns 48 x 5 into 240 and then 240 x 74 into 17,760, the 'Fill the white squares' tablet, the butterfly pattern rule, the six animal knobs and the four-colour switch chest. Every printed number was read twice from separate frames.";
+
+const faq = [
+  {
+    q: "What is the code in Rooms & Exits Chapter 3 Level 13 Kids Bedroom 1?",
+    a: "There is no single typed code that opens the room. The two numbers the level actually puts in front of you are printed on the wooden box: <b>74</b> on its front green panel and <b>4</b> on its right-hand green panel. The desk calculator is the level's arithmetic station, and the run we worked from uses it in two steps: <b>48 x 5 = 240</b>, then <b>240 x 74 = 17,760</b>. The <b>17,760</b> reading was taken twice from the calculator's LCD at two separate seconds, and 240 x 74 does equal 17,760.",
+  },
+  {
+    q: "How do I get 17,760 on the calculator?",
+    a: "The calculator on the desk is a real working calculator, not a static prop. In the recording the display shows <b>48*5</b> at 6:45, <b>240*</b> at 6:46 and <b>17760</b> at 6:47 and again at 6:48. That is a two-step chain: 48 x 5 = 240, then 240 x 74 = 17,760, with the 74 coming off the wooden box's green panel. The result sits on the LCD as a plain five-digit number, no decimal point.",
+  },
+  {
+    q: "Where is the wooden box with 74 on it?",
+    a: "It is the same box twice: at 1:24 the game pulls it up as a full inspect view, and at 5:24 you can see it sitting on the top shelf of the wardrobe, next to the folded clothes and above the green backpack. It is light wood with bright green side panels, an X-shaped wooden brace on each panel, and the numbers <b>74</b> (front) and <b>4</b> (right side) printed in pale green. Its lid holds a dark five-cell segment display that is completely unlit the first time you see it.",
+  },
+  {
+    q: "What is the matchstick puzzle?",
+    a: "At 7:00 the box's lid display becomes a full-screen puzzle: five seven-segment cells whose segments are individual matchsticks, with dark burnt heads. One cell always carries a <b>diagonal matchstick</b> that is not part of a normal digit, which is the game's way of showing you a match that has been moved out of place. Moving matches changes the digits — the cells read differently from second to second. We could not pin a final digit string to it, because the copy we worked from stops mid-puzzle.",
+  },
+  {
+    q: "What does the tablet ask for?",
+    a: "The tablet lying on the rug opens a grid puzzle with the instruction <b>FILL THE WHITE SQUARES</b>. The board is a purple patterned grid scattered with white cells, and you place orange stud-topped blocks into the white cells. The recording clears it in about forty seconds, between 0:06 and 0:42. No digits or letters appear on the tablet, so it is a spatial puzzle rather than a code lock.",
+  },
+  {
+    q: "What is the butterfly puzzle rule?",
+    a: "A framed picture of a tree full of butterflies at 4:18 carries the level's most explicit instruction. It reads: <b>DON'T COUNT HOW MANY BUTTERFLIES THERE ARE! COUNT THE NUMBER OF BUTTERFLY PATTERNS THAT HAVE THE SAME COLOR</b>. So the answer is a count of matching wing patterns, not a count of butterflies. The picture on the easel on the left of the room is the same butterfly tree, which is how the level tells you the two are connected.",
+  },
+  {
+    q: "What are the six animal knobs?",
+    a: "The dresser under the window has three drawers and six round knobs, each printed with an animal or object: a <b>green frog</b> and a <b>green crocodile</b> on the top drawer, a <b>white hippo</b> and a <b>yellow lion</b> on the middle drawer, a <b>yellow duck</b> and a <b>yellow mushroom</b> on the bottom drawer. The top pair is joined by a dark cord with a knot in the middle. We never see the combination that satisfies them in the footage we could decode.",
+  },
+  {
+    q: "Where do I find the key and the matches?",
+    a: "The <b>key</b> is already in the keyhole of the top desk drawer at 5:00 — the close-up shows a small silver key turned in a white drawer front with a gold handle. Turning it opens the drawer. The <b>Matches</b> are a separate pickup at 5:18, shown as a brown matchbox with two rows of gold-headed matches and labelled <b>Matches</b> in the inventory. The matches are what the box-lid matchstick puzzle runs on.",
+  },
+  {
+    q: "What is the chest with the coloured switches?",
+    a: "At 6:00 the game opens a wooden chest with a brass latch. Below the latch sits a panel divided into <b>four coloured modules — red, yellow, green and purple — each holding four brass toggle switches</b>, sixteen switches in total, all off. It is a state puzzle, not a keypad: you are setting a pattern of on/off switches rather than typing digits.",
+  },
+  {
+    q: "What is the sliding-block puzzle in this room?",
+    a: "A full-screen sliding-block board with coloured square blocks, each carrying a smiley face, runs from about 2:06 to 3:36. It is the longest single puzzle in the level — a minute and a half of real time in the recording, with the room clock ticking. We are not publishing a move list for it: the clip is cut and the block states change between sampled frames, so a guessed sequence would waste more of your time than solving it.",
+  },
+  {
+    q: "Is Kids Bedroom 1 room 13 of Chapter 3?",
+    a: "Yes. Chapter 3 is <i>Murder Dressed in White</i> and its fifteen rooms run: Dining Room, Living Room, Study Room, Guest Toilet, Workshop, Guest Bedroom, Master Bathroom, Kids Playroom, Backyard, Garden, Kitchen, Driveway, <b>Kids Bedroom</b>, Storage Room, Garage. Kids Bedroom is room <b>13 of 15</b>, straight after the Driveway and before the Storage Room.",
+  },
+  {
+    q: "Does the recording show the level being completed?",
+    a: "Not the copy we worked from. The upload runs 8:43, but the file we decoded only carries media up to <b>7:12</b> — the last frame is the matchstick display mid-solve. There is no results card, no exit animation and no coin reward in the decodable part, so this page prints no reward figure for Kids Bedroom 1.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-13"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 13"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 13</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 13 Walkthrough: Kids Bedroom 1</h1>
+
+    <p>Kids Bedroom 1 is the thirteenth room of Chapter 3, <i>Murder Dressed in White</i>, and it is the opposite of Kitchen in almost every way. Kitchen was one room with one long chain of locks; this is a small pastel bedroom packed with nine or ten separate toys, each of which is its own little puzzle. There is no keypad on the wall and no single code to type at the door. What the level actually hands you is a wooden box with two numbers on its sides, a working calculator on the desk, and a matchstick display built into the box lid.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame at one frame per second. The numbers <b>74</b> and <b>4</b> on the wooden box were each read twice — once from the whole frame at 1:24 and once from a 2x crop of the box — and both passes agreed. The calculator result <b>17760</b> was read twice from the LCD itself, at two separate seconds, and cross-checked against the arithmetic. Anything that only ever read one way, or that two passes read differently, is listed under "What this page could not verify" instead of being printed as a code.</div>
+
+    <LevelSelector chapter={3} current={13} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Kids Bedroom 1 is room 13 of 15 in Chapter 3. The wooden box carries <b>74</b> (front panel) and <b>4</b> (side panel); the desk calculator turns <b>48 × 5</b> into <b>240</b> and then <b>240 × 74</b> into <b>17,760</b>.</p>
+      <ol>
+        <li>Start with the tablet on the rug: it asks you to <b>Fill the white squares</b> with the orange blocks. No digits involved.</li>
+        <li>Inspect the wooden box. Front green panel <b>74</b>, right green panel <b>4</b>. Its lid is a five-cell segment display with matchsticks, dark until you have the matches.</li>
+        <li>Work the toy track on the rug, the sliding smiley-block board (the long one), the fish tangram, the six animal knobs and the butterfly pattern picture.</li>
+        <li>Open the desk drawer with the <b>key</b> already in its lock, and pick up the <b>Matches</b>.</li>
+        <li>At the desk calculator, run <b>48 × 5 = 240</b>, then <b>240 × 74 = 17,760</b> — the five-digit result is what the level is building toward.</li>
+        <li>Set the box-lid matchstick display. This is where our recording stops, so the exact digit pattern is not printed here.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="VMJIdMH_xxI" data-title="Rooms &amp; Exits Level 13 Kids Bedroom 1 Walkthrough Murder Dressed in White Chapter 3"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 13 Kids Bedroom 1 Walkthrough">
+        <img src="https://i.ytimg.com/vi/VMJIdMH_xxI/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 13 Kids Bedroom 1 walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/VMJIdMH_xxI/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The Kids Bedroom 1 run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l13-hero-bedroom.jpg" alt="Rooms and Exits Chapter 3 Level 13 Kids Bedroom 1: a pastel bedroom with blue and white stripes on the left wall, pink and white stripes on the right, a white bed with pink bedding, a white wardrobe, and a desk under a window with a bright green chair" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>One square bedroom, seen from a high angle, with three walls in play. The left wall is striped blue and white and carries a plain white door, a fabric toy bin printed with the alphabet, and a wooden easel holding a painting of a butterfly tree. The back wall is a wide window with pink curtains, a desk underneath it, and a lime-green chair. The right wall is striped pink and white, and against it sit the wardrobe and the bed — white frame, pink duvet, a green gift box sitting on the mattress.</p>
+    <p>The floor is the busiest surface in the room. A large pale rug covers most of it, and on the rug are a pink pouf, a blue star cushion, a segmented caterpillar toy curled into a question mark, and a red-yellow-green toy track that the game turns into its own puzzle. Two red and blue high-top sneakers sit by the bed. Almost every object in this room is interactive, which is why the recording spends the first minute simply opening things.</p>
+    <p>Structurally, this is a hub level rather than a chain. Kitchen made you solve one lock to reach the next; Kids Bedroom 1 lets you work its puzzles in almost any order and only links them at the end, through the box: the box's side numbers feed the calculator, the calculator's result feeds the box's lid display, and the matches you pick up are what let you set that display. Because the parts are independent, you can leave the sliding-block board for last without blocking anything.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Everything we could identify, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Tablet</td><td>On the rug, centre left</td><td>Grid puzzle with the instruction <b>FILL THE WHITE SQUARES</b>. Orange stud-topped blocks into white cells.</td></tr>
+        <tr><td>Wooden box</td><td>Top shelf of the wardrobe; also a full inspect view</td><td>Green side panels printed <b>74</b> (front) and <b>4</b> (right). Lid is a five-cell matchstick display.</td></tr>
+        <tr><td>Matchstick display</td><td>Built into the box lid</td><td>Five seven-segment cells made of matches, one diagonal match out of place.</td></tr>
+        <tr><td>Calculator</td><td>On the desk under the window</td><td>Working calculator; the run uses <b>48 × 5 = 240</b> then <b>240 × 74 = 17,760</b>.</td></tr>
+        <tr><td>Toy track</td><td>Rug, in front of the bed</td><td>Red, yellow and green track segments with puzzle-piece connectors; join the round ends.</td></tr>
+        <tr><td>Sliding smiley blocks</td><td>Full-screen board</td><td>Coloured square blocks with faces; the level's longest puzzle, about 2:06 to 3:36.</td></tr>
+        <tr><td>Fish tangram</td><td>Framed close-up on a textured panel</td><td>Dark fish silhouette filled with red and blue triangles.</td></tr>
+        <tr><td>Animal-knob dresser</td><td>Under the desk, right side</td><td>Six knobs: frog, crocodile, hippo, lion, duck, mushroom.</td></tr>
+        <tr><td>Butterfly picture</td><td>Framed, and again on the easel</td><td>Carries the rule: <b>count the number of butterfly patterns that have the same color</b>.</td></tr>
+        <tr><td>Desk drawer + key</td><td>Under the desk</td><td>Silver <b>key</b> already in the top drawer's keyhole at 5:00.</td></tr>
+        <tr><td>Matches</td><td>Inventory pickup</td><td>Labelled <b>Matches</b>; brown box, two rows of gold-headed matches.</td></tr>
+        <tr><td>Switch chest</td><td>Full-screen close-up</td><td>Four colour modules (red, yellow, green, purple) of four toggle switches each — sixteen switches.</td></tr>
+        <tr><td>Wardrobe</td><td>Right wall, beside the window</td><td>Opens to hanging clothes, folded stacks and a dark green <b>backpack</b>.</td></tr>
+        <tr><td>Green gift box</td><td>On the bed</td><td>Green box with a pink ribbon; sparkles when examined.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>The order below follows the recording. Timestamps are video time; the links jump to the matching second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:00</span>
+      <strong>Read the room before you touch it</strong>
+      The level opens on a title card — <b>Level 13 / Kids Bedroom 1</b> — over the full room, then the camera settles and the HUD appears. Sweep it once: door, toy bin and easel left; window, desk and green chair centre; wardrobe and bed right. Almost everything down at floor level on the rug is a puzzle, so resist the urge to start tapping the furniture first.
+      <img src="/rooms-and-exits/c3l13-level-title.jpg" alt="The Level 13 Kids Bedroom 1 title card in Rooms and Exits Chapter 3" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VMJIdMH_xxI&t=0s" target="_blank" rel="noopener">0:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:06 · the tablet</span>
+      <strong>"Fill the white squares"</strong>
+      The tablet on the rug opens first, and it is the only puzzle in the room that states its own rule in words: <b>FILL THE WHITE SQUARES</b>. The board is a purple patterned grid with scattered white cells, and the pieces are orange blocks with a yellow stud on top. You are filling the gaps, not matching a picture, so work from the edges inward. The recording clears it in about thirty-five seconds.
+      <img src="/rooms-and-exits/c3l13-tablet-fill-white-squares.jpg" alt="The tablet puzzle in Kids Bedroom 1 with the instruction Fill the white squares, a purple grid and orange blocks" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VMJIdMH_xxI&t=6s" target="_blank" rel="noopener">0:06</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 1:24 · the numbers that matter</span>
+      <strong>A wooden box printed 74 and 4</strong>
+      The game pulls the wooden box up as a full inspect view, and this is the single most useful frame in the level. It is light wood with bright green side panels, each crossed by an X-shaped wooden brace, and the numbers are printed in pale green: <b>74</b> across the front panel, <b>4</b> on the right-hand panel. The lid holds a dark five-cell segment display with no lit segments at all. Remember where this box lives — at 5:24 you can see it on the wardrobe's top shelf. A <b>Piece of paper</b> with a fox and a bear drawn on it comes out of the same area just before this, at 1:06.
+      <img src="/rooms-and-exits/c3l13-wooden-box-74.jpg" alt="The wooden box in Kids Bedroom 1 with green side panels printed 74 on the front and 4 on the right" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VMJIdMH_xxI&t=84s" target="_blank" rel="noopener">1:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 1:36 · the track</span>
+      <strong>Join the toy track on the rug</strong>
+      The red-yellow-green track on the rug opens as its own board: curved and straight segments with puzzle-piece tabs, and a round end cap at each side. The goal is one continuous run from the green cap to the orange cap. It is a rotation-and-fit puzzle, so the tabs tell you which way a piece has to face before you worry about its colour.
+      <img src="/rooms-and-exits/c3l13-track-puzzle.jpg" alt="The toy track puzzle in Kids Bedroom 1, red yellow and green segments with puzzle-piece connectors" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VMJIdMH_xxI&t=96s" target="_blank" rel="noopener">1:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 2:06 to 3:36 · the long one</span>
+      <strong>The sliding-block board of smiley faces</strong>
+      This is the level's time sink. A full-screen frame of coloured square blocks, each with a face, shuffled around one gap. The recording grinds on it for a minute and a half with the room clock running, which is the honest signal for how fiddly it is. We are not printing a move list: the footage is cut and the block layout changes between sampled seconds, so a guessed sequence would cost you more time than working it out yourself.
+      <img src="/rooms-and-exits/c3l13-sliding-smiley-blocks.jpg" alt="The sliding block puzzle in Kids Bedroom 1 with coloured square blocks carrying smiley faces" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VMJIdMH_xxI&t=126s" target="_blank" rel="noopener">2:06</a> · <a href="https://www.youtube.com/watch?v=VMJIdMH_xxI&t=216s" target="_blank" rel="noopener">3:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 3:42 · the tangram</span>
+      <strong>Fill the fish silhouette</strong>
+      A framed close-up on a textured grey panel, with a dark fish shape left as a silhouette. The pieces you place are right-angled triangles — in the frames we sampled, one dark red and one pale blue. It is a tangram in everything but name: cover the outline exactly, and the triangle count is the constraint, not the colours.
+      <img src="/rooms-and-exits/c3l13-fish-tangram.jpg" alt="The fish tangram puzzle in Kids Bedroom 1 with red and blue triangles over a fish silhouette" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VMJIdMH_xxI&t=222s" target="_blank" rel="noopener">3:42</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 4:06 · the dresser</span>
+      <strong>Six animal knobs, three drawers</strong>
+      The dresser under the desk has three drawers and six round knobs, each printed with a creature: <b>green frog</b> and <b>green crocodile</b> on the top drawer, <b>white hippo</b> and <b>yellow lion</b> on the middle, <b>yellow duck</b> and <b>yellow mushroom</b> on the bottom. The top pair is tied together by a dark cord with a knot in the middle. Treat it as a state puzzle: what matters is which knob you turn and in what order, and the pairing on each drawer is the hint.
+      <img src="/rooms-and-exits/c3l13-animal-knobs.jpg" alt="The three-drawer dresser in Kids Bedroom 1 with six animal knobs: frog, crocodile, hippo, lion, duck and mushroom" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VMJIdMH_xxI&t=246s" target="_blank" rel="noopener">4:06</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 4:18 · the butterfly rule</span>
+      <strong>"Don't count how many butterflies there are"</strong>
+      A framed picture of a tree covered in butterflies, and under it the level's most explicit instruction: <b>DON'T COUNT HOW MANY BUTTERFLIES THERE ARE! COUNT THE NUMBER OF BUTTERFLY PATTERNS THAT HAVE THE SAME COLOR</b>. Read it literally. The trick is that the butterflies are all different — you are counting how many share one colour scheme and wing pattern, not how many insects are on the tree. The easel on the left of the room holds the same butterfly tree, so the two are meant to be read together.
+      <img src="/rooms-and-exits/c3l13-butterfly-counting.jpg" alt="The butterfly tree picture in Kids Bedroom 1 with the instruction not to count how many butterflies there are but to count butterfly patterns that have the same color" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VMJIdMH_xxI&t=258s" target="_blank" rel="noopener">4:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 5:00 · the key and the matches</span>
+      <strong>Turn the key, take the matches</strong>
+      The desk drawer close-up shows a small silver <b>key</b> already sitting in the keyhole of the white top drawer, with the gold knob right beside it — you turn it rather than hunt for it. A few seconds later the <b>Matches</b> come into the inventory: a brown matchbox with the tray slid out and two neat rows of gold-headed matches, labelled simply <b>Matches</b>. Those matches are the tool for the box lid. Right after, the wardrobe opens at 5:24 — hanging clothes, folded stacks, and a dark green backpack on the middle shelf, with the wooden box from step 3 sitting on the top shelf.
+      <img src="/rooms-and-exits/c3l13-matches-item.jpg" alt="The Matches item in Kids Bedroom 1, a brown matchbox with two rows of gold-headed matches" width="1200" height="594" loading="lazy" />
+      <img src="/rooms-and-exits/c3l13-wardrobe-backpack.jpg" alt="The open wardrobe in Kids Bedroom 1 with hanging clothes, a green backpack and the wooden box on the top shelf" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VMJIdMH_xxI&t=300s" target="_blank" rel="noopener">5:00</a> · <a href="https://www.youtube.com/watch?v=VMJIdMH_xxI&t=318s" target="_blank" rel="noopener">5:18</a> · <a href="https://www.youtube.com/watch?v=VMJIdMH_xxI&t=324s" target="_blank" rel="noopener">5:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 6:00 · the switch chest</span>
+      <strong>Four colours, sixteen switches</strong>
+      A wooden chest with a brass latch opens as a close-up, and under the latch is the panel: <b>four coloured modules — red, yellow, green, purple — each holding four brass toggle switches</b>. Sixteen switches, all down when you find it. This is a state puzzle, not a code entry: the colours group the switches, and whatever pattern the room has been showing you is what you have to reproduce across the four groups.
+      <img src="/rooms-and-exits/c3l13-switch-chest.jpg" alt="The wooden chest in Kids Bedroom 1 with a brass latch and a panel of red, yellow, green and purple modules each holding four toggle switches" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VMJIdMH_xxI&t=360s" target="_blank" rel="noopener">6:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 6:45 · the calculator</span>
+      <strong>48 × 5 = 240, then 240 × 74 = 17,760</strong>
+      The calculator on the desk is not scenery — it is the level's arithmetic station, and the run uses it in two steps. At 6:45 the LCD reads <b>48*5</b>; a second later it reads <b>240*</b>; at 6:47 and again at 6:48 it reads <b>17760</b>. So the chain is 48 × 5 = 240, then 240 × 74 = 17,760, with the 74 coming straight off the wooden box's front panel. The result sits on the LCD as five plain digits with no decimal point, which is exactly the width of the box-lid display.
+      <img src="/rooms-and-exits/c3l13-calculator-17760.jpg" alt="The desk calculator in Kids Bedroom 1 with its LCD reading 17760" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VMJIdMH_xxI&t=405s" target="_blank" rel="noopener">6:45</a> · <a href="https://www.youtube.com/watch?v=VMJIdMH_xxI&t=407s" target="_blank" rel="noopener">6:47</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 7:00 to 7:12 · where the video stops</span>
+      <strong>The matchstick display on the box lid</strong>
+      The box's lid comes back as a full-screen board: five seven-segment cells with the segments made of individual matchsticks, burnt heads and all, and one cell that always carries a <b>diagonal matchstick</b> sticking out of the digit. That diagonal is the tell — the game is showing you a match that has been moved out of position, and the puzzle is about moving matches until the cells read what they are supposed to read. The cells genuinely change from second to second as the player works. Then the recording ends.
+      <img src="/rooms-and-exits/c3l13-matchstick-display.jpg" alt="The matchstick segment display on the wooden box lid in Kids Bedroom 1, five cells with a diagonal matchstick" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=VMJIdMH_xxI&t=420s" target="_blank" rel="noopener">7:00</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>You keep looking for a keypad.</b> There isn't one, and that is deliberate. Kids Bedroom 1 does its locking with objects — a box lid, a switch panel, a dresser of knobs — rather than with a number pad on a wall. The only digits the room actually asks you to produce come out of the calculator.</p>
+    <p><b>You read 74 and 4 as a single code.</b> They are not a two-digit and a one-digit code sitting next to each other; they are two numbers on two different faces of the same box, and the level expects you to do something with them. The run we worked from multiplies: 48 × 5 first, then 240 × 74, ending on 17,760.</p>
+    <p><b>The box lid is dark and looks broken.</b> It is supposed to be. The five-cell display is unlit when you first inspect the box at 1:24 and only becomes a puzzle once you have the <b>Matches</b> from 5:18. If you found the box early and thought it was decoration, go back to it after the drawer.</p>
+    <p><b>The butterfly picture feels like a trick question.</b> It is, but the wording is precise: <b>count the number of butterfly patterns that have the same color</b>. Counting the insects gets you a number that is too big and always wrong. Group by colour scheme first, then count the group.</p>
+    <p><b>The sliding-block board eats your time.</b> Plan for it. It is the one puzzle in this room that the recording spends more than a minute on, and there is no hint that solves it for you. Leave it until the quick pickups are done so you are not losing progress elsewhere while you grind it.</p>
+
+    <h2>Where Kids Bedroom 1 sits in Chapter 3<span class="accent">.</span></h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i>, and its fifteen rooms run from the Dining Room through the house and out into the garden: Dining Room, Living Room, Study Room, Guest Toilet, Workshop, Guest Bedroom, Master Bathroom, Kids Playroom, Backyard, Garden, Kitchen, Driveway, <b>Kids Bedroom</b>, Storage Room, Garage. Kids Bedroom is room <b>13 of 15</b> — the third-from-last room in the chapter, straight after the Driveway and before the Storage Room.</p>
+    <p>Mechanically it is a reset after Kitchen. Kitchen was a chain of dependencies in one big room; this is a small room where most puzzles stand alone, and the only chain is the one that ends at the box: numbers on the box, calculator on the desk, matches from the drawer, display in the lid. That makes it a good room to clear in one pass — grab the pickups first, then settle in for the sliding blocks.</p>
+
+    <LevelSelector chapter={3} current={13} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-3-level-12/">Chapter 3 Level 12 — Driveway</a></p>
+      <p>Back to: <a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Four things, stated plainly so you know which parts of this page are reads and which are reconstruction.
+      <br><br>
+      <b>1. The final matchstick pattern.</b> The five-cell display was sampled every second from 6:24 to 7:12 and the cells never held still: separate passes over the same frame read the digits differently, and the digit count itself flipped between four and five depending on which crop we used. With a diagonal match sitting in the last cell, a confident transcription is not possible. This page therefore prints no digit string for the box-lid puzzle. The calculator's <b>17760</b> is solid — that was read twice off the LCD itself — but we did not watch it being entered into the display.
+      <br><br>
+      <b>2. The ending and the reward.</b> The upload is 8:43 long, but the file we decoded stops at <b>7:12</b> — the container's last packet is at 432.2 seconds and everything after it is unrecoverable. So there is no results card, no <i>level completed</i> screen and no coin reward in our source. This page prints no reward figure for Kids Bedroom 1, and any number you see elsewhere is not from this recording.
+      <br><br>
+      <b>3. The answers to the knob, track and tangram puzzles.</b> We can describe all three confidently — six animal knobs, a red-green-orange track with puzzle tabs, a fish silhouette filled with red and blue triangles — but the footage never holds a clean "solved" frame for long enough to read a state off it. Rather than publish a guessed knob order or triangle placement, those sections stay descriptive.
+      <br><br>
+      <b>4. The significance of the 4 on the box's side panel.</b> The <b>74</b> is used: 240 × 74 = 17,760 is what the calculator lands on. The <b>4</b> on the right-hand panel is read just as reliably, but nothing in the decodable part of the recording uses it. It may belong to a later step in the level, or to the box's own lid puzzle. We are not going to invent a sum for it.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

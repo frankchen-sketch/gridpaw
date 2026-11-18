@@ -1,0 +1,330 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 5 Walkthrough: Workshop";
+const description = "Rooms & Exits Chapter 3 Level 5 walkthrough for the Workshop: the five-column panel on the red machine that settles on 41018, the Morse paper, the laptop that unlocks to 14:00, and the Roman-numeral clock — with an honest note on what the recording does not show.";
+
+const faq = [
+  {
+    q: "What is the code in Rooms & Exits Chapter 3 Level 5 Workshop?",
+    a: "The one numeric answer the room gives you outright is <b>41018</b>, on the <b>five-column display of the red machine with the two glass tubes</b>. Read the middle row of the 3x5 grid left to right and you get <b>4 1 0 1 8</b>; the columns stop moving there, the view closes and the machine is done. The other lock in the Workshop is the <b>laptop</b>, which asks for a text password rather than digits — its characters are masked on screen, so this page does not print a value for it.",
+  },
+  {
+    q: "Where is the 41018 panel?",
+    a: "On the red machine that sits on the bench under the shelves, the one flanked by two clear glass tubes full of wire. Tap it and the room zooms in on a grid of dark tiles, five columns wide and three rows tall, each tile carrying one white digit. It sits at the end of the bench near the safe, and it is easy to mistake for a label rather than a lock the first time you pass it.",
+  },
+  {
+    q: "How should I read the 3x5 grid?",
+    a: "By columns, not by rows, and only the <b>middle</b> one counts. Each column is a wheel showing the digit above, the digit you have selected and the digit below — the same three-window arrangement as a padlock. In the settled frame the five columns read <b>5/4/3</b>, <b>2/1/0</b>, <b>1/0/9</b>, <b>2/1/0</b> and <b>9/8/7</b>, so the middle row is <b>4 1 0 1 8</b>. Reading the top row instead gives 5 2 1 2 9 and nothing happens.",
+  },
+  {
+    q: "What is the laptop password?",
+    a: "We could not read it. The laptop opens on a blue login window with a question-mark avatar and a field that says <b>Enter Password</b>; at <b>1:40</b> the avatar changes to a smiling face and the field shows a short masked string, and by <b>1:42</b> the machine has unlocked. The mask hides the characters, and the room's only text clue — the crumpled piece of paper — is a row of Morse marks rather than a word this page can pin to a keyboard.",
+  },
+  {
+    q: "What does the laptop show once it opens?",
+    a: "A digital clock reading <b>14:00</b> on a black screen with a green display. That is the laptop's payoff and it is a clue, not a lock: the Workshop's other time puzzle is the big wooden wall clock with Roman numerals on its face, and 14:00 is the only time value the room hands you. On a twelve-hour dial that is two o'clock.",
+  },
+  {
+    q: "What is written on the wall note?",
+    a: "Two lines in white chalk on the dark panelled wall beside the safe: <b>XC=3</b> and <b>4=XL-10</b>. It is not standard Roman notation — XC is 90 and XL is 40 — which is the point: the note is asking you to treat the numerals as values to manipulate rather than to read. The walkthrough video annotates the same wall in red with <b>XC=90</b>, <b>X=10</b> and <b>L=50</b> as it works the puzzle out.",
+  },
+  {
+    q: "What is on the piece of paper?",
+    a: "A single row of Morse marks. The clearest frame is at <b>1:20</b>, where the game labels it <b>Piece of paper</b>: the marks read <b>..- .--. . ...</b> — four groups, which in standard Morse are U, P, E and S. It is the only written clue in the Workshop that is not a number, and the laptop is the only lock in the Workshop that takes text, so the two belong together even though the masked field stops us confirming the exact string.",
+  },
+  {
+    q: "How do I open the safe?",
+    a: "The safe is the green-grey box on the blue shelf unit on the left wall. Its door carries a large circular dial marked <b>0 to 90</b> in tens, with nine fine ticks between each number, plus a smaller lock above it and a latch handle on the right. In the recording the dial is turned repeatedly from <b>4:28</b> onwards; the video ends before the door swings, so this page does not print a combination for it.",
+  },
+  {
+    q: "What is the birdcage for?",
+    a: "At <b>3:15</b> the camera settles on a large empty birdcage hanging beside the window, with a small wooden box sitting inside it. The cage is a container puzzle: you have to get the box out. The recording opens the cage and takes the box but never holds a frame long enough to show how the latch works, so treat it as a place to look with a tool rather than a code.",
+  },
+  {
+    q: "Is Workshop the fifth room of Chapter 3?",
+    a: "Yes. Chapter 3 is <i>Murder Dressed in White</i>, and Workshop is room <b>5 of 15</b> — the first room of the chapter after the level-select screen, before Guest Bedroom (6) and Master Bathroom (7). It is the chapter's most mechanical room: a pegboard wall of tools, a workbench with a red toolbox, a bench-mounted machine with two glass tubes, a green safe on a blue shelf, a birdcage, a cuckoo clock and a big Roman-numeral wall clock.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-5"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 5"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 5</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 5 Walkthrough: Workshop</h1>
+
+    <p>Workshop is the fifth room of Chapter 3, <i>Murder Dressed in White</i>, and the first one that feels like a workshop rather than a room in a house: pegboard, bench, toolbox, a machine bolted to the bench with two glass tubes on it, and a green safe sitting on a blue shelf. The level has one clean numeric answer — <b>41018</b> on the machine's five-column display — a laptop that wants text instead of digits, a Morse paper, and a Roman-numeral clock that the laptop feeds. This page gives you the number, the chain, and an explicit account of the three things the recording does not let us finish.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt from a 5:40 recording sampled at one frame per second, with the machine's five-column display re-sampled at four frames per second to find the frame where the wheels stop. <b>41018</b> was read twice, at 0:59.25 and 0:59.50, from two separate frames of the settled display. Everything else on this page is a description of what is on screen rather than a number, and the sections that could not be confirmed say so.</div>
+
+    <LevelSelector chapter={3} current={5} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Workshop is room 5 of 15 in Chapter 3. The machine's five-column display settles on <b>41018</b>. The laptop wants text, not digits, and unlocks to a clock reading <b>14:00</b>.</p>
+      <ol>
+        <li>Find the red machine on the bench with two clear glass tubes on it, near the safe.</li>
+        <li>Read its 3x5 grid by column, middle row only: <b>4 1 0 1 8</b>. The wheels stop there and the view closes.</li>
+        <li>Open the laptop and enter its password — a short text string, masked on screen — and read the digital clock it shows: <b>14:00</b>.</li>
+        <li>Use that time on the wooden wall clock with the Roman-numeral face: two o'clock.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="Q6kFGej5t34" data-title="Rooms &amp; Exits Level 5 Workshop Walkthrough Murder Dressed in White Chapter"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 5 Workshop Walkthrough">
+        <img src="https://i.ytimg.com/vi/Q6kFGej5t34/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 5 Workshop walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/Q6kFGej5t34/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The 5:40 run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l5-hero-workshop.jpg" alt="Rooms and Exits Chapter 3 Level 5 Workshop: a cutaway view of the workshop with a pegboard of tools, workbenches, a red toolbox, a green safe on a blue shelf and a birdcage" width="1200" height="675" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>The room is one long bench against a dark panelled wall. On the wall above it, a pegboard holds wrenches, pliers and screwdrivers on hooks; further along there is a big wooden clock with Roman numerals on its face, a cuckoo clock beside a blue-framed window, and a large empty birdcage hanging near the window. On the bench itself: an open red toolbox with a roll of tape, screws and two screwdrivers, a clamp bolted at the left end, and a red machine with two clear glass tubes full of wire standing on it. Over on the left, a blue metal shelf unit carries a green-grey safe with a big circular dial.</p>
+    <p>What makes Workshop different from the rooms before it is that most of its clues are <b>written</b> rather than built. There is a note chalked on the wall (<b>XC=3</b> and <b>4=XL-10</b>), a crumpled piece of paper covered in Morse marks, and a laptop showing a login window. The one exception is the five-column display on the red machine, which is a physical wheel lock and the only place in the room where a number is set rather than read.</p>
+    <p>The chain the level wants is roughly: find the tools (hammer, saw blade, saw handle), use them on the furniture, read the two written clues, get the laptop open, and take the time it shows to the wall clock. The safe and the birdcage are the two containers that sit at the end of that chain.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Every interactive object we could identify, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Pegboard of tools</td><td>Wall above the bench</td><td>Wrenches, pliers, screwdrivers on hooks, with red marks chalked around them.</td></tr>
+        <tr><td>Hammer</td><td>On the bench, near the toolbox</td><td>Picked up at 0:40; the level's blunt tool.</td></tr>
+        <tr><td>Red toolbox</td><td>Bench, right of centre</td><td>Open: tape, screws, two screwdrivers. The saw blade and handle are worked here.</td></tr>
+        <tr><td>Red machine with two glass tubes</td><td>Bench, near the safe</td><td>Five-column, three-row digit display. Settles on <b>41018</b>.</td></tr>
+        <tr><td>Wall note</td><td>Dark panelling beside the safe</td><td>Chalk: <b>XC=3</b> / <b>4=XL-10</b>.</td></tr>
+        <tr><td>Piece of paper</td><td>On the bench, past the toolbox</td><td>Morse row <b>..- .--. . ...</b> — the room's only text clue.</td></tr>
+        <tr><td>Laptop</td><td>Bench, right end</td><td>Blue login window, "Enter Password"; unlocks to a clock reading <b>14:00</b>.</td></tr>
+        <tr><td>Roman-numeral wall clock</td><td>Wall, centre of the room</td><td>Big wooden face, I to XII; the hands are the puzzle.</td></tr>
+        <tr><td>Birdcage</td><td>Hanging beside the window</td><td>Holds a small wooden box; the cage latch is the puzzle.</td></tr>
+        <tr><td>Green safe</td><td>Blue shelf unit, left wall</td><td>Circular dial marked 0-90 in tens with fine ticks, plus a small lock above.</td></tr>
+        <tr><td>Cabinet with extinguisher</td><td>Left of the bench</td><td>Opens to a fire extinguisher and a broom; storage, not a lock.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:16</span>
+      <strong>Take the room in before touching anything</strong>
+      The level opens on the full workshop: pegboard and bench along the back, the blue shelf with the safe on the left, the birdcage and window on the right. Two things are worth fixing in your head now — the <b>red machine with the two glass tubes</b> on the bench, and the <b>green safe</b> on the blue shelf. Those are the two containers the level is built around, and both look like scenery at a glance.
+      <img src="/rooms-and-exits/c3l5-hero-workshop.jpg" alt="The Workshop at the start of Rooms and Exits Chapter 3 Level 5, showing the pegboard, bench, red toolbox, safe and birdcage" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Q6kFGej5t34&t=16s" target="_blank" rel="noopener">0:16</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:24 · the pegboard</span>
+      <strong>Tools on hooks, red chalk around them</strong>
+      The pegboard holds wrenches, pliers and screwdrivers, and there are red marks chalked on the board around some of the hooks. That combination — an outline and a tool — is the level telling you where something is missing rather than giving you a number. Check the empty hooks: the tools that belong there are the ones you will be collecting off the bench.
+      <img src="/rooms-and-exits/c3l5-pegboard-tools.jpg" alt="The pegboard in the Workshop with wrenches and pliers on hooks and red chalk marks around them" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Q6kFGej5t34&t=24s" target="_blank" rel="noopener">0:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:40 · the hammer</span>
+      <strong>Pick it up — the Workshop hands you a blunt tool early</strong>
+      The hammer sits on the bench and the game labels it when you tap it. Nothing in the same shot tells you what it is for, but Workshop's other furniture — the chest, the cabinet, the crate on the floor — is all the kind of thing a hammer opens. Take it rather than walking past: this level is generous with tools and stingy with hints.
+      <img src="/rooms-and-exits/c3l5-hammer.jpg" alt="The hammer item on the workbench in Rooms and Exits Chapter 3 Level 5 Workshop" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Q6kFGej5t34&t=40s" target="_blank" rel="noopener">0:40</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:58 · the machine panel</span>
+      <strong>Five columns, middle row: 4 1 0 1 8</strong>
+      The red machine's display is five columns wide and three rows tall, and every column is a wheel: the digit above, the selected digit, the digit below. At 0:58 the wheels are still turning; by <b>0:59.25</b> they stop with the columns reading <b>5/4/3</b>, <b>2/1/0</b>, <b>1/0/9</b>, <b>2/1/0</b>, <b>9/8/7</b>, so the selected row is <b>4 1 0 1 8</b>. The view closes a second later. Read the row, not the grid: the top row (5 2 1 2 9) is just what is coming next.
+      <img src="/rooms-and-exits/c3l5-machine-panel-41018.jpg" alt="The five-column digit display on the red machine in the Workshop, settled with the middle row reading 41018" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Q6kFGej5t34&t=58s" target="_blank" rel="noopener">0:58</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:04 · the toolbox</span>
+      <strong>Tape, screws, two screwdrivers — and a saw to build</strong>
+      The red toolbox is open on the bench with a roll of silver tape, a scattering of screws and two screwdrivers lying beside it. Later in the run the inventory holds a <b>Blade</b> on its own and then a complete saw, the blade and handle being put together the way the two <b>Key part</b> items are combined at the end of Guest Bedroom. If you are stuck for a cutting tool, the toolbox is where the pieces come from.
+      <img src="/rooms-and-exits/c3l5-red-toolbox.jpg" alt="The open red toolbox on the Workshop bench with tape, screws and screwdrivers around it" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Q6kFGej5t34&t=64s" target="_blank" rel="noopener">1:04</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:18 · the wall note</span>
+      <strong>XC=3 and 4=XL-10</strong>
+      Chalked on the dark panelled wall beside the safe are two lines: <b>XC=3</b> and <b>4=XL-10</b>. Neither is correct Roman notation — XC is 90 and XL is 40 — and that is deliberate. The note is a manipulation puzzle: you are meant to treat the numerals as values you can move around, which is exactly what the walkthrough video does when it annotates the same wall in red with <b>XC=90</b>, <b>X=10</b> and <b>L=50</b>.
+      <img src="/rooms-and-exits/c3l5-wall-note-roman.jpg" alt="The chalked wall note in the Workshop reading XC=3 and 4=XL-10, beside the green safe" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Q6kFGej5t34&t=78s" target="_blank" rel="noopener">1:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 1:20 · the Morse paper</span>
+      <strong>..- .--. . ...</strong>
+      A crumpled piece of paper on the bench, labelled <b>Piece of paper</b> when you tap it, carries a single row of Morse marks. The clearest frame reads <b>..- .--. . ...</b> — four groups, which in standard Morse are U, P, E and S. It is the only text clue in the Workshop, and the laptop is the only lock in the Workshop that takes text, so if you are going to try a word anywhere, this is the paper that supplies it.
+      <img src="/rooms-and-exits/c3l5-morse-paper.jpg" alt="The crumpled piece of paper in the Workshop with a row of Morse dots and dashes on it" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Q6kFGej5t34&t=80s" target="_blank" rel="noopener">1:20</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 1:36 · the laptop</span>
+      <strong>Enter Password — then a clock reading 14:00</strong>
+      The laptop opens on a blue login window with a question-mark avatar and a grey field reading <b>Enter Password</b>. At 1:40 the avatar turns into a smiling face and the field fills with a short masked string; by 1:42 the machine has unlocked and shows a black screen with a green digital clock reading <b>14:00</b>. That number is the laptop's whole point, and it is the only time value the room gives you.
+      <img src="/rooms-and-exits/c3l5-laptop-password.jpg" alt="The laptop in the Workshop showing a blue Enter Password login window" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Q6kFGej5t34&t=96s" target="_blank" rel="noopener">1:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 2:16 · the wall clock</span>
+      <strong>A wooden face with I to XII and hands you can move</strong>
+      The big wall clock is the Workshop's set-the-hands puzzle: a wooden face, Roman numerals I through XII, and two hands the player drags. With <b>14:00</b> in hand from the laptop, the setting is two o'clock — the hour hand on II and the minute hand straight up on XII. This is the cleanest chain in the level: laptop out, time read, clock set.
+      <img src="/rooms-and-exits/c3l5-wall-clock-roman.jpg" alt="The large wooden wall clock with Roman numerals in the Workshop, its hands being set" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Q6kFGej5t34&t=136s" target="_blank" rel="noopener">2:16</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 3:15 · the birdcage</span>
+      <strong>An empty cage with a small wooden box inside</strong>
+      The birdcage hangs beside the blue-framed window and there is a small wooden box sitting on the cage floor. The cage is a container, not a code: you have to get the door open to reach the box. The recording takes the box and moves on without ever holding a clean frame of the latch, so treat the cage as a place to try the tools you have collected rather than something with an answer written on it.
+      <img src="/rooms-and-exits/c3l5-birdcage.jpg" alt="The hanging birdcage in the Workshop with a small wooden box inside it" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Q6kFGej5t34&t=195s" target="_blank" rel="noopener">3:15</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 5:00 · the safe</span>
+      <strong>A dial marked 0 to 90, and a video that ends before it opens</strong>
+      The green-grey safe on the blue shelf has a large circular dial with <b>0 to 90</b> printed in tens and nine fine ticks between each number, a smaller lock above it and a latch handle on the right. From 4:28 onwards the dial is turned repeatedly, and the run we worked from ends at 5:22 with the door still shut. We are not printing a combination we never saw accepted on screen.
+      <img src="/rooms-and-exits/c3l5-safe-dial.jpg" alt="The circular dial on the green safe in the Workshop, marked from 0 to 90" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Q6kFGej5t34&t=300s" target="_blank" rel="noopener">5:00</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>The panels read the wrong way.</b> Both number displays in this room are wheel stacks, and both look like grids of digits at a glance. Read them by <b>column</b> and take the <b>middle</b> digit. On the machine that is 41018; the top row is 52129 and the bottom is 30907, and neither does anything.</p>
+    <p><b>The wheels are still moving when you look.</b> If you tap the machine and read immediately, you will catch a mid-turn value like 41038 and think it is the answer. Wait for the wheels to stop moving, then read. The settled frame is 0:59.</p>
+    <p><b>The laptop password feels impossible.</b> It is not a number and the room never spells it out. The two things to work with are the Morse paper and the wall note; the mask on screen means nobody can copy the string from a recording, so it has to be derived.</p>
+    <p><b>The clock does nothing.</b> The wall clock is not a code input — it is the same object you are setting. Drag the hands; do not go looking for a keypad behind it.</p>
+    <p><b>The safe never opens in the guides.</b> Because the dial is a free-spinning 0-90 wheel rather than a keypad, a recording has to hold on the exact second the door releases to be useful, and most do not. If you solve it, the three stops are worth writing down.</p>
+    <p><b>Tools look like scenery.</b> The hammer on the bench, the saw blade and its handle, the tape in the toolbox: Workshop is a room where half the inventory is lying in plain sight on the work surface. If you cannot open something, the answer is usually a tool rather than a code.</p>
+
+    <h2>Where Workshop sits in Chapter 3<span class="accent">.</span></h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i>, and Workshop is room <b>5 of 15</b> — the first room you play after the level-select screen, before Guest Bedroom (6) and Master Bathroom (7). Where Dining Room and the rooms before it kept you in one wall of furniture, Workshop gives you a bench, a shelf unit, a hanging cage and a wall of tools, and expects you to walk between them.</p>
+    <p>It also sets the chapter's habit of hiding the answer in handwriting. The wall note (XC=3, 4=XL-10) and the Morse paper are both text puzzles in a room whose only numeric lock is a set of physical wheels — and the laptop, unusually for this chapter, wants letters rather than digits. Guest Bedroom repeats the trick with its ID card and phone; Master Bathroom goes back to pure numbers.</p>
+
+    <LevelSelector chapter={3} current={5} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Next room: <a href="/rooms-and-exits/chapter-3-level-6/">Chapter 3 Level 6 — Guest Bedroom</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Three things, kept separate from the confirmed 41018 so you know what is a read and what is not.
+      <br><br>
+      <b>1. The laptop password.</b> The login window, the masked field and the happy-face avatar are all clearly visible, but the characters are hidden by the mask and the game never echoes them. The Morse paper gives four groups (U, P, E, S) and that is where we would start, but we have not seen the string accepted, so it is not printed as an answer.
+      <br><br>
+      <b>2. The safe combination.</b> The dial is legible — 0 to 90 in tens, nine ticks between — and the recording turns it for the best part of a minute, but the door never opens inside the footage we could extract. No combination is given here.
+      <br><br>
+      <b>3. The exit and the closing sequence.</b> The run used for this page was reconstructed from a partly downloaded file: the last seconds, where the door opens and the level ends, are not in it. We therefore cannot show you the exit frame or a completion card for Workshop, and this page does not claim a reward figure for it.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

@@ -1,0 +1,324 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 10 Walkthrough: Garden";
+const description = "Rooms & Exits Chapter 3 Level 10 walkthrough for Garden: the four-dial letter lock that takes B-N-U-G, the pattern-tool shape order that produces those letters, the three-tier herb planter (Chives, Thyme, Basil, Carrots), the 1911 notice, the trowel, the shears and the brick-wall dismantle puzzle.";
+
+const faq = [
+  {
+    q: "What is the code in Rooms & Exits Chapter 3 Level 10 Garden?",
+    a: "The room's letter lock is a vertical four-dial device and the answer is <b>B · N · U · G</b>, read top to bottom. The dials settle one at a time, and the fourth was still turning in our frames — it passes through W and K before landing on G. We read the finished state twice: once on the full frame and once on a 3x crop of the lock.",
+  },
+  {
+    q: "Why B-N-U-G and not a word?",
+    a: "Because the clue is not a word puzzle. The instruction reads <b>ARRANGE THE LETTERS THAT APPEAR IN THE PATTERN TOOL BASED ON THE SHAPE ORDER</b>, so the answer is letters sorted by the <i>shape</i> of the letterforms in the pattern the tool produces, not letters that spell something. If you are hunting for an English word, you will not find one — the lock accepts the shape order.",
+  },
+  {
+    q: "What is the pattern tool?",
+    a: "A dark hexagonal honeycomb pattern that fills the screen when you open the puzzle, with the instruction laid across the bottom. The letters that come out of it are the ones you lay into the four dials. It is the room's equivalent of a stencil: the pattern is not a clue you read, it is the thing that defines which order the letters belong in.",
+  },
+  {
+    q: "What are the herbs in the planter for?",
+    a: "They label the room's gardening chain. The three-tier pallet planter next to the shed carries chalkboard tags reading <b>Chives</b> and <b>Thyme</b> on the top tier and <b>Basil</b> and <b>Carrots</b> on the middle one. The tags matter because they identify which plant is which when the puzzle asks you to pick or cut; the plants themselves are not a code.",
+  },
+  {
+    q: "What does the trowel do?",
+    a: "It is the digging tool. It comes into the bag around 0:32 and is used on soil — the planter tiers, the beds by the shed. The recording never shows it being consumed by one specific puzzle, so treat it as a tool you will need in the garden rather than as a key to one lock.",
+  },
+  {
+    q: "What is the 1911 notice?",
+    a: "A printed sheet, dated 1911 in its header, that opens full-screen and carries a paragraph of small print. It is the room's document clue, in the same family as Kids Playroom's whiteboard: you read it for a line that turns into an instruction later. The header is legible in our frames; the body text is set too small to read reliably at this resolution and is not transcribed on this page.",
+  },
+  {
+    q: "What is the brick wall puzzle?",
+    a: "The instruction is explicit: <b>MAKE THE LARGE BRICK ON TOP STICK OUT, THEN TOUCH IT. THE REQUIRED BRICK WILL APPEAR, TOUCH IT TO DISMANTLE IT.</b> A dry-stone wall under a flowering vine is the play area. You push one brick proud of the face, touch it, and the wall presents the brick it actually wants; touching that one dismantles it. There are no digits involved — it is a dexterity and observation puzzle, not a code.",
+  },
+  {
+    q: "Where do the shears and the rope come in?",
+    a: "Late. <b>Shears</b> appear around 1:52 and a <b>Rope</b> at the very end of the section we could decode. Both are garden tools in the same chain as the trowel: the shears cut, the rope ties or lowers. The footage cuts away before either is used, so this page lists them as collected rather than as solved.",
+  },
+  {
+    q: "How long is Garden and how much of it does this page cover?",
+    a: "The video runs <b>3:47</b>. The copy we could decode frame by frame stops at <b>2:23</b>, which is the point where the download truncated, so roughly the last eighty seconds — the resolution of the brick wall and the garden's exit — are outside what we can honestly describe. Everything before that point was sampled at one frame per second.",
+  },
+  {
+    q: "Where does Garden sit in Chapter 3?",
+    a: "Chapter 3 is <i>Murder Dressed in White</i> and Garden is room <b>10 of 15</b>. It follows Backyard and precedes the next interior. The level card in this recording reads <b>Level 10 — Garden</b>. It is the chapter's daytime outdoor room, in contrast to Backyard, which is played at dusk.",
+  },
+  {
+    q: "Do the puzzles in Garden depend on each other?",
+    a: "Less than the two rooms before it. The herb tags, the trowel and the notice are all readable in the first two minutes, and the pattern-tool lock can be opened as soon as you have the instruction. The gardening chain (trowel, shears, rope) is the part that runs in sequence, because each tool unlocks the next patch of ground.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-10"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 10"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 10</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 10 Walkthrough: Garden</h1>
+
+    <p>Garden is room 10 of Chapter 3, <i>Murder Dressed in White</i>, and it is the chapter's daytime room. After the dusk of Backyard and the indoor clutter of Kids Playroom, this one is bright and open: a lawn, a raised deck, a shed, and a stone wall covered in pink flowering vine. It is also the first Chapter 3 room where the main lock is a letter lock rather than a keypad, and the answer is not a word — it is letters sorted by the shape of their letterforms.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt from the level's recording sampled at one frame per second. The dial lock <b>B · N · U · G</b> was read on the full frame at 1:49 and again from a 3x crop of the same frame. The herb tags, the 1911 notice header, the pattern-tool instruction and the brick-wall instruction were each read whole-frame and re-read on crops. Our copy of the video decodes to <b>2:23</b> of a 3:47 run; the section after that is not covered here and is called out as such.</div>
+
+    <LevelSelector chapter={3} current={10} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Garden is room 10 of 15 in Chapter 3. The four-dial lock takes <b>B · N · U · G</b>, top to bottom, and it is not a word — the clue is the pattern tool's <b>shape order</b>, so the letters are sorted by the shape of the letterforms rather than to spell anything.</p>
+      <ol>
+        <li>Read the three-tier planter by the shed: <b>Chives</b> and <b>Thyme</b> on top, <b>Basil</b> and <b>Carrots</b> in the middle. Take the <b>Key</b> at 0:10 and the <b>Trowel</b> at 0:32.</li>
+        <li>Open the dated notice — its header reads <b>1911</b> — and read the small-print line. It is the room's document clue.</li>
+        <li>Open the pattern tool. The instruction reads <b>ARRANGE THE LETTERS THAT APPEAR IN THE PATTERN TOOL BASED ON THE SHAPE ORDER</b>.</li>
+        <li>Set the four vertical dials to <b>B</b>, <b>N</b>, <b>U</b>, <b>G</b>. In the recording the fourth dial turns through W and K before it lands on G, so do not stop on a letter that merely looks plausible.</li>
+        <li>Work the brick wall last: <b>MAKE THE LARGE BRICK ON TOP STICK OUT, THEN TOUCH IT</b> — the wall then shows the brick it wants, and touching that one dismantles it.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="M1CT8F7yG9I" data-title="Rooms &amp; Exits Level 10 Garden Walkthrough Murder Dressed in White Chapter 3"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 10 Garden Walkthrough">
+        <img src="https://i.ytimg.com/vi/M1CT8F7yG9I/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 10 Garden walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/M1CT8F7yG9I/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l10-hero-garden.jpg" alt="Rooms and Exits Chapter 3 Level 10 Garden: a raised wooden deck with a light blue outdoor sofa set under a beige umbrella, a wooden garden shed on the left, a tiered pallet planter, and a stone wall covered in pink flowering vines" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span>.</h2>
+    <p>A working garden on a bright day. The lawn is closely mown and cut across by large pale stepping stones that run from the lower corner up to a raised wooden deck. On the deck sits a light wicker sofa set with pale blue cushions and darker blue throw pillows, arranged around a low coffee table under a square beige umbrella. A metal and glass lantern sits at the edge of the decking.</p>
+    <p>To the left stands a small garden shed, timber-planked with a terracotta-tiled gable and a plain door with a silver handle. Beside it is the most interactive object in the room: a three-tier planter built from stacked pallets, each tier carrying a black chalkboard tag with a plant name. A square planter with a large-leaved plant stands next to it. Along the back runs a low dry-stone wall, heavily covered with a vine of small bright pink flowers — this is the wall the brick puzzle works on. A cypress, a leafy tree and a gnarled smaller tree break up the skyline; a wooden bench with dark metal legs sits on the lawn, and a small wooden chest rests by the back wall.</p>
+    <p>Design-wise this room is looser than its neighbours. There is one real lock — the four-dial letter device — and the rest is a gardening chain of tools and ground. That makes it faster than Backyard but easier to stall in, because if you do not read the pattern-tool instruction carefully you will keep trying to spell a word on a lock that does not want one.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l10-herb-labels.jpg" alt="The three-tier pallet planter in Garden with chalkboard labels reading Chives, Thyme, Basil and Carrots" width="1200" height="594" loading="lazy" />
+
+    <h2>The map: what is where<span class="accent">.</span>.</h2>
+    <p>Every interactive object we could place, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Three-tier pallet planter</td><td>Left, beside the shed</td><td>Chalkboard tags: <b>Chives</b>, <b>Thyme</b> (top), <b>Basil</b>, <b>Carrots</b> (middle). Identifies the plants.</td></tr>
+        <tr><td>Garden shed</td><td>Far left</td><td>Timber, terracotta gable, single door with a silver handle.</td></tr>
+        <tr><td>Raised deck</td><td>Centre-left</td><td>Sofa set with blue cushions, coffee table, beige umbrella, lantern.</td></tr>
+        <tr><td>Pattern tool</td><td>Opened from the bag / a panel</td><td>Hexagonal honeycomb pattern with the instruction <b>ARRANGE THE LETTERS THAT APPEAR IN THE PATTERN TOOL BASED ON THE SHAPE ORDER</b>.</td></tr>
+        <tr><td>Four-dial letter lock</td><td>On a wooden ledge</td><td>Vertical dials. Answer <b>B N U G</b>.</td></tr>
+        <tr><td>Dry-stone wall</td><td>Back boundary, under pink vine</td><td>Brick puzzle: <b>MAKE THE LARGE BRICK ON TOP STICK OUT, THEN TOUCH IT</b>.</td></tr>
+        <tr><td>Dated notice</td><td>Carried / read</td><td>Printed sheet with <b>1911</b> in the header; the room's document clue.</td></tr>
+        <tr><td>Key</td><td>Carried, from 0:10</td><td>The room's first pickup.</td></tr>
+        <tr><td>Trowel</td><td>Carried, from 0:32</td><td>Digging tool for the beds and planter tiers.</td></tr>
+        <tr><td>Shears</td><td>Carried, around 1:52</td><td>Cutting tool; the footage does not show the cut.</td></tr>
+        <tr><td>Rope</td><td>Carried, end of the decoded section</td><td>Tying or lowering; use not shown.</td></tr>
+        <tr><td>Wooden bench</td><td>Lawn, right of centre</td><td>Scenery or a seat puzzle; not opened in our footage.</td></tr>
+        <tr><td>Wooden chest</td><td>Back wall, on the grass</td><td>Small and unlocked-looking; not opened in our footage.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span>.</h2>
+    <p>The order below follows the recording. Timestamps are video time; the links jump to the matching second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:03</span>
+      <strong>Sweep the garden from the deck</strong>
+      The level opens on its card — <b>Level 10, Garden</b> — and then holds on the whole space. Read it in one pass: shed and planter on the left, deck and sofa in the middle, lawn with stepping stones running to the bench, and the flowering wall closing the back. Almost everything interactive is visible from that one angle, which is why this room plays faster than Backyard.
+      <img src="/rooms-and-exits/c3l10-hero-garden.jpg" alt="The Garden at the start of Level 10, with the deck, shed, planter and flowering stone wall in view" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=M1CT8F7yG9I&t=3s" target="_blank" rel="noopener">0:03</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:08 · the planter</span>
+      <strong>Chives, Thyme, Basil, Carrots</strong>
+      The first thing worth reading is the pallet planter beside the shed. Three tiers of stacked crates, each with a black chalkboard tag: <b>Chives</b> and <b>Thyme</b> on the top tier, <b>Basil</b> and <b>Carrots</b> on the middle one, and two unlabelled plants on the bottom. The tags are the room telling you which plant is which before it starts asking you to cut or pull one. These names are worth writing down — the tags, not the plants.
+      <img src="/rooms-and-exits/c3l10-herb-labels.jpg" alt="The three-tier planter in Garden with chalkboard tags for Chives, Thyme, Basil and Carrots" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=M1CT8F7yG9I&t=8s" target="_blank" rel="noopener">0:08</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:10 and 0:32 · key and trowel</span>
+      <strong>The first two tools</strong>
+      A <b>Key</b> is collected almost immediately, at 0:10, and the <b>Trowel</b> follows at 0:32. Neither is a code; both are the start of the room's tool chain. The key opens something on the deck or in the shed within the first minute, and the trowel is for the soil. If you are the sort of player who hoards, this is a room that rewards it — nothing you pick up here is scenery.
+      <img src="/rooms-and-exits/c3l10-trowel.jpg" alt="The trowel being collected in the Garden level" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=M1CT8F7yG9I&t=10s" target="_blank" rel="noopener">0:10</a> · <a href="https://www.youtube.com/watch?v=M1CT8F7yG9I&t=32s" target="_blank" rel="noopener">0:32</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:46 · the notice</span>
+      <strong>A printed sheet dated 1911</strong>
+      A document opens full screen: a printed page whose header carries <b>1911</b> and whose body is set in small type across several lines. This is the room's document clue and it reads like a notice or a page from a local paper — the header is crisp in our frames, the body is not. Read the body in your own copy and look for a line that turns into an action later; that is how this chapter uses documents.
+      <img src="/rooms-and-exits/c3l10-1911-notice.jpg" alt="A printed notice dated 1911 opened full screen in the Garden level" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=M1CT8F7yG9I&t=46s" target="_blank" rel="noopener">0:46</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:07 · the pattern tool</span>
+      <strong>ARRANGE THE LETTERS THAT APPEAR IN THE PATTERN TOOL BASED ON THE SHAPE ORDER</strong>
+      The key instruction of the whole room. The pattern tool fills the screen with a dark hexagonal honeycomb, and the line across the bottom tells you what the lock wants: letters from the pattern, arranged by <b>shape order</b>. Not spelling, not alphabetical, not the order you found them. This is the sentence that stops people in this level, because it reads like a word puzzle and is not one.
+      <img src="/rooms-and-exits/c3l10-pattern-tool-letters.jpg" alt="The pattern tool overlay in Garden with the instruction to arrange letters based on shape order" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=M1CT8F7yG9I&t=67s" target="_blank" rel="noopener">1:07</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:24 to 1:49 · the lock</span>
+      <strong>B · N · U · G</strong>
+      The lock is a dark metal block with four vertical letter dials. In the recording the first three are already set — <b>B</b>, <b>N</b>, <b>U</b> — and the fourth is being turned: it passes through W, then K, then U again, before it lands on <b>G</b> at 1:49 and the panel closes. That is the answer: <b>B N U G</b>, top to bottom, and yes, it looks wrong. It is the shape order, not a word.
+      <img src="/rooms-and-exits/c3l10-dial-lock-bnug.jpg" alt="The four-dial letter lock in Garden set to B, N, U and G top to bottom" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=M1CT8F7yG9I&t=109s" target="_blank" rel="noopener">1:49</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 1:52 · the shears</span>
+      <strong>Third tool in the chain</strong>
+      <b>Shears</b> come into the bag a few seconds after the lock opens, which is the room's rhythm: lock, tool, ground, lock. The recording shows them picked up and then cuts away before the cut, so this page does not claim a target for them. If you are following along at home, the shears are for the vine and the beds rather than for a mechanism.
+      <img src="/rooms-and-exits/c3l10-shears.jpg" alt="The shears being collected in the Garden level" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=M1CT8F7yG9I&t=112s" target="_blank" rel="noopener">1:52</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 2:01 · the wall</span>
+      <strong>MAKE THE LARGE BRICK ON TOP STICK OUT</strong>
+      The stone wall under the flowering vine carries the room's most explicit instruction, printed across the middle of the screen: <b>MAKE THE LARGE BRICK ON TOP STICK OUT, THEN TOUCH IT. THE REQUIRED BRICK WILL APPEAR, TOUCH IT TO DISMANTLE IT.</b> Push a brick proud of the face and touch it; the wall answers by showing you the one it actually wants. Touch that and it comes away. No numbers, no order to memorise — just the correct brick, twice.
+      <img src="/rooms-and-exits/c3l10-brick-puzzle.jpg" alt="The dry-stone wall in Garden under a pink flowering vine, with the brick dismantle instruction on screen" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=M1CT8F7yG9I&t=121s" target="_blank" rel="noopener">2:01</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 2:23 · the edge of what we can see</span>
+      <strong>Rope, and then the file ends</strong>
+      The last thing in our decodable copy is a <b>Rope</b>, collected with the tools already in the bag. Our file truncates at this frame, so everything after it — the rest of the wall, the garden's exit and any completion panel — is outside this walkthrough. If you need the last minute, the video above continues past this point; the frames simply were not available to us.
+      <img src="/rooms-and-exits/c3l10-last-frame.jpg" alt="The last frame available from the Garden recording, with the inventory open and the rope collected" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=M1CT8F7yG9I&t=143s" target="_blank" rel="noopener">2:23</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span>.</h2>
+    <p><b>The letter lock will not accept a word.</b> It is not supposed to. The instruction says <b>shape order</b>, and the answer is <b>B N U G</b>. Every instinct you have about four-letter locks will fight this; ignore it.</p>
+    <p><b>The fourth dial keeps slipping past the right letter.</b> In the recording it goes W, K, U and then G. The dials are small and the letters are close together, so turn slowly and watch the window rather than the wheel.</p>
+    <p><b>You cannot find a second code.</b> There may not be one in this room. Garden's other puzzles are the brick wall and the tool chain, and neither asks for digits. If a guide tells you Garden has a number code, check it against your own copy before you trust it.</p>
+    <p><b>The brick will not come out.</b> Two touches, in order: first the brick you make stick out, then the one the wall offers you. Touching the offered brick first does nothing, and pushing a different brick proud gives you a different offer.</p>
+    <p><b>The herb tags do not seem to matter.</b> They do, but later and quietly — the room asks you to identify a plant by name, and the tags are the only place the names exist. Four names, four tags: Chives, Thyme, Basil, Carrots.</p>
+
+    <h2>Where Garden sits in Chapter 3<span class="accent">.</span>.</h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i>, and Garden is room <b>10 of 15</b>. It follows Backyard and comes two thirds of the way through the chapter. The run of three rooms — Kids Playroom, Backyard, Garden — is where Chapter 3 stops being a series of interiors and starts using larger, more open spaces, and the puzzle design follows: fewer enforced sequences, more scenery that turns out to be interactive, and one hard lock per room instead of two.</p>
+    <p>Carry one habit out of Garden: read the instruction text before touching anything. This room punishes assumptions harder than the two before it, and the whole letter-lock dead end exists because the instruction is easy to skim.</p>
+
+    <LevelSelector chapter={3} current={10} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-3-level-9/">Chapter 3 Level 9 — Backyard</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-3-level-11/">Chapter 3 Level 11</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span>.</h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span>.</h2>
+    <div class="warn">
+      <b>1. The last 1:24 of the level.</b> Our copy of the video decodes to 2:23 of a 3:47 run. The brick wall's resolution, the garden's exit and any completion panel or coin payout are after that cut and are not described anywhere on this page. Nothing here is inferred from other guides.
+      <br><br>
+      <b>2. The body text of the 1911 notice.</b> The header reads 1911 in every frame we have. The paragraph beneath it is printed at a size that turns to mush at this resolution, so it is not transcribed. If the notice contains the room's second code, that is exactly why no second code is printed here.
+      <br><br>
+      <b>3. What the shears, rope and key actually open.</b> All three enter the inventory and the footage cuts away before any of them is used. They are listed as collected items, not as steps with targets.
+      <br><br>
+      <b>4. Whether B N U G is the final state or one step before it.</b> The panel closes on the frame after G appears, which is the game's usual sign of acceptance, and the lock is not seen again — so we treat G as the settled answer rather than an intermediate dial position.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

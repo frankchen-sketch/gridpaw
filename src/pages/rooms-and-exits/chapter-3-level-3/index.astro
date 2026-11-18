@@ -1,0 +1,382 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 3 Walkthrough: Study Room";
+const description = "Rooms & Exits Chapter 3 Level 3 Study Room walkthrough: the laptop password is 20062015 (the date on the Photograph), the 2-step verification code is 45837 from the phone message, the laptop then shows 62850 for the final keypad, and the hidden wall safe turns 30 anti-clockwise, 40 clockwise, 55 anti-clockwise, 70 clockwise.";
+
+const faq = [
+  {
+    q: "What is the laptop password in Rooms & Exits Chapter 3 Level 3 Study Room?",
+    a: "It is <b>20062015</b> — eight digits, the date on the <b>Photograph</b> item. Open the Photograph in your inventory and the date reads <b>20.06.2015</b>; strip the dots and you have the password. We read it twice: full-frame OCR of the login screen shows the field filled with <b>20062015</b>, and a 3x crop of the same field reads the same eight digits. The build-up is visible frame by frame too — 20, then 20062, then 2006201, then 20062015 — so there is no ambiguity about the digits.",
+  },
+  {
+    q: "What is the 2-step verification code?",
+    a: "<b>45837</b>, five digits. It is on the <b>phone</b>: pick it up and the message bubble shows 45837. Type it into the laptop's <i>2-Step Verification — ENTER YOUR VERIFICATION CODE</i> screen. We read it twice from two different places: the phone message itself at 4:23, and the verification field at 4:44 with the digits already typed in. Both give the same five digits.",
+  },
+  {
+    q: "What is the code 62850 for?",
+    a: "<b>62850</b> is the final lock — the five-digit keypad. You do not find it written on a wall: the <b>laptop displays it</b> once you are past the password and the 2-step code. Then you walk to the keypad and enter <b>62850</b>. Confirmed twice: the laptop screen at 4:46 and the keypad display at 5:08 both read 62850.",
+  },
+  {
+    q: "What is the combination for the hidden wall safe?",
+    a: "The safe behind the hinged panel opens on <b>30 anti-clockwise, 40 clockwise, 55 anti-clockwise, 70 clockwise</b>. That sequence is the game's own hint text for this level, shown as four numbered lines — <i>1. 30 anti clockwise / 2. 40 clockwise / 3. 55 anti clockwise / 4. 70 clockwise</i> — and it matches the dial the player works between 2:51 and 3:05. Note the directions: two turns anticlockwise, two clockwise, alternating.",
+  },
+  {
+    q: "Where is the safe?",
+    a: "Behind a hinged white panel on the wood-panelled wall, beside a wall sconce with a warm glow. The panel is already open when the player reaches it at <b>0:54</b> and the safe inside is dark grey with a rotary dial. It is not in the desk, not behind a painting and not under the floor — it is a wall safe, high enough that the sconce sits to its right.",
+  },
+  {
+    q: "How do I get the phone message?",
+    a: "The phone is on the desk. Pick it up and the screen shows a search bar and a grey message bubble with <b>45837</b> in it — that is the whole interaction. There is no unlock step and no second message; the code is simply sitting in the bubble at <b>4:22</b> in the recording.",
+  },
+  {
+    q: "What does the book with the economy text do?",
+    a: "It is the level's biggest red herring. A thick book on the desk opens on a printed page headed <i>The economy may be considered as having developed through the following phases or degrees of precedence</i>, followed by a numbered list — 1 Consumer spending, 2 Exchange rate, 3 Gross domestic product, 4 GDP per capita, 5 GNP, 6 Stock market, 7 Interest rate, 8 Government debt, 9 Rate of inflation, 10 Unemployment, 11 Balance of trade. It reads like a key to an eleven-symbol cipher. It is not used: nothing in the run refers to any of the eleven entries.",
+  },
+  {
+    q: "What are the items Blanket, Shovel, Brush, Ash and Light bulb for?",
+    a: "They are inventory items picked up around the room — <b>Blanket</b>, <b>Shovel</b>, <b>Brush</b>, <b>Ash</b> and a <b>Light bulb</b> are all confirmed in the bag at different points. None of them is used on a lock in this run. The Brush and the <b>Fingerprint</b> it produces are examined, but no lock consumes either, so treat the collection as optional.",
+  },
+  {
+    q: "The books on the shelf have numbers — are they a code?",
+    a: "They have titles, not a code. Readable spines include <b>RUDYARD KIPLING</b>, <b>JUNGLE BOOK</b>, <b>BOLTON</b> and <b>BERTHA RUNKLE</b>, and one spine carries a stamped number that OCRs as <b>1745</b> but stays unstable between frames. The game's own hint for this shelf talks about the blue books and how they stand, using Roman numerals — <i>IV = 4, III = 3, VI = 7</i> — so the books are a counting puzzle, not a printed code.",
+  },
+  {
+    q: "What is the circular glowing thing at 0:44?",
+    a: "A round mechanism set into dark wood with a bright white square at its centre. The player touches it early and it is never explained in the run. It is not the safe — the safe is the separate wall panel at 0:54 — and it is not the keypad used at the end, which is a flat five-digit pad. We list it as an unexplained interactive.",
+  },
+  {
+    q: "How long is Study Room and what is the reward?",
+    a: "The recording is <b>5:13</b>. The in-game timer reads <b>17:53</b> at 5:09, so this was a long session by the player before the capture. The video ends at 5:12 on a completion animation with a gold emblem and a green progress bar, and <b>no readable reward figure</b> — so this page prints no coin amount for the level.",
+  },
+  {
+    q: "What order should I do the locks in?",
+    a: "Password first, then 2-step, then keypad. Specifically: read the <b>Photograph</b> (20.06.2015) → laptop password <b>20062015</b> → the laptop blocks you with <i>2-Step Verification</i> → find the <b>phone</b>, read <b>45837</b> → enter it → the laptop displays <b>62850</b> → enter <b>62850</b> on the keypad. The wall safe (30/40/55/70) is a side branch on the same level and does not feed this chain.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-3"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 3"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 3</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 3 Walkthrough: Study Room</h1>
+
+    <p>The Study Room is room 3 of Chapter 3, <i>Murder Dressed in White</i>, and it is the chapter's computer level: a laptop that takes an eight-digit password, then a five-digit verification code, then hands you a five-digit code for a keypad on the wall. There is also a hidden rotary safe behind a hinged panel, and a book full of economics that looks like a cipher key and is not. This page gives you <b>20062015</b>, <b>45837</b> and <b>62850</b>, shows where each one comes from, and tells you which props are dead ends so you stop reading them.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Built from one 5:13 recording, one frame per second (313 frames). Every character printed here was read twice: once from the full frame and once from a 3x to 5x crop, and the three codes were additionally cross-checked with macOS Vision OCR over all 313 frames. Where a value could only be read from a single source, it is listed under <i>What this page could not verify</i> instead of being presented as fact.</div>
+
+    <LevelSelector chapter={3} current={3} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Study Room is room 3 of 15 in Chapter 3. Four locks, three of them in one chain:</p>
+      <ol>
+        <li><b>Laptop password: 20062015</b> — read the <b>Photograph</b> in your inventory; it is dated <b>20.06.2015</b>.</li>
+        <li><b>2-step verification: 45837</b> — five digits, shown in the message bubble on the <b>phone</b> on the desk.</li>
+        <li><b>Final keypad: 62850</b> — the <b>laptop displays it</b> once you are logged in, then you type it on the five-digit keypad.</li>
+        <li><b>Hidden wall safe: 30 anti-clockwise, 40 clockwise, 55 anti-clockwise, 70 clockwise</b> — the game's own hint text, and the dial the player works at 2:51.</li>
+      </ol>
+      <p>The order matters: password → verification → keypad. The safe is a side branch and does not feed the chain.</p>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="2S33pol9jGE" data-title="Rooms &amp; Exits Level 3 Study Room Walkthrough Murder Dressed in White Chapter 3"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 3 Study Room Walkthrough">
+        <img src="https://i.ytimg.com/vi/2S33pol9jGE/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 3 Study Room walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/2S33pol9jGE/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The 5:13 run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l3-hero-study-room.jpg" alt="Rooms and Exits Chapter 3 Level 3 Study Room: dark wood desk and black office chair, tall bookshelves, a lounge chair with a blue throw, a marble side table with a decanter, and herringbone parquet flooring" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>A gentleman's study, and the richest room in the chapter visually: dark panelled walls, herringbone parquet, a heavy wooden desk with a black office chair, floor-to-ceiling bookshelves, a lit fireplace with a mantel, a lounge chair with a blue throw, and a marble-topped side table carrying a decanter, an ice bucket, a glass of amber liquid and a bowl of snacks.</p>
+    <p>The puzzle structure is a single linear chain plus one side branch. The chain runs <b>Photograph → laptop password → 2-step verification → laptop reveals a code → keypad</b>, and it is genuinely linear: you cannot skip the verification, and the keypad code is not written anywhere in the room — the laptop prints it for you. The side branch is the <b>rotary wall safe</b> behind the hinged panel, which takes a four-turn dial combination and sits outside the main chain.</p>
+    <p>Everything else is noise, and there is a lot of it: five inventory items with no lock to use them on, an eleven-entry economics list, a shelf of books with Roman-numeral hints, and a glowing round mechanism that never pays off. The recording spends most of its middle three minutes on that noise.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Laptop (Acer)</td><td>On the desk</td><td>Password <b>20062015</b>, then 2-step <b>45837</b>, then displays <b>62850</b>.</td></tr>
+        <tr><td>Photograph</td><td>Carried item</td><td>Dated <b>20.06.2015</b> — the source of the laptop password.</td></tr>
+        <tr><td>Phone</td><td>On the desk</td><td>Message bubble reads <b>45837</b> — the 2-step verification code.</td></tr>
+        <tr><td>Keypad</td><td>On the wall / panel</td><td>Five-digit pad with 0–9, X and an enter arrow. Takes <b>62850</b>.</td></tr>
+        <tr><td>Hidden safe</td><td>Behind a hinged white panel, right of the fireplace</td><td>Rotary dial safe. <b>30 CCW, 40 CW, 55 CCW, 70 CW</b>.</td></tr>
+        <tr><td>Hinged panel</td><td>Wood-panelled wall</td><td>Already open at 0:54; hides the safe. Wall sconce to its right.</td></tr>
+        <tr><td>Round glowing mechanism</td><td>Dark wood wall</td><td>White square core. Touched at 0:44, never explained.</td></tr>
+        <tr><td>Economics book</td><td>On the desk</td><td>Printed list of eleven economic indicators. Looks like a cipher key; unused.</td></tr>
+        <tr><td>Bookshelves</td><td>Back wall</td><td><b>RUDYARD KIPLING</b>, <b>JUNGLE BOOK</b>, <b>BOLTON</b>, <b>BERTHA RUNKLE</b>. Roman-numeral hint: IV=4, III=3, VI=7.</td></tr>
+        <tr><td>Side table</td><td>Beside the lounge chair</td><td>Decanter, ice bucket, glass, snacks. Scenery with a close-up at 0:05.</td></tr>
+        <tr><td>Blanket / Shovel / Brush / Ash / Light bulb</td><td>Carried items</td><td>All picked up in the run, none used on a lock.</td></tr>
+        <tr><td>Fingerprint</td><td>Carried item</td><td>Produced by the Brush at 1:41; no lock consumes it.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>Order follows the recording. Timestamps are video time; the links jump to the matching second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:02</span>
+      <strong>Sweep the study</strong>
+      The level opens on the chapter map, then cuts to the room. Desk and chair centre, bookshelves behind, fireplace and lounge to the right, side table with the decanter at the edge. The two things you are looking for are both on the desk: the <b>laptop</b> and the <b>phone</b>. Everything else is scenery until the safe shows up.
+      <img src="/rooms-and-exits/c3l3-hero-study-room.jpg" alt="The Study Room at the start of Chapter 3 Level 3, showing the desk, chair, bookshelves and lounge" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=2S33pol9jGE&t=2s" target="_blank" rel="noopener">0:02</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:29</span>
+      <strong>Fireplace, mantel, desk lamp</strong>
+      Panning to the fireplace side gives you the room's second half: a lit fire, a mantel with a small plant, more bookshelves, the desk lamp. No lock here — but this is where the <b>hinged panel</b> and the <b>wall sconce</b> live, and they are easy to miss if you only ever look at the desk.
+      <img src="/rooms-and-exits/c3l3-desk-and-fireplace.jpg" alt="The fireplace, mantel and desk area of the Study Room" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=2S33pol9jGE&t=29s" target="_blank" rel="noopener">0:29</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:44 · the odd one</span>
+      <strong>A round mechanism with a glowing square</strong>
+      A dark grey circular fitting set into the panelling with a bright white square in the middle. The player taps it once, early, and it never comes back. It is not the safe, and it is not a keypad — if you spend ten minutes trying to make it do something, you are in good company.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=2S33pol9jGE&t=44s" target="_blank" rel="noopener">0:44</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:54 · the safe</span>
+      <strong>The hinged panel hides a rotary safe</strong>
+      A white-framed panel on the panelled wall swings open to show a dark grey safe with a dial, next to a glowing wall sconce. This is the only rotary lock in the room, and it is the one that takes four turns rather than four digits. Its combination is covered at step 8.
+      <img src="/rooms-and-exits/c3l3-hidden-safe-dial.jpg" alt="The hidden wall safe in the Study Room, revealed behind an open hinged panel beside a wall sconce" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=2S33pol9jGE&t=54s" target="_blank" rel="noopener">0:54</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:07–1:41 · the bag fills up</span>
+      <strong>Blanket, Shovel, Ash, Brush, Fingerprint</strong>
+      The player collects a run of items: <b>Blanket</b>, <b>Shovel</b>, <b>Ash</b>, <b>Brush</b>, and a <b>Light bulb</b> later at 3:11. Using the Brush produces a <b>Fingerprint</b> at 1:41. All of them sit in the bag with Use / Combine / Dismantle / Examine and none of them is consumed by a lock in this run — so this is optional content, not a required step.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=2S33pol9jGE&t=67s" target="_blank" rel="noopener">1:07</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:51 · the economics book</span>
+      <strong>The eleven-item list is a dead end</strong>
+      A thick book opens on a printed page: <i>The economy may be considered as having developed through the following phases or degrees of precedence</i>, then a numbered list — 1 Consumer spending, 2 Exchange rate, 3 Gross domestic product, 4 GDP per capita, 5 GNP, 6 Stock market, 7 Interest rate, 8 Government debt, 9 Rate of inflation, 10 Unemployment, 11 Balance of trade. It reads exactly like the key to an eleven-symbol cipher. Nothing in the level ever uses it.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=2S33pol9jGE&t=111s" target="_blank" rel="noopener">1:51</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 2:28 · the photograph</span>
+      <strong>Photograph: 20.06.2015</strong>
+      Open the bag and there it is — a small <b>Photograph</b> with the date printed on it: <b>20.06.2015</b>. This is the level's best clue because it is the only one that tells you how to build a password: drop the dots and you have eight digits in a row. Do not read it as 20-06-2015 with separators; the laptop wants the digits run together.
+      <img src="/rooms-and-exits/c3l3-photograph-20062015.jpg" alt="The Photograph inventory item in the Study Room, dated 20.06.2015" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=2S33pol9jGE&t=148s" target="_blank" rel="noopener">2:28</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 2:04 · the safe combination</span>
+      <strong>30 anticlockwise, 40 clockwise, 55 anticlockwise, 70 clockwise</strong>
+      The game's hint for this level spells the safe out as four numbered moves: <i>1. 30 anti clockwise / 2. 40 clockwise / 3. 55 anti clockwise / 4. 70 clockwise</i>. Note that it alternates direction every turn, and that the numbers are dial positions, not clicks. The player works the dial between <b>2:51</b> and <b>3:05</b>, where the dial face shows the 20 / 30 / 60 / 70 / 90 marks.
+      <img src="/rooms-and-exits/c3l3-hint-rotary-dial.jpg" alt="The in-game hint text listing the Study Room safe combination: 30 anti clockwise, 40 clockwise, 55 anti clockwise, 70 clockwise" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=2S33pol9jGE&t=124s" target="_blank" rel="noopener">2:04</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 2:35 · the login screen</span>
+      <strong>PASWORD, and a field that wants eight digits</strong>
+      The laptop shows a login card headed <b>PASWORD</b> — the game's own spelling, missing the S — with a text field and a <b>Sign in</b> button, plus the on-screen keyboard. This is the first real lock of the chain and it wants the date from the Photograph.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=2S33pol9jGE&t=155s" target="_blank" rel="noopener">2:35</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 2:40 · type the password</span>
+      <strong>20062015</strong>
+      Eight digits, typed in one run: <b>2 0 0 6 2 0 1 5</b>. You can watch it build frame by frame — 20, then 20062, then 2006201, then the full 20062015 — which is exactly why we are confident in every digit. Then <b>Sign in</b>.
+      <img src="/rooms-and-exits/c3l3-laptop-password.jpg" alt="The Study Room laptop password field with 20062015 typed in" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=2S33pol9jGE&t=160s" target="_blank" rel="noopener">2:40</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 2:45 · the wall</span>
+      <strong>2-Step Verification wants five more digits</strong>
+      The password is accepted and the laptop immediately blocks you again: <b>2-Step Verification / ENTER YOUR VERIFICATION CODE</b>, with a fresh field and Verify button. At this point in the recording the player has no code — this is where the level sends you back into the room to find the phone.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=2S33pol9jGE&t=165s" target="_blank" rel="noopener">2:45</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 4:22 · the phone</span>
+      <strong>Message bubble: 45837</strong>
+      Pick up the phone on the desk. The screen shows a search bar at the top and one grey message bubble in the middle with five digits in it: <b>45837</b>. No unlock, no second message, no scrolling. That is the verification code.
+      <img src="/rooms-and-exits/c3l3-phone-message-45837.jpg" alt="The phone in the Study Room showing a message bubble with the code 45837" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=2S33pol9jGE&t=262s" target="_blank" rel="noopener">4:22</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 4:41 · verify</span>
+      <strong>Type 45837 and verify</strong>
+      Back to the laptop, into the verification field, five digits: <b>4 5 8 3 7</b>. Again the build-up is visible frame by frame — 45, then 458, then 4583, then 45837. Two different screens show the same five digits, which is why this one is printed without a caveat.
+      <img src="/rooms-and-exits/c3l3-two-step-code.jpg" alt="The 2-Step Verification screen on the Study Room laptop with 45837 entered" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=2S33pol9jGE&t=281s" target="_blank" rel="noopener">4:41</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 4:46 · the payoff</span>
+      <strong>The laptop prints 62850</strong>
+      Verification clears and the laptop opens on a screen with a light panel showing <b>62850</b> — five digits, no label, no explanation. This is the keypad code. It is the only place in the room where it appears, so if you skip the laptop you will not find it written anywhere else.
+      <img src="/rooms-and-exits/c3l3-laptop-code-62850.jpg" alt="The unlocked Study Room laptop display showing the code 62850" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=2S33pol9jGE&t=286s" target="_blank" rel="noopener">4:46</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 5:08 · the keypad</span>
+      <strong>62850 on the five-digit pad</strong>
+      The keypad is a clean 0–9 pad with an X and an enter arrow, and the field above it already reads <b>62850</b>. No dial, no letters, no length guessing — this pad is five digits and the laptop just told you which five. Entering it is the last action in the recording.
+      <img src="/rooms-and-exits/c3l3-final-keypad-62850.jpg" alt="The five-digit keypad in the Study Room with 62850 entered" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=2S33pol9jGE&t=308s" target="_blank" rel="noopener">5:08</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 5:12 · the end</span>
+      <strong>The run stops on the completion animation</strong>
+      The video ends at 5:12 on a gold emblem with a green progress bar filling behind it — the level's completion flourish. There is no results card with a coin figure before the footage stops, so this page does not print a reward number for Study Room.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=2S33pol9jGE&t=312s" target="_blank" rel="noopener">5:12</a></div>
+    </div>
+
+    <h2>Books and numerals: what the shelf is for<span class="accent">.</span></h2>
+    <p>The bookshelves get a lot of screen time and the readable spines are <b>RUDYARD KIPLING</b>, <b>JUNGLE BOOK</b>, <b>BOLTON</b> and <b>BERTHA RUNKLE</b>, plus one stamped spine number that OCRs as <b>1745</b> but shifts between frames. The game's own hint for this shelf says: <i>Look at the bookshelves with the Globe on, notice the blue books and how they stand — IV = 4, III = 3, VI = 7.</i> So the shelf is a counting puzzle: blue books standing in Roman numerals, read as digits. It is not a printed code and it does not feed the laptop.</p>
+    <p>That hint also tells you something useful about the level's design: when a shelf looks like a cipher, the game will eventually say so in a hint, and the hint will be about <i>how the books stand</i> rather than what is printed on them. If you are stuck on the books, count the blue spines rather than reading titles.</p>
+    <img src="/rooms-and-exits/c3l3-bookshelf-books.jpg" alt="The Study Room bookshelves with readable spines including Rudyard Kipling, Jungle Book, Bolton and Bertha Runkle" width="1200" height="594" loading="lazy" />
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>"The laptop password does not work."</b> It is <b>20062015</b>, eight digits, no dots, no slashes. The Photograph prints it as 20.06.2015 and the two most common mistakes are keeping the separators and typing 20062015 with a leading zero dropped — there is no leading zero, but there are two zeros in the middle: 2-0-0-6-2-0-1-5.</p>
+    <p><b>"I am past the password but stuck on verification."</b> The code is not in the laptop, the books or the safe. It is on the <b>phone</b> on the desk: <b>45837</b>. If your phone shows nothing, you have not picked it up yet — it is a carried item, not a wall object.</p>
+    <p><b>"Where is the code for the keypad?"</b> The laptop prints <b>62850</b> only after verification. Players hunt the room for a five-digit number on a wall and there is not one; the laptop is the only source.</p>
+    <p><b>"The safe dial does nothing."</b> It takes four alternating turns, not four digits: <b>30 anti-clockwise, 40 clockwise, 55 anti-clockwise, 70 clockwise</b>. Turn anticlockwise first — starting clockwise resets the dial, which is why people report that "the first number will not take".</p>
+    <p><b>"What do I do with the Blanket, Shovel, Brush, Ash and Light bulb?"</b> Nothing, in this run. They are collected and never consumed. The same goes for the Fingerprint the Brush produces and for the economics book's eleven-entry list.</p>
+    <p><b>"The round glowing mechanism must be a button."</b> It responds once, early, and never again. It is not the safe and not the keypad. Do not build a theory around it.</p>
+
+    <h2>Where Study Room sits in Chapter 3<span class="accent">.</span></h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i>. Study Room is room <b>3 of 15</b>, between Living Room and Guest Toilet, and it is the chapter's device level: two of its three codes exist only on screens. That is worth knowing before you start, because it changes where you look — the laptop and the phone are locks and clue-holders, not scenery.</p>
+    <p>It is also the longest chain in the chapter's opening run. Guest Toilet after it has a single safe and a single key; Study Room has a password, a second factor, a derived code and an optional rotary safe. If you are working through in order, do the laptop before you touch anything else — the verification step is a wall you cannot climb without the phone, and the phone is easier to find once you know you need it.</p>
+
+    <LevelSelector chapter={3} current={3} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-3-level-2/">Chapter 3 Level 2 — Living Room</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-3-level-4/">Chapter 3 Level 4 — Guest Toilet</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Four gaps, stated plainly.
+      <br><br>
+      <b>1. What the safe contains.</b> The dial is worked between 2:51 and 3:05 and the combination is confirmed from the game's own hint, but the recording does not settle on a clear shot of the safe standing open with its contents. We therefore do not claim what is inside it.
+      <br><br>
+      <b>2. The stamped number on the book spine.</b> It OCRs as <b>1745</b> in some frames and as 11745 or J7A5 in others, and a 3x crop was still unstable. It is not used by any lock in the run, so we have left it out of the guide rather than pick a reading.
+      <br><br>
+      <b>3. The reward for the level.</b> The video ends at 5:12 on the completion animation, before any results card. No coin figure is legible, so none is printed.
+      <br><br>
+      <b>4. The round glowing mechanism and the Fingerprint.</b> Both are interactive and both are abandoned in the footage. We cannot tell you whether they belong to a puzzle that this player skipped or to nothing at all.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

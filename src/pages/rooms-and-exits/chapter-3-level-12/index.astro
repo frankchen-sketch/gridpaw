@@ -1,0 +1,351 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 12 Walkthrough: Driveway";
+const description = "Rooms & Exits Chapter 3 Level 12 walkthrough for Driveway: the red sedan with plate 18-D-12345 and its light-control stalk set to AUTO, the lion's memorial tablet reading WILLIAM FOSTER / DIED / Oct. 7, 1866 / Aged 59 Years, the statue hint \"Pay attention to the lines on the statue\", the five-slider valve panel, the paper marked Valve handle position, the door labelled A17, and the skeleton key that finishes the level. There is no numeric keypad anywhere in this room; the reads below were each checked twice from separate frames.";
+
+const faq = [
+  {
+    q: "What is the code in Rooms & Exits Chapter 3 Level 12 Driveway?",
+    a: "There is no typed code. We sampled all 283 seconds of this recording and no keypad, dial bank or number panel ever appears — the only inputs are a car light-control stalk, a five-slider valve panel and a pipe network with red levers. The three pieces of text people mistake for codes are labels: the <b>18-D-12345</b> number plate on the red sedan, the <b>A17</b> plate on the mansion's front door, and the memorial tablet under the lion's paw, which reads <b>WILLIAM FOSTER / DIED / Oct. 7, 1866 / Aged 59 Years</b>.",
+  },
+  {
+    q: "Is there a keypad in the Driveway?",
+    a: "No. Frame by frame across the whole clip there is no keypad, no safe dial and no letter lock. Driveway is one of the chapter's outdoor rooms, and its interactives are physical: the car's light stalk, the valve panel between the two lion statues, and the pipe-and-valve network. If you are hunting for a four-digit pad, that is why you cannot find one.",
+  },
+  {
+    q: "What does the memorial tablet under the lion say?",
+    a: "The tablet held under the near lion's paw is engraved with four lines: <b>WILLIAM FOSTER</b>, <b>DIED</b>, <b>Oct. 7, 1866</b>, <b>Aged 59 Years</b>. We read it three ways — the whole frame at 0:56, a 3.4× crop of the tablet, and a wide 2.2× crop that included the paw and the base — and all three passes agreed. The date and the age are the two numbers worth writing down.",
+  },
+  {
+    q: "What does the statue hint say?",
+    a: "At roughly 2:21 a caption appears over the cherub statue on its fluted pedestal: <b>PAY ATTENTION TO THE LINES ON THE STATUE / AND TAKE THE LAST VALUE HANDLE</b>. It is printed as \"value\", which is the game's own typo for <b>valve</b> — and the item you get is literally called <b>Valve handle</b>. So the line is telling you two things: count or read the grooves on the pedestal, and take the last valve handle you find.",
+  },
+  {
+    q: "What is the five-slider panel between the lions?",
+    a: "A metal service panel mounted in the wall between the two lion statues, with <b>five vertical sliders</b>, a row of square indicator lights down each side, and a single <b>horizontal slider</b> along the bottom. The <b>Piece of paper</b> in your inventory — the one labelled <b>Valve handle position</b> — is its clue: the paper is a hand-drawn schematic of five circles with an X through them, wired together with arrows. The panel is a valve bank, not a keypad: you are matching handle positions, not typing digits.",
+  },
+  {
+    q: "How do I get through the gate?",
+    a: "Not with a code, and not at the start. At roughly 1:15 the camera moves to the gateway and a pale left-pointing arrow floats beside it — that arrow is the level's exit marker and it stays there for the rest of the run. It is a signpost rather than a lock, and tapping the gate early does nothing. The gate is dealt with last: the recording selects the <b>skeleton key</b> from the inventory at about 4:39, uses it, and the <b>LEVEL COMPLETED!</b> card follows at 4:42.",
+  },
+  {
+    q: "What is the A17 door?",
+    a: "The mansion's front door, up the driveway past the fountain, carries a plate reading <b>A17</b>. Read twice — the OCR pass and a 1.9× crop of the door both give A17, and the plate is set centrally on the dark wooden door between its glazed panels. A later hint at about 3:41 reads <b>BACK TO THE A17 ON THE DOOR</b>, which is the game sending you back to that door rather than naming a code.",
+  },
+  {
+    q: "What is the pipe puzzle with the red levers?",
+    a: "A full-screen network of grey pipe segments joined by flanges, with <b>red lever handles</b> at the junctions and a <b>green flow indicator</b> in the lower right. The recording works it between roughly 3:30 and 3:45 and returns to it later. It behaves like the standard flow puzzle: turn the valves so the run connects through to the green lamp. We are not printing a lever-by-lever list, because the clip is sped up and cut and a half-right order would cost you more time than working it out.",
+  },
+  {
+    q: "What does the car's light stalk do?",
+    a: "Inside the sedan, the left stalk behind the wheel is a rotary light switch with four markings, top to bottom: <b>O</b> (off), <b>AUTO</b>, a parking-light symbol, and a headlight symbol. In the recording the dial sits on <b>AUTO</b>, and that is the state the level wants — we read the stalk twice, whole frame and a 1.7× crop, and both reads put the pointer on AUTO. The right-hand rocker on the same stalk carries the front and rear fog-light symbols.",
+  },
+  {
+    q: "What ends the level?",
+    a: "A <b>skeleton key</b>. The inventory at the end holds two items — the car key fob and an old-fashioned key — and the recording selects the key, uses it at the gate, and the level completes. The gate is the level exit: the outline-arrow icon sits on the gateway itself, and the results card follows about a second later.",
+  },
+  {
+    q: "Is Driveway room 12 of Chapter 3?",
+    a: "Yes. Chapter 3 is <i>Murder Dressed in White</i> and its fifteen rooms run: Dining Room, Living Room, Study Room, Guest Toilet, Workshop, Guest Bedroom, Master Bathroom, Kids Playroom, Backyard, Garden, Kitchen, <b>Driveway</b>, Kids Bedroom 1, Storage Room, Garage. Driveway is room <b>12 of 15</b>, directly after Kitchen and before Kids Bedroom 1.",
+  },
+  {
+    q: "Does the recording show the level being completed?",
+    a: "Yes — this is the first room in the chapter where our copy includes the ending. The card reads <b>LEVEL COMPLETED!</b> at about 4:42. What it does not show is a reward figure: the card carries the title and two rule lines and nothing else, and our copy ends on that frame, so this page prints no coin amount for Driveway.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-12"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 12"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 12</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 12 Walkthrough: Driveway</h1>
+
+    <p>Driveway is the twelfth room of Chapter 3, <i>Murder Dressed in White</i> — the last of the chapter's outdoor rooms, following Garden and leading back inside to Kids Bedroom 1. It starts outside a walled mansion entrance at night: a shut wrought-iron gate, a red sedan parked nose-in with the number plate <b>18-D-12345</b>, two stone lions on pedestals looking down at the driveway, and a circular fountain further up the herringbone paving. There is no keypad here — that is the single most useful thing to know before you start tapping things.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame at one frame per second across the full 4:42 clip, including the ending. Every piece of text printed as a read on this page was checked at least twice from separate frames — the memorial tablet three ways, the <b>A17</b> plate twice, the statue caption twice, plate <b>18-D-12345</b> twice. Anything that only resolved once, or that two passes read differently, is listed under "What this page could not verify" instead of being stated as fact.</div>
+
+    <LevelSelector chapter={3} current={12} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Driveway is room 12 of 15 in Chapter 3. There is <b>no typed code</b> in this level — no keypad appears anywhere in the recording. The four things that matter are:</p>
+      <ol>
+        <li><b>A17</b> — the plate on the mansion's front door. A later hint sends you <b>back to the A17 on the door</b>; it is a location, not a code to enter.</li>
+        <li><b>AUTO</b> — the position of the car's light-control stalk. Read twice; the dial sits on AUTO with O, the parking-light and headlight symbols above and below it.</li>
+        <li><b>WILLIAM FOSTER / DIED / Oct. 7, 1866 / Aged 59 Years</b> — the memorial tablet under the lion's paw. The date and age are the only real numbers in the room.</li>
+        <li><b>Five-slider valve panel</b> between the two lions, plus the pipe network with red levers. The <b>Piece of paper</b> in your bag (labelled <b>Valve handle position</b>) is the clue: five X-marked circles wired with arrows. Match handles, do not type digits.</li>
+      </ol>
+      <p>End of the level: pick up the <b>skeleton key</b>, select it in the inventory, use it at the gate, and the <b>LEVEL COMPLETED!</b> card appears at about 4:42.</p>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="zpx_qJcWbBc" data-title="Rooms &amp; Exits Level 12 Driveway Walkthrough Murder Dressed in White Chapter 3"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 12 Driveway Walkthrough">
+        <img src="https://i.ytimg.com/vi/zpx_qJcWbBc/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 12 Driveway walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/zpx_qJcWbBc/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The 4:42 Driveway run used for every frame on this page — the in-game clock in the corner runs faster than the video, so ignore the timer in the screenshots.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l12-fountain-running.jpg" alt="Rooms and Exits Chapter 3 Level 12 Driveway: the Mediterranean mansion seen across its circular drive, the stone fountain running in the middle, the red sedan parked by the steps and the iron entrance gate on the right" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>One outdoor area, three separate puzzle sites. The entrance end has the gate and the two lions with their memorial tablet; the middle has the circular driveway, the working fountain and the parked sedan; the house end has the front door marked <b>A17</b>, a bench with a duffel bag, and a cherub statue on a fluted pedestal in a small lawn. Everything is reachable by tapping, and the camera swings between a wide property view and tight one-object views with the usual white corner brackets.</p>
+    <p>The puzzle logic is physical rather than numeric, which is why the room feels different from Kitchen. The car's light stalk is a rotary switch you turn; the metal panel between the lions is a bank of five sliders; the pipe network is a set of red levers you flip until flow reaches a green lamp. Nothing in this level asks you to type a number, and nothing asks you to spell a word.</p>
+    <p>What the room does have is one very readable piece of prose on stone. The near lion rests its paw on an upright tablet, and the tablet is engraved with a name, a death date and an age. In a chapter that has so far hidden its clues on notes and mugs, carving them into a gravestone is a nice piece of theatre — and it is the one clue in Driveway you can read at a glance.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Everything we could identify, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Wrought-iron gate</td><td>Entrance end of the driveway</td><td>Where the level ends. A pale left-pointing arrow — the exit marker — floats beside it from about 1:15 onward.</td></tr>
+        <tr><td>Red sedan</td><td>Parked facing the gate</td><td>Plate <b>18-D-12345</b>. Enter it for the light-control stalk puzzle; later a car key fob is in your inventory.</td></tr>
+        <tr><td>Light-control stalk</td><td>Left of the steering wheel, inside the car</td><td>Rotary dial marked <b>O</b>, <b>AUTO</b>, parking-light symbol, headlight symbol. Sits on <b>AUTO</b>.</td></tr>
+        <tr><td>Two stone lions</td><td>On pedestals flanking the gate</td><td>Frame the entrance. The near lion's paw rests on the memorial tablet.</td></tr>
+        <tr><td>Memorial tablet</td><td>Under the near lion's paw</td><td>Engraved <b>WILLIAM FOSTER / DIED / Oct. 7, 1866 / Aged 59 Years</b>. The room's clearest written clue.</td></tr>
+        <tr><td>Five-slider valve panel</td><td>Wall between the two lions</td><td>Five vertical sliders, square indicator rows down both sides, a horizontal slider along the bottom.</td></tr>
+        <tr><td>Piece of paper</td><td>Inventory item</td><td>Labelled <b>Valve handle position</b>. Hand-drawn schematic: five circles with an X through each, joined by arrows.</td></tr>
+        <tr><td>Pipe network</td><td>Full-screen puzzle</td><td>Grey pipe segments, <b>red lever handles</b> at junctions, <b>green flow indicator</b> lower right.</td></tr>
+        <tr><td>Cherub statue</td><td>Circular lawn right of the driveway</td><td>On a fluted pedestal. Raises the caption about the lines on the statue.</td></tr>
+        <tr><td>Bench</td><td>Against the house wall</td><td>Wooden slats on ornate iron legs, with a duffel bag and a furled umbrella on it.</td></tr>
+        <tr><td>Front door A17</td><td>Mansion entrance, up the driveway</td><td>Dark wooden door with glazed panels and a central <b>A17</b> plate. The hint later sends you back to it.</td></tr>
+        <tr><td>Skeleton key</td><td>Inventory, near the end</td><td>The last item collected. Select it, choose Use, and the gate ends the level.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>The order below follows the recording. Timestamps are video time; the links jump to the matching second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:02</span>
+      <strong>Read the entrance before you touch it</strong>
+      The level opens on the entrance with no cutscene: a dark iron gate between stone pillars, lanterns burning overhead, a lion on its pedestal to one side, and the red sedan parked facing away from you with <b>18-D-12345</b> on its plate. Sweep once — gate ahead, lion and paving underfoot, hedges along the walls — then get into the car.
+      <img src="/rooms-and-exits/c3l12-hero-driveway.jpg" alt="The near stone lion holding its shield on a pedestal, the herringbone driveway and the rear of the red sedan at the entrance in Driveway" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zpx_qJcWbBc&t=2s" target="_blank" rel="noopener">0:02</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:30 · inside the car</span>
+      <strong>The light-control stalk is already on AUTO</strong>
+      Tapping the sedan puts you behind the wheel. The interactive part is the left stalk: a rotary dial with four markings, top to bottom <b>O</b>, <b>AUTO</b>, a parking-light symbol and a headlight symbol, and the pointer sits on <b>AUTO</b>. The right-hand rocker on the same stalk carries the front and rear fog-light symbols. We read this twice — the whole frame and a 1.7× crop — and both reads put the pointer on AUTO, so if your dial has been spun elsewhere, that is the setting to restore.
+      <img src="/rooms-and-exits/c3l12-car-light-stalk.jpg" alt="The car light-control stalk inside the red sedan in Driveway, with the rotary dial on AUTO and the off, parking-light and headlight markings above and below" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zpx_qJcWbBc&t=30s" target="_blank" rel="noopener">0:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:44 · the dashboard</span>
+      <strong>The cabin is a second, quieter view</strong>
+      The camera pulls back to the whole dashboard: three-spoke wheel, two backlit gauges, a centre screen showing a map and a row of climate controls under it. Nothing here is an input — this is the game letting you look around the interior after the stalk. The car key fob is already listed as a carried item by this point, and it is still in the bag at the end.
+      <img src="/rooms-and-exits/c3l12-car-dashboard.jpg" alt="The dashboard of the red sedan in Driveway: steering wheel, instrument gauges and centre navigation screen" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zpx_qJcWbBc&t=44s" target="_blank" rel="noopener">0:44</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:56 · the memorial tablet</span>
+      <strong>WILLIAM FOSTER, died Oct. 7, 1866, aged 59</strong>
+      The near lion holds an upright tablet under its paw, and the tablet is engraved in four lines: <b>WILLIAM FOSTER</b>, <b>DIED</b>, <b>Oct. 7, 1866</b>, <b>Aged 59 Years</b>. Above the text there is a small carved medallion. Of everything written in Driveway, this is the clearest read and the only place two usable numbers appear — the year 1866 and the age 59. Write both down before you leave the gate.
+      <img src="/rooms-and-exits/c3l12-lion-memorial-tablet.jpg" alt="The memorial tablet under the lion's paw in Driveway, engraved William Foster, died Oct. 7 1866, aged 59 years" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zpx_qJcWbBc&t=56s" target="_blank" rel="noopener">0:56</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:15 · the gateway</span>
+      <strong>The gate area, and the arrow that sits on it all level</strong>
+      The camera returns to the gateway end of the drive: two stone pillars, the wrought-iron leaves between them, hedges along the wall and the lamp still burning. A pale left-pointing arrow floats in the dark HUD strip beside the gateway — that icon is the level's exit marker, and it is there from the middle of the run right through to the end. It is a signpost, not a lock: there is nothing to tap on the gate at this stage.
+      <img src="/rooms-and-exits/c3l12-gate-open-arrow.jpg" alt="The gateway in Driveway with its stone pillars and iron leaves, and the pale left-pointing exit arrow beside it" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zpx_qJcWbBc&t=75s" target="_blank" rel="noopener">1:15</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:30 · the bench</span>
+      <strong>A duffel bag and a furled umbrella</strong>
+      Along the house wall sits a slatted wooden bench on ornate iron legs, with a brown-and-blue duffel bag on the seat and a closed umbrella leaning on the left armrest. The bench, bag and umbrella all outline as interactive. This is where the room's tools start arriving — the bag is worth opening before you go back to the gate.
+      <img src="/rooms-and-exits/c3l12-bench-duffel-bag.jpg" alt="The wooden bench against the house wall in Driveway with a duffel bag on the seat and a furled umbrella at the armrest" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zpx_qJcWbBc&t=90s" target="_blank" rel="noopener">1:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 2:22 · the statue caption</span>
+      <strong>"Pay attention to the lines on the statue"</strong>
+      The cherub on its fluted pedestal raises a two-line caption across the top of the screen: <b>PAY ATTENTION TO THE LINES ON THE STATUE / AND TAKE THE LAST VALUE HANDLE</b>. The second line is printed as "value" — the game's own typo for <b>valve</b>, confirmed by the item you receive, which is called <b>Valve handle</b>. Read it as two instructions: study the pedestal's grooves, and pick up the last valve handle.
+      <img src="/rooms-and-exits/c3l12-statue-hint-popup.jpg" alt="The Driveway statue hint reading pay attention to the lines on the statue and take the last value handle" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zpx_qJcWbBc&t=142s" target="_blank" rel="noopener">2:22</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 2:48 · the valve panel</span>
+      <strong>Five sliders, not five digits</strong>
+      Between the two lions there is a metal service panel: <b>five vertical sliders</b> with rounded tracks, a column of small square indicators down each side, and a single <b>horizontal slider</b> running along the bottom between two sets of three short lines. The recording works it from about 2:30 to 3:00. It is a valve bank — each slider is a handle position, which is exactly what the paper in your bag is describing.
+      <img src="/rooms-and-exits/c3l12-valve-panel.jpg" alt="The five-slider valve panel between the two lion statues in Driveway, with a horizontal slider along the bottom" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zpx_qJcWbBc&t=168s" target="_blank" rel="noopener">2:48</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 3:20 · the paper</span>
+      <strong>"Valve handle position"</strong>
+      In the inventory, examine the <b>Piece of paper</b>. The item label under it reads <b>Valve handle position</b>, and the drawing is a hand-drawn schematic: five circles each crossed with an X, joined by straight runs of line with small arrows showing direction, and small square terminals at the ends. That is the valve bank drawn as a circuit. If you are stuck on the panel, this paper is the only place the arrangement is written down.
+      <img src="/rooms-and-exits/c3l12-paper-valve-diagram.jpg" alt="The Piece of paper in Driveway labelled Valve handle position, showing five crossed circles joined by arrows" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zpx_qJcWbBc&t=200s" target="_blank" rel="noopener">3:20</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 3:42 · the pipe network</span>
+      <strong>Red levers, one green lamp</strong>
+      A full-screen pipe puzzle: grey segments joined by flanges, <b>red lever handles</b> standing at the junctions, and a <b>green flow indicator</b> glowing in the lower right corner. The recording turns handles here, leaves, and comes back to it later. The goal is the usual one — get the run connected through to the green lamp — and we are deliberately not printing a lever order, because the footage is sped up and cut and a wrong sequence would waste more of your time than working it out.
+      <img src="/rooms-and-exits/c3l12-pipe-puzzle.jpg" alt="The pipe and valve network puzzle in Driveway with red lever handles and a green flow indicator" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zpx_qJcWbBc&t=222s" target="_blank" rel="noopener">3:42</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 4:07 · the A17 door</span>
+      <strong>The plate on the front door, and the hint that sends you back</strong>
+      The mansion's front door is dark wood with glazed panels either side of a central plate reading <b>A17</b>. A caption a little earlier reads <b>BACK TO THE A17 ON THE DOOR</b> — so the game is treating A17 as a destination, not a combination. We read the plate twice, the OCR pass and a 1.9× crop of the door, and both give A17.
+      <img src="/rooms-and-exits/c3l12-door-a17.jpg" alt="The mansion front door in Driveway with the plate A17 mounted centrally on the dark wooden panels" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zpx_qJcWbBc&t=247s" target="_blank" rel="noopener">4:07</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 4:39 to 4:42 · the key and the gate</span>
+      <strong>Skeleton key, Use, then LEVEL COMPLETED!</strong>
+      The last two inventory items are the car key fob and an old-fashioned <b>skeleton key</b>. The recording selects the key, chooses <b>Use</b>, and the gateway is where the interaction lands: the pale exit arrow is sitting beside the gate, the camera holds there, and the <b>LEVEL COMPLETED!</b> card follows at about 4:42. The card carries the title and two rule lines only — our copy ends on that frame, so there is no coin figure to report.
+      <img src="/rooms-and-exits/c3l12-level-completed.jpg" alt="The LEVEL COMPLETED card at the end of Rooms and Exits Chapter 3 Level 12 Driveway" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=zpx_qJcWbBc&t=279s" target="_blank" rel="noopener">4:39</a> · <a href="https://www.youtube.com/watch?v=zpx_qJcWbBc&t=282s" target="_blank" rel="noopener">4:42</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>You keep looking for a keypad.</b> There isn't one. Driveway is one of the chapter's outdoor rooms and every input in it is physical: a rotary stalk, five sliders, a bank of pipe levers. If you are stuck because you cannot find somewhere to type the year on the gravestone, the answer is that no such place exists — the tablet is atmosphere with a usable number in it, not a code to enter here.</p>
+    <p><b>The gate will not open when you tap it early.</b> It is not meant to. From about 1:15 there is a pale left-pointing arrow floating beside the gateway — that is the exit marker, and it is showing you where the level finishes, not inviting you to try the gate now. The gate becomes usable at the very end, after the skeleton key is in your bag.</p>
+    <p><b>The valve panel looks like a combination lock.</b> Five sliders in a row reads as five digits if you are coming straight from a keypad room, and then you cannot work out what the numbers should be, because there are no numbers. The panel is a valve bank: the sliders are handle heights, and the <b>Piece of paper</b> labelled <b>Valve handle position</b> is the diagram that tells you which handle goes where.</p>
+    <p><b>The statue caption says "value handle" and you cannot find a value handle.</b> That is a typo in the game's own text. The item you are meant to take is the <b>Valve handle</b>, and the panel between the lions is where it belongs.</p>
+    <p><b>The pipe puzzle never lights green.</b> The green lamp is in the lower right of the network, so trace from there backwards rather than from the top. The red levers at the junctions are the parts that change the route; the plain flanged segments are fixed.</p>
+
+    <h2>Where Driveway sits in Chapter 3<span class="accent">.</span></h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i>, and its fifteen rooms run: Dining Room, Living Room, Study Room, Guest Toilet, Workshop, Guest Bedroom, Master Bathroom, Kids Playroom, Backyard, Garden, Kitchen, <b>Driveway</b>, Kids Bedroom 1, Storage Room, Garage. Driveway is room <b>12 of 15</b>, straight after the Kitchen and immediately before Kids Bedroom 1.</p>
+    <p>It is also the chapter's change of scenery. Kitchen is a dense indoor room with four puzzle types stacked on three walls; Driveway opens the camera out, drops the keypad entirely and gives you a car, a gate, a gravestone and a fountain instead. If you have just finished Kitchen, expect the pace to feel slower and the clues to feel more spread out — the walk between the gate, the bench and the front door is most of the level.</p>
+
+    <LevelSelector chapter={3} current={12} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-3-level-11/">Chapter 3 Level 11 — Kitchen</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-3-level-13/">Chapter 3 Level 13 — Kids Bedroom 1</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Four things, stated plainly so you know which parts of this page are reads and which are reconstruction.
+      <br><br>
+      <b>1. The exact slider positions on the valve panel.</b> The panel is clearly five vertical sliders plus a horizontal one, but the handle heights in the footage were read three different ways across passes — one pass put them high/low/middle/low/high, another put them all at the bottom. At this resolution the handles are a few pixels tall and the panel is dark, so this page describes the mechanism and points you at the paper clue rather than printing a height for each slider.
+      <br><br>
+      <b>2. The lever order for the pipe network.</b> We can see red levers, flanged pipe segments and a green indicator, and the recording clearly works the puzzle in two sittings. What we cannot honestly reconstruct is the winning sequence — the clip is cut and sped up, and a partial order would be worse than no order.
+      <br><br>
+      <b>3. Where the skeleton key comes from.</b> The key is in the inventory at 4:39 and is used at the gate a second later, but the pickup itself happens off-camera between our sampled frames. This page therefore does not claim a source for it — only that it is the item that finishes the level.
+      <br><br>
+      <b>4. The reward and the coin count.</b> The <b>LEVEL COMPLETED!</b> card is in our copy, which is more than most rooms in this chapter gave us, but it carries only the title and two rule lines. There is no coin figure, no star rating and no "next" button on the frame our clip ends on, so no reward number appears on this page. The coin balance in the top bar reads 3230 throughout the run, before and after the card.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>
