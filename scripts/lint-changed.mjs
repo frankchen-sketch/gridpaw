@@ -15,7 +15,19 @@ function git(cmd) {
   try { return execSync(cmd, { encoding: 'utf8' }).split('\n'); } catch { return []; }
 }
 
-const base = process.env.LINT_BASE || 'origin/HEAD';
+function pickBase() {
+  if (process.env.LINT_BASE) return process.env.LINT_BASE;
+  // 优先本地主线分支：origin/HEAD 可能落后本地主线，会把别人的改动算进来
+  for (const ref of ['main', 'master']) {
+    try {
+      execSync(`git rev-parse --verify --quiet ${ref}`, { stdio: 'ignore' });
+      return ref;
+    } catch {}
+  }
+  return 'origin/HEAD';
+}
+
+const base = pickBase();
 const touched = [
   ...git(`git diff --name-only --diff-filter=ACMR ${base}...HEAD`),
   ...git('git diff --name-only --diff-filter=ACMR'),
