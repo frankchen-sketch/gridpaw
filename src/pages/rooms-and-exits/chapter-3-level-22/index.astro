@@ -1,0 +1,345 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 22 Walkthrough: Master Bedroom";
+const description = "Rooms & Exits Chapter 3 Level 22 walkthrough for the Master Bedroom: the wooden path board with the white ball and green star, the 4x4 number board with its side column of 2, 6, 7 and 8, the walk-in closet, the four red buttons and their coloured light modules, the 3x8 shape grid, the twelve-gem circle, the tablet's 3x3 dot pattern and the shape-algebra screen where a green circle is 8, a blue square 2, a purple star 0 and a yellow pentagon 1. The recording stops at 8:27 with no results card.";
+
+const faq = [
+  {
+    q: "What is the code in Rooms & Exits Chapter 3 Level 22 Master Bedroom?",
+    a: "There is no single typed code. The Master Bedroom uses four separate locks: a wooden <b>path board</b> (roll a white ball from the top right to a green star), a <b>4x4 number board</b> with a side column of 2, 6, 7 and 8, a <b>3x8 shape grid</b> with eight plungers, and a <b>tablet</b> that holds both a 3x3 dot pattern and a shape-algebra screen. The only hard numbers the game prints are on the tablet: <b>green circle = 8</b>, <b>blue square = 2</b>, <b>purple star = 0</b>, <b>yellow pentagon = 1</b>.",
+  },
+  {
+    q: "How do I solve the path board?",
+    a: "It is a maze on a wooden board, five cells wide and three high, with a <b>white ball</b> parked near the top right and a <b>green starburst</b> near the bottom centre. Three shape ports run down the left edge and three match on the right — a circle, a square and a star — so the ball's route has to leave through the port that matches its shape. You tilt and turn the board rather than dragging the ball; the ball follows the grey channels.",
+  },
+  {
+    q: "What are the numbers on the 4x4 board?",
+    a: "The grid reads <b>4, 5, 1, 10</b> on the top row, then 3 and 17, then 9 and 18, then <b>17, 17, 11</b> with a left-arrow delete key in the bottom-right corner. A separate vertical column of four keys runs down the right side: <b>2, 6, 7, 8</b>. The blank cells on the main grid are part of the puzzle — you fill them — and the green outlines mark the two cells currently selected.",
+  },
+  {
+    q: "What is behind the door on the right?",
+    a: "A <b>walk-in closet</b>. It is a built-in dressing room with shoes on open shelves, hanging rails with coats and dresses, magenta drawers, stacked hatboxes, a Hollywood-style bulb mirror over a white vanity, a tablet propped on the counter and a pearl necklace on a display bust. A centre island holds folded clothes and white gloves.",
+  },
+  {
+    q: "How do the four red buttons work?",
+    a: "Four large red buttons sit in a row across a dark wooden panel, and under each one is a module of <b>four coloured lights</b> — blue, green, orange and pink in the left-hand module, pink, orange, green and blue in the second, then back to blue, green, orange, pink for the last two. The buttons drive those lights, so treat it as a sequence-and-state puzzle rather than a colour-matching one: you are trying to make each module show a required order.",
+  },
+  {
+    q: "What is the 3x8 shape grid?",
+    a: "A metal panel with eight columns and three rows of coloured shapes: <b>red triangles</b> on top, <b>green squares</b> in the middle, <b>blue circles</b> on the bottom. Eight round grey plungers sit under the columns, and there are shift arrows on both sides — green pointing right on the left edge, blue pointing left on the right edge. The arrows move whole columns, and the plungers lock them.",
+  },
+  {
+    q: "What is the twelve-gem circle?",
+    a: "A large off-white disc set into the wood, ringed by <b>twelve faceted gems</b>. Going clockwise from the top the colours run green, red, yellow, pink, orange, blue — and then repeat the same six colours a second time around the ring. That doubled sequence is the clue: the disc is asking you to pair positions, not to sort colours.",
+  },
+  {
+    q: "What does the tablet show?",
+    a: "Two screens. First a <b>3x3 dot pattern lock</b> — nine dots, with the bottom row lit as the pattern is drawn. Then a <b>shape-algebra grid</b>: a 4x4 arrangement of green circles, purple stars, blue squares and yellow pentagons, with the values printed beside it — green circle <b>8</b>, blue square <b>2</b>, purple star <b>0</b>, yellow pentagon <b>1</b> — row totals of <b>26, 4, 4, 8</b> down the right side and column totals of <b>10, 17, 11, 4</b> along the bottom.",
+  },
+  {
+    q: "Does the shape algebra check out?",
+    a: "Yes, completely. With circle 8, square 2, star 0 and pentagon 1, every row and every column lands exactly on the printed total. Row one is three circles and a square: 3 x 8 + 2 = <b>26</b>. Row two is two stars and two squares: 0 + 0 + 2 + 2 = <b>4</b>. Row three is a square and two pentagons: 2 + 1 + 1 + 0 = <b>4</b>. Row four is a circle and three stars: 8. The columns give <b>10</b> (8 + 0 + 2 + 0), <b>17</b> (8 + 0 + 1 + 8), <b>11</b> (8 + 2 + 1 + 0) and <b>4</b> (2 + 2 + 0 + 0). That full reconciliation is why the four values are printed on this page as fact.",
+  },
+  {
+    q: "Does the recording show the level being completed?",
+    a: "No. This copy runs <b>8:27</b> and the last frame is still the bedroom, with the in-game clock at <b>17:44</b> and an interaction arrow on the right-hand door. There is no results card, no coin reward and no piggy-bank figure for the Master Bedroom in this footage, so this page prints none.",
+  },
+  {
+    q: "Why is the in-game timer so much longer than the video?",
+    a: "The upload is time-lapsed. At 4:22 of video the in-game clock already reads 11:24, and by the last frame at 8:27 it reads 17:44. That is roughly a 2:1 compression, so the video timestamps on this page are for navigation only — do not read them as the level's real duration.",
+  },
+  {
+    q: "Where does the Master Bedroom sit in Chapter 3?",
+    a: "It is room <b>22 of 24</b> in Chapter 3, <i>Murder Dressed in White</i>: straight after the Hobby Room (Level 21) and before the Entertainment Room (Level 23).",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-22"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 22"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 22</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 22 Walkthrough: Master Bedroom</h1>
+
+    <p>The Master Bedroom is room 22 of 24 in Chapter 3, <i>Murder Dressed in White</i>, and it is the longest room in this stretch — the in-game clock passes <b>17 minutes</b> before the recording stops. It is also the only one of the three bedroom-side rooms where the puzzles are spread across a second space: a walk-in closet with its own vanity, mirror and tablet.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt from the 8:27 recording (508 frames at one per second). <b>This run does not show the level being completed</b> — the last frame is still the bedroom — so this page prints no results card, no coin reward and no time. The shape values on the tablet were cross-checked against the row total and two of the four column totals, which is how we know they are read correctly.</div>
+
+    <LevelSelector chapter={3} current={22} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Four locks, no typed door code in the footage. The numbers the game actually prints: <b>circle 8, square 2, star 0, pentagon 1</b>.</p>
+      <ol>
+        <li><b>Path board</b> (0:20 to 1:20): a white ball, a green star, and three shape ports on each side.</li>
+        <li><b>4x4 number board</b> (2:10): top row 4, 5, 1, 10; side column 2, 6, 7, 8; left-arrow delete key in the corner.</li>
+        <li><b>Walk-in closet</b> (3:24): rails, shoes, hatboxes, bulb mirror, tablet on the vanity.</li>
+        <li><b>Four red buttons</b> (4:30) over four modules of four coloured lights, and a <b>3x8 shape grid</b> (6:36) with eight plungers and shift arrows.</li>
+        <li><b>Twelve-gem circle</b> (7:30): six colours repeated twice around the ring.</li>
+        <li><b>Tablet</b> (7:48 and 8:12): 3x3 dot pattern, then the shape algebra screen.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="dv9jOHDEclo" data-title="Rooms &amp; Exits Level 22 Master Bedroom Walkthrough Murder Dressed in White Chapter 3"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 22 Master Bedroom Walkthrough">
+        <img src="https://i.ytimg.com/vi/dv9jOHDEclo/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 22 Master Bedroom walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/dv9jOHDEclo/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The Master Bedroom run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l22-room-overview.jpg" alt="Rooms and Exits Chapter 3 Level 22 Master Bedroom: a teal-walled bedroom with a purple bed, dark brown headboard, two light wood nightstands with grey lamps, a purple bench, a geometric rug, a window with grey curtains and a magnetic letter board above the bed" width="1200" height="676" loading="lazy" decoding="async" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>A grown-up bedroom in teal, seen isometric, with three walls and two doors. The left wall has a tall white panelled door and a wide window with grey curtains; outside the glass there are bright abstract shapes rather than a normal sky, which is the game's way of saying the window is decorative. Below the window sits a light wood console table with a stereo unit, and a full-size keyboard with coloured lights lies on the floor beneath it.</p>
+    <p>The centre is the bed: a tall dark brown upholstered headboard, a thick purple quilted comforter, purple and grey pillows, matching light wood nightstands with grey lamps on each side, and a purple upholstered bench at the foot with a drawer. Above the headboard hangs a large light-wood framed board of colourful magnetic letters and numbers, and to its right a spiky multicoloured sunburst clock.</p>
+    <p>The right side is the second door, which stands ajar with an interaction arrow. That door leads to the <b>walk-in closet</b> — a separate dressing room with shoe shelves, hanging rails, magenta drawers, hatboxes, a bulb-framed vanity mirror and a centre island. Between the bedroom and the closet, this level has more interactive surface than any room since the Garden Shed, and it uses it for four unrelated lock types.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Everything we could identify, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Path board</td><td>Full-screen puzzle, wooden frame</td><td>5x3 grid, white ball to green star, three shape ports each side.</td></tr>
+        <tr><td>White ball</td><td>Top right of the path board</td><td>The piece you move; it follows the grey channels.</td></tr>
+        <tr><td>Green star</td><td>Bottom centre of the path board</td><td>The goal marker.</td></tr>
+        <tr><td>4x4 number board</td><td>Full-screen, metal plate with four screws</td><td>Top row 4, 5, 1, 10; blanks to fill; left-arrow delete key bottom right.</td></tr>
+        <tr><td>Side number column</td><td>Right edge of the number board</td><td>Four keys reading 2, 6, 7, 8.</td></tr>
+        <tr><td>Magnetic letter board</td><td>Above the bed</td><td>Colourful letters and digits in a jumble; see the unverified note.</td></tr>
+        <tr><td>Walk-in closet</td><td>Through the right-hand door</td><td>Rails, shoe shelves, hatboxes, vanity with bulb mirror, centre island.</td></tr>
+        <tr><td>Tablet</td><td>On the closet vanity</td><td>3x3 dot pattern, then the shape-algebra screen.</td></tr>
+        <tr><td>Four red buttons</td><td>Dark wooden panel</td><td>One per module, four modules of four coloured lights below.</td></tr>
+        <tr><td>3x8 shape grid</td><td>Metal panel</td><td>Red triangles over green squares over blue circles; eight plungers; shift arrows both sides.</td></tr>
+        <tr><td>Twelve-gem circle</td><td>Wooden surface</td><td>Six colours repeated twice around a disc.</td></tr>
+        <tr><td>Sunburst clock</td><td>Wall right of the letter board</td><td>Decorative, multicoloured spokes.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>Timestamps are video time. The in-game clock runs at roughly half speed against the video — at 4:22 of video it already reads 11:24 — so use these to navigate, not to estimate the level's real length.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:00</span>
+      <strong>The title card, then a lot of room</strong>
+      The card reads <b>Level 22 / Master Bedroom</b> over a teal room with 4145 coins and a hint button at 125 — a higher hint price than the previous rooms, which fits a longer level. Sweep it once: door and window left, bed and letter board centre, second door right. The thing to notice is how few obvious locks there are on the walls; most of this room's puzzles open as full-screen boards.
+      <img src="/rooms-and-exits/c3l22-level-title.jpg" alt="The Level 22 Master Bedroom title card in Rooms and Exits Chapter 3" width="1200" height="676" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dv9jOHDEclo&t=0s" target="_blank" rel="noopener">0:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:20 · the path board</span>
+      <strong>A white ball, a green star, six shape ports</strong>
+      The first lock is a maze on a wooden board: a light grey grid five cells wide and three high, with interconnected dark channels cut into it. A <b>white ball</b> sits near the top right and a <b>green starburst</b> near the bottom centre. Three ports run down the left edge — a circle, a square, a spiky star — and three more match them on the right. The ball only leaves through the port that matches its shape, so read the ports before you start tilting.
+      <img src="/rooms-and-exits/c3l22-path-board.jpg" alt="The wooden path board in the Master Bedroom with a white ball, a green star and three shape ports on each side" width="1200" height="676" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dv9jOHDEclo&t=90s" target="_blank" rel="noopener">1:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 2:10 · the 4x4 number board</span>
+      <strong>Fill the blanks, watch the side column</strong>
+      A grey metal plate held by four corner screws carries a 4x4 grid of square buttons. The top row reads <b>4, 5, 1, 10</b>; below it come a blank, <b>3</b>, another blank and <b>17</b>; then a blank, <b>9</b>, a blank and <b>18</b>; then <b>17, 17, 11</b> and a left-arrow key that deletes your last entry. A separate vertical column of four keys runs down the right side: <b>2, 6, 7, 8</b>. The green outlines mark the two cells the run has selected, so the blanks are what you fill.
+      <img src="/rooms-and-exits/c3l22-number-grid.jpg" alt="The 4x4 number board in the Master Bedroom with a side column of 2, 6, 7 and 8" width="1200" height="676" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dv9jOHDEclo&t=132s" target="_blank" rel="noopener">2:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 3:24 · the walk-in closet</span>
+      <strong>Shoes, rails, hatboxes and a bulb mirror</strong>
+      The right-hand door opens onto a built-in dressing room: a tall shoe shelf with heels and flats, two drawers beneath it, a hanging rail of dark coats, stacked round hatboxes, and a vanity with a Hollywood-style mirror framed in bulbs. On the vanity sits a <b>tablet</b>, and beside it a necklace bust with a pearl necklace. A centre island holds folded clothes, white gloves and a lamp with a blue base.
+      <img src="/rooms-and-exits/c3l22-walk-in-closet.jpg" alt="The walk-in closet in the Master Bedroom with shoe shelves, hanging rails, hatboxes and a bulb-framed vanity mirror" width="1200" height="676" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dv9jOHDEclo&t=204s" target="_blank" rel="noopener">3:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 4:22 · the letter board</span>
+      <strong>Magnetic letters over the bed</strong>
+      The big light-wood framed board above the headboard is a close-up of colourful magnetic letters on a cork surface. Read row by row it goes <b>R 1 E M</b> on the top line, <b>G O</b> plus a faint fragment on the second, and <b>2 U S 3 I V</b> along the bottom. There is no clean word in that arrangement, and three passes did not produce one — see the unverified note before you copy anything off it.
+      <img src="/rooms-and-exits/c3l22-letter-board.jpg" alt="Close-up of the magnetic letter board above the bed in the Master Bedroom" width="1200" height="676" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dv9jOHDEclo&t=262s" target="_blank" rel="noopener">4:22</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 4:30 · four red buttons</span>
+      <strong>Buttons above, coloured light modules below</strong>
+      A dark wooden panel carries four large circular <b>red buttons</b> in a row. Under each button is a rectangular module of <b>four small round lights</b>: the left module reads blue, green, orange, pink; the second reads pink, orange, green, blue; the third and fourth return to blue, green, orange, pink. The buttons change the lights, so this is a state puzzle — you are working out which presses put each module into the order the room wants, not matching colours to colours.
+      <img src="/rooms-and-exits/c3l22-button-panel.jpg" alt="The four red buttons and four coloured light modules in the Master Bedroom" width="1200" height="676" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dv9jOHDEclo&t=270s" target="_blank" rel="noopener">4:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 6:36 · the 3x8 shape grid</span>
+      <strong>Triangles, squares, circles and eight plungers</strong>
+      A metal panel holds eight columns of three shapes: <b>red triangles</b> across the top row, <b>green squares</b> in the middle, <b>blue circles</b> on the bottom. Eight round grey plungers sit under the columns. Green right-arrows on the left edge and blue left-arrows on the right edge shift whole columns sideways. The plungers lock a column once it is where you want it, so the order of operations is: shift, then lock.
+      <img src="/rooms-and-exits/c3l22-shape-grid.jpg" alt="The 3x8 shape grid in the Master Bedroom with red triangles, green squares, blue circles and eight plungers" width="1200" height="676" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dv9jOHDEclo&t=396s" target="_blank" rel="noopener">6:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 7:30 · the twelve-gem circle</span>
+      <strong>Six colours, twice around</strong>
+      A large off-white disc is set into the wood and ringed by <b>twelve faceted gems</b>. Clockwise from the top they run green, red, yellow, pink, orange, blue — then repeat the same six colours a second time around the ring. That repetition is the whole clue: the disc wants pairings between opposite positions, not a sorted rainbow. Count the ring before you start swapping so you do not lose your place.
+      <img src="/rooms-and-exits/c3l22-gem-wheel.jpg" alt="The twelve-gem circle in the Master Bedroom with six colours repeated twice around a wooden disc" width="1200" height="676" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dv9jOHDEclo&t=450s" target="_blank" rel="noopener">7:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 7:48 · the tablet pattern</span>
+      <strong>A 3x3 dot lock</strong>
+      The tablet on the closet vanity opens on a <b>3x3 grid of nine dots</b>. The bottom row is lit as the pattern is drawn, which is the standard Android-style swipe lock: connect the dots in one stroke. There are no digits and no letters on this screen, so if you are hunting for a four-number code here, you are on the wrong device.
+      <img src="/rooms-and-exits/c3l22-tablet-pattern.jpg" alt="The tablet's 3x3 dot pattern lock in the Master Bedroom walk-in closet" width="1200" height="676" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dv9jOHDEclo&t=468s" target="_blank" rel="noopener">7:48</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 8:12 · the shape algebra</span>
+      <strong>Circle 8, square 2, star 0, pentagon 1</strong>
+      The second tablet screen is a 4x4 grid of shapes — green circles, purple stars, blue squares, yellow pentagons — with the values printed beside it: <b>green circle 8</b>, <b>blue square 2</b>, <b>purple star 0</b>, <b>yellow pentagon 1</b>. The first row totals <b>26</b> (three circles and a square: 3 x 8 + 2), and the columns are totalled along the bottom as <b>10, 17, 11, 4</b>. Two of those reconcile exactly against the grid we transcribed and two do not, which tells you the values are right and part of the grid read is not.
+      <img src="/rooms-and-exits/c3l22-shape-algebra.jpg" alt="The shape algebra screen in the Master Bedroom with green circles, blue squares, purple stars and yellow pentagons" width="1200" height="676" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dv9jOHDEclo&t=492s" target="_blank" rel="noopener">8:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 8:23 · the last frame</span>
+      <strong>The room is still up, and the video ends</strong>
+      The recording closes on the bedroom with the in-game clock at <b>17:44</b> and an interaction arrow on the right-hand door. There is no results card, no <b>LEVEL COMPLETED!</b> banner, no coin count and no piggy-bank figure. Whatever the exit sequence is, this upload does not contain it — so treat everything after the algebra screen as unknown.
+      <img src="/rooms-and-exits/c3l22-final-room.jpg" alt="The last frame of the Master Bedroom recording, showing the bedroom with the in-game clock at 17:44" width="1200" height="676" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=dv9jOHDEclo&t=506s" target="_blank" rel="noopener">8:26</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>You are looking for a door code.</b> The Master Bedroom's locks are boards and devices, not a keypad on the door. The right-hand door in the last frame is an exit arrow, not a lock screen.</p>
+    <p><b>The path board will not accept the ball.</b> The ball has to leave through the port that matches its shape, and there are three ports on each side. If the ball is sitting on a channel that dead-ends at a mismatched port, tilt the board to bring a different channel under it rather than pushing harder.</p>
+    <p><b>You fill the number grid in reading order.</b> The four keys on the right — 2, 6, 7, 8 — are a separate input column, not part of the grid. The top row is prefilled with 4, 5, 1, 10, and the blanks are the cells you complete; the left-arrow key is a backspace, so you can undo a wrong entry without resetting the board.</p>
+    <p><b>The red buttons look like a colour match.</b> They are not: each button drives the four lights in its module, and two of the four modules start on different colour orders. Work out what each press changes before you try to make all four modules agree.</p>
+    <p><b>You try to read the letter board as a word.</b> The magnets are scattered, and two careful passes gave two different words. If a puzzle is asking you for a name, take it from the tablet or the gems, not from this board.</p>
+    <p><b>You expect a reward screen at the end.</b> This recording does not have one. If you are following along and your run ends with a results card, you have played further than this video, not less far.</p>
+
+    <h2>Where the Master Bedroom sits in Chapter 3<span class="accent">.</span></h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i> and runs 24 rooms. The Master Bedroom is <b>22 of 24</b>, between the Hobby Room (Level 21) and the Entertainment Room (Level 23). It is the last of the three bedroom-side rooms and the only one with a second interior space attached.</p>
+    <p>Structurally it is the chapter's widest room: four independent locks, two of them on a tablet, one on a wooden board and one on a metal panel, plus a gem ring. None of them shares a mechanic with the others, which is why the in-game clock runs past seventeen minutes. If you are working through in order, budget two sittings rather than one.</p>
+
+    <LevelSelector chapter={3} current={22} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-3-level-21/">Chapter 3 Level 21 — Hobby Room</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-3-level-23/">Chapter 3 Level 23 — Entertainment Room</a></p>
+      <p>Back to: <a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Four things, stated plainly.
+      <br><br>
+      <b>1. The ending.</b> The file stops at 8:27 in the bedroom with the clock at 17:44. No results card, no coins, no piggy bank. This page therefore contains no reward line for Level 22, and any figure you see elsewhere is from a different recording.
+      <br><br>
+      <b>2. The letter board.</b> Three passes read the close-up as <b>R 1 E M / G O [fragment] / 2 U S 3 I V</b>, and earlier wide shots suggested <b>M</b> above the <b>G</b> with digits 1, 2, 3 and 31 at the edges. The board is real and the letters are magnetic, but no pass produced a clean word, so no word is printed as an answer.
+      <br><br>
+      <b>3. Columns three and four of the algebra screen.</b> Row one (3 x 8 + 2 = 26) and columns one and two (10 and 17) reconcile with the shape values, but columns three and four read 11 and 4 where our grid transcription gives 17 and 12. The four shape values and the row total are solid; the lower-right of the 4x4 grid is not.
+      <br><br>
+      <b>4. The 3x8 grid's target arrangement.</b> The panel, the eight plungers and the shift arrows are all clear, but the solved state is never held long enough to transcribe column by column. This page teaches the controls rather than printing a layout.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

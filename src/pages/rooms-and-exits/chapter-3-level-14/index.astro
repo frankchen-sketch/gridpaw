@@ -1,0 +1,329 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 14 Walkthrough: Storage Room";
+const description = "Rooms & Exits Chapter 3 Level 14 walkthrough for the Storage Room: the open switchboard whose door reads blue x red + green, the paint-stain dial printed 5, 7, 8 and 8 around a question mark, the wine rack of coloured bottle caps, and the four-quadrant dial that reads 6-0-3-7 then 2-4-1-5. Every printed number was read twice from separate frames.";
+
+const faq = [
+  {
+    q: "What is the code in Rooms & Exits Chapter 3 Level 14 Storage Room?",
+    a: "There is no single typed code that opens the room. The numbers the level actually prints are on the paint stain on the floor: <b>5</b> top-left, <b>7</b> top-right, <b>8</b> bottom-left and <b>8</b> bottom-right, arranged around a green centre that holds a <b>question mark</b>. That reading was taken twice, from two separate seconds, and both passes agreed. The other number surface in the room is a four-quadrant circular dial that was seen in two states: <b>6 / 0 / 3 / 7</b> and then <b>2 / 4 / 1 / 5</b>.",
+  },
+  {
+    q: "What do the numbers 5, 7, 8 and 8 around the question mark mean?",
+    a: "They are four values around one missing centre value, and the level never states the rule in words. The frame shows a translucent brown ring divided into four segments with a solid green circle in the middle carrying a white <b>?</b>. Green lines separate the segments from each other and from the centre. Because the operation is never written down anywhere in the decodable part of the recording, this page prints the four numbers exactly as read and does not invent an arithmetic answer for the centre.",
+  },
+  {
+    q: "What is on the open switchboard?",
+    a: "The panel is mounted on the wall above the lower floor and its door swings open to the left. On the inside of the door are three coloured circles with operators between them: <b>blue, a multiplication sign, red, a plus sign, green</b>. Inside the box there is a row of red toggle switches and, below them, a row of vertical level bars, each in a different colour. In the sampled frames the bars read red, magenta-purple, green, yellow, blue and orange, at different fill heights.",
+  },
+  {
+    q: "Where is the protected lighter?",
+    a: "The <b>Protected lighter</b> is an inventory pickup, shown at 0:45 as a pink disposable lighter sealed inside a clear foil wrapper with crimped edges. The label under it reads exactly <b>Protected lighter</b>. It sits in the inventory grid alongside a dustpan, a white stick, a pink candle and a small shovel.",
+  },
+  {
+    q: "What is the wine rack and why do the bottle caps matter?",
+    a: "The wine cabinet is set into the upper wall: a glass-fronted door on each side and an open rack in the middle with two rows of six square bottle slots, plus an X-shaped divider below that holds one white ball and one dark ball with a red centre. The bottles sit neck-out, so their caps are what you see, and the caps are different colours — in the frames sampled, the top row alternates green and black, and the second row mixes green, blue and yellow. Colour is clearly the variable the puzzle is built on, which is why the caps are painted rather than plain.",
+  },
+  {
+    q: "What is the four-quadrant dial?",
+    a: "It is a circular face with a thick white outer ring, divided into four yellowish-green quadrants by a dark cross, with one large digit in each quadrant. Unlike a keypad it does not seem to take typed input — the quadrants are the display. It was read at two separate seconds: <b>6 / 0 / 3 / 7</b> at 5:29 and <b>2 / 4 / 1 / 5</b> at 5:49. Both readings were checked twice and both passes agreed each time.",
+  },
+  {
+    q: "Does the recording show the level being completed?",
+    a: "Yes, and this is one of the few Chapter 3 rooms where the ending survives. The results card appears at <b>6:02</b>: <b>LEVEL COMPLETED!</b>, a coin reward of <b>+50</b>, an efficiency bar <b>nine of ten</b> segments filled, <b>Time: 6:50</b>, and a piggy-bank contribution of <b>300</b> with the piggy bank showing <b>Full!</b>. The +50 and the 6:50 were each read twice, once from the whole frame and once from a crop of the results panel.",
+  },
+  {
+    q: "How long is the Storage Room run and is it edited?",
+    a: "The source file runs 6:03. It is not a continuous take: the in-game clock jumps between sampled frames — for example from 0:34 at 0:45 to 1:48 at 1:29 — so the upload is cut and sped up in places. That is why the timestamps on this page are video time, not the in-game clock, and why a puzzle can look like it solves itself between two cards.",
+  },
+  {
+    q: "How many rooms does Chapter 3 have, and where is Storage Room?",
+    a: "Chapter 3, <i>Murder Dressed in White</i>, lists twenty-four rooms. Storage Room is room <b>14 of 24</b>, straight after Kids Bedroom 1 and immediately before the Garage.",
+  },
+  {
+    q: "Is there a keypad or a safe in this room?",
+    a: "No keypad on a wall and no safe. Storage Room does its locking with object state instead: a switch panel with coloured bars, a dial with four quadrants, a wine rack whose caps are colour-coded, and a painted floor stain carrying four numbers. If you are hunting for a number pad, you are looking for something the room does not have.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-14"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 14"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 14</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 14 Walkthrough: Storage Room</h1>
+
+    <p>Storage Room is the fourteenth room of Chapter 3, <i>Murder Dressed in White</i>, and it is one of the few rooms in the chapter built on two levels. An upper wooden deck holds the glass-fronted cabinets, the barrel stack and the switchboard; a short flight of stairs drops you onto bare concrete where the crates, the bicycle, the mower and the gramophone live. Nothing here is typed into a keypad. The room locks itself with colours and object states: a switch panel with six coloured level bars, a painted floor stain with four numbers around a missing centre, a wine rack whose caps are deliberately mismatched, and a four-quadrant dial that visibly changes value.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame at one frame per second. The four numbers on the paint stain — <b>5</b>, <b>7</b>, <b>8</b>, <b>8</b> — were each read twice from two separate seconds, and both passes agreed. The dial was read twice at each of its two states: <b>6 / 0 / 3 / 7</b> and <b>2 / 4 / 1 / 5</b>. The results card was read twice, whole frame and cropped. Anything that only ever read one way is listed under "What this page could not verify" rather than printed as a solution.</div>
+
+    <LevelSelector chapter={3} current={14} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Storage Room is room 14 of 24 in Chapter 3. The four printed numbers are on the floor: <b>5</b>, <b>7</b>, <b>8</b>, <b>8</b> around a green centre holding a <b>?</b>. The four-quadrant dial reads <b>6 / 0 / 3 / 7</b> and later <b>2 / 4 / 1 / 5</b>.</p>
+      <ol>
+        <li>Walk the room before touching anything: the upper deck on the left, the concrete floor on the right, and the stairs between them.</li>
+        <li>Pick up the <b>Protected lighter</b> at 0:45. It is the first inventory item you are shown by name.</li>
+        <li>Open the wall switchboard. The inside of its door carries the formula <b>blue × red + green</b>; the box carries six coloured level bars under a row of red toggles.</li>
+        <li>Read the paint stain on the floor: <b>5</b> top-left, <b>7</b> top-right, <b>8</b> bottom-left, <b>8</b> bottom-right, <b>?</b> in the middle.</li>
+        <li>Count the wine-rack caps. Colour, not position, is the variable — the rack is built so you can see six caps per row.</li>
+        <li>Set the four-quadrant dial. It reads <b>6 / 0 / 3 / 7</b> at 5:29 and <b>2 / 4 / 1 / 5</b> at 5:49.</li>
+        <li>The results card lands at 6:02: <b>+50</b> coins, <b>Time: 6:50</b>, piggy bank <b>300</b>.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="KacoIPjd94U" data-title="Rooms &amp; Exits Level 14 Storage Room Walkthrough Murder Dressed in White Chapter 3"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 14 Storage Room Walkthrough">
+        <img src="https://i.ytimg.com/vi/KacoIPjd94U/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 14 Storage Room walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/KacoIPjd94U/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The Storage Room run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l14-hero-storage-room.jpg" alt="Rooms and Exits Chapter 3 Level 14 Storage Room: an upper wooden deck with glass-fronted cabinets and three stacked barrels, a short stair down to bare concrete, crates of green gourds, a bicycle, a yellow mower and a gramophone" width="1200" height="527" loading="lazy" decoding="async" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>A cellar split across two heights. The left half is a raised wooden deck: a wall of glazed cabinet doors, a coat rack, three big barrels on a steel stand, a canister vacuum sitting in front of them, and a bright yellow spill on the boards with a white tin beside it. A short wooden staircase with three steps joins the deck to the concrete, and a pair of pale rubber boots is parked on the bottom step.</p>
+    <p>The concrete half is the cluttered one. Wooden crates of striped green gourds are stacked against the stair, a bicycle leans nearby with a bottle in its front basket, a yellow push mower sits on the floor, a black crate marked GOOD BEER and an orange crate sit beside it. Against the right wall there are two lime-green drums, an antique gramophone on a wooden crate stamped 2017, a barrel of root vegetables on a pallet, and a guitar leaning by the tall shelving. The back wall is where the room keeps its information: a rack of jars, a metal mesh-fronted cabinet, a plain wooden door, and the switchboard.</p>
+    <p>Structurally this is a scavenger room rather than a chain. Kids Bedroom 1 made you feed one puzzle into the next; Storage Room lets you roam, and the only real dependency is that the switchboard has to be opened before you can read the formula on the inside of its door. Everything else — the stain, the rack, the dial — can be read in any order.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Everything we could identify, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Switchboard</td><td>Wall above the concrete floor, right of the door</td><td>Door opens left. Inside the door: <b>blue × red + green</b>. Inside the box: red toggles over six coloured level bars.</td></tr>
+        <tr><td>Paint stain</td><td>Floor of the upper deck, left of the stairs</td><td>Four-segment ring: <b>5</b>, <b>7</b>, <b>8</b>, <b>8</b>, with a green centre and a white <b>?</b>.</td></tr>
+        <tr><td>Four-quadrant dial</td><td>Wall-mounted; only ever shown in close-up</td><td>White ring, four yellowish-green quadrants with one digit each.</td></tr>
+        <tr><td>Wine rack</td><td>Built into the upper wall, between two glass doors</td><td>Two rows of six neck-out bottles with coloured caps; X-divider below holding a white and a dark ball.</td></tr>
+        <tr><td>Protected lighter</td><td>Inventory pickup</td><td>Pink lighter in a sealed clear wrapper; the label reads <b>Protected lighter</b>.</td></tr>
+        <tr><td>Barrel stack</td><td>Upper deck, against the back wall</td><td>Three large barrels on a stand; the vacuum cleaner sits at their foot.</td></tr>
+        <tr><td>Bicycle</td><td>Concrete floor, centre</td><td>Front basket holds a bottle; the bike is a prop you can inspect.</td></tr>
+        <tr><td>Gramophone</td><td>Concrete floor, right</td><td>Brass horn on a wooden crate stamped <b>2017</b>.</td></tr>
+        <tr><td>Lime-green drums</td><td>Concrete floor, right</td><td>Two tall drums, a woven basket balanced on the upper one.</td></tr>
+        <tr><td>Candle stand</td><td>On the lower right, beside the drums</td><td>Three-armed brass candelabra with lit candles — the room's only warm light.</td></tr>
+        <tr><td>Jar shelves</td><td>Back wall, right of the door</td><td>Two long shelves of glass jars over a mesh-fronted metal cabinet.</td></tr>
+        <tr><td>Good Beer crate</td><td>Concrete floor, by the mower</td><td>Black crate with <b>GOOD BEER</b> stencilled on the side.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>The order below follows the recording. Timestamps are video time; the links jump to the matching second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:00</span>
+      <strong>Read the two floors before you touch anything</strong>
+      The level opens on a title card — <b>Level 14 / Storage Room</b> — laid over the full room. Take the layout in one pass: cabinets, barrels and switchboard on the raised left; crates, bike, mower and gramophone on the concrete right; three steps between them. The room is deliberately split so that the props that give you numbers sit on the wooden deck and the props that take them sit on the concrete.
+      <img src="/rooms-and-exits/c3l14-level-title.jpg" alt="The Level 14 Storage Room title card in Rooms and Exits Chapter 3" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KacoIPjd94U&t=0s" target="_blank" rel="noopener">0:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:20 · the room, unobstructed</span>
+      <strong>Upper deck left, concrete right</strong>
+      With the title card gone you can see the whole space. The upper deck is a working pantry: glazed cabinets along the wall, three barrels on a steel cradle, a vacuum at their base, a coat rack with a cloth on it. A yellow spill spreads across the boards with a small white tin next to it. On the concrete below, the crates of green gourds are stacked against the stair and the bicycle stands with a bottle tucked into its front basket.
+      <img src="/rooms-and-exits/c3l14-hero-storage-room.jpg" alt="The full Storage Room in Rooms and Exits Level 14, showing the raised wooden deck with barrels and cabinets above the concrete floor with crates, a bicycle and a mower" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KacoIPjd94U&t=20s" target="_blank" rel="noopener">0:20</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:45 · first pickup</span>
+      <strong>The Protected lighter</strong>
+      The first named item is the <b>Protected lighter</b>: a pink disposable lighter sealed inside a clear foil wrapper with crimped top and bottom edges. The label under the object reads exactly that, two words, and the inventory at this point also holds a dustpan, a white stick, a pink candle and a small shovel. The wrapper is the point — the level is telling you the lighter survived being stored, which is the sort of detail this game hides a use for later.
+      <img src="/rooms-and-exits/c3l14-protected-lighter.jpg" alt="The Protected lighter item in Storage Room Level 14, a pink lighter sealed inside a clear foil wrapper" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KacoIPjd94U&t=45s" target="_blank" rel="noopener">0:45</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 2:09 · the formula</span>
+      <strong>Blue × red + green, painted inside the door</strong>
+      The switchboard is a grey metal box with its door swung open to the left, and the inside of that door is the single most useful surface in the room: three coloured circles in a row with operators between them — a <b>blue</b> circle, a multiplication sign, a <b>red</b> circle, a plus sign, a <b>green</b> circle. Whatever the panel's bars are doing, they are doing it to these three colours. Note the order; it is not the same as the order of the bars.
+      <img src="/rooms-and-exits/c3l14-switchboard-symbol.jpg" alt="The open switchboard in Storage Room Level 14 with blue multiplied by red plus green painted on the inside of the door" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KacoIPjd94U&t=129s" target="_blank" rel="noopener">2:09</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 2:23 · inside the box</span>
+      <strong>Six colour bars under the red toggles</strong>
+      Inside, the panel is a beige faceplate on four screws: a row of red toggle switches across the top, and below them a row of vertical level bars, each bar a different colour and each filled to a different height. Across the sampled close-ups the bars read red, magenta-purple, green, yellow, blue and orange, with the fills sitting at roughly four-fifths, two-fifths, four-fifths, three-fifths, four-fifths and three-fifths. The bars are the readout, not the input — the toggles are what you press.
+      <img src="/rooms-and-exits/c3l14-switchboard-bars.jpg" alt="The inside of the Storage Room switchboard, a row of red toggle switches above six vertical level bars in red, purple, green, yellow, blue and orange" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KacoIPjd94U&t=143s" target="_blank" rel="noopener">2:23</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 3:50 · the numbers on the floor</span>
+      <strong>5, 7, 8 and 8 around a question mark</strong>
+      A translucent brown ring lies on the wooden boards, divided into four segments, with a solid green circle at the centre holding a white <b>?</b>. The digits, read twice from two separate seconds and identical both times: <b>5</b> top-left, <b>7</b> top-right, <b>8</b> bottom-left, <b>8</b> bottom-right. Green lines separate the segments from each other and from the centre. A crumpled white rag with green paint on it lies to the left; an open tin of yellow paint with drips down its side sits to the right. The level gives you the numbers and refuses to give you the rule, which is the whole puzzle.
+      <img src="/rooms-and-exits/c3l14-paint-stain-numbers.jpg" alt="The circular paint stain on the Storage Room floor with 5 top-left, 7 top-right, 8 bottom-left, 8 bottom-right and a question mark in the green centre" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KacoIPjd94U&t=230s" target="_blank" rel="noopener">3:50</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 4:31 · the rack</span>
+      <strong>Twelve necks, and the caps are not matching</strong>
+      The wine cabinet is three bays wide: a glazed door on the left, an open rack in the middle, a glazed door on the right. The open rack holds two rows of six square slots, and the bottles sit neck-out so what you actually see is twelve caps. They are deliberately mismatched — in the frames sampled the top row alternates green and black, while the second row mixes green, blue and yellow. Below the two rows an X-shaped divider makes four triangular pockets, one holding a white ball and one holding a dark ball with a red centre.
+      <img src="/rooms-and-exits/c3l14-wine-rack-caps.jpg" alt="The open wine rack in Storage Room Level 14 with two rows of six bottles showing mismatched green, black, blue and yellow caps" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KacoIPjd94U&t=271s" target="_blank" rel="noopener">4:31</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 5:29 · the dial, first state</span>
+      <strong>6 / 0 / 3 / 7</strong>
+      The dial is a circular face with a thick white outer ring and a dark cross dividing the middle into four yellowish-green quadrants, one large digit in each. First state, read twice and identical both times: <b>6</b> top-left, <b>0</b> top-right, <b>3</b> bottom-left, <b>7</b> bottom-right. Nothing about it behaves like a keypad — there is no button field, so treat the quadrants as a display you are cycling rather than a code you are typing.
+      <img src="/rooms-and-exits/c3l14-dial-6037.jpg" alt="The four-quadrant circular dial in Storage Room Level 14 reading 6 top-left, 0 top-right, 3 bottom-left and 7 bottom-right" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KacoIPjd94U&t=329s" target="_blank" rel="noopener">5:29</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 5:49 · the dial, second state</span>
+      <strong>2 / 4 / 1 / 5</strong>
+      Twenty seconds later the same dial reads something else: <b>2</b> top-left, <b>4</b> top-right, <b>1</b> bottom-left, <b>5</b> bottom-right — again read twice, both passes agreeing. Every quadrant changed, which rules out the idea that you are only nudging one digit at a time. If you are stuck on a four-part lock elsewhere in the room, this is the pair of states to compare.
+      <img src="/rooms-and-exits/c3l14-dial-2415.jpg" alt="The same four-quadrant dial in Storage Room Level 14 later showing 2 top-left, 4 top-right, 1 bottom-left and 5 bottom-right" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KacoIPjd94U&t=349s" target="_blank" rel="noopener">5:49</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 6:02 · the ending</span>
+      <strong>+50 coins, Time 6:50</strong>
+      Storage Room is one of the rooms where the results card survives intact. <b>LEVEL COMPLETED!</b> appears over the room with a coin reward of <b>+50</b>, <b>nine of ten</b> efficiency segments filled, <b>Time: 6:50</b> in orange, and a piggy-bank line reading <b>300</b> with the bank itself flagged <b>Full!</b>. The +50 and the 6:50 were each read twice — once from the full frame and once from a tight crop of the panel — and agreed both times.
+      <img src="/rooms-and-exits/c3l14-level-complete.jpg" alt="The Level 14 Storage Room results card in Rooms and Exits showing Level Completed, a +50 coin reward, an efficiency bar nine of ten segments filled, Time 6:50 and a 300 coin piggy bank reward" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KacoIPjd94U&t=362s" target="_blank" rel="noopener">6:02</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>You keep hunting for a keypad.</b> There is none, and that is the design. Storage Room does its locking with state — a switch panel, a quadrant dial, a rack of coloured caps, a stain painted on the floor. The only four digits in the room are on the floor and on the dial face, and neither is typed into anything.</p>
+    <p><b>You try to do arithmetic on 5, 7, 8, 8 and get nowhere.</b> Every plausible rule — sums, pairs, opposites — gives a different centre, and the level never writes one down. If a rule is not printed on the stain, treat the numbers as four positional values rather than a sum. This page deliberately prints no computed centre for that reason.</p>
+    <p><b>You read the switchboard's formula as the order of its bars.</b> They are different orders. The door says <b>blue × red + green</b>; the bars run red, purple, green, yellow, blue, orange. Mapping one straight onto the other without checking is the most common way to burn ten minutes here.</p>
+    <p><b>You miss that the doors are glazed.</b> The cabinet on either side of the wine rack is glass-fronted, so the bottles behind it are visible without opening anything. The rack in the middle is the interactive part; the doors are there so you can compare what is inside with what is out.</p>
+    <p><b>You treat the spilled paint as decoration.</b> It is not — the stain is the room's only printed four-number puzzle, and the rag and the paint tin flanking it are placed deliberately to make you look down. If you walked past it, that is the step to go back to.</p>
+
+    <h2>Where Storage Room sits in Chapter 3<span class="accent">.</span></h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i>, and it lists twenty-four rooms rather than the fifteen some guides quote. Storage Room is room <b>14 of 24</b>, coming straight after Kids Bedroom 1 and immediately before the Garage. Both neighbours are indoor utility spaces, so expect the colour-and-state logic you learn here to carry into the Garage's workbenches.</p>
+    <p>Mechanically it is a widening step. Kids Bedroom 1 was one small room with a single chain running through a box and a calculator; Storage Room gives you two floors and no chain at all, which is why the recording can wander between the switchboard, the stain and the rack without breaking anything.</p>
+
+    <LevelSelector chapter={3} current={14} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-3-level-13/">Chapter 3 Level 13 — Kids Bedroom 1</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-3-level-15/">Chapter 3 Level 15 — Garage</a></p>
+      <p>Back to: <a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Four things, stated plainly so you know which parts of this page are reads and which are reconstruction.
+      <br><br>
+      <b>1. What the four stain numbers actually compute.</b> The digits <b>5</b>, <b>7</b>, <b>8</b> and <b>8</b> are solid — two independent passes agreed on all four, and on the green centre holding a question mark. What the level never does is state the operation, and the recording never holds a frame where the centre is revealed. This page therefore prints no answer for the centre rather than guessing at one of several arithmetic rules.
+      <br><br>
+      <b>2. Which dial state is the target.</b> Both readings are reliable — <b>6 / 0 / 3 / 7</b> at 5:29 and <b>2 / 4 / 1 / 5</b> at 5:49 — but the footage between them is cut, so we cannot tell whether the second state was reached by solving something or was simply the next value in a cycle. Treat them as two observed states, not as a before-and-after solution.
+      <br><br>
+      <b>3. The exact switch pattern on the switchboard.</b> We can state the door formula (<b>blue × red + green</b>) and the six bar colours with confidence, because both were read from clean close-ups. What we cannot do is state which toggles end up on: the panel is only on screen in short bursts, the toggle row is small in frame, and two passes over the same second disagreed on whether there are five or six toggles. The bar count is six; treat the toggle count as unresolved.
+      <br><br>
+      <b>4. What the wine-rack colours are for.</b> The caps are visibly mismatched and there are twelve of them, but no frame in the recording links a specific cap colour to a specific bar on the switchboard or a specific quadrant on the dial. The connection is strongly implied by the room's design and is never demonstrated, so it stays a description rather than a step.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

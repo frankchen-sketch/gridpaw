@@ -1,0 +1,337 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 15 Walkthrough: Garage";
+const description = "Rooms & Exits Chapter 3 Level 15 walkthrough for the Garage: the wall screen showing three sports cars, the four-letter lock that reads L S Z A, the red-and-green shape board that changes state in front of you, the 2/2 battery pickup and the red saloon over the service pit. Every printed letter was read twice from separate frames.";
+
+const faq = [
+  {
+    q: "What is the code in Rooms & Exits Chapter 3 Level 15 Garage?",
+    a: "The only code the recording lets us read cleanly is a four-letter lock, shown at <b>5:19</b> as four dark tiles in gold frames on a yellow panel. The letters are <b>L</b>, <b>S</b>, <b>Z</b>, <b>A</b>, left to right. That reading was taken twice — once from the whole frame and once from a crop of the panel — and both passes agreed with no ambiguous glyphs. There is no digit keypad in this room.",
+  },
+  {
+    q: "Are the four letters the answer or the current state?",
+    a: "That is the honest open question. The tiles are the lock's display, and in the frames sampled they hold <b>L S Z A</b> and do not change. Because the recording is cut, we cannot tell whether the player had already solved the lock, or whether <b>L S Z A</b> is a mid-attempt that never resolves on camera. If your lock starts blank, treat the sequence as the value to try, not as a demonstrated solution.",
+  },
+  {
+    q: "What is on the wall screen with the three cars?",
+    a: "At <b>1:59</b> the camera holds on a framed screen or poster over a desk lamp and a shelf of books. It shows three sports cars: a <b>yellow</b> car with its doors raised, a <b>red</b> car in the middle, and a <b>blue</b> car on the right. The garage itself contains a white saloon, a red saloon and a blue saloon, so the poster's colours map onto the three real cars — which is the kind of mirroring this game uses instead of writing instructions down.",
+  },
+  {
+    q: "What is the red-and-green shape board?",
+    a: "It is a close-up puzzle made of framed panels rather than digits: in the first state a <b>purple</b> square holding a dark circle, two solid <b>green</b> squares, a <b>red</b> horizontal bar and a <b>green</b> horizontal bar. At <b>3:19</b> the first square has changed to <b>blue</b> with a dark circle, and by the next sampled second it is <b>red</b> with a white circle. The other four elements stay put throughout, so the leftmost panel is the one being cycled.",
+  },
+  {
+    q: "Where do the batteries come from?",
+    a: "The inventory at <b>3:59</b> holds a stack labelled <b>2/2</b> — a pair of red batteries, counted as a set of two. They are the only item in that inventory view at that moment, which usually means the level has just handed them over for a device that needs both. This page does not name the device, because no frame in the recording shows the batteries being inserted.",
+  },
+  {
+    q: "What is under the blue car?",
+    a: "A service pit. The garage floor is marked with yellow lines, and the blue saloon sits over an opening in the concrete with stacked tyres down inside it and two piles of dirt or sand at the pit's edges. A red saloon is up on the lift beside it, and the camera visits the red car's nose at <b>4:19</b> as a close-up framed by white corner brackets.",
+  },
+  {
+    q: "What is the cart with the green books?",
+    a: "At <b>0:29</b> the camera settles on a blue-handled metal utility cart holding several green hardback books with <b>TECHNOLOGY</b> on the covers, plus a stack of flat blue rings. Behind it sit a metal crate of cardboard boxes, a piece of blue fabric and a pair of work boots on the floor, with a yellow line painted across the concrete. Books with titles are rare in this game, so the word is worth remembering.",
+  },
+  {
+    q: "Does the recording show the Garage being completed?",
+    a: "It shows the completion banner but not the numbers. At <b>5:31</b> the screen goes to <b>LEVEL COMPLETED!</b> with a shower of coins and a reward card icon in the lower right. The clip ends one second later at 5:32, before the reward panel resolves, so this page prints no coin figure and no time for the Garage. Any number you see elsewhere is not from this recording.",
+  },
+  {
+    q: "How long is the Garage run and is it edited?",
+    a: "The source file runs 5:32. It is cut: the in-game clock does not advance monotonically between sampled frames, and some puzzle states change across a single second. That is why the timestamps here are video time and why a state can look like it solved itself between two cards.",
+  },
+  {
+    q: "Where does the Garage sit in Chapter 3?",
+    a: "Chapter 3, <i>Murder Dressed in White</i>, lists twenty-four rooms. Garage is room <b>15 of 24</b>, straight after the Storage Room and immediately before the Attic.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-15"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 15"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 15</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 15 Walkthrough: Garage</h1>
+
+    <p>Garage is the fifteenth room of Chapter 3, <i>Murder Dressed in White</i>, and it is one of the largest interiors in the chapter. Three cars — a white saloon, a red saloon and a blue saloon — sit on yellow-marked concrete in front of a wall of shelving and two work desks with monitors. The room's information is split between a screen showing three sports cars, a four-letter lock on a yellow panel, and a shape board that changes colour while you watch it. There is no number pad anywhere; the only digits the room shows you are the battery count in your own inventory.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame at one frame per second. The four letters on the yellow panel — <b>L</b>, <b>S</b>, <b>Z</b>, <b>A</b> — were read twice, once from the whole frame and once from a tight crop, and both passes agreed with no ambiguous glyphs. Everything that only ever read one way, or that the clip cuts before it resolves, is listed under "What this page could not verify" instead of being printed as a solution.</div>
+
+    <LevelSelector chapter={3} current={15} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Garage is room 15 of 24 in Chapter 3. The only code-level read is the four-letter lock at 5:19: <b>L S Z A</b>. The completion banner appears at 5:31, but the clip ends before the reward numbers resolve.</p>
+      <ol>
+        <li>Sweep the room: white, red and blue saloons on yellow lines, shelving along the back wall, two desks with monitors.</li>
+        <li>Take the cart at 0:29 — green <b>TECHNOLOGY</b> hardbacks and flat blue rings.</li>
+        <li>Read the framed screen at 1:59: a yellow car with raised doors, a red car, a blue car. Those are the three cars in the room.</li>
+        <li>Work the shape board at 2:59 and 3:19. Only the leftmost square cycles; the two green squares and the red and green bars do not.</li>
+        <li>Collect the batteries — the inventory reads <b>2/2</b> at 3:59.</li>
+        <li>Set the four-letter lock: <b>L S Z A</b> at 5:19.</li>
+        <li>The banner lands at 5:31 and the file ends at 5:32, so no reward figure is printed here.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="SJUnv1xKrjE" data-title="Rooms &amp; Exits Level 15 Garage Walkthrough Murder Dressed in White Chapter 3"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 15 Garage Walkthrough">
+        <img src="https://i.ytimg.com/vi/SJUnv1xKrjE/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 15 Garage walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/SJUnv1xKrjE/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The Garage run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l15-hero-garage.jpg" alt="Rooms and Exits Chapter 3 Level 15 Garage: a blue saloon on yellow-marked concrete in front of shelving units, a workbench and stacked crates, with a red saloon behind and a roll-up door on the left" width="1200" height="675" loading="lazy" decoding="async" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>A working garage rather than a storage closet. The concrete is painted with yellow parking and service lines, a striped roll-up door takes up the left wall, and the back wall is a long run of metal shelving loaded with boxes, cans, blue bins and tools. Two desks with monitors sit against the shelving, which is what makes the room feel like an office bolted onto a workshop. A traffic cone, red gas cans, a rolling blue cart and a tyre stack fill the gaps.</p>
+    <p>The three cars are the level's organising idea. A white saloon parks on the left, a red saloon sits on a lift in the middle, and a blue saloon straddles a service pit on the right, with tyres stacked down in the pit and piles of dirt or sand at its edges. Every car close-up in the recording is framed on one of these three, and the framed screen on the back desk repeats the same three colours — which is as close as the room comes to writing an instruction down.</p>
+    <p>Structurally it is a hunt, not a chain. Unlike the Storage Room, the props here are spread over a wide floor plan, and the recording moves between the cart, the desk screen, the shape board and the lock without any visible dependency between them. That makes it a room you can clear in any order — but it also makes it the room where it is easiest to finish the visible puzzles and still be missing a pickup.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Everything we could identify, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>White saloon</td><td>Left bay, on yellow lines</td><td>Parked, not lifted. One of the three poster colours.</td></tr>
+        <tr><td>Red saloon</td><td>Centre bay, on the lift</td><td>Raised on the lift; its nose is a close-up at 4:19.</td></tr>
+        <tr><td>Blue saloon</td><td>Right bay, over the service pit</td><td>Tyres stacked in the pit below, dirt piles at the rim.</td></tr>
+        <tr><td>Framed screen</td><td>Back desk, above a lamp and a shelf of books</td><td>Three sports cars: yellow with raised doors, red, blue.</td></tr>
+        <tr><td>Utility cart</td><td>Foreground, blue handles</td><td>Green <b>TECHNOLOGY</b> hardbacks and flat blue rings.</td></tr>
+        <tr><td>Shape board</td><td>Full-screen close-up</td><td>Five framed panels; only the leftmost square cycles colour.</td></tr>
+        <tr><td>Four-letter lock</td><td>Yellow panel, dark tiles in gold frames</td><td>Reads <b>L S Z A</b> left to right.</td></tr>
+        <tr><td>Batteries</td><td>Inventory pickup</td><td>Two red batteries, counted as <b>2/2</b>.</td></tr>
+        <tr><td>Piece of paper</td><td>Inventory item</td><td>Ladder-like diagram on a brown ground; labelled <b>Piece of paper</b>.</td></tr>
+        <tr><td>Service pit</td><td>Under the blue saloon</td><td>Opening in the concrete with stacked tyres inside.</td></tr>
+        <tr><td>Roll-up door</td><td>Left wall</td><td>Yellow and black hazard stripes; opens late in the run.</td></tr>
+        <tr><td>Shelving run</td><td>Back wall, full width</td><td>Boxes, cans, blue bins, tools — the room's visual noise.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>The order below follows the recording. Timestamps are video time; the links jump to the matching second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:00</span>
+      <strong>Title card, then straight into the bays</strong>
+      The level opens on <b>Level 15 / Garage</b> over the full room, then the card lifts and you are looking at the three bays. Read the floor before you read the shelves: the yellow lines tell you which car is parked, which is lifted and which is over the pit, and that ordering matters later when the poster asks you to match colours.
+      <img src="/rooms-and-exits/c3l15-level-title.jpg" alt="The Level 15 Garage title card in Rooms and Exits Chapter 3, laid over the three-bay garage" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=SJUnv1xKrjE&t=0s" target="_blank" rel="noopener">0:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:29 · the cart</span>
+      <strong>Green hardbacks labelled TECHNOLOGY</strong>
+      A blue-handled metal cart sits in the foreground with several green hardback books inside, each carrying the word <b>TECHNOLOGY</b> on the cover, plus a stack of flat blue rings. Behind the cart: a metal crate of cardboard boxes, a length of blue fabric draped over it, and a pair of work boots on their sides on the concrete. A yellow line curves across the floor under the wheels. Books with a printed word on them are rare in this game, so that word is the one piece of text in the room that is not a number.
+      <img src="/rooms-and-exits/c3l15-cart-technologies.jpg" alt="A blue-handled utility cart in the Garage holding green hardback books labelled TECHNOLOGY and a stack of flat blue rings" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=SJUnv1xKrjE&t=29s" target="_blank" rel="noopener">0:29</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 1:59 · the poster</span>
+      <strong>Three sports cars, in the room's three colours</strong>
+      Over the desk lamp and a shelf of books hangs a framed screen showing three sports cars in a row: a <b>yellow</b> car with its doors raised like wings, a <b>red</b> car in the middle, and a <b>blue</b> car on the right. Compare that to the floor — white, red, blue. Red and blue line up exactly; yellow does not appear on any car in the room. That mismatch is the sort of thing the game plants on purpose, so note it rather than assuming the poster is a straight key.
+      <img src="/rooms-and-exits/c3l15-car-screen.jpg" alt="The framed screen in the Garage showing three sports cars: a yellow car with raised doors, a red car and a blue car" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=SJUnv1xKrjE&t=119s" target="_blank" rel="noopener">1:59</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 2:39 · the paper</span>
+      <strong>A ladder-shaped diagram in the inventory</strong>
+      The <b>Piece of paper</b> pickup is a brown, textured sheet with a line drawing on it: a run of horizontal rungs between two verticals, reading like a ladder or a stylised letter E. The inventory labels it plainly — <b>Piece of paper</b> — and offers the usual Use, Combine, Dismantle and Examine actions. Whatever it maps onto is not shown in the same frame, so treat it as a shape to carry, not a code to read.
+      <img src="/rooms-and-exits/c3l15-piece-of-paper.jpg" alt="The Piece of paper inventory item in the Garage showing a ladder-shaped diagram on a brown sheet" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=SJUnv1xKrjE&t=159s" target="_blank" rel="noopener">2:39</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 2:59 · the shape board, first state</span>
+      <strong>A purple square with a dark circle</strong>
+      Five framed panels in a row. On the left a <b>purple</b> square holding a dark grey circle; next to it two solid <b>green</b> squares; on the right a stack of two horizontal bars, the top <b>red</b> and the bottom <b>green</b>. This is a state puzzle in the purest form — no numbers, no letters, just a small set of attributes that can be changed. The four panels on the right never move in the recording.
+      <img src="/rooms-and-exits/c3l15-shape-grid.jpg" alt="The Garage shape board in its first state: a purple square with a dark circle, two green squares, a red bar and a green bar" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=SJUnv1xKrjE&t=179s" target="_blank" rel="noopener">2:59</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 3:19 · the shape board, second state</span>
+      <strong>The left panel cycles to blue</strong>
+      Twenty seconds later the leftmost square has gone from purple with a dark circle to <b>blue</b> with a dark circle. The two green squares and the red and green bars are untouched, which tells you the board is not a shared grid — only the left panel is being driven. By the next sampled second it has moved again, and the circle's fill appears to flip along with the background colour — treat that later value as a trend rather than a confirmed reading.
+      <img src="/rooms-and-exits/c3l15-shape-grid-set.jpg" alt="The Garage shape board in its second state, with the leftmost square now blue and the two green squares and coloured bars unchanged" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=SJUnv1xKrjE&t=199s" target="_blank" rel="noopener">3:19</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 3:59 · the batteries</span>
+      <strong>A set of two, counted 2/2</strong>
+      The inventory at this point holds exactly one entry: a stack of <b>two red batteries</b>, tagged <b>2/2</b>. The counter matters — this game uses a fraction when an item is a matched set, and a set of two usually means a device that will not accept one. Everything else the player has picked up by now has already been spent, which is why the grid is otherwise empty.
+      <img src="/rooms-and-exits/c3l15-battery-inventory.jpg" alt="The Garage inventory showing a single stack of two red batteries counted as 2/2" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=SJUnv1xKrjE&t=239s" target="_blank" rel="noopener">3:59</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 4:19 · the red car</span>
+      <strong>The nose of the lifted saloon</strong>
+      The camera drops onto the front of the red saloon on the lift — bonnet, headlights, part of a wheel, all framed by corner brackets. It is a plain inspection view rather than a puzzle surface: there is no badge to read or dial to turn in the frame. Its value is positional. Together with the white car on the left and the blue car over the pit, it completes the three-car set the poster was showing you.
+      <img src="/rooms-and-exits/c3l15-red-car-front.jpg" alt="A close-up of the front of the red saloon on the lift in the Garage, showing the bonnet, headlights and a wheel" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=SJUnv1xKrjE&t=259s" target="_blank" rel="noopener">4:19</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 5:09 · the room at full stretch</span>
+      <strong>Everything in one frame</strong>
+      Late in the run the camera pulls back to the widest view in the level: the blue saloon centred on its pit, the red car behind it, shelving running the full back wall, the workbench and monitor to the left, blue bins and crates stacked along the right. Use a frame like this to check what you have not touched yet — the room is wide enough that a missed pickup hides easily behind a crate.
+      <img src="/rooms-and-exits/c3l15-hero-garage.jpg" alt="A wide view of the Garage with the blue saloon on its service pit, the red saloon behind, shelving along the back wall and a workbench to the left" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=SJUnv1xKrjE&t=309s" target="_blank" rel="noopener">5:09</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 5:19 · the letter lock</span>
+      <strong>L S Z A</strong>
+      A yellow panel carrying four dark tiles in thin gold frames, one letter each. Read left to right, twice, from the whole frame and from a crop: <b>L</b>, <b>S</b>, <b>Z</b>, <b>A</b>. No glyph on the panel is ambiguous — the Z is the only one that could be mistaken for a 2, and it has the flat top and bottom strokes of a letter, not a numeral. This is the only code-shaped surface in the Garage.
+      <img src="/rooms-and-exits/c3l15-letter-lock.jpg" alt="The Garage four-letter lock, a yellow panel with four dark tiles reading L S Z A" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=SJUnv1xKrjE&t=319s" target="_blank" rel="noopener">5:19</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 5:31 · the last second</span>
+      <strong>The banner lands, the numbers do not</strong>
+      The screen cuts to <b>LEVEL COMPLETED!</b> with gold coins showering down and a reward card in the lower right that carries an eye symbol inside a blue frame. Then the file ends at 5:32, one second later, before the reward panel has drawn its figures. So the room is genuinely finished on camera — you can see the banner — but the coin total and the time never appear.
+      <img src="/rooms-and-exits/c3l15-level-complete.jpg" alt="The Garage completion banner in Rooms and Exits, showing Level Completed with falling coins and a reward card, before the reward figures resolve" width="1200" height="675" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=SJUnv1xKrjE&t=331s" target="_blank" rel="noopener">5:31</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>You read the poster as a straight key and it does not work.</b> The screen shows yellow, red, blue; the floor has white, red, blue. Two of the three match, one does not. If a puzzle in the Garage refuses the yellow-red-blue order, that is why — the poster is a mirror with one colour swapped, not a copy.</p>
+    <p><b>You keep pressing the whole shape board.</b> Only the leftmost square changes across the sampled states. The two green squares and the red and green bars hold their values for the entire run, so time spent cycling the right-hand panels is time wasted.</p>
+    <p><b>You take one battery.</b> The counter reads <b>2/2</b>, which means the game hands you a matched pair. If a device in this room will not accept the batteries, the usual cause is that the counter has not reached full — check the fraction, not the icon.</p>
+    <p><b>You look for a keypad under the bonnet.</b> The car close-ups are inspection views. There is no dial, no plate and no number on the red saloon's nose; the car's only job is to be one of three colours.</p>
+    <p><b>You wait for the reward screen.</b> It never arrives. The clip ends one second after the banner. If you are comparing coin payouts across Chapter 3, the Garage is not a usable data point from this recording.</p>
+
+    <h2>Where the Garage sits in Chapter 3<span class="accent">.</span></h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i>, and it lists twenty-four rooms. Garage is room <b>15 of 24</b>, straight after the Storage Room and immediately before the Attic. It is the last of the chapter's three utility spaces — cellar, garage, attic — and the widest of the three, which is why it is also the one where a missed pickup is easiest to hide.</p>
+    <p>Mechanically it drops the Storage Room's colour bars and gives you a shape board instead. Same family of logic, different surface: instead of reading six bar heights you are watching one panel cycle through background colours and circle fills. If the Storage Room's switchboard made sense to you, this room will too.</p>
+
+    <LevelSelector chapter={3} current={15} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-3-level-14/">Chapter 3 Level 14 — Storage Room</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-3-level-16/">Chapter 3 Level 16 — Attic</a></p>
+      <p>Back to: <a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Four things, stated plainly so you know which parts of this page are reads and which are reconstruction.
+      <br><br>
+      <b>1. The reward and the time.</b> The banner is real — <b>LEVEL COMPLETED!</b> is on screen at 5:31 and coins are already falling — but the file ends at 5:32, before the reward panel draws its coin figure and time. This page therefore prints no payout for the Garage. Any number quoted elsewhere is not from this recording.
+      <br><br>
+      <b>2. Whether L S Z A is the solution or a mid-attempt.</b> The letters themselves are solid: two passes, whole frame and crop, agreed on all four. What the footage cannot tell us is whether the player had already solved the lock or was still cycling it when the clip cut. Treat <b>L S Z A</b> as the value to try.
+      <br><br>
+      <b>3. What the shape board is for.</b> We can describe the two states precisely — purple with a dark circle, then blue with a dark circle, then red with a white circle — and we can say that only the leftmost panel moves. We cannot say what target the board is being driven toward, because no frame in the recording shows it locking or unlocking anything.
+      <br><br>
+      <b>4. The batteries' destination.</b> The <b>2/2</b> count is clear and the batteries are the only item in the inventory at that moment. What is not in the recording is a frame of them being fitted into a device, so the sentence "they go in X" cannot be written honestly. The same applies to the ladder-shaped <b>Piece of paper</b>, whose matching surface never appears on camera.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

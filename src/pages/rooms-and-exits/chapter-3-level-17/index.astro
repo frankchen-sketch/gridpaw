@@ -1,0 +1,350 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 17 Walkthrough: Terrace";
+const description = "Rooms & Exits Chapter 3 Level 17 walkthrough for the Terrace: the padded white crate with the yellow padlock whose four-digit lock ends on 7432, the misspelled Balance cushion-scale puzzle whose display reads 7435, the five-colour button panel, the 'Count the number for each symbol' dials, the Medallion and the crowbar. Every printed number was read twice from separate frames.";
+
+const faq = [
+  {
+    q: "What is the code in Rooms & Exits Chapter 3 Level 17 Terrace?",
+    a: "The code the level actually types is <b>7432</b>, entered on the four-digit lock on the padded white crate. It is on screen at 3:12, with a red button on the left and a green button on the right under the four digit cells. A separate display above the balance-scale puzzle reads <b>7435</b> at 0:42. The two numbers are not the same and they are not interchangeable: 7432 goes into the crate lock, and 7435 is what the scale's panel shows while you are loading cushions.",
+  },
+  {
+    q: "What is the Balance puzzle on the Terrace?",
+    a: "At 0:36 the game opens a two-pan balance with red bowls hanging from a white frame, and the title printed on the panel is <b>BLANACE</b> — a misspelling of Balance that is in the game itself, not in this guide. Both pans hold stacks of cushions, spare cushions sit to the right, and a white display above the pans shows four digits plus four small red indicator lights. The run we worked from leaves the panel reading <b>7435</b>.",
+  },
+  {
+    q: "Where do I find the Medallion?",
+    a: "The <b>Medallion</b> is the first named item in the level, picked up around <b>0:24</b>. It is an olive-green disc with a raised three-arrow symbol in the middle, and the game shows it on its own card with the word <b>Medallion</b> under it. By 1:36 it is sitting in the inventory, where a second, chair-shaped medallion is also visible.",
+  },
+  {
+    q: "What is the five-button panel on the dining wall?",
+    a: "The dining area has a brushed-metal panel with <b>five round buttons</b>. Read left to right the colours are <b>green, yellow, red, brown, red</b> — the fourth is a dull brown-orange, not a bright orange, and the fifth is red again. There are no letters printed above them; earlier notes claiming a G-Y-R-B-O row do not survive a second read. The recording presses them in different orders between 1:00 and 1:12 without showing a stamped solution.",
+  },
+  {
+    q: "What does 'Count the number for each symbol' want?",
+    a: "A framed puzzle at <b>1:48</b> shows three yellow symbols in a row — a faceted star or gem, a plain ring, and a chair — with one number dial under each and the instruction <b>COUNT THE NUMBER FOR EACH SYMBOL</b>. You count how many times each symbol appears in the room, not how many objects there are. The dials start at 0 0 0 and are being turned from 2:18. The final three digits are the one thing on this page we could not read twice; see the last section.",
+  },
+  {
+    q: "How do I turn the lights on in the Terrace?",
+    a: "There is a lever switch on the wall by the blue French doors, close-up at <b>2:33</b>. Throw it and the scene changes at 2:42: the windows and shutters are open, the terrace is lit, and the hanging pod chairs sparkle. That switch is the level's only obvious light control, and it is easy to walk past because the wall around it is plain beige tile.",
+  },
+  {
+    q: "What is in the barrel by the sofa?",
+    a: "At <b>2:48</b> the game zooms a weathered wooden barrel behind the outdoor sofa, painted with faded yellow and blue-grey bands, and a <b>red crowbar</b> is leaning against it. The crowbar is the interaction, not the barrel: it is the only red object in that corner and the camera holds on it. What it pries open is not shown in the part of the recording we can read.",
+  },
+  {
+    q: "Where is the locked crate?",
+    a: "The padded white crate with the yellow padlock sits in the garden bed at the front of the terrace — it is the first thing the camera zooms, at <b>0:12</b>, and it comes back as a full close-up at <b>3:00</b>. Its four-digit lock is the <b>7432</b> lock. The crate is white-painted wood with worn edges and a brass-yellow padlock hanging on the front hasp.",
+  },
+  {
+    q: "What is the striped chair clue?",
+    a: "At <b>0:54</b> the game zooms one of the white wire dining chairs. Its back is a lattice of white grid with five vertical colour stripes — <b>red, orange, yellow, green, blue</b>, in that order from the left. It is the only striped object in the level and the five-stripe count matches the five-button panel, which is why most players read the chair as the button clue.",
+  },
+  {
+    q: "What is the white box with five golden circles?",
+    a: "At <b>1:24</b> a distressed white-painted wooden box is pulled up, and its lid holds a brass insert with <b>five round golden depressions</b> in a row. They are shallow wells, not buttons and not digits — the shape is the same as a medallion, and the inventory already holds at least one Medallion by then. The recording never shows the box being filled.",
+  },
+  {
+    q: "Does the recording show Level 17 being completed?",
+    a: "No. The file runs <b>3:20</b> and the last frames are the terrace at 3:18 with sparkles around the pod chairs, right after the 7432 entry. There is no results card, no <i>level completed</i> banner and no coin reward anywhere in the video, so this page prints no reward figure for the Terrace.",
+  },
+  {
+    q: "Is the Terrace room 17 of Chapter 3?",
+    a: "Yes. Chapter 3 is <i>Murder Dressed in White</i> and the Terrace is room <b>17</b>, between the Attic (16) and the Basement (18). It is the first room in the chapter that is fully outdoors, which is why it has an awning, a garden bed and a lawn instead of walls on four sides.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-17"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 17"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 17</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 17 Walkthrough: Terrace</h1>
+
+    <p>The Terrace is the seventeenth room of Chapter 3, <i>Murder Dressed in White</i>, and the first one in the chapter that is entirely outdoors. You get a paved dining corner under a black-and-white striped awning, a lounge deck with an L-shaped sofa and a green umbrella, a raised garden bed with purple flowers and one big rock, and two hanging pod chairs that nobody in this house ever sits in. There is no keypad on a wall and no door code to type at the exit. The level's two typed numbers live on a white crate and on a balance scale, and both of them are printed — you never have to guess a digit.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt at one frame per second. The crate code <b>7432</b> was read twice — once from the whole 3:12 frame and once from a 2.2x crop of the four digit cells — and both passes agreed. The scale display <b>7435</b> was read three times, at three crop scales, and all three agreed. Anything that only read one way, or that two passes read differently, is listed under "What this page could not verify" instead of being printed as an answer.</div>
+
+    <LevelSelector chapter={3} current={17} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Terrace is room 17 of Chapter 3. The padded white crate's four-digit lock takes <b>7432</b>; the balance-scale panel above the two red pans reads <b>7435</b>.</p>
+      <ol>
+        <li>Open on the garden bed: the white crate with the yellow padlock is the first zoom, at <b>0:12</b>.</li>
+        <li>Take the <b>Medallion</b> (0:24) — an olive-green disc with a three-arrow symbol.</li>
+        <li>Work the two big boards: the <b>Balance</b> cushion scale (0:36) and the five-colour button panel on the dining wall (1:00).</li>
+        <li>Count the three symbols — star, ring, chair — on the framed panel at <b>1:48</b>.</li>
+        <li>Throw the wall switch at <b>2:33</b> to light the terrace, then collect the <b>crowbar</b> from the barrel at 2:48.</li>
+        <li>Set the crate lock to <b>7432</b> at 3:12. The recording ends at 3:20 without a results card.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="KxjzFxup5ww" data-title="Rooms &amp; Exits Level 17 Terrace Walkthrough Murder Dressed in White Chapter 3"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 17 Terrace Walkthrough">
+        <img src="https://i.ytimg.com/vi/KxjzFxup5ww/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 17 Terrace walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/KxjzFxup5ww/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The Terrace run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l17-hero-terrace.jpg" alt="Rooms and Exits Chapter 3 Level 17 Terrace: an outdoor terrace with a dining table under a black-and-white striped awning, an L-shaped sofa with yellow cushions under a green umbrella, two hanging pod chairs, and a raised garden bed with purple flowers" width="1200" height="676" loading="lazy" decoding="async" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>One wide outdoor set, viewed from a high three-quarter angle, with the house wall along the back and left. The dining end is tiled, with a round table, white wire chairs and a hedge; the lounge end is a wooden deck with the sofa, a coffee table, two lanterns and a barrel tucked behind. Between them runs a raised bed of purple flowers with a single large rock sitting in it, and a small yellow toy mower parks on the deck for no reason the level ever explains.</p>
+    <p>What makes the Terrace unusual is that it hides its puzzles in furniture rather than in locks. The two pans of a balance scale, a five-button panel on a wall, a framed counting puzzle and a box lid full of shallow golden wells are all things you would walk past in a real garden. The only two hard numbers in the room are the crate code and the number on the scale's panel, and neither is written anywhere else — which is exactly why so many players stall here.</p>
+    <p>Structurally this is a hub, not a chain. The Medallion, the buttons, the counting panel and the scale can be worked in any order, and only the crate at the end actually gates anything. The wall switch at 2:33 is the one sequencing step the level insists on: throw it and the scene relights, the windows open, and the terrace starts sparkling.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Everything we could identify, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Padded white crate</td><td>Garden bed, front of the terrace</td><td>Yellow padlock on the hasp; four-digit lock takes <b>7432</b>.</td></tr>
+        <tr><td>Medallion</td><td>First pickup, 0:24</td><td>Olive-green disc with a raised three-arrow symbol. Item card reads <b>Medallion</b>.</td></tr>
+        <tr><td>Balance scale</td><td>Dining end, under the awning</td><td>Two red pans on a white frame; display panel reads <b>7435</b> with four red lights above it.</td></tr>
+        <tr><td>Five-button panel</td><td>Dining wall</td><td>Round buttons in green, yellow, red, brown, red. No letters.</td></tr>
+        <tr><td>Striped wire chair</td><td>Dining table</td><td>Back lattice with five vertical stripes: red, orange, yellow, green, blue.</td></tr>
+        <tr><td>Counting panel</td><td>Framed close-up, 1:48</td><td><b>COUNT THE NUMBER FOR EACH SYMBOL</b>: star, ring, chair, with three dials.</td></tr>
+        <tr><td>White box, brass lid</td><td>Close-up, 1:24</td><td>Five shallow golden wells in a row. Fits a medallion-shaped object.</td></tr>
+        <tr><td>Wall switch</td><td>Beige tile wall by the French doors</td><td>Lever; lights the terrace and opens the windows at 2:42.</td></tr>
+        <tr><td>Barrel + crowbar</td><td>Behind the sofa, right of the deck</td><td>Weathered barrel with faded yellow and blue bands; <b>red crowbar</b> leaning on it.</td></tr>
+        <tr><td>Hanging pod chairs</td><td>Deck, left of the sofa</td><td>Two woven egg chairs with coloured cushions; sparkle once the lights are on.</td></tr>
+        <tr><td>Toy mower</td><td>Deck, near the garden bed</td><td>Small yellow push mower; scenery, not a puzzle.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>The order below follows the recording. Timestamps are video time; the links jump to the matching second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:00</span>
+      <strong>Read the terrace before you touch it</strong>
+      The level opens on a title card — <b>Level 17 / Terrace</b> — over a dimmed wide shot, then the camera settles and the HUD appears. Sweep it once: dining table and awning left, sofa and green umbrella right, garden bed with the big rock across the front, and the house wall with its blue French doors behind. Two hanging pod chairs sit between the dining end and the deck, and the barrel is behind the sofa where you will not see it until you pan.
+      <img src="/rooms-and-exits/c3l17-level-title.jpg" alt="The Level 17 Terrace title card in Rooms and Exits Chapter 3" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KxjzFxup5ww&t=0s" target="_blank" rel="noopener">0:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:12 · the first zoom</span>
+      <strong>The white crate with the yellow padlock</strong>
+      The very first thing the game zooms is a padded white wooden crate, worn at the edges, with a brass-yellow padlock hanging on its front hasp. No digits yet — this is the level introducing the object that will take the code at 3:00. Note where it lives: it sits low in the garden bed, partly screened by the purple flowers, which is why it is easy to lose again after the camera pulls back.
+      <img src="/rooms-and-exits/c3l17-garden-crate-padlock.jpg" alt="The padded white crate with a yellow padlock in the garden bed of the Terrace level" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KxjzFxup5ww&t=12s" target="_blank" rel="noopener">0:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:24 · the Medallion</span>
+      <strong>An olive-green disc with a three-arrow symbol</strong>
+      The first named item arrives as its own card: a thick olive-green disc, embossed with a three-arrow recycling-style symbol, and the word <b>Medallion</b> printed underneath. Take it. By 1:36 the inventory shows it sitting alongside a second, chair-shaped medallion, which matters because the white box with five golden wells at 1:24 is shaped to receive exactly this kind of disc.
+      <img src="/rooms-and-exits/c3l17-medallion.jpg" alt="The Medallion item card in the Terrace level, an olive-green disc with a three-arrow symbol" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KxjzFxup5ww&t=24s" target="_blank" rel="noopener">0:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:36 · the scale</span>
+      <strong>“Balance” — and the panel that reads 7435</strong>
+      Two red pans hang from a white frame, both loaded with stacked cushions: the left with a lime-green, a grey check and a brown patterned one, the right with orange, blue and yellow. Spare cushions wait on the right. The panel above them carries four red indicator lights and a white display that reads <b>7435</b>. Yes, the game spells the title <b>BLANACE</b>; that is in the build, not a typo here. The four red lights behave like progress markers, and the digits are the one number in the level that is not typed anywhere.
+      <img src="/rooms-and-exits/c3l17-balance-puzzle.jpg" alt="The Balance cushion balance puzzle in the Terrace level with two red pans, stacked pillows and a panel readiing 7435" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KxjzFxup5ww&t=36s" target="_blank" rel="noopener">0:36</a> · <a href="https://www.youtube.com/watch?v=KxjzFxup5ww&t=42s" target="_blank" rel="noopener">0:42</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 0:54 · the chair</span>
+      <strong>Five stripes on the back of a wire chair</strong>
+      The dining chairs are white wire lattice, and one of them has five vertical colour stripes woven through the back: <b>red, orange, yellow, green, blue</b>, left to right. The camera holds on it for several seconds, which is the level's way of saying "this is a clue". It is the only striped object on the terrace, and five stripes is the same count as the five-button panel that comes six seconds later.
+      <img src="/rooms-and-exits/c3l17-dining-chair-stripes.jpg" alt="A white wire dining chair in the Terrace level with five vertical stripes in red, orange, yellow, green and blue" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KxjzFxup5ww&t=54s" target="_blank" rel="noopener">0:54</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:00 · the buttons</span>
+      <strong>Five round buttons, no letters</strong>
+      A brushed-metal panel with five round buttons, each ringed in silver. Left to right the colours are <b>green, yellow, red, brown, red</b> — the fourth is a dull brown-orange, the fifth is red again. Between 1:00 and 1:12 they are pressed in different orders and the pressed state is visible as a shadowed rim, but the recording never holds a solved panel long enough to read a final order off it. Treat the chair stripes as the intended hint and test orders that follow them.
+      <img src="/rooms-and-exits/c3l17-colour-buttons.jpg" alt="The five-button colour panel in the Terrace level with green, yellow, red, brown and red round buttons" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KxjzFxup5ww&t=60s" target="_blank" rel="noopener">1:00</a> · <a href="https://www.youtube.com/watch?v=KxjzFxup5ww&t=72s" target="_blank" rel="noopener">1:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 1:24 · the box lid</span>
+      <strong>Five golden wells in a brass insert</strong>
+      A distressed white-painted box is pulled up as a full inspect view. Its lid holds a brass plate with <b>five round golden depressions</b> in a row — shallow wells, not buttons, not a digit display. The diameter matches the Medallion from 0:24, and five wells against one medallion in the inventory tells you the box is a receptacle puzzle rather than a code lock.
+      <img src="/rooms-and-exits/c3l17-white-box-lid.jpg" alt="The white wooden box in the Terrace level with a brass lid insert holding five round golden depressions" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KxjzFxup5ww&t=84s" target="_blank" rel="noopener">1:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 1:48 · the counting puzzle</span>
+      <strong>“Count the number for each symbol”</strong>
+      A framed panel with three yellow symbols in a row — a faceted star or gem, a plain ring, and a chair — and one number dial under each. The instruction reads <b>COUNT THE NUMBER FOR EACH SYMBOL</b>. The dials start at 0 0 0, and the recording starts turning them at 2:18, which is why you see 3 / 0 / 0 mid-solve. The symbols are objects in the room, not on the panel: count the star shapes, the rings and the chairs you can actually see.
+      <img src="/rooms-and-exits/c3l17-symbol-count-puzzle.jpg" alt="The count the number for each symbol puzzle in the Terrace level with a star, a ring and a chair above three number dials" width="1200" height="676" loading="lazy" />
+      <img src="/rooms-and-exits/c3l17-counted-dials.jpg" alt="The three number dials of the symbol counting puzzle mid-solve in the Terrace level" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KxjzFxup5ww&t=108s" target="_blank" rel="noopener">1:48</a> · <a href="https://www.youtube.com/watch?v=KxjzFxup5ww&t=138s" target="_blank" rel="noopener">2:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 2:33 · the switch</span>
+      <strong>Throw the lever and the terrace relights</strong>
+      A plain grey lever switch on beige tile, beside the blue French doors. Throw it and the whole scene changes at 2:42: the shutters and windows are open, the terrace is brighter, and both hanging pod chairs throw sparkles. This is the level's one hard sequencing step — the barrel, the crate and the last puzzles are all easier to see after it, so do not save it for last.
+      <img src="/rooms-and-exits/c3l17-wall-switch.jpg" alt="The grey lever wall switch beside the blue French doors in the Terrace level" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KxjzFxup5ww&t=153s" target="_blank" rel="noopener">2:33</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 2:48 · the barrel</span>
+      <strong>A red crowbar leaning on a painted barrel</strong>
+      Behind the sofa stands a weathered wooden barrel, banded in faded yellow and blue-grey paint, and a <b>red crowbar</b> is leaning against it. The camera zooms the crowbar, not the barrel, so the crowbar is the pickup. It is the only bright red object in that corner of the deck, which makes it easy to spot again if you back out too fast.
+      <img src="/rooms-and-exits/c3l17-barrel-crowbar.jpg" alt="A weathered barrel in the Terrace level with a red crowbar leaning against it" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KxjzFxup5ww&t=168s" target="_blank" rel="noopener">2:48</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 3:00 to 3:12 · the code</span>
+      <strong>Set the crate lock to 7432</strong>
+      The crate comes back as a close-up, the yellow padlock is opened, and the lock face appears: four dark digit cells over a red button on the left and a green button on the right. The player scrolls through 6 0 0 0 at 3:06 and settles on <b>7 4 3 2</b> at 3:12. Read it off the frames yourself: 7, 4, 3, 2, four cells, no decimal point. Green confirms, red clears.
+      <img src="/rooms-and-exits/c3l17-crate-lock-7432.jpg" alt="The four-digit lock on the white Terrace crate set to 7432 with red and green buttons underneath" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KxjzFxup5ww&t=186s" target="_blank" rel="noopener">3:06</a> · <a href="https://www.youtube.com/watch?v=KxjzFxup5ww&t=192s" target="_blank" rel="noopener">3:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 3:18 · where the video stops</span>
+      <strong>Sparkles, then the file ends</strong>
+      The last usable frames pull back to the terrace with the windows open and sparkles running along the pod chairs and the hedge. There is no crate-open animation, no results card and no reward in the file, which runs out at 3:20. If you are following along, 3:18 is simply where this recording stops, not where the level does.
+      <img src="/rooms-and-exits/c3l17-terrace-night.jpg" alt="The Terrace level at the end of the recording with the windows open and sparkles around the hanging pod chairs" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=KxjzFxup5ww&t=198s" target="_blank" rel="noopener">3:18</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>You type 7435 into the crate.</b> That is the most common wrong turn in this level, because 7435 is the number you spend the longest looking at — it is printed on the scale's panel and it looks like an answer. It is not the crate code. The crate takes <b>7432</b>. If the green button does nothing, check the last digit first.</p>
+    <p><b>You never find the second half of the terrace.</b> The barrel with the crowbar is behind the sofa, and the crate sits low in the flower bed. Both are off the first screen you see. Pan right for the barrel, pan down for the crate — the recording does both and it looks like the camera is just idling.</p>
+    <p><b>The scale's pans never balance.</b> Four red indicator lights sit above the 7435 display and they light up as progress markers, not as a pass/fail gate. If you are moving cushions and the lights are climbing, you are doing the right thing; the pans are not supposed to sit level until the puzzle is done.</p>
+    <p><b>You read the five buttons as a colour code with letters.</b> There are no letters on that panel. Five round buttons, five colours, no printed order. The dining chair's five stripes are the only ordered colour clue in the level, which is why the two objects are six seconds apart in the recording.</p>
+    <p><b>You count butterflies.</b> Nothing in the Terrace asks you to count objects in general — the counting panel names three specific symbols. If you are counting flowers or cushions, you are one step off; find the star, the ring and the chair.</p>
+
+    <h2>Where the Terrace sits in Chapter 3<span class="accent">.</span></h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i>, and its rooms run through the house and out into the grounds: Dining Room, Living Room, Study Room, Guest Toilet, Workshop, Guest Bedroom, Master Bathroom, Kids Playroom, Backyard, Garden, Kitchen, Driveway, Kids Bedroom, Storage Room, Garage, Attic, <b>Terrace</b>, Basement, Garden Shed, Kids Bedroom 2. The Terrace is room <b>17</b>, straight after the Attic and immediately before the Basement.</p>
+    <p>Mechanically it is a holiday from the Attic's enclosed clutter. The Attic was boxes and rafters and one long chain; the Terrace is open air, bright, and almost entirely parallel puzzles. The only dependency is the wall switch — everything else can be picked up or attempted in whatever order you notice it, which makes the Terrace one of the friendlier rooms in the back half of the chapter.</p>
+
+    <LevelSelector chapter={3} current={17} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-3-level-16/">Chapter 3 Level 16 — Attic</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-3-level-18/">Chapter 3 Level 18 — Basement</a></p>
+      <p>Back to: <a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Three things, stated plainly so you know which parts of this page are reads and which are reconstruction.
+      <br><br>
+      <b>1. The three digits of the symbol-counting puzzle.</b> The dials were read at five separate seconds between 2:18 and 2:30 and the passes disagreed: the whole-frame read gave <b>3 4 2</b> and a 2.4x crop of the same second gave <b>2 4 3</b>. The dials are being turned while the camera is on them, so a single second is not a reliable state. This page therefore prints no final answer for the star, ring and chair counts — count them yourself in the room, and if your dials agree with either reading you are almost certainly right.
+      <br><br>
+      <b>2. What 7435 is for.</b> The number is solid — three independent reads, three crop scales, all agreeing — but nothing in the decodable part of the recording types it anywhere. It may be the crate code in a different build, the balance target, or a clue for the white box. We are not going to invent a lock for it, and we are certainly not going to swap it with the 7432 that the crate demonstrably takes.
+      <br><br>
+      <b>3. The ending and the reward.</b> The file is 3:20 long and the last frame is the terrace at 3:18 with sparkles. No results card, no <i>level completed</i> banner, no coin figure. Any reward number you see quoted for the Terrace did not come from this recording.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

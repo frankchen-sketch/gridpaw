@@ -1,0 +1,386 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 18 Walkthrough: Basement";
+const description = "Rooms & Exits Chapter 3 Level 18 walkthrough for the Basement: the pipe room whose valve list reads 3L, 1S, 2V, 5W, the eight-letter valve dial, the wall keypad that takes 1200, the barbell bench that asks for 18 kilo on each side, the laundry and ring-tower chain, and the horoscope that leads to the suitcase. Every printed number was read twice from separate frames.";
+
+const faq = [
+  {
+    q: "What are the codes in Rooms & Exits Chapter 3 Level 18 Basement?",
+    a: "Two are solid. The wall keypad takes <b>1200</b> — four digits on a green display, read twice from separate frames. The pipe manifold is set from a printed list beside the valves that reads <b>3L</b>, <b>1S</b>, <b>2V</b>, <b>5W</b>: the number is how many turns, the letter names the valve. The barbell bench prints <b>18kilo-18kilo</b> as its target. A final keypad appears at 8:06 with a five-digit string on it, but that one did not survive a second read and is not printed here.",
+  },
+  {
+    q: "How do the valves in the Basement work?",
+    a: "The pipework is lettered, not numbered. At <b>4:54</b> the camera holds a grey handwheel on a green pipe with an <b>S</b> stamped in the middle, and the list <b>3L / 1S / 2V / 5W</b> sits to its left. At 5:00 five more handwheels on red pipes all carry a <b>W</b>. So each entry in the list is a valve letter plus a turn count: L three turns, S one turn, V two turns, W five turns. The letters on the L and V valves are further along the same run of pipes.",
+  },
+  {
+    q: "What is the eight-letter dial under the valves?",
+    a: "At <b>5:06</b> the game opens a circular brass dial with eight lettered positions around its rim — the ones we could read are <b>V, K, O, W, T, S, M, L</b> — plus a vertical slider on the right. Four of those letters are the four valve letters, which is why the dial belongs to the same puzzle family as the 3L/1S/2V/5W list: you are selecting letters in the order the list gives you, then pulling the slider.",
+  },
+  {
+    q: "What does the 1200 keypad open?",
+    a: "The keypad is a light grey plate screwed to a wall, with a green four-digit display, a 3x4 number pad, a clear key and a green tick. At <b>5:30</b> the display reads <b>1200</b>. Where the code comes from is not spelled out on screen. Nothing else in the decodable footage opens with it — the recording walks away from the keypad without showing a door, a safe or a hatch swinging open.",
+  },
+  {
+    q: "What is the weight-bench puzzle?",
+    a: "At <b>6:30</b> the game opens the blue bench with its barbell, a rack of coloured plates and a printed label that reads <b>Balance both side / 18kilo-18kilo</b>. The labels above the rack run in single kilos, 1 kg, 2 kg, 3 kg and upward. You are loading each end of the bar to the same total, 18 kilos, and every plate is a whole number of kilos, so the arithmetic is clean. The recording grinds on this for about half a minute before the bench's under-seat compartment pops at 7:06.",
+  },
+  {
+    q: "What is behind the blue cabinet?",
+    a: "The distressed blue cabinet on the left wall is the level's main storage. It opens at <b>0:42</b> with white shoes and bottles on its shelves, and at 0:54 its cubby section shows books and boxes, including one spine printed <b>Vocabulary</b>. At 1:06 the top drawers are pulled open with a green toolbox and a white first-aid kit sitting on top of the unit. This is where the early pickups live, so open all of it before you start on the pipe room.",
+  },
+  {
+    q: "What is the coat rack hint?",
+    a: "At <b>1:24</b> the camera holds a blue wall rack: three white storage bins along the top and three blue hangers below. A hint line appears over it about the white hanger positions and the blue drawer — that is the level telling you the rack's arrangement is a combination, not decoration. A round-button keypad comes up six seconds later at 1:30, which is the lock that arrangement feeds.",
+  },
+  {
+    q: "What do I do with the laundry and the rings?",
+    a: "Two separate chains, both in the middle of the level. The <b>Laundry</b> is a bundle of coloured clothes picked up around 2:24 and put into the washing machine at 2:36; the drum spins and the item is consumed. The <b>Rings</b> are picked up one at a time — a teal one at 2:06, a purple one at 2:12 — and land in the inventory as a stack of coloured rings. At <b>3:06</b> those rings go onto a stacking tower, one peg with rings already on it and a second bare peg, and the recording has it rearranged by 3:12.",
+  },
+  {
+    q: "Where does the horoscope come from and what is it for?",
+    a: "Solving the weight bench opens a compartment under the seat at <b>7:06</b>, and the paper inside it goes into the inventory as a folded newspaper. Examined, it is a <b>WEEKLY HOROSCOPE</b> page with all twelve zodiac glyphs laid out in a grid and a date range at the top. At <b>7:36</b> the camera finds a vintage suitcase with a row of zodiac glyphs painted on the wall above it — the same glyphs, in the same order the page is showing you.",
+  },
+  {
+    q: "Does the Basement level finish in this recording?",
+    a: "No. The file runs <b>8:16</b>. The last thing on screen is a five-digit keypad at 8:06, then the camera pulls back to the room at 8:12 and holds there until the file ends. There is no results card, no <i>level completed</i> banner and no coin figure anywhere, so this page prints no reward for the Basement.",
+  },
+  {
+    q: "Is the Basement room 18 of Chapter 3?",
+    a: "Yes. Chapter 3 is <i>Murder Dressed in White</i>, and the Basement is room <b>18</b> — after the Terrace (17) and before the Garden Shed (19). It is the first fully enclosed utility room in the chapter, and almost every puzzle in it is a piece of household plant: a washer, a fuse panel, a pipe manifold and a weight bench.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-18"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 18"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 18</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 18 Walkthrough: Basement</h1>
+
+    <p>The Basement is the eighteenth room of Chapter 3, <i>Murder Dressed in White</i>, and it is the busiest utility space in the chapter. A concrete box with a blue-riser staircase, a numbered locker bank, a washer and dryer on a pallet, a wall sink, a water heater, a pipe manifold, a weight bench and a red barrel you would not want to stand next to. It also has more locks than any room around it: a coat-rack combination, a round-button keypad, a pipe valve list and two numeric keypads.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt at one frame per second. The valve list <b>3L / 1S / 2V / 5W</b> was read twice — once from a 2x crop and once from a four-frame zoom set — and both agreed. The keypad code <b>1200</b> was read twice from the green display. The weight-bench label <b>18kilo-18kilo</b> was read twice at different crops. The five-digit string on the last keypad did not survive two reads, so it is listed under "What this page could not verify" rather than printed as a code.</div>
+
+    <LevelSelector chapter={3} current={18} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Basement is room 18 of Chapter 3. The pipe manifold is set from <b>3L, 1S, 2V, 5W</b>; the wall keypad takes <b>1200</b>; the barbell wants <b>18</b> kilos on each side.</p>
+      <ol>
+        <li>Clear the left wall first: the blue cabinet (0:42), its drawers (1:06) and the <b>Cloth</b> pickup at 0:25.</li>
+        <li>Read the coat rack at <b>1:24</b> — white bins above, three blue hangers below — then work the round-button keypad at 1:30.</li>
+        <li>Do the laundry chain: <b>Rings</b> at 2:06 and 2:12, <b>Laundry</b> at 2:24, washer at 2:36, ring tower at 3:06.</li>
+        <li>Work the pipe room: the valve list at <b>4:54</b>, five W wheels at 5:00, the letter dial at 5:06.</li>
+        <li>Enter <b>1200</b> on the wall keypad at 5:30.</li>
+        <li>Load the barbell to <b>18 kilo</b> a side (6:30), take the horoscope from the bench compartment (7:06), and match it to the zodiac suitcase (7:36).</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="xFo13yYJRZM" data-title="Rooms &amp; Exits Level 18 Basement Walkthrough Murder Dressed in White Chapter 3"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 18 Basement Walkthrough">
+        <img src="https://i.ytimg.com/vi/xFo13yYJRZM/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 18 Basement walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/xFo13yYJRZM/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The Basement run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l18-hero-basement.jpg" alt="Rooms and Exits Chapter 3 Level 18 Basement: an isometric concrete basement with a blue-riser staircase, a black locker bank, a distressed blue cabinet, a washer and dryer on a pallet, a pipe manifold, red barrels and a weight bench" width="1200" height="676" loading="lazy" decoding="async" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>One room, no outdoors, seen from a high isometric angle with the staircase cutting diagonally up the middle-left. The left wall is storage: a wooden door, a black locker bank numbered <b>1 to 6</b>, stacked cardboard boxes, a blue shelf unit and a pile of long planks on the floor. The back wall is plumbing: the sink, the washer and dryer on a pallet, two burlap sacks, exposed blue and green pipes. The right wall is the utility corner: the water heater, the red pipe manifold with its lettered valves, and a blue weight bench sitting in front of two red barrels.</p>
+    <p>It is also the only room in the back half of the chapter with a numbered locker bank, and that bank is a decoy in the sense that it looks like the level's main lock while the actual gates are a coat rack, a pipe manifold and a barbell. The zodiac glyphs painted on the concrete above the door are the other thing worth noticing early: they are not decoration, they are the key to the suitcase that appears forty minutes later in game time.</p>
+    <p>Structurally the Basement is three parallel chains that share one room. The storage chain (cabinet → coat rack → keypad) sits on the left, the laundry chain (rings → washer → tower) sits in the middle, and the utility chain (valves → dial → bench → horoscope → suitcase) sits on the right. Nothing forces an order, which is why recordings of this level look so different from each other.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Everything we could identify, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Blue cabinet</td><td>Left wall, past the lockers</td><td>Shelves of shoes and bottles, cubbies with books, top drawers with a first-aid kit above.</td></tr>
+        <tr><td>Cloth</td><td>Early pickup, 0:25</td><td>Yellow crumpled cloth with a hole; item card reads <b>Cloth</b>.</td></tr>
+        <tr><td>Coat rack</td><td>Blue wall rack, 1:24</td><td>Three white bins above, three blue hangers below; hint line points at the blue drawer.</td></tr>
+        <tr><td>Round-button keypad</td><td>Wall panel, 1:30</td><td>Grid of round yellow buttons with a green and a red confirm key.</td></tr>
+        <tr><td>Washing machine</td><td>Back wall, on a pallet</td><td>Takes the <b>Laundry</b>; drum spins from 2:36.</td></tr>
+        <tr><td>Rings</td><td>Pickups, 2:06 and 2:12</td><td>Teal and purple rings, then more colours; feed the stacking tower.</td></tr>
+        <tr><td>Ring tower</td><td>Full-screen board, 3:06</td><td>Two pegs and coloured rings; the recording has it rearranged by 3:12.</td></tr>
+        <tr><td>Pipe manifold</td><td>Right wall</td><td>Letter-stamped handwheels on green and red pipes; the list reads <b>3L / 1S / 2V / 5W</b>.</td></tr>
+        <tr><td>Letter dial</td><td>Full-screen board, 5:06</td><td>Eight lettered positions around a brass ring plus a vertical slider.</td></tr>
+        <tr><td>Wall keypad</td><td>Screwed plate, 5:30</td><td>Green four-digit display; set to <b>1200</b>.</td></tr>
+        <tr><td>Fuse panel</td><td>Open electrical box, 6:12</td><td>Grid of red and green indicators over four green switches; hint line about the second wash machine.</td></tr>
+        <tr><td>Control panel</td><td>Wall unit, 6:18</td><td>Six red lights, six green switches and an OFF/ON slider.</td></tr>
+        <tr><td>Weight bench</td><td>Right corner, blue frame</td><td>Barbell plus a plate rack labelled in single kilos from 1 kg up; label reads <b>Balance both side / 18kilo-18kilo</b>.</td></tr>
+        <tr><td>Bench compartment</td><td>Under the seat, 7:06</td><td>Hidden paper; becomes the <b>Newspaper</b> / <b>WEEKLY HOROSCOPE</b> in the inventory.</td></tr>
+        <tr><td>Zodiac suitcase</td><td>On a crate, 7:36</td><td>Vintage tan case with zodiac glyphs painted on the wall above it.</td></tr>
+        <tr><td>Locker bank</td><td>Left wall by the door</td><td>Six numbered doors, 1 to 6; two of them show a key symbol.</td></tr>
+        <tr><td>Red barrels</td><td>Right corner, on a pallet</td><td>Hazard-marked drums; scenery with a warning placard.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>The order below follows the recording. Timestamps are video time; the links jump to the matching second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:00</span>
+      <strong>Sweep the room before you open anything</strong>
+      The level opens on a title card — <b>Level 18 / Basement</b> — over a dimmed wide shot. Read the room in one pass: door and locker bank left, planks and manhole cover on the floor, staircase centre-left, blue cabinet and sink in the middle, washer and dryer on the back wall, and the pipe manifold and weight bench on the right. Two details are worth noting now because they pay off late: the zodiac glyphs painted above the door, and the numbered locker doors.
+      <img src="/rooms-and-exits/c3l18-level-title.jpg" alt="The Level 18 Basement title card in Rooms and Exits Chapter 3" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=0s" target="_blank" rel="noopener">0:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:25 · the first pickup</span>
+      <strong>A yellow Cloth with a hole in it</strong>
+      The first item card of the level is a crumpled yellow cloth, photographed flat with a hole worn through the middle, labelled simply <b>Cloth</b>. It comes out of the clutter under the staircase. Nothing in the decodable part of the level consumes it, so treat it as an inventory placeholder rather than a tool — but take it, because this game hides combine recipes behind exactly this kind of object.
+      <img src="/rooms-and-exits/c3l18-cloth-item.jpg" alt="The Cloth item card in the Basement level, a yellow crumpled cloth with a hole" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=24s" target="_blank" rel="noopener">0:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:42 · the blue cabinet</span>
+      <strong>Shoes, bottles and a shelf of books</strong>
+      The distressed blue cabinet opens in stages. At 0:42 the doors swing and the shelves hold white shoes and glass bottles; at 0:54 the cubby section shows books and boxes with one spine printed <b>Vocabulary</b>; at 1:06 the top drawers are out with a green toolbox and a white first-aid kit sitting on top of the unit. This is the level's main storage, and the early pickups are all in it, so open every door and drawer before you move on.
+      <img src="/rooms-and-exits/c3l18-blue-cabinet.jpg" alt="The open blue cabinet in the Basement level with shoes, bottles and shelves of books" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=42s" target="_blank" rel="noopener">0:42</a> · <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=66s" target="_blank" rel="noopener">1:06</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 1:18 · the crate by the washer</span>
+      <strong>A crate of gourds, and a pair of boots</strong>
+      Beside the washing machine sits a wooden crate packed with orange gourds, with boots and a watering can on the floor around it. It gets its own zoom at 1:18, which is the level's way of flagging a container — the crate itself lifts and something small is underneath. Do not skip it on the way to the coat rack; it is the last easy pickup in the left half of the room.
+      <img src="/rooms-and-exits/c3l18-pumpkin-crate.jpg" alt="A wooden crate of orange gourds beside the washing machine in the Basement level" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=78s" target="_blank" rel="noopener">1:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:24 · the rack</span>
+      <strong>White bins above, three blue hangers below</strong>
+      A blue wall rack: three white storage bins along the top and three blue coat hangers hanging under them. A hint line appears across the rack pointing at the white hanger positions and the blue drawer. That is the level saying the arrangement on this rack is the combination for a lock, and six seconds later the camera is on a round-button keypad, which is the lock in question. Count the hangers, note which bins sit above which hooks.
+      <img src="/rooms-and-exits/c3l18-coat-rack-hint.jpg" alt="The blue coat rack in the Basement level with three white bins above and three blue hangers below" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=84s" target="_blank" rel="noopener">1:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 2:06 · the rings</span>
+      <strong>Teal at 2:06, purple at 2:12, then the rest</strong>
+      The coloured rings are picked one at a time and each gets an item card labelled <b>Ring</b>: a teal one first, then a purple one, and by 2:18 the inventory shows a whole row of them — yellow, green, red, blue, purple, orange, teal. They are not decorative. They are the pieces for the stacking tower at 3:06, and the level gives you the colours one at a time so you have to keep opening drawers and shelves to find the rest.
+      <img src="/rooms-and-exits/c3l18-ring-tower.jpg" alt="The coloured ring stacking tower in the Basement level with rings on one peg and a bare peg beside it" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=126s" target="_blank" rel="noopener">2:06</a> · <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=186s" target="_blank" rel="noopener">3:06</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 2:24 · the laundry</span>
+      <strong>Bundle it, then run the drum</strong>
+      A bundle of coloured clothes comes into the inventory as <b>Laundry</b> at 2:24. Select it on the washing machine, and by 2:36 the door is shut with a green light on the panel; at 2:42 the drum is spinning with a swirl of colour behind the glass. The Laundry is consumed — after 2:48 it is gone from the grid — and whatever the wash produces arrives as the dark rod-like item that appears in the inventory around 3:00. Check the machine again after it stops.
+      <img src="/rooms-and-exits/c3l18-washing-machine.jpg" alt="The washing machine in the Basement level running with a green light on its control panel" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=144s" target="_blank" rel="noopener">2:24</a> · <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=162s" target="_blank" rel="noopener">2:42</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 3:30 · the lockers</span>
+      <strong>Six doors, numbered 1 to 6</strong>
+      The black locker bank by the door is the one object in this room that looks like the main puzzle and is not. Six doors, numbered <b>1</b> through <b>6</b>, two of them marked with a key glyph. The recording opens a couple of them and moves on; the actual progression is happening on the pipe side of the room. If you are stuck hunting a locker combination, you are probably one chain behind — go back to the coat rack.
+      <img src="/rooms-and-exits/c3l18-hero-basement.jpg" alt="The Basement level room view showing the black locker bank numbered one to six on the left wall" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=216s" target="_blank" rel="noopener">3:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 4:54 · the valves</span>
+      <strong>3L · 1S · 2V · 5W</strong>
+      The pipe manifold runs up the right wall in green and red. At 4:54 the camera holds a grey handwheel with an <b>S</b> stamped into its hub, and to its left a printed list: <b>3L</b>, <b>1S</b>, <b>2V</b>, <b>5W</b>. At 5:00 five more handwheels on the red pipes, all stamped <b>W</b>. Read it as valve letter plus turn count — L three turns, S one, V two, W five — and the counts line up with what is physically there: five W wheels for five W turns.
+      <img src="/rooms-and-exits/c3l18-valve-code.jpg" alt="The pipe valve puzzle in the Basement level with the code list 3L, 1S, 2V and 5W beside a handwheel stamped S" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=294s" target="_blank" rel="noopener">4:54</a> · <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=300s" target="_blank" rel="noopener">5:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 5:06 · the dial</span>
+      <strong>Eight letters around a brass ring</strong>
+      A circular brass dial on a beige panel, with eight lettered positions around the rim and a vertical slider to its right. The letters we could read are <b>V, K, O, W, T, S, M and L</b> — and four of those are the four valve letters from the list, which is how you know the dial is the input for the manifold rather than a separate lock. Set the letters in list order, then pull the slider.
+      <img src="/rooms-and-exits/c3l18-letter-dial.jpg" alt="The circular letter dial in the Basement level with eight lettered positions around the rim and a vertical slider" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=306s" target="_blank" rel="noopener">5:06</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 5:30 · the keypad</span>
+      <strong>1200 on a green display</strong>
+      A pale grey keypad plate held by four corner screws: green four-digit display, a 3x4 pad, a clear key bottom-left and a green tick bottom-right. At 5:30 the display reads <b>1 2 0 0</b>. Nothing in the decodable footage shows what it releases — the camera simply walks away — but the code itself is unambiguous, and four digits with two trailing zeros is the kind of number this game builds from a room detail rather than a puzzle.
+      <img src="/rooms-and-exits/c3l18-keypad-1200.jpg" alt="The grey wall keypad in the Basement level with a green display reading 1200" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=330s" target="_blank" rel="noopener">5:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 6:12 · the fuse panel</span>
+      <strong>Red and green indicators, four green switches</strong>
+      An open electrical box high on the wall: a grid of small red and green indicator lamps with four green switches underneath. A hint line sits across it about the order that opens the second wash machine — which is the level pairing this panel with the laundry corner. At 6:18 a second, larger control panel appears with six red lights, six green switches and an OFF/ON slider, already thrown to ON.
+      <img src="/rooms-and-exits/c3l18-fuse-panel.jpg" alt="The open electrical fuse panel in the Basement level with red and green indicator lights and green switches" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=372s" target="_blank" rel="noopener">6:12</a> · <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=378s" target="_blank" rel="noopener">6:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 6:30 · the bench</span>
+      <strong>Balance both side: 18 kilo, 18 kilo</strong>
+      The blue weight bench has a barbell on its rack, a row of coloured plates above it and a printed label that reads <b>Balance both side / 18kilo-18kilo</b>. The labels above the rack run in single kilos, from 1 kg upward, so every combination is whole numbers and you can do the arithmetic in your head: you need two sets that each total 18. The recording works it for about half a minute — plates go on, come off, swap sides — before the bench gives way.
+      <img src="/rooms-and-exits/c3l18-weight-bench.jpg" alt="The blue weight bench in the Basement level with a barbell, coloured plates and the label Balance both side 18kilo-18kilo" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=390s" target="_blank" rel="noopener">6:30</a> · <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=420s" target="_blank" rel="noopener">7:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 7:06 · the horoscope</span>
+      <strong>A folded page under the seat</strong>
+      Loading the bar correctly pops a compartment under the bench seat at 7:06, and the paper inside goes into the inventory as a folded newspaper. Examine it and it is a <b>WEEKLY HOROSCOPE</b>: a masthead, a date range, and all twelve zodiac glyphs laid out in a grid with a line of text each. The date on the masthead is the one number on this page we are not printing — see the last section for why.
+      <img src="/rooms-and-exits/c3l18-horoscope.jpg" alt="The Weekly Horoscope newspaper item in the Basement level inventory with zodiac glyphs laid out in a grid" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=426s" target="_blank" rel="noopener">7:06</a> · <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=438s" target="_blank" rel="noopener">7:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 7:36 · the suitcase</span>
+      <strong>Glyphs on the wall, a lock on the case</strong>
+      A vintage tan suitcase with two darker banding straps sits on a crate, and a row of zodiac glyphs is painted on the concrete above it. The horoscope page is the only other place in the level with those glyphs, so the read is: match each painted glyph to its entry in the page, and the lock wants the order the page gives you. The recording flips between the page and the case for a full minute.
+      <img src="/rooms-and-exits/c3l18-zodiac-suitcase.jpg" alt="A vintage suitcase in the Basement level with zodiac glyphs painted on the wall above it" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=456s" target="_blank" rel="noopener">7:36</a> · <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=462s" target="_blank" rel="noopener">7:42</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 8:06 · where the video stops</span>
+      <strong>A five-digit keypad, then the file ends</strong>
+      The last lock in the recording is the same grey keypad plate as the 1200 one, now holding a five-digit string on the green display. The camera holds on it for several seconds, pulls back to the room at 8:12, and the file runs out at 8:16 with the door on the left standing slightly ajar and the exit icon showing. There is no results card and no reward.
+      <img src="/rooms-and-exits/c3l18-final-keypad.jpg" alt="The five-digit keypad near the end of the Basement level in Rooms and Exits" width="1200" height="676" loading="lazy" />
+      <img src="/rooms-and-exits/c3l18-basement-exit.jpg" alt="The Basement room at the end of the recording with the wooden door ajar and an exit icon beside it" width="1200" height="676" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=486s" target="_blank" rel="noopener">8:06</a> · <a href="https://www.youtube.com/watch?v=xFo13yYJRZM&t=496s" target="_blank" rel="noopener">8:16</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>You spend twenty minutes on the locker bank.</b> Six numbered doors by the door look exactly like the level's main lock, and they are not. The Basement's real gates are the coat rack, the pipe manifold and the barbell. If you cannot find a locker combination it is because there is not one worth finding — the recording opens two, takes what is in them and leaves.</p>
+    <p><b>The valves do not respond.</b> They are lettered, not numbered, and the count is turns, not a setting. Look for the stamp on the hub before you touch anything: the green pipe's wheel carries an <b>S</b>, and the red pipe bank carries five <b>W</b> wheels. If you are turning a wheel whose letter is not on the list, you are on the wrong run of pipe.</p>
+    <p><b>The 18-kilo bench feels impossible.</b> It is not — it is arithmetic with whole kilos. Two sets, each totalling 18, made from 1 kg to 8 kg plates. Do not try to make both sides look identical; the label asks for the same total, not the same plates.</p>
+    <p><b>You cannot find the horoscope.</b> It is not on a shelf. It is in a compartment under the weight bench that only opens once the bar is loaded correctly, which means the bench is a container as well as a puzzle. If you have been loading plates and walking away, go back and look under the seat.</p>
+    <p><b>You read the washing machine as a dead end.</b> The Laundry is consumed and the drum spins, but the payout arrives later and quietly — a new item shows up in the grid around 3:00 without a card. Check the inventory after the cycle instead of waiting for a pop-up.</p>
+
+    <h2>Where the Basement sits in Chapter 3<span class="accent">.</span></h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i>, and its rooms run: Dining Room, Living Room, Study Room, Guest Toilet, Workshop, Guest Bedroom, Master Bathroom, Kids Playroom, Backyard, Garden, Kitchen, Driveway, Kids Bedroom, Storage Room, Garage, Attic, Terrace, <b>Basement</b>, Garden Shed, Kids Bedroom 2. The Basement is room <b>18</b> — after the open-air Terrace and before the Garden Shed.</p>
+    <p>Mechanically it is the densest room in the chapter. Three chains, four lock types, one laundry cycle and one hidden compartment, all in a single concrete box with no camera cuts to hide behind. Where the Terrace lets you work in any order because everything is visible, the Basement punishes a scattergun approach: pick one side of the room and finish it.</p>
+
+    <LevelSelector chapter={3} current={18} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-3-level-17/">Chapter 3 Level 17 — Terrace</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-3-level-19/">Chapter 3 Level 19 — Garden Shed</a></p>
+      <p>Back to: <a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Four things, stated plainly so you know which parts of this page are reads and which are reconstruction.
+      <br><br>
+      <b>1. The five-digit code on the last keypad.</b> This one failed the second-read test outright. The whole-frame pass gave <b>43758</b>, a 5x crop of the same second gave <b>17750</b>, and a contact-sheet pass gave <b>43578</b>. At 720p the digit cells are only a few pixels wide and the display blooms, so this page prints no five-digit code at all. The <b>1200</b> on the earlier keypad is a different matter: that one read the same way twice, and it is printed.
+      <br><br>
+      <b>2. The date on the horoscope.</b> Two passes over the same page disagreed — one read it as May 10 to May 16, the other as May 20 to May 26 — so the masthead range is not quoted here. The zodiac grid and the glyphs on the wall are solid; the date is not, and a wrong date would send you looking for a clue that does not exist.
+      <br><br>
+      <b>3. The zodiac order on the suitcase lock.</b> The glyphs above the suitcase were counted as four by one pass and five by another, and the names read differently each time (one pass had Taurus, Gemini, Libra and Scorpio; another had Taurus, Gemini, Pisces, Virgo and Sagittarius). The mechanism is certain — match the painted glyphs to the horoscope page — but this page will not print a sequence it read two different ways.
+      <br><br>
+      <b>4. The ending and the reward.</b> The file runs 8:16. The last frames are the room with the door ajar and the exit icon showing, and there is no results card, no <i>level completed</i> banner and no coin figure anywhere in it. Any reward number quoted for the Basement did not come from this recording.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

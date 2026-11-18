@@ -1,0 +1,374 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 21 Walkthrough: Hobby Room";
+const description = "Rooms & Exits Chapter 3 Level 21 walkthrough for the Hobby Room: the Blue tempera tube, the key hanging under the daffodil painting, the hexagonal box on the green dresser and its six-tile rotation puzzle, the four carved diamond recesses that take the Wooden decoration tiles, the drawer that needs a Handle, the three tulip planters reading 7, 2 and 5, the three-segment colour dial and the blue papercraft model house. The run finishes at 9:11 with +50 coins.";
+
+const faq = [
+  {
+    q: "What is the code in Rooms & Exits Chapter 3 Level 21 Hobby Room?",
+    a: "The only numbered clue in the room is the row of three yellow wall planters on the right: the <b>red tulip</b> planter is numbered <b>7</b>, the <b>magenta tulip</b> planter <b>2</b> and the <b>yellow tulip</b> planter <b>5</b>. Those three colours match the three segments of the circular dial that appears later — red, magenta, yellow — so the intended reading is 7 / 2 / 5. We could not confirm the dial's accepted digits from a clean frame; see \"What this page could not verify\".",
+  },
+  {
+    q: "How do I open the hexagonal box?",
+    a: "The hexagonal wooden box sits on the green dresser on the right wall, with a light grey lid. On top of it sit <b>four square coasters in a 2x2 grid</b>, each divided into four quadrants by a cross, on yellow, teal, peach and green backgrounds. Tapping the box opens a full-screen <b>rotation puzzle</b> on a hexagonal tray: <b>four square tiles in a 2x2</b> — light green, orange, light blue and yellow — each carrying four curved shapes around a coloured centre dot. Tap a tile to rotate it until the shapes meet their neighbours. The puzzle is the box's lock, and it runs for roughly a minute in this recording.",
+  },
+  {
+    q: "Where is the key in the Hobby Room?",
+    a: "On a wall-mounted key holder below the framed <b>daffodil painting</b>, on the pink wall beside the ladder shelf with the thread basket. The holder has three hooks — a black car remote on the left, a small key in the middle and a larger key on the right — and the run takes the key. It opens the tall green cabinet on the right wall, which holds the upper shelves of craft stock.",
+  },
+  {
+    q: "What is Blue tempera for?",
+    a: "It is one of the paint tubes on the wall shelf above the workbench, picked up at <b>0:36</b> with the caption <b>Blue tempera</b>. It is the only paint the run collects, and the only blue object that needs painting is the <b>papercraft model house</b> that appears on the workbench near the end. If you are stuck holding it, you are not there yet.",
+  },
+  {
+    q: "What are the four carved diamond recesses for?",
+    a: "A wooden panel on the dresser has four diamond-shaped depressions, each carved with a different motif — a five-petal flower, a textured leaf, a multi-lobed leaf and a rose-like swirl. These take the four <b>Wooden decoration</b> tiles from the inventory, one motif per recess. The panel is a shape-matching lock, not a colour puzzle.",
+  },
+  {
+    q: "Where do I get a Handle?",
+    a: "The <b>Handle</b> is a separate inventory item, shown selected at <b>6:11</b> in-game with the standard <b>Use</b> / <b>Combine</b> / <b>Dismantle</b> / <b>Examine</b> row underneath. It goes on the dresser drawer that has no knob: with the handle fitted the drawer pulls open and the cardboard box inside is reachable at about <b>7:02</b>.",
+  },
+  {
+    q: "What is the three-segment dial?",
+    a: "A circular metal dial with three pie-slice segments — <b>red</b> at the top, <b>magenta</b> bottom-left, <b>yellow</b> bottom-right — each showing a green digital digit that you can cycle. Its colours are the same three as the tulip planters, which is the whole clue. It appears at about <b>8:10</b> in-game, and the room brightens when it is accepted.",
+  },
+  {
+    q: "How do I finish the Hobby Room?",
+    a: "The last prop is the <b>blue papercraft model house</b> on the workbench: a chapel-like building with a steeple, arched window cut-outs and a tan paper base with a fence and path. Once the model is complete and the dial is set, the level ends. There is no door keypad in the Hobby Room — the exit is triggered by finishing the props.",
+  },
+  {
+    q: "How long is the Hobby Room?",
+    a: "This run takes <b>9:11</b> in-game across a <b>9:07</b> video file (547 seconds, one frame per second for this page). It is the longest of the three bedroom-side rooms in Chapter 3 and roughly twice the length of Kids Bedroom 2, because it has three separate locks — the hex box, the carved panel and the dial — plus a build.",
+  },
+  {
+    q: "Does the run show the results card?",
+    a: "Yes. The final frame reads <b>LEVEL COMPLETED!</b> with <b>+50</b> coins, <b>Time: 8:51</b>, and a piggy-bank panel showing <b>300</b> and a <b>42h 35m</b> refill timer. No stars are shown.",
+  },
+  {
+    q: "Where does the Hobby Room sit in Chapter 3?",
+    a: "It is room <b>21 of 24</b> in Chapter 3, <i>Murder Dressed in White</i>: straight after Kids Bedroom 2 (Level 20) and before the Master Bedroom (Level 22).",
+  },
+  {
+    q: "Is the Hobby Room the same as the Art Studio?",
+    a: "It is the chapter's craft room — easel, sewing machine, thread spools, paint tubes, workbench — and it is labelled <b>Level 21 / Hobby Room</b> on the title card. Some walkthroughs call it the Art Room or the Craft Room; the level number is what matters.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-21"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 21"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 21</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 21 Walkthrough: Hobby Room</h1>
+
+    <p>The Hobby Room is room 21 of 24 in Chapter 3, <i>Murder Dressed in White</i>, and it is the craft room of the house: an easel, a sewing machine, thread spools, paint tubes, and a workbench covered in half-finished projects. It is also the longest of the three bedroom-side rooms — 9:11 in this run — because it hides three separate locks instead of one. A hexagonal box on the green dresser, a carved wooden panel, and a three-segment dial, with a papercraft build as the finale.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt from the full 9:07 recording (547 seconds, one frame per second). Item names are quoted from the game's own white captions — <b>Blue tempera</b>, <b>Key</b>, <b>Wooden decoration</b>, <b>Handle</b>. The tulip planter numbers <b>7 / 2 / 5</b> were read twice from separate frames and agree. The dial's own digits did not agree across three reads, so they are not printed as an answer.</div>
+
+    <LevelSelector chapter={3} current={21} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Three locks, one build. No door keypad.</p>
+      <ol>
+        <li>Take the <b>Blue tempera</b> from the paint shelf (0:36) and the <b>Key</b> from the hook under the daffodil painting (1:02).</li>
+        <li>Open the <b>hexagonal box</b> on the green dresser (1:24) and solve its six-tile rotation puzzle (1:40 to 2:25).</li>
+        <li>Collect the four <b>Wooden decoration</b> tiles and fit them into the four carved diamond recesses on the wooden panel (4:05 to 4:30).</li>
+        <li>Fit the <b>Handle</b> to the knob-less drawer (6:11) and take the cardboard box inside (7:02).</li>
+        <li>Read the tulip planters — red <b>7</b>, magenta <b>2</b>, yellow <b>5</b> — and set the three-segment dial to match (8:10).</li>
+        <li>Finish the <b>blue papercraft model house</b> on the workbench (8:38). The level ends at <b>9:11</b>: +50 coins.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="p43aWB8ZSP4" data-title="Rooms &amp; Exits Level 21 Hobby Room Walkthrough Murder Dressed in White Chapter 3"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 21 Hobby Room Walkthrough">
+        <img src="https://i.ytimg.com/vi/p43aWB8ZSP4/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 21 Hobby Room walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/p43aWB8ZSP4/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The Hobby Room run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l21-room-overview.jpg" alt="Rooms and Exits Chapter 3 Level 21 Hobby Room: a pink craft studio with an easel and rose painting by the window, a workbench in the centre, a sewing machine and thread shelves on the back wall, and a green dresser on the right" width="1200" height="526" loading="lazy" decoding="async" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>The room is pink-walled with a pale wooden floor and it is genuinely crowded — this is the one room in the chapter where the scenery is the puzzle board. Three walls, four work zones:</p>
+    <ul>
+      <li><b>Left wall:</b> a green-framed window over a small table with a blue lamp, a shelf of paint tubes and brushes above it, an easel holding a painting of a red rose in a vase, and a second canvas — a lake-and-mountain landscape — leaning against the wall on the floor.</li>
+      <li><b>Back wall:</b> a tall wooden shelving unit with a sewing machine, thread spools, folded fabric, books and baskets; a wooden stool in front of it; a framed picture; and the white door with a blue frame.</li>
+      <li><b>Right wall:</b> a tall green cabinet with a light blue lamp on top, and the wide green-and-wood dresser with open shelves above and drawers below.</li>
+      <li><b>Centre:</b> the big workbench — palette, brushes, paints, scissors, rulers, papers, small boxes — with a white wooden chair pulled up to it.</li>
+    </ul>
+    <p>The floor adds a pair of blue slippers, a metal wastebasket full of rolled paper, and a rolled mat. Almost none of that is interactive, but it matters for one reason: the room gives you no obvious "puzzle" silhouette, so the first minute is about finding the two things that are actually clickable — the paint shelf and the key.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Everything we could identify, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Blue tempera</td><td>Paint shelf above the workbench table</td><td>Caption <b>Blue tempera</b> at 0:36. Paint for the model house.</td></tr>
+        <tr><td>Key</td><td>Hook under the daffodil painting</td><td>Antique key with a lock plate; opens the tall green cabinet.</td></tr>
+        <tr><td>Hexagonal box</td><td>On the green dresser, right wall</td><td>Four-quadrant lid; opens the six-tile rotation puzzle.</td></tr>
+        <tr><td>Six-tile board</td><td>Full-screen from the hex box</td><td>Six four-lobed coloured tiles around a grey hexagon; rotate to match lobes.</td></tr>
+        <tr><td>Carved wooden panel</td><td>Dresser, lower section</td><td>Four diamond recesses carved with flower, leaf, multi-lobed leaf and rose swirl; takes the Wooden decoration tiles.</td></tr>
+        <tr><td>Wooden decoration</td><td>Inventory pickup</td><td>Four-petal carved tile; four of them fill the panel.</td></tr>
+        <tr><td>Handle</td><td>Inventory item</td><td>Fits the dresser drawer with no knob; opens the drawer at about 7:02.</td></tr>
+        <tr><td>Cardboard box</td><td>Inside the handle drawer</td><td>The thing the drawer was hiding.</td></tr>
+        <tr><td>Gift bag</td><td>Wooden crate near the dresser</td><td>Patterned bag and a light blue box inside the crate.</td></tr>
+        <tr><td>Tulip planters</td><td>Right wall, three yellow pots</td><td>Red tulip <b>7</b>, magenta tulip <b>2</b>, yellow tulip <b>5</b>.</td></tr>
+        <tr><td>Three-segment dial</td><td>Full-screen, about 8:10</td><td>Red / magenta / yellow segments with cycleable digits.</td></tr>
+        <tr><td>Model house</td><td>Workbench, end of the run</td><td>Blue papercraft chapel with steeple and tan paper base.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>The order below follows the recording. Timestamps are video time; the in-game clock runs a few seconds behind, which is why the end card says 8:51 for a 9:07 file.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:00</span>
+      <strong>Take the room in before you tap anything</strong>
+      The title card reads <b>Level 21 / Hobby Room</b> over the studio, with 2320 coins in the HUD and a hint button at 100. Read it as four zones: window and easel left, sewing shelves and door back, green cabinet and dresser right, workbench centre. The two things you want first are small and easy to miss — a paint tube on the shelf and a key on a hook.
+      <img src="/rooms-and-exits/c3l21-level-title.jpg" alt="The Level 21 Hobby Room title card in Rooms and Exits Chapter 3" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=p43aWB8ZSP4&t=0s" target="_blank" rel="noopener">0:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:36 · Blue tempera</span>
+      <strong>The one paint the run collects</strong>
+      The shelf above the work table holds a row of paint tubes; the close-up resolves one of them, a blue tube, with the caption <b>Blue tempera</b>. It is the only paint you pick up in the whole room, and the only blue object that ever needs painting is the model house near the end. Take it now so you are not walking back for it at 8:38.
+      <img src="/rooms-and-exits/c3l21-blue-tempera.jpg" alt="The Blue tempera paint tube picked up from the shelf in the Hobby Room" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=p43aWB8ZSP4&t=36s" target="_blank" rel="noopener">0:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 1:02 · the Key</span>
+      <strong>A key holder below the daffodil painting</strong>
+      Beside the ladder shelf with the thread basket hangs a square framed painting of three daffodils — two yellow, one white — on a mottled blue wash. Under it is a wooden key holder with three hooks: a <b>black car remote</b> on the left, a small key in the middle and a larger key on the right. The run takes the <b>Key</b>, and it is the only key in the room; the only thing it opens is the tall green cabinet on the right wall.
+      <img src="/rooms-and-exits/c3l21-key-on-hook.jpg" alt="The key holder below the daffodil painting in the Hobby Room with a car remote and two keys" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=p43aWB8ZSP4&t=62s" target="_blank" rel="noopener">1:02</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 1:24 · the hexagonal box</span>
+      <strong>Four coasters on a grey lid</strong>
+      On top of the green dresser sits a <b>hexagonal wooden box</b> with a light grey lid, and on that lid are <b>four square coasters</b> in a 2x2 grid. Each coaster is divided into four quadrants by a cross and carries a small pattern of dots around a solid centre, on yellow, teal, peach and green backgrounds. Tapping the box sends the camera full-screen to its lock.
+      <img src="/rooms-and-exits/c3l21-hex-box-dresser.jpg" alt="The hexagonal wooden box on the green dresser in the Hobby Room with four square coasters on its lid" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=p43aWB8ZSP4&t=84s" target="_blank" rel="noopener">1:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:40 to 2:25 · the rotation puzzle</span>
+      <strong>Four tiles, each with four curved lobes</strong>
+      The box opens a light wooden hexagonal tray holding <b>four square tiles in a 2x2 grid</b>: light green top-left, orange top-right, light blue bottom-left, yellow bottom-right. Each tile carries four curved, blade-like shapes arranged pinwheel-fashion around a coloured centre dot. Tap a tile to rotate it; the board is solved when the lobes that meet along an internal edge agree in colour. It is the same edge-matching idea as the stained-glass board in Kids Bedroom 2, on a much smaller board.
+      <img src="/rooms-and-exits/c3l21-hex-tile-puzzle.jpg" alt="The four-tile rotation puzzle on a hexagonal tray from the wooden box in the Hobby Room" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=p43aWB8ZSP4&t=100s" target="_blank" rel="noopener">1:40</a> · <a href="https://www.youtube.com/watch?v=p43aWB8ZSP4&t=145s" target="_blank" rel="noopener">2:25</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 2:30 · the drawers</span>
+      <strong>One drawer with no knob</strong>
+      The dresser below the box is a grid of drawers in three finishes — light wood, green, yellow — and one of them is missing its handle. Open what you can: the top-left drawer pulls out empty. The knob-less drawer is the one that matters later, and the reason a <b>Handle</b> exists as an item at all.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=p43aWB8ZSP4&t=150s" target="_blank" rel="noopener">2:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 3:14 · Wooden decoration</span>
+      <strong>Four carved tiles in the inventory</strong>
+      The inventory shows a square wooden tile with a four-petal flower carved into it, captioned <b>Wooden decoration</b>. There are four motifs in total — flower, textured leaf, multi-lobed leaf, rose swirl — and they are not interchangeable with anything else in the room. If you are carrying them and nothing will take them, you have not found the panel yet.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=p43aWB8ZSP4&t=200s" target="_blank" rel="noopener">3:14</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 4:05 to 4:30 · the carved panel</span>
+      <strong>Four diamond recesses, one motif each</strong>
+      A wooden panel on the dresser has four diamond-shaped depressions, each carved with a different design: a five-petal flower, a textured leaf, a multi-lobed leaf and a rose-like swirl. Fit the matching <b>Wooden decoration</b> tile into each. This is a shape lock, not a colour lock — the wood is uniform, so the only cue is the carving.
+      <img src="/rooms-and-exits/c3l21-carved-panel.jpg" alt="The carved wooden panel in the Hobby Room with four diamond recesses for the Wooden decoration tiles" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=p43aWB8ZSP4&t=258s" target="_blank" rel="noopener">4:18</a> · <a href="https://www.youtube.com/watch?v=p43aWB8ZSP4&t=270s" target="_blank" rel="noopener">4:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 5:00 · the green cabinet</span>
+      <strong>The Key's one job</strong>
+      Back at the right wall, the tall green cabinet takes the <b>Key</b>. Behind its doors are the upper shelves of craft stock — jars, boxes, papers, folded fabric. This is the step that feels optional and is not: the cabinet is where the run picks up the loose stock it needs for the build.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=p43aWB8ZSP4&t=300s" target="_blank" rel="noopener">5:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 5:22 · the wooden crate</span>
+      <strong>A gift bag and a light blue box</strong>
+      A crate near the dresser opens to a dim interior: a patterned gift bag in red, green and yellow, a light blue box, a roll of striped paper and other craft stock. The lighting is deliberately low here, which is why the frame is darker than the rest of the room — it is a container, not a puzzle.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=p43aWB8ZSP4&t=322s" target="_blank" rel="noopener">5:22</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 6:11 · the Handle</span>
+      <strong>Fit it, then pull the drawer</strong>
+      The inventory selects a grey oval <b>Handle</b>, with <b>Use</b>, <b>Combine</b>, <b>Dismantle</b> and <b>Examine</b> underneath. Use it on the knob-less dresser drawer, then open the drawer: inside is a cardboard box, reached at about <b>7:02</b>. If the drawer will not open, you are on the wrong drawer — the handle only fits one.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=p43aWB8ZSP4&t=371s" target="_blank" rel="noopener">6:11</a> · <a href="https://www.youtube.com/watch?v=p43aWB8ZSP4&t=422s" target="_blank" rel="noopener">7:02</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 8:02 · the tulip planters</span>
+      <strong>7, 2, 5 — read them left to right</strong>
+      Three yellow wall planters stand in a row, each holding tulips and each carrying a number on the pot: red tulips above <b>7</b>, magenta tulips above <b>2</b>, yellow tulips above <b>5</b>. This is the only numbered clue in the Hobby Room, and the three tulip colours are exactly the three segments of the dial you are about to see. Read it as a colour-to-digit map, not as a three-digit code in reading order.
+      <img src="/rooms-and-exits/c3l21-tulip-numbers.jpg" alt="The three yellow tulip planters in the Hobby Room numbered 7, 2 and 5" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=p43aWB8ZSP4&t=494s" target="_blank" rel="noopener">8:02</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 8:10 · the colour dial</span>
+      <strong>Three segments, three digits</strong>
+      A circular metal dial with a heavy rim sits over the room, split into three pie slices: <b>red</b> at the top, <b>magenta</b> bottom-left, <b>yellow</b> bottom-right, each with a green digital digit you cycle. Set each segment to its tulip's number. The room brightens when it takes, which is the only confirmation the game gives you — there is no keypad and no "wrong code" message to read.
+      <img src="/rooms-and-exits/c3l21-colour-dial.jpg" alt="The three-segment red, magenta and yellow dial in the Hobby Room with green digital digits" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=p43aWB8ZSP4&t=490s" target="_blank" rel="noopener">8:10</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 8:38 · the model house</span>
+      <strong>Blue papercraft chapel on a tan base</strong>
+      The last prop is on the workbench: a papercraft model of a chapel-like building, blue walls and steeple, arched window cut-outs, standing on a tan paper base with a fence and a path. In this run it is already assembled and blue at 8:38 — the <b>Blue tempera</b> you took at 0:36 is what makes that possible. Pick it up to finish the room.
+      <img src="/rooms-and-exits/c3l21-blue-model-house.jpg" alt="The blue papercraft model house on the workbench in the Hobby Room" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=p43aWB8ZSP4&t=518s" target="_blank" rel="noopener">8:38</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 9:11 · results</span>
+      <strong>+50 coins, Time 8:51</strong>
+      The card reads <b>LEVEL COMPLETED!</b> with <b>+50</b> coins, an efficiency bar and <b>Time: 8:51</b>. The piggy-bank panel adds <b>300</b> with a <b>42h 35m</b> refill timer. No stars and no code are shown.
+      <img src="/rooms-and-exits/c3l21-level-complete.jpg" alt="The Level 21 Hobby Room results card with plus 50 coins and a time of 8:51" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=p43aWB8ZSP4&t=545s" target="_blank" rel="noopener">9:05</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>You cannot find the puzzle after the key.</b> The key does not open a door. It opens the tall green cabinet on the right wall, and the cabinet is stock, not a lock — the next real puzzle is the hexagonal box sitting on the dresser beside it. Do not spend ten minutes looking for a keyhole in a door frame.</p>
+    <p><b>The hex board looks random.</b> It is not: every lobe has a colour and every touching pair must agree. Rotate one tile at a time and check its four edges, rather than trying to rotate all six into a picture.</p>
+    <p><b>The Wooden decoration tiles will not go in.</b> They only fit the carved panel, and only one motif per diamond — flower, leaf, multi-lobed leaf, rose swirl. If a tile will not seat, you are holding it over the wrong carving.</p>
+    <p><b>The dresser drawer has no handle.</b> That is the point. The <b>Handle</b> is a separate inventory item; until you select it and press Use on that drawer, the cardboard box inside is unreachable.</p>
+    <p><b>You read the tulips as "725".</b> The pots give you a colour-to-digit map, not a sequence: red is 7, magenta is 2, yellow is 5. The dial has the same three colours in fixed positions, so put each digit on its own colour rather than typing 7-2-5 in order.</p>
+
+    <h2>Where the Hobby Room sits in Chapter 3<span class="accent">.</span></h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i> and runs 24 rooms. The Hobby Room is <b>21 of 24</b>, between Kids Bedroom 2 (Level 20) and the Master Bedroom (Level 22). It is the chapter's craft room and the first room in this stretch that asks you to build something rather than just open something.</p>
+    <p>Length is the thing to plan for. At 9:11 it is roughly twice Kids Bedroom 2, and the time is spread across three locks that do not share a mechanic: rotation, shape matching, and a colour-to-digit dial. None of them is hard on its own; the cost is walking between the dresser, the wall planters and the workbench.</p>
+
+    <LevelSelector chapter={3} current={21} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-3-level-20/">Chapter 3 Level 20 — Kids Bedroom 2</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-3-level-22/">Chapter 3 Level 22 — Master Bedroom</a></p>
+      <p>Back to: <a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Three things, stated plainly.
+      <br><br>
+      <b>1. The dial's accepted digits.</b> Three crops of the dial at different seconds read it as 2 / 0 / 1, as 9 / 1 / 5 and as 4 / 0 / 5 — the digits are small green seven-segment numbers on coloured segments and they cycle as the player turns them, so no single frame is authoritative. The <b>colour mapping</b> from the tulip planters (red 7, magenta 2, yellow 5) is solid and was read twice; the dial's final state is not.
+      <br><br>
+      <b>2. The exact hex-board solution.</b> The rule (match every touching lobe) is clear from the frames, but the board's final orientation is never held still long enough to transcribe tile by tile. This page teaches the rule rather than printing a layout.
+      <br><br>
+      <b>3. What the cardboard box contained.</b> The drawer opens at about 7:02 and a cardboard box is visible inside, but the item is never shown in a labelled close-up. We do not name it.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

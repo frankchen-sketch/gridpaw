@@ -1,0 +1,387 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 20 Walkthrough: Kids Bedroom 2";
+const description = "Rooms & Exits Chapter 3 Level 20 walkthrough for Kids Bedroom 2: the pink ottoman, the Zipper and Battery on the cloud shelf, combining the battery with the flashlight to light the space under the bed, the stained-glass tile board on the wooden chest that opens a drawer, the Screwdriver in the panda teepee, the five-socket jewel box on the desk and the cloud softpillow colour tag. The run finishes at 4:18 with +50 coins and a 4:10 level time.";
+
+const faq = [
+  {
+    q: "What is the code in Rooms & Exits Chapter 3 Level 20 Kids Bedroom 2?",
+    a: "There is no typed keypad code in Kids Bedroom 2. This is an object-puzzle room: a <b>Battery</b> and a <b>Flashlight</b> to combine, a stained-glass tile board on a wooden chest, a <b>Screwdriver</b> hidden in the panda teepee, and a jewel box whose lid carries <b>five ornate sockets</b>. The only code-like clue is the <b>cloud softpillow</b> tag, whose five-segment cloud reads <b>green, red, blue, purple, yellow</b>. Treat it as the socket order, but see the unverified note about the middle colour.",
+  },
+  {
+    q: "How do I see under the bed?",
+    a: "The space under the bed reads as a black rectangle the first time you look at it, at <b>0:26</b>. Open the inventory, select the <b>Battery</b>, then the <b>Flashlight</b>, and press <b>Combine</b>. The combined torch appears with a green outline and the caption changes to <b>Turned on flashlight</b> at <b>0:44</b>. Go back under the bed at <b>0:46</b> and the area is lit, with a dark wooden chest sitting on the floor.",
+  },
+  {
+    q: "Where is the battery and where is the flashlight?",
+    a: "The <b>Battery</b> comes off the white cloud shelf that holds the pink handheld console and the oval mirror — the camera pushes in at <b>0:11</b> and the battery is shown with the caption <b>Battery</b> at <b>0:16</b>. The <b>Flashlight</b> is already in the inventory when you first open it at <b>0:32</b>; the recording never shows where it was picked up, so we do not invent a location for it.",
+  },
+  {
+    q: "What is the rule of the stained-glass tile board?",
+    a: "Square tiles, each split into four triangular facets by an X-shaped metal frame, every facet a different glossy colour. Tiles sit in stacks to the left and right of a wooden board and you drop them into the grid. The completed frames show <b>edge matching</b>: the colour on one side of a tile repeats on the touching side of its neighbour. When the board is nearly full, the bottom facet of the upper row and the top facet of the row below are the same red across the seam.",
+  },
+  {
+    q: "How long does the tile board take?",
+    a: "In this run it starts at <b>0:50</b>, when the chest is opened under the bed, and the last loose tile goes in at about <b>1:49</b>. That is close to a minute of real time with no detours, which makes it the longest single interaction in the level. Plan for it rather than treating it as a quick lock.",
+  },
+  {
+    q: "How many cells does the tile board have?",
+    a: "We are not printing a count. Two passes over the same board read it as three rows of three and as three rows of four, and the loose-tile stacks read as different sizes at different seconds. The mechanic is clear and the completion is visible; the exact cell count is not, so it is listed under \"What this page could not verify\".",
+  },
+  {
+    q: "What is inside the pink ottoman?",
+    a: "The pink ottoman by the dollhouse opens at <b>0:05</b>. The lid lifts and the inside shows small pale objects with a sparkle effect. The frame carries no white item caption, so this page does not name the pickup — the battery shown later comes off the cloud shelf, not from here.",
+  },
+  {
+    q: "What does the Zipper do?",
+    a: "At <b>0:13</b> the close-up on the pink handheld console produces the caption <b>Zipper</b>. In the rest of this run it is never used — no zip, bag or seam takes it. Treat it as a collected part and do not spend time hunting for a place to use it before the jewel box.",
+  },
+  {
+    q: "What is in the panda teepee?",
+    a: "The white teepee with the black-and-white panda print is opened at <b>2:04</b>: a quilted pink mat, a large pink cushion, a doll, a white plush, stacked wooden blocks and a striped ball. At <b>2:16</b> a red-handled <b>Screwdriver</b> is picked up from the mat and the caption reads <b>Screwdriver</b>.",
+  },
+  {
+    q: "What is the jewel box on the desk?",
+    a: "An ornate wooden box with gold scrollwork at the corners, sitting on the desk under the window. Its lid carries <b>five round sockets with gold rims</b>, and the run fills them from the inventory as it goes — orange-red, green and magenta gems are visible in separate frames. The inventory at <b>3:37</b> holds <b>six</b> jewel colours: green, gold, purple, red, white and light blue.",
+  },
+  {
+    q: "What is the cloud softpillow tag?",
+    a: "A white label with a five-segment rainbow cloud and the words <b>cloud softpillow</b>. Each segment of the cloud is a solid colour and each letter of \"cloud\" is coloured to match one: <b>c</b> green, <b>l</b> red, <b>o</b> blue, <b>u</b> purple, <b>d</b> yellow. That gives a five-colour order — <b>green, red, blue, purple, yellow</b> — which is the only colour-order clue in the room and the natural key for the five jewel sockets. It appears on the bedding and again as a held close-up at <b>3:43</b>.",
+  },
+  {
+    q: "Is there a keypad in Kids Bedroom 2?",
+    a: "No. Nothing in the 4:20 run shows a number pad, a dial lock or a letter lock. The locks are physical: the tile board on the chest, the chest's own drawer, the jewel box, and the items that feed them.",
+  },
+  {
+    q: "Where does Kids Bedroom 2 sit in Chapter 3?",
+    a: "It is room <b>20 of 24</b> in Chapter 3, <i>Murder Dressed in White</i>. It comes straight after the Garden Shed (Level 19) and before the Hobby Room (Level 21).",
+  },
+  {
+    q: "Does the recording show the level being completed?",
+    a: "Yes. This copy runs the full <b>4:20</b> and the results card appears at <b>4:18</b>: <b>LEVEL COMPLETED!</b>, <b>+50</b> coins, <b>Time: 4:10</b>, and a piggy-bank reward of <b>300</b> with a <b>42h 46m</b> refill timer. No stars are shown on the card.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-20"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 20"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 20</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 20 Walkthrough: Kids Bedroom 2</h1>
+
+    <p>Kids Bedroom 2 is room 20 of 24 in Chapter 3, <i>Murder Dressed in White</i>, and it is a second pass at the child's-bedroom idea. Where Kids Bedroom 1 was a hub of ten loose toys, this one is a tighter chain: a dark space under the bed that needs light, a battery and a flashlight that make that light, and a stained-glass tile board on a wooden chest that only gives up its drawer once the board is finished. Everything after that is pickups feeding a single ornate jewel box on the desk.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt from the full 4:20 recording at one frame per second. Item names are quoted from the game's own white captions — <b>Zipper</b> (0:13), <b>Battery</b> (0:16), <b>Flashlight</b> (0:38), <b>Turned on flashlight</b> (0:44), <b>Screwdriver</b> (2:16) — and the end card was read from two separate frames plus a 4x crop of the numbers. All three end-card reads agree on <b>+50</b> and <b>Time: 4:10</b>. Anything that only ever read one way, or that two passes read differently, is listed under "What this page could not verify".</div>
+
+    <LevelSelector chapter={3} current={20} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>No keypad, no typed code. The chain is: <b>Battery</b> + <b>Flashlight</b> → light under the bed → stained-glass tile board on the chest → drawer opens → jewel box on the desk.</p>
+      <ol>
+        <li>Open the pink ottoman at <b>0:05</b>, then check the cloud shelf for the <b>Zipper</b> (0:13) and the <b>Battery</b> (0:16).</li>
+        <li>At <b>0:26</b> the space under the bed is black. Combine the battery with the flashlight in the inventory, then use it: <b>Turned on flashlight</b>, 0:44.</li>
+        <li>Under the bed now shows a wooden chest. Its lid is the tile board: square tiles with four coloured triangular facets, stacks either side. Match colours edge to edge.</li>
+        <li>The finished board opens the chest's drawer at about <b>1:49</b>. Take what is inside and keep moving: the panda teepee holds the <b>Screwdriver</b> at <b>2:16</b>.</li>
+        <li>Collect the jewels and the <b>cloud softpillow</b> colour tag, then fill the <b>five sockets</b> on the jewel box at the desk from about <b>3:30</b>.</li>
+        <li>The level ends at <b>4:18</b>: +50 coins, Time 4:10.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="C8Fn9aoJ9Vw" data-title="Rooms &amp; Exits Level 20 Kids Bedroom 2 Walkthrough Murder Dressed in White Chapter 3"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 20 Kids Bedroom 2 Walkthrough">
+        <img src="https://i.ytimg.com/vi/C8Fn9aoJ9Vw/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 20 Kids Bedroom 2 walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/C8Fn9aoJ9Vw/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The Kids Bedroom 2 run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l20-room-overview.jpg" alt="Rooms and Exits Chapter 3 Level 20 Kids Bedroom 2: a pink polka-dot bedroom with a white metal bed under a window, a desk and chair on the right, a white wardrobe covered in pink rose decals, a purple dollhouse, a panda-print teepee and a pink bicycle" width="1200" height="526" loading="lazy" decoding="async" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>One pink bedroom, seen from a high isometric angle, with three walls in play. The walls are pink with white polka dots. The left wall carries the white door, a string of fairy lights, a house-shaped wall shelf and a pink book rack with a storage box and a teddy bear beside it. The back wall is a wide window with purple Roman blinds, the white metal bed with patterned bedding, and the white desk with a pink chair. The right wall holds the tall white wardrobe with pink rose decals and four stuffed animals lined up on top.</p>
+    <p>The floor is where the level happens. A purple dollhouse, a panda-print teepee, a patterned round rug, a pink ottoman and a pink bicycle with training wheels all sit on the parquet, and the wooden chest you need is hidden under the bed rather than displayed. That is the structural difference from Kids Bedroom 1: the first puzzle is behind a lighting gate, not in plain sight.</p>
+    <p>The chain is short and one-directional. Battery plus flashlight clears the dark, the dark reveals the chest, the chest's tile board opens its drawer, and the jewels plus the softpillow tag feed the box on the desk. You cannot brute-force the order, but you also cannot get permanently stuck — the battery and the flashlight are both reachable in the first forty seconds.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Everything we could identify in the recording, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Pink ottoman</td><td>Floor, left side, by the dollhouse</td><td>Lid lifts at <b>0:05</b>; small pale objects inside with a sparkle effect. No caption in our frames.</td></tr>
+        <tr><td>Cloud-shaped wall shelf</td><td>Beside the oval mirror, above the bed</td><td>Holds the pink handheld console and the mirror; the <b>Zipper</b> comes from here at 0:13.</td></tr>
+        <tr><td>Battery</td><td>Cloud shelf pickup</td><td>Caption <b>Battery</b> at 0:16. Combines with the flashlight.</td></tr>
+        <tr><td>Flashlight</td><td>Already in inventory at 0:32</td><td>Combine with the battery, then <b>Use</b>; caption becomes <b>Turned on flashlight</b>.</td></tr>
+        <tr><td>Space under the bed</td><td>Beneath the bed, centre of the room</td><td>Black until lit; hides the wooden chest.</td></tr>
+        <tr><td>Wooden chest</td><td>Under the bed</td><td>Lid is the stained-glass tile board; a drawer below opens when the board is done.</td></tr>
+        <tr><td>Tile board</td><td>Chest lid, full-screen</td><td>Grid of square cells plus stacked tiles; match the colour on every shared edge.</td></tr>
+        <tr><td>Panda teepee</td><td>Floor, centre</td><td>Quilted mat, cushion, doll, plush, blocks, ball — and the <b>Screwdriver</b> at 2:16.</td></tr>
+        <tr><td>Pink bicycle</td><td>Floor, right of the teepee</td><td>Training wheels; inspected around 2:20, no pickup.</td></tr>
+        <tr><td>Purple backpack</td><td>Floor by the bed frame</td><td>Opened around <b>2:59</b>; a faceted jewel comes out of it.</td></tr>
+        <tr><td>Desk</td><td>Under the window</td><td>Pen pots, lamp, plant, and the ornate <b>jewel box</b>.</td></tr>
+        <tr><td>Jewel box</td><td>On the desk</td><td>Five gold-rimmed sockets on the lid; filled with coloured gems.</td></tr>
+        <tr><td>cloud softpillow tag</td><td>On the bedding, then held close-up</td><td>Five-segment colour cloud with colour-matched letters; the colour-order hint.</td></tr>
+        <tr><td>Wardrobe</td><td>Right wall</td><td>Opens at 2:55 to hanging clothes and folded stacks.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>The order below follows the recording. Timestamps are video time; the links jump to the matching second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:00</span>
+      <strong>The title card, then the room</strong>
+      The level opens on <b>Level 20 / Kids Bedroom 2</b> over a darkened view of the room. The HUD shows the coin total and a hint button costing 100. As soon as the card clears you get the full isometric view, and it is worth thirty seconds of looking: door and ottoman left, desk and bed centre, wardrobe right, teepee and bicycle on the floor. Nothing in this room is a keypad.
+      <img src="/rooms-and-exits/c3l20-level-title.jpg" alt="The Level 20 Kids Bedroom 2 title card in Rooms and Exits Chapter 3" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=0s" target="_blank" rel="noopener">0:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:05 · the pink ottoman</span>
+      <strong>Open the storage bench first</strong>
+      The ottoman by the dollhouse is the first thing the run touches. The lid swings up and the interior is full of small pale objects with a sparkle burst over them. There is no white item caption on this frame, so we are not naming what comes out — but it is a pickup, and it is free, so take it before you start hunting for tools.
+      <img src="/rooms-and-exits/c3l20-ottoman-open.jpg" alt="The open pink ottoman in Kids Bedroom 2 with small pale objects inside" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=5s" target="_blank" rel="noopener">0:05</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:11 · the cloud shelf</span>
+      <strong>Zipper, from the shelf with the handheld console</strong>
+      The camera pushes in on the white cloud shelf beside the oval mirror, where a pink handheld console shaped like a Game Boy sits with a red cartridge in the slot. Inspecting it produces the caption <b>Zipper</b> at <b>0:13</b> — an odd item to collect, and one this run never uses. There is also a white three-dimensional letter <b>X</b> standing on the shelf, which is scenery rather than a pickup.
+      <img src="/rooms-and-exits/c3l20-wall-shelf-x.jpg" alt="The cloud shelf in Kids Bedroom 2 with the pink handheld console, oval mirror and a white letter X" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=11s" target="_blank" rel="noopener">0:11</a> · <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=13s" target="_blank" rel="noopener">0:13</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:16 · the battery</span>
+      <strong>One battery, captioned exactly</strong>
+      A single cell is shown against a dark background with the caption <b>Battery</b>. This is the item the whole first act exists for. It goes straight into the inventory, and the next time you open that inventory it sits next to the flashlight. Do not go looking for a second battery — one is enough for the combine.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=16s" target="_blank" rel="noopener">0:16</a> · <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=32s" target="_blank" rel="noopener">0:32</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 0:26 · under the bed</span>
+      <strong>A black rectangle where the chest should be</strong>
+      Tapping the space under the bed gives you a framed close-up of almost nothing: the floor is unlit and the area reads as a black rectangle. That is the gate, not a bug. It is the level telling you, without a line of dialogue, that you need a light source before the under-bed area becomes a real location.
+      <img src="/rooms-and-exits/c3l20-under-bed-flashlight.jpg" alt="The unlit space under the bed in Kids Bedroom 2 before the flashlight is used" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=26s" target="_blank" rel="noopener">0:26</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 0:32 to 0:46 · the combine</span>
+      <strong>Battery plus flashlight, then switch it on</strong>
+      Open the inventory and you get the standard row of action buttons — <b>Use</b>, <b>Combine</b>, <b>Dismantle</b>, <b>Examine</b>. Select the <b>Battery</b>, then the <b>Flashlight</b>, and combine them; the two icons merge into one loaded torch, still captioned <b>Flashlight</b> at 0:38. Using it changes the caption to <b>Turned on flashlight</b> at <b>0:44</b>. This is a separate press and it is the one people skip: a loaded torch in the inventory is still a dark room until you press Use. Back under the bed at <b>0:46</b>, the beam finds the chest.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=38s" target="_blank" rel="noopener">0:38</a> · <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=44s" target="_blank" rel="noopener">0:44</a> · <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=46s" target="_blank" rel="noopener">0:46</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 0:50 · the tile board</span>
+      <strong>Stained-glass tiles, two side stacks</strong>
+      The chest lid is a wooden board inlaid with a grid of square cells, and the pieces are square tiles split into four triangular facets by an X-shaped frame — glossy red, green, blue, yellow, orange, purple and cyan glass. Tiles wait in vertical stacks on both sides of the board. Nothing on the board states a rule, so read the tiles themselves: each facet faces one edge, and an edge has to agree with the edge beside it.
+      <img src="/rooms-and-exits/c3l20-mosaic-board.jpg" alt="The stained-glass tile board on the wooden chest in Kids Bedroom 2 with loose tiles stacked either side" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=50s" target="_blank" rel="noopener">0:50</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 1:31 · working the board</span>
+      <strong>Edge matching, not picture matching</strong>
+      Halfway through, the board is filling from the sides in and the pattern is readable: every internal edge has the same colour on both tiles. When the upper row is complete, its bottom facets are red and the row below meets them with red top facets. That is the whole rule. Work from the outside in, and place each tile against an edge you have already fixed rather than trying to hold the middle in your head.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=91s" target="_blank" rel="noopener">1:31</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 1:49 · the last tile</span>
+      <strong>The board fills and the drawer slides out</strong>
+      By <b>1:49</b> the board is full apart from one loose tile waiting beside it — the shape of a finished puzzle, not a stuck one. The completed mosaic reads as a deliberate colour pattern rather than a photo, which is why matching edges is the only rule that gets you there. The chest's lower drawer then slides out at about <b>1:54</b>; in the frames we checked its interior is bare wood.
+      <img src="/rooms-and-exits/c3l20-tile-board-nearly-done.jpg" alt="The stained-glass tile board in Kids Bedroom 2 almost full, with one loose tile beside it" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=109s" target="_blank" rel="noopener">1:49</a> · <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=114s" target="_blank" rel="noopener">1:54</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 2:04 · the teepee</span>
+      <strong>Inside the panda tent</strong>
+      The white teepee with the black-and-white panda print opens as a close-up: a quilted pink mat, a big pink cushion, a doll, a white plush, stacked wooden blocks and a striped ball. It is the densest single container in the room and it holds the one tool there is, so do not skip it on the way to the desk.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=124s" target="_blank" rel="noopener">2:04</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 2:16 · the Screwdriver</span>
+      <strong>A red-handled Screwdriver on the mat</strong>
+      The pickup comes off the teepee mat and the caption reads <b>Screwdriver</b>. Nothing in the rest of this run visibly uses it — the flashlight combine does not need it and the jewel box is not screwed shut — so treat it as a collected tool for a later room rather than something to force onto the chest.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=136s" target="_blank" rel="noopener">2:16</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 2:40 · Scissors and the wardrobe</span>
+      <strong>Two quick stops, then the backpack</strong>
+      The inventory shows <b>Scissors</b> at <b>2:40</b> in a held close-up, and at <b>2:55</b> the tall white wardrobe is opened: hanging clothes, folded stacks on the shelves, drawers below. The wardrobe is mostly scenery. The useful thing in this corner is the <b>purple backpack</b> on the floor by the bed frame, opened at <b>2:59</b>.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=160s" target="_blank" rel="noopener">2:40</a> · <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=175s" target="_blank" rel="noopener">2:55</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 3:07 · the backpack jewel</span>
+      <strong>A faceted jewel out of the front pocket</strong>
+      The backpack close-up shows a small pale object in the front pocket; take it and the item display resolves into a faceted <b>Jewel</b>. This is one of six colours that show up in the inventory by <b>3:37</b>: green, gold, purple, red, white and light blue. They are for the box on the desk, not for the door.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=187s" target="_blank" rel="noopener">3:07</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 3:30 · the jewel box</span>
+      <strong>Five gold-rimmed sockets on an ornate lid</strong>
+      The desk holds an ornate wooden box with gold scrollwork at the corners. Its lid has <b>five round sockets</b>, each with a gold rim and a recessed centre. The run fills them one at a time from the inventory — an orange-red gem, a green gem and a magenta gem are all visible in separate frames — and this box is what the whole second half of the room is feeding.
+      <img src="/rooms-and-exits/c3l20-jewel-box.jpg" alt="The ornate jewel box on the desk in Kids Bedroom 2 with five gold-rimmed sockets and coloured gems placed" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=210s" target="_blank" rel="noopener">3:30</a> · <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=240s" target="_blank" rel="noopener">4:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 3:43 · the colour tag</span>
+      <strong>"cloud softpillow" and a five-colour cloud</strong>
+      A white label with a five-segment rainbow cloud and the words <b>cloud softpillow</b>, and the letters carry the answer: <b>c</b> is green, <b>l</b> red, <b>o</b> blue, <b>u</b> purple, <b>d</b> yellow. Read that as a left-to-right order — <b>green, red, blue, purple, yellow</b> — and you have the only colour-order clue in the room, which is exactly what five sockets on a jewel box want. It appears on the bedding and again as a held close-up at <b>3:43</b>.
+      <img src="/rooms-and-exits/c3l20-softpillow-tag.jpg" alt="The cloud softpillow label in Kids Bedroom 2 with a five-segment rainbow cloud and colour-matched letters" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=223s" target="_blank" rel="noopener">3:43</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 4:18 · results</span>
+      <strong>+50 coins, Time 4:10</strong>
+      The card reads <b>LEVEL COMPLETED!</b> with <b>+50</b> coins, an efficiency bar, and <b>Time: 4:10</b> — a little shorter than the 4:20 video, because the recording includes the title card and a few paused frames. The second panel is the piggy bank: <b>300</b> coins added and a <b>42h 46m</b> refill timer. No stars and no level code are shown.
+      <img src="/rooms-and-exits/c3l20-level-complete.jpg" alt="The Level 20 Kids Bedroom 2 results card in Rooms and Exits with plus 50 coins and a time of 4:10" width="1200" height="526" loading="lazy" decoding="async" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=C8Fn9aoJ9Vw&t=258s" target="_blank" rel="noopener">4:18</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>You combined the battery but the room is still dark.</b> Combining and using are two separate presses. The caption has to read <b>Turned on flashlight</b> before the under-bed view changes. If it still says <b>Flashlight</b>, you are holding a loaded torch that is switched off.</p>
+    <p><b>You cannot find the battery.</b> It is on the cloud shelf with the pink handheld console, not in the ottoman and not under the bed. The ottoman pickup and the battery are two different things, ten seconds apart.</p>
+    <p><b>The tile board looks like a jigsaw.</b> It is not — the tiles have no picture to assemble. Every tile is the same four-triangle design in different colours, so the only constraint is that the facet on one side of an edge matches the facet on the other side. Judge each placement edge by edge, from the outside in.</p>
+    <p><b>You try to repair the flashlight with the screwdriver.</b> You cannot, and you do not need to. The screwdriver arrives 90 seconds after the flashlight is already working and comes from a different container.</p>
+    <p><b>You keep waiting for a keypad.</b> There is none in the full 4:20 run. The locks are the chest board, the chest drawer and the jewel box. If a guide tells you to type a four-digit code at the door, it is describing a different level.</p>
+
+    <h2>Where Kids Bedroom 2 sits in Chapter 3<span class="accent">.</span></h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i> and runs 24 rooms. Kids Bedroom 2 is room <b>20 of 24</b>: straight after the Garden Shed (Level 19) and before the Hobby Room (Level 21). It is the second kids' bedroom in the chapter — Level 13 is Kids Bedroom 1 — and it reuses the same design language, down to the cloud shelf and the plush toys on the wardrobe.</p>
+    <p>Mechanically it is a reset after the Garden Shed's radio-and-padlock work. There is no numeric code anywhere in the level; the difficulty is a lighting gate and one long spatial puzzle. That makes it a good room to clear in a single pass: battery, flashlight, chest, then pickups, then the desk.</p>
+
+    <LevelSelector chapter={3} current={20} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-3-level-19/">Chapter 3 Level 19 — Garden Shed</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-3-level-21/">Chapter 3 Level 21 — Hobby Room</a></p>
+      <p>Back to: <a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Four things, stated plainly so you know which parts of this page are reads and which are reconstruction.
+      <br><br>
+      <b>1. The cell count of the tile board.</b> Two passes over the same solved board read it as three rows of three and as three rows of four, and the loose-tile stacks change size between frames as tiles are taken. The mechanic (edge matching, four triangular facets per tile) and the completion (last tile at about 1:49, drawer opens) are both solid; the exact grid is not, so no count is printed.
+      <br><br>
+      <b>2. The middle colour of the softpillow cloud.</b> Two crops agree on the order green, red, then purple, yellow at the end, and on the letter mapping (c green, l red, u purple, d yellow). They disagree on the third segment, which read once as blue and once as cyan. The order above uses blue; swap it for cyan if the socket will not take a blue gem.
+      <br><br>
+      <b>3. What the chest drawer contained.</b> The drawer clearly slides out after the board is finished, and the frame we checked shows a bare wooden interior. An earlier pass thought it saw a small pale object inside, so we describe the drawer and the timing and do not name contents.
+      <br><br>
+      <b>4. The purpose of the Zipper and the Screwdriver.</b> Both are real pickups with real captions, and neither is visibly used before the level ends. They may belong to the jewel-box sequence in a way the camera skips, or to a later room. We are not going to invent a use for them.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

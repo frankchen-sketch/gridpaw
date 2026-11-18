@@ -1,0 +1,400 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 24 Walkthrough: Hallway";
+const description = "Rooms & Exits Chapter 3 Level 24 walkthrough for the Hallway, the last room of Murder Dressed in White: the lock pick and the nail, the wall safe holding the Cube and the D=7 slip, the sliding-block board, the four-drum lock that gives you the Hammer, the painting and the R=5 slip, the five watches, the N=3 door, and the final keypad code 51378 — R, A, N, D and Y read as numbers. Reward and time included.";
+
+const faq = [
+  {
+    q: "What is the code for the last door in Rooms & Exits Chapter 3 Level 24 Hallway?",
+    a: "The five-digit code is <b>51378</b>. It is not a random number: the room hands you five letter-to-digit slips and one letter painted on a door, and each letter of the answer maps to a digit. <b>R=5</b>, <b>A=1</b>, <b>N=3</b>, <b>D=7</b>, <b>Y=8</b> in that order gives <b>5 1 3 7 8</b>. The display reads 51378 at 5:00, one frame before the lock releases, and the letter set was read twice off the inventory at 4:20. The two agreeing with each other is the real check.",
+  },
+  {
+    q: "Where do the five letter clues come from?",
+    a: "<b>D=7</b> is inside the wall safe behind the hanging coat, next to the Cube. <b>R=5</b> comes from the painting propped askew against the back wall, once you have the hammer and nail. <b>Y=8</b> is in a drawer that opens after the four-drum lock is worked, around 4:08. <b>A=1</b> is in the inventory by 4:12 but the recording does not show a clean pickup for it, so its exact source is the one thing on this page we could not pin down. <b>N=3</b> is not a slip at all — it is painted on the wooden door panel at 4:18.",
+  },
+  {
+    q: "Why 51378 and not 73155 or any other order?",
+    a: "Because the numbers spell the word. Read the five letters that have digits attached — R, A, N, D, Y — left to right as they appear in the inventory, substitute each digit, and you get 5-1-3-7-8. Any other permutation produces a number that matches no word in the room. That self-consistency is also the cross-check: the digits we read off the keypad display are exactly the digits those five letters carry.",
+  },
+  {
+    q: "How do I open the wall safe in the Hallway?",
+    a: "Two steps. First use the lock pick — it is the item card at 0:14 — on the wall lock at 0:21 and work the pin-tumbler mini-game until the drawer pops. That gives you a <b>Nail</b>. Then move the coat hanging on the coat-rack unit: a two-dial wall safe is behind it at 0:30. The <b>Key</b> in your inventory opens it, and the safe holds the blue <b>Cube</b> and the <b>D=7</b> slip.",
+  },
+  {
+    q: "What is the Cube for?",
+    a: "The sliding-block board. The board is a four-by-four grid with a fixed purple padlock tile, a movable green key tile and two light-blue X blocker tiles. The Cube is the piece the board is missing. Your job is to slide the green key tile through the free cells until it lands on the padlock; the board closes at 2:18. It is pure sliding-block logic, no numbers involved.",
+  },
+  {
+    q: "Where is the Hammer and how do I get it?",
+    a: "The wooden box sitting on top of the shoe rack on the far left wall has a four-drum combination lock — three digits visible per drum, the middle row being the active one. Roll the drums and the lid opens at 3:07, and the <b>Hammer</b> card follows at 3:09. You then combine it with the Nail: the inventory shows a single <b>Hammer and nail</b> card at 3:15.",
+  },
+  {
+    q: "What do I do with the hammer and nail?",
+    a: "Use them on the landscape painting hanging askew against the back wall, right of the dresser. The close-up at 3:19 shows the painting with a torn strip of paper trapped under the bottom of the frame. Once the frame is levered, the <b>R=5</b> slip comes free at 3:24.",
+  },
+  {
+    q: "What is the answer to the five watches?",
+    a: "The watches read <b>09:05</b>, <b>08:53</b>, <b>08:29</b>, <b>07:53</b> and a fifth showing <b>?</b>. The gap between them grows by twelve minutes each time: <b>−12</b>, <b>−24</b>, <b>−36</b>, so the next step is <b>−48</b>, which puts the fifth watch at <b>07:05</b>. The four printed times were read twice, from the full frame and from a 3x crop; the 07:05 answer is arithmetic on those reads, not something the game shows.",
+  },
+  {
+    q: "What is the four-drum lock in the Hallway?",
+    a: "A metal plate with four rotating digit drums mounted into a dark wooden surface, each drum showing the digit above, the active digit in the middle and the digit below. It appears at rest showing 1 / 0 / 9 down every column, so the active row starts at <b>000</b>. The recording works it twice — once on the shoe-rack box for the Hammer, and again around 4:05, after which a drawer opens on the <b>Y=8</b> slip. The middle row at that moment reads <b>0 7 8 4</b>.",
+  },
+  {
+    q: "Where is the N=3 clue?",
+    a: "Painted on the wooden door panel below the stairs, on the same wall as the electronic keypad. The camera holds on it at <b>4:18</b> and again at 4:29; the marking is a scratched white <b>N=3</b> on dark wood. It is the only one of the five letters that is not a paper slip.",
+  },
+  {
+    q: "Is Hallway the last level of Chapter 3?",
+    a: "Yes. Chapter 3 is <i>Murder Dressed in White</i> and Hallway is <b>24 of 24</b>, the room that closes the chapter. There is a Chapter 4 in the game — <i>Pharaoh's Bride</i> — and the Hallway's exit is what leads into it. We have not written Chapter 4 guides yet, so the next-room link on this page goes back to the walkthrough hub instead.",
+  },
+  {
+    q: "Does the recording show the level being completed?",
+    a: "Yes. The keypad accepts the code at 5:00, the door opens, and the <b>LEVEL COMPLETED!</b> card lands at 5:05 with a level reward of <b>+50</b> coins and a recorded <b>Time: 5:23</b>. The piggy-bank panel sits underneath it as usual.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-24"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 24"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    .cipher { background: #fff; border: 1.5px solid var(--green); border-radius: 10px; padding: 0.7rem 0.9rem; margin: 0.8rem 0; font-weight: 700; text-align: center; letter-spacing: 0.06em; color: var(--text); }
+    .cipher span { color: var(--amber); }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } .cipher { font-size: 0.9rem; letter-spacing: 0.03em; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 24</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 24 Walkthrough: Hallway</h1>
+
+    <p>The Hallway is the last room of Chapter 3, <i>Murder Dressed in White</i> — room 24 of 24 — and it is the chapter's closing argument. A herringbone floor, a grand curved staircase with a <b>CLOSED</b> sign on the banister and a <b>WET FLOOR</b> sign at its foot, an arched double door in the back wall, two red-framed armchairs on a round rug, and a shoe rack, a coat unit and a dresser along the left and back walls. After twenty-three rooms of locks, this one ends on a five-letter word that you read as a number.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame at one frame per second. The final code <b>51378</b> is read once off the keypad display, at 5:00 — the frame a second earlier still shows only <b>51</b> — and it is confirmed a second way: it is exactly the digits carried by the five letters the room gives you (<b>R=5</b>, <b>A=1</b>, <b>N=3</b>, <b>D=7</b>, <b>Y=8</b>), which were read twice from the inventory and the door. The five watch times were read twice, at full frame and at 3x. Anything that only ever read one way is listed under "What this page could not verify".</div>
+
+    <LevelSelector chapter={3} current={24} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Hallway is room 24 of 24 in Chapter 3. The last door takes <b>51378</b>, which is <b>R A N D Y</b> written as numbers.</p>
+      <ol>
+        <li>Lock pick (0:14) on the wall lock (0:21) &rarr; drawer &rarr; <b>Nail</b>.</li>
+        <li>Move the hanging coat &rarr; wall safe &rarr; <b>Key</b> opens it &rarr; <b>Cube</b> + <b>D=7</b>.</li>
+        <li>Cube &rarr; the four-by-four sliding board (0:54–2:18): walk the green key tile onto the purple padlock.</li>
+        <li>Four-drum lock on the shoe-rack box &rarr; <b>Hammer</b>. Combine with the Nail &rarr; pry the painting &rarr; <b>R=5</b>.</li>
+        <li>Five watches (3:51) step down <b>12 / 24 / 36</b> minutes, so the missing one is <b>07:05</b>.</li>
+        <li>Drawer &rarr; <b>Y=8</b>. Door panel &rarr; <b>N=3</b>. Keypad &rarr; <b>51378</b>.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="Mg7w5mcLNgs" data-title="Rooms &amp; Exits Level 24 Hallway Walkthrough Murder Dressed in White Chapter 3"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 24 Hallway Walkthrough">
+        <img src="https://i.ytimg.com/vi/Mg7w5mcLNgs/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 24 Hallway walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/Mg7w5mcLNgs/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The Hallway run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l24-hero-hallway.jpg" alt="Rooms and Exits Chapter 3 Level 24 Hallway: an entrance hall with a herringbone wood floor, a curved white staircase with a CLOSED sign on the right, arched double doors in the back wall, two red and green armchairs around a round table on a circular rug, a shoe rack and coat unit on the left" width="1200" height="526" loading="lazy" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>An entrance hall, seen from above with the near wall cut away. Left to right: a tall dark shoe rack stacked with shoes and a suitcase on top, three floating shelves, a long tufted green bench, then the coat unit — a dark wood built-in with a mirror back, a green bench and hooks holding a white coat, a black leather jacket and a blue bag. The back wall has the arched double door with light-blue glass, a dresser with flowers beside it, and a landscape painting hanging visibly askew. The right side is the curved staircase, a side table under it with a plant, and a plain door on the right wall next to a small electronic panel.</p>
+    <p>In the middle of the floor is the round patterned rug with the two armchairs and a low table holding a yellow bottle and red spheres. It is furniture, not a puzzle, but it tells you where the room's centre of gravity is: almost everything interactive is against a wall.</p>
+    <p>The chain here is the tightest in the chapter, and it is a real chain — each tool unlocks the next, and the level will not let you skip ahead. Lock pick to nail, key to safe, cube to board, drum lock to hammer, hammer and nail to painting, and only then the five letters. Miss one link and the final keypad is genuinely unsolvable, because you will be one or two slips short of a word.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Scissors</td><td>Item card at 0:04</td><td>First pickup of the level, before you have moved.</td></tr>
+        <tr><td>Lock pick</td><td>Item card at 0:14</td><td>Opens the wall lock; pin-tumbler mini-game, six pins.</td></tr>
+        <tr><td>Wall drawer</td><td>Coat-rack wall, left</td><td>Opens after the lock pick; holds the <b>Nail</b>.</td></tr>
+        <tr><td>Wall safe</td><td>Behind the hanging coat</td><td>Two-dial safe. The <b>Key</b> opens it: <b>Cube</b> + <b>D=7</b>.</td></tr>
+        <tr><td>Sliding board</td><td>Full-screen overlay</td><td>4x4 grid; purple padlock tile, green key tile, two blue X tiles.</td></tr>
+        <tr><td>Boots</td><td>Left wall, on the floor</td><td>Muddy boots close-up at 2:30; part of the shoe area.</td></tr>
+        <tr><td>Shoe-rack box</td><td>On top of the shoe rack</td><td>Wooden box with a four-drum lock. Holds the <b>Hammer</b>.</td></tr>
+        <tr><td>Painting</td><td>Back wall, right of the dresser</td><td>Hanging askew. Hammer and nail it to free the <b>R=5</b> slip.</td></tr>
+        <tr><td>Watches</td><td>Five watches on a purple basket</td><td>Times 09:05, 08:53, 08:29, 07:53 and one "?" — the sequence clue.</td></tr>
+        <tr><td>Bedside drawer</td><td>Small table by the stairs</td><td>Opens on the <b>Y=8</b> slip around 4:08.</td></tr>
+        <tr><td>Door panel</td><td>Below the stairs, right wall</td><td>Scratched <b>N=3</b> on the wood at 4:18.</td></tr>
+        <tr><td>Keypad</td><td>Right wall, by the door</td><td>12-key pad with a green display. Takes <b>51378</b>.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>The code, spelled out<span class="accent">.</span></h2>
+    <p>This is the one thing worth understanding rather than copying. The room gives you five letters, each carrying a digit. Put them in the order they appear and read the digits straight off:</p>
+    <div class="cipher"><span>R</span>=5 · <span>A</span>=1 · <span>N</span>=3 · <span>D</span>=7 · <span>Y</span>=8 &nbsp;&rarr;&nbsp; <b>5 1 3 7 8</b></div>
+    <table class="item-table">
+      <thead><tr><th>Letter</th><th>Digit</th><th>Where it comes from</th></tr></thead>
+      <tbody>
+        <tr><td>R</td><td>5</td><td>Paper slip freed from the painting (3:24)</td></tr>
+        <tr><td>A</td><td>1</td><td>Paper slip in the inventory by 4:12 — pickup not filmed cleanly</td></tr>
+        <tr><td>N</td><td>3</td><td>Painted on the wooden door panel below the stairs (4:18)</td></tr>
+        <tr><td>D</td><td>7</td><td>Paper slip inside the wall safe, next to the Cube (0:35)</td></tr>
+        <tr><td>Y</td><td>8</td><td>Paper slip in the bedside drawer (4:08)</td></tr>
+      </tbody>
+    </table>
+    <p>Five letters, five digits, and the keypad wants five digits. If you have been reading the room properly you should have all five slips in the backpack at 4:20, when the inventory shows <b>D=7</b>, <b>A=1</b>, <b>R=5</b> and <b>Y=8</b> in a row, with <b>N=3</b> left on the door because it was never a slip.</p>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>The order below follows the recording, and it is also the order the level enforces. Timestamps are video time; the links jump to the matching second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:00</span>
+      <strong>Take the hall in before you touch it</strong>
+      The level opens on the title card — <b>Level 24 / Hallway</b> — and a slow pan of the room. Two things are worth noticing straight away: the painting on the back wall is hanging crooked, and the staircase is blocked off with a <b>CLOSED</b> sign. Neither is a puzzle you can solve yet. The staircase never opens; it exists to push you back into the hall.
+      <img src="/rooms-and-exits/c3l24-level-title.jpg" alt="The Level 24 Hallway title card in Rooms and Exits Chapter 3" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=0s" target="_blank" rel="noopener">0:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:04 · the first pickup</span>
+      <strong>Scissors</strong>
+      Before the player has moved at all, an item card fills the screen: a pair of scissors with silver blades and black-and-gold handles, captioned <b>Scissors</b>. They are the level's opening gift and they go straight into the backpack.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=4s" target="_blank" rel="noopener">0:04</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:14 to 0:27 · the lock pick</span>
+      <strong>Pick the wall lock, take the Nail</strong>
+      The <b>Lock pick</b> card appears at 0:14 and the mini-game follows at 0:21: a close-up of a lock with six pins and a pick you drag into place, pin by pin. Clear them and the drawer in that panel slides open at 0:25, with the <b>Nail</b> card at 0:27. This is the first link in the chain — no nail, no hammer-and-nail, no painting.
+      <img src="/rooms-and-exits/c3l24-lockpick-puzzle.jpg" alt="The lock-picking mini-game in the Hallway with six pins and a pick" width="1200" height="526" loading="lazy" />
+      <img src="/rooms-and-exits/c3l24-drawer-nail.jpg" alt="The open wall drawer in the Hallway holding the Nail item" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=14s" target="_blank" rel="noopener">0:14</a> · <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=21s" target="_blank" rel="noopener">0:21</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:30 · the wall safe</span>
+      <strong>Move the coat: there is a safe behind it</strong>
+      The coat unit on the left wall has a white coat, a black jacket and a blue bag hanging from it. Move them and a small two-dial wall safe is sitting in the recess at 0:30. The <b>Key</b> is already in your inventory by 0:32 — it is what opens this, not a code.
+      <img src="/rooms-and-exits/c3l24-wall-safe.jpg" alt="The two-dial wall safe revealed behind the hanging coats in the Hallway" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=30s" target="_blank" rel="noopener">0:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 0:35 · what the safe holds</span>
+      <strong>The Cube and D=7</strong>
+      The safe comes open at 0:35 with two things inside: a blue cube and a torn slip of paper. They resolve into two item cards — the <b>Cube</b> at 0:36 and a <b>Piece of paper</b> reading <b>D=7</b> at 0:38. That slip is the first of the five letters, and it is the first thing in the room that tells you what the final keypad actually wants.
+      <img src="/rooms-and-exits/c3l24-safe-contents.jpg" alt="The open wall safe in the Hallway holding the blue Cube and a paper slip" width="1200" height="526" loading="lazy" />
+      <img src="/rooms-and-exits/c3l24-paper-d7.jpg" alt="The paper slip reading D=7 found inside the Hallway wall safe" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=35s" target="_blank" rel="noopener">0:35</a> · <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=38s" target="_blank" rel="noopener">0:38</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 0:54 to 2:18 · the sliding board</span>
+      <strong>Walk the key tile onto the padlock</strong>
+      The Cube opens a full-screen board: four by four, a fixed purple <b>padlock</b> tile, a green <b>key</b> tile you can move, two light-blue <b>X</b> blocker tiles, and plain wooden cells for everything else. The goal is the obvious one — slide the key tile through the empty cells until it sits on the padlock — and it is the longest single puzzle in the room at roughly eighty seconds. Nothing here is numeric, so there is no code to memorise; it is pure sliding-block logic, and the X tiles are what make it take a while.
+      <img src="/rooms-and-exits/c3l24-sliding-block-grid.jpg" alt="The four by four sliding block board in the Hallway with a purple padlock tile, a green key tile and two blue X blocker tiles" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=54s" target="_blank" rel="noopener">0:54</a> · <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=138s" target="_blank" rel="noopener">2:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 2:30 · the shoe corner</span>
+      <strong>Boots on the floor, a box on the rack</strong>
+      The camera drops to a pair of muddy boots on the floorboards at 2:30, then pulls back to the shoe rack: two pairs of black-and-white sneakers and one red pair on the lower shelf, and a closed wooden box sitting on top. The boots are scenery; the box is not.
+      <img src="/rooms-and-exits/c3l24-boots.jpg" alt="The muddy boots on the floor in the Hallway next to the shoe rack" width="1200" height="526" loading="lazy" />
+      <img src="/rooms-and-exits/c3l24-shoe-rack.jpg" alt="The shoe rack in the Hallway with sneakers below and a closed wooden box on top" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=150s" target="_blank" rel="noopener">2:30</a> · <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=158s" target="_blank" rel="noopener">2:38</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 2:40 to 3:07 · the four-drum lock</span>
+      <strong>Roll the drums, take the Hammer</strong>
+      The box has a metal plate with four rotating digit drums, each showing the digit above, the active digit and the digit below. At rest every column reads 1 / 0 / 9, so the active row starts at <b>0 0 0 0</b>. The player rolls the drums one at a time over about half a minute and the lid opens at 3:07; the <b>Hammer</b> card follows at 3:09. Watch the middle row, not the outer ones — the outer rows are just the neighbouring digits on the drum.
+      <img src="/rooms-and-exits/c3l24-drum-lock.jpg" alt="The four-drum combination lock on the wooden box in the Hallway, each drum showing 1 above, 0 in the middle and 9 below" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=160s" target="_blank" rel="noopener">2:40</a> · <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=187s" target="_blank" rel="noopener">3:07</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 3:15 · combine</span>
+      <strong>Hammer and nail become one item</strong>
+      Open the inventory and combine the Hammer with the Nail. The cards merge into a single <b>Hammer and nail</b> item at 3:15. If you skipped the lock-pick drawer at the start, this is where the level stops you: you will be holding a hammer with nothing to strike.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=195s" target="_blank" rel="noopener">3:15</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 3:19 · the crooked painting</span>
+      <strong>Pry the frame, take R=5</strong>
+      This is the payoff for the askew painting you noticed in the first second. The close-up at 3:19 shows the landscape hanging off true, with a torn strip of paper caught under the bottom edge of the frame. Use the hammer and nail, the frame lifts, and the <b>R=5</b> slip is yours at 3:24. Second letter down.
+      <img src="/rooms-and-exits/c3l24-painting-frame.jpg" alt="The landscape painting hanging askew in the Hallway with a torn paper slip under the frame" width="1200" height="526" loading="lazy" />
+      <img src="/rooms-and-exits/c3l24-paper-r5.jpg" alt="The paper slip reading R=5 freed from behind the Hallway painting" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=199s" target="_blank" rel="noopener">3:19</a> · <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=204s" target="_blank" rel="noopener">3:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 3:51 · the watches</span>
+      <strong>Five watches, one question mark</strong>
+      A purple woven basket holds five smartwatches. Four of them show times — <b>09:05</b>, <b>08:53</b>, <b>08:29</b>, <b>07:53</b> — and the fifth shows a <b>?</b>. The gaps are the tell: 12 minutes, then 24, then 36. The next gap is 48, and 07:53 minus 48 minutes is <b>07:05</b>. That is arithmetic on the four printed times, not a number the game displays, but it is the only reading that fits a growing interval.
+      <img src="/rooms-and-exits/c3l24-watches-times.jpg" alt="Five smartwatches in the Hallway showing 09:05, 08:53, 08:29, 07:53 and a question mark" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=231s" target="_blank" rel="noopener">3:51</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 4:08 · the drawer</span>
+      <strong>Y=8</strong>
+      A small bedside-style table stands at the foot of the stairs with a single drawer. It opens on a <b>Piece of paper</b> reading <b>Y=8</b> at 4:08. Third slip. By 4:12 the backpack is holding <b>D=7</b>, <b>A=1</b>, <b>R=5</b> and <b>Y=8</b> together.
+      <img src="/rooms-and-exits/c3l24-paper-y8.jpg" alt="The paper slip reading Y=8 inside the open bedside drawer in the Hallway" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=248s" target="_blank" rel="noopener">4:08</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 4:20 · the inventory check</span>
+      <strong>Four slips, and the shape of the word</strong>
+      Open the backpack and look at what you have: <b>D=7</b>, <b>A=1</b>, <b>R=5</b>, <b>Y=8</b>. Four letters, four digits, and they are not in reading order — the inventory sorts them the way you found them. The fifth letter is still missing, and it is the one painted on the wood downstairs.
+      <img src="/rooms-and-exits/c3l24-inventory-clues.jpg" alt="The Hallway inventory showing the four paper slips D=7, A=1, R=5 and Y=8" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=260s" target="_blank" rel="noopener">4:20</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 4:18 · the door marking</span>
+      <strong>N=3, scratched on the wood</strong>
+      The plain door on the right wall, below the stairs, has a marking cut into the panel: <b>N=3</b>. The camera holds on it at 4:18 and again at 4:29. It is the only one of the five letters that is not a paper slip, which is exactly why people miss it — you cannot put it in the backpack, so there is nothing to remind you.
+      <img src="/rooms-and-exits/c3l24-door-n3.jpg" alt="The wooden door panel in the Hallway with N=3 scratched into the wood" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=258s" target="_blank" rel="noopener">4:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 4:46 · the keypad</span>
+      <strong>51378</strong>
+      The electronic panel beside the door is a 12-key pad with a green display. The run types <b>5</b>, <b>1</b>, <b>3</b>, <b>7</b>, <b>8</b> — R, A, N, D, Y read as numbers — and the display holds <b>51378</b> at 5:00, with the enter arrow pressed a moment later and the lock releasing by 5:02. The frame at 4:58 still shows only <b>51</b>, so 51378 is a single-frame read; what makes it trustworthy is that the five letters produce exactly those five digits.
+      <img src="/rooms-and-exits/c3l24-keypad-51378.jpg" alt="The Hallway door keypad with its green display reading 51378" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=286s" target="_blank" rel="noopener">4:46</a> · <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=300s" target="_blank" rel="noopener">5:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 5:05 · the chapter ends</span>
+      <strong>+50 coins, 5:23 on the clock</strong>
+      The door opens, and the results card lands at 5:05: <b>LEVEL COMPLETED!</b> with a level reward of <b>+50</b> coins and a recorded <b>Time: 5:23</b>. That is the end of <i>Murder Dressed in White</i> — twenty-four rooms, closed on a five-letter name.
+      <img src="/rooms-and-exits/c3l24-level-completed.jpg" alt="The Level Completed card for Hallway showing a +50 coin reward and a time of 5:23" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Mg7w5mcLNgs&t=305s" target="_blank" rel="noopener">5:05</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>You never find the N=3.</b> This is the number one blocker. Every other letter arrives as a paper slip you can see in the backpack, so the inventory feels complete at four. The fifth is scratched on a door and never becomes an item. If your code attempts keep failing with four letters accounted for, go and look at the door panel again.</p>
+    <p><b>You do not combine the hammer and the nail.</b> The tool only works as one item. A hammer alone does nothing on the painting, and the combine action is in the inventory menu, not on the painting itself.</p>
+    <p><b>You read the drum lock's outer rows.</b> Every drum shows three digits at once. The top and bottom are just the neighbours. Only the middle row counts, and at rest it reads 0000 — if you are "reading" 109 you are looking at the wrong row.</p>
+    <p><b>You try to brute-force 51378 from the watches.</b> The watches are a separate clue with its own answer (07:05); they are not the door code. The door code is five digits and the watches give you four times and a question mark. Two different puzzles that happen to sit a minute apart.</p>
+    <p><b>You look for a way up the stairs.</b> There is not one. The <b>CLOSED</b> sign on the banister is the game telling you the staircase is scenery for this level, and the exit is the small door on the right wall, not the main entrance.</p>
+
+    <h2>Where Hallway sits in Chapter 3<span class="accent">.</span></h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i> and it runs twenty-four rooms. Hallway is <b>24 of 24</b> — the last one, straight after the Entertainment Room. It is also the chapter's exit: the door you open with 51378 is what takes you out of the hall and into Chapter 4, <i>Pharaoh's Bride</i>.</p>
+    <p>In structure it is the inverse of the room before it. Entertainment Room was loose and parallel — a dozen stations, none of them gating the others. The Hallway is a single chain of six links and it will not let you skip a step. If you have just come from the Entertainment Room, the adjustment is to stop looking for side puzzles and start looking for the next tool.</p>
+
+    <LevelSelector chapter={3} current={24} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-3-level-23/">Chapter 3 Level 23 — Entertainment Room</a></p>
+      <p>Next: <a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a> — Chapter 4 walkthroughs coming soon</p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Four honest gaps.
+      <br><br>
+      <b>1. Where the A=1 slip is picked up.</b> The slip is definitely in the backpack — the inventory at 4:12 and 4:20 both show <b>A=1</b> in the row with D=7, R=5 and Y=8 — but the recording never holds a clean pickup frame for it. The camera moves from the drawer to a storage alcove and back, and the slip is simply there afterwards. Its source is the one clue on this page we cannot point at.
+      <br><br>
+      <b>2. The accepted combination on the four-drum lock.</b> The drums never stop moving in the frames we sampled. The middle row reads <b>0 7 8 4</b> at 4:05, right before the drawer opens at 4:07, so 0784 is the obvious candidate — but that is one read at one instant, not two agreeing reads, so it is printed here as a candidate rather than a code. The Hammer route at 3:07 has the same problem, which is why neither is presented as "the answer".
+      <br><br>
+      <b>3. What the watch answer unlocks.</b> 07:05 is solid arithmetic on four twice-read times, but the recording does not show a lock that takes a time. Either it feeds a puzzle we could not tie to a visible lock, or it is a hint for a step the run skipped. The arithmetic is offered as arithmetic, not as a verified in-game input.
+      <br><br>
+      <b>4. The scissors and the boots.</b> Both get full close-ups and both are real pickups, but neither is visibly spent anywhere in the run. They may belong to branches the recording skipped; they are not presented here as required steps.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

@@ -1,0 +1,391 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 19 Walkthrough: Garden Shed";
+const description = "Rooms & Exits Chapter 3 Level 19 walkthrough for the Garden Shed, rebuilt from the full 8:24 recording: the jerrycan and the mower, the generator rated 4000 starting / 3500 running watts, the radio tuned to 91.8, the 918 dial lock on the red toolbox, the 3x3 sliding-tile board that takes four in-game minutes, the Box opener, the Lighter and candle, the RC truck with the Key on it, and the +50 coin results card.";
+
+const faq = [
+  {
+    q: "What are the codes in Rooms & Exits Chapter 3 Level 19 Garden Shed?",
+    a: "Two numbers matter. The three-dial lock on the red toolbox is set to <b>918</b> — three digits, read twice from separate frames, once at 2:06 mid-entry and once at 2:10 settled. The radio on the shelf displays <b>91.8</b>, read twice at two crop scales. There is no four-digit keypad anywhere in this level: its other locks are a 3x3 sliding-tile board and a physical key.",
+  },
+  {
+    q: "What is the generator for?",
+    a: "The generator sits on the red steel shelf unit against the left wall, and its plate reads <b>4000</b> starting watts over <b>3500</b> running watts. It has a horizontal charge bar on the top cover, a rocker switch marked I and O, a pull starter labelled PULL, two outlets and two red breaker buttons. The recording fills the mower first and comes back to the generator, but the shed's power never comes on in the footage — the lights stay off until the candle at 7:45.",
+  },
+  {
+    q: "What does the radio show?",
+    a: "A portable radio with a cassette deck, sitting on the shelf beside the generator. Its small LCD reads <b>91.8</b>, and a pencil lies on the shelf next to a loose cassette. 91.8 is the level's one piece of broadcast information, and it is the sort of number this game uses for a three-dial lock — which is exactly what turns up on the red toolbox at 2:06.",
+  },
+  {
+    q: "How do I open the red toolbox?",
+    a: "Three number dials on the front of the case. The player works them from about 1:48, and by <b>2:10</b> the display reads <b>9 1 8</b>; the lid is up at 2:12 with the tray visible. The dials are stacked vertically, each with the current digit in a window and two flanking digits visible above and below, so you can see how far each wheel has travelled.",
+  },
+  {
+    q: "What is the 3x3 sliding-tile puzzle?",
+    a: "At <b>3:19</b> the game opens a 3x3 sliding-tile board on a wooden panel: eight numbered or pictured tiles and one empty slot. It is the slowest puzzle in the level — the recording shows it still scrambled at 7:13, roughly four in-game minutes later, and only solves it at <b>7:15</b>. Solving it releases the <b>Box opener</b>, a yellow utility knife with a red blade, which appears with its own item card.",
+  },
+  {
+    q: "What does the Box opener open?",
+    a: "The red metal locker, at <b>7:18</b>. The Box opener is consumed on it — it is in the inventory at 7:30 but the locker is already standing open with its door swung wide. This is the level's last container: everything after it is inventory management and the bike at the door.",
+  },
+  {
+    q: "What is the candle for?",
+    a: "At <b>7:45</b> a lit taper candle stands in the middle of the shed floor and the room is almost black — you can just make out the shelves and the workbench. Lighting it takes the shed from dark to dim, which is the point: the last three pickups (the truck, its key and the exit) all happen in a room you can barely see. The candle is the only light source in the level that actually works.",
+  },
+  {
+    q: "Where is the Key?",
+    a: "On top of the red remote-control monster truck, on the shed floor, at <b>8:06</b>. The truck's own label reads <b>SAVAGE X4.6</b>, and the key is a large ornate silver key that glows when the camera lands on it; the label under it simply reads <b>Key</b>. Take it, then turn around to the back door.",
+  },
+  {
+    q: "What is the reward for Level 19?",
+    a: "The results card at 8:24 pays <b>+50</b> coins, shows an Efficiency bar with nine of its ten segments filled, records <b>Time: 8:12</b>, and adds <b>300</b> to the piggy bank with the note that the piggy bank fills as you complete levels. This is the only room in the Chapter 3 batch whose completion screen is inside the recording, so it is the only one on this site with a printed reward.",
+  },
+  {
+    q: "How long does this level take?",
+    a: "The in-game clock on the results card says <b>8:12</b>. The YouTube recording is 8:24 because it includes the title card and about ten seconds of standing still after the door opens. Roughly four of those in-game minutes are spent on the sliding-tile board alone — it is the single biggest time sink in the room, and everything you need for it is available by 3:19.",
+  },
+  {
+    q: "Is the Garden Shed room 19 of Chapter 3?",
+    a: "Yes. Chapter 3 is <i>Murder Dressed in White</i>, and the Garden Shed is room <b>19</b> — after the Basement (18) and before Kids Bedroom 2 (20). It is the last outdoor-adjacent room in the chapter and the only one where the exit is a garden door rather than an interior one.",
+  },
+  {
+    q: "Do I need the jerrycan and the mower to finish?",
+    a: "The mower is one of the level's two fuel-driven machines, and the jerrycan comes out of a grey bucket at <b>0:19</b>. Pouring the fuel into the mower's tank at 0:41 is a required step in the run we followed — the mower's engine is what the level uses to get you moving between the shed's two halves. Skip it and the generator sequence has nothing to build on.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-19"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 19"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 19</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 19 Walkthrough: Garden Shed</h1>
+
+    <p>The Garden Shed is the nineteenth room of Chapter 3, <i>Murder Dressed in White</i>, and it is the most physical room in the chapter: a lawnmower you have to fuel, a generator you have to start, a toolbox with a three-dial lock on it, and a 3x3 sliding-tile board that eats about four in-game minutes of your life. It also has a proper ending — this is the one level in the Chapter 3 batch where the recording actually reaches the <b>LEVEL COMPLETED</b> card, with <b>+50</b> coins on it.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt from the full <b>8:24</b> recording, not a partial one. The toolbox code <b>918</b> was read twice, at 2:06 and 2:10, from separate frames. The radio frequency <b>91.8</b> was read twice at two crop scales. The results card figures — <b>+50</b>, <b>Time: 8:12</b>, piggy-bank <b>300</b> — were read twice from the full frame and from a 1.6x crop. The four things that failed a second read are listed under "What this page could not verify".</div>
+
+    <LevelSelector chapter={3} current={19} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Garden Shed is room 19 of Chapter 3. Set the red toolbox dials to <b>918</b>, tune the radio to <b>91.8</b>, and the reward at the end is <b>+50</b> coins in <b>8:12</b>.</p>
+      <ol>
+        <li>Take the <b>jerrycan</b> out of the grey bucket (0:19) and pour it into the mower (0:41).</li>
+        <li>Read the generator plate: <b>4000</b> starting / <b>3500</b> running watts.</li>
+        <li>Note the radio display — <b>91.8</b> — then set the three toolbox dials to <b>918</b> (2:10).</li>
+        <li>The 3x3 sliding-tile board opens at 3:19. It takes four in-game minutes; solving it at 7:15 gives you the <b>Box opener</b>.</li>
+        <li>Open the red locker (7:18), collect the <b>Battery</b>, the <b>Bag of sand</b> and the <b>Lighter</b>, and light the candle at 7:45.</li>
+        <li>Take the <b>Key</b> off the RC truck (8:06) and open the back door (8:18). Results card at 8:24.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="4ylaVY-c4DM" data-title="Rooms &amp; Exits Level 19 Garden Shed Walkthrough Murder Dressed in White Chapter 3"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 19 Garden Shed Walkthrough">
+        <img src="https://i.ytimg.com/vi/4ylaVY-c4DM/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 19 Garden Shed walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/4ylaVY-c4DM/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The complete Garden Shed run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l19-hero-garden-shed.jpg" alt="Rooms and Exits Chapter 3 Level 19 Garden Shed: a wooden shed interior with red steel shelving, a generator, a radio, a bicycle, a lawnmower, hanging chainsaws and a workbench" width="1200" height="526" loading="lazy" decoding="async" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>A single-room shed, seen isometrically with the front wall removed. The left wall is tools: three chainsaws hanging nose-up, rakes and shovels, a red-framed steel shelf unit holding the generator and the radio, and a red bicycle leaning at the back. The centre is the working floor, with the lawnmower near the door, a red cabinet marked <b>H</b> on the back wall, and a grey bucket in the corner. The right side is the workbench under a tarp, two folding chairs, watering cans and a black bin.</p>
+    <p>The room has a lighting arc that most players miss. It starts bright enough to read every plate in it, then at 7:45 it goes almost black and you are working by candlelight. That is not a graphical glitch — the level dims the shed deliberately for its last three pickups, which is why the truck, the key and the door are all found in near-darkness.</p>
+    <p>Structurally the Garden Shed is two halves with a board game in the middle. The first half is machines: fuel, generator, radio, toolbox. The second half is containers: the locker, the inventory, the truck. The sliding-tile board at 3:19 sits between them and takes longer than everything else combined.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Everything we could identify, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Lawnmower</td><td>Near the door</td><td>Fuel tank under the cap; needs the jerrycan before it runs.</td></tr>
+        <tr><td>Jerrycan</td><td>Inside a grey bucket, 0:19</td><td>Red can with a yellow cap; pours green fuel into the mower at 0:41.</td></tr>
+        <tr><td>Generator</td><td>Red shelf unit, left wall</td><td>Plate reads <b>4000</b> starting / <b>3500</b> running watts; charge bar on the top cover, I/O switch, PULL starter, two outlets, two red breakers.</td></tr>
+        <tr><td>Radio</td><td>Shelf beside the generator</td><td>Small LCD reads <b>91.8</b>; cassette deck, loose cassette and pencil alongside.</td></tr>
+        <tr><td>Red toolbox</td><td>On the bench line, centre</td><td>Three number dials on the front; opens at <b>918</b>.</td></tr>
+        <tr><td>Red cabinet “H”</td><td>Back wall, centre</td><td>Wall-mounted red cabinet with a white H on the door.</td></tr>
+        <tr><td>Sliding-tile board</td><td>Wooden panel, 3:19</td><td>3x3 grid, eight tiles and one empty slot; releases the Box opener.</td></tr>
+        <tr><td>Box opener</td><td>Item card, 7:15</td><td>Yellow utility knife with a red blade; cuts the red locker open.</td></tr>
+        <tr><td>Red locker</td><td>Right of centre, 7:18</td><td>Tall red metal locker; opens with the Box opener and holds the late pickups.</td></tr>
+        <tr><td>Battery</td><td>Inventory, 7:30</td><td>Green cell; sits in the top-left slot of the inventory grid.</td></tr>
+        <tr><td>Bag of sand</td><td>Inventory, 7:30</td><td>Beige sack; third slot.</td></tr>
+        <tr><td>Lighter</td><td>Inventory, 7:36</td><td>Light blue disposable lighter; fourth slot.</td></tr>
+        <tr><td>Candle</td><td>Shed floor, 7:45</td><td>Tall cream taper; the only working light in the level.</td></tr>
+        <tr><td>RC monster truck</td><td>Floor, 8:00</td><td>Red remote-control truck badged <b>SAVAGE X4.6</b>.</td></tr>
+        <tr><td>Key</td><td>On the truck, 8:06</td><td>Large ornate silver key; the level's exit item.</td></tr>
+        <tr><td>Back door</td><td>Left wall</td><td>Swings open at 8:18 onto bright daylight; exit icon appears.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>The order below follows the recording. Timestamps are video time; the links jump to the matching second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:00</span>
+      <strong>Read the shed, then read the machines</strong>
+      The level opens on a title card — <b>Level 19 / Garden Shed</b> — and then a slow pan across a room that is much fuller than it first looks. Three chainsaws hang on the left wall, a red bicycle leans behind the shelving, the lawnmower sits by the door, and the workbench on the right is under a tarp. Note the two machines on the left shelf: the generator and the radio. They are the level's first two information sources and both are readable from here.
+      <img src="/rooms-and-exits/c3l19-level-title.jpg" alt="The Level 19 Garden Shed title card in Rooms and Exits Chapter 3" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=0s" target="_blank" rel="noopener">0:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:08 · the mower</span>
+      <strong>Engine block, fuel cap, pull handle</strong>
+      First close-up of the level: the top of the lawnmower's engine. You get the cooling fins, the fuel cap on the tank, the recoil starter and its handle laid across the deck. Nothing here is a puzzle — it is the game pointing at the tank so that when you find a jerrycan nine seconds later you already know where it goes.
+      <img src="/rooms-and-exits/c3l19-mower-engine.jpg" alt="Close-up of the lawnmower engine and fuel cap in the Garden Shed level" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=8s" target="_blank" rel="noopener">0:08</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:19 · the jerrycan</span>
+      <strong>A red can inside a grey bucket</strong>
+      The jerrycan is not on a shelf — it is standing inside a grey plastic bucket in the corner, which is why people walk past it. Red body, yellow cap, ribbed sides. The camera zooms it at 0:19 and it goes straight to the inventory with no item card, so if you were looking for a named popup you would have missed it.
+      <img src="/rooms-and-exits/c3l19-jerrycan-bucket.jpg" alt="A red jerrycan standing inside a grey bucket in the Garden Shed level" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=19s" target="_blank" rel="noopener">0:19</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 0:41 · fuelling up</span>
+      <strong>Green fuel into the mower's tank</strong>
+      Select the jerrycan on the mower: the can tips and a stream of green fuel runs into the tank, with the level's usual splash animation. By 0:43 the can is empty and the mower is fuelled. This is the only use for the jerrycan in the recording — once it is poured, it is gone from the inventory, so do not go looking for it later.
+      <img src="/rooms-and-exits/c3l19-fuel-mower.jpg" alt="Fuel being poured from the red jerrycan into the lawnmower tank in the Garden Shed level" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=41s" target="_blank" rel="noopener">0:41</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 0:51 · the generator</span>
+      <strong>4000 starting, 3500 running</strong>
+      The generator is a yellow-and-black portable unit on the bottom shelf. Its plate is legible: <b>4000 STARTING WATTS</b> over <b>3500 RUNNING WATTS</b>. The control face has a rocker switch marked <b>I</b> and <b>O</b>, a pull starter labelled <b>PULL</b>, two red breaker buttons and two outlets under spring flaps, with a horizontal charge bar on the top cover. The recording reads the plate, works the switch and pulls the cord; the shed's lights do not come on, which tells you this is a sequence, not a switch.
+      <img src="/rooms-and-exits/c3l19-generator.jpg" alt="The portable generator in the Garden Shed level with a plate reading 4000 starting and 3500 running watts" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=51s" target="_blank" rel="noopener">0:51</a> · <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=57s" target="_blank" rel="noopener">0:57</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:16 · the radio</span>
+      <strong>91.8 on a small LCD</strong>
+      The radio sits on the shelf above the generator: silver case, cassette deck on the front, a carry handle, and a small LCD that reads <b>91.8</b>. A pencil lies beside it and a loose cassette is propped against the shelf. 91.8 is the only broadcast number in the level, and a three-digit value like that is exactly what a three-dial lock wants — which is what you meet 14 seconds later.
+      <img src="/rooms-and-exits/c3l19-radio-91-8.jpg" alt="The portable radio in the Garden Shed level with a small LCD display reading 91.8" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=76s" target="_blank" rel="noopener">1:16</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 2:06 to 2:12 · the toolbox</span>
+      <strong>Three dials, and the code 918</strong>
+      The red toolbox has three vertical number wheels on its front face, each showing the current digit with the neighbouring digits above and below it. The player turns them from about 1:48; at 2:06 the middle wheel is moving, and by <b>2:10</b> the windows read <b>9 1 8</b>. The lid is up at 2:12 with the tray and its contents visible. Three digits, three wheels, no confirm button — the box opens as soon as the third wheel lands.
+      <img src="/rooms-and-exits/c3l19-lock-918.jpg" alt="The three-dial lock on the red toolbox in the Garden Shed level set to 918" width="1200" height="526" loading="lazy" />
+      <img src="/rooms-and-exits/c3l19-red-toolbox.jpg" alt="The red toolbox open in the Garden Shed level with its tray visible" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=126s" target="_blank" rel="noopener">2:06</a> · <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=130s" target="_blank" rel="noopener">2:10</a> · <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=132s" target="_blank" rel="noopener">2:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 3:12 · the H cabinet</span>
+      <strong>A red wall cabinet with a white H</strong>
+      High on the back wall hangs a red metal cabinet with a single white <b>H</b> across its door. It gets a zoom at 3:12 as the camera works its way around the walls. The letter is the only marking on it, and in a room full of tools an unlabelled red cabinet with one letter is either a first-aid box or a battery box — the inventory fills with a green Battery later in the run, which is the strongest hint about which.
+      <img src="/rooms-and-exits/c3l19-h-box.jpg" alt="A red wall cabinet marked with a white H on the back wall of the Garden Shed" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=192s" target="_blank" rel="noopener">3:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 3:19 · the tile board</span>
+      <strong>3x3, eight tiles, one empty slot</strong>
+      Seven seconds later the game opens a 3x3 sliding-tile board on a wooden panel — eight square tiles and a single empty slot, the classic fifteen-puzzle with a row missing. The picture on the tiles is pale and never resolves cleanly on screen; what matters is the mechanics, which are the standard ones: slide a tile into the gap, never lift anything out. This board is the level's biggest time sink.
+      <img src="/rooms-and-exits/c3l19-tile-puzzle.jpg" alt="The 3x3 sliding tile puzzle board in the Garden Shed level" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=199s" target="_blank" rel="noopener">3:19</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 7:13 to 7:15 · solved</span>
+      <strong>Four in-game minutes, then the Box opener</strong>
+      The board is still scrambled at <b>7:13</b> — that is how long this puzzle runs — and solved at <b>7:15</b>, when the panel opens and the item card appears: <b>Box opener</b>, a yellow utility knife with a red blade and a hook blade folded out. It goes into the second slot of the inventory. If you are stuck on this board, you are not missing a clue: there is nothing to read anywhere in the shed that helps. It is a pure sliding puzzle, and the recording grinds it for four minutes.
+      <img src="/rooms-and-exits/c3l19-box-opener.jpg" alt="The Box opener item card in the Garden Shed level, a yellow utility knife with a red blade" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=433s" target="_blank" rel="noopener">7:13</a> · <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=435s" target="_blank" rel="noopener">7:15</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 7:18 · the locker</span>
+      <strong>Cut it open and take what is inside</strong>
+      Three seconds later the Box opener is used on the tall red metal locker and the door swings wide. The locker is the level's last container — after this there are no more cabinets, drawers or boards, only the inventory and the floor. If your inventory looks thin at this point, the locker is where the missing pieces are.
+      <img src="/rooms-and-exits/c3l19-red-locker.jpg" alt="The red metal locker standing open in the Garden Shed level after being cut with the Box opener" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=438s" target="_blank" rel="noopener">7:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 7:30 to 7:36 · the inventory</span>
+      <strong>Battery, Bag of sand, Lighter</strong>
+      The inventory screen at 7:30 shows a 3x5 grid with three items in the top row: a green <b>Battery</b>, the <b>Box opener</b> and a beige <b>Bag of sand</b>, with Use / Combine / Dismantle / Examine along the bottom. At <b>7:36</b> a fourth item lands: a light blue <b>Lighter</b>. That order matters, because the next thing the recording does is light something — and it is the Lighter, not the Battery, that does it.
+      <img src="/rooms-and-exits/c3l19-inventory-lighter.jpg" alt="The Garden Shed inventory screen showing a Battery, Box opener, Bag of sand and a highlighted Lighter" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=450s" target="_blank" rel="noopener">7:30</a> · <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=456s" target="_blank" rel="noopener">7:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 7:45 · the candle</span>
+      <strong>The shed goes dark</strong>
+      At 7:45 the room has lost its light: the shelves and the bench are just shapes, and a tall cream candle stands in the middle of the floor with its wick burning. This is a deliberate lighting step, not a bug — the level drops the ambient light for its last three pickups. Everything after this point is done in a dim room, so slow down and pan instead of tapping.
+      <img src="/rooms-and-exits/c3l19-candle-lit.jpg" alt="A lit candle standing in the darkened Garden Shed level with the shelves barely visible" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=465s" target="_blank" rel="noopener">7:45</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 8:00 · the truck</span>
+      <strong>A red RC monster truck on the floor</strong>
+      In the dark, the camera finds a red remote-control monster truck parked on the shed floor, badged <b>SAVAGE X4.6</b> on its flank, with oversized knobbly tyres and a roll bar. The inventory at 7:54 already has it highlighted, which means the pickup happens between the candle and this frame. It is the only toy in the level and the only red object low to the ground.
+      <img src="/rooms-and-exits/c3l19-monster-truck.jpg" alt="A red remote-control monster truck badged SAVAGE X4.6 on the floor of the darkened Garden Shed" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=480s" target="_blank" rel="noopener">8:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 8:06 · the key</span>
+      <strong>Take the Key off the truck</strong>
+      At 8:06 a large ornate silver key appears above the truck, glowing, with the label <b>Key</b> under it. This is the level's exit item and it is deliberately placed on top of the toy rather than in a lock: the game wants you to have to look down in a dark room. Take it and the camera immediately turns toward the back wall.
+      <img src="/rooms-and-exits/c3l19-key-on-truck.jpg" alt="A large silver key glowing on top of the red monster truck in the Garden Shed level" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=486s" target="_blank" rel="noopener">8:06</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 16 · 8:18 to 8:24 · the exit</span>
+      <strong>Door open, +50 coins</strong>
+      The back door swings open at 8:18 onto bright daylight, with the walk-through-door icon showing on the frame — that is the exit prompt. Six seconds later the results card: <b>LEVEL COMPLETED</b>, <b>+50</b> coins under the Reward bar, an Efficiency bar with nine of its ten segments filled, <b>Time: 8:12</b>, and a second panel adding <b>300</b> to the piggy bank. That is the whole ending, and unlike most of Chapter 3 it is actually inside the recording.
+      <img src="/rooms-and-exits/c3l19-door-open.jpg" alt="The garden shed back door standing open onto bright daylight at the end of Level 19" width="1200" height="526" loading="lazy" />
+      <img src="/rooms-and-exits/c3l19-level-complete.jpg" alt="The Level 19 Garden Shed results card showing plus 50 coins, an efficiency bar, time 8:12 and a piggy bank total of 300" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=498s" target="_blank" rel="noopener">8:18</a> · <a href="https://www.youtube.com/watch?v=4ylaVY-c4DM&t=504s" target="_blank" rel="noopener">8:24</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>You cannot find the jerrycan.</b> It is not on a shelf and it does not get an item card. It stands inside a grey bucket in the corner, red can with a yellow cap. If you are hunting the inventory for a fuel item and it never appears, you have not picked it up yet.</p>
+    <p><b>The generator will not start.</b> The plate says 4000 starting and 3500 running, and the control face has an I/O rocker, a pull cord and two breakers. Reading the plate is not the same as starting it — and starting it is not the same as lighting the shed, because the shed stays dark until the candle. Do not sit here waiting for the lights.</p>
+    <p><b>The toolbox dials do nothing.</b> There is no confirm button on that lock: the box opens the moment the third wheel lands on <b>918</b>. If you are hunting for a green tick, you are on the wrong lock — this level has no keypad, only the dials, the tile board and a physical key.</p>
+    <p><b>The tile board eats your evening.</b> Four in-game minutes in the recording, and there is no clue anywhere in the shed that helps, because it is a pure sliding puzzle. If you are looking for a hint you will lose more time than the puzzle costs. Solve it by fixing the top row first and working downward.</p>
+    <p><b>You light the candle with the Battery.</b> The Battery is a green cell and it goes into something, but the thing that lights the candle at 7:45 is the <b>Lighter</b> picked up at 7:36 — light blue, fourth inventory slot. Battery plus candle is the most common wrong combine in the room.</p>
+    <p><b>You go through the front door.</b> The front of the shed is open to the camera and looks like an exit, but the exit icon only appears on the <b>back</b> door at 8:18, and it needs the Key from the truck. Walking at the open front face of the room does nothing.</p>
+
+    <h2>Where the Garden Shed sits in Chapter 3<span class="accent">.</span></h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i>, and its rooms run: Dining Room, Living Room, Study Room, Guest Toilet, Workshop, Guest Bedroom, Master Bathroom, Kids Playroom, Backyard, Garden, Kitchen, Driveway, Kids Bedroom, Storage Room, Garage, Attic, Terrace, Basement, <b>Garden Shed</b>, Kids Bedroom 2. The Garden Shed is room <b>19</b> — after the Basement and one before the chapter's last room.</p>
+    <p>Mechanically it is the chapter's palate cleanser after the Basement's four-lock density. Where the Basement stacks three parallel chains, the Shed gives you one long line: fuel, generator, radio, dials, board, locker, light, truck, key, door. The only place it opens up is the board, and that is a time problem rather than a logic problem. It is also, unusually for this chapter, a room that ends on camera — which is why this page can print a reward when the Terrace and Basement pages cannot.</p>
+
+    <LevelSelector chapter={3} current={19} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-3-level-18/">Chapter 3 Level 18 — Basement</a></p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-3-level-20/">Chapter 3 Level 20 — Kids Bedroom 2</a></p>
+      <p>Back to: <a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Four things, stated plainly so you know which parts of this page are reads and which are reconstruction.
+      <br><br>
+      <b>1. The picture on the sliding-tile board.</b> The 3x3 board is opened at 3:19 and never shown with its tiles all facing the camera in a clean frame. Two passes read it as a pale image of white sacks with a scoop of grain, which is consistent but not certain, and the solved board is on screen for barely a second before the panel opens. The puzzle's mechanic is certain; the artwork is not.
+      <br><br>
+      <b>2. What the Battery actually powers.</b> It appears in the inventory at 7:30 and nothing in the readable footage consumes it. The red cabinet marked <b>H</b> is the obvious candidate — a battery box is exactly what an H-marked wall cabinet in a shed would be — but the recording never shows the cabinet being opened, so this page will not claim it as a step.
+      <br><br>
+      <b>3. What is in the red toolbox.</b> The dials and the code <b>918</b> are solid, and the lid is up at 2:12, but the contents sit under the tray and the camera angle never gives a clean look. If you are following the guide for an item, take it off the box rather than trusting a guess from this page.
+      <br><br>
+      <b>4. Whether the generator ever runs.</b> The plate, the switch, the pull cord and the breakers are all clearly shown and clearly worked, but the shed's lights do not come on at any point in the recording, and the darkness at 7:45 is handled by the candle instead. Either the generator is a red herring or its payoff is a door or hatch that the camera never lingers on. We are not going to invent a hidden panel for it.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

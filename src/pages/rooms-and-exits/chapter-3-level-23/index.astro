@@ -1,0 +1,379 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 23 Walkthrough: Entertainment Room";
+const description = "Rooms & Exits Chapter 3 Level 23 walkthrough for the Entertainment Room: the pool table and dartboard, the four sums pinned to the board, the case padlock that takes 7561, the arcade cabinet that runs a Breakout game, the HIGH SCORE table reading YOU 56941, the metal box it opens, the arrow grid, the three-dial letter lock and the Key that ends the level. Every printed number was read twice from separate frames.";
+
+const faq = [
+  {
+    q: "What is the code in Rooms & Exits Chapter 3 Level 23 Entertainment Room?",
+    a: "There are two typed codes, on two different locks. The case sitting by the foosball table has a 12-key padlock and takes <b>7561</b>. The battered metal box on the stack of books has the same kind of padlock and takes <b>56941</b>, which is the top line of the arcade machine's HIGH SCORE table: <b>1. YOU 56941</b>. Both numbers were read twice off the green displays, at two separate seconds, and both reads agreed.",
+  },
+  {
+    q: "Where does 56941 come from?",
+    a: "From the arcade cabinet. The Breakout-style mini-game runs from about 3:08 to 5:06, and when it ends the cabinet shows a black HIGH SCORE screen with three entries: <b>1. YOU 56941</b>, <b>2. TOM 46987</b>, <b>3. OLY 24567</b>. The first line is the one the level uses. Type it into the metal box's padlock and the lid opens on a small tile carrying an arrow-like symbol.",
+  },
+  {
+    q: "Where does 7561 come from?",
+    a: "The level never shows the working. What it does show is a dartboard with a piece of paper pinned to it, and the paper carries four short expressions written one under another: <b>1+6</b>, <b>4/6</b>, <b>2-5</b>, <b>3-1</b>. Those four lines were each read twice from two different crops. How they turn into <b>7561</b> is not captured in any frame we could decode, so this page prints the code as a read rather than as a derivation.",
+  },
+  {
+    q: "How do I beat the Breakout mini-game on the arcade cabinet?",
+    a: "You play it like Breakout: clear the brick wall with the paddle, one ball. The recording spends almost two minutes on it — 3:08 to 5:06 — which tells you it is not a two-second interaction. The part that matters is what comes after: the cabinet ends on the HIGH SCORE table, and that table is the clue for the metal box. The run we used ends the game with <b>56941</b> on the top line.",
+  },
+  {
+    q: "What is the dartboard for?",
+    a: "It is a clue station, not a lock. Three darts are stuck in the board — one high and slightly right, one at the left, one at the right — and a rectangle of aged paper is pinned to the middle with four hand-written lines on it. We read those lines twice and they came out as <b>1+6</b>, <b>4/6</b>, <b>2-5</b> and <b>3-1</b>. Read it, then go to the case by the foosball table.",
+  },
+  {
+    q: "What are the six black-and-white tiles on the bar?",
+    a: "A single row of six small square tiles sits on the bar counter, each holding one big disc. Five of them are white tiles with a black disc; exactly one, second from the left, is a black tile with a white disc. That inverted tile is the read: this is a matching board, not a keypad. There is no instruction text and no counter, and the footage never holds a solved frame of it, so this page does not claim a rule for it.",
+  },
+  {
+    q: "Where do I find the Token and what does it do?",
+    a: "The <b>Token</b> is a pickup at about <b>2:47</b>: a flat, silver disc with two rings etched into it and a small centre dot, captioned simply <b>Token</b>. It appears right after the close-up of the arcade cabinet's control panel, which has two red button squares on top and two empty slots underneath them, and right before the cabinet's Breakout game starts at 3:08. The recording shows the panel, then the Token, then the game running — it does not show the Token being dropped into a slot, so treat that step as the obvious reading rather than a filmed one.",
+  },
+  {
+    q: "How do I open the exit door?",
+    a: "With the <b>Key</b>. The last lock in the room is a three-column letter machine: three square letter drums with the numbers <b>2</b>, <b>1</b> and <b>3</b> printed above them. The drums scroll, and at 7:25 the three boxes read <b>T</b>, <b>Y</b>, <b>N</b>; a second later the key is already in the open compartment. Pick up the <b>Key</b>, open the inventory, use it on the door on the left wall, and the door swings open on the exit at 7:37.",
+  },
+  {
+    q: "What is the four-record wall display?",
+    a: "A close-up on the right wall of the room: four black vinyl records set in a cross, two with red centre labels and two with pale ones, around a small framed picture of a gramophone. It opens as an interactive close-up and sparkles when it is done at 7:31. The recording never holds a solved frame long enough to read a pattern off it, so this page describes it rather than solving it.",
+  },
+  {
+    q: "What is the pinned arrow board?",
+    a: "A yellow panel pinned to a surface with a single white pin, holding a four-by-four grid of beveled cells, each carrying one white arrow: single up, down, left and right arrows mixed with double and triple ones. It is a directional-board puzzle, not a keypad. The footage covers about fifty seconds of it around 6:10 to 6:43 without ever spelling out the rule, so no move list is printed here.",
+  },
+  {
+    q: "Is Entertainment Room room 23 of Chapter 3?",
+    a: "Yes. Chapter 3 is <i>Murder Dressed in White</i> and it runs twenty-four rooms; Entertainment Room is <b>23 of 24</b>, straight after the Master Bedroom and immediately before the Hallway, which is the chapter's last room. That makes this the last room of the chapter with a full set of puzzles before the Hallway closes the chapter out.",
+  },
+  {
+    q: "Does the recording show the level being completed?",
+    a: "Yes, all the way to the results card. The door opens at 7:37 with a white silhouette in the doorway, and the <b>LEVEL COMPLETED!</b> card follows at 7:39. It shows a level reward of <b>+50</b> coins and a recorded <b>Time: 7:29</b>, plus the usual piggy-bank panel underneath.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-23"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 23"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 23</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 23 Walkthrough: Entertainment Room</h1>
+
+    <p>Entertainment Room is the twenty-third room of Chapter 3, <i>Murder Dressed in White</i>, and it is the biggest single space in the chapter. A pool table and a foosball table sit on the rug in the middle, a row of arcade cabinets lines the left wall under a dartboard, a bar with a <b>CLUB BAR</b> neon runs along the back, and a sofa, a guitar and an amp fill the right side. Where Kitchen was a chain and Kids Bedroom was a shelf of small toys, this room is a set of stations: you can work the dartboard, the pool table, the bar tiles and the cabinets in almost any order, and only two of them end in a typed code.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame at one frame per second. <b>7561</b> and <b>56941</b> were each read twice from the green keypad display, at two separate seconds, and both passes agreed; 56941 also matches the top line of the HIGH SCORE table, which was read twice from its own crop. The four lines on the dartboard paper were read twice at two zoom levels. Anything that only ever read one way is listed under "What this page could not verify" instead of being printed as fact.</div>
+
+    <LevelSelector chapter={3} current={23} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Entertainment Room is room 23 of 24 in Chapter 3. Two typed codes: <b>7561</b> on the case by the foosball table, <b>56941</b> on the metal box, taken straight off the arcade HIGH SCORE table.</p>
+      <ol>
+        <li>Read the room. Dartboard, pool table, bar tiles and arcade cabinets are all separate stations.</li>
+        <li>Work the bar's six black-and-white tiles, the pool table and the dartboard paper: <b>1+6</b>, <b>4/6</b>, <b>2-5</b>, <b>3-1</b>.</li>
+        <li>Open the case by the foosball table with <b>7561</b>.</li>
+        <li>Pick up the <b>Token</b>, use the arcade cabinet, play the Breakout game out, then read the HIGH SCORE table: <b>YOU 56941</b>.</li>
+        <li>Type <b>56941</b> into the metal box on the books. It opens on an arrow tile.</li>
+        <li>Finish the record display, the pinned arrow board and the three-dial letter lock, take the <b>Key</b>, and open the door on the left wall.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="0Sub3xxdD1E" data-title="Rooms &amp; Exits Level 23 Entertainment Room Walkthrough Murder Dressed in White Chapter 3"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 23 Entertainment Room Walkthrough">
+        <img src="https://i.ytimg.com/vi/0Sub3xxdD1E/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 23 Entertainment Room walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/0Sub3xxdD1E/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The Entertainment Room run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l23-hero-room.jpg" alt="Rooms and Exits Chapter 3 Level 23 Entertainment Room: a club room with a green pool table and foosball table on a red rug, arcade cabinets and a dartboard on the left wall, a bar with red stools and a CLUB BAR neon along the back, and a grey sofa with a guitar on the right" width="1200" height="526" loading="lazy" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>One long room seen from above, with the front wall cut away. The left wall is a run of arcade cabinets, a skateboard leaning against the first one, a red-shaded floor lamp by the door, and a dartboard mounted higher up. The back wall is the bar: a grey counter, a run of red-topped stools, a honeycomb shelf of bottles and the glowing <b>CLUB BAR</b> sign with a martini glass on it. To the right of the bar, four vinyl records hang in a square with a framed gramophone picture between them, and further right is a geometric shelf, a <b>ROAD WORK AHEAD</b> sign and the sofa.</p>
+    <p>The floor is almost all rug. The green-felt pool table sits in the middle with balls scattered on it, a foosball table stands between it and the front of the room, and a stand with two cues sits beside them. The right corner has the sofa, a lamp with a geometric shade, an amp and an electric guitar leaning on it. Everything in that list is either a puzzle station or a clue, which is why the recording opens by panning the whole room before touching anything.</p>
+    <p>Structurally, this is the loosest room in the chapter. There is no single chain: the two padlocks stand alone, the arcade mini-game stands alone, and the last three puzzles — records, arrows, letters — are self-contained until the letter machine hands you the Key. That also makes it forgiving: if one station stalls you, everything else is still open.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Everything we could identify, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Bar tiles</td><td>On the bar counter</td><td>Six square tiles in a row, one black tile with a white disc among five white tiles with black discs.</td></tr>
+        <tr><td>Pool table</td><td>Centre of the room, on the rug</td><td>Green felt, balls racked and scattered; opens as its own close-up board.</td></tr>
+        <tr><td>Dartboard</td><td>Left wall, above the gramophone</td><td>Three darts and a paper clue pinned to the middle: <b>1+6</b>, <b>4/6</b>, <b>2-5</b>, <b>3-1</b>.</td></tr>
+        <tr><td>Case padlock</td><td>By the foosball table</td><td>12-key padlock with a green display. Takes <b>7561</b>.</td></tr>
+        <tr><td>Arcade control panel</td><td>On the arcade cabinet, left wall</td><td>Two red button squares on top, two empty slots below, small keyhole icon at the right.</td></tr>
+        <tr><td>Token</td><td>Inventory pickup at 2:47</td><td>Flat silver disc, two etched rings, centre dot. Captioned <b>Token</b>.</td></tr>
+        <tr><td>Breakout cabinet</td><td>Left wall arcade machine</td><td>Playable brick-breaker, about 3:08 to 5:06, ends on the HIGH SCORE table.</td></tr>
+        <tr><td>HIGH SCORE table</td><td>On the cabinet screen</td><td><b>1. YOU 56941</b> · 2. TOM 46987 · 3. OLY 24567.</td></tr>
+        <tr><td>Metal box</td><td>On a stack of books, right of the bar</td><td>Battered grey tin with a 12-key padlock. Takes <b>56941</b>; holds an arrow tile.</td></tr>
+        <tr><td>Record display</td><td>Right wall, past the bar</td><td>Four vinyls in a cross around a framed gramophone picture. Sparkles when solved at 7:31.</td></tr>
+        <tr><td>Arrow board</td><td>Pinned yellow panel</td><td>4x4 grid of white arrows, single and double and triple, mixed directions.</td></tr>
+        <tr><td>Letter machine</td><td>Wall panel, close-up</td><td>Three letter drums under the numbers <b>2</b>, <b>1</b>, <b>3</b>. Yields the <b>Key</b>.</td></tr>
+        <tr><td>Key</td><td>Item card at 7:26</td><td>Silver key; opens the door on the left wall.</td></tr>
+        <tr><td>Exit door</td><td>Left wall, by the lamp</td><td>Plain wooden door. Opens at 7:37 on the white exit silhouette.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>The order below follows the recording. Timestamps are video time; the links jump to the matching second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:00</span>
+      <strong>Read the room before you touch it</strong>
+      The level opens on the title card — <b>Level 23 / Entertainment Room</b> — over the full room, then the camera settles. Sweep it once and fix the four stations in your head: cabinets and dartboard left, bar and tiles back, pool and foosball centre, sofa and records right. Nothing in this room is on a timer, so there is no cost to looking first.
+      <img src="/rooms-and-exits/c3l23-level-title.jpg" alt="The Level 23 Entertainment Room title card in Rooms and Exits Chapter 3" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=0s" target="_blank" rel="noopener">0:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:36 · the bar</span>
+      <strong>Six tiles, one of them the wrong way round</strong>
+      The camera drops onto the bar counter and a row of six small square tiles fills the screen. Five are white with a black disc; the second from the left is black with a white disc. That single inverted tile is the whole read: this is a matching board, not a code entry, and there is no instruction text or counter on it. Do it whenever — nothing in the footage ties it to a later lock.
+      <img src="/rooms-and-exits/c3l23-dice-tiles.jpg" alt="The row of six black and white disc tiles on the bar in the Entertainment Room, with the second tile inverted" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=36s" target="_blank" rel="noopener">0:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 1:00 · the small pickups</span>
+      <strong>Cue chalk and scissors</strong>
+      The inventory opens with two items in it: a blue cube labelled <b>Cue chalk</b> and a pair of <b>Scissors</b>. Neither is used in the part of the level we could decode, and both vanish from the inventory before the arcade game starts. Treat them as the room's two quiet pickups rather than as tools you have to spend.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=60s" target="_blank" rel="noopener">1:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 1:12 · the pool table</span>
+      <strong>The table opens as its own board</strong>
+      The pool table is interactive, not scenery. It pulls up as a close-up with the balls in play and a cue ball, and the player takes shots over the next dozen seconds. Whatever the table wants, it wants in shots rather than digits — there is no number printed anywhere on the felt and no counter on the frame.
+      <img src="/rooms-and-exits/c3l23-pool-table.jpg" alt="The pool table close-up in the Entertainment Room with balls racked and a cue ball in play" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=72s" target="_blank" rel="noopener">1:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:42 · the dartboard clue</span>
+      <strong>Four sums pinned to the board</strong>
+      The dartboard close-up is the room's only written clue. Three darts are stuck in it and a rectangle of aged paper is pinned across the middle with four short expressions stacked on it: <b>1+6</b>, <b>4/6</b>, <b>2-5</b>, <b>3-1</b>. We read those four lines twice, from the whole board and from a tight crop, and the reads agreed. This is the only place in the level where the working for a code could live.
+      <img src="/rooms-and-exits/c3l23-dartboard-paper.jpg" alt="The dartboard in the Entertainment Room with a paper clue pinned to it reading 1+6, 4/6, 2-5 and 3-1" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=102s" target="_blank" rel="noopener">1:42</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:59 · the first padlock</span>
+      <strong>7561 opens the case by the foosball table</strong>
+      A 12-key padlock comes up over the room — numbers 1 to 9, a clear key, 0, and a tick — with a green display on top. The run types <b>7</b>, <b>5</b>, <b>6</b>, <b>1</b> and the display holds <b>7561</b>; the keypad clears and the case underneath it is standing open. We read the display twice, at two separate seconds, and both reads gave the same four digits.
+      <img src="/rooms-and-exits/c3l23-foosball-keypad-7561.jpg" alt="A 12-key padlock in the Entertainment Room with its green display reading 7561" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=119s" target="_blank" rel="noopener">1:59</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 2:43 · the cabinet and the Token</span>
+      <strong>Two red buttons, two empty slots, one silver disc</strong>
+      The arcade cabinet's control panel opens as a close-up: a grey plate in a two-by-two layout with two red squares lit across the top, two empty slots underneath, and a small keyhole icon at the right edge. Seconds later the inventory shows a <b>Token</b> — a flat silver disc with two etched rings and a centre dot. The panel, then the Token, then the Breakout game running: that is the order the recording gives you.
+      <img src="/rooms-and-exits/c3l23-arcade-panel.jpg" alt="The arcade cabinet control panel in the Entertainment Room with two red button squares above two empty slots" width="1200" height="526" loading="lazy" />
+      <img src="/rooms-and-exits/c3l23-token-item.jpg" alt="The Token item in the Entertainment Room, a flat silver disc with etched rings" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=163s" target="_blank" rel="noopener">2:43</a> · <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=167s" target="_blank" rel="noopener">2:47</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 3:08 to 5:06 · the long one</span>
+      <strong>Play the brick-breaker out</strong>
+      The cabinet switches to a Breakout-style game: rows of coloured bricks at the top, one ball, one paddle. The recording grinds on it for close to two minutes — the single longest action in the room — and the bricks come down row by row. Do not treat this as a five-second interaction; budget the time, because the clue you need is on the other side of it.
+      <img src="/rooms-and-exits/c3l23-breakout-arcade.jpg" alt="The Breakout-style arcade mini-game in the Entertainment Room with rows of coloured bricks, a ball and a paddle" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=188s" target="_blank" rel="noopener">3:08</a> · <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=306s" target="_blank" rel="noopener">5:06</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 5:08 · the HIGH SCORE table</span>
+      <strong>1. YOU 56941</strong>
+      The game ends on a black screen with white pixel text: <b>HIGH SCORE</b>, then three lines — <b>1. YOU 56941</b>, <b>2. TOM 46987</b>, <b>3. OLY 24567</b>. The top line is the one the level wants, and it is five digits, which matters: the next padlock is a five-digit padlock. Read the whole table anyway; it is on screen for over ten seconds.
+      <img src="/rooms-and-exits/c3l23-high-score-56941.jpg" alt="The arcade HIGH SCORE screen in the Entertainment Room reading 1. YOU 56941, 2. TOM 46987, 3. OLY 24567" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=307s" target="_blank" rel="noopener">5:07</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 5:22 · the second padlock</span>
+      <strong>56941 opens the metal box</strong>
+      The same 12-key padlock comes up again, this time on the battered grey metal box that sits on a stack of books by the bar. It is typed in as five digits — <b>5</b>, <b>6</b>, <b>9</b>, <b>4</b>, <b>1</b> — and the display holds <b>56941</b> until the lid is standing open at 5:35. Inside is a single small square tile carrying an arrow-like symbol: the piece the arrow board has been waiting for.
+      <img src="/rooms-and-exits/c3l23-briefcase-keypad.jpg" alt="The 12-key padlock on the metal box in the Entertainment Room with its display reading 56941" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=322s" target="_blank" rel="noopener">5:22</a> · <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=335s" target="_blank" rel="noopener">5:35</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 5:45 · the records</span>
+      <strong>Four vinyls and a gramophone picture</strong>
+      A close-up on the right wall: four black records in a cross, the top and bottom ones with red centre labels and the two sides with pale ones, and a small framed picture of a gramophone in the middle of them. It is an interactive display rather than a prop — it sparkles when it is done at 7:31 — but the solved state is never held long enough in this footage to read a pattern off it.
+      <img src="/rooms-and-exits/c3l23-record-wall.jpg" alt="The four vinyl records arranged around a framed gramophone picture on the Entertainment Room wall" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=345s" target="_blank" rel="noopener">5:45</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 6:10 · the arrow board</span>
+      <strong>A pinned 4x4 of white arrows</strong>
+      A yellow panel with a single white pin at the top holds a four-by-four grid of beveled cells, each one carrying a white arrow: singles up, down, left and right mixed with doubles and triples. The player works it for about half a minute and the cells change one press at a time. There is no instruction text, no counter and no legend, so it is a state puzzle you read off the board.
+      <img src="/rooms-and-exits/c3l23-arrow-grid.jpg" alt="The pinned yellow panel in the Entertainment Room holding a four by four grid of white directional arrows" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=370s" target="_blank" rel="noopener">6:10</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 6:43 · the letter machine</span>
+      <strong>Three drums under 2, 1, 3</strong>
+      The last lock is a small grey panel with three square letter drums and the numbers <b>2</b>, <b>1</b>, <b>3</b> printed above them. The drums scroll: the recording shows <b>C Y N</b>, <b>T Y N</b> and <b>T Y L</b> in the closing seconds before the compartment opens. Whatever the intended word is, the machine hands over the Key at 7:26 — so the work here is scrolling three drums until the panel releases, not typing.
+      <img src="/rooms-and-exits/c3l23-letter-lock.jpg" alt="The three-dial letter lock in the Entertainment Room with the numbers 2, 1 and 3 above three letter drums reading T, Y and N" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=403s" target="_blank" rel="noopener">6:43</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 7:26 · the Key and the door</span>
+      <strong>Take the Key, open the door on the left wall</strong>
+      The letter machine opens on the <b>Key</b>: a silver key on the dark item card, captioned simply <b>Key</b>. Open the inventory, use it on the plain wooden door on the left wall by the red lamp, and the door swings open on a white exit silhouette at 7:37. That is the end of the room — no last keypad, no final code, just the key you were handed.
+      <img src="/rooms-and-exits/c3l23-key-item.jpg" alt="The Key item card in the Entertainment Room, a silver key on a dark background" width="1200" height="526" loading="lazy" />
+      <img src="/rooms-and-exits/c3l23-door-open.jpg" alt="The exit door in the Entertainment Room standing open with a white silhouette in the doorway" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=446s" target="_blank" rel="noopener">7:26</a> · <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=457s" target="_blank" rel="noopener">7:37</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 15 · 7:39 · the results</span>
+      <strong>+50 coins, 7:29 on the clock</strong>
+      The results card reads <b>LEVEL COMPLETED!</b> with a level reward of <b>+50</b> coins and a recorded <b>Time: 7:29</b>, then the usual piggy-bank panel underneath. That time matches the length of the run, so this room really does take a quarter of an hour if you play the arcade game properly.
+      <img src="/rooms-and-exits/c3l23-level-completed.jpg" alt="The Level Completed card for Entertainment Room showing a +50 coin reward and a time of 7:29" width="1200" height="526" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=0Sub3xxdD1E&t=459s" target="_blank" rel="noopener">7:39</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>You assume the dartboard is the code.</b> It is a clue, not a lock. The darts are in the board and the paper is pinned to it, but nothing in the room takes a dart score. Read the four lines, then go to the padlock.</p>
+    <p><b>You skip the arcade game.</b> The cabinet is worth two minutes of your life and the whole room turns on it: the HIGH SCORE table only appears once the game ends, and the metal box only opens with the score off it. If you walked past the cabinet, you have no way into the box.</p>
+    <p><b>You read 56941 as a five-digit score but not as a code.</b> It is both. The table is the only place that number exists, and the metal box is the only five-digit padlock in the room, which is the level telling you they belong together.</p>
+    <p><b>You hunt for a fourth digit on the first padlock.</b> 7561 is four digits because the case padlock is a four-digit padlock. Do not try to push five in.</p>
+    <p><b>You wait for the letter machine to say something.</b> It does not. The drums scroll and the panel opens; the key is the whole reward. If it is not opening, you are still one letter off on a drum, not missing a riddle.</p>
+
+    <h2>Where Entertainment Room sits in Chapter 3<span class="accent">.</span></h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i>, twenty-four rooms long. Entertainment Room is <b>23 of 24</b> — straight after the Master Bedroom and immediately before the Hallway, which is the chapter's final room. So this is the last full puzzle room of the chapter, and the biggest single space in it.</p>
+    <p>Mechanically it is a reset after the tighter rooms around it. Nothing here chains: the dartboard does not gate the padlock, the token does not gate the high score, and the record display and arrow board sit to one side entirely. That makes it a good room to clear fast — read the clue stations, open the two padlocks, play the arcade game, then roll the letter drums.</p>
+
+    <LevelSelector chapter={3} current={23} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Previous room: Chapter 3 Level 22 — Master Bedroom (walkthrough coming soon)</p>
+      <p>Next room: <a href="/rooms-and-exits/chapter-3-level-24/">Chapter 3 Level 24 — Hallway</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Four things, stated plainly so you know which parts of this page are reads and which are reconstruction.
+      <br><br>
+      <b>1. How the dartboard paper produces 7561.</b> The four lines read <b>1+6</b>, <b>4/6</b>, <b>2-5</b> and <b>3-1</b>, and those reads held up at two zoom levels. But no frame in the recording shows the paper being used, and no frame shows a working being written down. The code <b>7561</b> itself is solid — it was read twice off the keypad display — but the arithmetic that gets you there is not on film, so this page does not invent one.
+      <br><br>
+      <b>2. The final letters on the three-dial machine.</b> The drums were still moving when the compartment opened. The last clean read was <b>T Y N</b> at 7:25, and a 4x crop of the next second read the third box as an <b>L</b>; the Key appears at 7:26 either way. With three scrolling drums and no solved frame, this page prints the reading rather than a "correct" word.
+      <br><br>
+      <b>3. What the Token physically goes into.</b> The control panel with the two red squares and two empty slots is filmed at 2:43, the Token is picked up at 2:47, and the Breakout game is running by 3:08. That sequence is consistent with dropping the Token into a slot, but the drop is never shown, so it stays an inference.
+      <br><br>
+      <b>4. The payoffs of the record display and the arrow board.</b> Both open, both are worked, both end cleanly — the records sparkle at 7:31 — but neither shows a readable solved state or a reward we could tie to a later lock. They are described here, not solved.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>

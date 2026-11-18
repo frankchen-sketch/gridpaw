@@ -24,7 +24,12 @@ export HTTPS_PROXY=http://127.0.0.1:33210 HTTP_PROXY=http://127.0.0.1:33210 PATH
 - 137 拿不到就退 `-f 136`（720p 够用，出图本来就缩到 1200×594）
 - 失败先重试 3 次（代理偶发 SSL 抖动），仍失败再用 `ytsearch8:"Rooms and Exits Chapter 1 Level N walkthrough"` 换一条录像，并在交付里写明换了
 - **批量做多关时，下载必须串行，且由主 agent 一个人做** —— 2026-11-18 实测：4 个子 agent 各自重试下载 → 8 个并发 yt-dlp 抢同一个代理 → googlevideo 反复 `Read timed out after 10 retries`，L5/L10/L13 各失败 5 次，31 个视频里 3 个下不完。改成主 agent 串行（~2-3 分钟/个）后一次成功率 10/10。子 agent 只负责抽帧/读画面/写页面
-- **yt-dlp 报错时文件往往已经完整**：先别重下，跑 `ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 <file>.part`，时长对得上 YouTube 元数据就直接 `mv <file>.part <file>` 用（L5 339.4/340、L10 226.2/227、L13 522.6/523 全是完整数据，只差 yt-dlp 的收尾请求失败）。省下 30 分钟以上
+- **完整性验证只能用解码，不能用 ffprobe 的 duration**（2026-11-18 血泪教训）：
+  - ❌ 错：`ffprobe -show_entries format=duration` 读的是容器 metadata，**下载中断的文件照样报完整时长**（moov 头在，数据缺）。靠这个判定把 11 个只下了 5-60% 的文件当完整用，子 agent 白干一小时。
+  - ✅ 对：`ffmpeg -i "$f" -f null - 2>&1 | grep -oE 'time=[0-9:.]+' | tail -1` 取实际解码到的时间，`real >= meta * 0.97` 才算完整。
+  - 下载命令用 `--continue`（断点续传）+ `--retries 10 --fragment-retries 20`：**不要用 `--no-part`** —— 实测日志里 `Got error: 3228656 bytes read, 7243406 more expected` 就是连接被 YouTube 掐断，`--no-part` 每次都从零重来，永远下不完；`--continue` 保留 `.part` 续传进度。
+  - 下载**完成后**才能验证：此时 `ffmpeg -i "$f" -f null -` 解码出的时长 ≥ 元数据 95% 才算成功；不足则 `rm` 掉重下（此时 `.part` 已被 yt-dlp 消费，重来是干净的）。`.part` 阶段的文件不能用来判断完整性。
+  - 137（1080p）前 3 次失败后降 136（720p）——残的 1080p 不如完整的 720p。720p 源（1280×562）出 1200 宽的图只需 94% 缩放，够用。
 
 抽帧：
 
