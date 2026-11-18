@@ -95,7 +95,7 @@
             .catch(function (e) { statusEl.innerHTML = '<span class="err">' + esc(e.message) + '</span>'; });
         }
         document.getElementById('load').addEventListener('click', load);
-        tokenEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') load(); });
+        tokenEl.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.isComposing && e.keyCode !== 229) load(); });
         if (saved || qs) load();
       })();
     </script>

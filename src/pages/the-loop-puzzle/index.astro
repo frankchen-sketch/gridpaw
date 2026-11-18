@@ -24,8 +24,13 @@ function lpLongDate(iso: string): string {
   return `${LP_MONTHS[m - 1]} ${d}, ${y}`;
 }
 
-const title = "The Loop Puzzle: How to Play, Hints & Strategy | GridPaw";
-const description = "How to play The Loop, Britannica's daily picture puzzle: rules, what green, red and orange mean, 6 solving strategies, and a free loop puzzle to play now.";
+/* 标题对齐 GSC 实测意图：28 天 15,976 曝光的查询几乎全是 "loop britannica" 这类
+ * 品牌型导航词（位置 6-7，CTR 0.3%）。原文案主打 How to Play，页面上有可以玩的
+ * 棋盘却只字未在标题里提，点击理由为零。同时去掉 "Hints" —— 那是 /the-loop-hints/
+ * 的主词，留在本页只会自相残杀。 */
+/* SEOHead 会自动补 " | GridPaw"（+10），所以这里控到 48 字符，成品 58 */
+const title = "The Loop Puzzle (Britannica): Rules & Free Play";
+const description = "Play The Loop, Britannica's daily picture puzzle, free in your browser: the rules, what green, red and orange mean, and 6 techniques to finish the ring.";
 
 // FAQ 单一真源：schema 与页面正文共用同一数组，保证逐字一致（game-guide-page-playbook 铁律）
 const faqs = [
@@ -147,7 +152,7 @@ const faqJsonLd = [
 
   <main class="seo-section">
   <SideAd />
-    <h1>The Loop Puzzle: How to Play, Hints &amp; Strategy</h1>
+    <h1>The Loop Puzzle: Rules, Free Play &amp; Strategy</h1>
 
     <p class="lede">Seen today's <b>The Loop</b> on Britannica and want to actually finish it? This guide covers how the daily picture puzzle works (the rules, what green, red and orange mean, six solving techniques), plus a free loop puzzle you can play right here on the page.</p>
 

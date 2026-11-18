@@ -1098,7 +1098,7 @@ import SideAd from '../../components/SideAd.astro';
         document.addEventListener('click', onDoc, true);
         setTimeout(function () { try { inp.focus(); inp.select(); } catch (e) {} }, 0);
         inp.addEventListener('keydown', function (e) {
-          if (e.key === 'Enter') { e.preventDefault(); save.click(); }
+          if (e.key === 'Enter' && !e.isComposing && e.keyCode !== 229) { e.preventDefault(); save.click(); }
           else if (e.key === 'Escape') closePop();
         });
         save.addEventListener('click', function () {

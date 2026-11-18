@@ -9,7 +9,16 @@
 #
 # 用法（在任意 worktree 里跑，脚本会自己 cd 到仓库根）：
 #   bash scripts/deploy.sh              # 正常部署
-#   bash scripts/deploy.sh --allow-dirty # 明确知道自己在干什么才用
+#   bash scripts/deploy.sh --allow-dirty # 仅在「脏文件全在非构建路径且逐条核对过」时用
+#
+# ⚠ --allow-dirty 不是省事开关（2026-11-19 实测教训）：
+#   主 worktree 常年挂着兄弟会话的未提交文档，用它部署出来的 dist 内容没问题，
+#   但 stamp-sw 会打出 CACHE_VERSION='<hash>-dirty' —— 事后没人能一眼断定线上
+#   跑的是哪个 commit，可审计性没了。部署应从干净 commit 出包：
+#     git worktree add /tmp/<t> <hash>; ln -s <主>/node_modules /tmp/<t>/node_modules
+#     cp public/<indexnow-key>.txt /tmp/<t>/public/   # gitignore，新 worktree 必缺
+#     全链构建 → npx -y wrangler pages deploy dist --project-name gridpaw --branch main
+#   --allow-dirty 只留给「脏的确实不参与构建，且已经 grep 过 src/ public/」的情况。
 #
 # 退出码：0 成功 / 2 前置检查没过（没部署） / 3 另一个部署持锁中 / 4 部署后线上自检失败
 # ─────────────────────────────────────────────────────────────
