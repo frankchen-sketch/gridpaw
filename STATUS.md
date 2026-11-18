@@ -542,6 +542,37 @@ GameHub 14 款游戏线上全 200。
 - 原帧尺寸是 **1920×864**（不是 1080，上下有黑边），出图 `crop(0,0,1920,864) → 1200×594`
 - 12 关并行制作中（4 个子 agent × 3 关）
 
+### Chapter 3 全 13 关落地（`26ebc6e`）—— R&E 凑满 50 页
+
+L1 Dining Room（`a5a07a2`）之后，L2–L13 由 4+2 个子 agent 并行产出，**R&E 从 38 页扩到 50 页**（50 关卡页 + hub）。
+
+**全部码（逐帧读数，两次一致才写进页面）**：
+
+| 关卡 | 码 | 线索 |
+|---|---|---|
+| L2 Living Room | 无数字码 | 3×3 滑板盖 → Key → 白门 |
+| L3 Study Room | 2015 / 45837 / 62850 | 台灯罗马数字 / 书架序列 / 四盘箱 |
+| L4 Guest Toilet | 346 | 镜柜数字 / 水箱三盘锁 |
+| L5 Workshop | 41018 + 文字码 | 3×5 网格按列中行 / 笔记本 → 时钟 14:00 |
+| L6 Guest Bedroom | 94 + DAVID | 灯罩 IX/IV / ID 卡姓名 |
+| L7 Master Bathroom | 279151 + 6389 | 瓷砖 27/16→91/51 / 门键盘 |
+| L8 Kids Playroom | 396 | 玩具箱组合 |
+| L9 Backyard | 13 + 3·1·5·6·2 | 星星计数 / 报纸顺序（从底层起） |
+| L10 Garden | B·N·U·G + 1911 | 字母形状序 / 日期公告 |
+| L11 Kitchen | 325 | 烤箱转盘 |
+| L12 Driveway | 无数字码 | A17 门牌 / AUTO 拨杆 / William Foster 1866 墓碑 / 五滑阀 |
+| L13 Kids Bedroom 1 | 74 + 4 → 17,760 | 木箱面板 → 计算器 48×5=240 → 240×74 |
+
+**工艺**：13 个 YouTube 实况 1080p（format 137），1fps 抽帧 → 6s 步长扫读网格定位谜题 → 关键数字 2 倍裁切二次读数 → crop(0,0,1920,864) resize 1200×594，共 **131 张图**。每页 324–383 行，统一模板（FAQ ≥8 + FAQPage JSON-LD、Quick answer、物品表、step-card 8–16 带逐帧时间戳、"Where people get stuck"、"What this page could not verify" 诚实标注、上下关导航）。
+
+**验证**：验收脚本 12/12 通过（结构 / 图片存在性 / 死链 / 裸 iframe）；build 通过，Chapter 3 = 13 页、hub 13 链接、全站 R&E **50 关卡页**、死链 0。
+
+**踩到的坑（下次批量视频任务直接用）**：
+- **不要让 N 个子 agent 各自跑 yt-dlp** —— 8 并发打爆同一代理，googlevideo 反复 `Read timed out`，L5/L10/L13 各失败 5 次。正确做法：主 agent 串行下载（~2-3 分钟/个），子 agent 只做分析
+- **yt-dlp 报错时文件可能已完整**：`.part` 用 `ffprobe -show_entries format=duration` 验时长，对得上就直接 `mv` 成 `.mp4` 用（L5 339.4/340、L10 226.2/227、L13 522.6/523 全部是完整数据，只差 yt-dlp 收尾）
+- 验收脚本抓数字用 `[0-9]{3,6}` 会漏掉字母码（DAVID/B·N·U·G）和带分隔符的（3·1·5·6·2）—— 抽查要看 answer-box 正文而不是只看正则结果
+- 部署前置检查拦下「落后 origin/main 2 commit」：兄弟会话推了 loop-answers 数据 + 把我们分支 merge 进 main，`git merge origin/main` 无冲突后重跑即可
+
 ## 历史事件档案
 
 2026-09-21 ~ 2026-11-08 的全部按日期事件段（51 段，部署记录 / 事故复盘 / 验收数据）已搬至 `STATUS-ARCHIVE.md`「三、按日期事件段」。
