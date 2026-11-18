@@ -337,6 +337,27 @@ GSC 近 28 天（08-20~09-16）**267 曝光 / 5 点击**，均位 13.8。按设�
 
 **数据卫生（新坑，已记 skill）**：11-16/17 有一波**未被 `isLikelyBot` 标记的机器人流量**——`Mozilla/5.0 (X11; Linux x86_64)` + 无 referrer：11-16 全天 630（00-08 段 488）、11-17 751、11-18 降到 95。它把「visit 总量」灌高到 11-16 甚至超过断崖前（686 vs 533），**任何按 visit 总量做的断崖判断都会失真**；必须按 `referrerHost` 分层 + 同小时-of-day 对齐。
 
+**2026-11-18 追记：埋点修复 + 降权数据口径更正（`a029566`，已上线）**
+
+修复三个埋点 bug（`src/lib/funnel-track.ts` + 5 份 `public/*/gp-track.js`）：
+1. **`looksLikeBot()` 漏判伪装爬虫** —— 11-16/17 出现 634/756 个「Linux x86_64 + Chrome/148 + `tz=UTC`」访客，每个 `guest_id` 只发 1 条 visit、referrer 为空、集中爬 `/rooms-and-exits/chapter-2-level-*`。UA 无 bot 关键词 → 被判真人 → 计入日活。修法：`Intl.DateTimeFormat().resolvedOptions().timeZone === 'UTC'` 即判 bot（无头/服务器浏览器恒为 UTC；英国是 `Europe/London`、冰岛是 `Atlantic/Reykjavik`，都不是裸 UTC）
+2. **anonId fallback 身份碎片化** —— `toString(36)` 会产出 g-z，被服务端 `/^anon-[0-9a-fA-F-]{6,70}$/` 拒收 → 每请求签发新 UUID。改成 `toString(16)`
+3. **`crazy-cleanup/gp-track.js` 白名单分叉** —— 少 6 个 PWA 事件（`sw_registered`/`install_*`），该页一直被 400 丢弃
+
+**口径更正（重要，影响所有历史对账）**：此前「11-16/17 总访客没跌」是被爬虫掩盖的错误结论。排除 `tz=UTC` 后的真实访客：
+
+| 日期 | 原始 | 去 UTC | 说明 |
+|---|---|---|---|
+| 11-14 | 999 | **915** | 基线 |
+| 11-15 | 807 | 700 | -23% |
+| 11-16 | 1,007 | **404** | -56% |
+| 11-17 | 1,092 | **369** | -60% |
+| 11-18 | 1,099 | **912** | **99.7%（完全恢复）** |
+
+即：真实跌幅是「站点总流量 -56~60%」而非「-86%」；11-18 已完全回到 11-14 水平。**今后所有 D1 访客口径必须排除 `$.timezone='UTC'`**。
+
+**部署检查结论（同批核实）**：线上 `1978b68-dirty` 的 `-dirty` 是无害的 —— 未提交的只有 `NEWWORD-LEDGER.md`/`sitemap-monitor/**`/`research/**`，都不在 `src/`、`public/`，不进 dist；`45a2ee3`（撤广告）确认在线上版本的祖先链里。
+
 **2026-11-17 追记：Adsterra 全站撤除（`45a2ee3`，法老决定「撤掉先，等排名看是否能恢复」）**
 - 开关三处（恢复时一起改回 `false`）：`src/components/SideAd.astro`（侧栏/sticky/顶部）、`src/components/InContentAd.astro`（正文 300×250 + Native 实验）、`public/pictomino/gp-ads.js`（函数首行 return）
 - 依据：11-08 00:32 三档广告调度器把广告从 10 页扩到 500+ 页，与 83 关 + 107 德语页在 3 小时内同批上线；7 天后 11-15 10:00 整站曝光掉到原 8.7%。哥飞 11-15 群内两次定性「体验不好，很伤排名」，同群有人因师兄警告卡三周不敢接
