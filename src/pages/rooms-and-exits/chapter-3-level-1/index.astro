@@ -1,0 +1,326 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 3 Level 1 Walkthrough: Dining Room";
+const description = "Rooms & Exits Chapter 3 Level 1 walkthrough for Dining Room: the three-dial lock that takes 358 from the equation 13 × 3 × 9 − 2 + 9, the four-dial safe that takes 8563 off the crumpled paper, the fruit-bowl light projection, and the playing cards in the sideboard drawer.";
+
+const faq = [
+  {
+    q: "What is the code in Rooms & Exits Chapter 3 Level 1 Dining Room?",
+    a: "There are two locks and two codes. The <b>three-dial combination lock</b> takes <b>358</b> — the answer to the equation printed above it, <b>13 × 3 × 9 − 2 + 9</b>. The <b>four-dial safe</b> takes <b>8563</b>, the number written on the crumpled white <b>Piece of paper</b> you pick up in the room. Both were read twice from separate frames of the same recording.",
+  },
+  {
+    q: "Where does 358 come from?",
+    a: "From the white text above the lock itself. It reads <b>13 X 3 X 9 - 2 + 9</b>. Multiply first: 13 × 3 = 39, then 39 × 9 = 351. Then 351 − 2 = 349, and 349 + 9 = <b>358</b>. The lock has three dials, which matches a three-digit answer. Set each dial to the matching digit and the shackle releases.",
+  },
+  {
+    q: "Where do I find the number 8563?",
+    a: "On a <b>Piece of paper</b> in your inventory. It is a crumpled white scrap with the four digits written in red marker. You pick it up during the level; when you open the inventory and examine it, the digits are legible. The four-digit safe in the room is the lock that takes it. The digits are 8, 5, 6, 3 read left to right.",
+  },
+  {
+    q: "What is the fruit bowl on the dining table for?",
+    a: "It is a clue, not a container. Partway through the level a blue light projects a pattern onto the bowl and the fruit on it, and the bowl itself carries symbols — an X, a heart and a banana shape are visible. We treat it as a visual clue rather than a code we can read with confidence: the projection is legible as a smiley-face pattern, but we could not establish which lock it feeds, so this page does not print a number for it.",
+  },
+  {
+    q: "What are the playing cards in the drawer for?",
+    a: "The sideboard drawer near the window opens to reveal <b>playing cards and poker chips</b>. The cards go into your inventory — in the recording we captured the bag holds a 2 of Clubs, a King of Spades and a 7 of Diamonds. We could not establish which lock consumes them, so we do not present them as a code. If you are stuck, they are worth a second look, but we are not going to invent a sequence for them.",
+  },
+  {
+    q: "What does the nutcracker do?",
+    a: "A <b>Nutcracker</b> figure ends up in the inventory around the same time as a second Piece of paper. Our footage shows the item being collected and the paper being examined immediately afterwards, so the nutcracker is plausibly the tool that reveals the paper — but we never see the exact action in a single clear shot, so treat that as a probable chain rather than a confirmed one.",
+  },
+  {
+    q: "What is Chapter 3 called, and is Dining Room the first room?",
+    a: "Chapter 3 is <i>Murder Dressed in White</i>, and Dining Room is room 1 of it. The chapter moves the game indoors: instead of storefronts the rooms are the rooms of a house — dining room, living room, study, guest toilet, workshop, and so on. The room count for Chapter 3 in the game's own level list is fifteen.",
+  },
+  {
+    q: "How do I open the four-dial safe?",
+    a: "The safe is the brown metal box with four rotating dials, each showing three digits stacked vertically. Set the four dials to <b>8 5 6 3</b> from left to right. In our footage the dials rest on 8-5-7-0 before the code is entered, which is a useful confirmation that you are looking at the right object — if your dials do not start near those values, you are at a different lock.",
+  },
+  {
+    q: "What is the reward for finishing Dining Room?",
+    a: "We cannot tell you. The recording we sampled ends on a <b>THANKS FOR WATCHING</b> card at 2:42, before the results panel appears. Rather than quote a reward from another level's footage, this page leaves it blank. Every other Rooms &amp; Exits room we have documented pays a flat coin reward on a LEVEL COMPLETED card, so expect the usual card, but the figure for this room is unverified here.",
+  },
+  {
+    q: "Do I need to do the locks in a particular order?",
+    a: "No single order is enforced by the game, but the recording we sampled does the three-dial lock first (around 1:54) and the four-dial safe later (around 2:30). That order matches the clues: the equation is printed on the lock itself, so it can be solved on sight, while 8563 requires finding the paper first. If you are speedrunning, solve the equation as soon as you see the lock and keep an eye out for the paper while you work the rest of the room.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-3-level-1"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 3 Level 1"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 3 &gt; Level 1</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 3 Level 1 Walkthrough: Dining Room</h1>
+
+    <p>Dining Room is the first room of Chapter 3, <i>Murder Dressed in White</i>, and it is a deliberate change of gear from Chapter 2. There is no shop front, no till and no thief: you are locked in a single furnished dining room with a table, a hutch, two windows and a sideboard, and the level is solved almost entirely with two code locks. This page gives you both codes, the arithmetic behind one of them, and an honest account of the parts of the room we could not pin down.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame from a single 2:42 recording, sampled at one frame per second. Both codes on this page were read at least twice from separate frames: the equation <b>13 X 3 X 9 - 2 + 9</b> was read whole-frame and again from a 2× crop of the lock, and the paper's <b>8563</b> was read the same way. Where a detail appeared only once, it is listed under "What this page could not verify" instead of being stated as fact. Every digit printed here comes off the pixels, not from another guide.</div>
+
+    <LevelSelector chapter={3} current={1} variant="jump" label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Dining Room is room 1 of 15 in Chapter 3. Two locks, two codes: <b>358</b> on the three-dial combination lock (from the equation above it) and <b>8563</b> on the four-dial safe (from the crumpled Piece of paper).</p>
+      <ol>
+        <li>Look at the black three-dial lock: the white text above it reads <b>13 X 3 X 9 - 2 + 9</b>. That is <b>358</b>. Set the dials and it opens.</li>
+        <li>Work the room for items — the sideboard drawer gives <b>playing cards</b>, and a <b>Piece of paper</b> ends up in your bag with <b>8563</b> written on it in red.</li>
+        <li>Set the four-dial safe, the brown box with four stacked-dial columns, to <b>8 5 6 3</b>.</li>
+        <li>Check the dining table: a blue projection lands on the fruit bowl partway through, and the bowl itself carries an X, a heart and a banana. It is a clue; we could not tie it to a lock with confidence.</li>
+        <li>The recording ends on a THANKS FOR WATCHING card at 2:42, before the results panel — so the reward for this room is not printed anywhere on this page.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="bLoW8bODdeg" data-title="Rooms &amp; Exits Level 1 Dining Room Walkthrough Murder Dressed in White Chapter"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 1 Dining Room Walkthrough">
+        <img src="https://i.ytimg.com/vi/bLoW8bODdeg/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 3 Level 1 Dining Room walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/bLoW8bODdeg/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The 2:42 run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c3l1-hero-dining-room.jpg" alt="Rooms and Exits Chapter 3 Level 1 Dining Room: a rectangular dining table with six chairs on a patterned rug, a wooden hutch with glass doors on the back wall, two windows flanking a pop-art painting, and a pendant lamp above the table" width="1200" height="594" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>One room, and it does not get bigger. The dining room is a single rectangle: a long wooden table with six matching chairs sits on a patterned rug in the middle, a tall wooden hutch with glass doors displays dinnerware against the back wall, two windows flank a large pop-art painting of a woman's face in yellow and pink, a pendant lamp hangs over the table, and a wooden sideboard with a mirror above it runs along the right wall. A plant in a decorative pot sits near the radiator on the right side. That is the whole geography — there is no second area, no corridor, no lift.</p>
+    <p>What makes the room feel bigger than it is are the interactive hotspots. Nearly every piece of furniture carries one: the chair legs, the sideboard drawer, the hutch, the fruit bowl on the table, the painting, the plant. Rooms &amp; Exits marks them with the usual sparkle, and in this room the sparkles are dense enough that it pays to sweep the room once without touching anything, so you know how many hotspots you are working with before you start opening drawers.</p>
+    <p>The level's structure is two code locks and a set of clue props. The <b>three-dial combination lock</b> is the one you can solve on sight, because its clue is printed above it. The <b>four-dial safe</b> is the one that needs the room read first, because its code is on a piece of paper you have to find. Everything else — the cards, the bowl, the nutcracker — feeds those two locks or is scenery, and this page is explicit about which is which.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Every interactive object we could identify, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Dining table and chairs</td><td>Centre of the room, on the rug</td><td>Six chairs; at least one chair leg is a hotspot with a sparkle.</td></tr>
+        <tr><td>Fruit bowl</td><td>On the dining table</td><td>Carries an X, a heart and a banana symbol; a blue projection lands on it around 1:24.</td></tr>
+        <tr><td>Wooden hutch</td><td>Back wall, left of the windows</td><td>Glass doors, dinnerware inside; interactive, opens for a look.</td></tr>
+        <tr><td>Pop-art painting</td><td>Back wall, between the windows</td><td>Large portrait, yellow and pink; a hotspot in its own right.</td></tr>
+        <tr><td>Sideboard with mirror</td><td>Right wall, under the windows</td><td>Its drawer holds <b>playing cards and poker chips</b>.</td></tr>
+        <tr><td>Pendant lamp</td><td>Above the table</td><td>Light source; no interaction we could see.</td></tr>
+        <tr><td>Plant in a pot</td><td>Right side, near the radiator</td><td>Hotspot; we could not confirm what it gives.</td></tr>
+        <tr><td>Three-dial combination lock</td><td>On a surface mid-room</td><td>Black body, "HARDENED" on the shackle; the equation is printed above it. Code <b>358</b>.</td></tr>
+        <tr><td>Four-dial safe</td><td>Brown metal box, mid-room</td><td>Four stacked-dial columns; rests at 8-5-7-0. Code <b>8563</b>.</td></tr>
+        <tr><td>Piece of paper</td><td>Carried item</td><td>Crumpled white paper, four red digits: <b>8 5 6 3</b>.</td></tr>
+        <tr><td>Nutcracker</td><td>Carried item</td><td>Appears in the bag just before the paper is examined; probable tool, unconfirmed action.</td></tr>
+        <tr><td>Working lighter</td><td>Carried item</td><td>In the bag late in the run; we never see it used.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>The order below follows the recording. Timestamps are video time; the links jump to the matching second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:06</span>
+      <strong>Take the room in before you touch anything</strong>
+      The level opens straight into the dining room — no title card worth pausing on, no cutscene. The camera sits at the door end and the room reads left to right: the hutch and the windows on the back wall, the painting between them, the sideboard under the right window, the table and its six chairs in the middle, the plant near the radiator on the right. Sweep once. Count the sparkles. This room has more hotspots per square metre than most Rooms &amp; Exits levels, and knowing where they are stops you opening the same drawer twice.
+      <img src="/rooms-and-exits/c3l1-hero-dining-room.jpg" alt="The dining room at the start of Rooms and Exits Chapter 3 Level 1: table, chairs, hutch, windows, pop-art painting and pendant lamp" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=bLoW8bODdeg&t=6s" target="_blank" rel="noopener">0:06</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:18</span>
+      <strong>The chair leg is the first hotspot</strong>
+      One of the dining chairs has a sparkle on its leg, near the floor. It is an easy one to miss because the camera is high and the leg is in shadow under the table. Tapping it is what starts the room's item chain — the recording goes chair leg first, then the sideboard drawer, and the bag is not empty by the time the locks come up.
+      <img src="/rooms-and-exits/c3l1-chair-leg-clue.jpg" alt="A dining chair in the Rooms and Exits Chapter 3 Level 1 Dining Room with a highlighted hotspot on its leg" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=bLoW8bODdeg&t=18s" target="_blank" rel="noopener">0:18</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:48</span>
+      <strong>The sideboard drawer: playing cards and chips</strong>
+      The drawer under the sideboard's mirror pulls out to reveal <b>playing cards and poker chips</b>. The cards go into the bag — the inventory screen later in the run shows a 2 of Clubs, a King of Spades and a 7 of Diamonds. This is a clue, not a lock in itself: nothing in the room asks you to lay cards out. If the room is this deliberate about card faces, something downstream wants them, but we could not establish what, so this page does not print a sequence.
+      <img src="/rooms-and-exits/c3l1-drawer-playing-cards.jpg" alt="The open sideboard drawer in Dining Room holding playing cards and poker chips" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=bLoW8bODdeg&t=48s" target="_blank" rel="noopener">0:48</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 1:24</span>
+      <strong>The projection on the fruit bowl</strong>
+      Around 1:24 a blue light projects a pattern onto the fruit bowl and the fruit on the table; the pattern reads as a smiley face. Seconds later the camera is on the bowl itself, which carries an <b>X</b>, a <b>heart</b> and a <b>banana</b> shape. Two separate reads of the same prop, and this page prints neither as a code, because we could not establish which lock either one feeds. Use it as a hint that the bowl matters, not as a number.
+      <img src="/rooms-and-exits/c3l1-fruit-bowl-projection.jpg" alt="A blue light projection landing on the fruit bowl on the dining table in Dining Room" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=bLoW8bODdeg&t=84s" target="_blank" rel="noopener">1:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:42 · the bowl close-up</span>
+      <strong>The bowl's own symbols</strong>
+      Pulled in close, the bowl's rim carries symbols rather than numbers: an X, a heart, and a banana. If you have played Chapter 1 and 2 you will recognise the grammar — Rooms &amp; Exits uses shapes as a stand-in for digits in a number of rooms. The trouble here is that this room has three symbol-bearing props and we could not confidently pair any of them with a lock. Note it, move on, come back if a panel ever asks you for shapes.
+      <img src="/rooms-and-exits/c3l1-fruit-bowl-symbols.jpg" alt="Close-up of the fruit bowl in Dining Room showing an X, a heart and a banana symbol" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=bLoW8bODdeg&t=102s" target="_blank" rel="noopener">1:42</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 1:54 · the three-dial lock</span>
+      <strong>The equation lock takes 358</strong>
+      The black combination lock has the word <b>HARDENED</b> on its shackle and three stacked-dial columns. The clue is printed directly above it in bold white text: <b>13 X 3 X 9 - 2 + 9</b>. Multiply first — 13 × 3 = 39, 39 × 9 = 351 — then 351 − 2 = 349, and 349 + 9 = <b>358</b>. Three dials, three digits. In the footage the dials are resting on 9-8-7 before the code is entered; set them to 3-5-8 and the shackle releases.
+      <img src="/rooms-and-exits/c3l1-combination-lock.jpg" alt="The black three-dial combination lock in Dining Room with the equation 13 X 3 X 9 - 2 + 9 printed above it" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=bLoW8bODdeg&t=114s" target="_blank" rel="noopener">1:54</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 2:12 · the nutcracker and the paper</span>
+      <strong>The nutcracker, then the second Piece of paper</strong>
+      A <b>Nutcracker</b> figure goes into the bag, and immediately afterwards a second <b>Piece of paper</b> is examined. The proximity suggests the nutcracker is the tool that gets you the paper — but the footage cuts between the two and we never see the action in one shot, so treat the chain as probable, not certain. What is certain is the paper: a crumpled white scrap, and the digits on it.
+      <img src="/rooms-and-exits/c3l1-nutcracker-paper.jpg" alt="The nutcracker item and a Piece of paper in the inventory during Dining Room" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=bLoW8bODdeg&t=132s" target="_blank" rel="noopener">2:12</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 2:24 · the paper reads 8563</span>
+      <strong>8563, four red digits on white</strong>
+      The paper is displayed centre-screen over the inventory. The digits are written in red, in a marker hand: <b>8</b>, <b>5</b>, <b>6</b>, <b>3</b>. That is the whole clue — a four-digit number and no annotation. It matches the four-dial safe in the room, which is the only four-digit lock in the space.
+      <img src="/rooms-and-exits/c3l1-paper-code-8563.jpg" alt="The Piece of paper in Dining Room showing the four digits 8563 written in red" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=bLoW8bODdeg&t=144s" target="_blank" rel="noopener">2:24</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 2:30 · the four-dial safe</span>
+      <strong>Set the safe to 8 5 6 3</strong>
+      The safe is the brown metal box with four rotating dial columns, each showing three numbers stacked vertically with the selected one in the middle. In the recording the dials sit at <b>8 5 7 0</b> before the code goes in — which is a good sanity check that you are looking at the right object, since a different lock in the room has three columns, not four. Set the four columns to <b>8 5 6 3</b> left to right. The only digit that moves from the resting state is the third one, 7 to 6.
+      <img src="/rooms-and-exits/c3l1-safe-keypad.jpg" alt="The four-dial safe in Dining Room, its four columns resting at 8 5 7 0 before the code 8563 is entered" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=bLoW8bODdeg&t=150s" target="_blank" rel="noopener">2:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 2:36 · the toolbox</span>
+      <strong>What the safe opens</strong>
+      With the code accepted, the metal case opens and its contents are shown. In the footage this is the last interactive beat before the recording ends: the camera holds on the open case, then the video cuts to a <b>THANKS FOR WATCHING</b> card at 2:42 without an exit animation, a results panel or a level-complete card. If you are following the video expecting to see the door open, you will not.
+      <img src="/rooms-and-exits/c3l1-toolbox-open.jpg" alt="The metal case opened after entering the code in Dining Room" width="1200" height="594" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=bLoW8bODdeg&t=156s" target="_blank" rel="noopener">2:36</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>The equation makes no sense.</b> It does if you respect operator order. <b>13 × 3 × 9 − 2 + 9</b>: multiplication first, so 351, then subtract 2 and add 9. The answer is <b>358</b>. If you added before multiplying you will land on a different three-digit number and the lock will not take it. There is no display on the lock, so there is no error message — it simply does not release.</p>
+    <p><b>You cannot find 8563.</b> It is not written on a wall. It is on the second <b>Piece of paper</b>, and that paper is tied to the nutcracker beat at 2:12. If your bag has no second paper, you have not done whatever the nutcracker does. Check the inventory for the nutcracker first — if it is there and the paper is not, you are closer than you think.</p>
+    <p><b>The safe is a different lock from the first one.</b> Two locks, and they look alike at a glance: both are dark metal boxes with dial columns. The difference is the count — three columns versus four. 358 goes in the three-column lock; 8563 goes in the four-column one. Trying 358 on the safe, or 8563 on the padlock, wastes the most time in this room.</p>
+    <p><b>The fruit bowl does nothing when you tap it.</b> Correct — it is a display, not a container. The bowl's symbols and the blue projection are clues, and we could not establish which lock they feed, so do not expect tapping the bowl to open anything.</p>
+    <p><b>The cards do not open anything.</b> Also correct, as far as we can tell. They go into the bag and stay there. If Chapter 3 later asks you for card values, you have them; in this room they are a collectible, not a key.</p>
+
+    <h2>Where Dining Room sits in Chapter 3<span class="accent">.</span></h2>
+    <p>Chapter 3 is <i>Murder Dressed in White</i>, and Dining Room is room <b>1 of 15</b> — the first room of the chapter, and the first room of the game that takes place in a house rather than a business. The chapter's rooms are the rooms of a domestic interior: dining room, living room, study room, guest toilet, workshop, guest bedroom, master bathroom, kids playroom, backyard, garden, kitchen, driveway, kids bedroom, storage room, garage. If you have finished Chapter 2 you will notice the change immediately: no tills, no shop fronts, no lift, and a much smaller footprint per room.</p>
+    <p>Dining Room sets the template the rest of the chapter uses: one furnished room, two or three code locks, and clue props that are read rather than manipulated. The two locks here are the two kinds the chapter repeats — an arithmetic lock whose clue is printed on it, and a safe whose code comes off a found item. If you want to know what comes next, Living Room is room 2 and it is the same shape of problem.</p>
+
+    <LevelSelector chapter={3} current={1} compact={true} label="Chapter 3 · Murder Dressed in White" />
+
+    <div class="cta-box">
+      <p>Next room: <a href="/rooms-and-exits/chapter-3-level-2/">Chapter 3 Level 2 — Living Room</a></p>
+      <p><a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Four things, stated plainly so you know which parts of this page are reads and which are reconstruction.
+      <br><br>
+      <b>1. The fruit bowl and its projection.</b> We can read the symbols on the bowl (X, heart, banana) and we can see the blue projection land on it, but we could not tie either to a lock with confidence, and we did not find a panel in this room that accepts shapes. No shape-to-digit mapping is printed here because any mapping we gave you would be invented.
+      <br><br>
+      <b>2. The playing cards.</b> Three cards go into the bag and none of them is used in any shot we captured. Whether they feed a lock in this room, a lock later in Chapter 3, or nothing at all, we do not know.
+      <br><br>
+      <b>3. The nutcracker and the lighter.</b> Both appear in the inventory; neither action is shown clearly. The nutcracker is probably what reveals the second paper, and the lighter is never used in the footage at all. Both are listed as collected items, not as steps.
+      <br><br>
+      <b>4. The reward and the exit.</b> The recording ends at 2:42 on a THANKS FOR WATCHING card, before any results panel. We do not print a coin reward for this room because we have not seen one. If you finish the level yourself, the results card is the thing to check.
+    </div>
+  </main>
+  <InContentAd />
+  <AdSlot />
+  <SideAd />
+</body>
+</html>
