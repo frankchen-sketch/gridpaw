@@ -15,13 +15,16 @@
 
 ```bash
 cd ~/.hermes/cache/scratch/rooms-exits
-export HTTPS_PROXY=http://127.0.0.1:7880 HTTP_PROXY=http://127.0.0.1:7880 PATH="/opt/homebrew/bin:$PATH"
-/opt/homebrew/bin/yt-dlp --no-warnings -f 137 -o "LN_%(id)s_1080.%(ext)s" "https://www.youtube.com/watch?v=<ID>"
+# 代理端口会变：以 ~/.config/mihomo/PROXY_STATUS.md 现值为准（7880 曾长期可用，2026-11-18 起是 33210）
+export HTTPS_PROXY=http://127.0.0.1:33210 HTTP_PROXY=http://127.0.0.1:33210 PATH="/opt/homebrew/bin:$PATH"
+/opt/homebrew/bin/yt-dlp --no-warnings --continue -f 137 -o "LN_%(id)s_1080.%(ext)s" "https://www.youtube.com/watch?v=<ID>"
 ```
 
 - **不要**加 `--plugin-dirs`（旧的 POT 插件目录已被清理，加了会直接报错退出）
 - 137 拿不到就退 `-f 136`（720p 够用，出图本来就缩到 1200×594）
 - 失败先重试 3 次（代理偶发 SSL 抖动），仍失败再用 `ytsearch8:"Rooms and Exits Chapter 1 Level N walkthrough"` 换一条录像，并在交付里写明换了
+- **批量做多关时，下载必须串行，且由主 agent 一个人做** —— 2026-11-18 实测：4 个子 agent 各自重试下载 → 8 个并发 yt-dlp 抢同一个代理 → googlevideo 反复 `Read timed out after 10 retries`，L5/L10/L13 各失败 5 次，31 个视频里 3 个下不完。改成主 agent 串行（~2-3 分钟/个）后一次成功率 10/10。子 agent 只负责抽帧/读画面/写页面
+- **yt-dlp 报错时文件往往已经完整**：先别重下，跑 `ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 <file>.part`，时长对得上 YouTube 元数据就直接 `mv <file>.part <file>` 用（L5 339.4/340、L10 226.2/227、L13 522.6/523 全是完整数据，只差 yt-dlp 的收尾请求失败）。省下 30 分钟以上
 
 抽帧：
 
