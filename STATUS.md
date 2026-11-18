@@ -486,6 +486,15 @@ GameHub 14 款游戏线上全 200。
 
 删除 `gridpaw-hub`（`feat/home-hub`，已并入 `a562036`）。审计确认 `gridpaw-bp3fix`（`fix/bp3-internallinks-hreflang`）与 `gridpaw-rooms`（`feat/rxe-ch2`）均无未跟踪文件、无未结束会话、分支内容已在 main——一并清场。
 
+## 2026-11-18 · agent 写码闸门（oxlint + 约定检查）
+
+已入 main：`1978b68`（合 `20aed97` 装闸门 + `93bc828` lint:changed）；`ee034f0`/`ad6847f`（verify + 基准修正）在 `chore/lint-baseline` 待合。
+
+- 提交前 `pnpm verify`；`deploy` 已前置 `pnpm lint`
+- 只开 `correctness` 类；`no-unused-vars` 只对**改动文件**生效（`scripts/lint-changed.mjs`），存量不阻塞——动到哪个文件，哪个文件必须干净
+- 风格规则永久 off（`no-useless-escape` / `no-useless-catch` / `no-this-alias` / `no-new-array`）：挡不了 bug，只会逼人关闸门
+- 依据与踩坑：`~/workspace/research/2026-11-18-lauren-tan-agent-coding-spec.md`
+
 ## 历史事件档案
 
 2026-09-21 ~ 2026-11-08 的全部按日期事件段（51 段，部署记录 / 事故复盘 / 验收数据）已搬至 `STATUS-ARCHIVE.md`「三、按日期事件段」。
