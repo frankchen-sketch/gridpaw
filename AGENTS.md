@@ -8,6 +8,7 @@
 pnpm install
 pnpm run dev          # 本地开发 localhost:4321
 pnpm run build        # 构建（含引擎编译 + pagefind 索引）
+pnpm run verify       # 提交前：oxlint + 约定闸门 + 改动文件全规则（lint:changed）
 pnpm run deploy:safe  # ✅ 多会话并发/日常一律用这个：前置三查（脏树 / 落后 origin/main / 其它 worktree 有游离 commit）
                       #    → build → deploy --branch main → IndexNow → 线上 sw.js 指纹 + 4 URL 自检，全绿才 exit 0
                       #    并发部署由锁文件串行；前置不过 exit 2（不部署），部署后自检失败 exit 4
