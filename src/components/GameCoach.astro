@@ -15,7 +15,7 @@
  *  - ≤3 步，第 1 步指棋盘动作
  *  - localStorage['gp-onboard:<game>:v1']，第二次访问不弹
  *  - Skip / 走完 / 首个棋盘动作 → 永久收起
- *  - ❓（页面上带 data-gp-rules-btn 的任意按钮）开卡内抽屉，Esc / 点外关，不锁滚动
+ *  - 带 data-gp-rules-btn 的任意按钮（问号图标）开卡内抽屉，Esc / 点外关，不锁滚动
  */
 interface Rule { ic?: string; text: string }
 interface Props {
@@ -280,7 +280,7 @@ const { game, steps, rules = [], rulesTitle = 'How to play', nextLabel = 'Next',
     const board = document.querySelector('.puzzle-grid, .game-stage, [data-gp-board]');
     board?.addEventListener('pointerdown', finish, { once: true, passive: true });
 
-    // ❓ 入口：页面上任意 data-gp-rules-btn 按钮
+    // 问号 入口：页面上任意 data-gp-rules-btn 按钮
     document.querySelectorAll('[data-gp-rules-btn]').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
