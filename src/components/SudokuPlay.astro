@@ -1,11 +1,12 @@
 ---
-// SudokuPlay — 大格数独可玩面板（契约：docs/sudoku-cluster-contract.md §一/§二）
+// SudokuPlay — 大格数独可玩面板（契约：STYLE.md v1.0 §10.1 棋盘卡 / §10.2 控制条 / §11 图标）
 // 引擎：/sudoku-engine.js，全局 SudokuEngine（另一路并行实现，这里只按签名调用）
 //   generate(size, blockW, blockH, difficulty, seed, timeBudgetMs)
 //     → { size, blockW, blockH, symbols[], givens:[[idx,val]], solution[], difficulty }
 //   validate(p, vals) → { ok, errors }    hintLookup(p, idx) → 正确答案 / -1
 // 盘面索引 = r*size + c；空值用 -1。
 // JS 生成的 .sd-* 节点拿不到 scoped hash，样式必须 is:global（同 MeowdokuPlay 的坑）。
+// 视觉：色值/圆角/阴影/动效全部取 src/styles/tokens.css 的 --gp-* / --r-* / --shadow-*，禁止 raw hex。
 interface Props {
   gameKey: string;              // GA 事件里的 game 维度，如 '16x16-sudoku'
   size?: number;                // 初始格数：9 | 12 | 16 | 25
@@ -29,35 +30,92 @@ const {
 const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
 ---
 <div class="sd-play" id={`${uid}-wrap`}>
-  <div class="sd-top">
-    <span class="sd-badge" id={`${uid}-badge`}>{label} · Easy</span>
-    <span class="sd-stat">⏱ <span id={`${uid}-timer`}>0:00</span></span>
-    <span class="sd-stat"><span id={`${uid}-progress`}>0</span> filled</span>
-  </div>
-
-  <div class="sd-bar">
-    <div class="sd-diffs" id={`${uid}-diffs`} role="group" aria-label="Difficulty">
-      <button type="button" class="sd-chip" data-diff="easy" aria-pressed="true">Easy</button>
-      <button type="button" class="sd-chip" data-diff="medium" aria-pressed="false">Medium</button>
-      <button type="button" class="sd-chip" data-diff="hard" aria-pressed="false">Hard</button>
-    </div>
-    {allow25 && (
-      <div class="sd-diffs" id={`${uid}-sizes`} role="group" aria-label="Board size">
-        <button type="button" class="sd-chip" data-size="16" aria-pressed="true">16×16</button>
-        <button type="button" class="sd-chip" data-size="25" aria-pressed="false">25×25</button>
+  {/* ── 上控制条（§10.2：44px 单行，禁止换行）── */}
+  <div class="sd-toolbar">
+    <div class="sd-tb-left">
+      <span class="sd-badge" id={`${uid}-badge`}>{label} · Easy</span>
+      <div class="sd-diffs sd-diffs-top" id={`${uid}-diffs`} role="group" aria-label="Difficulty">
+        <button type="button" class="sd-chip" data-diff="easy" aria-pressed="true">Easy</button>
+        <button type="button" class="sd-chip" data-diff="medium" aria-pressed="false">Medium</button>
+        <button type="button" class="sd-chip" data-diff="hard" aria-pressed="false">Hard</button>
       </div>
-    )}
-    <div class="sd-tools">
-      <button type="button" class="primary" id={`${uid}-hint`}>💡 Hint <span id={`${uid}-hintleft`}>(3)</span></button>
-      <button type="button" id={`${uid}-restart`}>↩ Restart</button>
-      <button type="button" id={`${uid}-new`}>🔄 New</button>
+      <span class="sd-progress" id={`${uid}-progress`}>0 / {size * size}</span>
+      <span class="sd-timer">
+        <svg class="sd-ico" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+          <circle cx="20" cy="20" r="12.5" fill="none" stroke="currentColor" stroke-width="2.5"></circle>
+          <path d="M20 13.5 V20 l5 3.2" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path>
+        </svg>
+        <span id={`${uid}-timer`}>0:00</span>
+      </span>
+    </div>
+    <div class="sd-tb-right">
+      <button type="button" class="sd-iconbtn" id={`${uid}-undoicon`} aria-label="Undo" title="Undo" disabled>
+        <svg class="sd-ico" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+          <path d="M16 11 L8 19 L16 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M8 19 H24 a7.5 7.5 0 0 1 0 15 H19" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"></path>
+        </svg>
+      </button>
+      <button type="button" class="sd-iconbtn" id={`${uid}-redoicon`} aria-label="Redo" title="Redo" disabled>
+        <svg class="sd-ico" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+          <path d="M24 11 L32 19 L24 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M32 19 H16 a7.5 7.5 0 0 0 0 15 H21" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"></path>
+        </svg>
+      </button>
+      <button type="button" class="sd-iconbtn" id={`${uid}-hinticon`} aria-label="Hint" title="Hint">
+        <svg class="sd-ico" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+          <path d="M20 6.5 a9 9 0 0 1 5.6 16.1 V26.5 h-11.2 v-3.9 A9 9 0 0 1 20 6.5 Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"></path>
+          <path d="M15.5 30.5 h9 M17 34 h6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path>
+        </svg>
+      </button>
     </div>
   </div>
 
+  {/* ── 棋盘（与上下条间距 ≤16px，§10.1）── */}
   <div class="sd-boardwrap">
     <div class="sd-board" id={`${uid}-board`} role="grid" aria-label="Playable sudoku board"></div>
     <div class="sd-loading" id={`${uid}-loading`} hidden>
       <span class="sd-spin" aria-hidden="true"></span>Building a fresh board…
+    </div>
+  </div>
+
+  {/* ── 下主操作行（§10.1：Hint 实心 CTA / Undo·Restart 描边）── */}
+  <div class="sd-actions">
+    <button type="button" class="sd-btn sd-btn-primary" id={`${uid}-hint`}>
+      Hint <span id={`${uid}-hintleft`}>(3)</span>
+    </button>
+    <button type="button" class="sd-btn sd-btn-ghost" id={`${uid}-undo`}>Undo</button>
+    <button type="button" class="sd-btn sd-btn-ghost" id={`${uid}-restart`}>Restart</button>
+    <button type="button" class="sd-btn sd-btn-ghost sd-more" id={`${uid}-more`} aria-expanded="false" aria-controls={`${uid}-menu`} aria-label="More options" title="More options">
+      <svg class="sd-ico" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+        <circle cx="11" cy="20" r="2.6" fill="currentColor"></circle>
+        <circle cx="20" cy="20" r="2.6" fill="currentColor"></circle>
+        <circle cx="29" cy="20" r="2.6" fill="currentColor"></circle>
+      </svg>
+    </button>
+  </div>
+
+  {/* ── ⋯ 卡内抽屉（§10.2：低频动作收进 ⋯；卡内展开，不遮盘、不锁滚动）── */}
+  <div class="sd-menu" id={`${uid}-menu`} hidden>
+    <div class="sd-menu-row">
+      <span class="sd-menu-label">Difficulty</span>
+      <div class="sd-diffs" role="group" aria-label="Difficulty">
+        <button type="button" class="sd-chip" data-diff="easy" aria-pressed="true">Easy</button>
+        <button type="button" class="sd-chip" data-diff="medium" aria-pressed="false">Medium</button>
+        <button type="button" class="sd-chip" data-diff="hard" aria-pressed="false">Hard</button>
+      </div>
+    </div>
+    {allow25 && (
+      <div class="sd-menu-row">
+        <span class="sd-menu-label">Board size</span>
+        <div class="sd-diffs" role="group" aria-label="Board size">
+          <button type="button" class="sd-chip" data-size="16" aria-pressed="true">16×16</button>
+          <button type="button" class="sd-chip" data-size="25" aria-pressed="false">25×25</button>
+        </div>
+      </div>
+    )}
+    <div class="sd-menu-row">
+      <span class="sd-menu-label">Board</span>
+      <button type="button" class="sd-btn sd-btn-ghost" id={`${uid}-new`}>New board</button>
     </div>
   </div>
 
@@ -73,33 +131,53 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
 </div>
 
 <style is:global>
-  /* 视觉合同：STYLE.md v1.0 —— 所有色值取 src/styles/tokens.css 的 --gp-* token。
-   * §2 铁律：表外色相一个都不许出现（raw hex 已全部清零）。 */
+  /* 视觉合同：STYLE.md v1.0 —— 所有值取 tokens.css，raw hex 必须为 0 */
   .sd-play {
     box-sizing: border-box;
-    max-width: 660px; margin: 1.1rem auto 1.4rem; padding: 14px;
-    background: var(--gp-white); border: 2px solid var(--gp-linen); border-radius: 16px;
-    box-shadow: var(--shadow-md);
+    max-width: var(--w-game); margin: 1rem auto 1.4rem; padding: var(--sp-6);
+    background: var(--gp-white); border: 1px solid var(--gp-linen);
+    border-radius: var(--r-card); box-shadow: var(--shadow-candy);
   }
-  .sd-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 14px; font-size: 0.8rem; color: var(--gp-brown-400); }
-  .sd-badge { background: var(--gp-cream-warm); color: var(--gp-cta-dark); font-weight: 800; border-radius: var(--r-full); padding: 3px 10px; }
-  .sd-stat { font-weight: 700; }
-  .sd-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin: 10px 0 8px; }
+
+  /* §10.2 控制条：44px 单行，禁止换行 */
+  .sd-toolbar {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--sp-4);
+    height: var(--h-toolbar); min-height: var(--h-toolbar);
+    flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden;
+    margin-bottom: 12px; scrollbar-width: none;
+  }
+  .sd-toolbar::-webkit-scrollbar { display: none; }
+  .sd-tb-left { display: flex; align-items: center; gap: var(--sp-3); min-width: 0; }
+  .sd-tb-right { display: flex; align-items: center; gap: var(--sp-2); flex: 0 0 auto; }
+
+  .sd-badge {
+    background: var(--gp-cream-warm); color: var(--gp-cta-dark);
+    font-size: var(--fs-tiny); font-weight: 800; border-radius: var(--r-full);
+    padding: 4px 10px; white-space: nowrap;
+  }
+  .sd-progress { font-size: var(--fs-tiny); font-weight: 800; color: var(--gp-brown-600); white-space: nowrap; }
+  .sd-timer { display: inline-flex; align-items: center; gap: 4px; font-size: var(--fs-tiny); font-weight: 700; color: var(--gp-brown-400); white-space: nowrap; }
+  .sd-ico { width: 18px; height: 18px; display: block; }
+
   .sd-diffs { display: flex; gap: 2px; background: var(--gp-sand); border-radius: var(--r-full); padding: 3px; }
   .sd-chip {
     border: 0; background: transparent; color: var(--gp-ink);
-    font: inherit; font-size: 0.78rem; font-weight: 800; padding: 4px 10px;
-    border-radius: var(--r-full); cursor: pointer;
+    font: inherit; font-size: var(--fs-tiny); font-weight: 800; padding: 3px 10px;
+    border-radius: var(--r-full); cursor: pointer; white-space: nowrap;
+    transition: background var(--t-fast), color var(--t-fast);
   }
   .sd-chip[aria-pressed="true"] { background: var(--gp-cta); color: var(--gp-white); }
-  .sd-tools { display: flex; flex-wrap: wrap; gap: 6px; }
-  .sd-tools button {
-    border: 0; border-radius: var(--r-md); padding: 6px 10px; font: inherit;
-    font-size: 0.78rem; font-weight: 800; background: var(--gp-cream-warm);
-    color: var(--gp-ink); cursor: pointer;
+
+  /* §10.5 图标按钮：36px 圆，白底 + 2px linen 边，hover 边框 primary */
+  .sd-iconbtn {
+    width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;
+    background: var(--gp-white); border: 2px solid var(--gp-linen); border-radius: var(--r-full);
+    color: var(--gp-brown-600); cursor: pointer; padding: 0;
+    transition: border-color var(--t-fast), color var(--t-fast), transform var(--t-fast);
   }
-  .sd-tools button.primary { background: var(--gp-cta); color: var(--gp-white); }
-  .sd-tools button:disabled { opacity: 0.45; cursor: default; }
+  .sd-iconbtn:hover { border-color: var(--gp-primary); color: var(--gp-cta-dark); }
+  .sd-iconbtn:active { transform: scale(0.92); }
+  .sd-iconbtn:disabled { opacity: 0.4; cursor: default; transform: none; border-color: var(--gp-linen); color: var(--gp-stone); }
 
   .sd-boardwrap { position: relative; overflow-x: auto; overflow-y: hidden; padding: 2px; min-height: 140px; -webkit-overflow-scrolling: touch; }
   .sd-board {
@@ -124,27 +202,56 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
   .sd-cell.sd-given { color: var(--gp-brown-900); background: var(--gp-sand); font-weight: 800; cursor: default; }
   .sd-cell.sd-peer { background: var(--gp-cream-warm); }
   .sd-cell.sd-same { background: var(--gp-blush); }
-  .sd-cell.sd-sel { background: var(--gp-primary-soft); box-shadow: var(--ring); }
+  .sd-cell.sd-sel { background: var(--gp-primary-soft); box-shadow: var(--ring); z-index: 1; }
   .sd-cell.sd-conf { color: var(--gp-error); background: var(--gp-blush); }
   .sd-cell.sd-hinted { color: var(--gp-badge-easy-text); background: var(--gp-badge-easy-bg); }
 
+  /* §10.1 下主操作行：Hint 实心 CTA / Undo·Restart 描边 */
+  .sd-actions { display: flex; align-items: center; gap: var(--sp-4); margin-top: 12px; height: var(--h-toolbar); }
+  .sd-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    min-height: 44px; padding: 0 16px; font: inherit; font-size: var(--fs-small);
+    font-weight: var(--fw-btn); border-radius: var(--r-full); cursor: pointer;
+    transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
+  }
+  .sd-btn-primary { background: var(--gp-cta); color: var(--gp-white); border: 1.5px solid var(--gp-cta); flex: 1 1 auto; }
+  .sd-btn-primary:hover { background: var(--gp-cta-dark); border-color: var(--gp-cta-dark); }
+  .sd-btn-primary:disabled { opacity: 0.45; cursor: default; }
+  .sd-btn-ghost { background: var(--gp-white); color: var(--gp-ink); border: 1.5px solid var(--gp-linen); }
+  .sd-btn-ghost:hover { border-color: var(--gp-primary); color: var(--gp-cta-dark); }
+  .sd-btn-ghost:disabled { opacity: 0.4; cursor: default; }
+  .sd-btn:active { transform: translateY(1px); }
+  .sd-more { padding: 0; width: 44px; flex: 0 0 44px; }
+
+  /* ⋯ 卡内抽屉：插在操作行下方展开，棋盘永不被盖 */
+  .sd-menu {
+    display: flex; flex-direction: column; gap: var(--sp-4);
+    margin-top: var(--sp-4); padding: var(--sp-5);
+    background: var(--gp-cream-warm); border: 1.5px dashed var(--gp-primary);
+    border-radius: var(--r-lg);
+  }
+  .sd-menu[hidden] { display: none; }
+  .sd-menu-row { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-4); flex-wrap: wrap; }
+  .sd-menu-label { font-size: var(--fs-tiny); font-weight: 800; color: var(--gp-brown-600); text-transform: uppercase; letter-spacing: 0.04em; }
+
   .sd-keys {
     display: grid; grid-template-columns: repeat(var(--sd-kcols, 8), minmax(0, 1fr));
-    gap: 5px; margin: 10px auto 0; max-width: 470px;
+    gap: var(--sp-3); margin: 12px auto 0; max-width: var(--w-game);
   }
   .sd-key {
-    width: 100%; height: 36px; padding: 0 4px;
+    width: 100%; height: 44px; padding: 0 4px;
     border: 1.5px solid var(--gp-linen); background: var(--gp-white); border-radius: var(--r-md);
-    font: inherit; font-weight: 800; font-size: 0.95rem;
+    font: inherit; font-weight: 800; font-size: var(--fs-small);
     color: var(--gp-ink); cursor: pointer;
+    transition: border-color var(--t-fast), color var(--t-fast), transform var(--t-fast);
   }
   .sd-key:hover { border-color: var(--gp-primary); color: var(--gp-cta-dark); }
   .sd-key:active { transform: scale(0.95); }
 
   .sd-loading {
     position: absolute; inset: 0; z-index: 2; display: flex; align-items: center;
-    justify-content: center; gap: 8px; background: var(--gp-cream);
-    font-size: 0.85rem; font-weight: 700; color: var(--gp-brown-400);
+    justify-content: center; gap: var(--sp-4); background: var(--gp-cream);
+    font-size: var(--fs-small); font-weight: 700; color: var(--gp-brown-400);
   }
   .sd-loading[hidden] { display: none; }
   .sd-spin {
@@ -154,28 +261,38 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
   }
   @keyframes sdspin { to { transform: rotate(360deg); } }
 
-  .sd-msg { margin: 10px 0 0; font-size: 0.8rem; line-height: 1.55; color: var(--gp-brown-400); text-align: center; }
+  .sd-msg { margin: 10px 0 0; font-size: var(--fs-tiny); line-height: 1.55; color: var(--gp-brown-400); text-align: center; }
   .sd-error { margin: 0; padding: 18px 10px; text-align: center; font-weight: 700; color: var(--gp-error); }
 
   .sd-win {
-    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-4);
     margin-top: 10px; padding: 10px 12px; border-radius: var(--r-lg);
     background: var(--gp-cream-warm); border: 1.5px solid var(--gp-mint);
-    font-size: 0.86rem; color: var(--gp-brown-900);
+    font-size: var(--fs-small); color: var(--gp-brown-900);
   }
   .sd-win[hidden] { display: none; }
-  .sd-win strong { font-size: 1rem; }
+  .sd-win strong { font-size: var(--fs-body); }
   .sd-win button {
-    margin-left: auto; border: 0; border-radius: var(--r-md); padding: 6px 12px;
-    background: var(--gp-success); color: var(--gp-white); font: inherit; font-weight: 800;
-    font-size: 0.8rem; cursor: pointer;
+    margin-left: auto; min-height: 44px; padding: 0 14px; border: 0; border-radius: var(--r-full);
+    background: var(--gp-success); color: var(--gp-white); font: inherit; font-weight: var(--fw-btn);
+    font-size: var(--fs-small); cursor: pointer;
   }
 
-  @media (max-width: 520px) {
-    .sd-play { padding: 10px; border-radius: 14px; }
-    .sd-key { height: 33px; font-size: 0.88rem; }
-    .sd-tools button { padding: 6px 8px; }
-    .sd-chip { padding: 4px 8px; }
+  @media (prefers-reduced-motion: reduce) {
+    .sd-cell, .sd-chip, .sd-btn, .sd-key, .sd-iconbtn { transition: none; }
+    .sd-spin { animation: none; }
+  }
+
+  /* ── 手机（< 700px，§14/§15）：一行 44px、动作 ≤3 个，其余进 ⋯ ── */
+  @media (max-width: 699px) {
+    .sd-play { padding: var(--sp-4); margin: 0.6rem auto 1rem; }
+    .sd-toolbar { gap: var(--sp-3); }
+    .sd-diffs-top { display: none; }        /* 难度切换收进 ⋯（抽屉里同 data-diff 那组接管） */
+    .sd-tb-right { display: none; }         /* 圆形图标按钮是桌面快捷方式；手机上由下方主操作行承担 */
+    .sd-actions { gap: var(--sp-3); }
+    .sd-btn { font-size: var(--fs-body-m); padding: 0 10px; }
+    .sd-keys { gap: var(--sp-2); }
+    .sd-key { height: 44px; font-size: var(--fs-body-m); }
   }
 </style>
 
@@ -196,11 +313,15 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
     var winDetailEl = document.getElementById(uid + '-windetail');
     var loadEl = document.getElementById(uid + '-loading');
     var hintBtn = document.getElementById(uid + '-hint');
+    var hintIconBtn = document.getElementById(uid + '-hinticon');
     var hintLeftEl = document.getElementById(uid + '-hintleft');
-    var diffRow = document.getElementById(uid + '-diffs');
-    var sizeRow = allow25 ? document.getElementById(uid + '-sizes') : null;
-    var nextBtn = document.getElementById(uid + '-next');
+    var undoBtn = document.getElementById(uid + '-undo');
+    var undoIconBtn = document.getElementById(uid + '-undoicon');
+    var redoIconBtn = document.getElementById(uid + '-redoicon');
+    var moreBtn = document.getElementById(uid + '-more');
+    var menuEl = document.getElementById(uid + '-menu');
     var newBtn = document.getElementById(uid + '-new');
+    var nextBtn = document.getElementById(uid + '-next');
     var restartBtn = document.getElementById(uid + '-restart');
 
     if (!E || !boardEl || !keysEl) {
@@ -218,7 +339,8 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
       diff: difficulty,
       puzzle: null, vals: null, given: null, hinted: null, symbols: null,
       sel: -1, hintsLeft: 3, solved: false, filled: 0,
-      secs: 0, timerId: 0, token: 0, moved: false
+      secs: 0, timerId: 0, token: 0, moved: false,
+      past: [], future: []
     };
     var cells = [];
 
@@ -266,23 +388,69 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
     function setLoading(on) { loadEl.hidden = !on; }
 
     function syncChips() {
-      var chips = diffRow.querySelectorAll('[data-diff]');
+      var chips = wrap.querySelectorAll('[data-diff]');
       for (var i = 0; i < chips.length; i++) {
         chips[i].setAttribute('aria-pressed', chips[i].getAttribute('data-diff') === state.diff ? 'true' : 'false');
       }
-      if (sizeRow) {
-        var sc = sizeRow.querySelectorAll('[data-size]');
-        for (var j = 0; j < sc.length; j++) {
-          sc[j].setAttribute('aria-pressed', Number(sc[j].getAttribute('data-size')) === state.size ? 'true' : 'false');
-        }
+      var sc = wrap.querySelectorAll('[data-size]');
+      for (var j = 0; j < sc.length; j++) {
+        sc[j].setAttribute('aria-pressed', Number(sc[j].getAttribute('data-size')) === state.size ? 'true' : 'false');
       }
       var sizeText = letterMode ? label : state.size + '×' + state.size;
       badgeEl.textContent = sizeText + ' · ' + DIFF_LABEL[state.diff];
     }
 
-    function updateHintBtn() {
+    function updateHintBtns() {
       hintLeftEl.textContent = '(' + state.hintsLeft + ')';
-      hintBtn.disabled = state.hintsLeft <= 0;
+      var off = state.hintsLeft <= 0;
+      hintBtn.disabled = off;
+      if (hintIconBtn) hintIconBtn.disabled = off;
+    }
+
+    // ── 撤销 / 重做（§10.1 上控制条三圆钮）──
+    function pushHistory(entry) {
+      state.past.push(entry);
+      if (state.past.length > 200) state.past.shift();
+      state.future.length = 0;
+      updateHistoryBtns();
+    }
+    function updateHistoryBtns() {
+      var canUndo = state.past.length > 0;
+      var canRedo = state.future.length > 0;
+      if (undoBtn) undoBtn.disabled = !canUndo;
+      if (undoIconBtn) undoIconBtn.disabled = !canUndo;
+      if (redoIconBtn) redoIconBtn.disabled = !canRedo;
+    }
+    function applyHistory(entry, forward) {
+      var i = entry.i;
+      if (forward) {
+        state.vals[i] = entry.next;
+        state.hinted[i] = entry.hintNext;
+      } else {
+        state.vals[i] = entry.prev;
+        state.hinted[i] = entry.hintPrev;
+      }
+      state.sel = i;
+      recalc();
+      paint();
+    }
+    function doUndo() {
+      if (!state.past.length) return;
+      var entry = state.past.pop();
+      state.future.push(entry);
+      applyHistory(entry, false);
+      updateHistoryBtns();
+      updateHintBtns();
+      track('undo_click', { game: gameKey, size: state.size });
+    }
+    function doRedo() {
+      if (!state.future.length) return;
+      var entry = state.future.pop();
+      state.past.push(entry);
+      applyHistory(entry, true);
+      updateHistoryBtns();
+      updateHintBtns();
+      track('redo_click', { game: gameKey, size: state.size });
     }
 
     // ── 生成新盘（16/25 可能耗时：先让 loading 渲染，再同步跑引擎）──
@@ -296,9 +464,12 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
       state.solved = false;
       state.hintsLeft = 3;
       state.moved = false;
+      state.past.length = 0;
+      state.future.length = 0;
       winEl.hidden = true;
       syncChips();
-      updateHintBtn();
+      updateHintBtns();
+      updateHistoryBtns();
       if (via) track('puzzle_reset', { game: gameKey, via: via, size: s, difficulty: DIFF_LABEL[state.diff] });
 
       var token = ++state.token;
@@ -390,8 +561,9 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
       var host = boardEl.parentNode;
       var wide = host && host.clientWidth ? host.clientWidth : 320;
       var avail = Math.max(200, wide - 10); // 减去容器 padding 与棋盘边框
-      var minCell = N >= 25 ? 20 : (N >= 16 ? 16 : (N >= 12 ? 22 : 30));
-      var maxCell = N >= 25 ? 34 : (N >= 16 ? 40 : 54);
+      // §10.1：格子 28–56px（JS 按容器算，上限 56）；§14.1.5：16×16 手机下不得缩到 18px
+      var minCell = N >= 25 ? 20 : (N >= 16 ? 22 : 28);
+      var maxCell = N >= 25 ? 32 : (N >= 16 ? 40 : (N >= 12 ? 48 : 56));
       var cell = Math.floor(avail / N);
       if (cell > maxCell) cell = maxCell;
       if (cell < minCell) cell = minCell;
@@ -490,7 +662,10 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
         state.moved = true;
         track('first_move', { game: gameKey, size: state.size, difficulty: DIFF_LABEL[state.diff] });
       }
-      state.vals[i] = state.vals[i] === v ? -1 : v;
+      var prev = state.vals[i];
+      var next = prev === v ? -1 : v;
+      pushHistory({ i: i, prev: prev, next: next, hintPrev: 0, hintNext: 0 });
+      state.vals[i] = next;
       recalc();
       paint();
       maybeWin();
@@ -533,10 +708,11 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
       var ans = -1;
       try { ans = E.hintLookup(state.puzzle, i); } catch (e) { ans = -1; }
       if (!ans || ans < 1) { ans = state.puzzle.solution[i]; }
+      pushHistory({ i: i, prev: state.vals[i], next: ans, hintPrev: 0, hintNext: 1 });
       state.hintsLeft--;
       state.vals[i] = ans;
       state.hinted[i] = 1;
-      updateHintBtn();
+      updateHintBtns();
       recalc();
       paint();
       track('hint_click', { game: gameKey, size: state.size, difficulty: DIFF_LABEL[state.diff] });
@@ -554,12 +730,21 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
       state.solved = false;
       state.hintsLeft = 3;
       state.moved = false;
+      state.past.length = 0;
+      state.future.length = 0;
       winEl.hidden = true;
-      updateHintBtn();
+      updateHintBtns();
+      updateHistoryBtns();
       recalc();
       paint();
       startTimer();
       track('puzzle_reset', { game: gameKey, via: 'restart', size: state.size, difficulty: DIFF_LABEL[state.diff] });
+    }
+
+    // ── ⋯ 抽屉（低频动作：难度 / 棋盘尺寸 / 新盘）──
+    function setMenu(open) {
+      menuEl.hidden = !open;
+      moreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
     }
 
     // ── 事件绑定 ──
@@ -580,37 +765,52 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
       if (!isNaN(v)) setValue(v);
     });
 
-    diffRow.addEventListener('click', function (ev) {
+    // 难度 / 尺寸 chips：根节点委托（工具栏那一组与抽屉那一组共用一套逻辑）
+    wrap.addEventListener('click', function (ev) {
       var t = ev.target;
-      while (t && t !== diffRow && !t.getAttribute) t = t.parentNode;
-      if (!t || t === diffRow) return;
+      while (t && t !== wrap && !(t.getAttribute && (t.getAttribute('data-diff') || t.getAttribute('data-size')))) t = t.parentNode;
+      if (!t || t === wrap) return;
       var d = t.getAttribute('data-diff');
-      if (!d || d === state.diff) return;
-      state.diff = d;
-      newPuzzle(state.size, 'difficulty');
+      if (d) {
+        if (d === state.diff) return;
+        state.diff = d;
+        newPuzzle(state.size, 'difficulty');
+        return;
+      }
+      var s = Number(t.getAttribute('data-size'));
+      if (!s || s === state.size) return;
+      newPuzzle(s, 'size');
     });
 
-    if (sizeRow) {
-      sizeRow.addEventListener('click', function (ev) {
-        var t = ev.target;
-        while (t && t !== sizeRow && !t.getAttribute) t = t.parentNode;
-        if (!t || t === sizeRow) return;
-        var s = Number(t.getAttribute('data-size'));
-        if (!s || s === state.size) return;
-        newPuzzle(s, 'size');
-      });
-    }
-
     hintBtn.addEventListener('click', useHint);
+    if (hintIconBtn) hintIconBtn.addEventListener('click', useHint);
+    undoBtn.addEventListener('click', doUndo);
+    if (undoIconBtn) undoIconBtn.addEventListener('click', doUndo);
+    if (redoIconBtn) redoIconBtn.addEventListener('click', doRedo);
     restartBtn.addEventListener('click', restart);
-    newBtn.addEventListener('click', function () { newPuzzle(state.size, 'new'); });
-    if (nextBtn) nextBtn.addEventListener('click', function () { newPuzzle(state.size, 'new'); });
+    newBtn.addEventListener('click', function () { setMenu(false); newPuzzle(state.size, 'new'); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { winEl.hidden = true; newPuzzle(state.size, 'next'); });
+    moreBtn.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      setMenu(menuEl.hidden);
+    });
+    document.addEventListener('click', function (ev) {
+      if (menuEl.hidden) return;
+      if (menuEl.contains(ev.target) || moreBtn.contains(ev.target)) return;
+      setMenu(false);
+    });
 
+    // 键盘：Delete/Backspace 清格，符号键填数（原有行为，勿删）
     document.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape') {
+        if (!menuEl.hidden) { setMenu(false); return; }
+      }
       if (ev.metaKey || ev.ctrlKey || ev.altKey) return;
       if (ev.key === 'Backspace' || ev.key === 'Delete') {
-        if (state.sel >= 0 && !state.given[state.sel]) {
+        if (state.sel >= 0 && !state.given[state.sel] && state.vals[state.sel] > 0) {
+          pushHistory({ i: state.sel, prev: state.vals[state.sel], next: -1, hintPrev: state.hinted[state.sel], hintNext: 0 });
           state.vals[state.sel] = -1;
+          state.hinted[state.sel] = 0;
           recalc();
           paint();
         }
@@ -622,13 +822,14 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
       if (v) { ev.preventDefault(); setValue(v); }
     });
 
-    var resizeTimer = 0;
+    // 视口变化 → 重算格尺寸（§10.1 上限 56 / §14.1.5 下限）
+    var resizeId = 0;
     window.addEventListener('resize', function () {
-      if (resizeTimer) clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(sizeBoard, 120);
+      if (resizeId) clearTimeout(resizeId);
+      resizeId = setTimeout(function () { if (state.puzzle) sizeBoard(); }, 120);
     });
 
-    syncChips();
-    newPuzzle(state.size, '');
+    updateHistoryBtns();
+    newPuzzle(size, '');
   })();
 </script>
