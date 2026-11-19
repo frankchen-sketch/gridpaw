@@ -611,6 +611,26 @@ L1 Dining Room（`a5a07a2`）之后，L2–L13 由 4+2 个子 agent 并行产出
 - **下一步（待开工）**：Phase 2 三批——①15 页引导统一（新建 `GameCoach.astro`）②棋盘卡+工具栏组件化 ③首页 v3 重做 + 手机端重排。每批 ≤20 页、单独预览、过闸再合。
 - **hexadoku（sudoku）**：`design/sudoku-visual` 五版（最新 E = 胡桃木+毡绿+黄铜）与合同方向冲突，需按 §9–§16 重出；分支 rebase 到 main 即可拿到合同。
 
+## 2026-11-19 Phase 2 批① 引导统一合入 main（`62b1c59`）
+
+**分支** `ui/phase2`（worktree `~/workspace/.worktrees/ui-phase2`）→ 3 commit 合 main，已 push `7a8bca5..62b1c59`。
+
+| 项 | 结果 |
+|---|---|
+| 新组件 | `src/components/GameCoach.astro`（唯一引导实现：卡内引导条 + 卡内规则抽屉，首访才现，Skip/首动作永久收起） |
+| 遮罩页迁移 | akari / kenken / binary / star-battle / hashi：`rules-overlay`（z999 全屏挡棋盘）→ 卡内抽屉 360px |
+| 位置修正 | 首页 coach 棋盘**之后**→**之上**（150px static）；slitherlink fixed 飘浮卡 → 卡内 119px |
+| 补引导 | train-tracks-puzzle 3 步条（桌面 56 / 手机 90，gap 10） |
+| iframe 三页 | kakuro / nurikabe / nonogram：**不给页面层引导**（游戏内自带 4 关教程，双引导实测更差）+ iframe 高度自适应 |
+| iframe 高度 | 内嵌页 `embed=1` 时 postMessage 回传内容高度；kakuro 780→505、nonogram 820→584，**棋盘下空白 315/276px 归零** |
+| 合同 | STYLE.md **v1.2**：手机 coach ≤96 / 教学卡 ≤150（手机 ≤200）/ iframe 页不加页面层引导 / iframe 禁写死高度 |
+
+**用户实测抓到的两个 bug（已修）**：① kakuro 棋盘下方 315px 空白（iframe 写死 780 装着 465 的内容）；② nurikabe 两个同名 How to play（游戏内教程 + 我加的页面层抽屉）。
+
+**GSC 佐证（28 天，全站 245,117 曝光 / 12,966 点击）**：`/meowdoku/` 971 曝光（0.40%）、`/pictomino/` 374（0.15%）、`/crazy-cleanup/` 0 → 三款游戏合计 **0.55%**，远低于 5% 阈值 → 批① 尾部三页不做（`/meowdoku-guide/` 16,966 曝光属内容页，另计）。
+
+**未做**：murdoku（已有卡内 3 步 tutorial，用户确认不做）；三款低占比游戏；批②③ 未开；**未部署生产**（生产仍 `753f250`）。
+
 ## 历史事件档案
 
 2026-09-21 ~ 2026-11-08 的全部按日期事件段（51 段，部署记录 / 事故复盘 / 验收数据）已搬至 `STATUS-ARCHIVE.md`「三、按日期事件段」。
