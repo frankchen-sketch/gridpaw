@@ -1,5 +1,7 @@
 # HexaSudoku（六边形数独）选品评估 — 结论：不做
 
+> ⚠️ **本文件评估的对象有误，已被取代。** 用户说的其实是 **hexadoku = 16×16 数独**，不是六边形网格数独。正确评估见 `2026-11-19-hexadoku-research.md`（结论：**做**，2,400/月）。本文件保留作「六边形玩法」的记录：`hexasudoku` 本词 Google Ads 无数据，`hex sudoku` 词簇仅 170/月。
+>
 > 2026-11-19。用户提到「今天看到一个 hexasudoku 好像也不错」，按 skill `puzzle-game-expansion-research` 五维评估。
 > 数据源：web.cafe `keyword_volume`（Google Ads/KWP 口径，fromCache=false 真新读）、`serp_review`、`search_known_keywords`；App Store Search API；DNS/HTTP 探测。
 
