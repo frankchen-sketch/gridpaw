@@ -1,0 +1,194 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import pool from '../../data/tracks-puzzles.json';
+// 边索引直接用引擎的,不在这页复制一份——复制就会在某天悄悄跟引擎走散
+import { hIdx, vIdx, cellEdges } from '../../lib/puzzle-core/tracks-engine';
+
+// ── Train Tracks — printable pack ──────────────────────────────────────────
+// Boards come from src/data/tracks-puzzles.json. Each is already verified
+// unique and guess-free by scripts/gen-tracks-pool.mjs, so the answer key is
+// the same data — no second solver pass at build time.
+//
+// Print: one sheet of puzzles, then one of answers. @media print hides the
+// site chrome (GameNav / side ads), the buttons, and drops the page margins.
+type Board = {
+  rows: number; cols: number; rowClues: number[]; colClues: number[];
+  start: number; end: number; pathLen: number; difficulty: string; solution: number[];
+};
+
+const all = pool.boards as Record<string, Board[]>;
+
+// 6×6 给入门、8×8 主力、10×10 收尾：各 4 盘，一共 12 盘，两栏 6 行
+const PACK: { size: string; board: Board }[] = [
+  ...all['6'].slice(0, 4).map((board) => ({ size: '6×6', board })),
+  ...all['8'].slice(0, 4).map((board) => ({ size: '8×8', board })),
+  ...all['10'].slice(0, 4).map((board) => ({ size: '10×10', board })),
+];
+
+const geom = (b: Board) => {
+  const n = Math.max(b.rows, b.cols);
+  const S = n <= 6 ? 44 : n <= 8 ? 34 : 28;
+  const pad = Math.round(S * 0.9);
+  return { S, pad, W: pad + b.cols * S + 8, H: pad + b.rows * S + 8 };
+};
+
+const midOf = (b: Board, r: number, c: number, side: number, S: number, pad: number): [number, number] => {
+  const x = pad + c * S, y = pad + r * S;
+  if (side === 0) return [x + S / 2, y];
+  if (side === 1) return [x + S / 2, y + S];
+  if (side === 2) return [x, y + S / 2];
+  return [x + S, y + S / 2];
+};
+
+function boardSvg(b: Board, opts: { solution: boolean; label: string }): string {
+  const { S, pad, W, H } = geom(b);
+  const out: string[] = [];
+  out.push(`<svg class="ttp-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${opts.label}">`);
+  for (let r = 0; r <= b.rows; r++) {
+    out.push(`<line class="tt-gl" x1="${pad}" y1="${pad + r * S}" x2="${pad + b.cols * S}" y2="${pad + r * S}"/>`);
+  }
+  for (let c = 0; c <= b.cols; c++) {
+    out.push(`<line class="tt-gl" x1="${pad + c * S}" y1="${pad}" x2="${pad + c * S}" y2="${pad + b.rows * S}"/>`);
+  }
+  for (let r = 0; r < b.rows; r++) {
+    out.push(`<text class="tt-clue" x="${pad - 13}" y="${pad + r * S + S / 2 + 4}" text-anchor="middle">${b.rowClues[r]}</text>`);
+  }
+  for (let c = 0; c < b.cols; c++) {
+    out.push(`<text class="tt-clue" x="${pad + c * S + S / 2}" y="${pad - 10}" text-anchor="middle">${b.colClues[c]}</text>`);
+  }
+  if (opts.solution) {
+    for (let r = 0; r < b.rows; r++) {
+      for (let c = 0; c < b.cols; c++) {
+        const edges = cellEdges(b.rows, b.cols, r, c);
+        const cx = pad + c * S + S / 2, cy = pad + r * S + S / 2;
+        for (let side = 0; side < 4; side++) {
+          if (b.solution[edges[side]] !== 1) continue;
+          const [mx, my] = midOf(b, r, c, side, S, pad);
+          out.push(`<line class="tt-rail" x1="${mx}" y1="${my}" x2="${cx}" y2="${cy}"/>`);
+        }
+      }
+    }
+    const [ax, ay] = midOf(b, 0, b.start % b.cols, 0, S, pad);
+    out.push(`<line class="tt-rail" x1="${ax}" y1="${pad - 10}" x2="${ax}" y2="${ay}"/>`);
+    const [bx, by] = midOf(b, b.rows - 1, b.end % b.cols, 1, S, pad);
+    out.push(`<line class="tt-rail" x1="${bx}" y1="${by}" x2="${bx}" y2="${pad + b.rows * S + 10}"/>`);
+  }
+  const ax2 = pad + (b.start % b.cols) * S + S / 2;
+  out.push(`<circle class="tt-badge" cx="${ax2}" cy="${pad + S / 2}" r="${Math.round(S * 0.28)}"/>`);
+  out.push(`<text class="tt-badge-t" x="${ax2}" y="${pad + S / 2 + 4}" text-anchor="middle">A</text>`);
+  const bx2 = pad + (b.end % b.cols) * S + S / 2;
+  out.push(`<circle class="tt-badge" cx="${bx2}" cy="${pad + (b.rows - 1) * S + S / 2}" r="${Math.round(S * 0.28)}"/>`);
+  out.push(`<text class="tt-badge-t" x="${bx2}" y="${pad + (b.rows - 1) * S + S / 2 + 4}" text-anchor="middle">B</text>`);
+  out.push('</svg>');
+  return out.join('');
+}
+
+const title = 'Train Tracks Puzzles to Print — 12 Free Logic Puzzle Sheets';
+const description = 'Twelve printable Train Tracks puzzles (6x6, 8x8 and 10x10) with an answer key: one unbroken railway from A to B, every row and column count satisfied. Print straight from the browser, no signup.';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <SEOHead title={title} description={description} canonical="/train-tracks-puzzle/printable/" type="article" />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/train-tracks-puzzle/printable/">
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/train-tracks-puzzle/printable/">
+</head>
+<body>
+  <GameNav />
+
+  <main class="ttp">
+    <h1>Train Tracks puzzles to print</h1>
+    <p class="ttp-lede">
+      Twelve boards — four at 6×6, four at 8×8, four at 10×10 — plus a full answer key. Every board has
+      exactly one solution and can be finished by deduction alone, so nobody gets stuck on a guess.
+      <button class="ttp-btn no-print" id="ttp-print" type="button">Print / Save as PDF</button>
+    </p>
+
+    <section class="ttp-rules">
+      <h2>Rules</h2>
+      <ul>
+        <li>Join <strong>A</strong> to <strong>B</strong> with one unbroken railway.</li>
+        <li>Every square that holds rail has exactly two joints; A and B have one each, the line leaving the board through them.</li>
+        <li>The number beside each row and column is how many of its squares hold rail.</li>
+        <li>No crossings, no branches, no separate pieces. Two rails side by side in neighbouring squares is legal — they do not connect.</li>
+      </ul>
+    </section>
+
+    <section class="ttp-grid">
+      {PACK.map((item, i) => (
+        <figure class="ttp-card">
+          <figcaption>Puzzle {i + 1} <span class="ttp-size">{item.size}</span></figcaption>
+          <div set:html={boardSvg(item.board, { solution: false, label: `Train Tracks puzzle ${i + 1}, ${item.size}` })} />
+        </figure>
+      ))}
+    </section>
+
+    <section class="ttp-grid ttp-key">
+      <h2 class="ttp-keytitle">Answer key</h2>
+      {PACK.map((item, i) => (
+        <figure class="ttp-card">
+          <figcaption>Puzzle {i + 1} <span class="ttp-size">{item.size}</span></figcaption>
+          <div set:html={boardSvg(item.board, { solution: true, label: `Train Tracks answer ${i + 1}, ${item.size}` })} />
+        </figure>
+      ))}
+    </section>
+
+    <p class="ttp-note no-print">
+      Rather solve on screen, where a hint tells you which rule forces the move?
+      <a href="/train-tracks-puzzle/">Play Train Tracks</a> —
+      <a href="/train-tracks-puzzle/solver/">or watch a 12×12 board solved step by step</a>.
+    </p>
+  </main>
+
+  <style is:global>
+    .ttp { max-width: 860px; margin: 0 auto; padding: 24px 16px 64px; }
+    .ttp h1 { font-size: 30px; line-height: 1.2; margin: 8px 0 8px; }
+    .ttp-lede { font-size: 16px; line-height: 1.65; }
+    .ttp-btn { border: 1px solid currentColor; background: transparent; color: inherit; border-radius: 8px; padding: 6px 14px; font: inherit; font-size: 14px; cursor: pointer; margin-left: 8px; }
+    .ttp-rules { margin: 8px 0 20px; }
+    .ttp-rules h2 { font-size: 18px; margin: 0 0 6px; }
+    .ttp-rules ul { margin: 0; padding-left: 20px; }
+    .ttp-rules li { line-height: 1.55; margin: 4px 0; }
+    .ttp-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 22px; align-items: start; }
+    .ttp-card { margin: 0; break-inside: avoid; }
+    .ttp-card figcaption { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .ttp-size { font-weight: 400; opacity: .65; margin-left: 6px; }
+    .ttp-svg { width: 100%; height: auto; display: block; max-width: 100%; }
+    .tt-gl { stroke: #d4d4d8; stroke-width: 1; }
+    .tt-clue { font-size: 13px; font-weight: 700; fill: currentColor; }
+    .tt-rail { stroke: #1f2937; stroke-width: 4.5; stroke-linecap: round; }
+    .tt-badge { fill: #D97706; }
+    .tt-badge-t { fill: #fff; font-size: 9px; font-weight: 700; }
+    .ttp-key { margin-top: 34px; }
+    .ttp-keytitle { grid-column: 1 / -1; font-size: 20px; margin: 0 0 4px; }
+    .ttp-note { font-size: 14px; line-height: 1.6; margin-top: 28px; }
+
+    @media print {
+      html, body { background: #fff !important; color: #000 !important; }
+      header, nav, .gp-side-ad, .no-print, footer { display: none !important; }
+      .ttp { max-width: none; margin: 0; padding: 0; }
+      .ttp h1 { font-size: 16pt; margin: 0 0 4pt; }
+      .ttp-lede { font-size: 9pt; margin: 0 0 6pt; }
+      .ttp-rules h2 { font-size: 10pt; margin: 0 0 2pt; }
+      .ttp-rules ul { font-size: 8.5pt; padding-left: 12pt; }
+      .ttp-rules li { margin: 1pt 0; line-height: 1.35; }
+      .ttp-grid { grid-template-columns: repeat(2, 1fr); gap: 6mm 8mm; }
+      .ttp-card figcaption { font-size: 8pt; }
+      .tt-gl { stroke: #999; }
+      .tt-rail { stroke: #000; }
+      .tt-clue { fill: #000; }
+      .ttp-key { break-before: page; page-break-before: always; margin-top: 0; }
+      .ttp-keytitle { font-size: 12pt; }
+      @page { size: A4; margin: 12mm; }
+    }
+  </style>
+
+  <script is:inline>
+    document.getElementById('ttp-print').addEventListener('click', () => window.print());
+  </script>
+</body>
+</html>

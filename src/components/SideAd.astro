@@ -46,7 +46,11 @@ const PLAY_PREFIXES = ['/akari/puzzle/', '/meowdoku/levels/'];
 //   /murdoku、/murdoku/trail —— main 是 1152px 全宽（2026-10-14 「侧栏吞点击」那次事故的同一个布局债），
 //     侧栏会落在网格上；实测 25/25 采样点命中 main.main。要么先把它收到 840，要么继续全零。
 //   /unlock-all、/ad-free —— 售卖页，用户是来买/关广告的。
-const NEVER_ADS = new Set(['/murdoku', '/murdoku/trail', '/unlock-all', '/ad-free']);
+//   /train-tracks-puzzle* —— 2026-11-19 用户拍板：Train Tracks 三页不挂任何广告。
+const NEVER_ADS = new Set([
+  '/murdoku', '/murdoku/trail', '/unlock-all', '/ad-free',
+  '/train-tracks-puzzle', '/train-tracks-puzzle/solver', '/train-tracks-puzzle/printable',
+]);
 const PAGE_PATH = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const isPlaySurface =
   PLAY_SURFACES.has(PAGE_PATH) || PLAY_PREFIXES.some((p) => PAGE_PATH.startsWith(p));

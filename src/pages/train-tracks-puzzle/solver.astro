@@ -1,0 +1,344 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import {
+  deduce, countSolutions, cellEdges,
+} from '../../lib/puzzle-core/tracks-engine';
+import pool from '../../data/tracks-puzzles.json';
+
+// ── Train Tracks solver — GridPaw ───────────────────────────────────────────
+// 12×12 is the size the other online Tracks solvers stop short of, so the demo
+// board here is 12×12. Everything on this page is computed at build time: the
+// puzzle, its unique solution, and the full deduction. The HTML therefore ships
+// the answer AND the reasoning (good for search and for AI answers), and the
+// client script only walks through it.
+//
+// Engine: src/lib/puzzle-core/tracks-engine.ts (also bundled to
+// public/tracks-engine.js as the global TracksEngine for the play pages).
+// 题库是 scripts/gen-tracks-pool.mjs 生成并入的 JSON。页面不现算题：12×12 现生成
+// 要 ~15 秒，build 不该背这个成本，浏览器更背不动。
+const ROWS = 12;
+const COLS = 12;
+const raw = (pool.boards as Record<string, any[]>)['12'][0];
+const SEED = raw.seed;
+const puzzle = {
+  ...raw,
+  rowClues: Int8Array.from(raw.rowClues),
+  colClues: Int8Array.from(raw.colClues),
+  solution: Uint8Array.from(raw.solution),
+};
+const deduction = deduce(puzzle);
+const steps = deduction.steps;
+// 这页卖的是「每一步都是被逼出来的」。哪天后端引擎改动让这个种子推不完，
+// 构建必须红，不能悄悄发一个声称 guess-free 的页面。
+if (!deduction.solved) throw new Error('train-tracks solver page: seed ' + SEED + ' is not deduce-solvable');
+// 页面正文写着「exactly one solution」，那就必须在构建时证明，不能靠打赌。
+const uniq = countSolutions(puzzle, 2);
+if (uniq.count !== 1 || uniq.truncated) {
+  throw new Error('train-tracks solver page: seed ' + SEED + ' is not provably unique (' + uniq.count + ', truncated=' + uniq.truncated + ')');
+}
+
+// Board geometry in SVG user units. Rails are drawn per cell — from the
+// midpoint of a side through the cell centre — never along the grid lines,
+// which would read as a Slitherlink loop.
+const S = 30;
+const PAD = 36;
+
+// When does each edge get its value? A cell's rail piece may only appear once
+// the edge carrying it has been decided, so every half-segment is tagged with
+// the step that decides it.
+const decidedAt = new Map<number, number>();
+steps.forEach((st, i) => { if (!decidedAt.has(st.edge)) decidedAt.set(st.edge, i + 1); });
+
+const segs: { x1: number; y1: number; x2: number; y2: number; at: number }[] = [];
+const midOf = (r: number, c: number, side: number): [number, number] => {
+  const x = PAD + c * S, y = PAD + r * S;
+  if (side === 0) return [x + S / 2, y];
+  if (side === 1) return [x + S / 2, y + S];
+  if (side === 2) return [x, y + S / 2];
+  return [x + S, y + S / 2];
+};
+for (let r = 0; r < ROWS; r++) {
+  for (let c = 0; c < COLS; c++) {
+    const edges = cellEdges(ROWS, COLS, r, c);
+    const cx = PAD + c * S + S / 2, cy = PAD + r * S + S / 2;
+    for (let b = 0; b < 4; b++) {
+      if (puzzle.solution[edges[b]] !== 1) continue;
+      const [mx, my] = midOf(r, c, b);
+      segs.push({ x1: mx, y1: my, x2: cx, y2: cy, at: decidedAt.get(edges[b]) ?? 0 });
+    }
+  }
+}
+
+// A / B stubs run off the board edge.
+const [ax, ay] = midOf(0, puzzle.start % COLS, 0);
+const [bx, by] = midOf(ROWS - 1, puzzle.end % COLS, 1);
+const stubA = { x1: ax, y1: PAD - 12, x2: ax, y2: ay };
+const stubB = { x1: bx, y1: by, x2: bx, y2: PAD + ROWS * S + 12 };
+
+const W = PAD + COLS * S + 12;
+const H = PAD + ROWS * S + 12;
+
+// Static SVG: grid, clues, A/B, and the finished track. The client script hides
+// the track and reveals it step by step; with JS off the answer is still there.
+const grid = [];
+for (let r = 0; r <= ROWS; r++) grid.push(`<line class="tt-gl" x1="${PAD}" y1="${PAD + r * S}" x2="${PAD + COLS * S}" y2="${PAD + r * S}"/>`);
+for (let c = 0; c <= COLS; c++) grid.push(`<line class="tt-gl" x1="${PAD + c * S}" y1="${PAD}" x2="${PAD + c * S}" y2="${PAD + ROWS * S}"/>`);
+const clueEls = [];
+for (let r = 0; r < ROWS; r++) clueEls.push(`<text class="tt-clue" x="${PAD - 18}" y="${PAD + r * S + S / 2 + 5}" text-anchor="middle">${puzzle.rowClues[r]}</text>`);
+for (let c = 0; c < COLS; c++) clueEls.push(`<text class="tt-clue" x="${PAD + c * S + S / 2}" y="${PAD - 16}" text-anchor="middle">${puzzle.colClues[c]}</text>`);
+const segMarkup = segs
+  .map((s) => `<line class="tt-rail" data-at="${s.at}" x1="${s.x1}" y1="${s.y1}" x2="${s.x2}" y2="${s.y2}"/>`)
+  .join('');
+const svgMarkup = `<svg id="tt-board" viewBox="0 0 ${W} ${H}" width="100%" style="max-width:${W}px" role="img" aria-label="12 by 12 Train Tracks puzzle with its solution">
+  ${grid.join('')}
+  ${clueEls.join('')}
+  <line class="tt-rail" x1="${stubA.x1}" y1="${stubA.y1}" x2="${stubA.x2}" y2="${stubA.y2}"/>
+  <line class="tt-rail" x1="${stubB.x1}" y1="${stubB.y1}" x2="${stubB.x2}" y2="${stubB.y2}"/>
+  <g id="tt-rails">${segMarkup}</g>
+  <circle class="tt-badge" cx="${ax}" cy="${PAD + S / 2}" r="11"/>
+  <text class="tt-badge-t" x="${ax}" y="${PAD + S / 2 + 5}" text-anchor="middle">A</text>
+  <circle class="tt-badge" cx="${bx}" cy="${PAD + (ROWS - 1) * S + S / 2}" r="11"/>
+  <text class="tt-badge-t" x="${bx}" y="${PAD + (ROWS - 1) * S + S / 2 + 5}" text-anchor="middle">B</text>
+</svg>`;
+
+const ruleLabel: Record<string, string> = {
+  'row-full': 'row count',
+  'row-needed': 'row count',
+  'col-full': 'column count',
+  'col-needed': 'column count',
+  'cell-full': 'cell degree',
+  'cell-needed': 'cell degree',
+  'cell-empty': 'cell degree',
+  'connect': 'connectivity',
+  'refuted': 'contradiction',
+};
+
+const title = 'Train Tracks Solver — 12×12 Puzzle Solved Step by Step';
+const description = 'A 12×12 Train Tracks puzzle solved one deduction at a time: every rail is placed by the row and column counts, by cell degree, or by showing that the alternative contradicts itself. Walk the whole proof in your browser.';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <SEOHead title={title} description={description} canonical="/train-tracks-puzzle/solver/" type="article" />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/train-tracks-puzzle/solver/">
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/train-tracks-puzzle/solver/">
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'WebSite', '@id': 'https://gridpaw.com/#website', url: 'https://gridpaw.com/', name: 'GridPaw' },
+      {
+        '@type': 'HowTo',
+        name: 'How to solve a 12×12 Train Tracks puzzle',
+        description: 'Solve Train Tracks by satisfying the row and column counts, the two-joint rule for every cell, and one unbroken line from A to B.',
+        totalTime: 'PT10M',
+        step: steps.slice(0, 12).map((s, i) => ({
+          '@type': 'HowToStep',
+          position: i + 1,
+          name: `${ruleLabel[s.rule] ?? 'deduction'} — ${s.value === 1 ? 'place rail' : 'leave empty'}`,
+          text: s.reason,
+        })),
+      },
+    ],
+  })} />
+</head>
+<body>
+  <GameNav />
+
+  <main class="tt-wrap">
+    <h1>Train Tracks Solver: a 12×12 puzzle, one deduction at a time</h1>
+
+    <p class="tt-lede">
+      This page does not just print an answer. It solves a 12×12 Train Tracks board the way a person
+      would — <strong>{steps.length} deductions</strong>, each one forced by a rule you can check — and
+      you can walk through them. Every step below says which rule fired, so when you get stuck on your
+      own puzzle you can find the same rule and apply it yourself.
+    </p>
+
+    <div class="tt-controls">
+      <button id="tt-prev" class="tt-btn" aria-label="Previous step">←</button>
+      <button id="tt-play" class="tt-btn tt-btn-primary">Play</button>
+      <button id="tt-next" class="tt-btn" aria-label="Next step">→</button>
+      <button id="tt-all" class="tt-btn">Show all</button>
+      <span id="tt-status" class="tt-status">Step 0 of {steps.length}</span>
+    </div>
+
+    <div class="tt-board" set:html={svgMarkup} />
+
+    <p id="tt-reason" class="tt-reason">
+      Press <strong>Play</strong>, or step through with the arrows. The board fills in exactly as the
+      solver decided it.
+    </p>
+
+    <h2>How each step is forced</h2>
+    <p>
+      Four kinds of reasoning, strongest and simplest first. A board that needs only the first kind is
+      gentle; one that needs the last is where people usually get stuck.
+    </p>
+    <ol class="tt-rules">
+      <li>
+        <strong>Row and column counts.</strong> The number beside a row or column is how many squares in
+        it hold rail. Once a row has that many, every other square in it is empty; when the remaining
+        squares are exactly the count, they all hold rail.
+      </li>
+      <li>
+        <strong>Cell degree.</strong> A square with rail holds exactly two joints — a straight or a
+        corner. A square with one joint and only one open side must take it, and cannot exist at all
+        with only one open side. A and B are the exceptions: one joint each, the line leaving the board
+        through them.
+      </li>
+      <li>
+        <strong>Connectivity.</strong> The rail is one unbroken line from A to B. A piece that can no
+        longer reach anything is a contradiction; once A and B are joined, every square outside that
+        line is empty.
+      </li>
+      <li>
+        <strong>Contradiction.</strong> Some positions only fall to case analysis: assume rail, watch the
+        rules break, so it must be empty. This is the step that separates a 12×12 board from a 7×7 one,
+        and it is why a solver has to be honest about what it guessed.
+      </li>
+    </ol>
+
+    <h2>Is your own puzzle solvable this way?</h2>
+    <p>
+      One thing worth knowing before you trust any solver: a Train Tracks board can have more than one
+      answer. Two boards can carry identical row and column counts and still differ. If a solver only
+      checks that the counts add up, it will happily "solve" a board that has several solutions. The
+      board on this page is checked both ways before it ships — exactly one solution, and finishable
+      without guessing — so the steps you see here really do force the answer.
+    </p>
+
+    <h2>The full deduction</h2>
+    <p class="tt-note">
+      {steps.length} steps. Each row names the rule, the side it decides, and why. Sides are given as
+      the <em>n</em>-th horizontal or vertical line, counting from 1.
+    </p>
+    <div class="tt-steps" id="tt-steps">
+      <table>
+        <thead><tr><th>#</th><th>Rule</th><th>Action</th><th>Why</th></tr></thead>
+        <tbody>
+          {steps.map((s, i) => {
+            const horiz = s.edge < (ROWS + 1) * COLS;
+            const where = horiz
+              ? `h${Math.floor(s.edge / COLS) + 1}/${(s.edge % COLS) + 1}`
+              : `v${Math.floor((s.edge - (ROWS + 1) * COLS) / (COLS + 1)) + 1}/${((s.edge - (ROWS + 1) * COLS) % (COLS + 1)) + 1}`;
+            return (
+              <tr data-step={i + 1}>
+                <td>{i + 1}</td>
+                <td>{ruleLabel[s.rule] ?? s.rule}</td>
+                <td>{s.value === 1 ? 'rail' : 'empty'} <span class="tt-where">{where}</span></td>
+                <td>{s.reason}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+
+    <p class="tt-note">
+      GridPaw's Tracks boards are generated to be unique and guess-free; the engine behind them is our
+      own, written for this site. <a href="/train-tracks-puzzle/">Play Train Tracks</a> when you would
+      rather solve one than read one.
+    </p>
+  </main>
+
+  <style is:global>
+    .tt-wrap { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+    .tt-wrap h1 { font-size: 30px; line-height: 1.25; margin: 8px 0 12px; }
+    .tt-wrap h2 { font-size: 20px; margin: 32px 0 8px; }
+    .tt-wrap p { line-height: 1.65; }
+    .tt-lede { font-size: 16px; }
+    .tt-note { font-size: 14px; opacity: .8; }
+    .tt-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 16px 0 8px; }
+    .tt-btn { border: 1px solid currentColor; background: transparent; color: inherit; border-radius: 8px; padding: 6px 14px; font: inherit; font-size: 14px; cursor: pointer; }
+    .tt-btn-primary { background: #D97706; border-color: #D97706; color: #fff; }
+    .tt-status { font-size: 13px; opacity: .75; margin-left: 4px; }
+    .tt-board { margin: 8px 0; }
+    .tt-gl { stroke: #e4e4e7; stroke-width: 1; }
+    .tt-clue { font-size: 14px; font-weight: 600; fill: currentColor; }
+    .tt-rail { stroke: #1f2937; stroke-width: 6; stroke-linecap: round; }
+    .tt-badge { fill: #D97706; }
+    .tt-badge-t { fill: #fff; font-size: 12px; font-weight: 700; }
+    .tt-reason { font-size: 14px; min-height: 44px; padding: 10px 12px; border-left: 3px solid #D97706; background: rgba(217,119,6,.06); border-radius: 0 8px 8px 0; }
+    .tt-rules { padding-left: 20px; }
+    .tt-rules li { margin: 10px 0; line-height: 1.6; }
+    .tt-steps { max-height: 420px; overflow: auto; border: 1px solid #e4e4e7; border-radius: 10px; }
+    .tt-steps table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .tt-steps th, .tt-steps td { text-align: left; padding: 6px 10px; border-bottom: 1px solid #f1f1f4; vertical-align: top; }
+    .tt-steps th { position: sticky; top: 0; background: #fafafa; }
+    .tt-steps tr[data-active="1"] { background: rgba(217,119,6,.10); }
+    .tt-where { opacity: .6; font-variant-numeric: tabular-nums; }
+    @media (prefers-color-scheme: dark) {
+      .tt-gl { stroke: #333; }
+      .tt-rail { stroke: #f4f4f5; }
+      .tt-steps th { background: #1a1a1a; }
+      .tt-steps th, .tt-steps td { border-bottom-color: #2a2a2a; }
+    }
+  </style>
+
+  <div id="tt-meta" data-total={steps.length} hidden></div>
+  <script is:inline>
+    (() => {
+      const rails = [...document.querySelectorAll('#tt-rails .tt-rail')];
+      const rows = [...document.querySelectorAll('#tt-steps tbody tr')];
+      const totalSteps = Number(document.getElementById('tt-meta').dataset.total);
+      const statusEl = document.getElementById('tt-status');
+      const reasonEl = document.getElementById('tt-reason');
+      const reasons = rows.map((r) => r.children[3].textContent.trim());
+      const rules = rows.map((r) => r.children[1].textContent.trim());
+      const actions = rows.map((r) => r.children[2].textContent.trim());
+
+      let k = 0;
+      let timer = null;
+
+      function paint() {
+        for (const el of rails) {
+          const at = Number(el.dataset.at);
+          // 未决定的轨道完全藏起来：这页卖的是「看着证明一步步建起来」，
+          // 半透明的答案预览既提前泄底，也会被当成渲染残渣。
+          el.style.opacity = at === 0 || at <= k ? '1' : '0';
+        }
+        for (const r of rows) r.dataset.active = '0';
+        if (k > 0 && rows[k - 1]) rows[k - 1].dataset.active = '1';
+        statusEl.textContent = `Step ${k} of ${totalSteps}`;
+        if (k === 0) {
+          reasonEl.textContent = 'Press Play, or step through with the arrows. The board fills in exactly as the solver decided it.';
+        } else {
+          reasonEl.innerHTML = `<strong>${rules[k - 1]}</strong> → ${actions[k - 1]}. ${reasons[k - 1]}`;
+        }
+        // 只滚步骤表自己，别把整页拽走（scrollIntoView 会滚页面）
+        const row = rows[k - 1];
+        const box = document.getElementById('tt-steps');
+        if (row && box) {
+          const top = row.offsetTop, h = box.clientHeight;
+          if (top < box.scrollTop || top > box.scrollTop + h - 48) box.scrollTop = Math.max(0, top - h / 2);
+        }
+      }
+
+      function stop() {
+        if (timer) { clearInterval(timer); timer = null; }
+        document.getElementById('tt-play').textContent = 'Play';
+      }
+
+      document.getElementById('tt-next').addEventListener('click', () => { stop(); k = Math.min(totalSteps, k + 1); paint(); });
+      document.getElementById('tt-prev').addEventListener('click', () => { stop(); k = Math.max(0, k - 1); paint(); });
+      document.getElementById('tt-all').addEventListener('click', () => { stop(); k = totalSteps; paint(); });
+      document.getElementById('tt-play').addEventListener('click', (ev) => {
+        if (timer) { stop(); return; }
+        if (k >= totalSteps) k = 0;
+        ev.target.textContent = 'Pause';
+        timer = setInterval(() => {
+          k += 1;
+          paint();
+          if (k >= totalSteps) stop();
+        }, 420);
+      });
+
+      paint();
+    })();
+  </script>
+</body>
+</html>

@@ -63,3 +63,4 @@ await compileBundle('./src/lib/puzzle-core/hashi-engine.ts', 'hashi-engine.js', 
 await compileBundle('./src/lib/puzzle-core/slitherlink-engine.ts', 'slitherlink-engine.js', 'SlitherEngine');
 await compileBundle('./src/lib/puzzle-core/star-battle-engine.ts', 'star-battle-engine.js', 'StarBattleEngine');
 await compileBundle('./src/lib/puzzle-core/murdoku-engine.ts', 'murdoku-engine.js', 'MurdokuEngine');
+await compileBundle('./src/lib/puzzle-core/tracks-engine.ts', 'tracks-engine.js', 'TracksEngine');
