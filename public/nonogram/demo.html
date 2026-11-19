@@ -830,5 +830,30 @@ document.getElementById('nextBtn').addEventListener('click', function () {
   newPuzzle();
 })();
 </script>
+
+<script>
+/* 2026-11-19 UI-1: 内嵌高度回传——父页按内容撑高 iframe，消掉棋盘下方大片空白 */
+(function () {
+  if (!/[?&]embed=1/.test(location.search)) return;
+  var last = 0;
+  function report() {
+    var max = 0, nodes = document.body.children;
+    for (var i = 0; i < nodes.length; i++) {
+      var el = nodes[i], cs = getComputedStyle(el);
+      if (cs.display === 'none' || cs.position === 'fixed' || cs.position === 'sticky') continue;
+      var r = el.getBoundingClientRect();
+      if (r.height <= 0) continue;
+      var b = r.bottom + (window.scrollY || 0);
+      if (b > max) max = b;
+    }
+    var pad = parseFloat(getComputedStyle(document.body).paddingBottom) || 0;
+    var h = Math.ceil(max + pad);
+    if (h > 200 && Math.abs(h - last) > 4) { last = h; parent.postMessage({ type: 'gp:frame-height', h: h }, '*'); }
+  }
+  window.addEventListener('load', report);
+  window.addEventListener('resize', report);
+  setInterval(report, 600);
+})();
+</script>
 </body>
 </html>

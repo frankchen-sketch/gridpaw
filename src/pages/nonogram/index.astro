@@ -7,7 +7,6 @@ import GameNav from '../../components/GameNav.astro';
 import GameHub from '../../components/GameHub.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import SideAd from '../../components/SideAd.astro';
-import GameCoach from '../../components/GameCoach.astro';
 
 const title = 'Play Nonogram Online: Free Picture Logic Puzzles';
 const description =
@@ -85,26 +84,12 @@ const faqs = [
       puzzles. Everything runs in your browser.
     </p>
 
-    <div class="gp-frame-row">
-      <button class="howto-chip" type="button" aria-label="How to play" data-gp-rules-btn><span>❓</span> how to play</button>
-    </div>
-    <GameCoach
-      game="nonogram"
-      steps={[]}
-      rules={[
-          { ic: '1', text: '<b>Numbers are block lengths.</b> <i>3 1</i> = a block of 3, a gap, then a block of 1, in that order.' },
-          { ic: '2', text: '<b>Edge clues pin cells.</b> A 5 in a 5-wide line fills it; a 4 pins at least three cells.' },
-          { ic: '3', text: 'Tap to fill a cell, drag to fill a run. Mark empties with the ✕ tool to stop second-guessing.' },
-      ]}
-      rulesTitle="How to play Nonogram"
-    />
-
     <div class="game-frame">
       <iframe
         src="/nonogram/demo.html?embed=1"
         title="Play Nonogram free online at GridPaw"
         width="100%"
-        height="820"
+        height="560" loading="eager"
         style="border:0;border-radius:16px;display:block;background:#fff8ef"
       ></iframe>
     </div>
@@ -244,9 +229,20 @@ const faqs = [
       h1 { font-size: 1.5rem; }
       .rules { margin-left: 1.1rem; }
     }
-      .gp-frame-row { display: flex; justify-content: flex-end; margin: 0 0 8px; }
-    .howto-chip { display: inline-flex; align-items: center; gap: 0.3rem; background: var(--gp-white, #fff); border: 1.5px dashed var(--gp-primary, #E8A888); color: var(--gp-primary-strong, #D47A50); border-radius: 999px; font-size: 0.72rem; font-weight: 800; padding: 0.35rem 0.7rem; cursor: pointer; font-family: inherit; min-height: 44px; }
-    .howto-chip:hover { background: var(--gp-cream-warm, #FFF4F0); }
 </style>
+<script is:inline>
+  // 按内嵌页回传的高度撑 iframe（避免棋盘下方大片空白）
+  (function () {
+    var f = document.querySelector('.game-frame iframe');
+    if (!f) return;
+    window.addEventListener('message', function (e) {
+      if (!e.data || e.data.type !== 'gp:message-height' && e.data.type !== 'gp:frame-height') return;
+      if (e.source !== f.contentWindow) return;
+      var h = Math.round(e.data.h || 0);
+      if (h < 320) return;
+      f.style.height = Math.min(h, 1000) + 'px';
+    });
+  })();
+</script>
 </body>
 </html>
