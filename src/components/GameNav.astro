@@ -48,7 +48,8 @@ const guides = [
         <div class="gp-switcher-menu">
           {games.map((g) => (
             <a href={g.href} class={g.href === active ? 'active' : ''}>
-              <strong>{g.icon ? <img class="gp-game-ico" src={`/assets/game-icons/${g.icon}.webp`} alt="" width="18" height="18" loading="lazy" /> : g.emoji} {g.name}</strong>
+              <strong>{g.icon ? <!-- 2026-11-19 UI-1: 菜单初期 display:none，lazy 图标在 Chromium 下永不触发加载（实测 complete 一直 false）→ 必须 eager -->
+              <img class="gp-game-ico" src={`/assets/game-icons/${g.icon}.webp`} alt="" width="18" height="18" /> : g.emoji} {g.name}</strong>
               <span class="gp-game-desc">{g.desc}</span>
             </a>
           ))}

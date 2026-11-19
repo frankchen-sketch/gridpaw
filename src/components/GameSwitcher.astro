@@ -32,7 +32,8 @@ const isActive = (href) => (href === '/' ? pathname === '/' : pathname.startsWit
   <div class="game-switcher-menu">
     {GAMES.map((g) => (
       <a href={g.href} class={isActive(g.href) ? 'active' : ''}>
-        <strong>{g.icon ? <img class="game-ico" src={`/assets/game-icons/${g.icon}.webp`} alt="" width="18" height="18" loading="lazy" /> : g.emoji} {g.name}</strong>
+        <strong>{g.icon ? <!-- 2026-11-19 UI-1: 隐藏菜单里的 lazy 图标不加载 → eager -->
+        <img class="game-ico" src={`/assets/game-icons/${g.icon}.webp`} alt="" width="18" height="18" /> : g.emoji} {g.name}</strong>
         <span class="game-desc">{g.desc}</span>
       </a>
     ))}
