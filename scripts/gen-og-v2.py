@@ -295,13 +295,94 @@ def build_pages():
       for r in range(7) for c in range(7))
     pages["star-battle"] = ("star-battle", "Two stars every row", f'<div class="g">{cells}</div>', sb_css)
 
+    pages["train-tracks-puzzle"] = train_tracks_page()
     return pages
+
+
+def train_tracks_page():
+    """Train Tracks：用入库题库里的真盘（8×8 第一盘）画完整解。
+
+    盘必须是真的：谜题圈观众一眼能看出假盘，所以直接读
+    src/data/tracks-puzzles.json（已过唯一解 + 无猜测门槛）。
+    """
+    import json
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    with open(os.path.join(root, "src/data/tracks-puzzles.json")) as f:
+        b = json.load(f)["boards"]["8"][0]
+    rows, cols, sol = b["rows"], b["cols"], b["solution"]
+    S, pad = 46, 44
+    W, H = pad + cols * S + 10, pad + rows * S + 10
+
+    def h(r, c):
+        return r * cols + c
+
+    def v(r, c):
+        # 引擎里是 (rows+1)*cols + r*(cols+1) + c —— 漏掉末项会让所有竖边落到别的
+        # 边上去，图看着像「只有横段」，我第一次就漏了。末尾有对账断言兜底。
+        return (rows + 1) * cols + r * (cols + 1) + c
+
+    def edges(r, c):
+        return [h(r, c), h(r + 1, c), v(r, c), v(r, c + 1)]
+
+    def mid(r, c, side):
+        x, y = pad + c * S, pad + r * S
+        return [(x + S / 2, y), (x + S / 2, y + S), (x, y + S / 2), (x + S, y + S / 2)][side]
+
+    parts = []
+    for r in range(rows + 1):
+        parts.append('<line class="g" x1="%d" y1="%d" x2="%d" y2="%d"/>' % (pad, pad + r * S, pad + cols * S, pad + r * S))
+    for c in range(cols + 1):
+        parts.append('<line class="g" x1="%d" y1="%d" x2="%d" y2="%d"/>' % (pad + c * S, pad, pad + c * S, pad + rows * S))
+    for r in range(rows):
+        parts.append('<text class="cl" x="%d" y="%d" text-anchor="middle">%d</text>' % (pad - 16, pad + r * S + S / 2 + 7, b["rowClues"][r]))
+    for c in range(cols):
+        parts.append('<text class="cl" x="%d" y="%d" text-anchor="middle">%d</text>' % (pad + c * S + S / 2, pad - 12, b["colClues"][c]))
+    for r in range(rows):
+        for c in range(cols):
+            cx, cy = pad + c * S + S / 2, pad + r * S + S / 2
+            for side in range(4):
+                if sol[edges(r, c)[side]] != 1:
+                    continue
+                mx, my = mid(r, c, side)
+                parts.append('<line class="rail" x1="%d" y1="%d" x2="%d" y2="%d"/>' % (mx, my, cx, cy))
+    ax, ay = mid(0, b["start"] % cols, 0)
+    parts.append('<line class="rail" x1="%d" y1="%d" x2="%d" y2="%d"/>' % (ax, pad - 16, ax, ay))
+    bx, by = mid(rows - 1, b["end"] % cols, 1)
+    parts.append('<line class="rail" x1="%d" y1="%d" x2="%d" y2="%d"/>' % (bx, by, bx, pad + rows * S + 16))
+    for cx, cy, ch, dy in ((ax, pad + S / 2, "A", 6), (bx, pad + (rows - 1) * S + S / 2, "B", 6)):
+        parts.append('<circle class="badge" cx="%d" cy="%d" r="14"/>' % (cx, cy))
+        parts.append('<text class="bt" x="%d" y="%d" text-anchor="middle">%s</text>' % (cx, cy + dy, ch))
+
+    # 对账：画出来的段数必须 = 2*(含轨格数-2) + 2（A/B 各一段），
+    # 且每格接头数只能是 0 或 2（A/B 为 1）。不成立就别发图。
+    segs = sum(1 for x in parts if 'class="rail"' in x) - 2  # 减掉 A/B 各一条出界短轨
+    want_segs = 2 * (b["pathLen"] - 2) + 2                    # A/B 各只有一个接头
+    assert segs == want_segs, "rail segments %d != %d" % (segs, want_segs)
+    for r in range(rows):
+        for c in range(cols):
+            n = sum(1 for e in edges(r, c) if sol[e] == 1)
+            if r * cols + c in (b["start"], b["end"]):
+                assert n == 1, "endpoint (%d,%d) has %d joints" % (r, c, n)
+            else:
+                assert n in (0, 2), "cell (%d,%d) has %d joints" % (r, c, n)
+
+    board = '<svg width="%d" height="%d" viewBox="0 0 %d %d">%s</svg>' % (W, H, W, H, "".join(parts))
+    css = """
+  .board { padding:14px 18px; }
+  .g { stroke:#e6dccd; stroke-width:2; }
+  .rail { stroke:#4a3f52; stroke-width:9; stroke-linecap:round; }
+  .cl { font-size:22px; font-weight:900; fill:#b45309; }
+  .badge { fill:#D97706; }
+  .bt { fill:#fff; font-size:17px; font-weight:900; }
+"""
+    return ("Train Tracks", "One line, A to B", board, css)
 
 
 def main():
     ap = argparse.ArgumentParser(description="GridPaw OG 分享图批量生成器")
     ap.add_argument("--out", default="scripts/og-build", help="HTML/PNG 输出目录")
     ap.add_argument("--png", action="store_true", help="用 Playwright 截 1200x630 PNG")
+    ap.add_argument("--only", default="", help="只出某一张（如 train-tracks-puzzle），默认全部")
     args = ap.parse_args()
 
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -309,16 +390,20 @@ def main():
     os.makedirs(out, exist_ok=True)
 
     written = []
+    only = args.only.strip()
     for name, (title, tag, board, css) in build_pages().items():
+        if only and name != only:
+            continue
         html_path = os.path.join(out, f"og-{name}.html")
         with open(html_path, "w") as f:
             f.write(page(name, title, tag, board, css))
         written.append(html_path)
     # nonogram 独立版式（猫显形 + clue 自动算）
-    nono_path = os.path.join(out, "og-nonogram.html")
-    with open(nono_path, "w") as f:
-        f.write(nonogram_page())
-    written.append(nono_path)
+    if not only:
+        nono_path = os.path.join(out, "og-nonogram.html")
+        with open(nono_path, "w") as f:
+            f.write(nonogram_page())
+        written.append(nono_path)
 
     for p in written:
         print("wrote", os.path.relpath(p, root))
