@@ -7,6 +7,9 @@
 // 盘面索引 = r*size + c；空值用 -1。
 // JS 生成的 .sd-* 节点拿不到 scoped hash，样式必须 is:global（同 MeowdokuPlay 的坑）。
 // 视觉：色值/圆角/阴影/动效全部取 src/styles/tokens.css 的 --gp-* / --r-* / --shadow-*，禁止 raw hex。
+// 引导：§13 GameCoach（卡内 static 3 步；⋯ 抽屉里的 How to play 随时重开）
+import GameCoach from './GameCoach.astro';
+
 interface Props {
   gameKey: string;              // GA 事件里的 game 维度，如 '16x16-sudoku'
   size?: number;                // 初始格数：9 | 12 | 16 | 25
@@ -16,6 +19,7 @@ interface Props {
   allow25?: boolean;            // 面板内提供 16×16 / 25×25 切换（mega 页）
   letterMode?: boolean;         // 9×9 用 A–I 代替 1–9（sudoku-with-letters）
   label?: string;               // 徽标文案，如 '16×16'
+  coachSteps?: string[];        // §13 引导三步（默认是大格数独通用文案）
 }
 const {
   gameKey,
@@ -26,6 +30,11 @@ const {
   allow25 = false,
   letterMode = false,
   label = `${size}×${size}`,
+  coachSteps = [
+    'Tap a cell, then a symbol below.',
+    'Every row, column and box needs each symbol exactly once.',
+    'Red cells clash — Undo takes it back.',
+  ],
 } = Astro.props;
 const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
 ---
@@ -77,6 +86,9 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
     <button type="button" class="sd-view" data-view="loupe" aria-pressed="false">Zoom</button>
   </div>
 
+  {/* ── §13 引导：卡内 static，上控制条之下、棋盘之上；首次进入才出现 ── */}
+  <GameCoach game={gameKey} steps={coachSteps} />
+
   {/* ── 棋盘（与上下条间距 ≤16px，§10.1）── */}
   <div class="sd-boardwrap">
     <div class="sd-board" id={`${uid}-board`} role="grid" aria-label="Playable sudoku board"></div>
@@ -127,6 +139,10 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
     <div class="sd-menu-row">
       <span class="sd-menu-label">Board</span>
       <button type="button" class="sd-btn sd-btn-ghost" id={`${uid}-new`}>New board</button>
+    </div>
+    <div class="sd-menu-row">
+      <span class="sd-menu-label">Guide</span>
+      <button type="button" class="sd-btn sd-btn-ghost" id={`${uid}-guide`}>How to play</button>
     </div>
   </div>
 
@@ -359,6 +375,7 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
     var moreBtn = document.getElementById(uid + '-more');
     var menuEl = document.getElementById(uid + '-menu');
     var newBtn = document.getElementById(uid + '-new');
+    var guideBtn = document.getElementById(uid + '-guide');
     var nextBtn = document.getElementById(uid + '-next');
     var restartBtn = document.getElementById(uid + '-restart');
     var viewbarEl = document.getElementById(uid + '-viewbar');
@@ -826,6 +843,8 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
       if (!state.moved) {
         state.moved = true;
         track('first_move', { game: gameKey, size: state.size, difficulty: DIFF_LABEL[state.diff] });
+        // §13.1.5 完成首个动作 → 引导永久收起
+        window.dispatchEvent(new CustomEvent('gp-coach-complete', { detail: { game: gameKey } }));
       }
       var prev = state.vals[i];
       var next = prev === v ? -1 : v;
@@ -970,6 +989,12 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
     if (redoIconBtn) redoIconBtn.addEventListener('click', doRedo);
     restartBtn.addEventListener('click', restart);
     newBtn.addEventListener('click', function () { setMenu(false); newPuzzle(state.size, 'new'); });
+    if (guideBtn) {
+      guideBtn.addEventListener('click', function () {
+        setMenu(false);
+        window.dispatchEvent(new CustomEvent('gp-coach-open', { detail: { game: gameKey } }));
+      });
+    }
     if (nextBtn) nextBtn.addEventListener('click', function () { winEl.hidden = true; newPuzzle(state.size, 'next'); });
     moreBtn.addEventListener('click', function (ev) {
       ev.stopPropagation();
