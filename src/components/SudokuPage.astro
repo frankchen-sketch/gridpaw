@@ -5,6 +5,8 @@
 import SEOHead from './SEOHead.astro';
 import GameNav from './GameNav.astro';
 import SideAd from './SideAd.astro';
+// 视觉合同（STYLE.md v1.0）：本壳承载大格数独 6 页，token 从这里一次注入
+import '../styles/tokens.css';
 
 interface Props {
   title: string;
@@ -44,34 +46,35 @@ const webAppLd = {
   <SEOHead title={title} description={description} canonical={canonical} type="website" />
   <script type="application/ld+json" set:html={JSON.stringify(webAppLd)} />
   <style is:global>
-    .sdp-crumb { font-size: 0.78rem; color: var(--md-text-light, #7A6A5F); max-width: 760px; margin: 0 auto; padding: 0.7rem 1rem 0; }
+    /* 视觉合同：STYLE.md v1.0 —— 色值全部来自 tokens.css 的 --gp-* */
+    .sdp-crumb { font-size: 0.78rem; color: var(--gp-brown-400); max-width: 760px; margin: 0 auto; padding: 0.7rem 1rem 0; }
     .sdp-crumb a { color: inherit; text-decoration: none; }
-    .sdp-crumb a:hover { color: var(--md-primary, #D97706); }
+    .sdp-crumb a:hover { color: var(--gp-cta-dark); }
 
-    .sdp-main { max-width: 760px; margin: 0 auto; padding: 0 1rem 2.5rem; color: var(--md-text, #3D3D3D); }
-    .sdp-main h1 { font-size: 1.65rem; line-height: 1.28; margin: 0.8rem 0 0.5rem; color: #342421; }
-    .sdp-lede { font-size: 1rem; line-height: 1.72; margin: 0 0 0.4rem; color: var(--md-text, #3D3D3D); }
+    .sdp-main { max-width: 760px; margin: 0 auto; padding: 0 1rem 2.5rem; color: var(--gp-ink); }
+    .sdp-main h1 { font-size: 1.65rem; line-height: 1.28; margin: 0.8rem 0 0.5rem; color: var(--gp-brown-900); }
+    .sdp-lede { font-size: 1rem; line-height: 1.72; margin: 0 0 0.4rem; color: var(--gp-ink); }
 
     .sdp-prose { margin-top: 1.6rem; }
-    .sdp-prose h2 { font-size: 1.22rem; line-height: 1.35; margin: 1.7rem 0 0.5rem; color: #342421; }
-    .sdp-prose h3 { font-size: 1.02rem; margin: 1.2rem 0 0.35rem; color: #342421; }
+    .sdp-prose h2 { font-size: 1.22rem; line-height: 1.35; margin: 1.7rem 0 0.5rem; color: var(--gp-brown-900); }
+    .sdp-prose h3 { font-size: 1.02rem; margin: 1.2rem 0 0.35rem; color: var(--gp-brown-900); }
     .sdp-prose p { margin: 0.55rem 0; line-height: 1.75; }
     .sdp-prose ul, .sdp-prose ol { margin: 0.5rem 0 0.7rem; padding-left: 1.3rem; }
     .sdp-prose li { margin: 0.35rem 0; line-height: 1.65; }
-    .sdp-prose a { color: var(--md-primary, #D97706); font-weight: 600; }
-    .sdp-prose table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; }
-    .sdp-prose th, .sdp-prose td { border: 1px solid #E8D8CA; padding: 0.45rem 0.6rem; text-align: left; vertical-align: top; }
-    .sdp-prose th { background: #FBF6F0; font-weight: 800; }
-    .sdp-note { background: #FBF6F0; border-left: 3px solid var(--md-primary, #D97706); border-radius: 0 8px 8px 0; padding: 0.6rem 0.85rem; font-size: 0.9rem; line-height: 1.65; margin: 0.9rem 0; }
+    .sdp-prose a { color: var(--gp-cta-dark); font-weight: 600; }
+    .sdp-prose table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: var(--gp-white); }
+    .sdp-prose th, .sdp-prose td { border: 1px solid var(--gp-linen); padding: 0.45rem 0.6rem; text-align: left; vertical-align: top; }
+    .sdp-prose th { background: var(--gp-sand); font-weight: 800; }
+    .sdp-note { background: var(--gp-sand); border-left: 3px solid var(--gp-primary); border-radius: 0 var(--r-md) var(--r-md) 0; padding: 0.6rem 0.85rem; font-size: 0.9rem; line-height: 1.65; margin: 0.9rem 0; }
 
-    .sdp-cluster { margin-top: 2.2rem; border-top: 1px solid #E8D8CA; padding-top: 1.1rem; }
-    .sdp-cluster h2 { font-size: 1.05rem; margin: 0 0 0.7rem; color: #342421; }
+    .sdp-cluster { margin-top: 2.2rem; border-top: 1px solid var(--gp-linen); padding-top: 1.1rem; }
+    .sdp-cluster h2 { font-size: 1.05rem; margin: 0 0 0.7rem; color: var(--gp-brown-900); }
     .sdp-cluster ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 8px; }
-    .sdp-cluster a { display: block; background: #fff; border: 1.5px solid #E8D8CA; border-radius: 10px; padding: 9px 11px; text-decoration: none; }
-    .sdp-cluster a:hover { border-color: var(--md-primary, #D97706); }
-    .sdp-cluster strong { display: block; font-size: 0.88rem; color: var(--md-text, #3D3D3D); }
-    .sdp-cluster span { display: block; font-size: 0.75rem; color: var(--md-text-light, #7A6A5F); line-height: 1.45; margin-top: 2px; }
-    .sdp-foot { margin-top: 1.6rem; font-size: 0.75rem; color: var(--md-text-light, #7A6A5F); line-height: 1.6; }
+    .sdp-cluster a { display: block; background: var(--gp-white); border: 1.5px solid var(--gp-linen); border-radius: var(--r-md); padding: 9px 11px; text-decoration: none; }
+    .sdp-cluster a:hover { border-color: var(--gp-primary); }
+    .sdp-cluster strong { display: block; font-size: 0.88rem; color: var(--gp-ink); }
+    .sdp-cluster span { display: block; font-size: 0.75rem; color: var(--gp-brown-400); line-height: 1.45; margin-top: 2px; }
+    .sdp-foot { margin-top: 1.6rem; font-size: 0.75rem; color: var(--gp-brown-400); line-height: 1.6; }
     .sdp-foot a { color: inherit; }
 
     @media (max-width: 520px) {

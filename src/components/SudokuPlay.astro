@@ -73,30 +73,32 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
 </div>
 
 <style is:global>
+  /* 视觉合同：STYLE.md v1.0 —— 所有色值取 src/styles/tokens.css 的 --gp-* token。
+   * §2 铁律：表外色相一个都不许出现（raw hex 已全部清零）。 */
   .sd-play {
     box-sizing: border-box;
     max-width: 660px; margin: 1.1rem auto 1.4rem; padding: 14px;
-    background: #fff; border: 2px solid var(--md-primary, #D97706); border-radius: 16px;
-    box-shadow: 0 2px 10px rgba(63, 48, 38, 0.07);
+    background: var(--gp-white); border: 2px solid var(--gp-linen); border-radius: 16px;
+    box-shadow: var(--shadow-md);
   }
-  .sd-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 14px; font-size: 0.8rem; color: var(--md-text-light, #7A6A5F); }
-  .sd-badge { background: #FFF1E8; color: var(--md-primary, #D97706); font-weight: 800; border-radius: 99px; padding: 3px 10px; }
+  .sd-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 14px; font-size: 0.8rem; color: var(--gp-brown-400); }
+  .sd-badge { background: var(--gp-cream-warm); color: var(--gp-cta-dark); font-weight: 800; border-radius: var(--r-full); padding: 3px 10px; }
   .sd-stat { font-weight: 700; }
   .sd-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin: 10px 0 8px; }
-  .sd-diffs { display: flex; gap: 2px; background: #FBF6F0; border-radius: 99px; padding: 3px; }
+  .sd-diffs { display: flex; gap: 2px; background: var(--gp-sand); border-radius: var(--r-full); padding: 3px; }
   .sd-chip {
-    border: 0; background: transparent; color: var(--md-text, #3D3D3D);
+    border: 0; background: transparent; color: var(--gp-ink);
     font: inherit; font-size: 0.78rem; font-weight: 800; padding: 4px 10px;
-    border-radius: 99px; cursor: pointer;
+    border-radius: var(--r-full); cursor: pointer;
   }
-  .sd-chip[aria-pressed="true"] { background: var(--md-primary, #D97706); color: #fff; }
+  .sd-chip[aria-pressed="true"] { background: var(--gp-cta); color: var(--gp-white); }
   .sd-tools { display: flex; flex-wrap: wrap; gap: 6px; }
   .sd-tools button {
-    border: 0; border-radius: 9px; padding: 6px 10px; font: inherit;
-    font-size: 0.78rem; font-weight: 800; background: #FFF1E8;
-    color: var(--md-text, #3D3D3D); cursor: pointer;
+    border: 0; border-radius: var(--r-md); padding: 6px 10px; font: inherit;
+    font-size: 0.78rem; font-weight: 800; background: var(--gp-cream-warm);
+    color: var(--gp-ink); cursor: pointer;
   }
-  .sd-tools button.primary { background: var(--md-primary, #D97706); color: #fff; }
+  .sd-tools button.primary { background: var(--gp-cta); color: var(--gp-white); }
   .sd-tools button:disabled { opacity: 0.45; cursor: default; }
 
   .sd-boardwrap { position: relative; overflow-x: auto; overflow-y: hidden; padding: 2px; min-height: 140px; -webkit-overflow-scrolling: touch; }
@@ -105,26 +107,26 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
     grid-template-columns: repeat(var(--sd-n, 16), var(--sd-cell, 26px));
     grid-auto-rows: var(--sd-cell, 26px);
     width: max-content; margin: 0 auto;
-    border: 2px solid #B08968; border-radius: 6px; overflow: hidden; background: #fff;
+    border: 2px solid var(--gp-brown-400); border-radius: var(--r-sm); overflow: hidden; background: var(--gp-white);
   }
   .sd-cell {
     display: flex; align-items: center; justify-content: center; position: relative;
-    font-weight: 700; color: var(--md-text, #3D3D3D);
+    font-weight: 700; color: var(--gp-ink);
     font-size: calc(var(--sd-cell, 26px) * 0.56); line-height: 1;
-    border-right: 1px solid #E8D8CA; border-bottom: 1px solid #E8D8CA;
+    border-right: 1px solid var(--gp-linen); border-bottom: 1px solid var(--gp-linen);
     cursor: pointer; user-select: none; -webkit-user-select: none; touch-action: manipulation;
-    transition: background 0.08s;
+    transition: background var(--t-fast);
   }
   .sd-cell.sd-edge-r { border-right: 0; }
   .sd-cell.sd-edge-b { border-bottom: 0; }
-  .sd-cell.sd-box-r { border-right: 2px solid #B08968; }
-  .sd-cell.sd-box-b { border-bottom: 2px solid #B08968; }
-  .sd-cell.sd-given { color: #342421; background: #FDF8F2; font-weight: 800; cursor: default; }
-  .sd-cell.sd-peer { background: #FDF1E5; }
-  .sd-cell.sd-same { background: #FBE3CC; }
-  .sd-cell.sd-sel { background: #F7D9BC; box-shadow: inset 0 0 0 2px var(--md-primary, #D97706); }
-  .sd-cell.sd-conf { color: #E74C3C; background: #FDECEA; }
-  .sd-cell.sd-hinted { color: #2D6A3F; background: #EAF6ED; }
+  .sd-cell.sd-box-r { border-right: 2px solid var(--gp-brown-400); }
+  .sd-cell.sd-box-b { border-bottom: 2px solid var(--gp-brown-400); }
+  .sd-cell.sd-given { color: var(--gp-brown-900); background: var(--gp-sand); font-weight: 800; cursor: default; }
+  .sd-cell.sd-peer { background: var(--gp-cream-warm); }
+  .sd-cell.sd-same { background: var(--gp-blush); }
+  .sd-cell.sd-sel { background: var(--gp-primary-soft); box-shadow: var(--ring); }
+  .sd-cell.sd-conf { color: var(--gp-error); background: var(--gp-blush); }
+  .sd-cell.sd-hinted { color: var(--gp-badge-easy-text); background: var(--gp-badge-easy-bg); }
 
   .sd-keys {
     display: grid; grid-template-columns: repeat(var(--sd-kcols, 8), minmax(0, 1fr));
@@ -132,40 +134,40 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
   }
   .sd-key {
     width: 100%; height: 36px; padding: 0 4px;
-    border: 1.5px solid #E8D8CA; background: #fff; border-radius: 9px;
+    border: 1.5px solid var(--gp-linen); background: var(--gp-white); border-radius: var(--r-md);
     font: inherit; font-weight: 800; font-size: 0.95rem;
-    color: var(--md-text, #3D3D3D); cursor: pointer;
+    color: var(--gp-ink); cursor: pointer;
   }
-  .sd-key:hover { border-color: var(--md-primary, #D97706); color: var(--md-primary, #D97706); }
+  .sd-key:hover { border-color: var(--gp-primary); color: var(--gp-cta-dark); }
   .sd-key:active { transform: scale(0.95); }
 
   .sd-loading {
     position: absolute; inset: 0; z-index: 2; display: flex; align-items: center;
-    justify-content: center; gap: 8px; background: rgba(255, 255, 255, 0.88);
-    font-size: 0.85rem; font-weight: 700; color: var(--md-text-light, #7A6A5F);
+    justify-content: center; gap: 8px; background: var(--gp-cream);
+    font-size: 0.85rem; font-weight: 700; color: var(--gp-brown-400);
   }
   .sd-loading[hidden] { display: none; }
   .sd-spin {
-    width: 15px; height: 15px; border: 2px solid #E8D8CA;
-    border-top-color: var(--md-primary, #D97706); border-radius: 50%;
+    width: 15px; height: 15px; border: 2px solid var(--gp-linen);
+    border-top-color: var(--gp-cta); border-radius: 50%;
     animation: sdspin 0.7s linear infinite;
   }
   @keyframes sdspin { to { transform: rotate(360deg); } }
 
-  .sd-msg { margin: 10px 0 0; font-size: 0.8rem; line-height: 1.55; color: var(--md-text-light, #7A6A5F); text-align: center; }
-  .sd-error { margin: 0; padding: 18px 10px; text-align: center; font-weight: 700; color: #E74C3C; }
+  .sd-msg { margin: 10px 0 0; font-size: 0.8rem; line-height: 1.55; color: var(--gp-brown-400); text-align: center; }
+  .sd-error { margin: 0; padding: 18px 10px; text-align: center; font-weight: 700; color: var(--gp-error); }
 
   .sd-win {
     display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
-    margin-top: 10px; padding: 10px 12px; border-radius: 12px;
-    background: #DFF3E4; border: 1.5px solid #B8E8C0;
-    font-size: 0.86rem; color: #235C2E;
+    margin-top: 10px; padding: 10px 12px; border-radius: var(--r-lg);
+    background: var(--gp-cream-warm); border: 1.5px solid var(--gp-mint);
+    font-size: 0.86rem; color: var(--gp-brown-900);
   }
   .sd-win[hidden] { display: none; }
   .sd-win strong { font-size: 1rem; }
   .sd-win button {
-    margin-left: auto; border: 0; border-radius: 9px; padding: 6px 12px;
-    background: #2D6A3F; color: #fff; font: inherit; font-weight: 800;
+    margin-left: auto; border: 0; border-radius: var(--r-md); padding: 6px 12px;
+    background: var(--gp-success); color: var(--gp-white); font: inherit; font-weight: 800;
     font-size: 0.8rem; cursor: pointer;
   }
 
