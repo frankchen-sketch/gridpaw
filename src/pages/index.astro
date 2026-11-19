@@ -107,6 +107,12 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     }
     .board { touch-action: none; }
     .app { width: 100%; max-width: 500px; display: flex; flex-direction: column; position: relative; margin: 0 auto; padding: 0 16px; }
+    /* 2026-11-19 UI-1: 桌面断点。此前 500px 手机壳宽度套在桌面全站（工具区被挤出 17px+、Help 掉行）
+       → 桌面页宽 1120（契约 --w-page），游戏列收在 640 居中；手机保持 500 不变 */
+    @media (min-width: 1000px) {
+      .app { max-width: 1120px; }
+      .app > #account-area, .app > .daily-status, .app > .seo-content#daily-leaderboard, .app > .game-card { max-width: 640px; width: 100%; margin-left: auto; margin-right: auto; }
+    }
     .top-bar { display: flex; align-items: center; justify-content: space-between; padding: 14px 0 10px; }
     .top-bar .title { font-size: 17px; font-weight: 800; color: var(--mt-primary); }
     .icon-btn { width: 36px; height: 36px; border-radius: 50%; background: white; border: 2px solid var(--mt-cell-border); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--mt-text); cursor: pointer; transition: all 0.15s; box-shadow: var(--mt-shadow-sm); }
@@ -445,6 +451,8 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     .game-switcher-btn:hover { color: var(--gp-primary-strong); }
     .game-switcher-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: white; border: 1.5px solid var(--gp-parchment); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 200px; padding: 6px 0; z-index: 300; }
     .game-switcher:hover .game-switcher-menu { display: block; }
+    /* 2026-11-19 UI-1: 首页内联下拉（Leaderboard / Guides）同样限高内滚；% 会按按钮高度求值 → 用 vh */
+    .game-switcher-menu { max-height: min(70vh, 460px); overflow-y: auto; overscroll-behavior: contain; }
     .game-switcher-menu a { display: flex; flex-direction: column; padding: 10px 16px !important; font-size: 13px !important; gap: 2px; border-radius: 0 !important; }
     .game-switcher-menu a .game-desc { font-size: 11px; font-weight: 500; color: var(--gp-stone); }
     .game-switcher-menu a:hover { background: var(--gp-cream); color: var(--gp-primary-strong) !important; }
@@ -700,10 +708,6 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     </div>
   </section>
 
-<GameHub active="/" />
-
-<HomeTools />
-
   <section class="game-card" id="play" aria-label="GridPaw game">
     <div class="game-topbar">
       <div class="level-info" style="margin:0;padding:0">
@@ -783,6 +787,10 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
 
 
 </div>
+
+<GameHub active="/" />
+
+<HomeTools />
 
 {bannerEntry && (
   <div class="changelog-banner" id="changelogBanner" data-entry-date={bannerEntry.date}>

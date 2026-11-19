@@ -1,0 +1,133 @@
+/* tokens.css — GridPaw 视觉合同实现（STYLE.md v1.0）
+ * 唯一来源：页面/组件的颜色、字号、圆角、阴影、宽度必须用这里的变量。
+ * 合同没写的值 = 不许写。新值先补 STYLE.md 再落这里。
+ *
+ * 用法（Astro 页面/布局）：
+ *   import '../styles/tokens.css';
+ * 或 <link rel="stylesheet" href="/styles/tokens.css">（public 场景）
+ */
+
+:root {
+  /* ── 布局契约（UI-1，2026-11-19） ─────────────────────────── */
+  --w-page: 1120px;   /* 任何页面的内容最大宽；桌面唯一页宽 */
+  --w-game: 640px;    /* 游戏列（棋盘 + 上下控制条）最大宽 */
+  --w-prose: 720px;   /* 长文（SEO/攻略）行宽上限 */
+  --w-menu: 460px;    /* 下拉菜单最大高对应的宽基准（配合 max-height） */
+  --h-toolbar: 44px;  /* 游戏控制条单行高 */
+  --z-nav: 30;        /* sticky 头部 */
+  --z-menu: 300;      /* 下拉 */
+  --z-modal: 900;     /* 胜利浮层/弹窗 */
+
+  /* ── 移动端（< 700px，§14） ────────────────────────────────── */
+  --h-tap: 44px;      /* 触摸目标最小边 */
+  --fs-body-m: 15px;  /* 手机正文 */
+  --fs-aux-m: 13px;   /* 手机辅助文字 */
+  --pad-safe-b: env(safe-area-inset-bottom, 0px);
+
+  /* ── 品牌暖橙 ─────────────────────────────────────────────── */
+  --gp-primary: #E8A888;        /* 品牌主色：强调、hover 光晕、选中环 */
+  --gp-primary-strong: #D47A50; /* 次强调 */
+  --gp-primary-soft: #F0B898;
+  --gp-primary-dark: #C06A40;
+  --gp-cta: #D97706;            /* 实底 CTA（Play / Hint / 主按钮） */
+  --gp-cta-dark: #B45309;       /* CTA hover/按下 */
+
+  /* ── 深暖棕（文字与深底） ─────────────────────────────────── */
+  --gp-brown-900: #342421;
+  --gp-brown-600: #6F5651;
+  --gp-brown-400: #9B726C;
+
+  /* ── 奶油底 ───────────────────────────────────────────────── */
+  --gp-cream: #FFF8F0;
+  --gp-cream-warm: #FFF4F0;
+  --gp-sand: #F8F6EF;
+  --gp-blush: #F4DFDC;
+  --gp-linen: #E7DACF;
+  --gp-parchment: #E8DDD0;
+
+  /* ── 中性 ─────────────────────────────────────────────────── */
+  --gp-ink: #3D3D3D;
+  --gp-stone: #9E9590;
+  --gp-white: #FFFFFF;
+
+  /* ── 功能色（各只留一个） ─────────────────────────────────── */
+  --gp-error: #E74C3C;
+  --gp-success: #559C68;
+  --gp-info: #5C6BC0;
+
+  /* ── 棋盘点缀色（仅棋盘/徽章内） ──────────────────────────── */
+  --gp-lilac: #B8A8C8;
+  --gp-lilac-soft: #E8E0EB;
+  --gp-lilac-bright: #CFC2E8;
+  --gp-mint: #88C8A8;
+  --gp-sun: #FFC107;
+  --gp-pink: #FF42A5;
+
+  /* 难度徽章对（拆开混配禁止） */
+  --gp-badge-easy-bg: #B8E8C0;  --gp-badge-easy-text: #2D6A3F;
+  --gp-badge-med-bg: #FDD09F;   --gp-badge-med-text: #8B6914;
+  --gp-badge-hard-bg: #FFB3C6;  --gp-badge-hard-text: #8B2252;
+  --gp-badge-daily-bg: #B3D9FF; --gp-badge-daily-text: #1A5A8B;
+
+  /* ── 字体 ─────────────────────────────────────────────────── */
+  --font-sans: "SF Pro Rounded", "Segoe UI", "Noto Sans SC", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --fs-hero: clamp(2rem, 5vw, 3rem);
+  --fs-h2: clamp(1.5rem, 3vw, 2rem);
+  --fs-h3: 1.125rem;
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+  --fs-tiny: 0.75rem;
+  --fw-title: 800;
+  --fw-body: 400;
+  --fw-btn: 700;
+
+  /* ── 形状 ─────────────────────────────────────────────────── */
+  --r-lg: 12px;
+  --r-md: 8px;
+  --r-sm: 4px;
+  --r-card: 18px;   /* 大卡片（棋盘卡/分区卡） */
+  --r-full: 999px;
+
+  /* ── 阴影（暖灰黑，禁止纯黑） ─────────────────────────────── */
+  --shadow-sm: 0 1px 3px rgba(52, 36, 33, 0.15);
+  --shadow-md: 0 4px 12px rgba(52, 36, 33, 0.15);
+  --shadow-lg: 0 8px 24px rgba(52, 36, 33, 0.18);
+  --shadow-candy: 0 2px 0 #F0E0CC; /* 奶糖浮雕：硬边 2px 底边 */
+
+  /* ── 间距：2px 栅格 ──────────────────────────────────────── */
+  --sp-1: 2px;  --sp-2: 4px;  --sp-3: 6px;  --sp-4: 8px;
+  --sp-5: 12px; --sp-6: 16px; --sp-7: 20px; --sp-8: 24px;
+  --sp-9: 32px; --sp-10: 40px; --sp-11: 48px;
+
+  /* ── 动效 ─────────────────────────────────────────────────── */
+  --t-fast: 0.15s ease;
+  --t-med: 0.3s ease;
+  --t-slow: 0.5s ease;
+
+  /* ── 选中环 ───────────────────────────────────────────────── */
+  --ring: inset 0 0 0 3px var(--gp-primary);
+}
+
+/* 暗色（只有 play.astro 系页面启用，前缀锁死在 dark 块内） */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --gp-dark-bg: #1A1410;
+    --gp-dark-surface: #2A221C;
+    --gp-dark-surface-2: #3A3028;
+    --gp-dark-border: #4A3A2E;
+    --gp-dark-border-2: #5A4A3A;
+    --gp-dark-text: #F0E6D8;
+    --gp-dark-text-dim: #B8A088;
+    --gp-dark-primary: #E8925A;
+    --gp-dark-ink: #0F0B08;
+    --gp-dark-success: #81C784;
+    --gp-dark-error: #4A2222;
+    --gp-dark-info: #90CAF9;
+  }
+}
+
+/* 动效降级：合同 §5 要求所有新增动效响应 reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  :root { --t-fast: 0.01ms; --t-med: 0.01ms; --t-slow: 0.01ms; }
+}

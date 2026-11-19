@@ -7,20 +7,20 @@ interface Props {
 }
 const { active = '' } = Astro.props;
 const games = [
-  { href: '/', emoji: '🟧', name: 'Shikaku', desc: 'Rectangle partition puzzle' },
-  { href: '/akari/', emoji: '💡', name: 'Akari', desc: 'Light Up puzzle' },
-  { href: '/kakuro/', emoji: '🔢', name: 'Kakuro', desc: 'Cross-sum puzzle' },
-  { href: '/nonogram/', emoji: '🎨', name: 'Nonogram', desc: 'Picture logic puzzle' },
-  { href: '/nurikabe/', emoji: '🏝️', name: 'Nurikabe', desc: 'Islands and sea puzzle' },
-  { href: '/pictomino/', emoji: '🧩', name: 'Pictomino', desc: 'Spatial reasoning puzzle' },
-  { href: '/kenken/', emoji: '🧮', name: 'KenKen', desc: 'Calcudoku math puzzle' },
-  { href: '/binary/', emoji: '0️⃣1️⃣', name: 'Binary', desc: 'Takuzu 0/1 logic puzzle' },
-  { href: '/star-battle/', emoji: '⭐', name: 'Star Battle', desc: 'Two Not Touch puzzle' },
-  { href: '/hashi/', emoji: '🌉', name: 'Hashi', desc: 'Bridges island puzzle' },
-  { href: '/slitherlink/', emoji: '➰', name: 'Slitherlink', desc: 'Loop logic puzzle' },
-  { href: '/murdoku/', emoji: '🕵️', name: 'Murder Sudoku', desc: 'Cat mystery logic puzzle' },
-  { href: '/meowdoku/', emoji: '🧠', name: 'Meowdoku', desc: 'Cat Queens-style puzzle (fan)' },
-  { href: '/crazy-cleanup/', emoji: '🧹', name: 'Crazy Cleanup', desc: 'Tidy & sort puzzle' },
+  { href: '/', emoji: '🟧', name: 'Shikaku', icon: 'shikaku', desc: 'Rectangle partition puzzle' },
+  { href: '/akari/', emoji: '💡', name: 'Akari', icon: 'akari', desc: 'Light Up puzzle' },
+  { href: '/kakuro/', emoji: '🔢', name: 'Kakuro', icon: 'kakuro', desc: 'Cross-sum puzzle' },
+  { href: '/nonogram/', emoji: '🎨', name: 'Nonogram', icon: 'nonogram', desc: 'Picture logic puzzle' },
+  { href: '/nurikabe/', emoji: '🏝️', name: 'Nurikabe', icon: 'nurikabe', desc: 'Islands and sea puzzle' },
+  { href: '/pictomino/', emoji: '🧩', name: 'Pictomino', icon: 'pictomino', desc: 'Spatial reasoning puzzle' },
+  { href: '/kenken/', emoji: '🧮', name: 'KenKen', icon: 'kenken', desc: 'Calcudoku math puzzle' },
+  { href: '/binary/', emoji: '0️⃣1️⃣', name: 'Binary', icon: 'binary', desc: 'Takuzu 0/1 logic puzzle' },
+  { href: '/star-battle/', emoji: '⭐', name: 'Star Battle', icon: 'starbattle', desc: 'Two Not Touch puzzle' },
+  { href: '/hashi/', emoji: '🌉', name: 'Hashi', icon: 'hashi', desc: 'Bridges island puzzle' },
+  { href: '/slitherlink/', emoji: '➰', name: 'Slitherlink', icon: 'slitherlink', desc: 'Loop logic puzzle' },
+  { href: '/murdoku/', emoji: '🕵️', name: 'Murder Sudoku', icon: 'murdoku', desc: 'Cat mystery logic puzzle' },
+  { href: '/meowdoku/', emoji: '🧠', name: 'Meowdoku', icon: 'meowdoku', desc: 'Cat Queens-style puzzle (fan)' },
+  { href: '/crazy-cleanup/', emoji: '🧹', name: 'Crazy Cleanup', icon: 'crazycleanup', desc: 'Tidy & sort puzzle' },
   { href: '/train-tracks-puzzle/', emoji: '🚂', name: 'Train Tracks', desc: 'Railway path puzzle' },
 ];
 // ⚠️ 结构债：本组件与 GameSwitcher.astro 各有一份 games 数组（2026-10-16 加 meowdoku 时双写），
@@ -48,7 +48,7 @@ const guides = [
         <div class="gp-switcher-menu">
           {games.map((g) => (
             <a href={g.href} class={g.href === active ? 'active' : ''}>
-              <strong>{g.emoji} {g.name}</strong>
+              <strong>{g.icon ? <img class="gp-game-ico" src={`/assets/game-icons/${g.icon}.webp`} alt="" width="18" height="18" loading="lazy" /> : g.emoji} {g.name}</strong>
               <span class="gp-game-desc">{g.desc}</span>
             </a>
           ))}
@@ -97,6 +97,9 @@ const guides = [
     border-radius: 10px; padding: .4rem; box-shadow: 0 8px 20px rgba(63,45,29,.15); min-width: 230px;
   }
   .gp-switcher-menu.open { display: block; }
+  /* 2026-11-19 UI-1: 菜单曾无 max-height → 15 项 938px 顶到屏幕外、滚轮失效 */
+  .gp-switcher-menu { max-height: min(70vh, 460px); overflow-y: auto; overscroll-behavior: contain; }
+  .gp-game-ico { width: 18px; height: 18px; border-radius: 5px; vertical-align: -4px; margin-right: 2px; }
   .gp-switcher-menu a {
     display: flex; flex-direction: column; padding: .5rem .7rem;
     border-radius: 8px; text-decoration: none; color: #3f2d1d;
@@ -128,5 +131,15 @@ const guides = [
         t = t.parentNode;
       }
     }, true);
+    // 外点 / Esc 关闭（2026-11-19 UI-1：菜单过去只能再点一次按钮才关）
+    function closeMenus() {
+      var open = document.querySelectorAll('.gp-switcher-menu.open');
+      for (var i = 0; i < open.length; i++) open[i].classList.remove('open');
+    }
+    document.addEventListener('click', function (e) {
+      if (e.target && e.target.closest && e.target.closest('.gp-switcher')) return;
+      closeMenus();
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenus(); });
   })();
 </script>

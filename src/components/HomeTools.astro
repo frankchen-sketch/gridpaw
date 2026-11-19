@@ -116,7 +116,7 @@ function icon(svg: string) {
   .gp-tools {
     --gp-tool-bg: #FDF0E8;
     --gp-tool-ink: #C4703F;
-    max-width: 1020px;
+    max-width: 1120px; /* UI 契约 --w-page：桌面页宽统一 1120（原 1020 自造第 4 种宽度） */
     margin: 1.4rem auto 0;
     padding: 0 1rem;
   }
@@ -187,6 +187,13 @@ function icon(svg: string) {
     line-height: 1.34;
   }
   .gp-cluster-stack { display: grid; gap: 14px; }
+  /* 2026-11-19 UI-1: 桌面三列等宽（Solvers / Walkthroughs / Help 各一列）
+     此前 1.62fr 1fr 两列 → Solvers 289px、Walkthroughs 182px 不等宽，Help 被挤到第二行右侧空一格 */
+  @media (min-width: 1024px) {
+    .gp-tools-grid { grid-template-columns: repeat(3, 1fr); }
+    .gp-cluster-stack { display: contents; }
+    .gp-tool-wide { grid-column: auto; }
+  }
   @media (max-width: 860px) {
     .gp-tools-grid { grid-template-columns: 1fr; }
     .gp-tool-list-two { grid-template-columns: 1fr; }

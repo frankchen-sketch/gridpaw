@@ -1,9 +1,15 @@
-# STYLE.md — GridPaw 视觉合同（草案 v0.1，待法老拍板）
+# STYLE.md — GridPaw 视觉合同（v1.0 · 2026-11-19 · **已冻结**）
+
+> **冻结状态**：法老 2026-11-19 批准冻结。所有新页/新游戏（含 hexadoku）按本文件实现，
+> 实现方不得自行发明颜色、宽度、组件尺寸。
+>
+> **改合同的唯一方式**：先提版本号（v1.1 / v1.2…），在文末 `变更记录` 写一行「改了什么 + 为什么」，
+> 再改条款。没写进变更记录的改动视为违规。
 
 > 本文件是 UI 实现的唯一视觉依据。任何组件/页面的颜色、字体、动效
 > 必须能追溯到本文件；本文件没写的，先补合同再写代码。
 >
-> **本草案为「反向立约」**：从现有 1957 处色值引用中聚类收编，
+> **来源：反向立约 + UI-1 轮定稿**：从现有 1957 处色值引用中聚类收编，
 > 不是重新设计。归一过程中把 210 个散值收敛到 ~24 个 token，
 > 相近色以出现频次最高者为基准。
 
@@ -262,3 +268,228 @@
 - 各页 ：root 里的 token 定义行本身
 
 ---
+
+---
+
+## 9. 布局契约（2026-11-19 UI-1 定稿，hexadoku 等新游戏按此实现）
+
+> 实现文件：`src/styles/tokens.css`（**唯一来源**，页面 `import '../styles/tokens.css'`）
+> 铁律：任何 section/容器的宽度只能取下列三档之一，新页禁止自造第 4 种宽度。
+
+| Token | 值 | 用在哪 | 不许 |
+|---|---|---|---|
+| `--w-page` | 1120px | 页面级内容区（首页 hub、工具三列、页头内宽） | 写成 1020/1080/1200 |
+| `--w-game` | 640px | 游戏列：棋盘 + 上下控制条 + 关卡信息 | 棋盘直接铺满 1120 |
+| `--w-prose` | 720px | 长文（SEO 正文、攻略正文）行宽 | 正文超过 760（一行字太长） |
+
+- **首屏规则**：棋盘（`#play` 区）必须落在第一屏（1440×900 下 y < 900），游戏前面不许再插 hub/工具区。反例：旧首页把棋盘排到 y=1794。
+- **棋盘区 < 1000px 宽时退单列**：棋盘与侧栏不并排，改为上下堆叠。
+- **手机（< 700px）**：游戏列 100% 宽；页头导航折叠进汉堡；工具区单列。
+- **断点**：`< 700`（手机）/ `700–1023`（平板单列）/ `≥ 1024`（桌面三列 + 1120）。
+
+## 10. 组件视觉规格（钉死尺寸，禁止各页各写一套）
+
+### 10.1 棋盘卡 BoardCard
+- 容器：`background: var(--gp-white)`；`border: 1px solid var(--gp-linen)`；`border-radius: var(--r-card)`；`padding: var(--sp-6)`；`box-shadow: var(--shadow-candy)`
+- 结构（自上而下，缺一不可）：
+  1. **上控制条** `--h-toolbar`：左「关卡名 + 难度 chip + 进度（4 / 9）」；右 3 个圆形图标按钮（撤销 / 重做 / 提示），36px 圆，`.icon-btn`
+  2. **棋盘**：格子 28–56px（`clamp`，由 JS 按容器算，上限 56）；格线 `var(--gp-linen)`；每 5 格加粗一线（大棋盘）
+  3. **下主操作行**：`Hint`（实心 `--gp-cta`）/ `Undo` / `Restart`（次级描边）
+- 与棋盘的距离：上控制条距棋盘 **≤ 16px**，下操作行距棋盘 **≤ 16px**（v3 实测 12px）
+- **禁止**：工具栏吸在 header 下（离棋盘 100px+，法老否过）；工具条做成全局固定条
+
+### 10.2 游戏控制条 GameToolbar
+- 高度 `--h-toolbar`（44px）单行，`display:flex; align-items:center; justify-content:space-between`
+- 按钮集合固定：`Hint`（主，带剩余次数 `Hint 3`）、`Undo`、`Restart`；低频（Share / Rules / 返回列表）收进 `⋯`
+- iframe 类游戏（nonogram/kakuro）：**控制条留在页面层**，iframe 用 `postMessage`（`gp:state` / `gp:resize` / `gp:cmd`）回报状态；禁止把按钮藏在 iframe 里
+- **棋盘滚出视口**时才允许出现 36px slim 条，滚回即隐藏（`IntersectionObserver`，不许常驻）
+- 禁止：`position:sticky; top:52px` 这种挂 header 的方案；禁止 76px 双行按钮组
+
+### 10.3 游戏入口砖 HubTile
+- 网格 `repeat(5, 1fr)`（≥1024）；砖内：**真图标 40×40**（`/assets/game-icons/*.webp`）、名称（`--fs-small`，800）、一行副标（`--fs-tiny`，`--gp-stone`）
+- 圆角 `--r-lg`；hover：`border-color: var(--gp-primary)` + `--shadow-sm`
+- 禁止：用 emoji 当游戏图标（法老判为不合格）；砖内塞长描述
+
+### 10.4 下拉菜单 GameMenu
+- `max-height: min(70vh, 460px)`；`overflow-y: auto`；`overscroll-behavior: contain`
+- **滚轮在菜单里 = 滚菜单**，不关闭、不滚页面；关闭只认「点外部 / Esc」
+- 项：真图标 18×18 + 名称（800）+ 副标（`--fs-tiny`）；行高 44px；每项圆角 `--r-md`
+- 禁止：`max-height` 用百分比（会按父级按钮高度求值 → 菜单被压成 20px，实际踩过）
+- 禁止：无 `max-height`（15 项 938px = 104% 视口）
+
+### 10.5 按钮与 chip
+| 类型 | 规格 |
+|---|---|
+| 主按钮 CTA | 底 `--gp-cta`，字白，`--fw-btn`，圆角 `--r-full`，padding `10px 18px`，hover `--gp-cta-dark`，按下 `translateY(1px)` |
+| 次按钮 | 白底 + `1.5px solid var(--gp-linen)`，字 `--gp-ink` |
+| 幽灵/链接 | 无底，字 `--gp-primary-dark`，hover 下划线 |
+| 难度 chip | 胶囊 + 徽章色对（easy/med/hard/daily 四对，拆开混配禁止），`--fs-tiny`，字重 800 |
+| 图标按钮 | 36px 圆，白底 + `2px solid var(--gp-linen)`，hover 边框 `--gp-primary`，按下 `scale(.92)` |
+
+## 11. 图标规则
+
+- **游戏图标**：只用 `/assets/game-icons/<slug>.webp`（14 款已齐；新增游戏必须补图标再上线）。首页 hub、下拉菜单、游戏入口统一 40px / 18px 两种尺寸，圆角 5–9px
+- **品牌图形**：`/assets/logo.png`（clay 猫头 36px 页头 / 256px hero）、`/favicon.svg`
+- **功能图标**：内联 SVG（40×40 viewBox，2px 描边，`currentColor`），不许引第三方 icon 字体/CDN
+- **禁止**：emoji 当游戏图标；纯文本冒充图标；外链图标
+
+## 12. 决策记录（法老勾选 / 推荐值）
+
+| # | 待拍板 | 推荐 | 理由 |
+|---|---|---|---|
+| 1 | 主色基准 | `--gp-primary` 保留 `#E8A888`（现状最高频），**新增 `--gp-cta #D97706` 专管实底按钮** | 换主色要动 1957 处引用；CTA 单独一档既能拉齐品牌琥珀，又不动存量 |
+| 2 | 纯白策略 | 采纳：白只作棋盘亮格/卡片底，页面背景一律奶油 | 大面积纯白会让暖色调垮掉 |
+| 3 | 功能色归一 | 采纳：红/绿/蓝各留一个（`--gp-error/success/info`） | 现状每个 2–4 变体，语义混乱 |
+| 4 | Nunito | 采纳：删除引用并入系统栈（未加载 webfont 等于摆设） | 8 处引用，零成本 |
+| 5 | 收编策略 | 采纳：逐页清零长尾色值，不做一次性全站替换 | 1957 处一次改风险不可控 |
+| 6 | 间距栅格 | 已批准 2px 栅格 | 4px 栅格要改 585 处 |
+
+## 13. 引导（onboarding）契约（2026-11-19 定稿，15 页实测）
+
+> 组件：`src/components/GameCoach.astro`（新建，唯一实现）；样式 token 见 §10.1 棋盘卡。
+> 背景：审计 15 个游戏页，引导有四种病——全屏遮罩（5 页）、飘浮固定卡（1 页）、随滚动滚走（1 页）、根本没有（8 页）。
+
+| 页 | 现状 | 位置 | 判定 |
+|---|---|---|---|
+| `/` | 3 步 coach 卡 + tutorial-hint 条 | static, y=522 | 随滚动滚走 |
+| `/akari/` `/kenken/` `/binary/` `/star-battle/` `/hashi/` | `rules-overlay` 全屏遮罩（❓ 触发，z 999） | fixed inset:0 | 全屏遮罩挡棋盘 |
+| `/slitherlink/` | `coach-card` 飘浮卡 380×77 | fixed, z 950 | 飘浮压内容 |
+| `/kakuro/` `/nurikabe/` `/pictomino/` `/murdoku/` `/meowdoku/` | 只有 SEO 段落/纯文本 | static, y>980 | 进游戏时看不到 |
+| `/nonogram/` `/crazy-cleanup/` | 页面层无（iframe 内另有一套 / 第三方嵌入） | — | 页面层无引导 |
+| `/train-tracks-puzzle/` | 无 | — | 无引导 |
+
+### 13.1 硬规则
+
+1. **位置**：棋盘卡内部，上控制条之下、棋盘之上；`static`（inline）。**禁 `fixed` / `sticky`**。宽度 = 棋盘宽（`--w-game` 内）。
+2. **尺寸**：高 56–72px（单行文案 + 按钮）；与棋盘间距 **≤ 10px**（实测 10px）。
+3. **步数**：≤ 3 步，每步一句话；第 1 步必须直接指向棋盘上的动作（"先找数字"/"拖过格子"），不许先讲世界观。
+4. **出现**：首次进入该游戏才出现，`localStorage['gp-onboard:<game>:v1']`；第二次访问不弹。
+5. **消失**：点 `Skip` / 走完第 3 步 / 完成首个动作 → 永久收起并写 localStorage。
+6. **随时查**：❓ 按钮开**卡内抽屉**（或右侧滑出，宽 ≤ 360px），**不遮全屏**；`Esc` / 点外部关闭；不锁 body 滚动。
+7. **视觉**：奶油底 `--gp-cream-warm` + `1.5px dashed var(--gp-primary)` + 步骤 chip（`--gp-badge-med-*`）。不用强饱和色块、不用 `--gp-cta` 实底铺满。
+8. **可访问**：不抢焦点、不锁滚动、`Esc` 可关、`prefers-reduced-motion` 降级为直切。
+
+### 13.2 禁止清单
+
+- 用 `.win-overlay` 承载规则（胜利浮层只用于胜利；akari/kenken/binary/star-battle/hashi 现用法必须拆掉）。
+- 飘浮固定卡（slitherlink `coach-card`）。
+- 引导放在棋盘之后（pictomino y=1348、kakuro/nurikabe y>1500）——等于没有。
+- 引导里放超过 1 句话/超过 3 步/带视频。
+- iframe 内的按钮自己弹引导、页面层不知道（nonogram/kakuro 必须 postMessage 统一）。
+
+### 13.3 迁移清单
+
+| 文件 | 改什么 |
+|---|---|
+| `src/components/GameCoach.astro`（新建） | 唯一实现：3 步 + Skip + localStorage + 卡内 drawer |
+| `src/pages/index.astro` | `onboard-coach`（155px，滚动会走）→ GameCoach；保留 `tutorial-hint` 条 |
+| akari / kenken / binary / star-battle / hashi | `rules-overlay` → 卡内 drawer；❓ 保留为入口 |
+| slitherlink | `coach-card` fixed → GameCoach |
+| kakuro / nurikabe / pictomino / murdoku / meowdoku | 补 3 步 GameCoach |
+| nonogram / kakuro iframe | 页面层 GameCoach；iframe 内引导 postMessage 关掉 |
+| train-tracks-puzzle / crazy-cleanup | 补 GameCoach（TT 三页 + cleanup 外壳） |
+
+---
+
+## 变更记录
+
+| 版本 | 日期 | 改了什么 |
+|---|---|---|
+| v1.0 | 2026-11-19 | 首次冻结：§1–§8 现有反向立约 + §9 布局契约 + §10 组件规格 + §11 图标规则 + §12 决策 + §13 引导契约 + §14 移动端契约 + §15 移动端工具栏 + §16 Header 统一决策 |
+
+## 14. 移动端契约（< 700px，2026-11-19 定稿，390×844 实测）
+
+> 实测对象：本地构建 8 个游戏页，Chrome 390×844 / DPR 2 / mobile=true。
+> 结论：**手机端现在不合格**——不是"要不要适配"，是"已经坏了"。
+
+| 页 | 页高 | 横向溢出 | 触摸目标 <40px | 正文 <12px | fixed 元素 | 棋盘位置 |
+|---|---|---|---|---|---|---|
+| `/` | **10276**（12 屏） | 0 | **56 个** | **75 处** | `ob-toast` | — |
+| `/akari/` | 14311 | 0（但 `game-actions` right=421 被裁） | 51 | 32 | 4 个（`settings-overlay`+3×`win-overlay`） | top 225 |
+| `/kakuro/` | 4188 | 0 | 22 | 12 | 0 | iframe |
+| `/nonogram/` | 4308 | 0 | 19 | 12 | 0 | iframe |
+| `/slitherlink/` | 6019 | 0 | 25 | 28 | `coach-card` 飘浮 | top 225 |
+| `/pictomino/` | 6712 | 0 | 22 | 22 | 0 | — |
+| `/murdoku/` | 4984 | 0 | 16 | 29 | 0 | top 200 |
+| `/meowdoku/` | 4091 | 0 | 17 | 14 | 0 | **top 633（首屏看不到盘）** |
+
+### 14.1 硬规则（手机 = 主入口，不是降级版）
+
+| # | 规则 | 判据 |
+|---|---|---|
+| 1 | **零横向溢出** | `documentElement.scrollWidth === clientWidth`；任何元素 `right ≤ 视口宽`（不许靠父级 overflow 裁剪掩盖） |
+| 2 | **触摸目标 ≥ 44×44px**，相邻间距 ≥ 8px | 首页现状 56 个小目标 → 必须重排 |
+| 3 | **正文 ≥ 15px，辅助 ≥ 13px** | <12px 一律算 bug（首页 75 处、akari 32 处） |
+| 4 | **棋盘首屏可见** | 棋盘 `top ≤ 420` 且底边 ≤ 视口高；横向 `calc(100% - 24px)` 铺满 |
+| 5 | **单格 ≥ 22px** | 16×16（hexadoku）= 390 宽下每格仅 21px → 必须提供「放大镜/单宫放大/选中行高亮」，不许把盘硬缩到 18px |
+| 6 | **页高**：首页 ≤ 4 屏，游戏页 ≤ 8 屏 | 现状首页 12 屏 = 用户根本滚不到工具区 |
+| 7 | **禁 fixed 浮层**：引导/规则用**底部弹层（bottom sheet）** | `max-height: 80vh`、上圆角 `--r-card`、下滑/点遮罩/Esc 关闭、`padding-bottom: env(safe-area-inset-bottom)` |
+| 8 | **菜单**：全宽下拉或底部弹层，限高 70vh，内滚不关闭 | 复用 §10.4 的 `min(70vh,460px)` + `overscroll-behavior:contain` |
+| 9 | **hover 不承载信息**（触屏无 hover） | hover 态必须有 `:active` 等价反馈；hover 才显示的提示算缺失 |
+| 10 | **安全区** | `viewport-fit=cover` + `env(safe-area-inset-bottom)` 给底部条/弹层，禁止内容贴底 0px |
+| 11 | **横屏**（844×390）不崩 | 游戏区 `max-height: 70vh` + 允许滚动；不许出现"半张盘" |
+
+### 14.2 新增 token（已写进 tokens.css）
+
+```
+--h-tap: 44px;         /* 触摸目标最小边 */
+--fs-body-m: 15px;     /* 手机正文 */
+--fs-aux-m: 13px;      /* 手机辅助文字 */
+--pad-safe-b: env(safe-area-inset-bottom, 0px);
+```
+
+### 14.3 禁止清单
+
+- 用"桌面缩一缩"当手机方案（现状 8 页都是这么来的）。
+- 手机上仍用全屏遮罩做规则/引导（akari/kenken/binary/star-battle/hashi）。
+- 浮卡（slitherlink `coach-card`）。
+- 靠 `overflow:hidden` 把超宽元素藏起来（akari `game-actions` 被裁 31px，用户看不到右边按钮）。
+- 底部固定按钮不加安全区内边距（iPhone 手势条会压住）。
+
+## 15. 移动端工具栏契约（< 700px，390 实测）
+
+> 桌面工具栏见 §10.2；**手机不是把桌面缩一缩**——实测 7 页全部违规。
+
+| 页 | 工具条形态 | 高 | 按钮实测 | 判定 |
+|---|---|---|---|---|
+| `/akari/` | `.game-actions` 8 个按钮一行塞 | 39 | 27×32 / 68×32 / 97×39 | 全 <44，点不准 |
+| `/slitherlink/` | `.game-actions` + `.diff-row` 两行 | 74+92=**166** | 32–34 高 | 两行吃掉 1/5 屏 |
+| `/murdoku/` | `.game-topbar` + `.diff-row` | 105+54 | 34 高 | 工具条比棋盘卡还高 |
+| `/meowdoku/` | 工具在 `playrow`，**y=910（棋盘下方）** | 35 | 162×35 | 首屏拿不到工具 |
+| `/pictomino/` | `.game-toolbar` **sticky** | 40 | **28×26** | 最小按钮 |
+| `/kakuro/` `/nonogram/` | 页面层无工具条（iframe 内） | — | — | 页面层缺失 |
+
+### 15.1 硬规则
+
+1. **一行，高 44px**（按钮高 ≥ 44；图标 20px）。手机上**禁止两行**工具条。
+2. **动作 ≤ 3 个**，其余收进 `⋯`（akari 8 个 → `Hint / Undo / Restart` + `⋯`）。
+3. **位置**：棋盘卡内部，棋盘**下方**（拇指区）；若棋盘滚出视口 → **底部固定操作条**（44px + `padding-bottom: env(safe-area-inset-bottom)`），滚回即消失。**手机不用桌面那根 slim 顶条**（顶部够不到）。
+4. **iframe 类游戏**（kakuro/nonogram/cleanup）：页面层必须有自己的 44px 工具条，状态走 `postMessage`（`gp:state` / `gp:cmd`）。
+5. **禁止 sticky 小按钮条**（pictomino 40px/28×26 现状）。
+6. 工具条不许比棋盘卡高；不许把工具放棋盘之后（meowdoku y=910 现状）。
+
+### 15.2 桌面 vs 手机分工
+
+| | 桌面（≥1024） | 手机（<700） |
+|---|---|---|
+| 常态 | 棋盘卡内 44px 一行（上=元信息、下=主操作） | 棋盘卡内 44px 一行（棋盘下方） |
+| 棋盘滚出视口 | 顶部 36px slim 条 | 底部固定操作条 + 安全区 |
+| 次级动作 | `⋯` | `⋯`（44px） |
+
+## 16. Header 组件（是否统一：**统一，但不新建**）
+
+实测：**387 页用 `GameNav`**，同时 **52 页自带 `<header class="site-header">` + `.header-inner`**（第二套，高度按 padding 撑 ≈ 64px），另有一套 `.gp-nav-inner` 51px。现状 3 套并存：
+
+| 系统 | 覆盖 | 高度 | 手机按钮实测 |
+|---|---|---|---|
+| `GameNav`（组件） | 387 页 | 51–56px | 74×27（<44） |
+| `site-header`/`header-inner`（各页自写） | **52 页** | 56px ≈ 64px 不等（有 padding 版 / 4rem 版 / 56px 版） | 混 |
+| `.gp-nav-inner` | 部分游戏页 | 51px | 74×27 |
+
+### 16.1 结论
+
+- **不新建第 4 套**。唯一 Header = `GameNav` 组件，把 52 个 `site-header` 页 + `.gp-nav-inner` 页迁进去（Phase 2 分批，每批 ≤20 页）。
+- `GameNav` 自身要补两条：**手机 56px 高、按钮 ≥44×44**（现在 74×27）；桌面 59px（§10 视觉基线）。
+- Header 只放导航与站点入口；**游戏控件不许进 header**（§10.2 已禁）。
+- `site-header` 里那些"每页一份"的 nav 链接文案不许各写一套——迁移时统一到 `GameNav` 的数据源。
+
