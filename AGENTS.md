@@ -9,6 +9,9 @@ pnpm install
 pnpm run dev          # 本地开发 localhost:4321
 pnpm run build        # 构建（含引擎编译 + pagefind 索引）
 pnpm run verify       # 提交前：oxlint + 约定闸门 + 改动文件全规则（lint:changed）
+pnpm run preflight    # 会话开工/收工各一次（只读）：分支 + 与 origin/main 的 ahead/behind
+                      #   + 工作区残留分类（我的/别人 WIP/生成物）+ 其它 worktree 独有 commit
+pnpm run hooks:install # 装一次 scripts/hooks/* → .git/hooks（拦 feature 直推 main / main 非快进）
 pnpm run deploy:safe  # ✅ 多会话并发/日常一律用这个：前置三查（脏树 / 落后 origin/main / 其它 worktree 有游离 commit）
                       #    → build → deploy --branch main → IndexNow → 线上 sw.js 指纹 + 4 URL 自检，全绿才 exit 0
                       #    并发部署由锁文件串行；前置不过 exit 2（不部署），部署后自检失败 exit 4
@@ -64,6 +67,12 @@ pnpm run deploy       # 裸版 = wrangler pages deploy + IndexNow 提交（勿�
                       # ⚠️ 部署闸（loop-hints-pull.sh）只护 loop cron——手动 wrangler deploy 不过闸：并行 WIP 在飞时
                       # 部署前 git status 粗查 + 部署后 diff dist 新增物，确认携带的是已验证上线态而非未验收 WIP（2026-10-30 核查流）
 ```
+
+## 会话开工 / 收工预检（2026-11-19 定，多会话并行必备）
+每次会话开工与收工各跑一次 `pnpm run preflight`（= `bash scripts/session-preflight.sh`，只读）：打印分支、与 origin/main 的 ahead/behind、工作区残留分类、其它 worktree 的独有 commit。三条硬规则：
+1. **残留分三类，不许一锅端**：我的改动（按路径 `git add`，**禁 `add -A` / `add .`**，会端进别人的密钥和半成品）／别人的 WIP（不碰、不扫进 commit、不动它的 index）／生成物（`.astro/`、`*.generated.*`、`gp-build.js`、`llms-full.txt`、`dist/` → 还原，别提交）。
+2. **main worktree 不许带独有 commit 过夜**：任何人推了 origin/main，主 worktree 立刻 `git fetch && git merge --ff-only origin/main`；合不上就是分叉，当天处理——14:00 的 loop cron 一旦 ff 失败就断更。
+3. **feature 分支禁止直推 main**：`git push origin <feature>:main` 与 main 非快进 push 都由 `scripts/hooks/pre-push` 拦（装一次 `pnpm run hooks:install`，软链进 `.git/hooks`，同机所有 worktree 生效）。上生产只有一条路：主 worktree `git merge <分支>` → `pnpm run deploy:safe`。破例需显式 `ALLOW_PUSH_BRANCH_TO_MAIN=1` / `ALLOW_HISTORY_REWRITE=1`，并在 STATUS.md 记一句。
 
 ## 技术栈
 - Astro 5.x (静态输出) + TypeScript

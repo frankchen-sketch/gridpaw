@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# pre-push 闸（2026-11-19 定，根因见 STATUS.md「Loop 日更被闸拦下」）
+#   拦两件事：
+#     ① 把 feature 分支的 ref 直接推到 main —— 主 worktree 必然分叉，次日 14:00 loop cron 断更
+#     ② main 的非快进 push —— 会重写远端历史，抹掉别人的 commit
+#   破例（仅限人工，写完立刻说明原因）：
+#     ALLOW_PUSH_BRANCH_TO_MAIN=1  允许 <分支>:main
+#     ALLOW_HISTORY_REWRITE=1      允许 main 非快进
+#   安装：bash scripts/install-hooks.sh（软链进 .git/hooks，同机所有 worktree 共用）
+set -uo pipefail
+
+PROTECTED="refs/heads/main"
+ZERO="0000000000000000000000000000000000000000"
+BLOCK_BRANCH=0
+BLOCK_FF=0
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [ -z "${remote_ref:-}" ] && continue
+  [ "$remote_ref" != "$PROTECTED" ] && continue
+
+  if [ "$local_ref" != "$PROTECTED" ]; then
+    echo "✗ 拒绝：不允许把 $local_ref 直接推到 main。" >&2
+    echo "  正确姿势：主 worktree 里 git merge <分支> → pnpm run deploy:safe（部署人对账在飞分支）" >&2
+    echo "  临时破例：ALLOW_PUSH_BRANCH_TO_MAIN=1 git push …" >&2
+    BLOCK_BRANCH=1
+    continue
+  fi
+
+  if [ "$remote_sha" != "$ZERO" ] && [ "$local_sha" != "$ZERO" ]; then
+    if ! git merge-base --is-ancestor "$remote_sha" "$local_sha" 2>/dev/null; then
+      echo "✗ 拒绝：main 的非快进 push（远端有本地没有的 commit，推上去等于重写历史）。" >&2
+      echo "  正常流程：git fetch && git rebase origin/main 再推；确需重写：ALLOW_HISTORY_REWRITE=1" >&2
+      BLOCK_FF=1
+    fi
+  fi
+done
+
+if [ "$BLOCK_BRANCH" -eq 1 ] && [ "${ALLOW_PUSH_BRANCH_TO_MAIN:-0}" = "1" ]; then
+  echo "⚠ ALLOW_PUSH_BRANCH_TO_MAIN=1：放行分支→main（记得把这次破例写进 STATUS.md）" >&2
+  BLOCK_BRANCH=0
+fi
+if [ "$BLOCK_FF" -eq 1 ] && [ "${ALLOW_HISTORY_REWRITE:-0}" = "1" ]; then
+  echo "⚠ ALLOW_HISTORY_REWRITE=1：放行 main 非快进（记得把这次破例写进 STATUS.md）" >&2
+  BLOCK_FF=0
+fi
+[ "$BLOCK_BRANCH" -eq 1 ] || [ "$BLOCK_FF" -eq 1 ] && exit 1
+exit 0
