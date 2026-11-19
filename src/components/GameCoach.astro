@@ -1,0 +1,306 @@
+---
+/**
+ * GameCoach — 唯一引导实现（STYLE.md §13 v1.0 契约）
+ *
+ * 用法（放在棋盘卡内部，上控制条之下、棋盘之上）：
+ *   <GameCoach
+ *     game="akari"
+ *     steps={['Tap a white cell to place a bulb.', 'Light must reach every white cell.', 'A number means exactly that many bulbs around it.']}
+ *     rules={[{ ic: '1', text: 'Tap cells to place light bulbs.' }, ...]}
+ *     rulesTitle="How to play Akari"
+ *   />
+ *
+ * 契约硬规则：
+ *  - static（禁 fixed/sticky），宽 = 卡片宽，高 56–72px，距棋盘 ≤10px
+ *  - ≤3 步，第 1 步指棋盘动作
+ *  - localStorage['gp-onboard:<game>:v1']，第二次访问不弹
+ *  - Skip / 走完 / 首个棋盘动作 → 永久收起
+ *  - ❓（页面上带 data-gp-rules-btn 的任意按钮）开卡内抽屉，Esc / 点外关，不锁滚动
+ */
+interface Rule { ic?: string; text: string }
+interface Props {
+  game: string;
+  steps: string[];
+  rules?: Rule[];
+  rulesTitle?: string;
+  nextLabel?: string;
+  doneLabel?: string;
+}
+const { game, steps, rules = [], rulesTitle = 'How to play', nextLabel = 'Next', doneLabel = 'Got it' } = Astro.props;
+---
+
+<div class="gp-coach-host" data-gp-coach-host data-game={game}>
+  <div class="gp-coach" data-gp-coach role="region" aria-label="How to play">
+    <span class="gp-coach-chip" data-gp-coach-chip>1 / {steps.length}</span>
+    <p class="gp-coach-text" data-gp-coach-text>{steps[0]}</p>
+    <button class="gp-coach-skip" type="button" data-gp-coach-skip>Skip</button>
+    <button class="gp-coach-next" type="button" data-gp-coach-next>{nextLabel}</button>
+  </div>
+
+  <div class="gp-drawer" data-gp-drawer aria-hidden="true">
+    <div class="gp-drawer-head">
+      <strong>{rulesTitle}</strong>
+      <button class="gp-drawer-x" type="button" data-gp-drawer-close aria-label="Close rules">&times;</button>
+    </div>
+    <div class="gp-drawer-body">
+      {rules.map((r) => (
+        <p class="gp-drawer-rule">
+          {r.ic && <span class="gp-drawer-ic" aria-hidden="true">{r.ic}</span>}
+          <span set:html={r.text} />
+        </p>
+      ))}
+    </div>
+  </div>
+
+  <script type="application/json" data-gp-coach-data set:html={JSON.stringify({ steps, doneLabel })} />
+</div>
+
+<style>
+  /* 宿主：定位锚点，卡内一行，不撑开棋盘间距 */
+  .gp-coach-host {
+    position: relative;
+    width: 100%;
+    margin: 0 0 10px; /* §13.2：与棋盘间距 ≤10px */
+  }
+
+  /* ── 引导条：奶油底 + 虚线主色（§13.7） ─────────────────── */
+  .gp-coach {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4, 8px);
+    min-height: 56px;
+    max-height: 72px;
+    padding: 6px 10px;
+    box-sizing: border-box;
+    background: var(--gp-cream-warm, #FFF4F0);
+    border: 1.5px dashed var(--gp-primary, #E8A888);
+    border-radius: var(--r-lg, 12px);
+  }
+  .gp-coach.is-hidden { display: none; }
+
+  .gp-coach-chip {
+    flex: 0 0 auto;
+    background: var(--gp-badge-med-bg, #FDD09F);
+    color: var(--gp-badge-med-text, #8B6914);
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1;
+    padding: 5px 7px;
+    border-radius: var(--r-full, 999px);
+    font-variant-numeric: tabular-nums;
+  }
+  .gp-coach-text {
+    flex: 1 1 auto;
+    margin: 0;
+    font-size: var(--fs-small, 0.875rem);
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--gp-brown-900, #342421);
+  }
+  .gp-coach-skip,
+  .gp-coach-next {
+    flex: 0 0 auto;
+    font: inherit;
+    font-size: var(--fs-tiny, 0.75rem);
+    font-weight: 800;
+    border-radius: var(--r-full, 999px);
+    cursor: pointer;
+    min-height: 32px;
+    padding: 0 12px;
+  }
+  .gp-coach-skip {
+    background: transparent;
+    border: 1.5px solid transparent;
+    color: var(--gp-brown-600, #6F5651);
+  }
+  .gp-coach-skip:hover { border-color: var(--gp-linen, #E7DACF); }
+  .gp-coach-next {
+    background: var(--gp-cta, #D97706);
+    border: 0;
+    color: #fff;
+    box-shadow: var(--shadow-candy, 0 2px 0 #F0E0CC);
+  }
+  .gp-coach-next:hover { background: var(--gp-cta-dark, #B45309); }
+
+  /* ── 卡内抽屉（≤360px，右出，不遮全屏、不锁滚动） ────────── */
+  .gp-drawer {
+    position: absolute;
+    /* 抽屉挂在引导条下方，避免盖住条内的 Skip/Next；引导条已收起时 host 高 0 → 正好落在控制条下方 */
+    top: calc(100% + 2px);
+    right: 0;
+    z-index: 120;
+    display: none;
+    width: min(360px, calc(100% - 8px));
+    max-height: min(70vh, 420px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--gp-white, #fff);
+    border: 1.5px solid var(--gp-linen, #E7DACF);
+    border-radius: var(--r-lg, 12px);
+    box-shadow: var(--shadow-lg, 0 8px 24px rgba(52, 36, 33, 0.18));
+  }
+  .gp-drawer.is-open { display: block; }
+
+  .gp-drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4, 8px);
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--gp-linen, #E7DACF);
+    background: var(--gp-cream, #FFF8F0);
+    position: sticky;
+    top: 0;
+  }
+  .gp-drawer-head strong {
+    font-size: var(--fs-small, 0.875rem);
+    color: var(--gp-brown-900, #342421);
+  }
+  .gp-drawer-x {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    border: 0;
+    border-radius: var(--r-full, 999px);
+    background: transparent;
+    color: var(--gp-brown-600, #6F5651);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .gp-drawer-x:hover { background: var(--gp-linen, #E7DACF); }
+
+  .gp-drawer-body { padding: 10px 12px 14px; }
+  .gp-drawer-rule {
+    display: flex;
+    gap: var(--sp-4, 8px);
+    margin: 0 0 10px;
+    font-size: var(--fs-small, 0.875rem);
+    line-height: 1.5;
+    color: var(--gp-ink, #3D3D3D);
+  }
+  .gp-drawer-rule:last-child { margin-bottom: 0; }
+  .gp-drawer-ic {
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    border-radius: var(--r-full, 999px);
+    background: var(--gp-blush, #F4DFDC);
+    color: var(--gp-primary-dark, #C06A40);
+    font-size: 11px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── 手机（§14：触摸 ≥44、正文 ≥15） ────────────────────── */
+  @media (max-width: 699px) {
+    .gp-coach {
+      flex-wrap: wrap;
+      max-height: none;
+      padding: 8px 10px;
+      gap: 8px;
+    }
+    .gp-coach-text {
+      flex: 1 1 100%;
+      order: 3;
+      font-size: var(--fs-body-m, 15px);
+    }
+    .gp-coach-skip,
+    .gp-coach-next { min-height: var(--h-tap, 44px); padding: 0 16px; }
+    .gp-coach-next { margin-left: auto; }
+    .gp-drawer { width: 100%; max-height: min(70vh, 60vh); }
+    .gp-drawer-x { width: var(--h-tap, 44px); height: var(--h-tap, 44px); }
+    .gp-drawer-rule { font-size: var(--fs-body-m, 15px); }
+  }
+</style>
+
+<script>
+  // 每页只跑一次（Astro 对组件脚本按页去重）
+  const host = document.querySelector<HTMLElement>('[data-gp-coach-host]');
+  if (host) {
+    const game = host.dataset.game || 'game';
+    const key = `gp-onboard:${game}:v1`;
+    const bar = host.querySelector<HTMLElement>('[data-gp-coach]');
+    const chip = host.querySelector<HTMLElement>('[data-gp-coach-chip]');
+    const text = host.querySelector<HTMLElement>('[data-gp-coach-text]');
+    const nextBtn = host.querySelector<HTMLButtonElement>('[data-gp-coach-next]');
+    const skipBtn = host.querySelector<HTMLButtonElement>('[data-gp-coach-skip]');
+    const drawer = host.querySelector<HTMLElement>('[data-gp-drawer]');
+    const raw = host.querySelector('[data-gp-coach-data]');
+
+    let steps: string[] = [];
+    let doneLabel = 'Got it';
+    try {
+      const parsed = JSON.parse(raw?.textContent || '{}');
+      steps = Array.isArray(parsed.steps) ? parsed.steps : [];
+      doneLabel = parsed.doneLabel || doneLabel;
+    } catch {
+      steps = [];
+    }
+
+    let seen = false;
+    try { seen = localStorage.getItem(key) === 'done'; } catch {}
+    if (seen || steps.length === 0) bar?.classList.add('is-hidden');
+
+    let i = 0;
+    const render = () => {
+      if (chip) chip.textContent = `${i + 1} / ${steps.length}`;
+      if (text) text.textContent = steps[i] || '';
+      if (nextBtn) nextBtn.textContent = i === steps.length - 1 ? doneLabel : 'Next';
+    };
+    render();
+
+    const finish = () => {
+      try { localStorage.setItem(key, 'done'); } catch {}
+      bar?.classList.add('is-hidden');
+      closeDrawer();
+    };
+
+    const openDrawer = () => {
+      if (!drawer) return;
+      drawer.classList.add('is-open');
+      drawer.setAttribute('aria-hidden', 'false');
+    };
+    const closeDrawer = () => {
+      if (!drawer) return;
+      drawer.classList.remove('is-open');
+      drawer.setAttribute('aria-hidden', 'true');
+    };
+
+    nextBtn?.addEventListener('click', () => {
+      if (i >= steps.length - 1) return finish();
+      i += 1;
+      render();
+    });
+    skipBtn?.addEventListener('click', finish);
+
+    // 首个棋盘动作 → 永久收起（§13.5）
+    const board = document.querySelector('.puzzle-grid, .game-stage, [data-gp-board]');
+    board?.addEventListener('pointerdown', finish, { once: true, passive: true });
+
+    // ❓ 入口：页面上任意 data-gp-rules-btn 按钮
+    document.querySelectorAll('[data-gp-rules-btn]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (drawer?.classList.contains('is-open')) closeDrawer();
+        else openDrawer();
+      });
+    });
+    host.querySelector('[data-gp-drawer-close]')?.addEventListener('click', closeDrawer);
+
+    // Esc / 点外部关闭（不锁 body 滚动）
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeDrawer();
+    });
+    document.addEventListener('pointerdown', (e) => {
+      if (!drawer?.classList.contains('is-open')) return;
+      const t = e.target as Node;
+      if (!drawer.contains(t) && !(t as Element)?.closest?.('[data-gp-rules-btn]')) closeDrawer();
+    });
+
+    // 供页面/iframe 使用
+    (window as any).gpCoach = { finish, openRules: openDrawer, closeRules: closeDrawer };
+  }
+</script>

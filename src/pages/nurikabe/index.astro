@@ -88,7 +88,7 @@ const faqs = [
         src="/nurikabe/demo.html?embed=1"
         title="Play Nurikabe free online at GridPaw"
         width="100%"
-        height="820"
+        height="560" loading="eager"
         style="border:0;border-radius:16px;display:block;background:#fff8ef"
       ></iframe>
     </div>
@@ -228,6 +228,20 @@ const faqs = [
       h1 { font-size: 1.5rem; }
       .rules { margin-left: 1.1rem; }
     }
-  </style>
+</style>
+<script is:inline>
+  // 按内嵌页回传的高度撑 iframe（避免棋盘下方大片空白）
+  (function () {
+    var f = document.querySelector('.game-frame iframe');
+    if (!f) return;
+    window.addEventListener('message', function (e) {
+      if (!e.data || e.data.type !== 'gp:message-height' && e.data.type !== 'gp:frame-height') return;
+      if (e.source !== f.contentWindow) return;
+      var h = Math.round(e.data.h || 0);
+      if (h < 320) return;
+      f.style.height = Math.min(h, 1000) + 'px';
+    });
+  })();
+</script>
 </body>
 </html>
