@@ -78,6 +78,46 @@
 - Train Tracks（第 12 个引擎）在飞，与 16×16 数独不冲突（新拓扑 vs 参数化复用，量级差一个档）
 - 建议顺序：Train Tracks 收尾 → 16×16 数独（2 天）→ 四个衍生页
 
+## KWP 实测对照（2026-11-19，法老截图，美国 2025-11 ~ 2026-10）
+
+| 关键词 | 月均搜索量 | 同比 | 竞争 | 顶部出价 低-高 |
+|---|---|---|---|---|
+| **16x16 sudoku** | **1000-1万** | 0% | 低 | $0.02 - $1.73 |
+| **mega sudoku** | **1000-1万** | 0% | 低 | — |
+| **hexadoku** | 100-1000 | **+900%** | 低 | $0.40 - $3.77 |
+| 16x16 sudoku printable | 100-1000 | 0% | 低 | — |
+| **16x16 sudoku online** | 100-1000 | 0% | 低 | $0.59 - **$5.24** |
+| sudoku 12x12 | 100-1000 | 0% | 低 | — |
+| 25x25 sudoku | 100-1000 | 0% | **中** | — |
+| giant sudoku | 100-1000 | 0% | 低 | — |
+| sudoku with letters | 100-1000 | 0% | 低 | $0.75 - $3.47 |
+| sudoku 16 | 100-1000 | 0% | 低 | $0.64 - $2.00 |
+| 16x16 sudoku solver | 10-100 | **-90%** | 低 | — |
+
+**四条判读：**
+
+1. **两口径对上了**：KWP 给 `16x16 sudoku` 1000-1万 的区间，web.cafe 精确值 2,400 落在区间内 —— 盘子确认，不是虚高。
+2. **`hexadoku` 同比 +900%**：web.cafe 显示它 12 个月从 ~10 涨到 110/月。**新兴词，早期占位窗口**。
+3. **出价推翻了我原先的「CPC 低」风险判断**：`16x16 sudoku online` 顶部出价高区间 **$5.24**、`hexadoku` **$3.77**、`sudoku with letters` **$3.47** —— 有广告主真在出价，AdSense RPM 不会像 web.cafe 的 avg CPC $0.32 那么惨。
+4. **`16x16 sudoku solver` 同比 -90%**：solver 需求在萎缩（可能被 App 和工具吞掉）→ **不做独立 solver 页**，只在主页面板里带一个求解器当留存工具，不单独吃词。
+
+**未出数据/被裁的 11 个词**（等补图）：`sudoku 16x16`、`16x16 sudoku free`、`16x16 sudoku hard`、`16x16 sudoku pdf`、`16x16 sudoku numbers and letters`、`hexadoku printable`、`hexadoku solver`、`hexadoku online`、`hexadoku hard`、`12x12 sudoku`、`large print sudoku`。
+
+## 修正后的页型规划：做「大格数独集群」，不是单页
+
+KWP 暴露了一个更重要的事实：**`mega sudoku` 也是 1000-1万**，`12x12`/`25x25`/`giant`/`sudoku with letters` 各 100-1000。这是一整条「大格数独」产品线，共用一个 N 参数化引擎。
+
+| 页 | 目标词 | 量 | 优先级 |
+|---|---|---|---|
+| `/16x16-sudoku/` | 16x16 sudoku、sudoku 16x16 | 1000-1万 | P0 |
+| `/mega-sudoku/` | mega sudoku、giant sudoku | 1000-1万 + 100-1000 | P0 |
+| `/hexadoku/` | hexadoku、hexadoku online | 100-1000（+900%） | P1 |
+| `/12x12-sudoku/` | 12x12 sudoku、sudoku 12x12 | 100-1000 | P1 |
+| `/25x25-sudoku/` | 25x25 sudoku | 100-1000（竞争中） | P2 |
+| `/sudoku-with-letters/` | sudoku with letters | 100-1000 | P2 |
+
+引擎一个，N ∈ {12, 16, 25} 参数化 + 符号集可配（数字 / 数字+字母）。蚕食处理：每页独立内容（不同格数规则、不同难度、不同示例盘），`/hexadoku/` 作 16×16 的同义入口但正文不重复。
+
 ## 数据口径
 
 - 搜索量：KWP US，`fromCache=false`（2026-11-19 实读）。`16x16 sudoku`（2400→1900）与 `sudoku 16x16`（1000→720-880）曲线不完全一致，**不能简单相加**
