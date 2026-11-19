@@ -722,5 +722,27 @@ export function generate(
     if (!d.solved) continue;
     return { ...candidate, grade: d.level };
   }
-  throw new Error(`tracks: no puzzle for ${rows}x${cols} ${difficulty}`);
+  // Second pass: keep the clue cosmetics but stop insisting on them. Boards
+  // are generated at build time, so a few extra attempts are cheap; a throw
+  // here means "this seed is unlucky", never "this size is impossible".
+  for (let attempt = 0; attempt < 120; attempt++) {
+    const start = ci(cols, 0, (rng() * cols) | 0);
+    const end = ci(cols, rows - 1, (rng() * cols) | 0);
+    const path = makePath(rows, cols, start, end, rng, minLen);
+    if (!path) continue;
+    const edges = pathToEdges(rows, cols, path);
+    const cells = cellsFromEdges(rows, cols, edges);
+    const { rowClues, colClues, pathLen } = deriveClues(rows, cols, cells);
+    const candidate: TracksPuzzle = {
+      id: `tracks-${rows}x${cols}-${seed}-relaxed-${attempt}`,
+      rows, cols, rowClues, colClues, start, end,
+      solution: edges, solutionCells: cells, pathLen, difficulty: label, grade: 'stalled',
+    };
+    const uniq = countSolutions(candidate, 2);
+    if (uniq.truncated || uniq.count !== 1) continue;
+    const d = deduce(candidate);
+    if (!d.solved) continue;
+    return { ...candidate, grade: d.level };
+  }
+  throw new Error(`tracks: no board for ${rows}x${cols} at seed ${seed} — retry with another seed`);
 }

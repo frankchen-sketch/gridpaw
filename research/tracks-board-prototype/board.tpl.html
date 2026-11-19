@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<script>window.__errs=[];addEventListener("error",e=>window.__errs.push(String(e.message||e.error)));</script>
+<title>Train Tracks · 主盘原型</title>
+<style>
+  .wrap { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; font-family: inherit; color: var(--foreground, #111); }
+  .topbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .seg { display: inline-flex; border: 1px solid var(--border, #d4d4d8); border-radius: 999px; overflow: hidden; }
+  .seg button { border: 0; background: transparent; padding: 6px 14px; font: inherit; font-size: 13px; cursor: pointer; color: var(--muted-foreground, #52525b); }
+  .seg button[aria-pressed="true"] { background: #D97706; color: #fff; }
+  .btn { border: 1px solid var(--border, #d4d4d8); background: var(--card, #fff); color: inherit; padding: 6px 14px; border-radius: 8px; font: inherit; font-size: 13px; cursor: pointer; }
+  .btn:hover { border-color: #D97706; }
+  .btn.primary { background: #D97706; border-color: #D97706; color: #fff; }
+  svg { touch-action: none; user-select: none; }
+  .clue { font-size: 15px; font-weight: 600; fill: var(--foreground, #111); font-variant-numeric: tabular-nums; }
+  .clue.done { fill: #D97706; }
+  .grid-line { stroke: var(--border, #e4e4e7); stroke-width: 1; }
+  .rail { stroke: #1f2937; stroke-linecap: round; }
+  .rail-hit { stroke: transparent; stroke-width: 16; cursor: pointer; }
+  .badge { fill: #D97706; }
+  .badge-txt { fill: #fff; font-size: 15px; font-weight: 700; }
+  .cellbad { fill: #dc2626; opacity: .10; }
+  .msg { font-size: 13px; color: var(--muted-foreground, #52525b); min-height: 20px; line-height: 1.5; max-width: 470px; }
+  .msg.ok { color: #15803d; }
+  .msg.bad { color: #b91c1c; }
+  .msg.hint { color: #b45309; }
+  .meta { font-size: 12px; color: var(--muted-foreground, #71717a); }
+  .rules { font-size: 12.5px; color: var(--muted-foreground, #52525b); line-height: 1.6; max-width: 470px; }
+  b { color: var(--foreground, #111); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="seg" id="sizes">
+      <button data-n="6" aria-pressed="false">6×6</button>
+      <button data-n="8" aria-pressed="true">8×8</button>
+      <button data-n="10" aria-pressed="false">10×10</button>
+    </div>
+    <button class="btn" id="new">换一题</button>
+    <button class="btn" id="hint">提示</button>
+    <button class="btn primary" id="check">检查</button>
+    <span class="meta" id="meta"></span>
+  </div>
+  <svg id="board" xmlns="http://www.w3.org/2000/svg"></svg>
+  <div class="msg" id="msg"></div>
+  <div class="rules">
+    每格铁轨件恰好接 <b>两条</b> 边；<b>A</b> 和 <b>B</b> 各接一条（轨道从它们出界）。左侧 / 上方的数字是
+    <b>该行 / 该列含有铁轨的格数</b>。铁轨是一整条从 A 到 B 的连线：不分叉、不闭合、不断开。
+    相邻两格都铺轨但彼此不连（平行铁轨）是合法的。
+  </div>
+</div>
+<script type="module">
+/*__ENGINE__*/
+/*__POOL__*/
+
+const svg = document.getElementById('board');
+const msgEl = document.getElementById('msg');
+const metaEl = document.getElementById('meta');
+
+let N = 8;
+let puzzle = null;
+let state = null;
+let railEls = new Map();
+let paintVal = null;
+let hintSteps = null;
+
+function say(text, cls = '') { msgEl.textContent = text; msgEl.className = 'msg ' + cls; }
+
+/* 引擎的 reason 是英文的（gridpaw 是英文站），原型里译一下便于判断文案 */
+function zh(r) {
+  return String(r)
+    .replace(/r(\d+)c(\d+) already has (\d+) rail joint\(s\)/g, '第 $1 行第 $2 格已经接满 $3 个接头')
+    .replace(/r(\d+)c(\d+) still needs (\d+) rail joint\(s\) and has only (\d+) undecided side\(s\)/g, '第 $1 行第 $2 格还缺 $3 个接头，只剩 $4 条边没定')
+    .replace(/r(\d+)c(\d+) cannot reach 2 joints, so it holds no rail/g, '第 $1 行第 $2 格接不满两个接头，这格不铺轨')
+    .replace(/Row (\d+) needs (\d+) square\(s\) and already has (\d+)/g, '第 $1 行需要 $2 格含轨，已有 $3 格')
+    .replace(/Column (\d+) needs (\d+) square\(s\) and already has (\d+)/g, '第 $1 列需要 $2 格含轨，已有 $3 格')
+    .replace(/The A–B line is already complete, so this square stays empty/g, 'A→B 已经连通，这格保持空白')
+    .replace(/Assuming rail on this side leads to a contradiction/g, '假设这段铺轨会推出矛盾')
+    .replace(/Assuming no rail on this side leads to a contradiction/g, '假设这段留空会推出矛盾')
+    .replace(/has (\d+) rail joint\(s\): a square holds either no rail or exactly 2/g, '接了 $1 个接头：一格要么不铺，要么正好两个')
+    .replace(/is an endpoint and must have exactly 1 rail joint \(has (\d+)\)/g, '是端点，必须正好接一个接头（现在 $1 个）');
+}
+
+function hydrate(raw) {
+  return {
+    ...raw,
+    rowClues: Int8Array.from(raw.rowClues),
+    colClues: Int8Array.from(raw.colClues),
+    solution: Uint8Array.from(raw.solution),
+    solutionCells: Uint8Array.from(raw.solutionCells),
+  };
+}
+
+function build() {
+  S = N >= 10 ? 36 : 42;
+  padL = 42; padT = 42;
+  const padR = 10, padB = 10;
+  const rows = puzzle.rows, cols = puzzle.cols;
+  const W = padL + cols * S + padR, H = padT + rows * S + padB;
+  svg.setAttribute('width', W); svg.setAttribute('height', H);
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.innerHTML = '';
+  railEls = new Map();
+
+  const NS = 'http://www.w3.org/2000/svg';
+  const g = document.createElementNS(NS, 'g');
+  svg.appendChild(g);
+  hitsG = document.createElementNS(NS, 'g');
+  piecesG = document.createElementNS(NS, 'g');
+  topG = document.createElementNS(NS, 'g');
+  svg.appendChild(hitsG);
+  svg.appendChild(piecesG);
+  svg.appendChild(topG);
+
+  for (let r = 0; r <= rows; r++) {
+    const l = document.createElementNS(NS, 'line');
+    l.setAttribute('x1', padL); l.setAttribute('x2', padL + cols * S);
+    l.setAttribute('y1', padT + r * S); l.setAttribute('y2', padT + r * S);
+    l.setAttribute('class', 'grid-line'); g.appendChild(l);
+  }
+  for (let c = 0; c <= cols; c++) {
+    const l = document.createElementNS(NS, 'line');
+    l.setAttribute('x1', padL + c * S); l.setAttribute('x2', padL + c * S);
+    l.setAttribute('y1', padT); l.setAttribute('y2', padT + rows * S);
+    l.setAttribute('class', 'grid-line'); g.appendChild(l);
+  }
+
+  for (let r = 0; r < rows; r++) {
+    const t = document.createElementNS(NS, 'text');
+    t.setAttribute('class', 'clue'); t.setAttribute('text-anchor', 'middle');
+    t.setAttribute('x', padL - 20); t.setAttribute('y', padT + r * S + S / 2 + 5);
+    t.textContent = String(puzzle.rowClues[r]);
+    t.dataset.rowClue = String(r);
+    g.appendChild(t);
+  }
+  for (let c = 0; c < cols; c++) {
+    const t = document.createElementNS(NS, 'text');
+    t.setAttribute('class', 'clue'); t.setAttribute('text-anchor', 'middle');
+    t.setAttribute('x', padL + c * S + S / 2); t.setAttribute('y', padT - 16);
+    t.textContent = String(puzzle.colClues[c]);
+    t.dataset.colClue = String(c);
+    g.appendChild(t);
+  }
+
+  const badge = (cx, cy, ch) => {
+    const c2 = document.createElementNS(NS, 'circle');
+    c2.setAttribute('cx', cx); c2.setAttribute('cy', cy); c2.setAttribute('r', 13);
+    c2.setAttribute('class', 'badge'); topG.appendChild(c2);
+    const t = document.createElementNS(NS, 'text');
+    t.setAttribute('x', cx); t.setAttribute('y', cy + 5); t.setAttribute('text-anchor', 'middle');
+    t.setAttribute('class', 'badge-txt'); t.textContent = ch; topG.appendChild(t);
+  };
+  const ax = padL + (puzzle.start % cols) * S + S / 2, ay = padT + S / 2;
+  badge(ax, ay - 4, 'A');
+  const bx = padL + (puzzle.end % cols) * S + S / 2, by = padT + (rows - 1) * S + S / 2;
+  badge(bx, by + 4, 'B');
+
+  for (let r = 0; r <= rows; r++) {
+    for (let c = 0; c < cols; c++) edgeHit(hitsG, hIdx(rows, cols, r, c), padL + c * S, padT + r * S, padL + (c + 1) * S, padT + r * S);
+  }
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c <= cols; c++) edgeHit(hitsG, vIdx(rows, cols, r, c), padL + c * S, padT + r * S, padL + c * S, padT + (r + 1) * S);
+  }
+  renderPieces();
+}
+
+let hitsG = null, piecesG = null, topG = null, padL = 42, padT = 42, S = 42;
+
+function edgeHit(g, idx, x1, y1, x2, y2) {
+  const NS = 'http://www.w3.org/2000/svg';
+  const hit = document.createElementNS(NS, 'line');
+  hit.setAttribute('x1', x1); hit.setAttribute('y1', y1);
+  hit.setAttribute('x2', x2); hit.setAttribute('y2', y2);
+  hit.setAttribute('class', 'rail-hit');
+  g.appendChild(hit);
+  const paint = (ev) => {
+    ev.preventDefault();
+    const v = paintVal !== null ? paintVal : (state[idx] === 1 ? 0 : 1);
+    if (paintVal === null) paintVal = v;
+    state[idx] = v;
+    renderPieces();
+  };
+  hit.addEventListener('pointerdown', (ev) => { paintVal = null; paint(ev); });
+  hit.addEventListener('pointerenter', (ev) => { if (ev.buttons) paint(ev); });
+}
+
+/**
+ * 轨道件画在格内：从一条边的中点穿过格子中心到另一条边的中点。
+ * 画在边界上会看起来像数回的环，是错的。
+ */
+function renderPieces() {
+  const NS = 'http://www.w3.org/2000/svg';
+  const { rows, cols } = puzzle;
+  piecesG.innerHTML = '';
+  const line = (x1, y1, x2, y2) => {
+    const l = document.createElementNS(NS, 'line');
+    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    l.setAttribute('stroke', '#1f2937');
+    l.setAttribute('stroke-width', 7);
+    l.setAttribute('stroke-linecap', 'round');
+    piecesG.appendChild(l);
+  };
+  const mid = (r, c, side) => {
+    const x = padL + c * S, y = padT + r * S;
+    if (side === 0) return [x + S / 2, y];
+    if (side === 1) return [x + S / 2, y + S];
+    if (side === 2) return [x, y + S / 2];
+    return [x + S, y + S / 2];
+  };
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const edges = cellEdges(rows, cols, r, c);
+      const active = [];
+      for (let b = 0; b < 4; b++) if (state[edges[b]] === 1) active.push(b);
+      if (!active.length) continue;
+      const cx = padL + c * S + S / 2, cy = padT + r * S + S / 2;
+      for (const b of active) { const [mx, my] = mid(r, c, b); line(mx, my, cx, cy); }
+    }
+  }
+  // A / B 的出界短轨
+  const [ax, ay0] = mid(0, puzzle.start % cols, 0);
+  line(ax, padT - 12, ax, ay0);
+  const [bx, by0] = mid(rows - 1, puzzle.end % cols, 1);
+  line(bx, by0, bx, padT + rows * S + 12);
+  refreshLive();
+}
+
+function paintAll() { renderPieces(); }
+
+function refreshLive() {
+  const NS = 'http://www.w3.org/2000/svg';
+  const { rows, cols } = puzzle;
+  const on = new Int16Array(rows * cols);
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      let n = 0;
+      for (const e of cellEdges(rows, cols, r, c)) if (state[e] === 1) n++;
+      on[ci(cols, r, c)] = n;
+    }
+  }
+  svg.querySelectorAll('.cellbad').forEach((n) => n.remove());
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const idx = ci(cols, r, c);
+      const isEnd = idx === puzzle.start || idx === puzzle.end;
+      const n = on[idx];
+      const bad = isEnd ? n > 1 : (n === 1 || n > 2);
+      if (!bad) continue;
+      const rect = document.createElementNS(NS, 'rect');
+      rect.setAttribute('x', padL + c * S + 2); rect.setAttribute('y', padT + r * S + 2);
+      rect.setAttribute('width', S - 4); rect.setAttribute('height', S - 4);
+      rect.setAttribute('class', 'cellbad'); rect.setAttribute('rx', 4);
+      svg.insertBefore(rect, piecesG);
+    }
+  }
+  for (let r = 0; r < rows; r++) {
+    let n = 0;
+    for (let c = 0; c < cols; c++) if (on[ci(cols, r, c)] > 0) n++;
+    const t = svg.querySelector(`[data-row-clue="${r}"]`);
+    if (t) t.classList.toggle('done', n === puzzle.rowClues[r]);
+  }
+  for (let c = 0; c < cols; c++) {
+    let n = 0;
+    for (let r = 0; r < rows; r++) if (on[ci(cols, r, c)] > 0) n++;
+    const t = svg.querySelector(`[data-col-clue="${c}"]`);
+    if (t) t.classList.toggle('done', n === puzzle.colClues[c]);
+  }
+}
+
+function newPuzzle(n = N) {
+  N = n;
+  const bag = PUZZLES[N];
+  puzzle = hydrate(bag[Math.floor(Math.random() * bag.length)]);
+  state = new Int8Array(edgeCount(puzzle.rows, puzzle.cols)).fill(-1);
+  hintSteps = null;
+  build();
+  metaEl.textContent = `${puzzle.rows}×${puzzle.cols} · ${puzzle.difficulty} · 铁轨格 ${puzzle.pathLen}`;
+  say('拖动连线：点住一条边划过去就会连续画轨；再点一次擦掉。');
+}
+
+document.getElementById('sizes').addEventListener('click', (ev) => {
+  const b = ev.target.closest('button'); if (!b) return;
+  for (const x of document.querySelectorAll('#sizes button')) x.setAttribute('aria-pressed', String(x === b));
+  newPuzzle(Number(b.dataset.n));
+});
+document.getElementById('new').addEventListener('click', () => newPuzzle());
+
+document.getElementById('hint').addEventListener('click', () => {
+  if (!hintSteps) hintSteps = deduce(puzzle).steps;   // ~7ms, paid on first hint only
+  const step = hintSteps.find((s) => state[s.edge] === -1);
+  if (!step) { say('按规则推不出下一步了，剩下的靠自己判断。', 'hint'); return; }
+  state[step.edge] = step.value;
+  paintAll();
+  const rows = puzzle.rows, cols = puzzle.cols;
+  let where;
+  if (step.edge < (rows + 1) * cols) {
+    where = `第 ${Math.floor(step.edge / cols) + 1} 条横线的第 ${(step.edge % cols) + 1} 段`;
+  } else {
+    const t = step.edge - (rows + 1) * cols;
+    where = `第 ${(t % (cols + 1)) + 1} 条竖线的第 ${Math.floor(t / (cols + 1)) + 1} 段`;
+  }
+  say(`提示（${where}）：${zh(step.reason)} → ${step.value ? '铺轨' : '留空'}。`, 'hint');
+});
+
+document.getElementById('check').addEventListener('click', () => {
+  const edges = Uint8Array.from(state, (v) => (v === 1 ? 1 : 0));
+  const undecided = Array.from(state).filter((v) => v === -1).length;
+  const res = validate(puzzle, edges);
+  if (res.ok) { say('完全正确：整条铁轨从 A 通到 B，每格两条边，行列线索全对上。', 'ok'); return; }
+  if (undecided > 0) { say(`还有 ${undecided} 条边没定，继续画。`); return; }
+  say('边都定完了，但盘面不成立：' + res.errors.slice(0, 2).map(zh).join('；'), 'bad');
+});
+
+window.addEventListener('pointerup', () => { paintVal = null; });
+
+/* 原型自检用:把解铺满再点检查,验证"完成"分支 */
+window.__ttSolve = () => { state.set(puzzle.solution); paintAll(); document.getElementById('check').click(); return msgEl.textContent; };
+try { newPuzzle(8); } catch (e) { window.__errs.push('BOOT: ' + e.message); }
+
+</script>
+</body>
+</html>
