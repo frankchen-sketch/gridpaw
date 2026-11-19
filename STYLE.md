@@ -1,9 +1,9 @@
-# STYLE.md — GridPaw 视觉合同（草案 v0.1，待法老拍板）
+# STYLE.md — GridPaw 视觉合同（v1.0 · 2026-11-19）
 
 > 本文件是 UI 实现的唯一视觉依据。任何组件/页面的颜色、字体、动效
 > 必须能追溯到本文件；本文件没写的，先补合同再写代码。
 >
-> **本草案为「反向立约」**：从现有 1957 处色值引用中聚类收编，
+> **来源：反向立约 + UI-1 轮定稿**：从现有 1957 处色值引用中聚类收编，
 > 不是重新设计。归一过程中把 210 个散值收敛到 ~24 个 token，
 > 相近色以出现频次最高者为基准。
 
@@ -262,3 +262,79 @@
 - 各页 ：root 里的 token 定义行本身
 
 ---
+
+---
+
+## 9. 布局契约（2026-11-19 UI-1 定稿，hexadoku 等新游戏按此实现）
+
+> 实现文件：`src/styles/tokens.css`（**唯一来源**，页面 `import '../styles/tokens.css'`）
+> 铁律：任何 section/容器的宽度只能取下列三档之一，新页禁止自造第 4 种宽度。
+
+| Token | 值 | 用在哪 | 不许 |
+|---|---|---|---|
+| `--w-page` | 1120px | 页面级内容区（首页 hub、工具三列、页头内宽） | 写成 1020/1080/1200 |
+| `--w-game` | 640px | 游戏列：棋盘 + 上下控制条 + 关卡信息 | 棋盘直接铺满 1120 |
+| `--w-prose` | 720px | 长文（SEO 正文、攻略正文）行宽 | 正文超过 760（一行字太长） |
+
+- **首屏规则**：棋盘（`#play` 区）必须落在第一屏（1440×900 下 y < 900），游戏前面不许再插 hub/工具区。反例：旧首页把棋盘排到 y=1794。
+- **棋盘区 < 1000px 宽时退单列**：棋盘与侧栏不并排，改为上下堆叠。
+- **手机（< 700px）**：游戏列 100% 宽；页头导航折叠进汉堡；工具区单列。
+- **断点**：`< 700`（手机）/ `700–1023`（平板单列）/ `≥ 1024`（桌面三列 + 1120）。
+
+## 10. 组件视觉规格（钉死尺寸，禁止各页各写一套）
+
+### 10.1 棋盘卡 BoardCard
+- 容器：`background: var(--gp-white)`；`border: 1px solid var(--gp-linen)`；`border-radius: var(--r-card)`；`padding: var(--sp-6)`；`box-shadow: var(--shadow-candy)`
+- 结构（自上而下，缺一不可）：
+  1. **上控制条** `--h-toolbar`：左「关卡名 + 难度 chip + 进度（4 / 9）」；右 3 个圆形图标按钮（撤销 / 重做 / 提示），36px 圆，`.icon-btn`
+  2. **棋盘**：格子 28–56px（`clamp`，由 JS 按容器算，上限 56）；格线 `var(--gp-linen)`；每 5 格加粗一线（大棋盘）
+  3. **下主操作行**：`Hint`（实心 `--gp-cta`）/ `Undo` / `Restart`（次级描边）
+- 与棋盘的距离：上控制条距棋盘 **≤ 16px**，下操作行距棋盘 **≤ 16px**（v3 实测 12px）
+- **禁止**：工具栏吸在 header 下（离棋盘 100px+，法老否过）；工具条做成全局固定条
+
+### 10.2 游戏控制条 GameToolbar
+- 高度 `--h-toolbar`（44px）单行，`display:flex; align-items:center; justify-content:space-between`
+- 按钮集合固定：`Hint`（主，带剩余次数 `Hint 3`）、`Undo`、`Restart`；低频（Share / Rules / 返回列表）收进 `⋯`
+- iframe 类游戏（nonogram/kakuro）：**控制条留在页面层**，iframe 用 `postMessage`（`gp:state` / `gp:resize` / `gp:cmd`）回报状态；禁止把按钮藏在 iframe 里
+- **棋盘滚出视口**时才允许出现 36px slim 条，滚回即隐藏（`IntersectionObserver`，不许常驻）
+- 禁止：`position:sticky; top:52px` 这种挂 header 的方案；禁止 76px 双行按钮组
+
+### 10.3 游戏入口砖 HubTile
+- 网格 `repeat(5, 1fr)`（≥1024）；砖内：**真图标 40×40**（`/assets/game-icons/*.webp`）、名称（`--fs-small`，800）、一行副标（`--fs-tiny`，`--gp-stone`）
+- 圆角 `--r-lg`；hover：`border-color: var(--gp-primary)` + `--shadow-sm`
+- 禁止：用 emoji 当游戏图标（法老判为不合格）；砖内塞长描述
+
+### 10.4 下拉菜单 GameMenu
+- `max-height: min(70vh, 460px)`；`overflow-y: auto`；`overscroll-behavior: contain`
+- **滚轮在菜单里 = 滚菜单**，不关闭、不滚页面；关闭只认「点外部 / Esc」
+- 项：真图标 18×18 + 名称（800）+ 副标（`--fs-tiny`）；行高 44px；每项圆角 `--r-md`
+- 禁止：`max-height` 用百分比（会按父级按钮高度求值 → 菜单被压成 20px，实际踩过）
+- 禁止：无 `max-height`（15 项 938px = 104% 视口）
+
+### 10.5 按钮与 chip
+| 类型 | 规格 |
+|---|---|
+| 主按钮 CTA | 底 `--gp-cta`，字白，`--fw-btn`，圆角 `--r-full`，padding `10px 18px`，hover `--gp-cta-dark`，按下 `translateY(1px)` |
+| 次按钮 | 白底 + `1.5px solid var(--gp-linen)`，字 `--gp-ink` |
+| 幽灵/链接 | 无底，字 `--gp-primary-dark`，hover 下划线 |
+| 难度 chip | 胶囊 + 徽章色对（easy/med/hard/daily 四对，拆开混配禁止），`--fs-tiny`，字重 800 |
+| 图标按钮 | 36px 圆，白底 + `2px solid var(--gp-linen)`，hover 边框 `--gp-primary`，按下 `scale(.92)` |
+
+## 11. 图标规则
+
+- **游戏图标**：只用 `/assets/game-icons/<slug>.webp`（14 款已齐；新增游戏必须补图标再上线）。首页 hub、下拉菜单、游戏入口统一 40px / 18px 两种尺寸，圆角 5–9px
+- **品牌图形**：`/assets/logo.png`（clay 猫头 36px 页头 / 256px hero）、`/favicon.svg`
+- **功能图标**：内联 SVG（40×40 viewBox，2px 描边，`currentColor`），不许引第三方 icon 字体/CDN
+- **禁止**：emoji 当游戏图标；纯文本冒充图标；外链图标
+
+## 12. 决策记录（法老勾选 / 推荐值）
+
+| # | 待拍板 | 推荐 | 理由 |
+|---|---|---|---|
+| 1 | 主色基准 | `--gp-primary` 保留 `#E8A888`（现状最高频），**新增 `--gp-cta #D97706` 专管实底按钮** | 换主色要动 1957 处引用；CTA 单独一档既能拉齐品牌琥珀，又不动存量 |
+| 2 | 纯白策略 | 采纳：白只作棋盘亮格/卡片底，页面背景一律奶油 | 大面积纯白会让暖色调垮掉 |
+| 3 | 功能色归一 | 采纳：红/绿/蓝各留一个（`--gp-error/success/info`） | 现状每个 2–4 变体，语义混乱 |
+| 4 | Nunito | 采纳：删除引用并入系统栈（未加载 webfont 等于摆设） | 8 处引用，零成本 |
+| 5 | 收编策略 | 采纳：逐页清零长尾色值，不做一次性全站替换 | 1957 处一次改风险不可控 |
+| 6 | 间距栅格 | 已批准 2px 栅格 | 4px 栅格要改 585 处 |
+
