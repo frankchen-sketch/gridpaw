@@ -93,6 +93,21 @@ EXPECTED=$(grep -oE "CACHE_VERSION *= *'[^']*'" dist/sw.js | head -1 | sed "s/.*
 [ -n "$EXPECTED" ] || die "dist/sw.js 里找不到 CACHE_VERSION，构建产物不完整"
 say "✓ 构建指纹 ${EXPECTED}"
 
+# 引擎自测（全量）——build 里只跑 fast 档（nonogram 49ms + akari 154ms）；
+# kakuro 173s / nurikabe 31s / tracks 20s 成本高，放部署闸门：
+# 引擎几何/可解性回归一旦上线玩家会撞到，而 fast 档抓不到生成器深处的回退。
+# 前置：build 已跑过 bundle-engine，public/*.js 是新鲜产物。
+say "── 2b/5 引擎自测（全量，约 4 分钟）──"
+if [ "${SKIP_ENGINE_SELFTEST:-0}" = "1" ]; then
+  say "⚠ SKIP_ENGINE_SELFTEST=1 —— 本次跳过引擎自测（只留给紧急热修，事后必须补跑 pnpm selftest:engines）"
+else
+  node scripts/selftest-engines.mjs --all > /tmp/gridpaw-engine-selftest.log 2>&1 || {
+    tail -30 /tmp/gridpaw-engine-selftest.log >&2
+    die "引擎自测失败（完整日志 /tmp/gridpaw-engine-selftest.log）"
+  }
+  say "✓ 引擎自测全部通过"
+fi
+
 say "── 3/5 部署（--branch main = 打进生产柜）──"
 npx -y wrangler pages deploy dist --project-name gridpaw --branch main --commit-dirty=true 2>&1 | tee /tmp/gridpaw-deploy.log | grep -E "Uploaded|Deployment complete|Deployment alias" || true
 grep -q "Deployment complete" /tmp/gridpaw-deploy.log || die "部署回执里没有 Deployment complete（看 /tmp/gridpaw-deploy.log）"
