@@ -288,7 +288,9 @@ const description = 'A 12×12 Train Tracks puzzle solved one deduction at a time
       function paint() {
         for (const el of rails) {
           const at = Number(el.dataset.at);
-          el.style.opacity = at === 0 || at <= k ? '1' : '0.06';
+          // 未决定的轨道完全藏起来：这页卖的是「看着证明一步步建起来」，
+          // 半透明的答案预览既提前泄底，也会被当成渲染残渣。
+          el.style.opacity = at === 0 || at <= k ? '1' : '0';
         }
         for (const r of rows) r.dataset.active = '0';
         if (k > 0 && rows[k - 1]) rows[k - 1].dataset.active = '1';
