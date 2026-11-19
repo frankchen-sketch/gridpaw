@@ -603,7 +603,11 @@ L1 Dining Room（`a5a07a2`）之后，L2–L13 由 4+2 个子 agent 并行产出
   | §16 Header | **不新建第 4 套**：唯一 Header = `GameNav`（387 页已在用），52 个 `site-header` 页分批迁入 |
 - **P1 止血已合入 main**（merge `6e6920a` + 图标修复 merge）：下拉限高 460 内滚 + 滚轮不关、14 真图标、`.app` 桌面 1120、工具三列等宽、首页棋盘 y **1794→290**、首页总高 **7814→6759**、1440/390 零横向溢出。
 - **合 main 后实测发现的真 bug**：菜单图标带 `loading="lazy"` 时在隐藏菜单里 Chromium **永不加载**（complete 一直 false，eager 后立刻 128px）→ 已改 eager（`a531927`，14 图标共 ~21KB）。
-- **未做**：未 push、未部署。main 领先 origin/main 8 个 commit（含兄弟会话 6 个）。
+- **已上线（2026-11-19 22:36）**：push `2446676..753f250` → 生产指纹 **`753f250`**（`https://gridpaw.com/sw.js` 实测一致）。
+  - 部署路径：`scripts/deploy.sh` 的闸门 ③ 拦下（4 条 sudoku WIP 分支有游离 commit）→ 按脚本头注释的合规做法：**临时干净 worktree（detached 753f250）+ 软链 node_modules + 补 IndexNow key → npm run build → wrangler pages deploy --branch main**，避开把 WIP 原型合进生产。清理后 `git worktree list` 只剩主树 + 兄弟 5 个。
+  - 线上实测：menu `max-height 460` 内滚、**14/14 真图标加载**、`.app` 1120、棋盘 top 290 / bottom 703（首屏内）、1440 与 390 横向溢出 0。
+  - IndexNow：页面级无变更 → sitemap-index 兜底提交 1 URL，HTTP 200。
+  - 遗留：4 条 sudoku 分支仍游离（`feat/sudoku-engine` `feat/sudoku-pages` `chore/sudoku-scaffold` `design/sudoku-visual`），下次部署仍会被闸门 ③ 拦；等 hexadoku 按契约重出后合并即可解除。
 - **下一步（待开工）**：Phase 2 三批——①15 页引导统一（新建 `GameCoach.astro`）②棋盘卡+工具栏组件化 ③首页 v3 重做 + 手机端重排。每批 ≤20 页、单独预览、过闸再合。
 - **hexadoku（sudoku）**：`design/sudoku-visual` 五版（最新 E = 胡桃木+毡绿+黄铜）与合同方向冲突，需按 §9–§16 重出；分支 rebase 到 main 即可拿到合同。
 
