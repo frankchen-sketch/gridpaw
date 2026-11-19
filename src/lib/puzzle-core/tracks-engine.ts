@@ -49,12 +49,29 @@ export interface TracksPuzzle {
   solution: Uint8Array;      // edges, 0/1
   solutionCells: Uint8Array; // cells, 0/1 (derived: the cell holds rail)
   pathLen: number;           // number of squares holding rail
+  /** Size is the difficulty: 5-6 easy, 7-8 medium, 9-12 hard. */
   difficulty: 'easy' | 'medium' | 'hard';
+  /** What the logic solver actually needed — shown as a tag, never as the label. */
+  grade: TracksDeductionLevel;
 }
 
 export type TracksDeductionLevel = 'sums' | 'degree' | 'connect' | 'refute' | 'stalled';
 
 export const UNSET = -1;
+
+/**
+ * Difficulty is board size, the way Tatham and every Tracks site does it.
+ * Grading by which deduction family the machine needed inverts on small
+ * boards — a 6x6 often needs refutation simply because it has fewer deduction
+ * opportunities, and shipping that as "hard" would be a lie to the player.
+ * The rule grade is reported separately as `grade`.
+ */
+export function sizeDifficulty(rows: number, cols: number): 'easy' | 'medium' | 'hard' {
+  const n = Math.max(rows, cols);
+  if (n <= 6) return 'easy';
+  if (n <= 8) return 'medium';
+  return 'hard';
+}
 
 // ── Lattice indices ─────────────────────────────────────────────────────────
 export function ci(cols: number, r: number, c: number): number { return r * cols + c; }
@@ -661,8 +678,13 @@ export function deduce(p: TracksPuzzle, maxRounds = 40, refuteTries = 160): {
 }
 
 // ── Generate ────────────────────────────────────────────────────────────────
+/**
+ * Build a board. `_difficulty` is accepted for call-site compatibility but no
+ * longer steers anything: the shipped label is the size bucket, and `grade`
+ * reports what the logic solver needed.
+ */
 export function generate(
-  rows: number, cols: number, difficulty: TracksPuzzle['difficulty'],
+  rows: number, cols: number, _difficulty: TracksPuzzle['difficulty'] = 'medium',
   seed = Date.now(), naturalClues = true,
 ): TracksPuzzle {
   let s = (seed >>> 0) || 1;
@@ -674,46 +696,31 @@ export function generate(
   };
   const totalCells = rows * cols;
   const minLen = Math.max(4, Math.round(totalCells * 0.32));
-  let fallback: TracksPuzzle | null = null;
+  const label = sizeDifficulty(rows, cols);
 
-  // Big boards find a clue-unique line far less often; a 300-attempt budget on
-  // 12×12 means minutes, so cap it and let the caller retry with another seed.
-  const maxAttempts = totalCells > 100 ? 50 : 140;
-  // Hitting an exact difficulty grade is expensive (the grade only shows up
-  // after the puzzle is uniqueness-proved). Spend the first stretch of the
-  // budget hunting the requested grade, then take the first accepted puzzle and
-  // let its honest grade stand — the label on the shipped board is always the
-  // solver's own grade, never what the caller asked for.
-  const exactUntil = Math.round(maxAttempts * 0.4);
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    const strict = naturalClues;
+  // First accepted line wins: uniqueness + natural clues + a guess-free
+  // deduction. Hunting a particular rule grade cost ~10s a board and measured
+  // wrong anyway, so it is gone.
+  for (let attempt = 0; attempt < 220; attempt++) {
     const start = ci(cols, 0, (rng() * cols) | 0);
     const end = ci(cols, rows - 1, (rng() * cols) | 0);
-
     const path = makePath(rows, cols, start, end, rng, minLen);
     if (!path) continue;
     const edges = pathToEdges(rows, cols, path);
     const cells = cellsFromEdges(rows, cols, edges);
     const { rowClues, colClues, pathLen } = deriveClues(rows, cols, cells);
-    if (strict && !cluesLookNatural(rows, cols, rowClues, colClues, start, end)) continue;
+    if (naturalClues && !cluesLookNatural(rows, cols, rowClues, colClues, start, end)) continue;
 
     const candidate: TracksPuzzle = {
-      id: `tracks-${rows}x${cols}-${difficulty}-${seed}-${attempt}`,
+      id: `tracks-${rows}x${cols}-${seed}-${attempt}`,
       rows, cols, rowClues, colClues, start, end,
-      solution: edges, solutionCells: cells, pathLen, difficulty,
+      solution: edges, solutionCells: cells, pathLen, difficulty: label, grade: 'stalled',
     };
     const uniq = countSolutions(candidate, 2);
     if (uniq.truncated || uniq.count !== 1) continue;
-
     const d = deduce(candidate);
     if (!d.solved) continue;
-    const label: TracksPuzzle['difficulty'] =
-      d.level === 'sums' ? 'easy' : d.level === 'degree' ? 'medium' : 'hard';
-    const graded = { ...candidate, difficulty: label };
-    if (label === difficulty) return graded;
-    if (!fallback) fallback = graded;
-    else if (attempt >= exactUntil) return fallback;
+    return { ...candidate, grade: d.level };
   }
-  if (fallback) return fallback;
   throw new Error(`tracks: no puzzle for ${rows}x${cols} ${difficulty}`);
 }

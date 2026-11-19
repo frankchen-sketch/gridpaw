@@ -111,10 +111,11 @@ for (const [rows, cols, diff, runs] of cases) {
       for (let i = 0; i < p.solution.length; i++) if (d.state[i] !== p.solution[i]) { same = false; break; }
       check(same, `${tag}: deduced state differs from the solution`);
     }
-    // the shipped label must be the engine's own grade, never the request
-    const gradeOf = { sums: 'easy', degree: 'medium', refute: 'hard' };
-    check(p.difficulty === gradeOf[d.level] || (d.level === 'stalled' && p.difficulty === 'hard'),
-      `${tag}: label does not match the deduction grade`, `label=${p.difficulty}, grade=${d.level}`);
+    // difficulty is the size bucket; the rule grade is reported separately and
+    // must be the one the solver actually reached
+    check(p.difficulty === eng.sizeDifficulty(rows, cols),
+      `${tag}: difficulty is not the size bucket`, `got ${p.difficulty}`);
+    check(p.grade === d.level, `${tag}: grade does not match the solver`, `stored=${p.grade}, ran=${d.level}`);
 
     let hintOk = true;
     for (let i = 0; i < total; i++) if (eng.hintLookup(p, i) !== p.solutionCells[i]) { hintOk = false; break; }
