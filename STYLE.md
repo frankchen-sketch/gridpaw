@@ -338,3 +338,48 @@
 | 5 | 收编策略 | 采纳：逐页清零长尾色值，不做一次性全站替换 | 1957 处一次改风险不可控 |
 | 6 | 间距栅格 | 已批准 2px 栅格 | 4px 栅格要改 585 处 |
 
+## 13. 引导（onboarding）契约（2026-11-19 定稿，15 页实测）
+
+> 组件：`src/components/GameCoach.astro`（新建，唯一实现）；样式 token 见 §10.1 棋盘卡。
+> 背景：审计 15 个游戏页，引导有四种病——全屏遮罩（5 页）、飘浮固定卡（1 页）、随滚动滚走（1 页）、根本没有（8 页）。
+
+| 页 | 现状 | 位置 | 判定 |
+|---|---|---|---|
+| `/` | 3 步 coach 卡 + tutorial-hint 条 | static, y=522 | 随滚动滚走 |
+| `/akari/` `/kenken/` `/binary/` `/star-battle/` `/hashi/` | `rules-overlay` 全屏遮罩（❓ 触发，z 999） | fixed inset:0 | 全屏遮罩挡棋盘 |
+| `/slitherlink/` | `coach-card` 飘浮卡 380×77 | fixed, z 950 | 飘浮压内容 |
+| `/kakuro/` `/nurikabe/` `/pictomino/` `/murdoku/` `/meowdoku/` | 只有 SEO 段落/纯文本 | static, y>980 | 进游戏时看不到 |
+| `/nonogram/` `/crazy-cleanup/` | 页面层无（iframe 内另有一套 / 第三方嵌入） | — | 页面层无引导 |
+| `/train-tracks-puzzle/` | 无 | — | 无引导 |
+
+### 13.1 硬规则
+
+1. **位置**：棋盘卡内部，上控制条之下、棋盘之上；`static`（inline）。**禁 `fixed` / `sticky`**。宽度 = 棋盘宽（`--w-game` 内）。
+2. **尺寸**：高 56–72px（单行文案 + 按钮）；与棋盘间距 **≤ 10px**（实测 10px）。
+3. **步数**：≤ 3 步，每步一句话；第 1 步必须直接指向棋盘上的动作（"先找数字"/"拖过格子"），不许先讲世界观。
+4. **出现**：首次进入该游戏才出现，`localStorage['gp-onboard:<game>:v1']`；第二次访问不弹。
+5. **消失**：点 `Skip` / 走完第 3 步 / 完成首个动作 → 永久收起并写 localStorage。
+6. **随时查**：❓ 按钮开**卡内抽屉**（或右侧滑出，宽 ≤ 360px），**不遮全屏**；`Esc` / 点外部关闭；不锁 body 滚动。
+7. **视觉**：奶油底 `--gp-cream-warm` + `1.5px dashed var(--gp-primary)` + 步骤 chip（`--gp-badge-med-*`）。不用强饱和色块、不用 `--gp-cta` 实底铺满。
+8. **可访问**：不抢焦点、不锁滚动、`Esc` 可关、`prefers-reduced-motion` 降级为直切。
+
+### 13.2 禁止清单
+
+- 用 `.win-overlay` 承载规则（胜利浮层只用于胜利；akari/kenken/binary/star-battle/hashi 现用法必须拆掉）。
+- 飘浮固定卡（slitherlink `coach-card`）。
+- 引导放在棋盘之后（pictomino y=1348、kakuro/nurikabe y>1500）——等于没有。
+- 引导里放超过 1 句话/超过 3 步/带视频。
+- iframe 内的按钮自己弹引导、页面层不知道（nonogram/kakuro 必须 postMessage 统一）。
+
+### 13.3 迁移清单
+
+| 文件 | 改什么 |
+|---|---|
+| `src/components/GameCoach.astro`（新建） | 唯一实现：3 步 + Skip + localStorage + 卡内 drawer |
+| `src/pages/index.astro` | `onboard-coach`（155px，滚动会走）→ GameCoach；保留 `tutorial-hint` 条 |
+| akari / kenken / binary / star-battle / hashi | `rules-overlay` → 卡内 drawer；❓ 保留为入口 |
+| slitherlink | `coach-card` fixed → GameCoach |
+| kakuro / nurikabe / pictomino / murdoku / meowdoku | 补 3 步 GameCoach |
+| nonogram / kakuro iframe | 页面层 GameCoach；iframe 内引导 postMessage 关掉 |
+| train-tracks-puzzle / crazy-cleanup | 补 GameCoach（TT 三页 + cleanup 外壳） |
+
