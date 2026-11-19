@@ -216,6 +216,18 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
   }
   /* §14.1.5 视图切换条：桌面不出（大屏格子够大），≤699px 出 Grid / Box / Zoom */
   .sd-viewbar { display: none; }
+  /* §14.1.5 补充：格子实算 < 28px（§10.1 合同下限）时，任何宽度都放出视图条——
+     25×25 在 640px 游戏列里只能 23px，桌面也得有 Box / Zoom 放大手段，不能让桌面用户无路可走 */
+  .sd-play.sd-needs-view .sd-viewbar { display: flex; gap: var(--sp-2); height: var(--h-toolbar); margin-bottom: 12px; }
+  .sd-view {
+    flex: 1 1 0; height: 44px; padding: 0 4px;
+    background: var(--gp-white); color: var(--gp-ink);
+    border: 1.5px solid var(--gp-linen); border-radius: var(--r-full);
+    font: inherit; font-size: var(--fs-body-m); font-weight: var(--fw-btn);
+    cursor: pointer; touch-action: manipulation;
+    transition: background var(--t-fast), color var(--t-fast), border-color var(--t-fast);
+  }
+  .sd-view[aria-pressed="true"] { background: var(--gp-cta); color: var(--gp-white); border-color: var(--gp-cta); }
 
   /* 放大视图（单宫 / 5×5 放大镜）：同一套 .sd-cell 皮肤，尺寸由 JS 算后写进 --sd-cell */
   .sd-board[hidden], .sd-zoomwrap[hidden] { display: none; }
@@ -333,17 +345,8 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
     .sd-toolbar { gap: var(--sp-3); }
     .sd-diffs-top { display: none; }        /* 难度切换收进 ⋯（抽屉里同 data-diff 那组接管） */
     .sd-tb-right { display: none; }         /* 圆形图标按钮是桌面快捷方式；手机上由下方主操作行承担 */
-    /* §14.1.5 视图条：44px 一行，三个等宽按钮，去掉一行就回到桌面版（display:none） */
+    /* §14.1.5 视图条：44px 一行，三个等宽按钮（按钮皮肤在基础层，窄屏/小格共用） */
     .sd-viewbar { display: flex; gap: var(--sp-2); height: var(--h-toolbar); margin-bottom: 12px; }
-    .sd-view {
-      flex: 1 1 0; height: 44px; padding: 0 4px;
-      background: var(--gp-white); color: var(--gp-ink);
-      border: 1.5px solid var(--gp-linen); border-radius: var(--r-full);
-      font: inherit; font-size: var(--fs-body-m); font-weight: var(--fw-btn);
-      cursor: pointer; touch-action: manipulation;
-      transition: background var(--t-fast), color var(--t-fast), border-color var(--t-fast);
-    }
-    .sd-view[aria-pressed="true"] { background: var(--gp-cta); color: var(--gp-white); border-color: var(--gp-cta); }
     .sd-actions { gap: var(--sp-3); }
     .sd-btn { font-size: var(--fs-body-m); padding: 0 10px; }
     .sd-key { height: 44px; font-size: var(--fs-body-m); }
@@ -639,6 +642,9 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
       if (cell > maxCell) cell = maxCell;
       if (cell < 20) cell = 20;
       boardEl.style.setProperty('--sd-cell', cell + 'px');
+      // §14.1.5：实算格子 < 28px（§10.1 下限）→ 放出视图条，桌面也能 Box / Zoom 放大
+      var wrapEl = boardEl.closest('.sd-play');
+      if (wrapEl) wrapEl.classList.toggle('sd-needs-view', cell < 28);
     }
 
     function recalc() {
