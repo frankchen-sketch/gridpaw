@@ -124,3 +124,28 @@ KWP 暴露了一个更重要的事实：**`mega sudoku` 也是 1000-1万**，`12
 - KD：web.cafe 哥飞版（`serp_review`）
 - 竞品流量：web.cafe 快照（sudokubliss 90.9 万/月，该词带 64.6K）
 - 引擎判断：直读 `src/lib/puzzle-core/` 六个引擎文件 + `MeowdokuPlay.astro` 的 `SB.generate(N, K, ...)`
+
+## SERP 意图实测（2026-11-19，Bing US/EN）
+
+**判据问题**：Google Play 上有个叫 HexaDoku 的手游（`com.goodjobgames.hexnumbers`，10万+ 下载、4.6 星、948 评价、2026-11-13 更新），玩法是**六边形蜂巢连号**（19 格把 1→19 连成蛇形路径），视觉是燕麦米底 + 绿色六边形格 + 轻拟物凸起。担心「hexadoku」搜索意图被这个 App 抢走。
+
+**实测结果**：搜 `hexadoku` 首页 10 条，10/10 是 16×16 数独站，那个 App 一条都没出现：
+
+| # | 域名 | 标题要点 |
+|---|---|---|
+| 1 | sudokubliss.com/16x16 | "also known as Hexadecimal Sudoku, **Hexadoku**, or Super Sudoku" |
+| 2 | escape-sudoku.com | **Hexadoku** 16x16 Medium |
+| 3 | 1sudoku.com | Super Sudoku 16x16 |
+| 4 | sudokutodo.com | Easy 16x16 **Hexadoku** |
+| 5 | krazydad.com/hexsudoku | Hexadecimal Sudoku Puzzles |
+| 6 | masteringsudoku.com/hexadoku | **Hexadoku** — Play The 16x16 Sudoku Variant |
+| 7 | sudokutodo.com | Medium 16x16 **Hexadoku** |
+| 8 | puzzlemadness.co.uk | Daily Medium 16×16 Giant Sudoku |
+| 9 | 1sudoku.com | expert 16x16 |
+| 10 | puzzlemadness.co.uk | Daily 16×16 Giant Sudoku |
+
+**结论**：网页搜索层面意图完全匹配，术语已被行业固化（Hexadoku = Hexadecimal Sudoku = 16×16 Sudoku，第 1/6 条描述明写）。Play 商店搜索与网页搜索是两个独立市场，该 App 的 10 万下载不构成 SERP 竞争。
+
+**唯一处置**：`/hexadoku/` 页 title 同时覆盖两个词（`Hexadoku — 16×16 Sudoku Puzzles`），让两类搜索者都能对号。策略不变。
+
+**视觉借鉴（不影响意图）**：该 App 的视觉语言值得迁移——① 色块代替网格线分区 ② 每格 inset 高光 + 外阴影的凸起感 ③ 极简顶栏（只有关卡号 + 齿轮）。A/B/C 三版旧稿被判「扁平、无色块、无凸起感」，据此重做 D 版。
