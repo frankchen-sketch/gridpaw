@@ -255,6 +255,10 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
   .sd-cell.sd-box-r { border-right: 2px solid var(--gp-brown-400); }
   .sd-cell.sd-box-b { border-bottom: 2px solid var(--gp-brown-400); }
   .sd-cell.sd-given { color: var(--gp-brown-900); background: var(--gp-sand); font-weight: 800; cursor: default; }
+  /* 用户填入 vs 题目给定必须能分辨（16×16 有 256 格）：给定 = 深棕近黑，填入 = 焦橙。
+     --gp-cta 在 --gp-white 上只有 3.19:1（11.76px 小字不达 AA），
+     --gp-cta-dark 实测 5.02:1 → 手机最小字号也过 AA；两色都在 STYLE.md v1.0 表内。 */
+  .sd-cell.sd-user { color: var(--gp-cta-dark); }
   .sd-cell.sd-peer { background: var(--gp-parchment); }
   .sd-cell.sd-same { background: var(--gp-blush); }
   .sd-cell.sd-sel { background: var(--gp-white); box-shadow: var(--ring); z-index: 1; }
@@ -292,6 +296,7 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
   .sd-keys {
     display: grid; grid-template-columns: repeat(var(--sd-kcols, 8), minmax(0, 1fr));
     gap: var(--sp-4); margin: 12px auto 0; max-width: var(--w-game);
+    scroll-margin: 8px 0;   /* scrollIntoView 时与视口边留 8px */
   }
   .sd-key {
     width: 100%; height: 44px; padding: 0 4px;
@@ -712,6 +717,7 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
 
         var cls = d.__base;
         if (state.given[i]) cls += ' sd-given';
+        else if (v > 0 && !state.hinted[i]) cls += ' sd-user';
         if (state.hinted[i]) cls += ' sd-hinted';
         var r = Math.floor(i / N), c = i % N;
         if (sel >= 0 && i !== sel) {
@@ -836,10 +842,24 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
       else if (left + cellPx > host.scrollLeft + host.clientWidth) host.scrollLeft = left + cellPx - host.clientWidth + cellPx;
     }
 
+    // 390×844 实测：键盘顶端在 946px（viewport 844）→ 点完格子还得手动滚 300px 才能填数。
+    // 选中格子就把键盘带进视口（block:'nearest' = 最小位移，已可见时不动）。
+    // 盘面 344px + 操作行 44 + 键盘 148 同屏放得下，滚完盘面与键盘都在视口内。
+    // 不用 fixed 遮罩、不弹窗（§14.1.5 手机交互约束）；prefers-reduced-motion 时瞬移
+    function revealKeypad() {
+      if (!keysEl) return;
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      var r = keysEl.getBoundingClientRect();
+      if (r.top >= 0 && r.bottom <= vh - 4) return;
+      var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+      keysEl.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
+    }
+
     function selectCell(i) {
       state.sel = i;
       if (state.view !== 'grid') renderZoom();
       else { paint(); ensureVisible(i); }
+      revealKeypad();
     }
 
     function setValue(v) {
