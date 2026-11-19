@@ -11,7 +11,8 @@
 |---|---|---|
 | **P0** | BP3 L54-136（英 83 关，1 关/页）+ 德语 L31-137 | `research/2026-11-08-bp3-expansion-plan.md` |
 | **P1** | R&E Ch1 L12-31（约 20 关，Ch2 已铺满后的下一条铺关线） | `research/2026-11-08-rxe-recheck.md` |
-| — | 2027-01-04 前只巩固不扩张（第一枪 R&E、第二枪 akari solver） | `research/2026-11-05-battle-plan.md` |
+| **P1** | **Train Tracks 四合一（2026-11-19 拍板：并入 gridpaw 当游戏簇、不单独挂牌；3 个 URL = 主盘/solver/printable，walkthrough 不独立成页）** | `research/2026-11-19-train-tracks-cluster-plan.md` |
+| — | 2027-01-04 前只巩固不扩张（第一枪 R&E、第二枪 akari solver）——**例外：Train Tracks 已于 2026-11-19 拍板动工** | `research/2026-11-05-battle-plan.md` |
 | — | 方向定义 | `research/2026-11-05-next-direction.md` |
 | — | 0924 横向拓展前置验证（GamePix 供给侧 + DR 差距） | `research/2026-09-24_横向拓展前置验证_GamePix供给侧与DR差距.md` |
 
