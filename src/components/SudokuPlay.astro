@@ -70,9 +70,20 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
     </div>
   </div>
 
+  {/* ── 棋盘视图切换（§14.1.5：手机必须能给放大镜 / 单宫放大；桌面不需要，只窄屏出）── */}
+  <div class="sd-viewbar" id={`${uid}-viewbar`} role="group" aria-label="Board view">
+    <button type="button" class="sd-view" data-view="grid" aria-pressed="true">Grid</button>
+    <button type="button" class="sd-view" data-view="box" aria-pressed="false">Box</button>
+    <button type="button" class="sd-view" data-view="loupe" aria-pressed="false">Zoom</button>
+  </div>
+
   {/* ── 棋盘（与上下条间距 ≤16px，§10.1）── */}
   <div class="sd-boardwrap">
     <div class="sd-board" id={`${uid}-board`} role="grid" aria-label="Playable sudoku board"></div>
+    <div class="sd-zoomwrap" id={`${uid}-zoomwrap`} hidden>
+      <p class="sd-zoomcap" id={`${uid}-zoomcap`}></p>
+      <div class="sd-zoom" id={`${uid}-zoom`} role="grid" aria-label="Zoomed board view"></div>
+    </div>
     <div class="sd-loading" id={`${uid}-loading`} hidden>
       <span class="sd-spin" aria-hidden="true"></span>Building a fresh board…
     </div>
@@ -187,6 +198,22 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
     width: max-content; margin: 0 auto;
     border: 2px solid var(--gp-brown-400); border-radius: var(--r-sm); overflow: hidden; background: var(--gp-white);
   }
+  /* §14.1.5 视图切换条：桌面不出（大屏格子够大），≤699px 出 Grid / Box / Zoom */
+  .sd-viewbar { display: none; }
+
+  /* 放大视图（单宫 / 5×5 放大镜）：同一套 .sd-cell 皮肤，尺寸由 JS 算后写进 --sd-cell */
+  .sd-board[hidden], .sd-zoomwrap[hidden] { display: none; }
+  .sd-zoomwrap { display: flex; flex-direction: column; align-items: center; }
+  .sd-zoomcap { margin: 0 0 6px; font-size: var(--fs-tiny); font-weight: 800; color: var(--gp-brown-400); text-align: center; }
+  .sd-zoom {
+    display: grid;
+    grid-template-columns: repeat(var(--sd-zn, 5), var(--sd-cell, 56px));
+    grid-auto-rows: var(--sd-cell, 56px);
+    width: max-content; margin: 0 auto;
+    border: 2px solid var(--gp-brown-400); border-radius: var(--r-sm);
+    overflow: hidden; background: var(--gp-white);
+  }
+
   .sd-cell {
     display: flex; align-items: center; justify-content: center; position: relative;
     font-weight: 700; color: var(--gp-ink);
@@ -200,9 +227,9 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
   .sd-cell.sd-box-r { border-right: 2px solid var(--gp-brown-400); }
   .sd-cell.sd-box-b { border-bottom: 2px solid var(--gp-brown-400); }
   .sd-cell.sd-given { color: var(--gp-brown-900); background: var(--gp-sand); font-weight: 800; cursor: default; }
-  .sd-cell.sd-peer { background: var(--gp-cream-warm); }
+  .sd-cell.sd-peer { background: var(--gp-parchment); }
   .sd-cell.sd-same { background: var(--gp-blush); }
-  .sd-cell.sd-sel { background: var(--gp-primary-soft); box-shadow: var(--ring); z-index: 1; }
+  .sd-cell.sd-sel { background: var(--gp-white); box-shadow: var(--ring); z-index: 1; }
   .sd-cell.sd-conf { color: var(--gp-error); background: var(--gp-blush); }
   .sd-cell.sd-hinted { color: var(--gp-badge-easy-text); background: var(--gp-badge-easy-bg); }
 
@@ -236,7 +263,7 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
 
   .sd-keys {
     display: grid; grid-template-columns: repeat(var(--sd-kcols, 8), minmax(0, 1fr));
-    gap: var(--sp-3); margin: 12px auto 0; max-width: var(--w-game);
+    gap: var(--sp-4); margin: 12px auto 0; max-width: var(--w-game);
   }
   .sd-key {
     width: 100%; height: 44px; padding: 0 4px;
@@ -285,13 +312,24 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
 
   /* ── 手机（< 700px，§14/§15）：一行 44px、动作 ≤3 个，其余进 ⋯ ── */
   @media (max-width: 699px) {
-    .sd-play { padding: var(--sp-4); margin: 0.6rem auto 1rem; }
+    /* 面板在手机上贴边（抵消 SudokuPage 的 8px 侧距）：16×16 才拿得到 21px/格且不横向溢出 */
+    .sd-play { padding: var(--sp-4); margin: 0.6rem -8px 1rem; }
     .sd-toolbar { gap: var(--sp-3); }
     .sd-diffs-top { display: none; }        /* 难度切换收进 ⋯（抽屉里同 data-diff 那组接管） */
     .sd-tb-right { display: none; }         /* 圆形图标按钮是桌面快捷方式；手机上由下方主操作行承担 */
+    /* §14.1.5 视图条：44px 一行，三个等宽按钮，去掉一行就回到桌面版（display:none） */
+    .sd-viewbar { display: flex; gap: var(--sp-2); height: var(--h-toolbar); margin-bottom: 12px; }
+    .sd-view {
+      flex: 1 1 0; height: 44px; padding: 0 4px;
+      background: var(--gp-white); color: var(--gp-ink);
+      border: 1.5px solid var(--gp-linen); border-radius: var(--r-full);
+      font: inherit; font-size: var(--fs-body-m); font-weight: var(--fw-btn);
+      cursor: pointer; touch-action: manipulation;
+      transition: background var(--t-fast), color var(--t-fast), border-color var(--t-fast);
+    }
+    .sd-view[aria-pressed="true"] { background: var(--gp-cta); color: var(--gp-white); border-color: var(--gp-cta); }
     .sd-actions { gap: var(--sp-3); }
     .sd-btn { font-size: var(--fs-body-m); padding: 0 10px; }
-    .sd-keys { gap: var(--sp-2); }
     .sd-key { height: 44px; font-size: var(--fs-body-m); }
   }
 </style>
@@ -323,6 +361,10 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
     var newBtn = document.getElementById(uid + '-new');
     var nextBtn = document.getElementById(uid + '-next');
     var restartBtn = document.getElementById(uid + '-restart');
+    var viewbarEl = document.getElementById(uid + '-viewbar');
+    var zoomWrapEl = document.getElementById(uid + '-zoomwrap');
+    var zoomEl = document.getElementById(uid + '-zoom');
+    var zoomCapEl = document.getElementById(uid + '-zoomcap');
 
     if (!E || !boardEl || !keysEl) {
       if (boardEl) boardEl.innerHTML = '<p class="sd-error">The sudoku engine did not load. Please refresh the page.</p>';
@@ -340,9 +382,12 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
       puzzle: null, vals: null, given: null, hinted: null, symbols: null,
       sel: -1, hintsLeft: 3, solved: false, filled: 0,
       secs: 0, timerId: 0, token: 0, moved: false,
-      past: [], future: []
+      past: [], future: [],
+      view: 'grid',  // grid | box（单宫放大）| loupe（5×5 放大镜）—— §14.1.5
+      narrow: false
     };
     var cells = [];
+    var zoomCells = [];
 
     // ── GA4（与 star-battle / kenken 同款四通道）──
     function track(event, params) {
@@ -529,6 +574,7 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
           if (r === N - 1) cls += ' sd-edge-b';
           d.className = cls;
           d.__base = cls;
+          d.__i = r * N + c;
           d.setAttribute('role', 'gridcell');
           d.setAttribute('data-i', String(r * N + c));
           frag.appendChild(d);
@@ -538,11 +584,19 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
       boardEl.appendChild(frag);
       buildKeys();
       sizeBoard();
+      if (state.view !== 'grid') renderZoom();
     }
+
+    function isNarrow() { return (wrap.clientWidth || 640) < 520; }
 
     function buildKeys() {
       keysEl.innerHTML = '';
-      var kcols = state.size <= 9 ? state.size : (state.size <= 12 ? 6 : (state.size <= 16 ? 8 : 10));
+      // §14.1.2 手机键位 ≥44×44 且相邻 ≥8px：窄屏减列数换宽度（9→5 / 12→4 / 16→6 / 25→7 列）
+      var narrow = isNarrow();
+      state.narrow = narrow;
+      var kcols;
+      if (narrow) kcols = state.size <= 9 ? 5 : (state.size <= 12 ? 4 : (state.size <= 16 ? 6 : 7));
+      else kcols = state.size <= 9 ? state.size : (state.size <= 12 ? 6 : (state.size <= 16 ? 8 : 10));
       keysEl.style.setProperty('--sd-kcols', String(kcols));
       for (var v = 1; v <= state.size; v++) {
         var b = document.createElement('button');
@@ -561,12 +615,12 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
       var host = boardEl.parentNode;
       var wide = host && host.clientWidth ? host.clientWidth : 320;
       var avail = Math.max(200, wide - 10); // 减去容器 padding 与棋盘边框
-      // §10.1：格子 28–56px（JS 按容器算，上限 56）；§14.1.5：16×16 手机下不得缩到 18px
-      var minCell = N >= 25 ? 20 : (N >= 16 ? 22 : 28);
+      // §10.1 格子 28–56px 是桌面口径；§14.1.5 手机下限 20px（明确禁止硬缩到 18px），
+      // 实算优先 —— 宁可格子小一点也不让盘面横向溢出（溢出的部分靠 Box / Zoom 视图看）
       var maxCell = N >= 25 ? 32 : (N >= 16 ? 40 : (N >= 12 ? 48 : 56));
       var cell = Math.floor(avail / N);
       if (cell > maxCell) cell = maxCell;
-      if (cell < minCell) cell = minCell;
+      if (cell < 20) cell = 20;
       boardEl.style.setProperty('--sd-cell', cell + 'px');
     }
 
@@ -617,18 +671,18 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
       return conf;
     }
 
-    function paint() {
+    function paintInto(list, conf) {
       var N = state.size;
       var vals = state.vals;
-      var conf = conflicts();
       var sel = state.sel;
       var selV = sel >= 0 ? vals[sel] : -1;
       var sr = sel >= 0 ? Math.floor(sel / N) : -1;
       var sc = sel >= 0 ? sel % N : -1;
       var bw = state.bw, bh = state.bh;
 
-      for (var i = 0; i < cells.length; i++) {
-        var d = cells[i];
+      for (var k = 0; k < list.length; k++) {
+        var d = list[k];
+        var i = d.__i;
         var v = vals[i];
         var txt = v > 0 ? state.symbols[v - 1] : '';
         if (d.textContent !== txt) d.textContent = txt;
@@ -649,9 +703,120 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
       }
     }
 
+    function paint() {
+      if (!state.vals) return;
+      var conf = conflicts();
+      paintInto(cells, conf);
+      if (state.view !== 'grid') paintInto(zoomCells, conf);
+    }
+
+    // ── §14.1.5 放大视图：box = 选中格所在宫；loupe = 以选中格为中心的 5×5 ──
+    function zoomWindow() {
+      var N = state.size;
+      var sel = state.sel;
+      var r = sel >= 0 ? Math.floor(sel / N) : 0;
+      var c = sel >= 0 ? sel % N : 0;
+      var idx = [], cols, rows, label;
+      if (state.view === 'box') {
+        var bw = state.bw, bh = state.bh;
+        var br = Math.floor(r / bh) * bh;
+        var bc = Math.floor(c / bw) * bw;
+        for (var y = 0; y < bh; y++) {
+          for (var x = 0; x < bw; x++) idx.push((br + y) * N + (bc + x));
+        }
+        cols = bw; rows = bh;
+        var perRow = Math.floor(N / bw);
+        label = 'Box ' + (Math.floor(br / bh) * perRow + Math.floor(bc / bw) + 1) + ' of ' + (perRow * Math.floor(N / bh));
+      } else {
+        var w = Math.min(5, N);
+        var r0 = Math.min(Math.max(0, r - Math.floor(w / 2)), N - w);
+        var c0 = Math.min(Math.max(0, c - Math.floor(w / 2)), N - w);
+        for (var yy = 0; yy < w; yy++) {
+          for (var xx = 0; xx < w; xx++) idx.push((r0 + yy) * N + (c0 + xx));
+        }
+        cols = w; rows = w;
+        label = 'Rows ' + (r0 + 1) + '–' + (r0 + w) + ' · Cols ' + (c0 + 1) + '–' + (c0 + w);
+      }
+      return { cols: cols, rows: rows, cells: idx, label: label };
+    }
+
+    function renderZoom() {
+      if (!state.puzzle) return;
+      if (state.view === 'grid') {
+        zoomWrapEl.hidden = true;
+        boardEl.hidden = false;
+        return;
+      }
+      var win = zoomWindow();
+      var host = boardEl.parentNode;
+      var avail = Math.max(200, (host && host.clientWidth ? host.clientWidth : 320) - 12);
+      var cell = Math.floor(avail / win.cols);
+      if (cell > 92) cell = 92;
+      zoomEl.style.setProperty('--sd-zn', String(win.cols));
+      zoomEl.style.setProperty('--sd-cell', cell + 'px');
+      zoomEl.innerHTML = '';
+      zoomCells = [];
+      var frag = document.createDocumentFragment();
+      var N = state.size;
+      for (var k = 0; k < win.cells.length; k++) {
+        var i = win.cells[k];
+        var d = document.createElement('div');
+        var cls = 'sd-cell';
+        var r = Math.floor(i / N), c = i % N;
+        if (c === N - 1 || (c + 1) % state.bw === 0) cls += ' sd-box-r';
+        if (r === N - 1 || (r + 1) % state.bh === 0) cls += ' sd-box-b';
+        if (c === N - 1) cls += ' sd-edge-r';
+        if (r === N - 1) cls += ' sd-edge-b';
+        d.className = cls;
+        d.__base = cls;
+        d.__i = i;
+        d.setAttribute('data-i', String(i));
+        d.setAttribute('role', 'gridcell');
+        frag.appendChild(d);
+        zoomCells.push(d);
+      }
+      zoomEl.appendChild(frag);
+      zoomCapEl.textContent = win.label;
+      zoomWrapEl.hidden = false;
+      boardEl.hidden = true;
+      paint();
+    }
+
+    function setView(v) {
+      if (v === state.view) return;
+      state.view = v;
+      var btns = viewbarEl.querySelectorAll('[data-view]');
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].setAttribute('aria-pressed', btns[i].getAttribute('data-view') === v ? 'true' : 'false');
+      }
+      if (v === 'grid') {
+        zoomWrapEl.hidden = true;
+        boardEl.hidden = false;
+        paint();
+        ensureVisible(state.sel);
+      } else {
+        renderZoom();
+      }
+      track('view_switch', { game: gameKey, view: v, size: state.size });
+    }
+
+    // 25×25 在手机上盘面横向可滚：选中格滚进可视区
+    function ensureVisible(i) {
+      if (i < 0) return;
+      var host = boardEl.parentNode;
+      if (!host || host.scrollWidth <= host.clientWidth + 1) return;
+      var N = state.size;
+      var cellPx = parseFloat(window.getComputedStyle(boardEl).getPropertyValue('--sd-cell')) || 30;
+      var c = i % N;
+      var left = c * cellPx;
+      if (left < host.scrollLeft) host.scrollLeft = Math.max(0, left - cellPx);
+      else if (left + cellPx > host.scrollLeft + host.clientWidth) host.scrollLeft = left + cellPx - host.clientWidth + cellPx;
+    }
+
     function selectCell(i) {
       state.sel = i;
-      paint();
+      if (state.view !== 'grid') renderZoom();
+      else { paint(); ensureVisible(i); }
     }
 
     function setValue(v) {
@@ -748,14 +913,30 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
     }
 
     // ── 事件绑定 ──
-    boardEl.addEventListener('click', function (ev) {
-      var t = ev.target;
-      while (t && t !== boardEl && !(t.className && String(t.className).indexOf('sd-cell') !== -1)) t = t.parentNode;
-      if (!t || t === boardEl) return;
-      var i = Number(t.getAttribute('data-i'));
-      if (isNaN(i)) return;
-      selectCell(i);
-    });
+    // 盘面点击（主网格与放大视图共用一套：data-i 指向同一份真实索引）
+    function bindGridClicks(el) {
+      if (!el) return;
+      el.addEventListener('click', function (ev) {
+        var t = ev.target;
+        while (t && t !== el && !(t.className && String(t.className).indexOf('sd-cell') !== -1)) t = t.parentNode;
+        if (!t || t === el) return;
+        var i = Number(t.getAttribute('data-i'));
+        if (isNaN(i)) return;
+        selectCell(i);
+      });
+    }
+    bindGridClicks(boardEl);
+    bindGridClicks(zoomEl);
+
+    // 视图切换（§14.1.5）：Grid / Box（单宫放大）/ Zoom（5×5 放大镜）
+    if (viewbarEl) {
+      viewbarEl.addEventListener('click', function (ev) {
+        var t = ev.target;
+        while (t && t !== viewbarEl && !(t.getAttribute && t.getAttribute('data-view'))) t = t.parentNode;
+        if (!t || t === viewbarEl) return;
+        setView(t.getAttribute('data-view'));
+      });
+    }
 
     keysEl.addEventListener('click', function (ev) {
       var t = ev.target;
@@ -822,11 +1003,16 @@ const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
       if (v) { ev.preventDefault(); setValue(v); }
     });
 
-    // 视口变化 → 重算格尺寸（§10.1 上限 56 / §14.1.5 下限）
+    // 视口变化 → 重算格尺寸（§10.1 上限 56 / §14.1.5 下限），放大视图重排窗口
     var resizeId = 0;
     window.addEventListener('resize', function () {
       if (resizeId) clearTimeout(resizeId);
-      resizeId = setTimeout(function () { if (state.puzzle) sizeBoard(); }, 120);
+      resizeId = setTimeout(function () {
+        if (!state.puzzle) return;
+        if (isNarrow() !== state.narrow) buildKeys();   // 旋屏/缩放跨过 520px 门槛时重排键位
+        if (state.view !== 'grid') renderZoom();
+        else sizeBoard();
+      }, 120);
     });
 
     updateHistoryBtns();
