@@ -13,7 +13,7 @@
  * 用法：node scripts/gen-tracks-pool.mjs [--check]
  *   --check 只校验现有 JSON 是否仍满足三条门槛，不重新生成（CI/构建可复用）
  */
-import { readFileSync, writeFileSync, existsSync, mkdtempSync } from 'fs';
+import { readFileSync, writeFileSync, mkdtempSync } from 'fs';
 import { resolve, join } from 'path';
 import { tmpdir } from 'os';
 import { pathToFileURL } from 'url';
