@@ -1,0 +1,33 @@
+---
+import SudokuPage from '../../components/SudokuPage.astro';
+import SudokuPlay from '../../components/SudokuPlay.astro';
+
+const title = "Hexadoku: Play the 16×16 Sudoku Variant Free";
+const description = "Hexadoku explained and playable: the 16×16 sudoku with 4×4 boxes and symbols 0–9 plus A–F. Free browser board, full hex keypad, hints and conflict highlighting.";
+---
+<SudokuPage
+  title={title}
+  description={description}
+  canonical="/hexadoku/"
+  crumb="Hexadoku"
+  h1="Hexadoku: The 16×16 Sudoku With a Hexadecimal Name"
+  lede="Hexadoku is not a new puzzle. It is the 16×16 sudoku under the name Japanese publishers gave it — and the name tells you exactly which sixteen symbols it uses."
+  appName="GridPaw Hexadoku"
+>
+  <SudokuPlay gameKey="hexadoku" size={16} blockW={4} blockH={4} label="16×16" />
+
+  <section class="sdp-prose">
+    <h2>Hexadoku is 16×16 sudoku</h2>
+    <p>Hexa- for sixteen, -doku from the Japanese for “single number”, the same suffix as sudoku. Search for hexadoku, hex sudoku, hexadecimal sudoku or 16×16 sudoku and you land on the same grid: 256 cells, sixteen 4×4 boxes, and sixteen symbols that appear exactly once in every row, every column and every box. The board above is a hexadoku; call it whatever helps you find it.</p>
+
+    <h2>Why the symbols run 0 to F</h2>
+    <p>Sixteen symbols happen to be exactly the range of a hexadecimal digit: 0 through 9, then A, B, C, D, E and F. That is not a coincidence. Grids this size need single-character symbols, because a cell in a 4×4 box is small and a two-character label would not fit. The hex digits solve that neatly, and they give the puzzle a second life among programmers, who can read a finished hexadoku as a 16×16 table of hex values.</p>
+
+    <h2>What hexadoku feels like to solve</h2>
+    <p>Two families of symbols instead of one. You get the digits you already scan automatically, plus six letters that break the pattern. Most solvers develop a feel for a 9×9 row — a glance tells them what is missing — and that instinct does not transfer to letters straight away. Expect the first few boards to be slower than the arithmetic suggests.</p>
+    <p>The 4×4 box is generous, though. Sixteen cells means a box often resolves itself once three or four symbols land inside it, and the box-line deductions you know from 9×9 fire more often because each box reaches four rows and four columns.</p>
+
+    <h2>Which page do you actually want?</h2>
+    <p>If you came for rules and solving technique in depth, the <a href="/16x16-sudoku/">16×16 sudoku guide</a> covers both, move by move. If you want to choose between giant sizes, the <a href="/mega-sudoku/">mega sudoku</a> panel toggles 16×16 and 25×25. Moving up from the classic grid? <a href="/12x12-sudoku/">12×12 sudoku</a> is the smaller step, and if you only want letters on a familiar 9×9 board, <a href="/sudoku-with-letters/">sudoku with letters</a> is the page for that.</p>
+  </section>
+</SudokuPage>

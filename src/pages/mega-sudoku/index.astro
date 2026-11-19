@@ -1,0 +1,50 @@
+---
+import SudokuPage from '../../components/SudokuPage.astro';
+import SudokuPlay from '../../components/SudokuPlay.astro';
+
+const title = "Mega Sudoku: Play 16×16 and 25×25 Grids Free";
+const description = "Mega sudoku in your browser: switch between 16×16 and 25×25 boards. Free giant sudoku with a full symbol keypad, hints and live conflict checks.";
+---
+<SudokuPage
+  title={title}
+  description={description}
+  canonical="/mega-sudoku/"
+  crumb="Mega Sudoku"
+  h1="Mega Sudoku: Two Giant Sizes in One Panel"
+  lede="Mega sudoku is the umbrella name for grids bigger than 9×9. This panel starts at 16×16 and switches to 25×25 with one tap, so you can decide how much of your afternoon the puzzle gets."
+  appName="GridPaw Mega Sudoku"
+>
+  <SudokuPlay gameKey="mega-sudoku" size={16} blockW={4} blockH={4} allow25={true} label="16×16" />
+
+  <section class="sdp-prose">
+    <h2>What counts as mega sudoku?</h2>
+    <p>Publishers are loose with the label: “mega sudoku” covers any grid above the classic 9×9, and you will see it on three sizes — 12×12 with 4×3 boxes, 16×16 with 4×4 boxes, 25×25 with 5×5 boxes. A book with that title may contain any of the three, so check the grid before you buy. The panel above sticks to the two sizes most players mean and switches between them.</p>
+
+    <h2>Choosing a size</h2>
+    <table>
+      <tr><th>Size</th><th>Cells</th><th>Box</th><th>Symbols</th><th>What it feels like</th></tr>
+      <tr><td>12×12</td><td>144</td><td>4×3</td><td>1–9, A–C</td><td>A long 9×9, one sitting</td></tr>
+      <tr><td>16×16</td><td>256</td><td>4×4</td><td>0–9, A–F</td><td>A deliberate evening puzzle</td></tr>
+      <tr><td>25×25</td><td>625</td><td>5×5</td><td>1–9, A–P</td><td>A project you come back to</td></tr>
+    </table>
+    <p>Start one size below what you think you can handle: the jump from 16×16 to 25×25 is not more of the same.</p>
+
+    <h2>What changes as the grid grows</h2>
+    <p>More symbols means more to hold in working memory, and the keypad grows with the board — sixteen keys on the smaller grid, twenty-five on the larger. Sweeps get longer too: one pass over 25×25 touches twenty-five boxes, so solvers break the alphabet into runs of five or six symbols.</p>
+    <p>Mistakes get more expensive too: a wrong symbol on a 9×9 costs a few minutes, on a 25×25 it can poison a whole band before you notice, which is why pencil marks stop being optional.</p>
+
+    <h2>A routine that survives giant boards</h2>
+    <ol>
+      <li><strong>First pass:</strong> sweep every symbol once and write only the placements you are certain about.</li>
+      <li><strong>Second pass:</strong> work box by box. A 5×5 box with ten or twelve symbols filled often resolves the rest on its own.</li>
+      <li><strong>Then mark candidates,</strong> two per cell at most, and clear marks as soon as a line closes.</li>
+      <li><strong>Bank finished boxes.</strong> A completed box constrains five rows and five columns — worth more than a scattered handful of singles.</li>
+    </ol>
+
+    <h2>Screens, speed and patience</h2>
+    <p>16×16 fits a laptop screen comfortably. 25×25 does not fit a phone at a readable size, so this page keeps a minimum cell size and lets the board scroll sideways. Generation is not instant either: the engine builds a full solution, then removes clues while keeping the answer unique, which takes a moment on the biggest grids; a loading note appears meanwhile.</p>
+
+    <h2>Where to go next</h2>
+    <p>For the rules and technique in detail, read the <a href="/16x16-sudoku/">16×16 sudoku guide</a>; for the biggest grid on its own page, try <a href="/25x25-sudoku/">25×25 sudoku</a>. Stepping up from the classic puzzle? <a href="/12x12-sudoku/">12×12 sudoku</a> is the gentlest size change, and <a href="/hexadoku/">hexadoku</a> explains the sixteenth-symbol naming.</p>
+  </section>
+</SudokuPage>

@@ -1,0 +1,44 @@
+---
+import SudokuPage from '../../components/SudokuPage.astro';
+import SudokuPlay from '../../components/SudokuPlay.astro';
+
+const title = "25×25 Sudoku: Play the Biggest Sudoku Grid Free";
+const description = "Play 25×25 sudoku: 625 cells, 5×5 boxes and 25 symbols from 1 to P. Free giant sudoku in your browser with a 25-key pad, hints and live conflict highlighting.";
+---
+<SudokuPage
+  title={title}
+  description={description}
+  canonical="/25x25-sudoku/"
+  crumb="25×25 Sudoku"
+  h1="25×25 Sudoku: The 625-Cell Grid, No Illusions"
+  lede="Twenty-five boxes, twenty-five symbols, 625 cells. This is the largest sudoku size in common circulation, and it plays like a project rather than a coffee break. The board below is real: each row, column and 5×5 box holds every symbol once."
+  appName="GridPaw 25×25 Sudoku"
+>
+  <SudokuPlay gameKey="25x25-sudoku" size={25} blockW={5} blockH={5} label="25×25" />
+
+  <section class="sdp-prose">
+    <h2>What you are looking at</h2>
+    <p>A 25×25 sudoku has 625 cells in twenty-five 5×5 boxes. The symbol set is 1 through 9 followed by A to P, twenty-five characters in total, and each must appear exactly once in every row, column and box. No trick, no house rule: the grid is simply large enough that holding it in your head stops working.</p>
+
+    <h2>The arithmetic of a 625-cell board</h2>
+    <p>A finished grid contains 625 placements, so a typical puzzle leaves several hundred cells to work out. That sounds worse than it is: every 5×5 box is a miniature sudoku in its own right, and once ten or twelve of its symbols are placed the rest often resolve without any cross-board reasoning. The skill here is knowing when to stop scanning the whole grid and finish the region in front of you.</p>
+
+    <h2>How to keep twenty-five symbols straight</h2>
+    <ol>
+      <li><strong>Sweep in runs of five.</strong> One pass over all twenty-five symbols is too long to remember: take 1–5, then 6–9 plus A, then B–F, and finish a run before starting the next.</li>
+      <li><strong>Finish boxes, not rows.</strong> A completed box constrains five rows and five columns at once; a half-finished row gives you nothing until the last cell clicks.</li>
+      <li><strong>Pencil-mark pairs only.</strong> With up to twenty-five candidates per cell, full notation is unreadable. Record the two candidates that survived your last sweep and move on.</li>
+      <li><strong>Accept the slog.</strong> No clever shortcut solves a 25×25 quickly: the board rewards patience and penalises optimism.</li>
+    </ol>
+
+    <h2>How long does it actually take?</h2>
+    <p>An easy 25×25 is realistically a 45 to 90 minute session; a hard one is an afternoon or two. If you want a giant grid you can finish in one sitting, <a href="/16x16-sudoku/">16×16 sudoku</a> is the better use of an hour. The <a href="/mega-sudoku/">mega sudoku</a> panel switches between the two sizes without losing your place in the article.</p>
+
+    <h2>On a phone, and on the wait</h2>
+    <p>Twenty-five columns on a phone screen means cells smaller than a fingertip. Rather than shrink the grid into illegibility, this page enforces a minimum cell size and lets the board scroll sideways: playable, but panning is constant, and a tablet or laptop is saner. The 25-key pad wraps into rows beneath the grid.</p>
+    <p>Generation needs a moment too: the engine builds a full solution, then removes clues while proving the answer unique — on 625 cells that takes noticeably longer than on a 9×9.</p>
+
+    <h2>Related grids</h2>
+    <p>For the rules in slower detail, see the <a href="/16x16-sudoku/">16×16 guide</a>, where symbols stop at F — a kinder place to learn box-line logic. <a href="/12x12-sudoku/">12×12 sudoku</a> is the smallest step up from the classic grid, and <a href="/sudoku-with-letters/">letter sudoku</a> covers the alphabet-only end of the family.</p>
+  </section>
+</SudokuPage>

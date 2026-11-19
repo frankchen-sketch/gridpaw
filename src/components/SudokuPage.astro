@@ -1,0 +1,108 @@
+---
+// SudokuPage — 大格数独集群的页面外壳（head / 面包屑 / H1 / 正文排版 / 交叉内链）
+// 六个页面共用，保证 title·description 由各页自己给（全局唯一），排版与内链一致。
+// 正文用 <slot /> 注入；H1 只由本组件输出，保证每页恰好一个。
+import SEOHead from './SEOHead.astro';
+import GameNav from './GameNav.astro';
+import SideAd from './SideAd.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;          // 例 '/16x16-sudoku/'
+  crumb: string;              // 面包屑末级文案
+  h1: string;
+  lede: string;
+  appName: string;            // WebApplication structured data 里的名字
+}
+
+const { title, description, canonical, crumb, h1, lede, appName } = Astro.props;
+
+// 集群互链：每页页尾都带全部入口 → 任何一页都 ≥2 条指向其它大格页
+const cluster = [
+  { href: '/16x16-sudoku/', name: '16×16 Sudoku', desc: '256 cells, 4×4 boxes, 0–F symbols' },
+  { href: '/hexadoku/', name: 'Hexadoku', desc: 'The 16×16 variant under its Japanese name' },
+  { href: '/mega-sudoku/', name: 'Mega Sudoku', desc: '16×16 and 25×25 in one panel' },
+  { href: '/12x12-sudoku/', name: '12×12 Sudoku', desc: '144 cells, 4×3 rectangular boxes' },
+  { href: '/25x25-sudoku/', name: '25×25 Sudoku', desc: '625 cells, 5×5 boxes, 1–P symbols' },
+  { href: '/sudoku-with-letters/', name: 'Sudoku With Letters', desc: 'A–I instead of 1–9' },
+];
+
+const webAppLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: appName,
+  applicationCategory: 'GameApplication',
+  operatingSystem: 'Web Browser',
+  url: `https://gridpaw.com${canonical}`,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} canonical={canonical} type="website" />
+  <script type="application/ld+json" set:html={JSON.stringify(webAppLd)} />
+  <style is:global>
+    .sdp-crumb { font-size: 0.78rem; color: var(--md-text-light, #7A6A5F); max-width: 760px; margin: 0 auto; padding: 0.7rem 1rem 0; }
+    .sdp-crumb a { color: inherit; text-decoration: none; }
+    .sdp-crumb a:hover { color: var(--md-primary, #D97706); }
+
+    .sdp-main { max-width: 760px; margin: 0 auto; padding: 0 1rem 2.5rem; color: var(--md-text, #3D3D3D); }
+    .sdp-main h1 { font-size: 1.65rem; line-height: 1.28; margin: 0.8rem 0 0.5rem; color: #342421; }
+    .sdp-lede { font-size: 1rem; line-height: 1.72; margin: 0 0 0.4rem; color: var(--md-text, #3D3D3D); }
+
+    .sdp-prose { margin-top: 1.6rem; }
+    .sdp-prose h2 { font-size: 1.22rem; line-height: 1.35; margin: 1.7rem 0 0.5rem; color: #342421; }
+    .sdp-prose h3 { font-size: 1.02rem; margin: 1.2rem 0 0.35rem; color: #342421; }
+    .sdp-prose p { margin: 0.55rem 0; line-height: 1.75; }
+    .sdp-prose ul, .sdp-prose ol { margin: 0.5rem 0 0.7rem; padding-left: 1.3rem; }
+    .sdp-prose li { margin: 0.35rem 0; line-height: 1.65; }
+    .sdp-prose a { color: var(--md-primary, #D97706); font-weight: 600; }
+    .sdp-prose table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; }
+    .sdp-prose th, .sdp-prose td { border: 1px solid #E8D8CA; padding: 0.45rem 0.6rem; text-align: left; vertical-align: top; }
+    .sdp-prose th { background: #FBF6F0; font-weight: 800; }
+    .sdp-note { background: #FBF6F0; border-left: 3px solid var(--md-primary, #D97706); border-radius: 0 8px 8px 0; padding: 0.6rem 0.85rem; font-size: 0.9rem; line-height: 1.65; margin: 0.9rem 0; }
+
+    .sdp-cluster { margin-top: 2.2rem; border-top: 1px solid #E8D8CA; padding-top: 1.1rem; }
+    .sdp-cluster h2 { font-size: 1.05rem; margin: 0 0 0.7rem; color: #342421; }
+    .sdp-cluster ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 8px; }
+    .sdp-cluster a { display: block; background: #fff; border: 1.5px solid #E8D8CA; border-radius: 10px; padding: 9px 11px; text-decoration: none; }
+    .sdp-cluster a:hover { border-color: var(--md-primary, #D97706); }
+    .sdp-cluster strong { display: block; font-size: 0.88rem; color: var(--md-text, #3D3D3D); }
+    .sdp-cluster span { display: block; font-size: 0.75rem; color: var(--md-text-light, #7A6A5F); line-height: 1.45; margin-top: 2px; }
+    .sdp-foot { margin-top: 1.6rem; font-size: 0.75rem; color: var(--md-text-light, #7A6A5F); line-height: 1.6; }
+    .sdp-foot a { color: inherit; }
+
+    @media (max-width: 520px) {
+      .sdp-main h1 { font-size: 1.38rem; }
+      .sdp-prose h2 { font-size: 1.12rem; }
+    }
+  </style>
+</head>
+<body>
+  <GameNav active={canonical} />
+  <nav class="sdp-crumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; {crumb}</nav>
+  <main class="sdp-main">
+    <SideAd />
+    <h1>{h1}</h1>
+    <p class="sdp-lede">{lede}</p>
+    <slot />
+
+    <nav class="sdp-cluster" aria-label="More big sudoku grids">
+      <h2>More big sudoku grids</h2>
+      <ul>
+        {cluster.filter((c) => c.href !== canonical).map((c) => (
+          <li>
+            <a href={c.href}>
+              <strong>{c.name}</strong>
+              <span>{c.desc}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="sdp-foot">All boards are generated fresh in your browser and have exactly one solution. <a href="/">Shikaku</a> · <a href="/star-battle/">Star Battle</a> · <a href="/kenken/">KenKen</a> · <a href="/">all GridPaw puzzles</a></p>
+    </nav>
+  </main>
+</body>
+</html>

@@ -1,0 +1,39 @@
+---
+import SudokuPage from '../../components/SudokuPage.astro';
+import SudokuPlay from '../../components/SudokuPlay.astro';
+
+const title = "12×12 Sudoku: Free 4×3 Box Grid Puzzles Online";
+const description = "Play 12×12 sudoku with rectangular 4×3 boxes and twelve symbols (1–9 plus A–C). Free browser game with a twelve-key pad, hints and duplicate highlighting.";
+---
+<SudokuPage
+  title={title}
+  description={description}
+  canonical="/12x12-sudoku/"
+  crumb="12×12 Sudoku"
+  h1="12×12 Sudoku: Rectangular Boxes, Real Challenge"
+  lede="Twelve symbols, 144 cells, and boxes that are wider than they are tall. The 12×12 grid is the smallest sudoku size that genuinely feels like a different puzzle rather than a longer one."
+  appName="GridPaw 12×12 Sudoku"
+>
+  <SudokuPlay gameKey="12x12-sudoku" size={12} blockW={4} blockH={3} label="12×12" />
+
+  <section class="sdp-prose">
+    <h2>The one rule that makes 12×12 different</h2>
+    <p>Every sudoku size needs boxes whose area matches the symbol count, and twelve does not have a square root you can use. The standard solution is a 4×3 box: four cells wide, three cells tall. Three boxes span the width, four boxes stack down the height, and every row, column and box still contains each symbol exactly once. Twelve symbols means 1 through 9 plus A, B and C.</p>
+
+    <h2>Why rectangular boxes change your deductions</h2>
+    <p>A box is wider than it is tall, and that asymmetry shows up in the box-line trick. When a symbol is confined to a single row inside a box, that row is closed for the other boxes in the band — four cells in each of them, because a box is four columns wide. When a symbol is confined to a single column inside a box, that column is closed for the boxes stacked above and below — three cells each, because a box is only three rows tall.</p>
+    <p>So horizontal deductions sweep away more cells than vertical ones. Solvers who learned on 9×9, where both directions are symmetrical, tend to under-use the row version here. It is the strongest move on the board.</p>
+
+    <h2>A practical solving order</h2>
+    <ol>
+      <li><strong>Cross-hatch the digits first.</strong> Nine of the twelve symbols are digits, and your eye is already trained on them.</li>
+      <li><strong>Then sweep A, B and C.</strong> The three letters usually cluster once the digits are placed, because they have the fewest copies on the board.</li>
+      <li><strong>Pencil-mark only two-candidate cells.</strong> More than that and the marks cost you more time than they save.</li>
+      <li><strong>Hunt the row-within-box pattern</strong> described above whenever the board stalls. On 144 cells it is the deduction that unsticks a grid most often.</li>
+    </ol>
+
+    <h2>Is 12×12 the right next step?</h2>
+    <p>If 9×9 has become routine, 12×12 is the smallest jump that still feels new: 144 cells is roughly three-quarters more board than 81, but you keep the digits you know and add only three letters. Most solvers finish an easy 12×12 in fifteen to twenty-five minutes, which fits a lunch break better than either of the giant sizes.</p>
+    <p>When twelve symbols stop slowing you down, <a href="/16x16-sudoku/">16×16 sudoku</a> doubles the board and adds the A–F range, and <a href="/25x25-sudoku/">25×25 sudoku</a> doubles it again. The <a href="/mega-sudoku/">mega sudoku panel</a> keeps both giant sizes on one page, and <a href="/hexadoku/">hexadoku</a> explains the sixteen-symbol naming you will meet on the way.</p>
+  </section>
+</SudokuPage>

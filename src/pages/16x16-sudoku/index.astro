@@ -1,0 +1,41 @@
+---
+import SudokuPage from '../../components/SudokuPage.astro';
+import SudokuPlay from '../../components/SudokuPlay.astro';
+
+const title = "16×16 Sudoku: Play Free Giant Sudoku Online";
+const description = "Play 16×16 sudoku in your browser: 256 cells, sixteen 4×4 boxes and symbols 0–9 plus A–F. Free giant sudoku with hints, conflict checks and a full keypad.";
+---
+<SudokuPage
+  title={title}
+  description={description}
+  canonical="/16x16-sudoku/"
+  crumb="16×16 Sudoku"
+  h1="16×16 Sudoku: Giant Grids, Explained"
+  lede="A 16×16 sudoku is the classic puzzle blown up to 256 cells: sixteen symbols, sixteen 4×4 boxes, the same three rules. The board below has exactly one solution — pick a difficulty, tap a cell, then a symbol."
+  appName="GridPaw 16×16 Sudoku"
+>
+  <SudokuPlay gameKey="16x16-sudoku" size={16} blockW={4} blockH={4} label="16×16" />
+
+  <section class="sdp-prose">
+    <h2>What a 16×16 sudoku actually is</h2>
+    <p>A 16×16 sudoku is a standard sudoku board scaled up to 256 cells. It uses sixteen symbols — the digits 0 through 9, followed by A, B, C, D, E and F — and the grid is split into sixteen 4×4 boxes. Every row, every column and every box must hold each of the sixteen symbols exactly once. No arithmetic, no wordplay: these are the 9×9 rules on a bigger board.</p>
+
+    <h2>Why the bigger boxes change the game</h2>
+    <p>In a 9×9 grid a box covers nine cells and reaches three rows and three columns. A 4×4 box covers sixteen cells and reaches four rows and four columns, so each placement you write down eliminates a wider slice of the board. Deductions that take three or four steps on a 9×9 grid often collapse into one here.</p>
+    <p>The cost is bookkeeping. With 256 cells a symbol can hide in a corner you have already scanned twice, and it is easy to lose track of which boxes you checked. Most of the difficulty in 16×16 sudoku is memory, not logic.</p>
+
+    <h2>How to solve one without drowning</h2>
+    <ol>
+      <li><strong>Sweep one symbol at a time.</strong> Pick a symbol, find every box where it already appears, then cross out the rows and columns those copies block. One sweep usually places two or three more copies before it stalls.</li>
+      <li><strong>Read boxes in bands.</strong> Four boxes form a horizontal band. If a symbol can only sit in one row of a box, that row is closed for the other three boxes in the band — the familiar box-line trick, and it fires more often here.</li>
+      <li><strong>Keep light pencil marks.</strong> Note only the two or three candidates that survive a sweep, and erase marks the moment a placement kills them.</li>
+      <li><strong>Finish a box before moving on.</strong> A completed 4×4 box is a permanent constraint on four rows and four columns; chasing it to the end beats drifting around the board.</li>
+    </ol>
+
+    <h2>How long should one take?</h2>
+    <p>A first 16×16 will probably eat 40–60 minutes, most of it spent re-checking rows. With practice, easy boards fall in 15–25 minutes; hard ones still ask for an hour. If that sounds like a lot, start on <a href="/12x12-sudoku/">12×12 sudoku</a>, which adds extra symbols without doubling the cell count, then come back.</p>
+
+    <h2>Names and near neighbours</h2>
+    <p>This format also sells as <a href="/hexadoku/">hexadoku</a> and hexadecimal sudoku — same puzzle, different labels. If you would rather pick the size yourself, the <a href="/mega-sudoku/">mega sudoku</a> panel switches between 16×16 and 25×25 without leaving the page. For the opposite direction, <a href="/sudoku-with-letters/">sudoku with letters</a> keeps the 9×9 grid and swaps digits for A–I.</p>
+  </section>
+</SudokuPage>

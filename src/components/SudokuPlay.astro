@@ -1,0 +1,632 @@
+---
+// SudokuPlay — 大格数独可玩面板（契约：docs/sudoku-cluster-contract.md §一/§二）
+// 引擎：/sudoku-engine.js，全局 SudokuEngine（另一路并行实现，这里只按签名调用）
+//   generate(size, blockW, blockH, difficulty, seed, timeBudgetMs)
+//     → { size, blockW, blockH, symbols[], givens:[[idx,val]], solution[], difficulty }
+//   validate(p, vals) → { ok, errors }    hintLookup(p, idx) → 正确答案 / -1
+// 盘面索引 = r*size + c；空值用 -1。
+// JS 生成的 .sd-* 节点拿不到 scoped hash，样式必须 is:global（同 MeowdokuPlay 的坑）。
+interface Props {
+  gameKey: string;              // GA 事件里的 game 维度，如 '16x16-sudoku'
+  size?: number;                // 初始格数：9 | 12 | 16 | 25
+  blockW?: number;              // 区块宽
+  blockH?: number;              // 区块高
+  difficulty?: 'easy' | 'medium' | 'hard';
+  allow25?: boolean;            // 面板内提供 16×16 / 25×25 切换（mega 页）
+  letterMode?: boolean;         // 9×9 用 A–I 代替 1–9（sudoku-with-letters）
+  label?: string;               // 徽标文案，如 '16×16'
+}
+const {
+  gameKey,
+  size = 16,
+  blockW = 4,
+  blockH = 4,
+  difficulty = 'easy',
+  allow25 = false,
+  letterMode = false,
+  label = `${size}×${size}`,
+} = Astro.props;
+const uid = 'sd-' + gameKey.replace(/[^a-z0-9]+/gi, '');
+---
+<div class="sd-play" id={`${uid}-wrap`}>
+  <div class="sd-top">
+    <span class="sd-badge" id={`${uid}-badge`}>{label} · Easy</span>
+    <span class="sd-stat">⏱ <span id={`${uid}-timer`}>0:00</span></span>
+    <span class="sd-stat"><span id={`${uid}-progress`}>0</span> filled</span>
+  </div>
+
+  <div class="sd-bar">
+    <div class="sd-diffs" id={`${uid}-diffs`} role="group" aria-label="Difficulty">
+      <button type="button" class="sd-chip" data-diff="easy" aria-pressed="true">Easy</button>
+      <button type="button" class="sd-chip" data-diff="medium" aria-pressed="false">Medium</button>
+      <button type="button" class="sd-chip" data-diff="hard" aria-pressed="false">Hard</button>
+    </div>
+    {allow25 && (
+      <div class="sd-diffs" id={`${uid}-sizes`} role="group" aria-label="Board size">
+        <button type="button" class="sd-chip" data-size="16" aria-pressed="true">16×16</button>
+        <button type="button" class="sd-chip" data-size="25" aria-pressed="false">25×25</button>
+      </div>
+    )}
+    <div class="sd-tools">
+      <button type="button" class="primary" id={`${uid}-hint`}>💡 Hint <span id={`${uid}-hintleft`}>(3)</span></button>
+      <button type="button" id={`${uid}-restart`}>↩ Restart</button>
+      <button type="button" id={`${uid}-new`}>🔄 New</button>
+    </div>
+  </div>
+
+  <div class="sd-boardwrap">
+    <div class="sd-board" id={`${uid}-board`} role="grid" aria-label="Playable sudoku board"></div>
+    <div class="sd-loading" id={`${uid}-loading`} hidden>
+      <span class="sd-spin" aria-hidden="true"></span>Building a fresh board…
+    </div>
+  </div>
+
+  <div class="sd-keys" id={`${uid}-keys`} role="group" aria-label="Symbol keypad"></div>
+
+  <p class="sd-msg" id={`${uid}-msg`}>Tap a cell, then a symbol. Duplicates in the same row, column or box turn red; tap the same symbol again to clear a cell.</p>
+
+  <div class="sd-win" id={`${uid}-win`} hidden>
+    <strong id={`${uid}-wintitle`}>Solved!</strong>
+    <span id={`${uid}-windetail`}></span>
+    <button type="button" id={`${uid}-next`}>Next board →</button>
+  </div>
+</div>
+
+<style is:global>
+  .sd-play {
+    box-sizing: border-box;
+    max-width: 660px; margin: 1.1rem auto 1.4rem; padding: 14px;
+    background: #fff; border: 2px solid var(--md-primary, #D97706); border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(63, 48, 38, 0.07);
+  }
+  .sd-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 14px; font-size: 0.8rem; color: var(--md-text-light, #7A6A5F); }
+  .sd-badge { background: #FFF1E8; color: var(--md-primary, #D97706); font-weight: 800; border-radius: 99px; padding: 3px 10px; }
+  .sd-stat { font-weight: 700; }
+  .sd-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin: 10px 0 8px; }
+  .sd-diffs { display: flex; gap: 2px; background: #FBF6F0; border-radius: 99px; padding: 3px; }
+  .sd-chip {
+    border: 0; background: transparent; color: var(--md-text, #3D3D3D);
+    font: inherit; font-size: 0.78rem; font-weight: 800; padding: 4px 10px;
+    border-radius: 99px; cursor: pointer;
+  }
+  .sd-chip[aria-pressed="true"] { background: var(--md-primary, #D97706); color: #fff; }
+  .sd-tools { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sd-tools button {
+    border: 0; border-radius: 9px; padding: 6px 10px; font: inherit;
+    font-size: 0.78rem; font-weight: 800; background: #FFF1E8;
+    color: var(--md-text, #3D3D3D); cursor: pointer;
+  }
+  .sd-tools button.primary { background: var(--md-primary, #D97706); color: #fff; }
+  .sd-tools button:disabled { opacity: 0.45; cursor: default; }
+
+  .sd-boardwrap { position: relative; overflow-x: auto; overflow-y: hidden; padding: 2px; min-height: 140px; -webkit-overflow-scrolling: touch; }
+  .sd-board {
+    display: grid;
+    grid-template-columns: repeat(var(--sd-n, 16), var(--sd-cell, 26px));
+    grid-auto-rows: var(--sd-cell, 26px);
+    width: max-content; margin: 0 auto;
+    border: 2px solid #B08968; border-radius: 6px; overflow: hidden; background: #fff;
+  }
+  .sd-cell {
+    display: flex; align-items: center; justify-content: center; position: relative;
+    font-weight: 700; color: var(--md-text, #3D3D3D);
+    font-size: calc(var(--sd-cell, 26px) * 0.56); line-height: 1;
+    border-right: 1px solid #E8D8CA; border-bottom: 1px solid #E8D8CA;
+    cursor: pointer; user-select: none; -webkit-user-select: none; touch-action: manipulation;
+    transition: background 0.08s;
+  }
+  .sd-cell.sd-edge-r { border-right: 0; }
+  .sd-cell.sd-edge-b { border-bottom: 0; }
+  .sd-cell.sd-box-r { border-right: 2px solid #B08968; }
+  .sd-cell.sd-box-b { border-bottom: 2px solid #B08968; }
+  .sd-cell.sd-given { color: #342421; background: #FDF8F2; font-weight: 800; cursor: default; }
+  .sd-cell.sd-peer { background: #FDF1E5; }
+  .sd-cell.sd-same { background: #FBE3CC; }
+  .sd-cell.sd-sel { background: #F7D9BC; box-shadow: inset 0 0 0 2px var(--md-primary, #D97706); }
+  .sd-cell.sd-conf { color: #E74C3C; background: #FDECEA; }
+  .sd-cell.sd-hinted { color: #2D6A3F; background: #EAF6ED; }
+
+  .sd-keys {
+    display: grid; grid-template-columns: repeat(var(--sd-kcols, 8), minmax(0, 1fr));
+    gap: 5px; margin: 10px auto 0; max-width: 470px;
+  }
+  .sd-key {
+    width: 100%; height: 36px; padding: 0 4px;
+    border: 1.5px solid #E8D8CA; background: #fff; border-radius: 9px;
+    font: inherit; font-weight: 800; font-size: 0.95rem;
+    color: var(--md-text, #3D3D3D); cursor: pointer;
+  }
+  .sd-key:hover { border-color: var(--md-primary, #D97706); color: var(--md-primary, #D97706); }
+  .sd-key:active { transform: scale(0.95); }
+
+  .sd-loading {
+    position: absolute; inset: 0; z-index: 2; display: flex; align-items: center;
+    justify-content: center; gap: 8px; background: rgba(255, 255, 255, 0.88);
+    font-size: 0.85rem; font-weight: 700; color: var(--md-text-light, #7A6A5F);
+  }
+  .sd-loading[hidden] { display: none; }
+  .sd-spin {
+    width: 15px; height: 15px; border: 2px solid #E8D8CA;
+    border-top-color: var(--md-primary, #D97706); border-radius: 50%;
+    animation: sdspin 0.7s linear infinite;
+  }
+  @keyframes sdspin { to { transform: rotate(360deg); } }
+
+  .sd-msg { margin: 10px 0 0; font-size: 0.8rem; line-height: 1.55; color: var(--md-text-light, #7A6A5F); text-align: center; }
+  .sd-error { margin: 0; padding: 18px 10px; text-align: center; font-weight: 700; color: #E74C3C; }
+
+  .sd-win {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    margin-top: 10px; padding: 10px 12px; border-radius: 12px;
+    background: #DFF3E4; border: 1.5px solid #B8E8C0;
+    font-size: 0.86rem; color: #235C2E;
+  }
+  .sd-win[hidden] { display: none; }
+  .sd-win strong { font-size: 1rem; }
+  .sd-win button {
+    margin-left: auto; border: 0; border-radius: 9px; padding: 6px 12px;
+    background: #2D6A3F; color: #fff; font: inherit; font-weight: 800;
+    font-size: 0.8rem; cursor: pointer;
+  }
+
+  @media (max-width: 520px) {
+    .sd-play { padding: 10px; border-radius: 14px; }
+    .sd-key { height: 33px; font-size: 0.88rem; }
+    .sd-tools button { padding: 6px 8px; }
+    .sd-chip { padding: 4px 8px; }
+  }
+</style>
+
+<script is:inline src="/sudoku-engine.js"></script>
+<script is:inline define:vars={{ uid, size, blockW, blockH, difficulty, allow25, letterMode, gameKey, label }}>
+  (function () {
+    var E = window.SudokuEngine;
+    var wrap = document.getElementById(uid + '-wrap');
+    if (!wrap) return;
+
+    var boardEl = document.getElementById(uid + '-board');
+    var keysEl = document.getElementById(uid + '-keys');
+    var msgEl = document.getElementById(uid + '-msg');
+    var timerEl = document.getElementById(uid + '-timer');
+    var progEl = document.getElementById(uid + '-progress');
+    var badgeEl = document.getElementById(uid + '-badge');
+    var winEl = document.getElementById(uid + '-win');
+    var winDetailEl = document.getElementById(uid + '-windetail');
+    var loadEl = document.getElementById(uid + '-loading');
+    var hintBtn = document.getElementById(uid + '-hint');
+    var hintLeftEl = document.getElementById(uid + '-hintleft');
+    var diffRow = document.getElementById(uid + '-diffs');
+    var sizeRow = allow25 ? document.getElementById(uid + '-sizes') : null;
+    var nextBtn = document.getElementById(uid + '-next');
+    var newBtn = document.getElementById(uid + '-new');
+    var restartBtn = document.getElementById(uid + '-restart');
+
+    if (!E || !boardEl || !keysEl) {
+      if (boardEl) boardEl.innerHTML = '<p class="sd-error">The sudoku engine did not load. Please refresh the page.</p>';
+      return;
+    }
+
+    // 契约里的固定区块划分（§一 符号集表格）
+    var BLOCKS = { 9: [3, 3], 12: [4, 3], 16: [4, 4], 25: [5, 5] };
+    var LETTERS9 = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+    var DIFF_LABEL = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
+
+    var state = {
+      size: size, bw: blockW, bh: blockH,
+      diff: difficulty,
+      puzzle: null, vals: null, given: null, hinted: null, symbols: null,
+      sel: -1, hintsLeft: 3, solved: false, filled: 0,
+      secs: 0, timerId: 0, token: 0, moved: false
+    };
+    var cells = [];
+
+    // ── GA4（与 star-battle / kenken 同款四通道）──
+    function track(event, params) {
+      var p = params || {};
+      if (window.gpTrack) window.gpTrack(event, p);
+      if (typeof window.gtag === 'function') window.gtag('event', event, p);
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture(event, Object.assign({ site: 'gridpaw' }, p));
+      }
+      if (typeof window.clarity === 'function') {
+        window.clarity('event', event);
+        Object.keys(p).forEach(function (k) { window.clarity('set', k, String(p[k])); });
+      }
+    }
+    function detectSource() {
+      var q = new URLSearchParams(location.search);
+      if (q.get('embed')) return 'embed';
+      var ref = document.referrer || '';
+      if (!ref) return 'direct';
+      if (ref.indexOf(location.hostname) !== -1) return 'internal';
+      if (ref.indexOf('google') !== -1) return 'google';
+      return 'referral';
+    }
+
+    function fmt(s) {
+      var m = Math.floor(s / 60);
+      var r = s % 60;
+      return m + ':' + (r < 10 ? '0' : '') + r;
+    }
+    function startTimer() {
+      stopTimer();
+      state.secs = 0;
+      timerEl.textContent = '0:00';
+      state.timerId = setInterval(function () {
+        state.secs++;
+        timerEl.textContent = fmt(state.secs);
+      }, 1000);
+    }
+    function stopTimer() {
+      if (state.timerId) { clearInterval(state.timerId); state.timerId = 0; }
+    }
+    function msg(text) { msgEl.textContent = text; }
+    function setLoading(on) { loadEl.hidden = !on; }
+
+    function syncChips() {
+      var chips = diffRow.querySelectorAll('[data-diff]');
+      for (var i = 0; i < chips.length; i++) {
+        chips[i].setAttribute('aria-pressed', chips[i].getAttribute('data-diff') === state.diff ? 'true' : 'false');
+      }
+      if (sizeRow) {
+        var sc = sizeRow.querySelectorAll('[data-size]');
+        for (var j = 0; j < sc.length; j++) {
+          sc[j].setAttribute('aria-pressed', Number(sc[j].getAttribute('data-size')) === state.size ? 'true' : 'false');
+        }
+      }
+      var sizeText = letterMode ? label : state.size + '×' + state.size;
+      badgeEl.textContent = sizeText + ' · ' + DIFF_LABEL[state.diff];
+    }
+
+    function updateHintBtn() {
+      hintLeftEl.textContent = '(' + state.hintsLeft + ')';
+      hintBtn.disabled = state.hintsLeft <= 0;
+    }
+
+    // ── 生成新盘（16/25 可能耗时：先让 loading 渲染，再同步跑引擎）──
+    function newPuzzle(nextSize, via) {
+      var s = nextSize || state.size;
+      var b = BLOCKS[s] || [state.bw, state.bh];
+      state.size = s;
+      state.bw = b[0];
+      state.bh = b[1];
+      state.sel = -1;
+      state.solved = false;
+      state.hintsLeft = 3;
+      state.moved = false;
+      winEl.hidden = true;
+      syncChips();
+      updateHintBtn();
+      if (via) track('puzzle_reset', { game: gameKey, via: via, size: s, difficulty: DIFF_LABEL[state.diff] });
+
+      var token = ++state.token;
+      setLoading(true);
+      setTimeout(function () {
+        var p = null;
+        var tries = 0;
+        while (!p && tries < 3) {
+          tries++;
+          var seed = (Date.now() ^ ((Math.random() * 0x7fffffff) | 0) ^ (tries * 2654435761)) | 0;
+          try {
+            p = E.generate(s, b[0], b[1], state.diff, seed, 8000);
+          } catch (err) {
+            p = null;
+          }
+        }
+        if (state.token !== token) return;
+        setLoading(false);
+        if (!p) {
+          msg('That board could not be generated. Press New to try again.');
+          return;
+        }
+        state.puzzle = p;
+        state.symbols = (letterMode && s === 9) ? LETTERS9 : p.symbols;
+        state.given = new Uint8Array(s * s);
+        state.hinted = new Uint8Array(s * s);
+        state.vals = new Int8Array(s * s).fill(-1);
+        for (var g = 0; g < p.givens.length; g++) {
+          var pair = p.givens[g];
+          state.given[pair[0]] = 1;
+          state.vals[pair[0]] = pair[1];
+        }
+        buildBoard();
+        recalc();
+        paint();
+        msg('Tap a cell, then a symbol. Duplicates in the same row, column or box turn red; tap the same symbol again to clear a cell.');
+        startTimer();
+        if (document.visibilityState === 'visible') {
+          track('game_start', { game: gameKey, size: s, difficulty: DIFF_LABEL[state.diff], source: detectSource() });
+        }
+      }, 30);
+    }
+
+    function buildBoard() {
+      var N = state.size;
+      boardEl.style.setProperty('--sd-n', String(N));
+      boardEl.innerHTML = '';
+      cells = [];
+      var frag = document.createDocumentFragment();
+      for (var r = 0; r < N; r++) {
+        for (var c = 0; c < N; c++) {
+          var d = document.createElement('div');
+          var cls = 'sd-cell';
+          if (c === N - 1 || (c + 1) % state.bw === 0) cls += ' sd-box-r';
+          if (r === N - 1 || (r + 1) % state.bh === 0) cls += ' sd-box-b';
+          if (c === N - 1) cls += ' sd-edge-r';
+          if (r === N - 1) cls += ' sd-edge-b';
+          d.className = cls;
+          d.__base = cls;
+          d.setAttribute('role', 'gridcell');
+          d.setAttribute('data-i', String(r * N + c));
+          frag.appendChild(d);
+          cells.push(d);
+        }
+      }
+      boardEl.appendChild(frag);
+      buildKeys();
+      sizeBoard();
+    }
+
+    function buildKeys() {
+      keysEl.innerHTML = '';
+      var kcols = state.size <= 9 ? state.size : (state.size <= 12 ? 6 : (state.size <= 16 ? 8 : 10));
+      keysEl.style.setProperty('--sd-kcols', String(kcols));
+      for (var v = 1; v <= state.size; v++) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'sd-key';
+        b.textContent = state.symbols[v - 1];
+        b.setAttribute('data-v', String(v));
+        b.setAttribute('aria-label', 'Place ' + state.symbols[v - 1]);
+        keysEl.appendChild(b);
+      }
+    }
+
+    function sizeBoard() {
+      var N = state.size;
+      // 以棋盘滚动容器的真实宽度为基准（.sd-play 的 clientWidth 含内边距，会算出溢出）
+      var host = boardEl.parentNode;
+      var wide = host && host.clientWidth ? host.clientWidth : 320;
+      var avail = Math.max(200, wide - 10); // 减去容器 padding 与棋盘边框
+      var minCell = N >= 25 ? 20 : (N >= 16 ? 16 : (N >= 12 ? 22 : 30));
+      var maxCell = N >= 25 ? 34 : (N >= 16 ? 40 : 54);
+      var cell = Math.floor(avail / N);
+      if (cell > maxCell) cell = maxCell;
+      if (cell < minCell) cell = minCell;
+      boardEl.style.setProperty('--sd-cell', cell + 'px');
+    }
+
+    function recalc() {
+      var n = 0;
+      for (var i = 0; i < state.vals.length; i++) if (state.vals[i] > 0) n++;
+      state.filled = n;
+      progEl.textContent = n + ' / ' + (state.size * state.size);
+    }
+
+    // 行 / 列 / 区块重复值 → 标记冲突
+    function conflicts() {
+      var N = state.size;
+      var vals = state.vals;
+      var conf = new Uint8Array(N * N);
+      var bw = state.bw, bh = state.bh;
+      var r, c, i, v, first;
+
+      for (r = 0; r < N; r++) {
+        first = new Int32Array(N + 1).fill(-1);
+        for (c = 0; c < N; c++) {
+          i = r * N + c; v = vals[i];
+          if (v <= 0) continue;
+          if (first[v] >= 0) { conf[i] = 1; conf[first[v]] = 1; } else { first[v] = i; }
+        }
+      }
+      for (c = 0; c < N; c++) {
+        first = new Int32Array(N + 1).fill(-1);
+        for (r = 0; r < N; r++) {
+          i = r * N + c; v = vals[i];
+          if (v <= 0) continue;
+          if (first[v] >= 0) { conf[i] = 1; conf[first[v]] = 1; } else { first[v] = i; }
+        }
+      }
+      var boxesX = N / bw, boxesY = N / bh;
+      for (var by = 0; by < boxesY; by++) {
+        for (var bx = 0; bx < boxesX; bx++) {
+          first = new Int32Array(N + 1).fill(-1);
+          for (r = 0; r < bh; r++) {
+            for (c = 0; c < bw; c++) {
+              i = (by * bh + r) * N + (bx * bw + c); v = vals[i];
+              if (v <= 0) continue;
+              if (first[v] >= 0) { conf[i] = 1; conf[first[v]] = 1; } else { first[v] = i; }
+            }
+          }
+        }
+      }
+      return conf;
+    }
+
+    function paint() {
+      var N = state.size;
+      var vals = state.vals;
+      var conf = conflicts();
+      var sel = state.sel;
+      var selV = sel >= 0 ? vals[sel] : -1;
+      var sr = sel >= 0 ? Math.floor(sel / N) : -1;
+      var sc = sel >= 0 ? sel % N : -1;
+      var bw = state.bw, bh = state.bh;
+
+      for (var i = 0; i < cells.length; i++) {
+        var d = cells[i];
+        var v = vals[i];
+        var txt = v > 0 ? state.symbols[v - 1] : '';
+        if (d.textContent !== txt) d.textContent = txt;
+
+        var cls = d.__base;
+        if (state.given[i]) cls += ' sd-given';
+        if (state.hinted[i]) cls += ' sd-hinted';
+        var r = Math.floor(i / N), c = i % N;
+        if (sel >= 0 && i !== sel) {
+          var sameRow = r === sr, sameCol = c === sc;
+          var sameBox = Math.floor(r / bh) === Math.floor(sr / bh) && Math.floor(c / bw) === Math.floor(sc / bw);
+          if (sameRow || sameCol || sameBox) cls += ' sd-peer';
+        }
+        if (selV > 0 && v === selV && i !== sel) cls += ' sd-same';
+        if (i === sel) cls += ' sd-sel';
+        if (conf[i]) cls += ' sd-conf';
+        if (d.className !== cls) d.className = cls;
+      }
+    }
+
+    function selectCell(i) {
+      state.sel = i;
+      paint();
+    }
+
+    function setValue(v) {
+      var i = state.sel;
+      if (i < 0) { msg('Tap a cell first, then choose a symbol.'); return; }
+      if (state.solved || state.given[i] || state.hinted[i]) return;
+      if (!state.moved) {
+        state.moved = true;
+        track('first_move', { game: gameKey, size: state.size, difficulty: DIFF_LABEL[state.diff] });
+      }
+      state.vals[i] = state.vals[i] === v ? -1 : v;
+      recalc();
+      paint();
+      maybeWin();
+    }
+
+    function maybeWin() {
+      if (state.solved || !state.puzzle) return;
+      if (state.filled !== state.size * state.size) return;
+      var ok = false;
+      try {
+        var res = E.validate(state.puzzle, state.vals);
+        ok = !!(res && res.ok);
+      } catch (e) {
+        ok = false;
+      }
+      if (!ok) {
+        ok = true;
+        for (var i = 0; i < state.vals.length; i++) {
+          if (state.vals[i] !== state.puzzle.solution[i]) { ok = false; break; }
+        }
+      }
+      if (!ok) {
+        track('game_over', { game: gameKey, size: state.size, difficulty: DIFF_LABEL[state.diff] });
+        msg('Every cell is filled, but some symbols break the rules — red cells show where.');
+        return;
+      }
+      state.solved = true;
+      stopTimer();
+      winDetailEl.textContent = state.size + '×' + state.size + ' ' + DIFF_LABEL[state.diff] + ' solved in ' + fmt(state.secs) + '.';
+      winEl.hidden = false;
+      msg('All ' + (state.size * state.size) + ' cells are legal: every row, column and box holds each symbol exactly once.');
+      track('level_up', { game: gameKey, size: state.size, difficulty: DIFF_LABEL[state.diff], seconds: state.secs });
+    }
+
+    function useHint() {
+      var i = state.sel;
+      if (i < 0) { msg('Tap the cell you want revealed, then press Hint.'); return; }
+      if (state.given[i] || state.hinted[i]) { msg('That cell is already revealed.'); return; }
+      if (state.hintsLeft <= 0) { msg('No hints left on this board — press New for three fresh ones.'); return; }
+      var ans = -1;
+      try { ans = E.hintLookup(state.puzzle, i); } catch (e) { ans = -1; }
+      if (!ans || ans < 1) { ans = state.puzzle.solution[i]; }
+      state.hintsLeft--;
+      state.vals[i] = ans;
+      state.hinted[i] = 1;
+      updateHintBtn();
+      recalc();
+      paint();
+      track('hint_click', { game: gameKey, size: state.size, difficulty: DIFF_LABEL[state.diff] });
+      maybeWin();
+    }
+
+    function restart() {
+      var N = state.size;
+      state.vals = new Int8Array(N * N).fill(-1);
+      state.hinted = new Uint8Array(N * N);
+      for (var g = 0; g < state.puzzle.givens.length; g++) {
+        state.vals[state.puzzle.givens[g][0]] = state.puzzle.givens[g][1];
+      }
+      state.sel = -1;
+      state.solved = false;
+      state.hintsLeft = 3;
+      state.moved = false;
+      winEl.hidden = true;
+      updateHintBtn();
+      recalc();
+      paint();
+      startTimer();
+      track('puzzle_reset', { game: gameKey, via: 'restart', size: state.size, difficulty: DIFF_LABEL[state.diff] });
+    }
+
+    // ── 事件绑定 ──
+    boardEl.addEventListener('click', function (ev) {
+      var t = ev.target;
+      while (t && t !== boardEl && !(t.className && String(t.className).indexOf('sd-cell') !== -1)) t = t.parentNode;
+      if (!t || t === boardEl) return;
+      var i = Number(t.getAttribute('data-i'));
+      if (isNaN(i)) return;
+      selectCell(i);
+    });
+
+    keysEl.addEventListener('click', function (ev) {
+      var t = ev.target;
+      while (t && t !== keysEl && !(t.className && String(t.className).indexOf('sd-key') !== -1)) t = t.parentNode;
+      if (!t || t === keysEl) return;
+      var v = Number(t.getAttribute('data-v'));
+      if (!isNaN(v)) setValue(v);
+    });
+
+    diffRow.addEventListener('click', function (ev) {
+      var t = ev.target;
+      while (t && t !== diffRow && !t.getAttribute) t = t.parentNode;
+      if (!t || t === diffRow) return;
+      var d = t.getAttribute('data-diff');
+      if (!d || d === state.diff) return;
+      state.diff = d;
+      newPuzzle(state.size, 'difficulty');
+    });
+
+    if (sizeRow) {
+      sizeRow.addEventListener('click', function (ev) {
+        var t = ev.target;
+        while (t && t !== sizeRow && !t.getAttribute) t = t.parentNode;
+        if (!t || t === sizeRow) return;
+        var s = Number(t.getAttribute('data-size'));
+        if (!s || s === state.size) return;
+        newPuzzle(s, 'size');
+      });
+    }
+
+    hintBtn.addEventListener('click', useHint);
+    restartBtn.addEventListener('click', restart);
+    newBtn.addEventListener('click', function () { newPuzzle(state.size, 'new'); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { newPuzzle(state.size, 'new'); });
+
+    document.addEventListener('keydown', function (ev) {
+      if (ev.metaKey || ev.ctrlKey || ev.altKey) return;
+      if (ev.key === 'Backspace' || ev.key === 'Delete') {
+        if (state.sel >= 0 && !state.given[state.sel]) {
+          state.vals[state.sel] = -1;
+          recalc();
+          paint();
+        }
+        return;
+      }
+      var k = ev.key.length === 1 ? ev.key.toUpperCase() : '';
+      if (!k) return;
+      var v = state.symbols.indexOf(k) + 1;
+      if (v) { ev.preventDefault(); setValue(v); }
+    });
+
+    var resizeTimer = 0;
+    window.addEventListener('resize', function () {
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(sizeBoard, 120);
+    });
+
+    syncChips();
+    newPuzzle(state.size, '');
+  })();
+</script>

@@ -1,0 +1,37 @@
+---
+import SudokuPage from '../../components/SudokuPage.astro';
+import SudokuPlay from '../../components/SudokuPlay.astro';
+
+const title = "Sudoku With Letters: Play A–I Letter Sudoku Free";
+const description = "Play sudoku with letters instead of numbers: a 9×9 grid labelled A to I, same rules. Free in your browser with a letter keypad, hints and conflict highlighting.";
+---
+<SudokuPage
+  title={title}
+  description={description}
+  canonical="/sudoku-with-letters/"
+  crumb="Sudoku With Letters"
+  h1="Sudoku With Letters: A to I Instead of 1 to 9"
+  lede="Same grid, same rules, different labels. This 9×9 board uses A through I where a normal sudoku would use 1 through 9 — which changes how the puzzle feels far more than you would expect."
+  appName="GridPaw Sudoku With Letters"
+>
+  <SudokuPlay gameKey="sudoku-with-letters" size={9} blockW={3} blockH={3} letterMode={true} label="9×9 letters" />
+
+  <section class="sdp-prose">
+    <h2>Same puzzle, different alphabet</h2>
+    <p>Sudoku with letters is exactly the puzzle you already know, with the nine digits replaced by nine letters. This page uses A through I: A does the job of 1, B of 2, and so on to I for 9. Nothing about the logic changes — every row, every column and every 3×3 box must contain each of the nine letters exactly once.</p>
+
+    <h2>Why play with letters at all?</h2>
+    <ul>
+      <li><strong>No number anxiety.</strong> Children who are still learning to read are often much happier hunting letters than digits, and the puzzle teaches the same set-and-elimination reasoning.</li>
+      <li><strong>It breaks pattern autopilot.</strong> Experienced solvers read digit grids by shape and rhythm without really looking. Letters interrupt that shortcut, which makes a letter sudoku honest practice for scanning technique.</li>
+      <li><strong>It is the same skill in a different costume.</strong> Teachers use letter grids for the same reason they use word problems: the reasoning transfers, the anxiety does not.</li>
+      <li><strong>Word sudoku exists.</strong> Some publishers take it further and build grids where a completed row spells a word. Those puzzles are a close cousin and use the same solving habits.</li>
+    </ul>
+
+    <h2>How the mapping works here</h2>
+    <p>If you can solve a 9×9 with numbers, you can solve this one by substitution. Two practical notes. First, the letters sit on the keypad in alphabetical order, and your physical keyboard works too — press A through I and the symbol lands in the selected cell. Second, watch the glyph shapes: a capital I is easy to confuse with a lowercase l or a 1, so read the grid carefully when a row is nearly full.</p>
+
+    <h2>Letters beyond the 9×9 grid</h2>
+    <p>Once a puzzle needs more than nine symbols, letters stop being a novelty and become necessary. <a href="/12x12-sudoku/">12×12 sudoku</a> adds A, B and C to the digits, <a href="/16x16-sudoku/">16×16 sudoku</a> runs 0–9 plus A–F, and <a href="/25x25-sudoku/">25×25 sudoku</a> goes all the way to P. The <a href="/hexadoku/">hexadoku</a> page explains why the sixteen-symbol version borrowed hexadecimal digits, and the <a href="/mega-sudoku/">mega sudoku</a> panel is where the two giant sizes live together.</p>
+  </section>
+</SudokuPage>
