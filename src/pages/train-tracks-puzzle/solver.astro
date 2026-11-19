@@ -2,8 +2,9 @@
 import SEOHead from '../../components/SEOHead.astro';
 import GameNav from '../../components/GameNav.astro';
 import {
-  generate, deduce, countSolutions, cellEdges,
+  deduce, countSolutions, cellEdges,
 } from '../../lib/puzzle-core/tracks-engine';
+import pool from '../../data/tracks-puzzles.json';
 
 // ── Train Tracks solver — GridPaw ───────────────────────────────────────────
 // 12×12 is the size the other online Tracks solvers stop short of, so the demo
@@ -14,10 +15,18 @@ import {
 //
 // Engine: src/lib/puzzle-core/tracks-engine.ts (also bundled to
 // public/tracks-engine.js as the global TracksEngine for the play pages).
+// 题库是 scripts/gen-tracks-pool.mjs 生成并入的 JSON。页面不现算题：12×12 现生成
+// 要 ~15 秒，build 不该背这个成本，浏览器更背不动。
 const ROWS = 12;
 const COLS = 12;
-const SEED = 20260119;
-const puzzle = generate(ROWS, COLS, 'hard', SEED);
+const raw = (pool.boards as Record<string, any[]>)['12'][0];
+const SEED = raw.seed;
+const puzzle = {
+  ...raw,
+  rowClues: Int8Array.from(raw.rowClues),
+  colClues: Int8Array.from(raw.colClues),
+  solution: Uint8Array.from(raw.solution),
+};
 const deduction = deduce(puzzle);
 const steps = deduction.steps;
 // 这页卖的是「每一步都是被逼出来的」。哪天后端引擎改动让这个种子推不完，
