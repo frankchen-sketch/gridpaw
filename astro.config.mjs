@@ -31,6 +31,8 @@ export default defineConfig({
           'https://gridpaw.com/akari/levels/hard/', // thin content, same as easy/medium
           'https://gridpaw.com/ad-free/',           // noindex 售卖页（2026-11-09 补；11-07 上线时漏排除）
           'https://gridpaw.com/unlock-all/',        // noindex coming-soon 落地页（2026-11-09 实验期）
+          'https://gridpaw.com/refund-policy/',     // noindex 功能页（2026-11-19 adsense 审计：noindex 却在 sitemap）
+          'https://gridpaw.com/offline/',           // noindex PWA 离线壳（2026-11-19 adsense 审计：noindex 却在 sitemap）
         ];
         if (exactExcludes.includes(page)) {
           return false;
