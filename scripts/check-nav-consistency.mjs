@@ -55,7 +55,15 @@ const SUDOKU_CLUSTER = [
   { route: '/sudoku-with-letters/', file: 'src/pages/sudoku-with-letters/index.astro' },
 ];
 // 有意不挂导航的路由（例如纯同义入口页只做正文内链）：写在这里，别注释掉检查
-const SUDOKU_NAV_EXEMPT = new Set();
+const SUDOKU_NAV_EXEMPT = new Set([
+  // 同簇子页：入口由 hub 页 /16x16-sudoku/ 承担，正文内链互通
+  // 注意：必须与 SUDOKU_CLUSTER 里的 route 字面一致（带尾斜杠）
+  '/mega-sudoku/',
+  '/hexadoku/',
+  '/12x12-sudoku/',
+  '/25x25-sudoku/',
+  '/sudoku-with-letters/',
+]);
 
 const normHref = (h) => (h.length > 1 ? h.replace(/\/+$/, '') : h) || '/';
 const allNavHrefs = (file) => {

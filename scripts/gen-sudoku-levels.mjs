@@ -32,15 +32,15 @@ const DEFAULT_OUT = 'src/data/sudoku-levels.json';
 // ── 页面清单（与契约第二节的表逐行对应）────────────────────────────────────
 // size / blockW / blockH 必须与页面自己调 SudokuEngine.generate() 的参数一致，
 // 否则静态盘与运行时盘的符号集对不上。
-// sudoku-with-letters 选 12×4×3：引擎固定符号表里只有 12/16/25 带字母（1-9 + A B C），
-// 12 是其中最便宜的一档；契约写的「9 或 16 + 字母符号」在 9×9 下拿不到字母（符号表固定 1..9）。
+// sudoku-with-letters 用 9×3×3：页面 SudokuPlay 传的是 size=9 + letterMode=true，
+// 字母 A–I 由页面把 1..9 映射显示，不改引擎符号表（引擎 9×9 原生就是 1..9）。
 const PAGES = [
   { route: '/16x16-sudoku/', size: 16, blockW: 4, blockH: 4, timeBudgetMs: 8000 },
   { route: '/mega-sudoku/', size: 16, blockW: 4, blockH: 4, timeBudgetMs: 8000 },
   { route: '/hexadoku/', size: 16, blockW: 4, blockH: 4, timeBudgetMs: 8000 },
   { route: '/12x12-sudoku/', size: 12, blockW: 4, blockH: 3, timeBudgetMs: 4000 },
   { route: '/25x25-sudoku/', size: 25, blockW: 5, blockH: 5, timeBudgetMs: 15000 },
-  { route: '/sudoku-with-letters/', size: 12, blockW: 4, blockH: 3, timeBudgetMs: 4000 },
+  { route: '/sudoku-with-letters/', size: 9, blockW: 3, blockH: 3, timeBudgetMs: 4000 },
 ];
 
 const DIFFICULTIES = ['easy', 'medium', 'hard', 'expert'];
