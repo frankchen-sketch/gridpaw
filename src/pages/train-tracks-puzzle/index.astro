@@ -1,6 +1,7 @@
 ---
 import SEOHead from '../../components/SEOHead.astro';
 import GameNav from '../../components/GameNav.astro';
+import GameCoach from '../../components/GameCoach.astro';
 import pool from '../../data/tracks-puzzles.json';
 
 // ── Train Tracks — GridPaw game page ───────────────────────────────────────
@@ -84,6 +85,23 @@ const description = `Play Train Tracks free online: one unbroken railway from A 
       <button class="tt-btn tt-btn-primary" id="tt-check">Check</button>
       <span class="tt-meta" id="tt-meta"></span>
     </div>
+
+    <GameCoach
+      game="train-tracks"
+      steps={[
+        'Drag on the grid to lay track.',
+        'Every track square needs two joints.',
+        'Row numbers count railed squares.',
+      ]}
+      rules={[
+        { ic: '1', text: 'Drag along the grid to lay track. Drag again over a piece to erase it, or tap a single edge.' },
+        { ic: '2', text: 'Every square holding track has exactly two joints — a straight piece or a corner.' },
+        { ic: '3', text: '<b>A</b> and <b>B</b> are the ends: one joint each, and the line leaves the board through them.' },
+        { ic: '4', text: 'The number beside a row or column counts the squares in it that hold rail.' },
+        { ic: '5', text: 'The result is a single connected line — neighbouring rails run side by side without connecting.' },
+      ]}
+      rulesTitle="How to play Train Tracks"
+    />
 
     <div class="tt-boardwrap">
       <svg id="tt-board" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Train Tracks board"></svg>

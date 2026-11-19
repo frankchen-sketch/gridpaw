@@ -7,6 +7,7 @@ import GameNav from '../../components/GameNav.astro';
 import GameHub from '../../components/GameHub.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import SideAd from '../../components/SideAd.astro';
+import GameCoach from '../../components/GameCoach.astro';
 
 const title = 'Play Kakuro Online: Free Cross-Sum Puzzle Game';
 const description =
@@ -81,6 +82,21 @@ const faqs = [
       its clue, no repeats allowed. Learn it in four guided lessons, clear an 11-level
       campaign, then push into paw-print fog territory. Everything runs in your browser.
     </p>
+
+    <div class="gp-frame-row">
+      <button class="howto-chip" type="button" aria-label="How to play" data-gp-rules-btn><span>❓</span> how to play</button>
+    </div>
+    <GameCoach
+      game="kakuro"
+      steps={[]}
+      rules={[
+          { ic: '1', text: 'Every white run of cells adds up to the clue at its start.' },
+          { ic: '2', text: 'No digit may repeat inside a run — across or down.' },
+          { ic: '3', text: 'Tap a white cell, then a digit on the keypad. The keypad strikes out duplicates and colours overflow red.' },
+          { ic: '4', text: 'Fog levels hide cells: solve the visible part first.' },
+      ]}
+      rulesTitle="How to play Kakuro"
+    />
 
     <div class="game-frame">
       <iframe
@@ -272,6 +288,9 @@ const faqs = [
       h1 { font-size: 1.5rem; }
       .game-frame iframe { height: 720px; }
     }
-  </style>
+      .gp-frame-row { display: flex; justify-content: flex-end; margin: 0 0 8px; }
+    .howto-chip { display: inline-flex; align-items: center; gap: 0.3rem; background: var(--gp-white, #fff); border: 1.5px dashed var(--gp-primary, #E8A888); color: var(--gp-primary-strong, #D47A50); border-radius: 999px; font-size: 0.72rem; font-weight: 800; padding: 0.35rem 0.7rem; cursor: pointer; font-family: inherit; min-height: 44px; }
+    .howto-chip:hover { background: var(--gp-cream-warm, #FFF4F0); }
+</style>
 </body>
 </html>

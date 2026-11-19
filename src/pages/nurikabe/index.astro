@@ -7,6 +7,7 @@ import GameNav from '../../components/GameNav.astro';
 import GameHub from '../../components/GameHub.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import SideAd from '../../components/SideAd.astro';
+import GameCoach from '../../components/GameCoach.astro';
 
 const title = 'Play Nurikabe Online: Free Island and Sea Logic Puzzles';
 const description =
@@ -82,6 +83,20 @@ const faqs = [
       Learn it in four guided lessons, clear an 11-level campaign from 5×5 to 7×7, then
       keep going with daily puzzles. Everything runs in your browser.
     </p>
+
+    <div class="gp-frame-row">
+      <button class="howto-chip" type="button" aria-label="How to play" data-gp-rules-btn><span>❓</span> how to play</button>
+    </div>
+    <GameCoach
+      game="nurikabe"
+      steps={[]}
+      rules={[
+          { ic: '1', text: '<b>Numbers are island sizes.</b> Each clue is the exact number of white cells in its island; islands never touch.' },
+          { ic: '2', text: '<b>The sea stays connected.</b> Every black cell must reach every other black cell without crossing an island.' },
+          { ic: '3', text: '<b>No 2×2 sea blocks.</b> Four black cells can never form a square.' },
+      ]}
+      rulesTitle="How to play Nurikabe"
+    />
 
     <div class="game-frame">
       <iframe
@@ -228,6 +243,9 @@ const faqs = [
       h1 { font-size: 1.5rem; }
       .rules { margin-left: 1.1rem; }
     }
-  </style>
+      .gp-frame-row { display: flex; justify-content: flex-end; margin: 0 0 8px; }
+    .howto-chip { display: inline-flex; align-items: center; gap: 0.3rem; background: var(--gp-white, #fff); border: 1.5px dashed var(--gp-primary, #E8A888); color: var(--gp-primary-strong, #D47A50); border-radius: 999px; font-size: 0.72rem; font-weight: 800; padding: 0.35rem 0.7rem; cursor: pointer; font-family: inherit; min-height: 44px; }
+    .howto-chip:hover { background: var(--gp-cream-warm, #FFF4F0); }
+</style>
 </body>
 </html>
