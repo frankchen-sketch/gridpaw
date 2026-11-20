@@ -39,8 +39,16 @@ const archive: ArchiveEntry[] = (data.archive || [])
   .filter((e: ArchiveEntry) => e.date <= publishedDate)
   .sort((a: ArchiveEntry, b: ArchiveEntry) => (a.date < b.date ? 1 : -1));
 
-const title = 'The Loop Past Answers & Archive (Updated Daily) | GridPaw';
-const description = 'Every The Loop answer and solution chain, updated daily. Browse past Britannica Loop puzzles by date with all image connections explained.';
+/* 标题/描述按 GSC 实测词族重排（2026-11-20 页包 #792 #793 #795 #796 #798 #801）。
+ * 本页 28 天 6,778 曝光 / 257 点击（CTR 3.79%），均位 2-6，但原 title 主打 "Past
+ * Answers & Archive (Updated Daily)"：最大两个词 the loop answers today（823 曝光）
+ * 与 the loop game britannica answers today（760 曝光 · CTR 0.66%）在标题里都没有
+ * "today" 落点，等于把最强意图埋掉。hints 词族（约 2,060 曝光）同样只靠正文命中。
+ * 所以：title 收 answers today + game + britannica + archive；description 第一句
+ * 直面 hints 意图并给出"答案就在这"的点击理由。canonical 未动、未改正文 ——
+ * 与 /the-loop-hints/ 的页面归属问题属结构决策，待拍板。 */
+const title = 'The Loop Game Answers Today & Britannica Archive';
+const description = "Stuck on The Loop hints today? The answer is here: today's Britannica ring plus every past day, all 12 images in solving order from the locked start.";
 
 const OFFICIAL = 'https://www.britannica.com/games/loop?utm_source=gridpaw';
 import SideAd from '../../components/SideAd.astro';
