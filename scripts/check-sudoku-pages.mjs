@@ -10,6 +10,12 @@
  *   5. 引入了 /sudoku-engine.js
  * 另加一条契约要求的内链检查（≥2 条指向其它大格页）。
  *
+ * ⚠ 2026-11-20 修正（此前 6/6 页全红、本闸门等于摆设）：
+ *   视觉重构后页面把 <h1> 与引擎装载下沉到 `SudokuPage.astro` / `SudokuPlay.astro`，
+ *   页面自身只剩一个 <SudokuPage …> 调用 —— 旧版只 grep 页面 .astro 文件，
+ *   于是「h1 有 0 个 / 未引入 sudoku-engine.js」12 条假红，谁也修不好，闸门实际从未生效。
+ *   现在把页面 import 的本地组件（递归，深度 2）合并成「有效源码」再判断。
+ *
  * 页面由另一路并行开发，现在很可能整批不存在：
  *   默认 → 缺失只报「未就绪」，不判失败（随时可跑，不挡构建）
  *   --strict → 缺失也算失败，合并前验收用
@@ -40,6 +46,37 @@ function readPage(relPath) {
   const abs = resolve(ROOT, relPath);
   if (!existsSync(abs)) return null;
   return readFileSync(abs, 'utf8');
+}
+
+/**
+ * 页面 + 它 import 的本地组件（递归 maxDepth 层）合成一份「有效源码」。
+ * 为什么需要：2026-11-19 重构把 <h1> 与 /sudoku-engine.js 装载下沉进
+ * SudokuPage.astro / SudokuPlay.astro，页面只剩一个 <SudokuPage …> 调用。
+ * 只 grep 页面文件会把 6 个合规页全判红（实测 12 条假红），闸门等于没接。
+ */
+function effectiveSource(pageFile, maxDepth = 2) {
+  const seen = new Set();
+  const out = [];
+  const walk = (rel, depth) => {
+    const abs = resolve(ROOT, rel);
+    if (seen.has(abs) || !existsSync(abs)) return;
+    seen.add(abs);
+    const text = readFileSync(abs, 'utf8');
+    out.push(text);
+    if (depth >= maxDepth) return;
+    const dir = dirname(abs);
+    for (const m of text.matchAll(/import\s+\w+\s+from\s+['"](\.[^'"]+)['"]/g)) {
+      let target = resolve(dir, m[1]);
+      if (!target.endsWith('.astro')) {
+        if (existsSync(target + '.astro')) target += '.astro';
+        else if (existsSync(resolve(target, 'index.astro'))) target = resolve(target, 'index.astro');
+        else continue;
+      }
+      walk(target.startsWith(ROOT) ? target.slice(ROOT.length + 1) : target, depth + 1);
+    }
+  };
+  walk(pageFile, 0);
+  return out.join('\n');
 }
 
 // frontmatter 里 `const title = "..."` 优先，其次 <SEOHead title="..." /> 这类属性写法
@@ -74,10 +111,12 @@ for (const page of PAGES) {
     report.push({ ...page, ready: false, line: '未就绪（页面文件不存在）' });
     continue;
   }
+  // title/description 从页面自身取（每页必须自己写）；h1/引擎从「有效源码」取（可以来自组件）
+  const eff = effectiveSource(page.file);
   const title = metaField(astro, 'title');
   const description = metaField(astro, 'description');
-  const h1 = countH1(astro);
-  const hasEngine = astro.includes('/sudoku-engine.js');
+  const h1 = countH1(eff);
+  const hasEngine = eff.includes('/sudoku-engine.js');
   const links = siblingLinks(astro, page.route);
   const bad = [];
 
