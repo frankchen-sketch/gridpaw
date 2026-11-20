@@ -26,6 +26,10 @@ set -euo pipefail
 
 cd "$(git rev-parse --show-toplevel)"
 
+# Cloudflare credentials from the global secret files. Without this the deploy
+# quietly uses the OAuth login, whose scopes cannot read or change zone settings.
+. ./scripts/cf-auth.sh
+
 ALLOW_DIRTY=0
 [ "${1:-}" = "--allow-dirty" ] && ALLOW_DIRTY=1
 
