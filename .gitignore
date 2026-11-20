@@ -1,4 +1,6 @@
-node_modules/
+# 不带斜杠：worktree 里的 node_modules 是软链，node_modules/ 只匹配目录不匹配软链，
+# 会让每个 worktree 都显示 ?? node_modules（列车据此判「工作树有未提交」，分支永远不合）。
+node_modules
 dist/
 .wrangler/
 .dev.vars
