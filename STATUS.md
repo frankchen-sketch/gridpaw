@@ -2,7 +2,7 @@
 
 > 项目状态的**唯一入口**。此处只放现役结论与待决策；主题细节在各主题文档（见下方索引）。
 > **历史完成报告已归档 → [`STATUS-ARCHIVE.md`](STATUS-ARCHIVE.md)**（2026-09~11 的部署叙事、验收数据、坑清单全文，约 66K 字符）。
-> 最后全站核对：2026-09-19；此后按条目增量更新（最新 2026-11-09）｜ 分支 `main`
+> 最后全站核对：2026-09-19；此后按条目增量更新（最新 2026-11-20）｜ 分支 `main`
 > **章节排序约定**：上部（现役执行入口 / 状态摘要 / 跨会话指针 / 一、现役事实 / 二、待决策 / 三、索引）按重要性排；下部时间序列章节**按时间正序追加**，中段带编号的历史专题节（四~八）非严格排序，找现役只看上部与文末最近几节。
 
 ## 现役执行入口（新会话从这里开始）
@@ -17,6 +17,8 @@
 | — | 0924 横向拓展前置验证（GamePix 供给侧 + DR 差距） | `research/2026-09-24_横向拓展前置验证_GamePix供给侧与DR差距.md` |
 
 ## 现役状态摘要（截至 2026-11-09）
+
+- **play surface 漏登记补漏 + 部署凭据改走 secrets + 分支清理（2026-11-20，merge `8869af1`，生产指纹 `8869af1`）**：`bfa6eea` 把数独集群 6 页（`/16x16-sudoku/`·`/hexadoku/`·`/mega-sudoku/`·`/12x12-sudoku/`·`/25x25-sudoku/`·`/sudoku-with-letters/`）+ `/akari/play` + `/akari/cheats` 补进 `PLAY_SURFACES`（漏登记会落进内容页档 = 出平板 sticky / 手机顶部，压控件），并新增 `scripts/check-play-surfaces.mjs` 接进 build 链（实测 33 个棋盘页全部有明确归属：37 精确放行 + 2 目录前缀 + 7 全零 + 3 有意豁免）。`f4b6318` 新增 `scripts/cf-auth.sh`：wrangler 只读 `.env` 不读 `.env.production`，此前 token 明明在却每次部署走 OAuth（缺 zone/DNS 权限，调 DNS 报 9109）；两条部署路径（`deploy` / `deploy.sh`）先 source 该脚本从 `~/.hermes/secrets/` 取 token，显式 env 仍可覆盖。部署全绿（566 页、引擎自测 4 分钟全通过、Uploaded 568 files、IndexNow 200、4 URL 自检 200、线上 sw.js 指纹 = `8869af1`）。**分支清理**：8 个已并入 main 的远程死分支（`add-支付功能开发`·`feat/nonogram-input-ux`·`feat/pt-br-bp3`·`feat/pt-br-bp3-batch2`·`feat/rxe-ch2`·`feat/solver-opps`·`feat/train-tracks-cluster`·`fix/bp3-internallinks-hreflang`）+ `ops/sudoku-integration`（12 commit 中 10 个已等价在 main，剩 2 个 GameCoach 数独专用版被 main 全局版取代）全删；远程只剩 `main` + `fix/play-surfaces-sudoku-cluster`（备份）。**教训**：判分支「还有没有独有内容」用两点 diff + `git cherry`，三点 diff 会把整条历史算成分支改动（该分支三点 5446 行 / 两点只剩 2 文件）。
 
 - **引擎自测接入构建与部署闸门（2026-11-20，main `638525f`，生产 `79e4532a`）**：新增 `scripts/selftest-engines.mjs`，把此前**零引用**的 5 个引擎自测接进闸门（同 furriq `verify-production-surface` 四个月未跑那类腐化）。两档按成本分：**build 跑 fast**（nonogram 0.1s + akari 0.2s，实测 2 suite green）；**`deploy:safe` 跑全量**（kakuro 173s / nurikabe 31s / tracks 20s，约 4 分钟），带 `SKIP_ENGINE_SELFTEST=1` 紧急逃生门并强制事后 `pnpm selftest:engines` 补跑。新增 `selftest:engines` / `selftest:engines:fast` 两个 npm script。合并时 `package.json` 与数独线冲突（各加各的 script），两边都保留。
 
