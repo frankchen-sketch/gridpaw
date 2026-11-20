@@ -4,7 +4,9 @@
 //   ≥1350px        左右 160×600 侧栏（贴 840px 内容列之外，缝里）
 //   768–1349px     底部 728×90 sticky（带关闭按钮；给 body 加 padding-bottom 保证内容能滚出来）
 //   <768px 移动     顶部 320×50（JS 插到 header 之后，棋盘之上、不覆盖）+ 正文底部 300×250
-// 永不启用：popunder / smartlink / social bar / interstitial / Native 卡片 / Auto ads（后台必须关）。
+// 永不启用：popunder / smartlink / social bar / interstitial / Native 卡片。
+// 自动广告（Auto ads）由 SEOHead 的 loader 闸门控制：只在允许的页面加载 adsbygoogle.js，
+// 且后台只留「页内横幅」一种格式（见 src/lib/adsense.ts 的 ADSENSE_AUTO 注释）。
 //
 // ── 2026-11-20 AdSense 接管 ────────────────────────────────────────────
 // Adsterra 已于 2026-11-17 全站撤除（法老验「广告是否伤排名」，`ADSTERRA_OFF = true`），
@@ -22,6 +24,7 @@
 //   · /murdoku、/murdoku/trail 的 main 是 1152px 全宽，侧栏会盖在网格上 → 继续全零。
 import AdGate from './AdGate.astro';
 import { ADSENSE_CLIENT, ADSENSE_SLOTS, ADSENSE_ENABLED } from '../lib/adsense';
+import { isPlaySurface as isPlaySurfacePath, adsAllowed } from '../lib/ad-policy';
 
 // ── Adsterra（退役，保留代码只为回滚参考）──
 const RAIL_KEY = '309484c05af1066efb6f321317c94311';
@@ -42,44 +45,12 @@ const SLOTS = {
 };
 const ADSENSE_ANY = ADSENSE_ON && Object.values(SLOTS).some(Boolean);
 
-// play surface（棋盘页/解题器/单关页）2026-11-16 起从「零广告」改为「只开桌面侧栏」：
-//   ≥1350 的左右 160×600 落在 840px 内容列之外的空白 gutter ——
-//   29 个 play surface 逐页 elementFromPoint 采样实测（1440/1350 两档），棋盘格、按钮、文字零命中。
-//   判据仍是路径白名单（去尾斜杠比较）；新增游戏页/解题器页必须同步加进来。
-const PLAY_SURFACES = new Set([
-  '/',
-  '/akari', '/binary', '/crazy-cleanup', '/hashi', '/kakuro', '/kenken',
-  '/meowdoku', '/murdoku', '/nonogram', '/nurikabe', '/slitherlink', '/star-battle',
-  '/solver', '/akari/solver', '/hashi/solver', '/nonogram/solver', '/kenken/solver',
-  // 同族真棋盘页（2026-11-08 补）：不是 /akari/ 主入口但同样直接渲染可玩棋盘
-  '/akari/akari-puzzle', '/akari/cat-logic-puzzle', '/akari/create', '/akari/daily',
-  '/akari/light-up-puzzle', '/akari/logic-puzzle', '/akari/sudoku-with-pictures',
-  '/murdoku/trail', '/the-loop-puzzle',
-  // 2026-11-20 补：大格数独集群 6 页（11-19 上线时漏加，见下条说明）+ /akari/play
-  '/16x16-sudoku', '/hexadoku', '/mega-sudoku', '/12x12-sudoku', '/25x25-sudoku',
-  '/sudoku-with-letters', '/akari/play',
-  // 2026-11-20 补：/akari/cheats 正文中段是交互式 Akari 编辑器 + solver（#editor-board），
-  // 按「解题器页」口径归 play surface（只出桌面侧栏）。同族 /akari/solver 早已在此表。
-  '/akari/cheats',
-  // 产品/售卖页：用户在这页是来买/看产品的，不挂广告（2026-11-09 unlock-all 落地页）
-  '/unlock-all', '/ad-free',
-]);
-// 按目录整片收：单关棋盘页（/akari/puzzle/puzzle-001 … /meowdoku/levels/1 …）
-const PLAY_PREFIXES = ['/akari/puzzle/', '/meowdoku/levels/'];
-// 永久零广告（连侧栏都不出）：
-//   /murdoku、/murdoku/trail —— main 是 1152px 全宽（2026-10-14 「侧栏吞点击」那次事故的同一个布局债），
-//     侧栏会落在网格上；实测 25/25 采样点命中 main.main。要么先把它收到 840，要么继续全零。
-//   /unlock-all、/ad-free —— 售卖页，用户是来买/关广告的。
-//   /train-tracks-puzzle* —— 2026-11-19 用户拍板：Train Tracks 三页不挂任何广告。
-const NEVER_ADS = new Set([
-  '/murdoku', '/murdoku/trail', '/unlock-all', '/ad-free',
-  '/train-tracks-puzzle', '/train-tracks-puzzle/solver', '/train-tracks-puzzle/printable',
-]);
-const PAGE_PATH = Astro.url.pathname.replace(/\/+$/, '') || '/';
-const isPlaySurface =
-  PLAY_SURFACES.has(PAGE_PATH) || PLAY_PREFIXES.some((p) => PAGE_PATH.startsWith(p));
+// play surface / 永久零广告的判定已抽到 src/lib/ad-policy.ts —— 因为 SEOHead 的 loader 注入
+// 也要用同一份清单（play surface 连 adsbygoogle.js 都不加载，自动广告物理上到不了棋盘页）。
+const PAGE_PATH = Astro.url.pathname;
+const isPlaySurface = isPlaySurfacePath(PAGE_PATH);
 
-const ALLOWED = !NEVER_ADS.has(PAGE_PATH);
+const ALLOWED = adsAllowed(PAGE_PATH);
 // 侧栏：play surface 也出（≥1350 才落 gutter）
 const SHOW_RAIL = ALLOWED && (ADSTERRA_ON || ADSENSE_ANY);
 // sticky / 手机顶部 / 手机底部信息流：play surface 一律不出

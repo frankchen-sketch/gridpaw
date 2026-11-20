@@ -6,7 +6,12 @@
 
 import { siteConfig } from '../lib/site-config';
 import { ADSENSE_CLIENT, ADSENSE_LOADER } from '../lib/adsense';
+import { loaderAllowed } from '../lib/ad-policy';
 const { ga4Id, clarityId, posthogKey, domain, brandName, umamiId, umamiSrc, pvuvSite } = siteConfig;
+
+// play surface（棋盘页/解题器/单关页）与永久零广告页连 adsbygoogle.js 都不加载 ——
+// 自动广告因此物理上到不了这些页，不用去 AdSense 后台维护第二份排除清单。
+const ADSENSE_LOADER_ALLOWED = ADSENSE_LOADER && loaderAllowed(Astro.url.pathname);
 
 export interface Props {
   title: string;
@@ -144,11 +149,14 @@ const articleJsonLd = type === 'article' ? {
 </script>
 
 <!-- Google AdSense（2026-11-20 复审通过，client ca-pub-5225990079437405）
-     与 GA4 同口径：只有 gridpaw.com / www 才注入 loader。localhost 与 *.pages.dev 预览域一律不加载，
-     避免自测/预览流量进 AdSense 的无效流量判定（广告位在 src/lib/adsense.ts 未配 unit 时也不渲染）。
-     脚本位置与官方指引一致（head 内 async），对应广告位见 SideAd.astro / InContentAd.astro。
-     ⚠ 后台必须确认 Auto ads 已关闭——否则本脚本一上线 Google 会自己往棋盘页插广告。 -->
-{ADSENSE_LOADER && (
+     三道闸，缺一不可：
+     ① ADSENSE_LOADER（src/lib/adsense.ts）：开了自动广告或任一手动位有 unit id 才注入；
+     ② loaderAllowed()（src/lib/ad-policy.ts）：play surface 与永久零广告页**连脚本都不加载**——
+        自动广告因此物理上到不了棋盘页，不必再去后台维护第二份「排除的网页」清单；
+     ③ 运行时 hostname 门：只有 gridpaw.com / www 才真正插入脚本，
+        localhost 与 *.pages.dev 预览域不加载（避免自测/预览流量进 AdSense 的无效流量判定）。
+     后台口径：自动广告只留页内横幅（上限 6 / 间距 1000px），重叠式与意向驱动全关。 -->
+{ADSENSE_LOADER_ALLOWED && (
 <script define:vars={{ adsenseClient: ADSENSE_CLIENT }}>
   (function () {
     if (!/(^|\.)gridpaw\.com$/.test(location.hostname)) return;

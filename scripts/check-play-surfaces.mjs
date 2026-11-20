@@ -3,14 +3,14 @@
  * Play surface 登记闸门 —— 防「新游戏页上线了，SideAd 白名单没同步」这类静默缺陷。
  *
  * 背景（2026-11-20 实测）：大格数独集群 6 页（/16x16-sudoku/ 等）11-19 上线，
- * 但 SideAd.astro 的 PLAY_SURFACES 没加 → 一旦 Adsterra 恢复（ADSTERRA_OFF=false），
+ * 但 ad-policy.ts 的 PLAY_SURFACES 没加 → 一旦 Adsterra 恢复（ADSTERRA_OFF=false），
  * 这 6 页会按「普通内容页」处理：768–1349px 底部 728×90 sticky（position:fixed，压住
  * 视口底部 90px）+ <768px 顶部 320×50（插在 header 之后、棋盘之上）+ 手机底部第二信息流，
  * 全部压在可点的棋盘 / 数字键盘上。AGENTS.md 写死「新增游戏页/解题器页/单关页必须同步
  * 加进 PLAY_SURFACES 或 PLAY_PREFIXES」，但没有闸门保证这一条被执行。
  *
  * 判据：任何源码里渲染了交互棋盘（board 容器 id / Play 组件 / *-engine.js）的页面，
- * 必须在 SideAd.astro 三张表里之一有明确归属（放行 / 全零 / 目录前缀）。没有归属 = 红。
+ * 必须在 src/lib/ad-policy.ts 三张表里之一有明确归属（放行 / 全零 / 目录前缀）。没有归属 = 红。
  *
  * 有意不登记的路由写进 EXEMPT 并注明原因（例：纯静态 demo iframe，板子不在本页）。
  *
@@ -20,7 +20,7 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
-const SIDEAD = 'src/components/SideAd.astro';
+const POLICY = 'src/lib/ad-policy.ts';
 const PAGES_DIR = 'src/pages';
 
 // 有意不登记：{ '路由': '原因' }
@@ -36,16 +36,16 @@ const EXEMPT = {
   '/japanese-logic-puzzles': 'demo iframe 内容页',
 };
 
-const src = readFileSync(SIDEAD, 'utf8');
+const src = readFileSync(POLICY, 'utf8');
 
 function readSet(name) {
   const m = src.match(new RegExp(`${name}\\s*=\\s*new Set\\(\\[([\\s\\S]*?)\\]\\)`));
-  if (!m) throw new Error(`${SIDEAD} 里找不到 ${name}`);
+  if (!m) throw new Error(`${POLICY} 里找不到 ${name}`);
   return new Set([...m[1].matchAll(/'([^']+)'/g)].map((x) => x[1]));
 }
 function readArray(name) {
   const m = src.match(new RegExp(`${name}\\s*=\\s*\\[([\\s\\S]*?)\\]`));
-  if (!m) throw new Error(`${SIDEAD} 里找不到 ${name}`);
+  if (!m) throw new Error(`${POLICY} 里找不到 ${name}`);
   return [...m[1].matchAll(/'([^']+)'/g)].map((x) => x[1]);
 }
 
@@ -136,7 +136,7 @@ if (unknown.length) {
   for (const u of unknown) console.error(`   ${u.key}  <- ${u.file}  (命中 ${u.marker})`);
   console.error('');
   console.error('  修法（三选一）：');
-  console.error('   ① 棋盘页/解题器页/单关页 → 加进 SideAd.astro 的 PLAY_SURFACES 或 PLAY_PREFIXES（只出桌面侧栏）');
+  console.error('   ① 棋盘页/解题器页/单关页 → 加进 src/lib/ad-policy.ts 的 PLAY_SURFACES 或 PLAY_PREFIXES（只出桌面侧栏）');
   console.error('   ② 用户拍板永久零广告 → 加进 NEVER_ADS');
   console.error('   ③ 确实是内容页、有意保留全档广告 → 写进本文件 EXEMPT 并注明原因');
   console.error('  不登记就上线 = sticky 会压住视口底部 90px 的棋盘与按钮（AGENTS.md「广告现役状态」）。');

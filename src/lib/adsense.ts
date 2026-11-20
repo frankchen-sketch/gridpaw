@@ -28,8 +28,20 @@ export const ADSENSE_SLOTS = {
 
 export type AdPosition = keyof typeof ADSENSE_SLOTS;
 
-/** 至少一个位有 unit id 才注入 loader 脚本 */
-export const ADSENSE_LOADER = Object.values(ADSENSE_SLOTS).some(Boolean);
+/**
+ * 自动广告（Auto ads，后台「广告 → 按网站 → 自动广告」）总开关。
+ *
+ * 2026-11-20 法老拍板：先让 Google 自己找位置，用它的数据当基线，再决定要不要收回控制权改手动位。
+ * 后台配置口径（写死在这里，别漂）：只留页内横幅 + 上限 6 + 最小间距 1000px，
+ * 重叠式（锚定/侧栏/穿插）全关、意向驱动关、多重广告关、优化现有广告关。
+ *
+ * 开这个开关 = 内容页会加载 adsbygoogle.js（play surface 与永零页仍不加载，见 src/lib/ad-policy.ts）。
+ * 手动位（ADSENSE_SLOTS）保持空串即可单独关掉手动位，两者互不牵连。
+ */
+export const ADSENSE_AUTO = true;
+
+/** 是否注入 loader 脚本：开了自动广告，或至少一个手动位有 unit id */
+export const ADSENSE_LOADER = ADSENSE_AUTO || Object.values(ADSENSE_SLOTS).some(Boolean);
 
 /** AdSense 广告位接管（Adsterra 已 2026-11-17 全站撤除，两套不共存） */
 export const ADSENSE_ENABLED = true;
