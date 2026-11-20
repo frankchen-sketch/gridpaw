@@ -31,6 +31,13 @@ export const PLAY_SURFACES = new Set([
   '/akari/cheats',
   // 产品/售卖页：用户在这页是来买/看产品的，不挂广告（2026-11-09 unlock-all 落地页）
   '/unlock-all', '/ad-free',
+  // 2026-11-20 晚补（兄弟会话 cron 雷达独立复验时抓到，本会话复核坐实）：
+  // /meowdoku-guide 一直被当成「有意保留广告的内容页」，但那条豁免的前提是「内嵌 demo = iframe，
+  // 广告进不去」。实测该页 iframe=0，正文里是**内联渲染**的 <MeowdokuPlay mode="random" />——
+  // #mzr-board / #mzr-hearts / #mzr-hint / #mzr-reset / #mzr-win 全在，是一张真能玩的棋盘。
+  // 不改的话自动广告会物理落在一个可玩棋盘页上，正是本闸门要防的缺陷。
+  // 对照：/japanese-logic-puzzles 有 iframe（loader 在但广告进不到棋盘里），豁免仍然成立。
+  '/meowdoku-guide',
 ]);
 
 /** 按目录整片收：单关棋盘页（/akari/puzzle/puzzle-001 … /meowdoku/levels/1 …） */
