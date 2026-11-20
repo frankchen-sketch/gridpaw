@@ -1126,7 +1126,7 @@ const description = "Play Binary Puzzle (Takuzu) free online: cat-themed 0/1 log
         if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
         if (e.key === 'Escape') {
           if (winOverlay.classList.contains('show')) closeWin();
-          else if (gpRulesOpen()) { window.gpCoach && window.gpCoach.closeRules(); }
+          else if (gpRulesOpen()) { if (window.gpCoach) window.gpCoach.closeRules(); }
           return;
         }
         // overlay 打开时不响应棋盘输入
@@ -1179,7 +1179,7 @@ const description = "Play Binary Puzzle (Takuzu) free online: cat-themed 0/1 log
         newPuzzle(state.difficulty);
       });
 
-      document.getElementById('howto-chip').addEventListener('click', function () { window.gpCoach && window.gpCoach.openRules(); });
+      document.getElementById('howto-chip').addEventListener('click', function () { if (window.gpCoach) window.gpCoach.openRules(); });
 
       document.getElementById('share-copy').addEventListener('click', function () {
         track('share_copy', { level: state.size, difficulty: DIFFS[state.difficulty].label });

@@ -1201,7 +1201,7 @@ const description = "Play Hashi (Bridges) free online: connect every island with
         if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
         if (e.key === 'Escape') {
           if (winOverlay.classList.contains('show')) { closeWin(); return; }
-          if (gpRulesOpen()) { window.gpCoach && window.gpCoach.closeRules(); return; }
+          if (gpRulesOpen()) { if (window.gpCoach) window.gpCoach.closeRules(); return; }
           state.selA = -1; state.selB = -1;
           renderBoard();
           return;
@@ -1287,7 +1287,7 @@ const description = "Play Hashi (Bridges) free online: connect every island with
         newPuzzle(state.difficulty);
       });
 
-      document.getElementById('howto-chip').addEventListener('click', function () { window.gpCoach && window.gpCoach.openRules(); });
+      document.getElementById('howto-chip').addEventListener('click', function () { if (window.gpCoach) window.gpCoach.openRules(); });
 
       document.getElementById('share-copy').addEventListener('click', function () {
         track('share_copy', { islands: state.puzzle.islands.length, difficulty: DIFFS[state.difficulty].label });

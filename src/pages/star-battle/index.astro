@@ -1185,7 +1185,7 @@ const description = "Play Two Not Touch (Star Battle) free online: place 2 or 3 
         if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
         if (e.key === 'Escape') {
           if (winOverlay.classList.contains('show')) closeWin();
-          else if (gpRulesOpen()) { window.gpCoach && window.gpCoach.closeRules(); }
+          else if (gpRulesOpen()) { if (window.gpCoach) window.gpCoach.closeRules(); }
           return;
         }
         if (winOverlay.classList.contains('show') || gpRulesOpen()) return;
@@ -1237,7 +1237,7 @@ const description = "Play Two Not Touch (Star Battle) free online: place 2 or 3 
         newPuzzle(state.difficulty);
       });
 
-      document.getElementById('howto-chip').addEventListener('click', function () { window.gpCoach && window.gpCoach.openRules(); });
+      document.getElementById('howto-chip').addEventListener('click', function () { if (window.gpCoach) window.gpCoach.openRules(); });
 
       document.getElementById('share-copy').addEventListener('click', function () {
         track('share_copy', { level: state.puzzle.size, difficulty: DIFFS[state.difficulty].label });
