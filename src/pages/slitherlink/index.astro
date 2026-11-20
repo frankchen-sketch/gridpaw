@@ -1198,7 +1198,7 @@ const description = "Play Slitherlink free online: draw one closed loop through 
         newPuzzle(state.difficulty);
       });
 
-      document.getElementById('howto-chip').addEventListener('click', function () { window.gpCoach && window.gpCoach.openRules(); });
+      document.getElementById('howto-chip').addEventListener('click', function () { if (window.gpCoach) window.gpCoach.openRules(); });
 
       // ── 新手引导（首访 3 步导览；?tour=1 强制重看）──
       var tourCard = document.getElementById('coach-card');
@@ -1251,7 +1251,7 @@ const description = "Play Slitherlink free online: draw one closed loop through 
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
           if (winOverlay.classList.contains('show')) closeWin();
-          else if (gpRulesOpen()) { window.gpCoach && window.gpCoach.closeRules(); }
+          else if (gpRulesOpen()) { if (window.gpCoach) window.gpCoach.closeRules(); }
         }
       });
 

@@ -1568,7 +1568,7 @@ const description = "Play Akari (Light Up) free online: cat-themed logic puzzles
     // 9/23 曾改成滚到页底玩法指南——实测把人带离棋盘（1mllfzf 点完 5 秒离开）。改为原地弹规则弹层。
     // 2026-11-19 UI-1 §13：规则改卡内抽屉（GameCoach 提供），不再用 win-overlay
     function openRules(source) {
-      window.gpCoach && window.gpCoach.openRules();
+      if (window.gpCoach) window.gpCoach.openRules();
       track(source === 'badge' ? 'badge_help_click' : 'howto_open', { level: level, source: source });
       track('rules_drawer_open', { level: level, source: source });
     }
