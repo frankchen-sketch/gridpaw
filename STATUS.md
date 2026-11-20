@@ -647,6 +647,20 @@ L1 Dining Room（`a5a07a2`）之后，L2–L13 由 4+2 个子 agent 并行产出
 
 **未做**：murdoku（已有卡内 3 步 tutorial，用户确认不做）；三款低占比游戏；批②③ 未开；**未部署生产**（生产仍 `753f250`）。
 
+## 2026-11-20 深夜 · 主树守卫 + oxlint 修完 + kakuro 判据改 CPU（上线 `139896c`）
+
+三条 `ops/2026-11-20-*` 分支按闸门顺序合入主树并上线，`deploy:safe` 全绿。
+
+| 分支 | 动的是什么 | 为什么 |
+|---|---|---|
+| `gate-green` | 6 页 11 处 `a && b;` → `if (a) b;` | oxlint `--deny-warnings` 的主树红灯；不修，任何带 `--deny-warnings` 的闸门都过不去 |
+| `kakuro-gate` | 自测判据由**墙钟**改**CPU 时间**，预算按 p100×2（easy 16s / medium 38s / hard 100s） | 墙钟在负载下假红：实测 easy 8064ms>8000、medium 15372ms>15000（超 0.8% / 2.5%），机器忙一点就挡部署 |
+| `commit-guard` | pre-commit 守卫进 `scripts/hooks`（+18 行） | 主树里手滑 `git commit` 会直接改生产源；守卫把它挡在提交前 |
+
+**上线事实**：565 页构建，指纹 `139896c`，引擎自测全量通过（kakuro 在 3.0 负载下不再假红），线上 `sw.js` 指纹与本地一致，IndexNow 提交 sitemap-index。
+
+**运营知识（别忘）**：`scripts/hooks/pre-push` 只放 `local_ref == refs/heads/main` 的推送，所以**合并列车推不进 gridpaw 的 main**——gridpaw 的正路是「主树 `ALLOW_MAIN_COMMIT=1 git merge` → `bash scripts/deploy.sh` → `git push origin main`」。deploy 脚本末尾那句「别忘了 push」是真提醒：不 push，下次部署会把这次上线回滚掉。主树提交守卫同理：主树要提交必须显式 `ALLOW_MAIN_COMMIT=1`。
+
 ## 历史事件档案
 
 2026-09-21 ~ 2026-11-08 的全部按日期事件段（51 段，部署记录 / 事故复盘 / 验收数据）已搬至 `STATUS-ARCHIVE.md`「三、按日期事件段」。
