@@ -5,7 +5,13 @@
 // Requires site-config.ts in src/lib/ with ga4Id, clarityId, domain, brandName
 
 import { siteConfig } from '../lib/site-config';
+import { ADSENSE_CLIENT, ADSENSE_LOADER } from '../lib/adsense';
+import { loaderAllowed } from '../lib/ad-policy';
 const { ga4Id, clarityId, posthogKey, domain, brandName, umamiId, umamiSrc, pvuvSite } = siteConfig;
+
+// play surface（棋盘页/解题器/单关页）与永久零广告页连 adsbygoogle.js 都不加载 ——
+// 自动广告因此物理上到不了这些页，不用去 AdSense 后台维护第二份排除清单。
+const ADSENSE_LOADER_ALLOWED = ADSENSE_LOADER && loaderAllowed(Astro.url.pathname);
 
 export interface Props {
   title: string;
@@ -141,6 +147,27 @@ const articleJsonLd = type === 'article' ? {
     })();
   })();
 </script>
+
+<!-- Google AdSense（2026-11-20 复审通过，client ca-pub-5225990079437405）
+     三道闸，缺一不可：
+     ① ADSENSE_LOADER（src/lib/adsense.ts）：开了自动广告或任一手动位有 unit id 才注入；
+     ② loaderAllowed()（src/lib/ad-policy.ts）：play surface 与永久零广告页**连脚本都不加载**——
+        自动广告因此物理上到不了棋盘页，不必再去后台维护第二份「排除的网页」清单；
+     ③ 运行时 hostname 门：只有 gridpaw.com / www 才真正插入脚本，
+        localhost 与 *.pages.dev 预览域不加载（避免自测/预览流量进 AdSense 的无效流量判定）。
+     后台口径：自动广告只留页内横幅（上限 6 / 间距 1000px），重叠式与意向驱动全关。 -->
+{ADSENSE_LOADER_ALLOWED && (
+<script define:vars={{ adsenseClient: ADSENSE_CLIENT }}>
+  (function () {
+    if (!/(^|\.)gridpaw\.com$/.test(location.hostname)) return;
+    var s = document.createElement('script');
+    s.async = true;
+    s.crossOrigin = 'anonymous';
+    s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + adsenseClient;
+    document.head.appendChild(s);
+  })();
+</script>
+)}
 
 <!-- Analytics (GA4 + Clarity + PostHog) — 只有生产域名上报，dev/预览域静默 -->
 <script define:vars={{ ga4Id, clarityId, posthogKey, umamiId, umamiSrc, pvuvSite }}>
