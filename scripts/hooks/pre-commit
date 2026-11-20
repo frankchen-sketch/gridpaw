@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# 主树禁止提交（并行契约，2026-11-20）
+# ---------------------------------------------------------------
+# 两个会话在同一主树干活：A 的 `git add -A` 会把 B 未提交的文件扫进提交，
+# B 的提交又落到 A 正在用的分支上——分支和提交的主人分不清，还得人工拆。
+# 动代码一律开 worktree：
+#   git worktree add .worktrees/<主题> -b ops/<日期>-<主题> origin/main
+# 自动化确实要在主树提交时：ALLOW_MAIN_COMMIT=1 git commit ...
+# ---------------------------------------------------------------
+set -u
+main_root=$(cd "$(git rev-parse --git-common-dir)/.." 2>/dev/null && pwd)
+here=$(git rev-parse --show-toplevel 2>/dev/null)
+if [ -n "$main_root" ] && [ "$main_root" = "$here" ] && [ "${ALLOW_MAIN_COMMIT:-0}" != "1" ]; then
+  echo "✗ 主树不允许提交：改成在 worktree 的分支上提交（ops/<日期>-<主题>）。" >&2
+  echo "  自动化任务确实要提交：ALLOW_MAIN_COMMIT=1 git commit ..." >&2
+  exit 1
+fi
+exit 0
