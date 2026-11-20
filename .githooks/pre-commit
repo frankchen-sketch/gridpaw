@@ -1,0 +1,26 @@
+#!/bin/sh
+# 并行契约（ops-console）：主树只跟 main，动代码一律去 .worktrees/<主题>。
+#
+# 为什么要有这个闸：2026-11-20 两个会话在同一主树里干活，A 的 `git add -A`
+# 把 B 未提交的 worker.mjs / judge-trigger.test.mjs 扫进了自己的提交，
+# B 又把提交落到了 A 正在用的分支上——分支和提交的主人分不清了。
+#
+# 放行：ALLOW_MAIN_COMMIT=1 git commit ...（列车/维护脚本确实要在主树提交时）
+
+main_root=$(cd "$(git rev-parse --git-common-dir)/.." 2>/dev/null && pwd)
+here=$(git rev-parse --show-toplevel 2>/dev/null)
+
+if [ -n "$main_root" ] && [ "$main_root" = "$here" ] && [ "${ALLOW_MAIN_COMMIT:-0}" != "1" ]; then
+  cat >&2 <<'MSG'
+✗ 主树不允许提交：并行会话会把彼此的改动扫进提交（2026-11-20 已出过事故）。
+
+  开一个自己的 worktree：
+    scripts/wt.sh new <主题>        # 建 .worktrees/<主题>，分支 ops/<日期>-<主题>
+    cd .worktrees/<主题>            # 以后所有改动/提交都在这里
+
+  确实要在主树提交（列车/维护脚本）：
+    ALLOW_MAIN_COMMIT=1 git commit ...
+MSG
+  exit 1
+fi
+exit 0
