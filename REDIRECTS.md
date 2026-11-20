@@ -351,6 +351,12 @@ spatialreasoninggame.com/blog/benefits-of-puzzle-games-for-children -> gridpaw.c
 #   动态表达式原样透传路径，故目标保留 .html，再由 gridpaw 308 一次。
 #   旧站 canonical/sitemap 用无扩展名形式，实际流量不受影响。
 
+# ── The Loop 提示页合并（2026-11-20）─────────────────────────────────────────
+# ⚠️ 这条**不在 Dashboard**：/the-loop-hints/ → /the-loop-past-answers/ 的 301 写在
+#   public/_redirects（随构建部署，与本表同属「站内」类）。去 Dashboard 找会白找。
+#   背景与判据见 STATUS.md 2026-11-20 条目（ops 页包 #53 拍板并页）。
+#   核对方法：部署后 curl -I https://gridpaw.com/the-loop-hints/ 应为 301 且 Location 指向历史页。
+
 # ── gridpaw.com 站内薄页合并 301（2026-10-14 AdSense 低价值内容整改）──────────
 # 实现：CF zone gridpaw.com → Rules → Redirect Rules。✅ 已添加（2026-10-14 经 ego-browser 在 Dashboard UI 建，
 #   规则名：akari-glossary-merge / akari-tips-number-merge / akari-compare-merge，均 活动）
