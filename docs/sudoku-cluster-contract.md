@@ -100,6 +100,8 @@ export function hintLookup(p: SudokuPuzzle, idx: number): number   // 正确答�
 
 **红线**：不 push、不 merge、不 deploy、不动 main、不切主 worktree 分支。
 
+> worktree 路径口径（2026-11-19 起）：新建一律 `<repo>/.worktrees/<slug>`（上表是历史路径，存量已清）。建在 `~/workspace/.worktrees/` 会让会话归不进项目、侧栏长出 `.worktrees` 自动节点。
+
 ## 六、验收（合并前逐条过）
 
 1. **引擎**：node 跑每档 100 盘，唯一解 100%，无崩溃，16×16 单盘生成 < 8s
