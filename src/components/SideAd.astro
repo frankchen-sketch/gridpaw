@@ -1,32 +1,50 @@
 ---
-// AdSlots（文件名保留 SideAd.astro，避免 137 处 import 改动）—— 全站广告位调度器
-// 三个位按视口互斥，全部走同一条 __gpAdChain 串行注入 + AdGate 前置闸：
+// AdSlots（文件名保留 SideAd.astro，避免 431 处 import 改动）—— 全站广告位调度器
+// 三个位按视口互斥，AdSense 版全部走「按视口裁剪 ins → 按 DOM 顺序逐个 push」：
 //   ≥1350px        左右 160×600 侧栏（贴 840px 内容列之外，缝里）
 //   768–1349px     底部 728×90 sticky（带关闭按钮；给 body 加 padding-bottom 保证内容能滚出来）
-//   <768px 移动     顶部 320×50（JS 插到 header 之后，棋盘之上、不覆盖）
-// 永不启用：popunder / smartlink / social bar / interstitial / Native 卡片。
-// 2026-11-07 法老定：sticky 全站都上（游戏页接受压住底部控件）；移动端只做顶部+信息流。
-// 单元 id：160×600=31688449 / 728×90=32144316 / 320×50=32144309（均 Active）
-// 代码档：.adsterra/banner-160x600.snippet.md 等；invoke 域按后台 API 现值 bauval.org/22/
+//   <768px 移动     顶部 320×50（JS 插到 header 之后，棋盘之上、不覆盖）+ 正文底部 300×250
+// 永不启用：popunder / smartlink / social bar / interstitial / Native 卡片 / Auto ads（后台必须关）。
+//
+// ── 2026-11-20 AdSense 接管 ────────────────────────────────────────────
+// Adsterra 已于 2026-11-17 全站撤除（法老验「广告是否伤排名」，`ADSTERRA_OFF = true`），
+// AdSense 复审通过（client ca-pub-5225990079437405）后由本组件接管同一套位。
+// 两套不共存：AdSense 政策要求自有库存可辨识，Adsterra 的 loader 曾被实锤带 popunder 能力
+// （research/2026-11-07-adsterra-restart-execution.md），混排 = 拿 AdSense 账号赌。
+//
+// 单元 id 的真源在 src/lib/adsense.ts。SLOT 为空 = 该位不渲染（连 ins 都不出），
+// 所以后台建好一个 unit 就能单独开一个位，不必等全套齐。pictomino 静态站的副本
+// （public/pictomino/gp-ads.js）必须同步改。
+//
+// 已实测的布局契约（改位前必读，来自 Adsterra 时代 29 页 ×2 档 elementFromPoint 采样）：
+//   · play surface 只出 ≥1350 桌面侧栏；sticky（fixed 压底 90px）与手机顶部位（抢首屏）
+//     在游戏页一个都不出 —— 这个判定 2026-11-16 逐页采样过，别推翻。
+//   · /murdoku、/murdoku/trail 的 main 是 1152px 全宽，侧栏会盖在网格上 → 继续全零。
 import AdGate from './AdGate.astro';
+import { ADSENSE_CLIENT, ADSENSE_SLOTS, ADSENSE_ENABLED } from '../lib/adsense';
 
+// ── Adsterra（退役，保留代码只为回滚参考）──
 const RAIL_KEY = '309484c05af1066efb6f321317c94311';
 const STICKY_KEY = 'c0a7039d4910c7d761aa9df9b0c73367';
 const TOP_KEY = '361fc202189557ef23683b546d7f0393';
 const BASE = 'https://bauval.org/22/';
+const ADSTERRA_OFF = true; // 2026-11-17 起 true；恢复需先过 /changelog/ 公告 + 邮件受影响目录方
+const ADSTERRA_ON = !ADSTERRA_OFF;
 
-// 2026-11-07 恢复：只恢复静态 banner 类。恢复闸：/changelog/ 公告先行；
-// 任何一起跳转投诉=当天撤，不辩护。
-// ⚠️ 2026-11-17 法老撤除（全站零广告）：验证「Adsterra 是否伤排名」——
-//    11-08 广告全站铺开 + 190 页批量内容同批上线，11-15 整站曝光掉到 8.7%；
-//    哥飞 11-15 群内两次定性「体验不好，很伤排名」。撤到 11-24 核心更新结束后对账，
-//    恢复率恢复=广告主因，不恢复=核心更新判定。恢复时只改这一行为 false。
-const ADSTERRA_OFF = true;
+// ── AdSense（现役）──
+const ADSENSE_ON = ADSENSE_ENABLED;
+const SLOTS = {
+  left: ADSENSE_SLOTS.left,
+  right: ADSENSE_SLOTS.right,
+  sticky: ADSENSE_SLOTS.sticky,
+  top: ADSENSE_SLOTS.top,
+  mobilefoot: ADSENSE_SLOTS.mobilefoot,
+};
+const ADSENSE_ANY = ADSENSE_ON && Object.values(SLOTS).some(Boolean);
 
 // play surface（棋盘页/解题器/单关页）2026-11-16 起从「零广告」改为「只开桌面侧栏」：
-//   ≥1350 的左右 160×600 / 160×300 落在 840px 内容列之外的空白 gutter ——
+//   ≥1350 的左右 160×600 落在 840px 内容列之外的空白 gutter ——
 //   29 个 play surface 逐页 elementFromPoint 采样实测（1440/1350 两档），棋盘格、按钮、文字零命中。
-//   手机端顶部位 / 平板 sticky / 手机底部第二信息流仍然一个都不出（顶部抢首屏、sticky 压控件）。
 //   判据仍是路径白名单（去尾斜杠比较）；新增游戏页/解题器页必须同步加进来。
 const PLAY_SURFACES = new Set([
   '/',
@@ -61,58 +79,89 @@ const PAGE_PATH = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const isPlaySurface =
   PLAY_SURFACES.has(PAGE_PATH) || PLAY_PREFIXES.some((p) => PAGE_PATH.startsWith(p));
 
-const SHOW = !ADSTERRA_OFF && !NEVER_ADS.has(PAGE_PATH);
----
-{SHOW && <AdGate />}
+const ALLOWED = !NEVER_ADS.has(PAGE_PATH);
+// 侧栏：play surface 也出（≥1350 才落 gutter）
+const SHOW_RAIL = ALLOWED && (ADSTERRA_ON || ADSENSE_ANY);
+// sticky / 手机顶部 / 手机底部信息流：play surface 一律不出
+const SHOW_WIDE = SHOW_RAIL && !isPlaySurface;
 
-{SHOW && (
+const showLeft = SHOW_RAIL && (ADSTERRA_ON || !!SLOTS.left);
+const showRight = SHOW_RAIL && (ADSTERRA_ON || !!SLOTS.right);
+const showSticky = SHOW_WIDE && (ADSTERRA_ON || !!SLOTS.sticky);
+const showTop = SHOW_WIDE && (ADSTERRA_ON || !!SLOTS.top);
+const showMobileFoot = SHOW_WIDE && (ADSTERRA_ON || !!SLOTS.mobilefoot);
+---
+{ADSTERRA_ON && <AdGate />}
+
+{showLeft && (
 <div class="gp-side-ad gp-side-ad--left">
   <span class="gp-side-ad__label">Advertisement</span>
-  <div class="gp-side-ad__slot" data-gp-slot="left"></div>
+  {ADSENSE_ON && SLOTS.left ? (
+    <ins class="adsbygoogle gp-ad-ins" data-gp-owner="rail" data-gp-pos="left" style="display:inline-block;width:160px;height:600px"
+         data-ad-client={ADSENSE_CLIENT} data-ad-slot={SLOTS.left}
+         data-full-width-responsive="false"></ins>
+  ) : (
+    <div class="gp-side-ad__slot" data-gp-slot="left"></div>
+  )}
 </div>
 )}
 
-{SHOW && (
+{showRight && (
 <div class="gp-side-ad gp-side-ad--right">
   <span class="gp-side-ad__label">Advertisement</span>
-  <div class="gp-side-ad__slot" data-gp-slot="right"></div>
+  {ADSENSE_ON && SLOTS.right ? (
+    <ins class="adsbygoogle gp-ad-ins" data-gp-owner="rail" data-gp-pos="right" style="display:inline-block;width:160px;height:600px"
+         data-ad-client={ADSENSE_CLIENT} data-ad-slot={SLOTS.right}
+         data-full-width-responsive="false"></ins>
+  ) : (
+    <div class="gp-side-ad__slot" data-gp-slot="right"></div>
+  )}
 </div>
 )}
 
-{SHOW && !isPlaySurface && (
+{showSticky && (
 <div class="gp-sticky-ad" id="gpStickyAd">
   <span class="gp-sticky-ad__label">Advertisement</span>
   <button class="gp-sticky-ad__close" type="button" aria-label="Close advertisement">×</button>
-  <div class="gp-sticky-ad__slot" data-gp-slot="sticky"></div>
+  {ADSENSE_ON && SLOTS.sticky ? (
+    <ins class="adsbygoogle gp-ad-ins" data-gp-owner="rail" data-gp-pos="sticky" style="display:inline-block;width:728px;height:90px"
+         data-ad-client={ADSENSE_CLIENT} data-ad-slot={SLOTS.sticky}
+         data-full-width-responsive="false"></ins>
+  ) : (
+    <div class="gp-sticky-ad__slot" data-gp-slot="sticky"></div>
+  )}
 </div>
 )}
 
-{SHOW && !isPlaySurface && (
+{showTop && (
 <div class="gp-top-ad">
   <span class="gp-top-ad__label">Advertisement</span>
-  <div class="gp-top-ad__slot" data-gp-slot="top"></div>
+  {ADSENSE_ON && SLOTS.top ? (
+    <ins class="adsbygoogle gp-ad-ins" data-gp-owner="rail" data-gp-pos="top" style="display:inline-block;width:320px;height:50px"
+         data-ad-client={ADSENSE_CLIENT} data-ad-slot={SLOTS.top}
+         data-full-width-responsive="false"></ins>
+  ) : (
+    <div class="gp-top-ad__slot" data-gp-slot="top"></div>
+  )}
 </div>
 )}
 
-{SHOW && !isPlaySurface && (
+{showMobileFoot && (
 <div class="gp-mf-ad">
   <span class="gp-mf-ad__label">Advertisement</span>
-  <div class="gp-mf-ad__slot" data-gp-slot="mobilefoot"></div>
+  {ADSENSE_ON && SLOTS.mobilefoot ? (
+    <ins class="adsbygoogle gp-ad-ins" data-gp-owner="rail" data-gp-pos="mobilefoot" style="display:inline-block;width:300px;height:250px"
+         data-ad-client={ADSENSE_CLIENT} data-ad-slot={SLOTS.mobilefoot}
+         data-full-width-responsive="false"></ins>
+  ) : (
+    <div class="gp-mf-ad__slot" data-gp-slot="mobilefoot"></div>
+  )}
 </div>
 )}
 
-{SHOW && (
+{ADSENSE_ANY && (showLeft || showRight || showSticky || showTop || showMobileFoot) && (
 <script is:inline>
 (function () {
-  var KEYS = { left: '309484c05af1066efb6f321317c94311', right: '9f1d682930273a58cd2e02f0cee94cc0', sticky: 'c0a7039d4910c7d761aa9df9b0c73367', top: '361fc202189557ef23683b546d7f0393', mobilefoot: 'c3072bbbf851bb748d0bc833da23e21e' };
-  // 右栏 2026-11-16 换成独立单元（160x300，unit 32303990）：Adsterra 同站同尺寸只能有一个 unit，
-  // 所以右栏不能再用第二个 160x600，改用未占用的 160x300 拿独立 key —— 左右各一个 key，
-  // 顺手验证「同一 key 在一页跑两次只出一次」的假设（旧写法左右共用 160x600 key，实测交付仅 ~20%）。
-  // mobilefoot = 手机端正文底部第二个 300×250：Adsterra 同尺寸不能建第二个 unit，只能复用同一个 key
-  // 再调一次——**零预留高度**（未填充时整块 0 高、连 Advertisement 标签都不出），所以双位无效也不会伤 UX。
-  var DIMS = { left: [160, 600], right: [160, 300], sticky: [728, 90], top: [320, 50], mobilefoot: [300, 250] };
-  var BASE = 'https://bauval.org/22/';
-
   // 内嵌模式（?embed=1）：一个广告都不出，连盒子也不留
   if (new URLSearchParams(location.search).has('embed')) {
     var all = document.querySelectorAll('.gp-side-ad, .gp-sticky-ad, .gp-top-ad, .gp-mf-ad');
@@ -120,24 +169,150 @@ const SHOW = !ADSTERRA_OFF && !NEVER_ADS.has(PAGE_PATH);
     return;
   }
 
-  // 付费去广告（/ad-free/）：有权益就不注入，空盒子由 html.gp-ads-free 一并藏掉
+  // 付费去广告（/ad-free/）：有权益就不推广告，空盒子由 html.gp-ads-free 一并藏掉
   var free = false;
   try { free = !!localStorage.getItem('gp_ads_free'); } catch (e) {}
   if (free) { document.documentElement.classList.add('gp-ads-free'); return; }
-
-  function visible(el) { return el && getComputedStyle(el).display !== 'none'; }
 
   // ⚠ 不能用 getComputedStyle 判显示：组件 <style> 在脚本之后才生效，
   // 执行时读到的 display 是默认值（实测 1440 桌面被误加 gp-has-sticky）。
   // 这里用与 CSS 媒体查询完全一致的阈值，两处必须同步改。
   var vw = window.innerWidth;
-  var showRail = vw >= 1350;
-  var showSticky = vw >= 768 && vw < 1350;
-  var showTop = vw < 768;
+  var active = {};
+  if (vw >= 1350) { active.left = 1; active.right = 1; }
+  else if (vw >= 768) { active.sticky = 1; }
+  else { active.top = 1; active.mobilefoot = 1; }
+
+  // AdSense 的 push 只认「DOM 里第一个还没初始化的 ins」，所以不能按视口挑着 push，
+  // 必须先把当前视口用不到的 ins 从 DOM 里摘掉，剩下的按 DOM 顺序逐个 push。
+  var ins = document.querySelectorAll('ins.adsbygoogle[data-gp-owner="rail"]');
+  var queue = [];
+  for (var j = 0; j < ins.length; j++) {
+    var pos = ins[j].getAttribute('data-gp-pos');
+    if (!active[pos]) { if (ins[j].parentNode) ins[j].parentNode.removeChild(ins[j]); continue; }
+    queue.push(ins[j]);
+  }
+  if (!queue.length) return;
 
   // 移动端顶部位：插到 header 之后（DOM 里组件在 body 末尾，位置不对）
   // 2026-11-09：BP3 实验条 .gp-unlock-bar 若位于 header 之后，广告插在条之后（付费钩子优先于广告）。
   // ⚠ header 与 bar 之间隔着组件内联 <script>，不能用 nextElementSibling 判断——用文档顺序比较。
+  if (active.top) {
+    var topAd = document.querySelector('.gp-top-ad');
+    if (topAd) {
+      var hdr = document.querySelector('header, .site-header, nav');
+      var barEl = document.querySelector('.gp-unlock-bar');
+      var barAfterHdr = !!(hdr && barEl && (hdr.compareDocumentPosition(barEl) & Node.DOCUMENT_POSITION_FOLLOWING));
+      if (barAfterHdr) barEl.parentNode.insertBefore(topAd, barEl.nextSibling);
+      else if (hdr && hdr.parentNode) hdr.parentNode.insertBefore(topAd, hdr.nextSibling);
+      else if (document.body.firstChild) document.body.insertBefore(topAd, document.body.firstChild);
+    }
+  }
+
+  // 底部 sticky：给 body 留出 90px，内容才不会被永久压住
+  var stickyAd = active.sticky ? document.getElementById('gpStickyAd') : null;
+  if (stickyAd) {
+    var closed = false;
+    try { closed = sessionStorage.getItem('gp-sticky-closed') === '1'; } catch (e) {}
+    if (closed) {
+      stickyAd.style.display = 'none';
+      stickyAd = null;
+      // 关了 sticky 就不推它（ins 一并摘掉，免得 AdSense 计一次空曝光）
+      var skip = document.querySelector('ins.adsbygoogle[data-gp-owner="rail"][data-gp-pos="sticky"]');
+      if (skip) {
+        if (skip.parentNode) skip.parentNode.removeChild(skip);
+        for (var q = 0; q < queue.length; q++) if (queue[q] === skip) queue.splice(q--, 1);
+      }
+    } else {
+      document.documentElement.classList.add('gp-has-sticky');
+      var btn = stickyAd.querySelector('.gp-sticky-ad__close');
+      if (btn) btn.addEventListener('click', function () {
+        stickyAd.style.display = 'none';
+        document.documentElement.classList.remove('gp-has-sticky');
+        try { sessionStorage.setItem('gp-sticky-closed', '1'); } catch (e) {}
+      });
+    }
+  }
+
+  // 手机端正文底部 300×250：挂到 <footer> 之前（DOM 里组件在 body 末尾，位置不对）
+  // ⚠ 本 script 是内联的、执行时 <footer> 可能还没解析出来 → 必须等 DOM 就绪再搬
+  if (active.mobilefoot) {
+    var mfAd = document.querySelector('.gp-mf-ad');
+    if (mfAd) {
+      var placeMf = function () {
+        var ft = document.querySelector('footer');
+        if (ft && ft.parentNode) ft.parentNode.insertBefore(mfAd, ft);
+        else if (document.body) document.body.appendChild(mfAd);
+      };
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', placeMf);
+      else placeMf();
+    }
+  }
+
+  // 填充判定：AdSense 填充后会给 ins 打 data-ad-status="filled"（未填充 = "unfilled"）。
+  // is-filled 同时控制「Advertisement 标签露不露」和「sticky 空白悬浮条撤不撤」。
+  function collapseSticky(box) {
+    if (box.dataset.gpEmpty === '1') return;
+    box.dataset.gpEmpty = '1';
+    box.style.display = 'none';
+    document.documentElement.classList.remove('gp-has-sticky');
+  }
+  function check(el, box, final) {
+    var st = el.getAttribute('data-ad-status');
+    if (st === 'filled') { box.classList.add('is-filled'); return true; }
+    if (st === 'unfilled') {
+      if (box.classList.contains('gp-sticky-ad')) collapseSticky(box);
+      return true;
+    }
+    if (final && box.classList.contains('gp-sticky-ad')) collapseSticky(box);
+    return false;
+  }
+
+  window.adsbygoogle = window.adsbygoogle || [];
+  for (var k = 0; k < queue.length; k++) {
+    (function (el) {
+      var box = el.closest ? el.closest('.gp-side-ad, .gp-sticky-ad, .gp-top-ad, .gp-mf-ad') : null;
+      if (!box) return;
+      if (check(el, box, false)) return;
+      if (typeof MutationObserver === 'function') {
+        var mo = new MutationObserver(function () {
+          if (check(el, box, false)) mo.disconnect();
+        });
+        mo.observe(el, { attributes: true, attributeFilter: ['data-ad-status'] });
+      }
+      // 晚检查点负责撤掉未填充的空白 sticky（慢网创意 4s 才到的也接得住）
+      setTimeout(function () { check(el, box, false); }, 1200);
+      setTimeout(function () { check(el, box, true); }, 4000);
+      // push 一次对应一个 ins，顺序必须与 DOM 一致
+      window.adsbygoogle.push({});
+    })(queue[k]);
+  }
+})();
+</script>
+)}
+
+{ADSTERRA_ON && (
+<script is:inline>
+(function () {
+  var KEYS = { left: '309484c05af1066efb6f321317c94311', right: '9f1d682930273a58cd2e02f0cee94cc0', sticky: 'c0a7039d4910c7d761aa9df9b0c73367', top: '361fc202189557ef23683b546d7f0393', mobilefoot: 'c3072bbbf851bb748d0bc833da23e21e' };
+  var DIMS = { left: [160, 600], right: [160, 300], sticky: [728, 90], top: [320, 50], mobilefoot: [300, 250] };
+  var BASE = 'https://bauval.org/22/';
+
+  if (new URLSearchParams(location.search).has('embed')) {
+    var all = document.querySelectorAll('.gp-side-ad, .gp-sticky-ad, .gp-top-ad, .gp-mf-ad');
+    for (var i = 0; i < all.length; i++) all[i].style.display = 'none';
+    return;
+  }
+
+  var free = false;
+  try { free = !!localStorage.getItem('gp_ads_free'); } catch (e) {}
+  if (free) { document.documentElement.classList.add('gp-ads-free'); return; }
+
+  var vw = window.innerWidth;
+  var showRail = vw >= 1350;
+  var showSticky = vw >= 768 && vw < 1350;
+  var showTop = vw < 768;
+
   var topAd = showTop ? document.querySelector('.gp-top-ad') : null;
   if (topAd) {
     var hdr = document.querySelector('header, .site-header, nav');
@@ -148,7 +323,6 @@ const SHOW = !ADSTERRA_OFF && !NEVER_ADS.has(PAGE_PATH);
     else if (document.body.firstChild) document.body.insertBefore(topAd, document.body.firstChild);
   }
 
-  // 底部 sticky：给 body 留出 90px，内容才不会被永久压住
   var stickyAd = showSticky ? document.getElementById('gpStickyAd') : null;
   if (stickyAd) {
     var closed = false;
@@ -166,16 +340,12 @@ const SHOW = !ADSTERRA_OFF && !NEVER_ADS.has(PAGE_PATH);
   }
 
   window.__gpAdChain = window.__gpAdChain || Promise.resolve();
-  // 填充判定：只有 slot 里真的出现 iframe（Adsterra banner 创意就是 iframe）才加 is-filled，
-  // is-filled 同时控制「Advertisement 标签露不露」和「sticky 空白悬浮条撤不撤」。
-  // 注意 fill() 在 slot 里塞的是 <script>，不能拿 childElementCount 判填充。
   function markFilled(slot, final) {
     var box = slot.closest ? slot.closest('.gp-mf-ad, .gp-side-ad, .gp-sticky-ad, .gp-top-ad') : null;
     if (!box) return;
     var filled = !!slot.querySelector('iframe');
     if (filled) {
       box.classList.add('is-filled');
-      // 之前按空判定撤掉过 sticky，后来又填上了 → 恢复（含 body 预留，避免被压住内容）
       if (box.dataset.gpEmpty === '1') {
         box.dataset.gpEmpty = '';
         box.style.display = '';
@@ -183,8 +353,6 @@ const SHOW = !ADSTERRA_OFF && !NEVER_ADS.has(PAGE_PATH);
       }
       return;
     }
-    // 未填充：sticky（fixed 悬浮条 + 90px 空白 + 关闭按钮）观感最差，整块撤掉并撤掉 body 预留；
-    // 其余位只靠 CSS 藏标签，盒子本身 fixed/流内零副作用（顶部位保留预留高度，避免 CLS）。
     if (final && box.classList.contains('gp-sticky-ad') && box.dataset.gpEmpty !== '1') {
       box.dataset.gpEmpty = '1';
       box.style.display = 'none';
@@ -205,15 +373,12 @@ const SHOW = !ADSTERRA_OFF && !NEVER_ADS.has(PAGE_PATH);
         s.addEventListener('load', resolve);
         s.addEventListener('error', resolve);
         slot.appendChild(s);
-        // 创意可能异步注入：load 后补两次检查，早一次晚一次（晚的那次负责撤空白 sticky）
         setTimeout(function () { markFilled(slot, false); }, 1200);
         setTimeout(function () { markFilled(slot, true); }, 3500);
       });
     });
   }
 
-  // 手机端正文底部第二个 300×250：挂到 <footer> 之前（DOM 里组件在 body 末尾，位置不对）
-  // ⚠ 本 script 是内联的、执行时 <footer> 可能还没解析出来 → 必须等 DOM 就绪再搬，否则 fallback 会塞进 body 中段
   var mfAd = showTop ? document.querySelector('.gp-mf-ad') : null;
   if (mfAd) {
     var placeMf = function () {
@@ -226,7 +391,6 @@ const SHOW = !ADSTERRA_OFF && !NEVER_ADS.has(PAGE_PATH);
   }
 
   function start() {
-    // 只填当前视口实际显示的位（阈值与 CSS 媒体查询一致，见上面的 showRail/showSticky/showTop）
     if (showRail) { fill('left'); fill('right'); }
     if (stickyAd) fill('sticky');
     if (topAd) fill('top');
@@ -237,12 +401,12 @@ const SHOW = !ADSTERRA_OFF && !NEVER_ADS.has(PAGE_PATH);
 </script>
 )}
 
-{SHOW && (
+{SHOW_RAIL && (
 <style>
-  /* 三个位互斥，全部由媒体查询决定「存在与否」，JS 只负责填内容。
-     ≤767 移动：只有顶部 320×50
-     768–1349：只有底部 728×90 sticky
-     ≥1350：只有左右 160×600 */
+  /* 三个位互斥，全部由媒体查询决定「存在与否」，JS 只负责推广告。
+     ≤767 移动：顶部 320×50 + 正文底部 300×250
+     768–1349：底部 728×90 sticky
+     ≥1350：左右 160×600 */
   .gp-side-ad, .gp-sticky-ad, .gp-top-ad, .gp-mf-ad { display: none; }
 
   /* —— 侧栏 160×600 —— */
@@ -258,7 +422,7 @@ const SHOW = !ADSTERRA_OFF && !NEVER_ADS.has(PAGE_PATH);
     .gp-side-ad--left { left: max(8px, calc((100vw - 840px) / 2 - 192px)); }
     .gp-side-ad--right { right: max(8px, calc((100vw - 840px) / 2 - 192px)); }
     .gp-side-ad__slot { width: 160px; height: 600px; }
-    /* 右栏是 160x300 独立单元（2026-11-16），高度必须跟着换，否则留 600px 空气且广告贴顶错位 */
+    /* Adsterra 时代右栏是 160x300（同站同尺寸只能一个 unit 的硬限制）；AdSense 尺寸由 ins 内联定 */
     .gp-side-ad--right .gp-side-ad__slot { height: 300px; }
   }
 
@@ -271,8 +435,6 @@ const SHOW = !ADSTERRA_OFF && !NEVER_ADS.has(PAGE_PATH);
       margin: 0.5rem auto 0.75rem;
     }
     .gp-top-ad__slot { width: 320px; height: 50px; margin: 0 auto; }
-    /* 正文底部第二个 300×250（复用 300×250 单元 key，见 KEYS.mobilefoot）。
-       零预留：没填充时整块高度 0、标签不显示；填充后才露出标签与 250px 创意。 */
     .gp-mf-ad {
       display: block;
       width: 100%;
@@ -326,7 +488,7 @@ const SHOW = !ADSTERRA_OFF && !NEVER_ADS.has(PAGE_PATH);
     html.gp-has-sticky body { padding-bottom: 100px; }
   }
 
-  /* 标签只在创意真的填充后才露（2026-11-16）：填充率 ~56%，未填充时不该给用户看一个孤零零的 ADVERTISEMENT */
+  /* 标签只在创意真的填充后才露：填充率不到 100% 时不该给用户看一个孤零零的 ADVERTISEMENT */
   .gp-side-ad__label, .gp-sticky-ad__label, .gp-top-ad__label {
     display: none;
     font-size: 10px;
@@ -339,6 +501,10 @@ const SHOW = !ADSTERRA_OFF && !NEVER_ADS.has(PAGE_PATH);
   .gp-side-ad.is-filled > .gp-side-ad__label,
   .gp-sticky-ad.is-filled > .gp-sticky-ad__label,
   .gp-top-ad.is-filled > .gp-top-ad__label { display: block; }
+
+  /* AdSense 的 ins 自己带尺寸；小屏时别让它顶出横向滚动 */
+  .gp-top-ad .gp-ad-ins, .gp-mf-ad .gp-ad-ins { max-width: 100%; }
+  .gp-mf-ad { text-align: center; }
 
   /* 已购去广告：三个位全部不占位 */
   html.gp-ads-free .gp-side-ad,

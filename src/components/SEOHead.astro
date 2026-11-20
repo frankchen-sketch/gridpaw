@@ -5,6 +5,7 @@
 // Requires site-config.ts in src/lib/ with ga4Id, clarityId, domain, brandName
 
 import { siteConfig } from '../lib/site-config';
+import { ADSENSE_CLIENT, ADSENSE_LOADER } from '../lib/adsense';
 const { ga4Id, clarityId, posthogKey, domain, brandName, umamiId, umamiSrc, pvuvSite } = siteConfig;
 
 export interface Props {
@@ -141,6 +142,24 @@ const articleJsonLd = type === 'article' ? {
     })();
   })();
 </script>
+
+<!-- Google AdSense（2026-11-20 复审通过，client ca-pub-5225990079437405）
+     与 GA4 同口径：只有 gridpaw.com / www 才注入 loader。localhost 与 *.pages.dev 预览域一律不加载，
+     避免自测/预览流量进 AdSense 的无效流量判定（广告位在 src/lib/adsense.ts 未配 unit 时也不渲染）。
+     脚本位置与官方指引一致（head 内 async），对应广告位见 SideAd.astro / InContentAd.astro。
+     ⚠ 后台必须确认 Auto ads 已关闭——否则本脚本一上线 Google 会自己往棋盘页插广告。 -->
+{ADSENSE_LOADER && (
+<script define:vars={{ adsenseClient: ADSENSE_CLIENT }}>
+  (function () {
+    if (!/(^|\.)gridpaw\.com$/.test(location.hostname)) return;
+    var s = document.createElement('script');
+    s.async = true;
+    s.crossOrigin = 'anonymous';
+    s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + adsenseClient;
+    document.head.appendChild(s);
+  })();
+</script>
+)}
 
 <!-- Analytics (GA4 + Clarity + PostHog) — 只有生产域名上报，dev/预览域静默 -->
 <script define:vars={{ ga4Id, clarityId, posthogKey, umamiId, umamiSrc, pvuvSite }}>

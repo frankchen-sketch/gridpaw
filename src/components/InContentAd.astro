@@ -1,36 +1,70 @@
 ---
-// InContentAd — 正文内 300x250 Banner（unit 31836413，key c3072bbb…；代码档 .adsterra/banner-300x250.snippet.md）
-// 在流内（非悬浮），桌面+移动端同一位：视频正下方。暖色底固定 250px 高预留：
-// 填充前不闪白、未填充也不出白块，CLS=0。
-// invoke 域按官方 GET CODE（bauval.org/22/<key>，Adsterra 会轮换域名，以 API codes 为准）。
-// ⚠ 同页可能与 SideAd（160x600）并存：两者都走全局 atOptions，必须经 __gpAdChain
-// 串行注入（set atOptions → append invoke.js → 等 load），否则后注入方的尺寸会覆盖先注入方。
-// 2026-10-22 起注入前过 AdGate（geo 黑名单 CN/HK + bot UA，fail-open）。
+// InContentAd — 正文内 300×250（AdSense 接管，unit id 见 src/lib/adsense.ts 的 incontent）
+// 在流内（非悬浮），桌面+移动端同一位：视频正下方 / 正文中段。
+// 暖色底固定 250px 高预留：填充前不闪白、CLS=0；填充后撤掉虚线框（AdSense 自带白底创意框）。
+//
+// ── 2026-11-20 AdSense 接管 ────────────────────────────────────────────
+// Adsterra 2026-11-17 全站撤除（`ADSTERRA_OFF = true`），AdSense 复审通过后同一个位换库存。
+// SLOT 为空 = 这位直接不渲染（连 ins 都不出）——后台建好 unit 填进 src/lib/adsense.ts 即上线。
+// 与 SideAd 同页并存时两边都往 window.adsbygoogle 队列 push，AdSense 按 DOM 顺序一一对应，
+// 不需要 Adsterra 时代那个 __gpAdChain 串行锁（AdSense 没有 atOptions 全局变量竞态）。
 import AdGate from './AdGate.astro';
 import NativeAd from './NativeAd.astro';
 import { NATIVE_TEST_PATHS } from '../data/native-test-pages';
-// 2026-11-07 恢复：法老拍板「先恢复 Adsterra 做收益」，站点转向攻略站。
-// 只恢复静态 banner 类（本组件 300x250 iframe / SideAd 160x600 iframe）；
-// AdSlot 的 Native 门保持 false（Native 卡片是 10-15 投诉的直接来源，不恢复）。
-// 恢复闸：/changelog/ 公告 → 邮件 Peter(DLES.gg) → 才上线；任何一起跳转投诉=当天撤。
-// ⚠️ 2026-11-17 法老撤除（全站零广告，与 SideAd 同一开关口径）：验证 Adsterra 是否伤排名。
-//    恢复时改回 false。Native 实验（NATIVE_TEST_PATHS）一并停摆。
-const ADSTERRA_OFF = true;
+import { ADSENSE_CLIENT, ADSENSE_SLOTS, ADSENSE_ENABLED } from '../lib/adsense';
+
+const ADSTERRA_OFF = true; // 2026-11-17 法老撤除（全站零广告，与 SideAd 同一开关口径）
+const ADSTERRA_ON = !ADSTERRA_OFF;
+const ADSENSE_ON = ADSENSE_ENABLED;
+const SLOT = ADSENSE_SLOTS.incontent;
 
 // 2026-11-16 起：格式对账实验。命中清单的页把 300×250 iframe 换成 Native Banner（无 iframe）。
 // 清单/分组/回滚方式见 src/data/native-test-pages.ts；实验结束清空数组即全站回 iframe。
 const PAGE_PATH = Astro.url.pathname.replace(/\/+$/, '') || '/';
-const useNative = NATIVE_TEST_PATHS.has(PAGE_PATH);
+const useNative = ADSTERRA_ON && NATIVE_TEST_PATHS.has(PAGE_PATH);
 ---
-{!ADSTERRA_OFF && <AdGate />}
-{!ADSTERRA_OFF && useNative && <NativeAd />}
-{!ADSTERRA_OFF && !useNative && (
+{ADSTERRA_ON && <AdGate />}
+{ADSTERRA_ON && useNative && <NativeAd />}
+{ADSENSE_ON && SLOT && (
+<div class="gp-incontent-ad">
+  <span class="gp-incontent-ad__label">Advertisement</span>
+  <ins class="adsbygoogle gp-ad-ins" data-gp-pos="incontent" style="display:inline-block;width:300px;height:250px"
+       data-ad-client={ADSENSE_CLIENT} data-ad-slot={SLOT}
+       data-full-width-responsive="false"></ins>
+  <script is:inline>
+  (function () {
+    if (new URLSearchParams(location.search).has('embed')) {
+      document.documentElement.classList.add('gp-ads-free');
+      return;
+    }
+    var free = false;
+    try { free = !!localStorage.getItem('gp_ads_free'); } catch (e) {}
+    if (free) { document.documentElement.classList.add('gp-ads-free'); return; }
+    var ins = document.currentScript.parentNode.querySelector('ins.adsbygoogle[data-gp-pos="incontent"]');
+    if (!ins) return;
+    window.adsbygoogle = window.adsbygoogle || [];
+    // 填充判定：AdSense 填充后给 ins 打 data-ad-status="filled"
+    function check() {
+      var st = ins.getAttribute('data-ad-status');
+      if (st === 'filled') { ins.closest('.gp-incontent-ad').classList.add('is-filled'); return true; }
+      return false;
+    }
+    if (!check() && typeof MutationObserver === 'function') {
+      var mo = new MutationObserver(function () { if (check()) mo.disconnect(); });
+      mo.observe(ins, { attributes: true, attributeFilter: ['data-ad-status'] });
+    }
+    window.adsbygoogle.push({});
+  })();
+  </script>
+</div>
+)}
+{ADSTERRA_ON && !useNative && (
 <div class="gp-incontent-ad" aria-hidden="true">
   <span class="gp-incontent-ad__label">Advertisement</span>
   <div class="gp-incontent-ad__slot"></div>
 </div>
 )}
-{!ADSTERRA_OFF && !useNative && (
+{ADSTERRA_ON && !useNative && (
 <script is:inline>
 (function () {
   if (new URLSearchParams(location.search).has('embed')) return;
@@ -87,6 +121,13 @@ const useNative = NATIVE_TEST_PATHS.has(PAGE_PATH);
     z-index: 1;
   }
   .gp-incontent-ad__slot { width: 300px; height: 250px; }
+  /* AdSense 填充后：撤掉虚线占位装饰，只留 300×250 白底创意（尺寸不变 = 零 CLS） */
+  .gp-incontent-ad.is-filled {
+    background: transparent;
+    border-color: transparent;
+    border-radius: 0;
+  }
+  .gp-incontent-ad.is-filled .gp-incontent-ad__label { display: none; }
   /* 已购去广告：彻底不占位 */
   html.gp-ads-free .gp-incontent-ad { display: none !important; }
 </style>
