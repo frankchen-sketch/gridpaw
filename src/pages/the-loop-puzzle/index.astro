@@ -27,7 +27,7 @@ function lpLongDate(iso: string): string {
 /* 标题对齐 GSC 实测意图：28 天 15,976 曝光的查询几乎全是 "loop britannica" 这类
  * 品牌型导航词（位置 6-7，CTR 0.3%）。原文案主打 How to Play，页面上有可以玩的
  * 棋盘却只字未在标题里提，点击理由为零。同时去掉 "Hints" —— 那是 /the-loop-hints/
- * 的主词，留在本页只会自相残杀。 */
+ * 的主词，留在本页只会自相残杀（该页 2026-11-20 已 301 并入 /the-loop-past-answers/）。 */
 /* SEOHead 会自动补 " | GridPaw"（+10），所以这里控到 48 字符，成品 58 */
 const title = "The Loop Puzzle (Britannica): Rules & Free Play";
 const description = "Play The Loop, Britannica's daily picture puzzle, free in your browser: the rules, what green, red and orange mean, and 6 techniques to finish the ring.";
@@ -161,7 +161,7 @@ const faqJsonLd = [
     {todayAnswer && (
       <div class="cta-box" id="todays-answer">
         <p>Today's answer ({lpLongDate(todayAnswer.date)}): <span style="color:var(--lp-primary)">{todayAnswer.title}</span></p>
-        <p style="font-size:0.9rem;font-weight:600;">See the full connection chain, image by image: <a href="/the-loop-hints/">The Loop hints &amp; answer →</a></p>
+        <p style="font-size:0.9rem;font-weight:600;">See the full connection chain, image by image: <a href="/the-loop-past-answers/">The Loop answer &amp; archive →</a></p>
         <p style="font-size:0.9rem;font-weight:600;">Missed a day? <a href="/the-loop-past-answers/">Every past answer in the archive →</a></p>
       </div>
     )}
@@ -174,7 +174,7 @@ const faqJsonLd = [
     </div>
 
     <div class="cta-box">
-      <p>Stuck on today's ring? <a href="/the-loop-hints/">Today's hints &amp; answer →</a></p>
+      <p>Stuck on today's ring? <a href="/the-loop-past-answers/">Today's answer &amp; past rings →</a></p>
       <p style="font-size:0.9rem;font-weight:600;">Or browse <a href="/the-loop-past-answers/">every past answer in the archive →</a> &nbsp;·&nbsp; <a href="https://www.britannica.com/games/loop?utm_source=gridpaw" rel="noopener">Play on Britannica →</a></p>
       <p style="font-size:0.9rem;font-weight:600;">Into ring puzzles on mobile? <a href="/rotate-rings/">Our wave-verified Rotate Rings guide →</a></p>
     </div>

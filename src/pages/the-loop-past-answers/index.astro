@@ -45,8 +45,9 @@ const archive: ArchiveEntry[] = (data.archive || [])
  * 与 the loop game britannica answers today（760 曝光 · CTR 0.66%）在标题里都没有
  * "today" 落点，等于把最强意图埋掉。hints 词族（约 2,060 曝光）同样只靠正文命中。
  * 所以：title 收 answers today + game + britannica + archive；description 第一句
- * 直面 hints 意图并给出"答案就在这"的点击理由。canonical 未动、未改正文 ——
- * 与 /the-loop-hints/ 的页面归属问题属结构决策，待拍板。 */
+ * 直面 hints 意图并给出"答案就在这"的点击理由。canonical 未动。
+ * 2026-11-20 追加：法老拍板两页合并（页包 #53），/the-loop-hints/ 已 301 到本页
+ * （见 public/_redirects），提示页文件删除，本页成为 The Loop 唯一答案/提示落地页。 */
 const title = 'The Loop Game Answers Today & Britannica Archive';
 const description = "Stuck on The Loop hints today? The answer is here: today's Britannica ring plus every past day, all 12 images in solving order from the locked start.";
 
@@ -117,7 +118,7 @@ import SideAd from '../../components/SideAd.astro';
 
   <main class="seo-section">
     <h1>The Loop Past Answers &amp; Archive</h1>
-    <p class="toplink"><a href="/the-loop-hints/">Looking for today's hints and answer? →</a></p>
+    <p class="toplink"><a href={'#' + archive[0].date}>Jump to the newest answer →</a></p>
 
     <p class="lede">Every The Loop puzzle we have on record, newest first, each with its theme and the full 12-image solution ring in order — starting from the locked image, going around the circle. Handy if you missed a day, want to check yesterday's ring, or are studying how Britannica builds these connections.</p>
 
@@ -163,12 +164,12 @@ import SideAd from '../../components/SideAd.astro';
       <p><a href={OFFICIAL} rel="noopener">Play today's puzzle on Britannica →</a></p>
     </div>
 
-    <p>New to the game? <a href="/the-loop-puzzle/">The Loop guide</a> covers the rules, what green, orange and red mean, and six solving strategies. For today's progressive hints, see <a href="/the-loop-hints/">today's hints and answer</a>.</p>
+    <p>New to the game? <a href="/the-loop-puzzle/">The Loop guide</a> covers the rules, what green, orange and red mean, and six solving strategies.</p>
   </main>
 
   <section class="seo-section" style="border-top:2px solid #e7dacf;padding-top:1rem;margin-top:2rem">
     <ExtensionPromo />
-    <p class="seo-footer">GridPaw · free cat-themed logic puzzles in your browser · <a href="/">Home</a> · <a href="/the-loop-puzzle/">The Loop guide</a> · <a href="/the-loop-hints/">Today's hints</a> · <a href="/slitherlink/">Slitherlink</a></p>
+    <p class="seo-footer">GridPaw · free cat-themed logic puzzles in your browser · <a href="/">Home</a> · <a href="/the-loop-puzzle/">The Loop guide</a> · <a href="/slitherlink/">Slitherlink</a></p>
   </section>
 <SideAd />
 </body>
