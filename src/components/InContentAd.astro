@@ -99,7 +99,11 @@ const useNative = ADSTERRA_ON && NATIVE_TEST_PATHS.has(PAGE_PATH);
   .gp-incontent-ad {
     width: 300px;
     max-width: 100%; /* 兜底：塞进窄容器时不许溢出压住旁边的卡片（answers 页 1440 曾实测重叠 66×250px） */
-    height: 250px;
+    /* 高度交给 ins 决定，容器不许写死：AdSense 未填充时会把 ins 以及容器一起压成
+       内联 height:0（线上实测），填充时只还原 ins 的 250px——容器若还留着 height:0 + overflow:hidden，
+       创意会被裁成 0 高，展示照记、收入为零。!important 才能压过内联样式。 */
+    height: auto !important;
+    line-height: 0; /* ins 压成 0 高时不留下 24px 的行盒虚线残条 */
     margin: 0.9rem auto;
     background: #FFF8E6;
     border: 1.5px dashed #E8D5B5;
