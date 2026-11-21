@@ -8,8 +8,11 @@
 # 自动化确实要在主树提交时：ALLOW_MAIN_COMMIT=1 git commit ...
 # ---------------------------------------------------------------
 set -u
-main_root=$(cd "$(git rev-parse --git-common-dir)/.." 2>/dev/null && pwd)
-here=$(git rev-parse --show-toplevel 2>/dev/null)
+# 用 pwd -P（realpath）比：git rev-parse --show-toplevel 给的是真实路径，
+# 而逻辑 pwd 在符号链接目录下（macOS 的 /tmp、/var/folders，即 $TMPDIR）会给出另一串，
+# 两边一串不等 → 守卫静默放行，主树照建照提交（2026-11-20 沙盒实测到）。
+main_root=$(cd "$(git rev-parse --git-common-dir)/.." 2>/dev/null && pwd -P)
+here=$(cd "$(git rev-parse --show-toplevel)" 2>/dev/null && pwd -P)
 if [ -n "$main_root" ] && [ "$main_root" = "$here" ] && [ "${ALLOW_MAIN_COMMIT:-0}" != "1" ]; then
   echo "✗ 主树不允许提交：改成在 worktree 的分支上提交（ops/<日期>-<主题>）。" >&2
   echo "  自动化任务确实要提交：ALLOW_MAIN_COMMIT=1 git commit ..." >&2
