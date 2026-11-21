@@ -18,6 +18,12 @@
 
 ## 现役状态摘要（截至 2026-11-09）
 
+- **四分支合批上线（2026-11-20 21:48，main `98cc2fe`，生产指纹 `98cc2fe`，565 页）**：`deploy:safe` 全绿（前置三查 / build / IndexNow 200 推 4 URL / 线上 sw.js 指纹 = 本地 / 4 URL 自检 200）。本轮带上线的：① The Loop 两页合并 301（见下条）② bp3 L45 描述织入 `drag the hammer to the crack` ③ bp3 L60 title 命中步骤词 + L76 → L60 回链 ④ bp3 L7 title/desc 补 `13 moves in order`。**逐项线上复核**：`/the-loop-hints/` 与无斜杠两条实测 301 → `/the-loop-past-answers/?cb=…`，历史页 title 线上为 `The Loop Game Answers Today & Britannica Archive | GridPaw`；L45 线上 description 含原句、L60 title 线上一致、L76 页内 `href="/brain-puzzle-3-level-60/"` 命中 1 处。**部署账**：手动补写 `~/.agent-autoloop/work/ledger/deploy-state.json` 的 gridpaw 条目（sha `98cc2fe`，同 divination 先例），否则指挥台面板会把已上线的件显示成「已合 · 待部署」。
+
+- **deploy:safe 的引擎自测计时闸：判据从墙钟改 CPU 时间（2026-11-20，分支 `ops/2026-11-20-kakuro-gate`，待合）**：`scripts/selftest-kakuro.mjs` 的三条耗时判据（easy 8s / medium 15s / hard 60s）原本量的是墙钟，而 kakuro 生成是纯 CPU 活 —— 同一份代码同一批种子，墙钟在机器忙时从 6.3s 飘到 21.1s（连红两轮，把 `deploy:safe` 拦在 2b/5），CPU 时间只从 5.1s 飘到 7.6s（1.5 倍 vs 墙钟 3.3 倍）。改为 `process.cpuUsage()` 计量；预算按实测 p100 的 ~2 倍（easy 16s / medium 38s / hard 100s，定位是**只拦系统性退化**）；**正确性断言（unique / consistent / win-check / clue sums / fog 双块唯一）一条不动**，墙钟照旧打进同一行日志留作观测。**实测底数**（`~/.hermes/cache/scratch/kakuro-bench.mjs`，10 盘/难度镜像生产 6×8s 重试）：easy 单盘 3.1s 均值 / CPU 2.6s、medium 4.3s / 3.9s、hard 30.4s / 27.4s，hard 10 盘里 1 盘 6 次全废（null）—— 这是**玩家侧的真问题**：`public/kakuro/demo.html` 就是运行时生成（gen-worker 6×8s 重试），7×7 的 hard 最坏让玩家等 48s，然后可能拿到「生成失败」。**但改引擎算法现在不值得**：`/kakuro/` + `/kakuro/demo` 28 天各 28 个 PV（约 1 会话/天）。根治方向（等有流量再排）= build 期预生成题库、运行时零生成（Train Tracks 先例）；小补丁方向 = 让 hard 在 8s 内有更高命中率。
+
+- **The Loop 两页合并（2026-11-20，页包 #53 法老拍板「现在就并成一页」；分支 `ops/2026-11-20-the-loop-past-answers`，**已上线，生产指纹 `98cc2fe`**）**：`/the-loop-hints/` → 301 → `/the-loop-past-answers/`，提示页文件已删，本页成为 The Loop 唯一答案/提示落地页。判据：28 天 GSC 两页抢同一批词，历史页 6,778 曝光 / 257 点击（CTR 3.79%）vs 提示页 2,216 / 51（2.30%），同词位次全面落后（the loop hints 3.8 vs 7.4、the loop hints today 6.2 vs 6.3、the loop game britannica answers today 3.9 vs 8.1）。同一 commit 含 TDK 重排（title `The Loop Game Answers Today & Britannica Archive`，desc 首句直面 hints 意图）。**301 写在 `public/_redirects`（不是 CF Dashboard）**；站内引用同轮改指：guide 两处 CTA / 首页 HomeTools 卡片 / 本页三段内链（自指改成 `#最新日期` 锚点）；changelog 2026-10-22 那条历史公告保留原链接不动。**待验收**：部署后 7 / 14 天看 hints+answers 两族 CTR 与提示页流量是否平滑转移（指挥台 change #14-19 已记账）。**已知损失**：提示页的分步 hints 文案（connection notes）随页下线，历史页只有 12 图顺序 + 主题/难度；要补得改正文，另开一轮。
+
 - **AdSense 出货方案改道：自动广告（页内横幅）先行 + loader 按路径闸门（2026-11-20 晚，`feat/adsense-integration`）**：实现上做了两个判断：① **不开后台「排除的网页」清单**，改为 `src/lib/ad-policy.ts` 的 `loaderAllowed()` 在 `SEOHead` 侧决定「这页要不要加载 adsbygoogle.js」——play surface 与永零页连脚本都不进，自动广告物理上到不了棋盘页，且清单仍只有代码一处（后台那份生效最长 1 小时、每加一个游戏页都要同步，属于双处维护）。② 后台只留「页内横幅」：上限 6（滑块下限就是 6）、最小间距 1000px（滑块是反向的，0=最大间距）、「在文章页面上寻找更多广告展示位置」与「允许 Google 优化现有广告」都关；重叠式（锚定/侧栏/穿插：**固定在视口边缘的广告**会在棋盘页压控件）、意向驱动、多重广告全关。代码侧新增 `ADSENSE_AUTO` 总开关（`ADSENSE_LOADER = ADSENSE_AUTO || 任一位有 id`）。**实测验收**：dist 585 个 HTML 里 443 个带 loader；`/`、`/akari/`、`/akari/puzzle/puzzle-001/`、`/kenken/solver/`、`/murdoku/`、`/unlock-all/`、`/the-loop-puzzle/`、`/train-tracks-puzzle/`、`/meowdoku/levels/1/` 全部 loader=0；`/brain-teasers-for-adults/`、`/brain-puzzle-3-level-1/`、`/japanese-logic-puzzles/` loader=1（带 iframe 的内容页照旧保留广告；**`/meowdoku-guide/` 2026-11-20 晚已收进 PLAY_SURFACES → loader=0**——该页不是 iframe 而是内联 `<MeowdokuPlay>`，`#mzr-board` 是一张真能玩的棋盘，兄弟会话 cron 雷达独立复验时抓到、本会话复核坐实；「EXEMPT=广告进不去」的前提只对 iframe 成立）；`check-play-surfaces.mjs` 33 棋盘页归属全绿、566 页构建通过、`lint:changed` 6 文件全规则通过。**后台已落地（2026-11-20 晚，法老亲手点的）**：按网站列表 `gridpaw.com` 行复核 = `自动优化：停用`、`自动广告：启用`。应用时选「立即应用」而非「首先运行实验」——实验按 50% 流量分流，会把「广告是否伤排名」这条归因彻底搅浑，且 AdSense 实验的优化目标是广告收益最大化，与我们「最少干扰、保排名」的目标相反。**CMP 其实早配好了**：`European regulations message - gridpaw.com`（英语 + 另 31 种语言，2026-10-04 创建，状态「已发布」）——所以 EEA/UK/CH 的意见征求不是新工作，只是从未触发（显示次数 0 / 同意率 0%，因为线上从来没有 AdSense 代码）。**另测**：`隐私权和消息 → 创收` 里「积分墙」有创建入口 = Offerwall 对本账号开放（这是 AdSense 激励广告的两条路之一：计次墙形态、无需改代码、但只在有激励库存时渲染；按钮级触发的「激励广告单元」仍是 beta 且本账号未放量）。→ **合并 + 部署已于 2026-11-20 20:41 完成**（`7a29ba0`，deploy:safe 五步全绿），`/changelog/` 公告按 10-29 承诺先行上线。
 - **首日报表第一课：重叠式三种格式一直在跑，「面板关掉」从未真正保存（2026-11-21 午）**。`报告 → 细分维度：广告格式`（AdSense 账号时区 = 太平洋日，11-20 行）实测：**锚定 231 展示 / $0.25 / 83.4% 可见率 / 4 点击；穿插 96 / $0.23 / 85.9% / 2；侧边栏 10 / $0.01 / 60%；页内 35 / $0.01 / 0% 可见率**，合计 372 展示 / $0.50 / 6 点击 / RPM $1.36 / CTR 1.6%。→ 我 11-20 在面板里把「重叠式」三个 checkbox 关掉、法老点「应用到网站」，**从未生效**（11-21 重开面板仍是 3/3，这已是第三次「面板态 ≠ 已保存态」；真正在跑的是自动广告总开关的默认配置）。11-21 11:40 已用 `element.click()` 直调关掉**穿插广告**（全屏插页 = AGENTS 永久禁令）并「应用到网站 → 立即应用 → 保存」，重新导航重开面板复核 = 重叠式 **(2/3)**（锚定 + 侧栏 on、穿插 off）、页内 (1/2)、意向驱动 (0/1)、自动广告 on。**锚定与侧栏暂时保留、待法老拍**（锚定是唯一真正被看到的格式，且这些格式只可能出现在带 loader 的内容页，棋盘页连脚本都没有）。**「应用到网站」自动化的正确打开方式**：2560px 视口下坐标点击会被 CDK 覆盖层吃掉（`elementFromPoint` 命中自身但 handler 不触发，四次尝试全败的真因）；改 `element.click()` 直调（Angular 的 `(click)` 绑定照常触发）→ 弹窗「立即应用 / 保存」同样直调 → 成功。**页内横幅 0% 可见率**是个必须记住的事实：自动广告在这批「答案/攻略」短页上把页内位插在正文底部，用户走不到 → 「只留页内横幅」= 白装（$0.01/35 展示），这推翻了「页内最克制且有效」的前提。**机制已验证通**：ego 真跑生产页 `/brain-puzzle-3-level-36/`，页面发出 4 个 `doubleclick` 广告请求并渲染出 265/355px 高的广告位（大陆 IP 也有填充）。**「展示量少」的判据要先对齐回填**：AdSense 当前报表只回填到部署当晚约 21:40（288 PV ≈ GA4 20:41–21:40 累计），而该窗口 GA4 总 PV ≈ 2,750 → 属分日/滞后，不是配置问题。
 
@@ -641,6 +647,20 @@ L1 Dining Room（`a5a07a2`）之后，L2–L13 由 4+2 个子 agent 并行产出
 **GSC 佐证（28 天，全站 245,117 曝光 / 12,966 点击）**：`/meowdoku/` 971 曝光（0.40%）、`/pictomino/` 374（0.15%）、`/crazy-cleanup/` 0 → 三款游戏合计 **0.55%**，远低于 5% 阈值 → 批① 尾部三页不做（`/meowdoku-guide/` 16,966 曝光属内容页，另计）。
 
 **未做**：murdoku（已有卡内 3 步 tutorial，用户确认不做）；三款低占比游戏；批②③ 未开；**未部署生产**（生产仍 `753f250`）。
+
+## 2026-11-20 深夜 · 主树守卫 + oxlint 修完 + kakuro 判据改 CPU（上线 `139896c`）
+
+三条 `ops/2026-11-20-*` 分支按闸门顺序合入主树并上线，`deploy:safe` 全绿。
+
+| 分支 | 动的是什么 | 为什么 |
+|---|---|---|
+| `gate-green` | 6 页 11 处 `a && b;` → `if (a) b;` | oxlint `--deny-warnings` 的主树红灯；不修，任何带 `--deny-warnings` 的闸门都过不去 |
+| `kakuro-gate` | 自测判据由**墙钟**改**CPU 时间**，预算按 p100×2（easy 16s / medium 38s / hard 100s） | 墙钟在负载下假红：实测 easy 8064ms>8000、medium 15372ms>15000（超 0.8% / 2.5%），机器忙一点就挡部署 |
+| `commit-guard` | pre-commit 守卫进 `scripts/hooks`（+18 行） | 主树里手滑 `git commit` 会直接改生产源；守卫把它挡在提交前 |
+
+**上线事实**：565 页构建，指纹 `139896c`，引擎自测全量通过（kakuro 在 3.0 负载下不再假红），线上 `sw.js` 指纹与本地一致，IndexNow 提交 sitemap-index。
+
+**运营知识（别忘）**：`scripts/hooks/pre-push` 只放 `local_ref == refs/heads/main` 的推送，所以**合并列车推不进 gridpaw 的 main**——gridpaw 的正路是「主树 `ALLOW_MAIN_COMMIT=1 git merge` → `bash scripts/deploy.sh` → `git push origin main`」。deploy 脚本末尾那句「别忘了 push」是真提醒：不 push，下次部署会把这次上线回滚掉。主树提交守卫同理：主树要提交必须显式 `ALLOW_MAIN_COMMIT=1`。
 
 ## 历史事件档案
 
