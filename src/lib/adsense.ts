@@ -23,7 +23,7 @@ export const ADSENSE_SLOTS = {
   // 手机正文底部第二信息流（零预留高度，未填充整块 0 高）
   mobilefoot: '', // 300×250  gridpaw-mobilefoot-300x250
   // 正文内 300×250（攻略/内容页，视频或正文中段）
-  incontent: '', // 300×250  gridpaw-incontent-300x250
+  incontent: '6686471388', // 300×250  gridpaw-incontent-300x250
 } as const;
 
 export type AdPosition = keyof typeof ADSENSE_SLOTS;
