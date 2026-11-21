@@ -316,7 +316,122 @@ const articleJsonLd = type === 'article' ? {
   })();
 </script>
 
-<script is:inline src="/hof-banner.js"></script>
+<script is:inline src="/hof-banner.js"></script><!--
+  攻略页截图点开放大（2026-11-22，法老拍板「全站统一」；source: ops #3176 的 dead click）
+  背景：rooms-and-exits / de / rotate-rings 这些攻略页把游戏截图直接写成 <img>，
+  玩家点图想放大读游戏里的小字，什么也不发生 → Clarity 记成 dead click。
+  这里是唯一实现：点正文大图 → 全屏看图（原图比屏幕大时先按 1:1 像素铺开可拖动，
+  再点一下切「整图」）；Esc / 点 × 关闭（整图模式下点图外空白也关）。
+  不接管：?embed=1 与 iframe 内（嵌入页）、视频缩略图（自带播放）、广告容器、
+  按钮里的图、href 指向别处的链接图（那种图本来就该跳转，不是死点击）。
+  已知未覆盖：hero 图被包成 <a href="#video">（brain-puzzle-3-* / rotate-rings 的
+  「跳到视频」锚点图）——那些图本来就能点，不抢它的跳转。
+-->
+<style is:global>
+  html.gp-zoom-open, html.gp-zoom-open body { overflow: hidden; }
+  .gp-zoom { position: fixed; inset: 0; z-index: 2147483200; display: block; background: #0e0b08; overflow: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+  .gp-zoom[hidden] { display: none !important; }
+  .gp-zoom img { display: block; margin: 0 auto; width: auto; height: auto; max-width: none; max-height: none; cursor: zoom-out; background: #fff; }
+  .gp-zoom.is-fit { display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .gp-zoom.is-fit img { max-width: 100%; max-height: 100%; cursor: zoom-in; }
+  .gp-zoom-close { position: fixed; top: 8px; right: 8px; width: 42px; height: 42px; border: 0; border-radius: 50%; background: rgba(255,255,255,.2); color: #fff; font: 400 26px/1 system-ui, sans-serif; cursor: pointer; }
+  .gp-zoom-close:hover, .gp-zoom-close:focus-visible { background: rgba(255,255,255,.34); }
+</style>
+<script>
+  (function () {
+    var MIN_SIDE = 600;                       // 自然尺寸任一边 ≥600 才算「大图」（logo/图标不动）
+    var IMG_HREF = /\.(jpe?g|png|webp|gif|avif)(\?|#|$)/i;
+    var overlay = null, opener = null, isFit = false;
+
+    function embedded() {
+      try { if (window.self !== window.top) return true; } catch (e) { return true; }
+      return /[?&]embed=1/.test(location.search);
+    }
+    function eligible(img) {
+      if (!img || !img.getAttribute('src')) return false;
+      if (!img.closest('main')) return false;
+      if (img.closest('.yt-facade,[role="button"],button,ins,iframe,[data-no-zoom]')) return false;
+      if (img.closest('[class*="adsbygoogle"],[class*="gp-incontent-ad"]')) return false;
+      var w = img.naturalWidth || 0, h = img.naturalHeight || 0;
+      var rw = img.getBoundingClientRect().width || 0;
+      if (rw < 220) return false;             // 屏幕上就很小（logo/图标/缩略图）不动
+      if (w && h) return Math.max(w, h) >= MIN_SIDE;
+      // lazy 图刚滚进视口、还没解码完时 naturalWidth 是 0：按屏幕上占的宽度判断
+      return rw >= 260;
+    }
+    function build() {
+      if (overlay) return overlay;
+      overlay = document.createElement('div');
+      overlay.className = 'gp-zoom';
+      overlay.hidden = true;
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-modal', 'true');
+      var pic = document.createElement('img');
+      pic.alt = '';
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'gp-zoom-close';
+      btn.setAttribute('aria-label', 'Close');
+      btn.textContent = '\u00D7';
+      overlay.appendChild(pic);
+      overlay.appendChild(btn);
+      overlay.addEventListener('click', function (e) {
+        if (e.target === pic) { toggleFit(); return; }
+        close();
+      });
+      document.body.appendChild(overlay);
+      return overlay;
+    }
+    function applyMode() {
+      var pic = overlay.querySelector('img');
+      var iw = pic.naturalWidth || 0, ih = pic.naturalHeight || 0;
+      isFit = iw > 0 && iw <= window.innerWidth + 4 && ih <= window.innerHeight + 4;
+      overlay.classList.toggle('is-fit', isFit);
+    }
+    function toggleFit() {
+      isFit = !isFit;
+      overlay.classList.toggle('is-fit', isFit);
+    }
+    function open(img) {
+      build();
+      var pic = overlay.querySelector('img');
+      var src = img.currentSrc || img.src;
+      pic.alt = img.alt || '';
+      overlay.setAttribute('aria-label', img.alt || 'Screenshot');
+      opener = img.closest('a') || img;
+      overlay.hidden = false;
+      document.documentElement.classList.add('gp-zoom-open');
+      if (pic.getAttribute('src') !== src) { pic.onload = applyMode; pic.src = src; }
+      // 原图本来就装得下 → 整图；比屏幕大 → 1:1（手机上是唯一能读清游戏里小字的方式）。
+      // 图还没解码完（lazy）时先按 1:1 挂着，解码完 applyMode 再校正。
+      applyMode();
+      var btn = overlay.querySelector('.gp-zoom-close');
+      try { btn.focus({ preventScroll: true }); } catch (e) { /* 老浏览器 */ }
+    }
+    function close() {
+      if (!overlay || overlay.hidden) return;
+      overlay.hidden = true;
+      overlay.classList.remove('is-fit');
+      document.documentElement.classList.remove('gp-zoom-open');
+      overlay.querySelector('img').removeAttribute('src');
+      if (opener && opener.focus) { try { opener.focus({ preventScroll: true }); } catch (e) {} }
+      opener = null;
+    }
+    document.addEventListener('click', function (e) {
+      if (embedded()) return;
+      if (overlay && !overlay.hidden) return;            // 覆盖层内部自己处理
+      var img = e.target && e.target.closest ? e.target.closest('img') : null;
+      if (!img || !eligible(img)) return;
+      var a = img.closest('a');
+      if (a && !IMG_HREF.test(a.getAttribute('href') || '')) return;  // 指向别处的图照旧跳转
+      if (a) e.preventDefault();
+      open(img);
+    }, true);
+    document.addEventListener('keydown', function (e) {
+      if (overlay && !overlay.hidden && (e.key === 'Escape' || e.key === 'Esc')) { e.preventDefault(); close(); }
+    });
+  })();
+</script>
 
 <!-- Service Worker registration (PWA: offline daily + install prompt). Prod-HTTPS only;
      skips localhost / *.pages.dev / ?embed=1. sw_registered fires once per browser (GA4-only). -->
