@@ -97,6 +97,10 @@ EXPECTED=$(grep -oE "CACHE_VERSION *= *'[^']*'" dist/sw.js | head -1 | sed "s/.*
 [ -n "$EXPECTED" ] || die "dist/sw.js 里找不到 CACHE_VERSION，构建产物不完整"
 say "✓ 构建指纹 ${EXPECTED}"
 
+# sitemap 与 noindex 必须一致：被排除出 sitemap 的页却还能被收录（或反过来），是隐形 SEO 事故。
+# 2026-11-21 实测抓到 /akari/levels/hard/：exactExcludes 里有它，页面却没 noindex。
+node scripts/check-sitemap-noindex.mjs || die "sitemap 与 noindex 不一致（见上）；要么给页面加 noindex，要么把它从 exactExcludes 里去掉"
+
 # 引擎自测（全量）——build 里只跑 fast 档（nonogram 49ms + akari 154ms）；
 # kakuro 173s / nurikabe 31s / tracks 20s 成本高，放部署闸门：
 # 引擎几何/可解性回归一旦上线玩家会撞到，而 fast 档抓不到生成器深处的回退。
