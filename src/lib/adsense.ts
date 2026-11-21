@@ -14,8 +14,8 @@ export const ADSENSE_CLIENT = 'ca-pub-5225990079437405';
 // 命名建议：gridpaw-<位置>-<尺寸>
 export const ADSENSE_SLOTS = {
   // 桌面 ≥1350 左右侧栏（落在 840px 内容列之外的 gutter，29 页 elementFromPoint 实测零命中）
-  left: '', // 160×600  gridpaw-left-160x600
-  right: '', // 160×600  gridpaw-right-160x600
+  left: '3408078063', // 160×600  gridpaw-rail-left-160x600（2026-11-21 建，固定尺寸）
+  right: '1600172373', // 160×600  gridpaw-rail-right-160x600（2026-11-21 建，固定尺寸）
   // 平板 768–1349 底部 sticky（fixed，body 预留 100px；play surface 永不出）
   sticky: '', // 728×90   gridpaw-sticky-728x90
   // 手机 <768 顶部（插在 header 之后、棋盘之上；play surface 永不出）

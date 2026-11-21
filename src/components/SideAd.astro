@@ -24,7 +24,7 @@
 //   · /murdoku、/murdoku/trail 的 main 是 1152px 全宽，侧栏会盖在网格上 → 继续全零。
 import AdGate from './AdGate.astro';
 import { ADSENSE_CLIENT, ADSENSE_SLOTS, ADSENSE_ENABLED } from '../lib/adsense';
-import { isPlaySurface as isPlaySurfacePath, adsAllowed } from '../lib/ad-policy';
+import { isPlaySurface as isPlaySurfacePath, adsAllowed, loaderAllowed } from '../lib/ad-policy';
 
 // ── Adsterra（退役，保留代码只为回滚参考）──
 const RAIL_KEY = '309484c05af1066efb6f321317c94311';
@@ -51,8 +51,11 @@ const PAGE_PATH = Astro.url.pathname;
 const isPlaySurface = isPlaySurfacePath(PAGE_PATH);
 
 const ALLOWED = adsAllowed(PAGE_PATH);
-// 侧栏：play surface 也出（≥1350 才落 gutter）
-const SHOW_RAIL = ALLOWED && (ADSTERRA_ON || ADSENSE_ANY);
+// 侧栏：只在「AdSense loader 真的加载」的页出。play surface 的 loader 被 ad-policy 挡掉
+// （零广告棋盘页），在那类页上挂 ins 只会得到一块永不填充的虚线空盒 —— 2026-11-21 实测
+// 首页 ≥1440 就是这么压住 H2 的（首页 main 比 840 宽）。Adsterra 时代没有 loader 闸，所以旧的
+// 「play surface 也出侧栏」口径在 AdSense 下不成立。
+const SHOW_RAIL = ADSTERRA_ON ? ALLOWED : (ADSENSE_ANY && loaderAllowed(PAGE_PATH));
 // sticky / 手机顶部 / 手机底部信息流：play surface 一律不出
 const SHOW_WIDE = SHOW_RAIL && !isPlaySurface;
 
