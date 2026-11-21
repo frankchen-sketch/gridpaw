@@ -664,6 +664,33 @@ L1 Dining Room（`a5a07a2`）之后，L2–L13 由 4+2 个子 agent 并行产出
 
 **运营知识（别忘）**：`scripts/hooks/pre-push` 只放 `local_ref == refs/heads/main` 的推送，所以**合并列车推不进 gridpaw 的 main**——gridpaw 的正路是「主树 `ALLOW_MAIN_COMMIT=1 git merge` → `bash scripts/deploy.sh` → `git push origin main`」。deploy 脚本末尾那句「别忘了 push」是真提醒：不 push，下次部署会把这次上线回滚掉。主树提交守卫同理：主树要提交必须显式 `ALLOW_MAIN_COMMIT=1`。
 
+## 2026-11-21 sitemap ⟷ noindex 对齐（`e30f90d` 已上线）
+
+**发现的真实问题只有一个**：`/akari/levels/hard/` 在 `astro.config.mjs` 的 `exactExcludes` 里（不进 sitemap），
+但页面**没有 noindex**——easy/medium 两个兄弟页都是 noindex，只有 hard 漏了。等于「故意藏起来却不给隐藏信号」，
+Google 可自由收录。已给 `hard.astro` 的 `SEOHead` 补 `noindex={true}`，线上已验（`<meta name="robots" content="noindex">`，
+sitemap 仍不含它）。
+
+**没有漏页**（顺带把口径纠正了）：492 个 sitemap URL 全部 200；从首页 + 35 个浅层页爬出的 209 条内链里，
+只有 5 条不在 sitemap——`/leaderboard/`、`/privacy/`、`/akari/levels/{easy,medium,hard}/`，前四个本来就该排除且都带 noindex。
+`sitemap-0.xml` 里确有 `/brain-puzzle-3-answers/`（此前误判「漏页」是自己 grep 用 `/$u/\b` 写错）。
+
+**新增闸门**：`scripts/check-sitemap-noindex.mjs`（对着 `dist` 校验，不看源码）
+- ERROR：在 sitemap 里的页却是 noindex（自己打自己）
+- WARN：既不在 sitemap 也没 noindex 的孤儿页
+已挂进 `scripts/deploy.sh` 构建之后（不一致直接不部署）。当前跑出 0 error / 0 orphan。
+注意它要读**所有** `*sitemap*.xml`（`pictomino-sitemap.xml` 不以 sitemap 开头），并且跳过 dist 里的 `*.html` 重定向壳。
+
+**上线事实**：565 页构建，指纹 `e30f90d`，线上 `sw.js` 指纹一致，IndexNow 只提交了改动的 1 个 URL。
+引擎自测第二次部署时为赶时间 `SKIP_ENGINE_SELFTEST=1` 跳过——同一份代码在 20 分钟前的第一次部署里已全量通过，未复跑。
+
+**破例记录**（pre-push 要求写进 STATUS）：主树直接推 main 用了 `ALLOW_PUSH_BRANCH_TO_MAIN=1`（本次是修 SEO 单点，
+走的分支 → 主树 merge → deploy 正路，只是 push 这一步的 hook 需要放行）。
+
+**另一件要记住的**：`git commit`（不带路径）提交的是**整个 index**，兄弟会话 staged 的
+`research/loop-answers/loop-answers-2026-11-21.json` 被卷进了本次 commit `457182f`。
+以后在本仓提交一律用 `git commit -m "..." -- <paths>`。
+
 ## 历史事件档案
 
 2026-09-21 ~ 2026-11-08 的全部按日期事件段（51 段，部署记录 / 事故复盘 / 验收数据）已搬至 `STATUS-ARCHIVE.md`「三、按日期事件段」。
