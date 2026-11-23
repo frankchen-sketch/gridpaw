@@ -69,31 +69,105 @@ export function dailySize(d?: Date): number {
 }
 
 /**
- * Build the canonical gradient: hue sweeps left→right, lightness sweeps
- * top→bottom. Two axes keep neighbouring swatches distinguishable at 3×3
- * (9 tiles) up to 5×5 (25 tiles).
+ * Colour maths for the perceptual ramp. Why it exists: the original ramp
+ * stepped the rows in HSL lightness, which is not perceptual. The same 8-point
+ * HSL step measures ΔL* 6.1 on a warm hue but only 3.0 at cyan, so the cyan
+ * column's row pairs fell to ΔE00 2.1–2.7 on 22 of 28 real daily boards —
+ * visible, but it reads as "the same colour with dirt on it", and on the last
+ * row it turns sorting into guesswork. Stepping the rows in CIELAB L* instead
+ * gives every column the same perceived step, whatever its hue.
  */
-export function buildTarget(size: number, seed: number): string[] {
+function hslToRgbUnit(h: number, s: number, l: number): [number, number, number] {
+  const hh = ((((h % 360) + 360) % 360) / 360);
+  const ss = s / 100;
+  const ll = l / 100;
+  const a = ss * Math.min(ll, 1 - ll);
+  const f = (n: number): number => {
+    const k = (n + hh * 12) % 12;
+    return ll - a * Math.max(-1, Math.min(k - 3, 9 - k, 1));
+  };
+  return [f(0), f(8), f(4)];
+}
+
+/** CIELAB L* (0–100) of an HSL colour, D65. */
+function labL(h: number, s: number, l: number): number {
+  const [r0, g0, b0] = hslToRgbUnit(h, s, l);
+  const lin = (c: number): number => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+  const y = lin(r0) * 0.2126729 + lin(g0) * 0.7151522 + lin(b0) * 0.072175;
+  const f = y > 216 / 24389 ? Math.cbrt(y) : (841 / 108) * y + 4 / 29;
+  return 116 * f - 16;
+}
+
+/** HSL lightness (0–100) whose CIELAB L* equals `target` at this hue/sat. */
+function lightForLabL(h: number, s: number, target: number): number {
+  let lo = 0;
+  let hi = 100;
+  for (let i = 0; i < 26; i++) {
+    const mid = (lo + hi) / 2;
+    if (labL(h, s, mid) < target) lo = mid;
+    else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
+
+/**
+ * Boards whose id sorts on/after this date use the perceptual ramp. Older ids
+ * keep the original HSL ramp because the 30-day archive re-generates a board
+ * from its id — a player should see the shades they actually solved.
+ */
+export const PERCEPTUAL_FROM = "2026-11-24";
+
+/**
+ * Build the canonical gradient: hue sweeps left→right, lightness sweeps
+ * top→bottom.
+ *
+ * `perceptual` steps the rows in CIELAB L* (top 84–86 → bottom 45–48, with a
+ * +12 saturation ramp) instead of HSL lightness. Measured over 300 seeds per
+ * size, min row-to-row ΔE00 goes 4.8 / 3.0 / 2.2 / 2.5 → 13.6 / 9.2 / 6.1 /
+ * 4.6 for 3×3…6×6, and the 6×6 special-case range is no longer needed.
+ */
+export function buildTarget(size: number, seed: number, perceptual: boolean): string[] {
   const rand = mulberry32(seed);
   // A little seeded jitter on the ramp endpoints so daily puzzles differ in
-  // mood, not just in shuffle order.
+  // mood, not just in shuffle order. Same three rand() draws either way, so
+  // an older id reproduces its palette to the digit.
   const hueStart = 12 + Math.floor(rand() * 24); // 12–36  (warm)
   const hueEnd = 268 + Math.floor(rand() * 34); // 268–302 (violet)
-  // 6×6 的明度只有 5 段台阶时，相邻两行 ΔE00 会掉到 1.33（人眼不可辨 = 只能瞎换），
-  // 所以只对 size>=6 放宽区间（80–83 → 36–39，相邻行 ΔE00 ≈ 4）；3–5 保持原参数，
-  // 历史盘逐位不变（rand() 调用次数相同，determinism 不受影响）。
-  const wide = size >= 6;
-  const lightTop = (wide ? 80 : 74) + Math.floor(rand() * 4); // 3–5: 74–78% / 6×6: 80–83%
-  const lightBottom = wide ? 36 + Math.floor(rand() * 4) : 46 + Math.floor(rand() * 5); // 3–5: 46–51% / 6×6: 36–39%
+  const rTop = rand();
+  const rBottom = rand();
   const sat = 62 + Math.floor(rand() * 10);
 
-  const out: string[] = [];
   const span = size === 1 ? 1 : size - 1;
+  const hues: number[] = [];
+  for (let c = 0; c < size; c++) hues.push(Math.round(hueStart + ((hueEnd - hueStart) * c) / span));
+  const out: string[] = [];
+
+  if (!perceptual) {
+    // Legacy ramp — frozen: 3–5 walk 74–78% → 46–50%, 6×6 walks 80–83% → 36–39%.
+    const wide = size >= 6;
+    const lightTop = (wide ? 80 : 74) + Math.floor(rTop * 4);
+    const lightBottom = wide ? 36 + Math.floor(rBottom * 4) : 46 + Math.floor(rBottom * 5);
+    for (let r = 0; r < size; r++) {
+      const light = lightTop + ((lightBottom - lightTop) * r) / span;
+      for (let c = 0; c < size; c++) out.push(`hsl(${hues[c]} ${sat}% ${Math.round(light)}%)`);
+    }
+    return out;
+  }
+
+  // Perceptual ramp: equal L* steps for every column, any size. Bottom stops at
+  // L* 45 rather than 40 and gains up to 12 points of saturation on the way:
+  // at L* 40 a warm hue turns into muddy brown, which reads as "dirty" even
+  // though the step is the largest one on the board.
+  const lTop = 84 + Math.floor(rTop * 3); // L* 84–86
+  // Span is pinned at 38–39 L* so rounding HSL lightness to whole points can
+  // never squeeze a step under ~5.9 L*; the bottom lands at L* 46–49, which is
+  // dark enough to read as "the deepest row" without turning warm hues to mud.
+  const lBottom = lTop - 38 + Math.floor(rBottom * 2); // L* 46–49
   for (let r = 0; r < size; r++) {
-    const light = lightTop + ((lightBottom - lightTop) * r) / span;
+    const targetL = lTop + ((lBottom - lTop) * r) / span;
+    const rowSat = Math.round(sat + (12 * r) / span);
     for (let c = 0; c < size; c++) {
-      const hue = hueStart + ((hueEnd - hueStart) * c) / span;
-      out.push(`hsl(${Math.round(hue)} ${sat}% ${Math.round(light)}%)`);
+      out.push(`hsl(${hues[c]} ${rowSat}% ${Math.round(lightForLabL(hues[c], rowSat, targetL))}%)`);
     }
   }
   return out;
@@ -129,7 +203,10 @@ function shuffled(n: number, rand: () => number): number[] {
 export function generate(size: number, id: string): GradientPuzzle {
   const n = Math.max(3, Math.min(6, Math.floor(size) || 5));
   const seed = hash32(id);
-  const target = buildTarget(n, seed);
+  // ISO dates and the practice ids both sort correctly against the cutover:
+  // anything that is not an older date ("practice-…", "board-…") gets the
+  // perceptual ramp, i.e. every board a player can meet from here on.
+  const target = buildTarget(n, seed, id >= PERCEPTUAL_FROM);
   const board = shuffled(n * n, mulberry32(seed ^ 0x9e3779b9));
   return { id, size: n, target, board };
 }

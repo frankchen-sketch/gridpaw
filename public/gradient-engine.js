@@ -20,6 +20,7 @@ var GradientEngine = (() => {
   // src/lib/puzzle-core/gradient-engine.ts
   var gradient_engine_exports = {};
   __export(gradient_engine_exports, {
+    PERCEPTUAL_FROM: () => PERCEPTUAL_FROM,
     buildTarget: () => buildTarget,
     dailyId: () => dailyId,
     dailySize: () => dailySize,
@@ -60,21 +61,63 @@ var GradientEngine = (() => {
     const date = d || /* @__PURE__ */ new Date();
     return DAILY_SIZES[date.getDay()];
   }
-  function buildTarget(size, seed) {
+  function hslToRgbUnit(h, s, l) {
+    const hh = (h % 360 + 360) % 360 / 360;
+    const ss = s / 100;
+    const ll = l / 100;
+    const a = ss * Math.min(ll, 1 - ll);
+    const f = (n) => {
+      const k = (n + hh * 12) % 12;
+      return ll - a * Math.max(-1, Math.min(k - 3, 9 - k, 1));
+    };
+    return [f(0), f(8), f(4)];
+  }
+  function labL(h, s, l) {
+    const [r0, g0, b0] = hslToRgbUnit(h, s, l);
+    const lin = (c) => c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+    const y = lin(r0) * 0.2126729 + lin(g0) * 0.7151522 + lin(b0) * 0.072175;
+    const f = y > 216 / 24389 ? Math.cbrt(y) : 841 / 108 * y + 4 / 29;
+    return 116 * f - 16;
+  }
+  function lightForLabL(h, s, target) {
+    let lo = 0;
+    let hi = 100;
+    for (let i = 0; i < 26; i++) {
+      const mid = (lo + hi) / 2;
+      if (labL(h, s, mid) < target) lo = mid;
+      else hi = mid;
+    }
+    return (lo + hi) / 2;
+  }
+  var PERCEPTUAL_FROM = "2026-11-24";
+  function buildTarget(size, seed, perceptual) {
     const rand = mulberry32(seed);
     const hueStart = 12 + Math.floor(rand() * 24);
     const hueEnd = 268 + Math.floor(rand() * 34);
-    const wide = size >= 6;
-    const lightTop = (wide ? 80 : 74) + Math.floor(rand() * 4);
-    const lightBottom = wide ? 36 + Math.floor(rand() * 4) : 46 + Math.floor(rand() * 5);
+    const rTop = rand();
+    const rBottom = rand();
     const sat = 62 + Math.floor(rand() * 10);
-    const out = [];
     const span = size === 1 ? 1 : size - 1;
+    const hues = [];
+    for (let c = 0; c < size; c++) hues.push(Math.round(hueStart + (hueEnd - hueStart) * c / span));
+    const out = [];
+    if (!perceptual) {
+      const wide = size >= 6;
+      const lightTop = (wide ? 80 : 74) + Math.floor(rTop * 4);
+      const lightBottom = wide ? 36 + Math.floor(rBottom * 4) : 46 + Math.floor(rBottom * 5);
+      for (let r = 0; r < size; r++) {
+        const light = lightTop + (lightBottom - lightTop) * r / span;
+        for (let c = 0; c < size; c++) out.push(`hsl(${hues[c]} ${sat}% ${Math.round(light)}%)`);
+      }
+      return out;
+    }
+    const lTop = 84 + Math.floor(rTop * 3);
+    const lBottom = lTop - 38 + Math.floor(rBottom * 2);
     for (let r = 0; r < size; r++) {
-      const light = lightTop + (lightBottom - lightTop) * r / span;
+      const targetL = lTop + (lBottom - lTop) * r / span;
+      const rowSat = Math.round(sat + 12 * r / span);
       for (let c = 0; c < size; c++) {
-        const hue = hueStart + (hueEnd - hueStart) * c / span;
-        out.push(`hsl(${Math.round(hue)} ${sat}% ${Math.round(light)}%)`);
+        out.push(`hsl(${hues[c]} ${rowSat}% ${Math.round(lightForLabL(hues[c], rowSat, targetL))}%)`);
       }
     }
     return out;
@@ -104,7 +147,7 @@ var GradientEngine = (() => {
   function generate(size, id) {
     const n = Math.max(3, Math.min(6, Math.floor(size) || 5));
     const seed = hash32(id);
-    const target = buildTarget(n, seed);
+    const target = buildTarget(n, seed, id >= PERCEPTUAL_FROM);
     const board = shuffled(n * n, mulberry32(seed ^ 2654435769));
     return { id, size: n, target, board };
   }
