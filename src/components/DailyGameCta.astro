@@ -1,0 +1,130 @@
+---
+/**
+ * 跨页 Huepaw 每日签到入口（2026-11-23）
+ * 用在答案/攻略/清单类内容页尾部：这些页有稳定长尾流量，但不带游戏入口。
+ * 设计约束：自有暖色板（不依赖页面 CSS 变量，5 个宿主页主题各不相同）· 内容列 ≤840px · 零广告位。
+ */
+interface Props {
+  /** 埋点用：从哪个页面点出去 */
+  from?: string;
+}
+const { from = '' } = Astro.props;
+// 与游戏同源色：hue 30→274，light 84→34，sat 70
+const ramp = [
+  'hsl(30 70% 84%)',
+  'hsl(79 70% 74%)',
+  'hsl(128 70% 64%)',
+  'hsl(177 70% 54%)',
+  'hsl(226 70% 44%)',
+  'hsl(274 70% 34%)',
+];
+---
+
+<aside class="gp-huepaw-cta" aria-label="Huepaw daily color puzzle">
+  <div class="gp-hc-ramp" aria-hidden="true">
+    {ramp.map((c) => <span style={`background:${c}`}></span>)}
+  </div>
+  <div class="gp-hc-text">
+    <b>Huepaw — today's color gradient</b>
+    <span>One board a day, 3×3 to 6×6. Streak and badges stay on your device.</span>
+  </div>
+  <a class="gp-hc-btn" href="/huepaw/" data-gp-hc-cta={from || Astro.url.pathname}>Play today's board →</a>
+</aside>
+
+<style>
+  .gp-huepaw-cta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    /* 5 个宿主页容器留白不一致（有的正文在 16px 内边距容器里，有的没有），
+       自己兜住 2rem 侧边距，避免手机端卡片贴边 */
+    width: min(840px, calc(100% - 2rem));
+    max-width: 840px;
+    margin: 1.6rem auto 1.2rem;
+    padding: 14px 16px;
+    background: #fdf7ee;
+    border: 1.5px solid #e7d4b8;
+    border-radius: 14px;
+    box-shadow: 0 1px 0 rgba(217, 119, 6, 0.06);
+    font-family: inherit;
+  }
+  .gp-hc-ramp {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
+    padding: 4px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: inset 0 0 0 1px #efe0c9;
+  }
+  .gp-hc-ramp span {
+    border-radius: 3px;
+    display: block;
+  }
+  .gp-hc-text {
+    flex: 1 1 220px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    line-height: 1.35;
+  }
+  .gp-hc-text b {
+    font-size: 0.98rem;
+    font-weight: 800;
+    color: #3f2d1d;
+  }
+  .gp-hc-text span {
+    font-size: 0.8rem;
+    color: #8a6f55;
+  }
+  .gp-hc-btn {
+    flex: 0 0 auto;
+    display: inline-block;
+    padding: 9px 16px;
+    background: #d97706;
+    color: #fff;
+    font-size: 0.86rem;
+    font-weight: 800;
+    text-decoration: none;
+    border-radius: 999px;
+    box-shadow: 0 2px 6px rgba(217, 119, 6, 0.28);
+  }
+  .gp-hc-btn:hover {
+    background: #b86404;
+  }
+  @media (max-width: 560px) {
+    .gp-huepaw-cta {
+      gap: 10px;
+      padding: 12px;
+    }
+    .gp-hc-btn {
+      flex: 1 1 100%;
+      text-align: center;
+      padding: 11px 14px;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    document.addEventListener(
+      'click',
+      function (e) {
+        var a = e.target && e.target.closest ? e.target.closest('[data-gp-hc-cta]') : null;
+        if (!a) return;
+        var params = { target: a.getAttribute('href') || '/huepaw/', placement: 'huepaw_tail_cta', from: a.getAttribute('data-gp-hc-cta') || '' };
+        if (typeof window.gtag === 'function') window.gtag('event', 'cta_click', params);
+        if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture('cta_click', Object.assign({ site: 'gridpaw' }, params));
+        if (typeof window.clarity === 'function') window.clarity('event', 'cta_click');
+        if (window.gpTrack) window.gpTrack('cta_click', params);
+      },
+      true
+    );
+  })();
+</script>
