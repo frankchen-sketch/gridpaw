@@ -726,7 +726,32 @@ sitemap 仍不含它）。
 
 **同日追加（`7a832cd`，已上线）**：① 矮屏胜利面板压缩（`@media max-height 780/660` 两档先藏第 3/2 行，375×667 实测分享行 659/667 完整可见，不再是"要滚才能分享"）；② 尺寸徽章 chips（清过哪些尺寸存 `huepaw:cleared`，赢一局点亮一个，胜利面板 + Ladder 卡片都显示）；③ 「击败 X%」——`type=size` 回 `total`，带 `&t=<ms>` 算 `beatPct`（样本 <10 不显示）；④ `/changelog/` 补 Huepaw 新游戏条目（含"3–5 明度刻意不动"的对外说法）+ gameColors 补 Huepaw + 更新日期。
 
-**待决策/已知**：① 胜利面板在 390×818 只剩 8px 余量，375×667 要滚动（overlay 是 `overflow-y:auto`，能滚但分享按钮在折线以下）—— 要不要压缩阶梯榜块；② P2「击败 X%」/专属徽章未做；③ 5×5 明度偏挤未修（见上）。
+**待决策/已知**：① ~~胜利面板在 390×818 只剩 8px 余量，375×667 要滚动~~（已由矮屏压缩解决）；② ~~P2「击败 X%」/专属徽章未做~~（`7a832cd` 已上线）；③ 5×5 明度偏挤 —— **法老 2026-11-23 拍板「按现状来，不放宽」**，见下节。
+
+**同日追加（`8dde99c`，20:25 上线，部署 `4d34f333`，sw 指纹 `8dde99c`）· 入口补齐 + 词族调研结论**
+
+起因（数据驱动，非感觉）：今日 D1 里 huepaw 只有 `game_start`×2 / `daily_start`×1 / `daily_solved`×1，且那套 `daily_solved` 是探测自己造的 —— 真实玩家今天最多 1 人开了盘就走。查入口发现：`/huepaw/` 在全站 471/567 页只存在于**导航下拉**，**首页正文零链接**（首页是 Shikaku 主排名页，organic 基线 588–746/天）。产品质量没问题，是入口不存在。
+
+- **首页宫格**：`GameHub` 14 → 15 卡（`grid-template-columns: repeat(5,1fr)` 正好 3 整行），Huepaw 带红 NEW 角标。宫格同时出现在首页与所有游戏页。
+- **新图标** `public/assets/game-icons/huepaw.webp`：3×3 渐变网格 + 中间格「抬起」（投影 + 白描边），40px 实测可辨；迭代 3 轮（3×3 网格 / 连续渐变+猫爪剪影 / 抬高格），vision 判定 40px 下爪印会糊、网格最稳。
+- **新组件 `src/components/DailyGameCta.astro`**：内容页尾部每日签到条（自兜 `min(840px, 100% - 2rem)`，5 个宿主页容器留白不一致，初版手机端满宽贴边实测抓到后修），接入 5 页：`/brain-puzzle-3-answers/` `/the-loop-past-answers/` `/meowdoku-guide/` `/block-blast-hints/` `/arrows-puzzle-walkthrough/`，自带 `cta_click` 埋点（`placement: huepaw_tail_cta` + `from`）。
+- **实测**：5 页 × 手机 390 / 桌面 1440 双档 —— 手机内缩 16px（loop 页 32，因其容器自带 16）、桌面 840 居中（loop 776 跟随其窄列）、零横向溢出；生产 curl 复核宫格 15 卡、huepaw 卡 1、NEW 1、图标 200 image/webp 5230B、5 页 cta 标记各 2、sw 指纹 `8dde99c`。
+
+**词族调研（webcafe 词量 + 哥飞 KD）→ 决定不为 Huepaw 开新内容页**：
+
+| 词 | 月量 | KD | SERP 现状 | 判断 |
+|---|---|---|---|---|
+| color gradient game | 260 | 5.6 | feyder.co(DR5) / cubicleriot(DR13) 弱站 | ✅ 唯一好打，但量小；/huepaw/ 现成页即可吃 |
+| color gradient puzzle | 260–1050 | 33.8 | Amazon / Puzzle Warehouse 实体拼图 | ❌ 电商意图 |
+| gradient puzzle | 590 | 33.5 | Ravensburger 实体渐变拼图 | ❌ 意图不符 |
+| huedle | 2910（10 月冲 3600） | 32.3 | huedle.uk(DR36)/.com/.org/playhued 四 EMD 占满 10/10 | ❌ 正面红海 |
+| color game | 49,500 | 57.2 | Poki / CrazyGames 门户 | ❌ 需 DR35+，现阶段打不动 |
+| color matching game | 22,200 | 54.1 | 同上 | ❌ |
+| color gradient | 12,100 | 29.3 | 配色/CSS 工具站 | ❌ 意图错，游戏页进去必弹 |
+
+结论：不建新页（开新页 = 自己和 `/huepaw/` 抢排名）；`/huepaw/` 的 TDK 织词（color gradient game / color shade / daily color 变体）**要动就等 core update 结算之后**，否则归因混在更新里分不清。法老 2026-11-23：「不建新页」。
+
+**5×5 明度：拍板「按现状来，不放宽」**（量化留档，别再重开）：现状 5×5 相邻行纵向最差 ΔE00 **2.60** / 均值 4.63；放宽版（L 80→36，与 6×6 同口径）最差 **4.21** / 均值 8.72。副作用是放宽会改今日盘与 30 天归档回放的颜色（成绩/徽章/连胜不受影响）。另暴露一条已知债：**现行 6×6 最差台阶只有 2.68，出在青色列（hue≈176）** —— HSL 明度不是感知明度，青色在浅端 L* 变化很小；「只调明度」这旋钮对青列有上限，要让台阶真正均匀得改「逐格感知间距」（每格按 ΔE 反解明度），未做。
 
 ## 历史事件档案
 
