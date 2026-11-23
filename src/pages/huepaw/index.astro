@@ -339,6 +339,25 @@ const ld = {
     .hw-ladder-list li.me { background: #FFF6E8; border-radius: 8px; padding-left: .3rem; }
     .hw-ladder-list li.hw-ladder-empty { justify-content: center; color: var(--text-muted); font-size: .8rem; }
     .hw-ladder-you { margin: .55rem 0 0; font-size: .8rem; font-weight: 800; color: #7A4B12; }
+    /* 尺寸徽章（本地记：清过哪些尺寸）——洞的留白暗示还没拿到的 */
+    .hw-badges { display: flex; gap: .28rem; flex-wrap: wrap; margin: .45rem 0 0; }
+    .hw-badge-chip { font-size: .62rem; font-weight: 800; letter-spacing: .02em; padding: .12rem .42rem; border-radius: 999px; border: 1px dashed var(--border-soft); color: #B4A79A; background: #fff; }
+    .hw-badge-chip.is-on { border: 1px solid #E0B87E; color: #7A4B12; background: linear-gradient(180deg, #FFF3DE, #FFE7C4); }
+    .hw-ladder-badges { margin: .55rem 0 0; font-size: .74rem; color: var(--text-muted); display: flex; gap: .28rem; align-items: center; flex-wrap: wrap; }
+    .hw-ladder-badges .hw-badge-chip { font-size: .6rem; }
+    .hw-ladder-badges b { font-size: .72rem; color: var(--ink); }
+    /* 小屏/矮视口：胜利面板先压缩再滚动（沿用站内 11-05 那条口径） */
+    @media (max-height: 780px) {
+      .hw-ladder-mini { margin-top: .45rem; padding-top: .45rem; }
+      .hw-ladder-mini .hw-ladder-list li:nth-child(3) { display: none; }
+      .hw-ladder-mini .hw-ladder-list li { padding: .18rem 0; }
+      .hw-badges { margin-top: .3rem; }
+      .hw-win .win-title, .win-overlay .win-title { margin-bottom: .1rem; }
+    }
+    @media (max-height: 660px) {
+      .hw-ladder-mini .hw-ladder-list li:nth-child(2) { display: none; }
+      .hw-ladder-mini .hw-ladder-you { display: none; }
+    }
 
     /* ── 棋盘区 ── */
     .game-stage {
@@ -776,6 +795,7 @@ const ld = {
       <div class="hw-ladder-card">
         <ol class="hw-ladder-list" id="hw-ladder-list"><li class="hw-ladder-empty">Loading…</li></ol>
         <p class="hw-ladder-you" id="hw-ladder-you"></p>
+        <p class="hw-ladder-badges" id="hw-ladder-badges"></p>
       </div>
     </section>
 
@@ -797,6 +817,7 @@ const ld = {
       </div>
       <div class="hw-next" id="hw-next">Next daily board: <strong>midnight, your local time</strong></div>
       <div class="hw-rank" id="hw-rank" hidden></div>
+      <div class="hw-badges" id="hw-badges" hidden></div>
       <div class="hw-ladder-mini" id="hw-ladder-mini" hidden>
         <div class="hw-ladder-mini-head" id="hw-ladder-mini-head">Ladder</div>
         <ol class="hw-ladder-list" id="hw-ladder-mini-list"></ol>
@@ -1303,6 +1324,7 @@ const ld = {
           postResult(ms, size, true); // 练习盘也上尺寸阶梯榜（刷阶梯就在练习盘）
         }
         saveSizeBest(size, ms);
+        markCleared(size);
         loadLadderMini(size, ms);
         if (LAD_TAB === size) loadLadder(size);
         updateStreakChip();
@@ -1317,11 +1339,34 @@ const ld = {
       function saveSizeBest(size, ms) {
         try { var b = sizeBest(size); if (!b || ms < b) store('huepaw:best:' + size, JSON.stringify({ ms: Math.round(ms) })); } catch (e) {}
       }
-      function ladderEntries(size, cb) {
-        fetch('/api/leaderboard?game=huepaw&type=size&size=' + size + '&_=' + Date.now())
+      /* 尺寸徽章：清过一个尺寸留一个（只存本机，和 streak 一样不建账号） */
+      function clearedSizes() {
+        try { var a = JSON.parse(store('huepaw:cleared') || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; }
+      }
+      function markCleared(size) {
+        try {
+          var a = clearedSizes();
+          if (a.indexOf(size) < 0) { a.push(size); a.sort(function (x, y) { return x - y; }); store('huepaw:cleared', JSON.stringify(a)); }
+        } catch (e) {}
+      }
+      function badgeChips() {
+        var a = clearedSizes(), out = '';
+        [3, 4, 5, 6].forEach(function (n) {
+          out += '<span class="hw-badge-chip' + (a.indexOf(n) >= 0 ? ' is-on' : '') + '">' + n + '×' + n + '</span>';
+        });
+        return out;
+      }
+      function renderBadges() {
+        var a = clearedSizes();
+        var win = $('hw-badges'), card = $('hw-ladder-badges');
+        if (win) { win.innerHTML = badgeChips(); win.hidden = a.length === 0; }
+        if (card) card.innerHTML = '<b>Cleared:</b>' + badgeChips();
+      }
+      function ladderEntries(size, cb, mine) {
+        fetch('/api/leaderboard?game=huepaw&type=size&size=' + size + (mine ? '&t=' + Math.round(mine) : '') + '&_=' + Date.now())
           .then(function (r) { return r.ok ? r.json() : null; })
-          .then(function (d) { cb(d && Array.isArray(d.entries) ? d.entries : null); })
-          .catch(function () { cb(null); });
+          .then(function (d) { cb(d && Array.isArray(d.entries) ? d.entries : null, d || {}); })
+          .catch(function () { cb(null, {}); });
       }
       function ladderRow(rank, name, t, me) {
         var safe = String(name || 'Anonymous Cat').replace(/[<>&]/g, '');
@@ -1356,17 +1401,25 @@ const ld = {
       }
       function loadLadderMini(size, ms) {
         var box = $('hw-ladder-mini'), head = $('hw-ladder-mini-head'), list = $('hw-ladder-mini-list'), you = $('hw-ladder-mini-you');
+        renderBadges();
         if (!box) return;
         if (head) head.textContent = 'Ladder · ' + size + '×' + size + ' all-time';
-        ladderEntries(size, function (entries) {
+        ladderEntries(size, function (entries, meta) {
           if (!entries) { box.hidden = true; return; }
           var mine = sizeBest(size);
           if (list) {
             list.innerHTML = entries.slice(0, 3).map(function (e, i) { return ladderRow(i + 1, e.name, e.timeMs, mine && e.timeMs === mine); }).join('');
           }
-          if (you) you.textContent = mine ? 'Your best this size — ' + fmtTime(mine) + ' · ' + rankLine(mine, entries) : '';
+          if (you) {
+            var line = mine ? 'Your best this size — ' + fmtTime(mine) + ' · ' + rankLine(mine, entries) : '';
+            // 分母够大才报百分位，样本 3 个人时说 "beat 67%" 是噪音
+            if (mine && meta && meta.total >= 10 && typeof meta.beatPct === 'number') {
+              line += ' · faster than ' + meta.beatPct + '% of ' + meta.total + ' cats';
+            }
+            you.textContent = line;
+          }
           box.hidden = !(list && list.innerHTML);
-        });
+        }, sizeBest(size));
       }
 
       /* ── 榜单：复用 /api/leaderboard（game=huepaw，日期=盘面日期；游客 anonId 也能上榜） ── */
@@ -1444,6 +1497,7 @@ const ld = {
         b.addEventListener('click', function () { loadLadder(Number(b.getAttribute('data-lad'))); });
       });
       loadLadder(LAD_TAB);
+      renderBadges();
       $('hw-hint').addEventListener('click', doHint);
       $('hw-peek').addEventListener('click', peek);
       $('hw-restart').addEventListener('click', function () {

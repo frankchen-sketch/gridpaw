@@ -163,10 +163,30 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
       .bind(game, size)
       .all();
     const rows = (results ?? []) as { uid: string; name: string | null; time_ms: number; solved_at: number }[];
+
+    // 分母 + 百分位：胜利面板的 "You beat X% of N cats"。
+    // t=<ms> 可选（不传就只回 total），两个都是走 idx_game_size 的计数。
+    const totalRow = await env.meowtrail_users
+      .prepare(`SELECT COUNT(*) AS n FROM game_results_size WHERE game = ?1 AND size = ?2`)
+      .bind(game, size)
+      .first<{ n: number }>();
+    const total = Number(totalRow?.n ?? 0);
+    const tRaw = Number(url.searchParams.get('t'));
+    let beatPct: number | null = null;
+    if (Number.isFinite(tRaw) && tRaw > 0 && total > 0) {
+      const slowRow = await env.meowtrail_users
+        .prepare(`SELECT COUNT(*) AS n FROM game_results_size WHERE game = ?1 AND size = ?2 AND time_ms > ?3`)
+        .bind(game, size, Math.round(tRaw))
+        .first<{ n: number }>();
+      beatPct = Math.round((Number(slowRow?.n ?? 0) * 100) / total);
+    }
+
     return json({
       game,
       type: 'size',
       size,
+      total,
+      beatPct,
       entries: rows.map((r, i) => {
         const dn = displayNameFor(r.uid, r.name);
         return { rank: i + 1, name: dn.name, timeMs: r.time_ms, guest: dn.guest || undefined };
