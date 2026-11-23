@@ -825,9 +825,29 @@ const ld = {
       var S = {
         engine: null, size: 5, mode: 'daily', id: '', p: null,
         board: [], initial: [], sel: -1, moves: 0, hints: 3,
-        t0: 0, tickId: null, over: false, firstMove: false, lockedClicks: 0
+        t0: 0, tickId: null, over: false, firstMove: false, lockedClicks: 0, userScrolled: false
       };
       var hintTimer = null;
+      /* 用户是否自己滚过：认「滚动落点」。我们自己 scrollTo 前记下目标，落点对上就是程序滚的，
+         其余任何滚动（滚轮/触摸/拖滚动条/键盘）都算用户主动 → 本局不再自动定位。
+         这样不用按事件次数或时间窗猜，也不会被 Escape 之类不滚动页面的按键误触发。
+         取舍：浏览器因布局变化自行调整滚动位置时也会算"用户滚过"，本局就跳过自动定位 ——
+         宁可少定位一次（用户自己滚一下就有），也不要把正在读页面的人拽回棋盘 */
+      var autoScrollTarget = -1;
+      window.addEventListener('scroll', function () {
+        if (autoScrollTarget >= 0 && Math.abs(window.scrollY - autoScrollTarget) < 2) {
+          autoScrollTarget = -1;
+          return;
+        }
+        S.userScrolled = true;
+      }, { passive: true });
+      function autoScrollTo(y) {
+        // 记「浏览器实际落点」而不是请求坐标：目标超过最大滚动位时会被截断，记错会把自己当成用户
+        var before = Math.round(window.scrollY);
+        window.scrollTo(0, Math.max(0, y));
+        var after = Math.round(window.scrollY);
+        autoScrollTarget = after === before ? -1 : after; // 没位移就不留待匹配目标
+      }
 
       function store(key, val) {
         try {
@@ -954,21 +974,24 @@ const ld = {
 
       /* 开局后棋盘若被教学卡/标题挤出视口，就把它滚到视口中央（游戏页常态） */
       function ensureBoardVisible() {
+        if (S.userScrolled) return; // 用户已经自己滚过，就别把人拽回来
         try {
           var r = boardEl.getBoundingClientRect();
           var vh = window.innerHeight;
           // 棋盘比视口还高（横屏/小窗）：不强求"完整可见"，只保证顶部露出来
           if (r.height > vh - 24) {
-            if (r.top < 0 || r.top > vh - 140) window.scrollTo(0, Math.max(0, window.scrollY + r.top - 12));
+            if (r.top < 0 || r.top > vh - 140) autoScrollTo(window.scrollY + r.top - 12);
             return;
           }
           if (r.top >= 0 && r.bottom <= vh) return;
           // 一次性即时滚动：smooth 在省电/无头环境会被吞，和用户滚动抢也没意义
-          window.scrollTo(0, Math.max(0, window.scrollY + r.top - (vh - r.height) / 2));
+          autoScrollTo(window.scrollY + r.top - (vh - r.height) / 2);
         } catch (e) {}
       }
 
       function begin(mode, size) {
+        S.userScrolled = false; // 从点击这一刻起，用户任何滚动都优先于我们的自动定位
+        autoScrollTarget = -1;  // 上一局的待匹配目标不带进新局
         coverEl.hidden = true;
         stageEl.classList.remove('hw-pre');
         if (!S.engine) {
@@ -1106,8 +1129,10 @@ const ld = {
       $('hw-restart').addEventListener('click', function () {
         if (!S.p) { begin('daily'); return; }
         var usedHints = 3 - S.hints;
-        if (S.moves > 0 && !window.confirm('Restart this board? Your progress (' + S.moves +
-            (S.moves === 1 ? ' swap' : ' swaps') + (usedHints ? ', ' + usedHints + (usedHints === 1 ? ' hint' : ' hints') + ' used' : '') +
+        // 只用过 hint/peek 也算进度（提示额度是稀缺资源，不该被一次误点清掉）
+        if ((S.moves > 0 || usedHints > 0) && !window.confirm('Restart this board? Your progress (' +
+            S.moves + (S.moves === 1 ? ' swap' : ' swaps') +
+            (usedHints ? ', ' + usedHints + (usedHints === 1 ? ' hint' : ' hints') + ' used' : '') +
             ') will be reset.')) return;
         S.board = S.initial.slice(); S.moves = 0; S.sel = -1; S.hints = 3; S.over = false; S.lockedClicks = 0;
         stopTimer(); timerEl.textContent = '0:00'; S.firstMove = false;
