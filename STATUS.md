@@ -712,6 +712,20 @@ sitemap 仍不含它）。
 `research/loop-answers/loop-answers-2026-11-21.json` 被卷进了本次 commit `457182f`。
 以后在本仓提交一律用 `git commit -m "..." -- <paths>`。
 
+## 2026-11-23 · Huepaw 分难度阶梯榜上线（6×6 + 难度角标）
+
+**已上线**：`329081f` → 部署 `d9409c5f`（生产 sw 指纹 `329081f`）。三块一起：
+- **尺寸阶梯榜**：新表 `game_results_size`（PK `user,game,size`，best-ever 永不过期），D1 迁移 `migrations/002-huepaw-size-ladder.sql` 已 remote 执行（表 + `idx_game_size` 就位）。API `GET /api/leaderboard?game=huepaw&type=size&size=N`、`POST` 多带 `size`。每日榜 `game_results` 一个字没动。
+- **练习盘隔离**：`ladderOnly:true` → 只写阶梯榜。否则练习盘 id 不是日期、服务端回落成"今天"，会污染当日榜（实测：ladderOnly POST 后当日榜仍 `entries:[]`）。
+- **下限分档**：3×3 2500 / 4×4 4000 / 5×5 6000 / 6×6 12000；实测 6×6 报 8.0s 不落库、18.5s 落库。
+- **Expert 6×6 + 角标**：`Hard 5×5` 贴琥珀 `crazy`、`Expert 6×6` 贴红 `hell`（`pointer-events:none`，390/360 四钮两行两列无溢出）。胜利面板加第二块 `Ladder · N×N all-time`。
+- **6×6 明度**：只对 `size>=6` 放宽 80–83 → 36–39（相邻行 ΔE00 1.33 → ~4）。**3/4/5 逐位不变**（旧 bundle 对拍 15 组全等），历史盘/归档不变样 —— 所以 5×5 那条「相邻行 ΔE 2.26–2.89 偏挤」的问题刻意**没动**，要修得单独拍板（会改历史盘）。
+- 自检：`selftest-gradient` 扩到 3×3–6×6（6000 盘）+ 6×6 行台阶 ≥8、36 色互不重复。
+
+**线上实测**：`/huepaw/` 200（角标/阶梯榜/36 格 6×6 全在，控制台 0 错）；`type=size` 200；空态文案 "No times yet on 5×5 — be the first."；测试行已从 D1 删除（榜回到空）。
+
+**待决策/已知**：① 胜利面板在 390×818 只剩 8px 余量，375×667 要滚动（overlay 是 `overflow-y:auto`，能滚但分享按钮在折线以下）—— 要不要压缩阶梯榜块；② P2「击败 X%」/专属徽章未做；③ 5×5 明度偏挤未修（见上）。
+
 ## 历史事件档案
 
 2026-09-21 ~ 2026-11-08 的全部按日期事件段（51 段，部署记录 / 事故复盘 / 验收数据）已搬至 `STATUS-ARCHIVE.md`「三、按日期事件段」。
