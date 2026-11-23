@@ -38,6 +38,8 @@ export const PLAY_SURFACES = new Set([
   // 不改的话自动广告会物理落在一个可玩棋盘页上，正是本闸门要防的缺陷。
   // 对照：/japanese-logic-puzzles 有 iframe（loader 在但广告进不到棋盘里），豁免仍然成立。
   '/meowdoku-guide',
+  // 2026-11-23 新游戏：Huepaw 每日渐变谜题（内联渲染棋盘 = play surface，只出桌面侧栏）
+  '/huepaw',
 ]);
 
 /** 按目录整片收：单关棋盘页（/akari/puzzle/puzzle-001 … /meowdoku/levels/1 …） */
