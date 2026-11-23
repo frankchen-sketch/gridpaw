@@ -52,10 +52,26 @@ check('different ids differ',
 /* 2. never solved on generate -------------------------------------------- */
 let solvedOnLoad = 0;
 for (let i = 0; i < 6000; i++) {
-  const p = E.generate(3 + (i % 3), `board-${i}`);
+  const p = E.generate(3 + (i % 4), `board-${i}`); // 3..6（6×6 是 hell 档）
   if (E.isSolved(p)) solvedOnLoad++;
 }
 check('not solved on load', solvedOnLoad === 0, `${solvedOnLoad}/6000 boards were already solved`);
+
+/* 6.5) 6×6 的明度台阶必须够大：相邻两行 lightness 差 <8 时 ΔE00 会掉到 1.3（人眼不可辨），
+ * 玩家只能瞎换。这里守住参数层（6×6 用 80–83 → 36–39 的更宽区间）。 */
+let tightRows = 0, dupColors = 0;
+for (let i = 0; i < 600; i++) {
+  const p = E.generate(6, `six-${i}`);
+  const L = (k) => Number(/hsl\([\d.]+ [\d.]+% ([\d.]+)%\)/.exec(p.target[k])[1]);
+  for (let c = 0; c < 6; c++) {
+    for (let r = 0; r + 1 < 6; r++) {
+      if (Math.abs(L(r * 6 + c) - L((r + 1) * 6 + c)) < 8) tightRows++;
+    }
+  }
+  if (new Set(p.target).size !== 36) dupColors++;
+}
+check('6×6 row steps >= 8 lightness', tightRows === 0, `${tightRows} adjacent row pairs were too close`);
+check('6×6 all 36 colours distinct', dupColors === 0, `${dupColors}/600 boards had duplicate colours`);
 
 /* 3. hint strictly advances (the 6,000-board regression) ------------------ */
 let noopHints = 0;
@@ -121,4 +137,4 @@ if (failures) {
   console.error(`✗ gradient: ${failures} failure(s)`);
   process.exit(1);
 }
-console.log('✓ gradient: 6,000 boards — no pre-solved board, every hint strictly advances, locks respected, size map + local rollover correct');
+console.log('✓ gradient: 6,000 boards (3×3–6×6) — no pre-solved board, every hint strictly advances, locks respected, size map + local rollover correct, 6×6 row steps discriminable');

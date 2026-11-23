@@ -64,8 +64,9 @@ var GradientEngine = (() => {
     const rand = mulberry32(seed);
     const hueStart = 12 + Math.floor(rand() * 24);
     const hueEnd = 268 + Math.floor(rand() * 34);
-    const lightTop = 74 + Math.floor(rand() * 4);
-    const lightBottom = 46 + Math.floor(rand() * 5);
+    const wide = size >= 6;
+    const lightTop = (wide ? 80 : 74) + Math.floor(rand() * 4);
+    const lightBottom = wide ? 36 + Math.floor(rand() * 4) : 46 + Math.floor(rand() * 5);
     const sat = 62 + Math.floor(rand() * 10);
     const out = [];
     const span = size === 1 ? 1 : size - 1;

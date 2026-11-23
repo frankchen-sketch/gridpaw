@@ -15,13 +15,20 @@ const GAMES = new Set([
 // 10×10 akari 真人不可能 <8s；5×5 shikaku daily 最快 ~5s 留余量；pictomino daily 盘 ≥8s。
 const DAILY_FLOORS: Record<string, number> = { shikaku: 5000, akari: 8000, pictomino: 8000, huepaw: 2500 };
 
+// 尺寸阶梯榜（game_results_size）下限：按盘面最小交换数估的真人下限，
+// 不能沿用每日榜那条（huepaw 2500ms 是照 3×3 定的，6×6 会被 3 秒假成绩占满）。
+// 无此档的尺寸取 5000 兜底。
+const SIZE_FLOORS: Record<string, Record<number, number>> = {
+  huepaw: { 3: 2500, 4: 4000, 5: 6000, 6: 12000 },
+};
+
 // 双轨兼容：
 //  - 带 game     → 新 game_results，分游戏当日榜（登录用户 + 游客 anonId 都可写，2026-10-22）
 //  - 无 game     → 旧 daily_results（仅登录用户，首页 shikaku / akari daily 现行为，勿破坏）
 // 游客身份：无 mt_session cookie 时，body.anonId 校验通过即以 'guest:<anonId>' 落库；
 // ON CONFLICT (user_id, game, puzzle_date) 天然限频（每游客每游戏每天最多一行最优成绩）。
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
-  let body: { game?: unknown; date?: unknown; timeMs?: unknown; anonId?: unknown };
+  let body: { game?: unknown; date?: unknown; timeMs?: unknown; anonId?: unknown; size?: unknown; ladderOnly?: unknown };
   try {
     const text = await request.text();
     if (text.length > 512) return json({ error: 'payload_too_large' }, 413);
@@ -61,8 +68,10 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
   // 下限防线：低于真人不可能的每游戏下限 → 必须有 24h 内 daily_start 佐证（daily 页正常流零误伤）。
   // 常规关快通 / 幽灵提交 / 脚本刷 0.1-4s 全挡。佐证查询对登录用户查 user_id，对游客查 guest_id。
+  // 练习盘（ladderOnly）不写每日榜，也不吃每日榜的 floor/佐证闸——它有自己的按尺寸下限（SIZE_FLOORS）
+  const ladderOnly = (body as { ladderOnly?: unknown }).ladderOnly === true;
   const floor = DAILY_FLOORS[game] ?? 5000;
-  if (timeMs < floor) {
+  if (!ladderOnly && timeMs < floor) {
     const gid = isGuest ? uid.slice(GUEST_PREFIX.length) : uid;
     const evidence = await env.meowtrail_users
       .prepare(
@@ -73,14 +82,34 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     if (!evidence) return json({ error: 'bad_time' }, 400);
   }
 
-  // 新表：按 (user, game, date) 唯一，多次完成保留最好
-  await env.meowtrail_users
-    .prepare(
-      `INSERT INTO game_results (user_id, game, puzzle_date, time_ms, solved_at) VALUES (?, ?, ?, ?, ?)
-       ON CONFLICT (user_id, game, puzzle_date) DO UPDATE SET time_ms = MIN(time_ms, excluded.time_ms), solved_at = excluded.solved_at`
-    )
-    .bind(uid, game, date, Math.round(timeMs), Date.now())
-    .run();
+  // 新表：按 (user, game, date) 唯一，多次完成保留最好。
+  // ladderOnly=练习盘：只写尺寸阶梯榜，绝不写每日榜（练习盘的 id 不是日期，会被服务端回落成"今天"污染当日榜）。
+  if (!ladderOnly) {
+    await env.meowtrail_users
+      .prepare(
+        `INSERT INTO game_results (user_id, game, puzzle_date, time_ms, solved_at) VALUES (?, ?, ?, ?, ?)
+         ON CONFLICT (user_id, game, puzzle_date) DO UPDATE SET time_ms = MIN(time_ms, excluded.time_ms), solved_at = excluded.solved_at`
+      )
+      .bind(uid, game, date, Math.round(timeMs), Date.now())
+      .run();
+  }
+
+  // 尺寸阶梯榜：按 (user, game, size) 唯一，best-ever 永不过期。
+  // 练习盘也写（刷阶梯主要就在练习盘）；下限按尺寸分档。
+  const sizeRaw = Number((body as { size?: unknown }).size);
+  const size = Number.isFinite(sizeRaw) ? Math.round(sizeRaw) : NaN;
+  if (size >= 3 && size <= 8) {
+    const sizeFloor = SIZE_FLOORS[game]?.[size] ?? 5000;
+    if (timeMs >= sizeFloor) {
+      await env.meowtrail_users
+        .prepare(
+          `INSERT INTO game_results_size (user_id, game, size, time_ms, solved_at) VALUES (?, ?, ?, ?, ?)
+           ON CONFLICT (user_id, game, size) DO UPDATE SET time_ms = MIN(time_ms, excluded.time_ms), solved_at = excluded.solved_at`
+        )
+        .bind(uid, game, size, Math.round(timeMs), Date.now())
+        .run();
+    }
+  }
 
   return json({
     ok: true,
@@ -113,10 +142,39 @@ function dayDiff(a: string, b: string): number {
 export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   const url = new URL(request.url);
   const date = url.searchParams.get('date') ?? new Date().toISOString().slice(0, 10);
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return json({ error: 'bad_date' }, 400);
   const gameParam = url.searchParams.get('game');
   const game = gameParam && GAMES.has(gameParam) ? gameParam : null;
   const type = url.searchParams.get('type');
+
+  // ── 尺寸阶梯榜：GET /api/leaderboard?game=huepaw&type=size&size=6
+  // best-ever per size，不看日期（永不过期榜）；游客行同样映射猫名。
+  if (type === 'size') {
+    if (!game) return json({ error: 'bad_game' }, 400);
+    const sRaw = Number(url.searchParams.get('size'));
+    const size = Number.isFinite(sRaw) ? Math.round(sRaw) : NaN;
+    if (!(size >= 3 && size <= 8)) return json({ error: 'bad_size' }, 400);
+    const { results } = await env.meowtrail_users
+      .prepare(
+        `SELECT r.user_id AS uid, ${DISPLAY_NAME} AS name, r.time_ms, r.solved_at
+         FROM game_results_size r LEFT JOIN users u ON u.id = r.user_id
+         WHERE r.game = ?1 AND r.size = ?2
+         ORDER BY r.time_ms ASC LIMIT 20`
+      )
+      .bind(game, size)
+      .all();
+    const rows = (results ?? []) as { uid: string; name: string | null; time_ms: number; solved_at: number }[];
+    return json({
+      game,
+      type: 'size',
+      size,
+      entries: rows.map((r, i) => {
+        const dn = displayNameFor(r.uid, r.name);
+        return { rank: i + 1, name: dn.name, timeMs: r.time_ms, guest: dn.guest || undefined };
+      }),
+    });
+  }
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return json({ error: 'bad_date' }, 400);
 
   // ── 全时最长连胜（P2）：只读该 game 的新表，旧 daily_results 不混入（口径不同、避免跨表拼接）
   if (type === 'streak') {

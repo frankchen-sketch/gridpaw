@@ -79,8 +79,12 @@ export function buildTarget(size: number, seed: number): string[] {
   // mood, not just in shuffle order.
   const hueStart = 12 + Math.floor(rand() * 24); // 12–36  (warm)
   const hueEnd = 268 + Math.floor(rand() * 34); // 268–302 (violet)
-  const lightTop = 74 + Math.floor(rand() * 4); // ~74–78%
-  const lightBottom = 46 + Math.floor(rand() * 5); // ~46–51%
+  // 6×6 的明度只有 5 段台阶时，相邻两行 ΔE00 会掉到 1.33（人眼不可辨 = 只能瞎换），
+  // 所以只对 size>=6 放宽区间（80–83 → 36–39，相邻行 ΔE00 ≈ 4）；3–5 保持原参数，
+  // 历史盘逐位不变（rand() 调用次数相同，determinism 不受影响）。
+  const wide = size >= 6;
+  const lightTop = (wide ? 80 : 74) + Math.floor(rand() * 4); // 3–5: 74–78% / 6×6: 80–83%
+  const lightBottom = wide ? 36 + Math.floor(rand() * 4) : 46 + Math.floor(rand() * 5); // 3–5: 46–51% / 6×6: 36–39%
   const sat = 62 + Math.floor(rand() * 10);
 
   const out: string[] = [];

@@ -42,7 +42,7 @@ const faqs = [
   },
   {
     q: 'Is there a leaderboard?',
-    a: 'Each daily board shows its fastest times when you finish — a today-only board, no account needed. Because there is no sign-up, entries are tied to an anonymous device id rather than a name you choose.',
+    a: 'Two boards. Each daily board shows its fastest times when you finish (today-only), and the Ladder keeps the best time ever on each board size — 3×3 through 6×6 — with no date and no reset. No account needed: entries are tied to an anonymous device id rather than a name you choose.',
   },
   {
     q: 'Is Huepaw free?',
@@ -316,6 +316,29 @@ const ld = {
     .diff-btn:hover { border-color: var(--gp-primary-strong); color: var(--ink); transform: translateY(-1px); }
     .diff-btn.active { background: var(--btn-dark); border-color: var(--btn-dark); color: #fff; }
     .diff-btn.active span { color: rgba(255,255,255,0.75); }
+    /* 高难度角标：贴在档位按钮右上角，暖→红的"辣度"梯度（激发挑战欲；点不到，纯视觉） */
+    .diff-btn { position: relative; overflow: visible; }
+    .diff-tag { position: absolute; top: -7px; right: -7px; font-size: .56rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; padding: 1px 6px; border-radius: 999px; color: #fff; box-shadow: 0 2px 7px rgba(120,60,10,.3); transform: rotate(6deg); pointer-events: none; }
+    .diff-tag--crazy { background: linear-gradient(135deg, #F59E0B, #D97706); }
+    .diff-tag--hell { background: linear-gradient(135deg, #EF4444, #B91C1C); }
+    @media (max-width: 420px) { .diff-tag { font-size: .5rem; padding: 1px 5px; top: -6px; right: -5px; } }
+
+    /* 尺寸阶梯榜（best-ever per size，永不过期） */
+    .hw-ladder { margin-top: 1.2rem; }
+    .hw-ladder-title { font-size: 1.15rem; font-weight: 900; color: var(--ink); margin: 0 0 .15rem; }
+    .hw-ladder-sub { font-size: .78rem; color: var(--text-muted); margin: 0 0 .7rem; }
+    .hw-ladder-tabs { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: .7rem; }
+    .hw-ladder-tabs button { font: inherit; font-size: .78rem; font-weight: 800; padding: .34rem .7rem; border-radius: 999px; border: 1px solid var(--border-soft); background: #fff; color: var(--text); cursor: pointer; position: relative; }
+    .hw-ladder-tabs button.is-on { background: var(--btn-dark); border-color: var(--btn-dark); color: #fff; }
+    .hw-ladder-card { background: #fffdf9; border: 1px solid var(--border-soft); border-radius: 14px; padding: .7rem .9rem; }
+    .hw-ladder-list { margin: 0; padding: 0; list-style: none; font-size: .88rem; }
+    .hw-ladder-list li { display: flex; gap: .5rem; align-items: baseline; padding: .3rem 0; border-bottom: 1px dashed var(--border-soft); }
+    .hw-ladder-list li:last-child { border-bottom: 0; }
+    .hw-ladder-list b { width: 1.1rem; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+    .hw-ladder-list span { margin-left: auto; font-weight: 800; color: var(--ink); font-variant-numeric: tabular-nums; }
+    .hw-ladder-list li.me { background: #FFF6E8; border-radius: 8px; padding-left: .3rem; }
+    .hw-ladder-list li.hw-ladder-empty { justify-content: center; color: var(--text-muted); font-size: .8rem; }
+    .hw-ladder-you { margin: .55rem 0 0; font-size: .8rem; font-weight: 800; color: #7A4B12; }
 
     /* ── 棋盘区 ── */
     .game-stage {
@@ -581,6 +604,11 @@ const ld = {
     .hw-rank-list { margin: 0; padding-left: 1.1rem; text-align: left; }
     .hw-rank-list li { margin: 1px 0; }
     .hw-rank-list b { color: var(--ink); font-variant-numeric: tabular-nums; }
+    .hw-ladder-mini { margin-top: .7rem; padding-top: .6rem; border-top: 1px dashed var(--border-soft); max-width: 22rem; text-align: left; }
+    .hw-ladder-mini[hidden] { display: none; }
+    .hw-ladder-mini-head { font-size: .66rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); margin-bottom: .25rem; }
+    .hw-ladder-mini .hw-ladder-list { font-size: .76rem; }
+    .hw-ladder-mini .hw-ladder-you { font-size: .74rem; margin: .35rem 0 0; }
     @media (prefers-reduced-motion: reduce) {
       .hw-flow { display: none; }
       .hw-ticket.reveal { animation: none; }
@@ -677,7 +705,8 @@ const ld = {
       <div class="diff-row" role="group" aria-label="Practice grid size">
         <button class="diff-btn" data-size="3" aria-pressed="false">Easy <span>3×3</span></button>
         <button class="diff-btn" data-size="4" aria-pressed="false">Medium <span>4×4</span></button>
-        <button class="diff-btn" data-size="5" aria-pressed="false">Hard <span>5×5</span></button>
+        <button class="diff-btn" data-size="5" aria-pressed="false">Hard <span>5×5</span><em class="diff-tag diff-tag--crazy">crazy</em></button>
+        <button class="diff-btn" data-size="6" aria-pressed="false">Expert <span>6×6</span><em class="diff-tag diff-tag--hell">hell</em></button>
       </div>
 
       <GameCoach
@@ -735,6 +764,21 @@ const ld = {
       </div>
     </section>
 
+    <section class="section hw-ladder" id="hw-ladder" aria-label="Huepaw ladder — best time on each board size">
+      <h2 class="hw-ladder-title">Ladder</h2>
+      <p class="hw-ladder-sub">Best time ever on each board size — no date, never resets.</p>
+      <div class="hw-ladder-tabs" role="tablist" id="hw-ladder-tabs">
+        <button type="button" data-lad="3" aria-selected="false">3×3</button>
+        <button type="button" data-lad="4" aria-selected="false">4×4</button>
+        <button type="button" data-lad="5" class="is-on" aria-selected="true">5×5</button>
+        <button type="button" data-lad="6" aria-selected="false">6×6<em class="diff-tag diff-tag--hell">hell</em></button>
+      </div>
+      <div class="hw-ladder-card">
+        <ol class="hw-ladder-list" id="hw-ladder-list"><li class="hw-ladder-empty">Loading…</li></ol>
+        <p class="hw-ladder-you" id="hw-ladder-you"></p>
+      </div>
+    </section>
+
     <div class="toast" id="toast"></div>
 
     <!-- Win Overlay -->
@@ -753,6 +797,11 @@ const ld = {
       </div>
       <div class="hw-next" id="hw-next">Next daily board: <strong>midnight, your local time</strong></div>
       <div class="hw-rank" id="hw-rank" hidden></div>
+      <div class="hw-ladder-mini" id="hw-ladder-mini" hidden>
+        <div class="hw-ladder-mini-head" id="hw-ladder-mini-head">Ladder</div>
+        <ol class="hw-ladder-list" id="hw-ladder-mini-list"></ol>
+        <p class="hw-ladder-you" id="hw-ladder-mini-you"></p>
+      </div>
       <button class="win-btn" id="hw-win-next">Play a practice board →</button>
       <div class="win-share-row">
         <button class="share-btn share-copy" id="hw-share-copy">📋 Copy Result</button>
@@ -776,7 +825,7 @@ const ld = {
         <li><strong>Watch the lock</strong> — a tile that lands in its home spot locks with a ✓ and cannot be moved again, so a good placement never gets undone by a stray tap.</li>
         <li><strong>Finish the board</strong> — when every tile is home, the gradient runs seamlessly corner to corner and the board clears.</li>
       </ol>
-      <p>The daily board is built from your local date, so a new one appears at midnight your time. Practice mode offers an unlimited supply of boards in 3×3, 4×4 and 5×5.</p>
+      <p>The daily board is built from your local date, so a new one appears at midnight your time. Practice mode offers an unlimited supply of boards in 3×3, 4×4, 5×5 and 6×6.</p>
     </section>
 
     <section class="section prose seo-section" id="tips" aria-label="Tips and strategy">
@@ -793,7 +842,7 @@ const ld = {
     <section class="section prose seo-section" id="huedle" aria-label="Huepaw compared with Huedle">
       <h2>Huepaw and Huedle: What Is Different</h2>
       <p><strong>Huedle</strong> (huedle.uk) is an independent daily color-gradient game. Checked on 2026-11-23, it plays across 4×4 to 8×8, picks the grid size for you from that day's board, swaps by dragging, locks a tile once it is correct (with sound), and adds an archive of past boards, leaderboards and an optional Google sign-in. It is free and, per its own privacy page, runs no ads.</p>
-      <p>Huepaw is GridPaw's own take on the genre rather than a copy: our own generator and boards, plus a few things Huedle does not offer — you choose 3×3, 4×4 or 5×5 in practice mode, every board has a hint, a target peek and a label toggle, and there is nothing to sign up for. Huepaw also keeps an <a href="/huepaw/archive/">archive of past daily boards</a> (rebuilt from the same date-based seed, so each one matches the day it was played) and shows a today-only fastest-time board when you finish. What it still does <em>not</em> have is grids larger than 5×5.</p>
+      <p>Huepaw is GridPaw's own take on the genre rather than a copy: our own generator and boards, plus a few things Huedle does not offer — you choose 3×3 up to 6×6 in practice mode, every board has a hint, a target peek and a label toggle, and there is nothing to sign up for. Huepaw also keeps an <a href="/huepaw/archive/">archive of past daily boards</a> (rebuilt from the same date-based seed, so each one matches the day it was played) and shows a today-only fastest-time board when you finish. It also keeps a <a href="#hw-ladder">ladder of best times per board size</a> — 3×3 through 6×6 — which Huedle does not have at all.</p>
       <p>Looking for <em>Huedle hints</em> or today's Huedle answer? This page will not solve another site's board for you — it gives you a fresh gradient puzzle of your own, plus the technique that makes any gradient board click: build from the corners inward, keep brightness bands together, and trust the seams.</p>
     </section>
 
@@ -1248,23 +1297,88 @@ const ld = {
           } catch (e) {}
           // daily_solved 是连胜/徽章派生事件（_badges-derive 按日聚合）；归档盘不计连胜
           if (S.mode === 'daily') track('daily_solved', { game: 'huepaw', size: size, seconds: Math.round(ms / 1000), date: S.id });
-          postResult(ms);
+          postResult(ms, size, false);
         } else {
           $('hw-rank').hidden = true;
+          postResult(ms, size, true); // 练习盘也上尺寸阶梯榜（刷阶梯就在练习盘）
         }
+        saveSizeBest(size, ms);
+        loadLadderMini(size, ms);
+        if (LAD_TAB === size) loadLadder(size);
         updateStreakChip();
         win._ms = ms;
       }
 
+      /* ── 尺寸阶梯榜：best-ever per size（新表 game_results_size，永不过期） ── */
+      var LAD_TAB = 5;
+      function sizeBest(size) {
+        try { var v = store('huepaw:best:' + size); return v ? (JSON.parse(v).ms || null) : null; } catch (e) { return null; }
+      }
+      function saveSizeBest(size, ms) {
+        try { var b = sizeBest(size); if (!b || ms < b) store('huepaw:best:' + size, JSON.stringify({ ms: Math.round(ms) })); } catch (e) {}
+      }
+      function ladderEntries(size, cb) {
+        fetch('/api/leaderboard?game=huepaw&type=size&size=' + size + '&_=' + Date.now())
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (d) { cb(d && Array.isArray(d.entries) ? d.entries : null); })
+          .catch(function () { cb(null); });
+      }
+      function ladderRow(rank, name, t, me) {
+        var safe = String(name || 'Anonymous Cat').replace(/[<>&]/g, '');
+        return '<li' + (me ? ' class="me"' : '') + '><b>' + rank + '</b>' + safe + '<span>' + fmtTime(t) + '</span></li>';
+      }
+      function rankLine(mine, entries) {
+        var faster = 0;
+        for (var i = 0; i < entries.length; i++) if (entries[i].timeMs < mine) faster++;
+        if (entries.length >= 20 && faster >= 20) return 'outside top 20';
+        return '#' + (faster + 1);
+      }
+      function loadLadder(size) {
+        LAD_TAB = size;
+        document.querySelectorAll('#hw-ladder-tabs [data-lad]').forEach(function (b) {
+          var on = Number(b.getAttribute('data-lad')) === size;
+          b.classList.toggle('is-on', on);
+          b.setAttribute('aria-selected', String(on));
+        });
+        var list = $('hw-ladder-list'), you = $('hw-ladder-you');
+        if (!list) return;
+        list.innerHTML = '<li class="hw-ladder-empty">Loading…</li>';
+        if (you) you.textContent = '';
+        ladderEntries(size, function (entries) {
+          if (!entries) { list.innerHTML = '<li class="hw-ladder-empty">Ladder unavailable right now.</li>'; return; }
+          var mine = sizeBest(size), html = '', rows = entries.slice(0, 5);
+          for (var i = 0; i < rows.length; i++) html += ladderRow(i + 1, rows[i].name, rows[i].timeMs, mine && rows[i].timeMs === mine);
+          list.innerHTML = html || '<li class="hw-ladder-empty">No times yet on ' + size + '×' + size + ' — be the first.</li>';
+          if (you) you.textContent = mine
+            ? 'Your best ' + size + '×' + size + ' — ' + fmtTime(mine) + ' · ' + rankLine(mine, entries)
+            : 'No time from this device on ' + size + '×' + size + ' yet.';
+        });
+      }
+      function loadLadderMini(size, ms) {
+        var box = $('hw-ladder-mini'), head = $('hw-ladder-mini-head'), list = $('hw-ladder-mini-list'), you = $('hw-ladder-mini-you');
+        if (!box) return;
+        if (head) head.textContent = 'Ladder · ' + size + '×' + size + ' all-time';
+        ladderEntries(size, function (entries) {
+          if (!entries) { box.hidden = true; return; }
+          var mine = sizeBest(size);
+          if (list) {
+            list.innerHTML = entries.slice(0, 3).map(function (e, i) { return ladderRow(i + 1, e.name, e.timeMs, mine && e.timeMs === mine); }).join('');
+          }
+          if (you) you.textContent = mine ? 'Your best this size — ' + fmtTime(mine) + ' · ' + rankLine(mine, entries) : '';
+          box.hidden = !(list && list.innerHTML);
+        });
+      }
+
       /* ── 榜单：复用 /api/leaderboard（game=huepaw，日期=盘面日期；游客 anonId 也能上榜） ── */
-      function postResult(ms) {
-        if (!/^\d{4}-\d{2}-\d{2}$/.test(S.id)) return;
-        var payload = { game: 'huepaw', date: S.id, timeMs: Math.round(ms), anonId: getAnonId() };
+      function postResult(ms, size, ladderOnly) {
+        if (!ladderOnly && !/^\d{4}-\d{2}-\d{2}$/.test(S.id)) return;
+        var payload = { game: 'huepaw', date: S.id, timeMs: Math.round(ms), anonId: getAnonId(), size: size };
+        if (ladderOnly) payload.ladderOnly = true; // 练习盘：只写尺寸阶梯榜，不碰当日榜
         fetch('/api/leaderboard', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify(payload)
-        }).then(function () { loadRank(ms); }).catch(function () { loadRank(ms); });
+        }).then(function () { if (!ladderOnly) loadRank(ms); }).catch(function () { if (!ladderOnly) loadRank(ms); });
       }
 
       function loadRank(ms) {
@@ -1326,6 +1440,10 @@ const ld = {
         playBtn.textContent = '▶ Play the ' + archiveId + ' board';
         badgeEl.textContent = 'Archive · ' + archiveId + ' · ' + archSize + '×' + archSize;
       }
+      document.querySelectorAll('#hw-ladder-tabs [data-lad]').forEach(function (b) {
+        b.addEventListener('click', function () { loadLadder(Number(b.getAttribute('data-lad'))); });
+      });
+      loadLadder(LAD_TAB);
       $('hw-hint').addEventListener('click', doHint);
       $('hw-peek').addEventListener('click', peek);
       $('hw-restart').addEventListener('click', function () {
