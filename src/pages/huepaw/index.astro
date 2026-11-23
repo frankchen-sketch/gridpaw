@@ -508,6 +508,12 @@ const ld = {
     .hw-stage { position: relative; }
     /* .game-stage 是 flex column + align-items:center，子项会缩成内容宽 → 必须显式拉满 */
     .hw-board-wrap { position: relative; display: flex; justify-content: center; width: 100%; flex: 0 0 auto; margin: 0.6rem 0 0.4rem; }
+    /* 方向轴标：落在棋盘外的 padding 带里（不压格子）；只在棋盘可见时出现 */
+    .hw-board-wrap.show-axes { padding: 24px 0 0 30px; }
+    .hw-ax { position: absolute; display: none; font: 700 .62rem/1.15 var(--font-sans, system-ui); color: #8A6A4F; letter-spacing: .1em; text-transform: uppercase; pointer-events: none; white-space: nowrap; }
+    .hw-board-wrap.show-axes .hw-ax { display: block; }
+    .hw-ax-top { top: 4px; text-align: center; }
+    .hw-ax-left { left: 0; writing-mode: vertical-rl; text-align: center; }
     .hw-pre .game-meta-row, .hw-pre .hw-tools { visibility: hidden; }
     /* 开局前不展示教学卡（先看封面→点 Play→教学从第 1 步开始），一屏能容下棋盘 */
     .hw-pre .gp-coach-host { display: none; }
@@ -527,10 +533,12 @@ const ld = {
     @keyframes hwLockPop { 0% { transform: scale(1.08); } 60% { transform: scale(.96); } 100% { transform: scale(1); } }
     .hw-tile .hw-idx { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: .7rem; font-weight: 800; color: rgba(255,255,255,.92); text-shadow: 0 0 2px rgba(0,0,0,.45); opacity: 0; pointer-events: none; }
     .hw-board.show-labels .hw-tile .hw-idx { opacity: 1; }
-    .hw-target { margin: .4rem auto .2rem; width: 100%; max-width: 430px; flex: 0 0 auto; }
+    /* 目标参照：浮在棋盘正中（不占页面高度，3 秒后消失） */
+    .hw-target { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 6; width: auto; max-width: 210px; margin: 0; padding: 9px 10px 10px; background: rgba(253,246,236,.97); border: 2px dashed #D9A76A; border-radius: 14px; box-shadow: 0 10px 30px rgba(80,50,20,.18); pointer-events: none; }
+    .hw-board-wrap.show-axes .hw-target { left: calc(50% + 15px); top: calc(50% + 12px); } /* 补偿轴标 padding，仍然对准棋盘 */
     .hw-target[hidden] { display: none; }
-    .hw-target-label { font-size: .72rem; color: var(--text-muted); display: block; margin-bottom: 4px; }
-    .hw-target-strip { display: grid; grid-auto-flow: column; gap: 2px; height: 22px; border-radius: 8px; overflow: hidden; }
+    .hw-target-label { font-size: .7rem; font-weight: 700; color: #8A6A4F; display: block; text-align: center; margin-bottom: 6px; }
+    .hw-target-strip { display: grid; grid-auto-flow: row; gap: 3px; width: 132px; aspect-ratio: 1; margin: 0 auto; border-radius: 8px; overflow: hidden; }
     .hw-target-strip i { display: block; }
     .hw-tools { display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap; margin: .5rem 0 .2rem; }
     .hw-tool { font: inherit; font-size: .78rem; font-weight: 700; padding: .42rem .75rem; border-radius: 999px; border: 2px solid var(--border); background: #fff; color: var(--ink); cursor: pointer; }
@@ -696,7 +704,9 @@ const ld = {
           <span id="hw-streak" class="hw-moves hw-streak" hidden></span>
         </div>
 
-        <div class="hw-board-wrap">
+        <div class="hw-board-wrap" id="hw-board-wrap">
+          <span class="hw-ax hw-ax-top" id="hw-ax-top" aria-hidden="true">Hue · warm → cool</span>
+          <span class="hw-ax hw-ax-left" id="hw-ax-left" aria-hidden="true">Brightness · light → deep</span>
           <div class="hw-board" id="hw-board" role="grid" aria-label="Color gradient board"></div>
         <!-- 开始卡片（三态之一：封面 → 加载 → 游戏，同尺寸不跳版；JS 前显示静态文案） -->
         <div class="hw-cover" id="hw-cover">
@@ -708,11 +718,11 @@ const ld = {
         </div>
 
         <div class="hw-loading" id="hw-loading" hidden><span class="hw-spinner"></span>Loading board…</div>
-        </div>
 
-        <div class="hw-target" id="hw-target" hidden>
-          <span class="hw-target-label">Target gradient — top row is the top of the board</span>
-          <div class="hw-target-strip" id="hw-target-strip"></div>
+          <div class="hw-target" id="hw-target" hidden>
+            <span class="hw-target-label">Target board — top row is the top of the board</span>
+            <div class="hw-target-strip" id="hw-target-strip"></div>
+          </div>
         </div>
 
         <div class="hw-tools">
@@ -885,6 +895,8 @@ const ld = {
       var movesEl = $('hw-moves'), timerEl = $('hw-timer'), progressEl = $('hw-progress');
       var hintCountEl = $('hw-hint-count'), badgeEl = $('hw-badge'), modeNameEl = $('hw-mode-name');
       var playBtn = $('hw-play'), targetEl = $('hw-target'), stripEl = $('hw-target-strip');
+      var wrapEl = $('hw-board-wrap'), axTopEl = $('hw-ax-top'), axLeftEl = $('hw-ax-left');
+      var targetLabelEl = document.querySelector('.hw-target-label');
       var winEl = $('hw-win'), winDetail = $('hw-win-detail'), ticketEl = $('hw-ticket');
       var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -986,9 +998,24 @@ const ld = {
         hintCountEl.textContent = S.hints + ' left';
         $('hw-hint').classList.toggle('disabled', S.hints <= 0);
         $('hw-peek').classList.toggle('disabled', S.hints <= 0);
+        if (wrapEl) wrapEl.classList.toggle('show-axes', !!S.p);
+        placeAxes();
       }
+      /* 轴标落在棋盘外的 padding 带里：宽度/高度按棋盘实测对齐（右对齐/竖排都跟着棋盘走） */
+      function placeAxes() {
+        if (!wrapEl || !axTopEl || !axLeftEl || !wrapEl.classList.contains('show-axes')) return;
+        var b = boardEl.getBoundingClientRect(), w = wrapEl.getBoundingClientRect();
+        axTopEl.style.left = (b.left - w.left) + 'px';
+        axTopEl.style.width = b.width + 'px';
+        axLeftEl.style.top = (b.top - w.top) + 'px';
+        axLeftEl.style.height = b.height + 'px';
+      }
+      window.addEventListener('resize', placeAxes);
       function paintTarget() {
         stripEl.innerHTML = '';
+        // 目标按 N×N 铺开（原来 grid-auto-flow:column 会摊成一条 25 片竖线，看起来像一维排序）
+        var n = Math.round(Math.sqrt(S.p.target.length)) || S.p.size || 5;
+        stripEl.style.gridTemplateColumns = 'repeat(' + n + ', 1fr)';
         for (var i = 0; i < S.p.target.length; i++) {
           var bar = document.createElement('i');
           bar.style.background = S.p.target[i];
@@ -1098,6 +1125,7 @@ const ld = {
               return;
             }
             newPuzzle(mode, size, idOverride);
+            firstLook();
             track('game_start', { game: 'huepaw', mode: mode, size: S.size });
             // daily_start 是 /api/leaderboard 成绩下限的佐证事件（<下限必须 24h 内有它）
             if (mode !== 'practice') track('daily_start', { game: 'huepaw', mode: mode, size: S.size, date: S.id });
@@ -1105,6 +1133,7 @@ const ld = {
           return;
         }
         newPuzzle(mode, size, idOverride);
+        firstLook();
         track('game_start', { game: 'huepaw', mode: mode, size: S.size });
         if (mode !== 'practice') track('daily_start', { game: 'huepaw', mode: mode, size: S.size, date: S.id });
       }
@@ -1172,10 +1201,23 @@ const ld = {
         if (S.over || !S.p) return;
         if (S.hints <= 0) { toast('No hints left for a peek.'); return; }
         S.hints--; paint();
+        if (targetLabelEl) targetLabelEl.textContent = 'Target board — top row is the top of the board';
         targetEl.hidden = false;
         track('hint_click', { game: 'huepaw', size: S.size, kind: 'peek' });
         clearTimeout(peek._t);
         peek._t = setTimeout(function () { targetEl.hidden = true; }, 3200);
+      }
+
+      /* 首次进每日盘：目标盘免费展示 3 秒（不扣 hint，只给一次） */
+      function firstLook() {
+        if (!S.p || S.mode !== 'daily') return;
+        if (store('huepaw:firstLook')) return;
+        store('huepaw:firstLook', '1');
+        if (targetLabelEl) targetLabelEl.textContent = 'Your goal — 3 s, free: hues warm → cool, brightness light → deep';
+        targetEl.hidden = false;
+        clearTimeout(peek._t);
+        peek._t = setTimeout(function () { targetEl.hidden = true; }, 3200);
+        track('hint_click', { game: 'huepaw', size: S.size, kind: 'first_look' });
       }
 
       /* ── 胜利：色流 + 色票卡 ────────────────────────────────────── */
