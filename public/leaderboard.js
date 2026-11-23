@@ -53,7 +53,8 @@
     mount: function (game, container) {
       if (!container || !validGame(game)) return Promise.resolve();
       container.innerHTML = '<div style="padding:12px;color:#8b7d6f;font-size:.85rem">Loading leaderboard…</div>';
-      var today = new Date().toISOString().slice(0, 10);
+      var d0 = new Date();
+      var today = d0.getFullYear() + '-' + (d0.getMonth() < 9 ? '0' : '') + (d0.getMonth() + 1) + '-' + (d0.getDate() < 10 ? '0' : '') + d0.getDate(); // 本地日历日（原 UTC 会在 00:00-08:00 读到昨天的榜）
       // &_= 防自定义域边缘缓存旧响应（POST 后立即 GET 会读到陈旧榜，2026-10-22 实测）
       return fetchJSON('/api/leaderboard?game=' + encodeURIComponent(game) + '&date=' + today + '&_=' + Date.now()).then(function (data) {
         var rows = data.entries || [];

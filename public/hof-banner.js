@@ -115,7 +115,7 @@
     if (!document.querySelector('.site-header') && !document.querySelector('.gp-nav')) return; // 无头部页不出（help 等）
     try { if (localStorage.getItem('gp_hof_dismissed') === '1') return; } catch (e) {}
     Promise.all([
-      fetchJSON('/api/leaderboard?game=shikaku&date=' + new Date().toISOString().slice(0, 10) + '&_=' + Date.now()),
+      fetchJSON('/api/leaderboard?game=shikaku&date=' + (function () { var d = new Date(), p = function (n) { return (n < 10 ? '0' : '') + n; }; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); })() + '&_=' + Date.now()),
       fetchJSON('/api/leaderboard?game=akari&type=streak'),
       fetchJSON('/api/leaderboard?game=shikaku&type=streak')
     ]).then(function (rs) {

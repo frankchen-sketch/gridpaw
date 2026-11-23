@@ -981,8 +981,8 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
 
   // ─── Daily streak state machine (shared with /daily page key) ──────
   var DAILY_KEY = 'gridpaw-daily';
-  function getToday() { return new Date().toISOString().split('T')[0]; }
-  function getYesterdayD() { var d = new Date(); d.setDate(d.getDate() - 1); return d.toISOString().split('T')[0]; }
+  function getToday() { const d = new Date(); return d.getFullYear() + '-' + (d.getMonth() < 9 ? '0' : '') + (d.getMonth() + 1) + '-' + (d.getDate() < 10 ? '0' : '') + d.getDate(); } // 本地日历日（toISOString 是 UTC，与 getDailySeed 的本地口径打架，2026-11-23 修）
+  function getYesterdayD() { var d = new Date(); d.setDate(d.getDate() - 1); return d.getFullYear() + '-' + (d.getMonth() < 9 ? '0' : '') + (d.getMonth() + 1) + '-' + (d.getDate() < 10 ? '0' : '') + d.getDate(); }
   function loadDailyState() {
     var s = localStorage.getItem(DAILY_KEY);
     if (!s) return null;
@@ -1622,9 +1622,10 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
   var isDailyMode = false;
   function generateDaily() {
     isDailyMode = true;
-    var today = new Date().toISOString().split('T')[0];
-    // 平日 10×10；周末（周六/周日 UTC）14×14 Weekend Super Challenge
-    var dow = new Date().getUTCDay();
+    var nowD = new Date();
+    var today = nowD.getFullYear() + '-' + (nowD.getMonth() < 9 ? '0' : '') + (nowD.getMonth() + 1) + '-' + (nowD.getDate() < 10 ? '0' : '') + nowD.getDate(); // 本地日历日（与 getToday 同口径）
+    // 平日 10×10；周末（周六/周日，本地日）14×14 Weekend Super Challenge
+    var dow = nowD.getDay();
     var dailySize = (dow === 0 || dow === 6) ? 14 : 10;
     var dailyPuzzle = generateDailyPuzzle(today, dailySize);
     if (!dailyPuzzle) { statusEl.textContent = 'Failed to generate daily puzzle.'; return; }

@@ -37,16 +37,20 @@ export class DailyChallenge {
     this.storageKey = `${siteId}-daily`;
   }
 
-  /** Get today's date string (YYYY-MM-DD) */
+  /** Get today's date string (YYYY-MM-DD) — 本地日历日，与 getDailySeed 同口径（原 toISOString 是 UTC，
+      东八区 00:00-08:00 会把"今天"的盘记成昨天，2026-11-23 修） */
   getToday(): string {
-    return new Date().toISOString().split('T')[0];
+    const d = new Date();
+    const p = (n: number) => (n < 10 ? '0' + n : '' + n);
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
   }
 
-  /** Get yesterday's date string (YYYY-MM-DD) */
+  /** Get yesterday's date string (YYYY-MM-DD) — 同为本地日历日 */
   getYesterday(): string {
     const d = new Date();
     d.setDate(d.getDate() - 1);
-    return d.toISOString().split('T')[0];
+    const p = (n: number) => (n < 10 ? '0' + n : '' + n);
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
   }
 
   /** Generate a deterministic seed based on today's date */
@@ -140,8 +144,8 @@ export class DailyChallenge {
 export const dailyChallengeInline = `
 var DailyChallenge = (function() {
   function DailyChallenge(siteId) { this.storageKey = siteId + '-daily'; }
-  DailyChallenge.prototype.getToday = function() { return new Date().toISOString().split('T')[0]; };
-  DailyChallenge.prototype.getYesterday = function() { var d = new Date(); d.setDate(d.getDate() - 1); return d.toISOString().split('T')[0]; };
+  DailyChallenge.prototype.getToday = function() { var d = new Date(); var p = function(n) { return (n < 10 ? '0' : '') + n; }; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); };
+  DailyChallenge.prototype.getYesterday = function() { var d = new Date(); d.setDate(d.getDate() - 1); var p = function(n) { return (n < 10 ? '0' : '') + n; }; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); };
   DailyChallenge.prototype.getDailySeed = function() { var t = new Date(); return t.getFullYear() * 10000 + (t.getMonth() + 1) * 100 + t.getDate(); };
   DailyChallenge.prototype.seededRandom = function(seed) { var s = seed; return function() { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }; };
   DailyChallenge.prototype.loadState = function() {

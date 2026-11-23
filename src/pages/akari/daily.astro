@@ -354,8 +354,8 @@ import SideAd from '../../components/SideAd.astro';
     }
 
     // Streak system
-    function getToday() { return new Date().toISOString().split('T')[0]; }
-    function getYesterday() { const d = new Date(); d.setDate(d.getDate() - 1); return d.toISOString().split('T')[0]; }
+    function getToday() { const d = new Date(); const p = (n) => (n < 10 ? '0' : '') + n; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); } // 本地日历日（原 UTC 与本地 seed 打架）
+    function getYesterday() { const d = new Date(); d.setDate(d.getDate() - 1); const p = (n) => (n < 10 ? '0' : '') + n; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
     function loadState() {
       const s = localStorage.getItem(STORAGE_KEY);
       if (!s) return null;
@@ -962,7 +962,7 @@ import SideAd from '../../components/SideAd.astro';
     if (scb) scb.addEventListener('click', () => {
       const cardData = generateShareCard();
       const link = document.createElement('a');
-      link.download = 'gridpaw-daily-' + new Date().toISOString().split('T')[0] + '.png';
+      link.download = 'gridpaw-daily-' + (function () { var d = new Date(), p = function (n) { return (n < 10 ? '0' : '') + n; }; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); })() + '.png';
       link.href = cardData;
       link.click();
       showToast('📸 Share card downloaded!', 'success');
@@ -1401,7 +1401,8 @@ import SideAd from '../../components/SideAd.astro';
         var raw = localStorage.getItem('gridpaw-daily');
         if (!raw) return;
         var st = JSON.parse(raw);
-        var today = new Date().toISOString().split('T')[0];
+        var td = new Date(), tpad = function (n) { return (n < 10 ? '0' : '') + n; };
+        var today = td.getFullYear() + '-' + tpad(td.getMonth() + 1) + '-' + tpad(td.getDate());
         window.postMessage({
           type: 'gridpaw_extension_sync',
           payload: {

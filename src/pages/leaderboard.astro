@@ -207,7 +207,7 @@ const GAMES = [
         var s = total % 60;
         return m + ':' + pad(s);
       }
-      function today() { return new Date().toISOString().slice(0, 10); }
+      function today() { var d = new Date(), p = function (n) { return (n < 10 ? '0' : '') + n; }; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); } // 本地日历日
       function escapeHtml(s) {
         return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
           return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];

@@ -163,7 +163,7 @@ import SideAd from '../../components/SideAd.astro';
 
     function loadDailyPuzzle() {
       const today = new Date();
-      const dateStr = today.toISOString().slice(0, 10);
+      const p2 = (n) => (n < 10 ? '0' : '') + n; const dateStr = today.getFullYear() + '-' + p2(today.getMonth() + 1) + '-' + p2(today.getDate()); // 本地日历日
       try {
         puzzle = generateDailyPuzzle(dateStr, 7);
         size = puzzle.size;
@@ -184,7 +184,7 @@ import SideAd from '../../components/SideAd.astro';
     function loadStreak() {
       try {
         const saved = JSON.parse(localStorage.getItem('gridpaw-streak') || '{}');
-        const today = new Date().toISOString().slice(0, 10);
+        const today = (() => { const d = new Date(); const p = (n) => (n < 10 ? '0' : '') + n; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); })();
         if (saved.date === today) {
           streak = saved.streak || 0;
         } else {
@@ -197,7 +197,7 @@ import SideAd from '../../components/SideAd.astro';
     function saveStreak() {
       try {
         localStorage.setItem('gridpaw-streak', JSON.stringify({
-          date: new Date().toISOString().slice(0, 10),
+          date: (() => { const d = new Date(); const p = (n) => (n < 10 ? '0' : '') + n; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); })(),
           streak: streak
         }));
       } catch { /* ignore */ }

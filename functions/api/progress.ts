@@ -27,8 +27,9 @@ function validDate(v: unknown): string | null {
   // 真实日历校验（防 2026-02-31）+ 拒未来日期（防恶意 last_solved_date 永久压制合并）
   const d = new Date(v + 'T00:00:00Z');
   if (isNaN(d.getTime()) || d.toISOString().slice(0, 10) !== v) return null;
-  const today = new Date().toISOString().slice(0, 10);
-  if (v > today) return null;
+  // 客户端已改本地日历日：UTC+ 时区的"今天"在服务端可能是 UTC 明天 → 留 1 天宽限，只拒真未来
+  const tomorrow = new Date(Date.now() + 86_400_000).toISOString().slice(0, 10);
+  if (v > tomorrow) return null;
   return v;
 }
 
