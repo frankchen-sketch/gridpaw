@@ -39,7 +39,10 @@ export const PLAY_SURFACES = new Set([
   // 对照：/japanese-logic-puzzles 有 iframe（loader 在但广告进不到棋盘里），豁免仍然成立。
   '/meowdoku-guide',
   // 2026-11-23 新游戏：Huepaw 每日渐变谜题（内联渲染棋盘 = play surface，只出桌面侧栏）
-  '/huepaw',
+  // 同族的 /huepaw/archive/ 也是 play surface：这页在页内加载 gradient-engine.js 重放 30 天的
+  // 每日盘（每张缩略图都是可点进棋盘的入口），且刻意不加任何广告组件。不登记的后果是
+  // check-play-surfaces 报红，同时 SEOHead 会把 adsbygoogle loader 放进这个棋盘页。
+  '/huepaw', '/huepaw/archive',
 ]);
 
 /** 按目录整片收：单关棋盘页（/akari/puzzle/puzzle-001 … /meowdoku/levels/1 …） */

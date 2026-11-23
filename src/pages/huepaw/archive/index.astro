@@ -1,0 +1,441 @@
+---
+// ── Huepaw Archive — 往日每日盘 ────────────────────────────────────────────
+// 口径（与 /huepaw/ 一致）：每日盘按**本地午夜**换题，所以日期字符串必须用
+// getFullYear/getMonth/getDate 拼 YYYY-MM-DD；UTC 序列化会让不同时区差一天。
+// 尺寸表 [3,5,4,5,4,5,4]（周日 3×3）与引擎 DAILY_SIZES 同一份，SSR 用本地表兜底，
+// 客户端优先调 GradientEngine.dailySize()。
+//
+// 两段式渲染：
+//   ① SSR 出一份「构建机本地日期」快照（无 JS 也能看、也能点），缩略图是静态 CSS 渐变条占位；
+//   ② 页面底部加载 /gradient-engine.js 后，按**访客本地日期**重写每张卡的日期/尺寸/链接，
+//      并用 GradientEngine.generate(size, ymd).target 逐格画 <i>，缩略图就是那天的真盘面。
+//      服务端不 import 引擎 TS 模块：缩略图的唯一真源是引擎本身，不在页面里复刻公式。
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import '../../../styles/tokens.css';
+
+const title = 'Huepaw Archive — Past Daily Color Gradient Boards';
+const description =
+  'Replay any of the last 30 Huepaw daily boards. Every past color gradient puzzle is rebuilt from the same daily seed, so each board matches the original day exactly.';
+const canonical = '/huepaw/archive/';
+
+const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+// 与 public/gradient-engine.js 的 DAILY_SIZES 同表（[3,5,4,5,4,5,4]，周日 3×3）
+const DAILY_SIZES = [3, 5, 4, 5, 4, 5, 4];
+const DAYS = 30;
+
+const pad2 = (n: number) => (n < 10 ? `0${n}` : String(n));
+/** 本地 YYYY-MM-DD（本地午夜口径，不用 UTC） */
+const localYmd = (d: Date) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+const dayLabel = (d: Date) => `${WEEKDAYS[d.getDay()]}, ${MONTHS[d.getMonth()]} ${d.getDate()}`;
+
+const buildDay = new Date();
+const buildYmd = localYmd(buildDay);
+
+const cards = Array.from({ length: DAYS }, (_, offset) => {
+  // 用「年月日 - offset」构造：自动跨月/跨年/跨 DST，不会落到错误的一天
+  const d = new Date(buildDay.getFullYear(), buildDay.getMonth(), buildDay.getDate() - offset);
+  const size = DAILY_SIZES[d.getDay()];
+  return {
+    offset,
+    ymd: localYmd(d),
+    label: dayLabel(d),
+    size,
+    isToday: offset === 0,
+    // 无 JS 时的占位渐变条：色相在引擎的 hue 区间（12…301）里按卡片偏移，让 30 张不至于全同
+    hueA: 18 + ((offset * 7) % 24),
+    hueB: 262 + ((offset * 11) % 32),
+  };
+});
+
+const boards = cards.length;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <SEOHead
+    title={title}
+    description={description}
+    canonical={canonical}
+    type="website"
+    image="/og-huepaw.png"
+    breadcrumbTitle="Archive"
+  />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/huepaw/archive/">
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/huepaw/archive/">
+
+  <style is:global>
+    * { box-sizing: border-box; }
+    body {
+      /* 奶油底：本页局部覆盖成 Huepaw 的 #FDF6EC（同属 --gp-cream 家族，不动全站 token） */
+      --gp-cream: #FDF6EC;
+      margin: 0;
+      background: var(--gp-cream);
+      color: var(--gp-brown-900);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; }
+
+    /* 内容列 840px —— SideAd 契约：桌面侧栏只落在 840px 之外 */
+    .hp-main {
+      width: 100%;
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 1.25rem 1rem 3rem;
+      flex: 1;
+    }
+
+    .hp-crumb {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin: 0 0 0.6rem;
+      font-size: var(--fs-tiny);
+      font-weight: 700;
+      color: var(--gp-brown-400);
+    }
+    .hp-crumb a {
+      color: var(--gp-cta-dark);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .hp-crumb a:hover { color: var(--gp-brown-900); }
+
+    h1 {
+      margin: 0 0 0.5rem;
+      font-size: var(--fs-h2);
+      font-weight: var(--fw-title);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--gp-brown-900);
+    }
+    h1 .accent { color: var(--gp-cta); }
+
+    .hp-lede {
+      margin: 0 0 1rem;
+      max-width: 44rem;
+      font-size: var(--fs-body);
+      color: var(--gp-brown-600);
+    }
+
+    .hp-notes {
+      margin: 0 0 1.5rem;
+      padding: 0.75rem 0.9rem;
+      background: var(--gp-cream-warm);
+      border: 1px solid var(--gp-blush);
+      border-radius: var(--r-md);
+      font-size: var(--fs-small);
+      color: var(--gp-brown-600);
+    }
+    .hp-notes strong { color: var(--gp-brown-900); }
+    .hp-notes p { margin: 0; }
+
+    /* 自适应网格：390px 上落 2 列（140×2+间隙 < 内容宽），不横向溢出 */
+    .hp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.85rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .hp-grid > li { display: flex; }
+
+    .hp-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      width: 100%;
+      padding: 0.5rem 0.5rem 0.6rem;
+      background: var(--gp-white);
+      border: 1px solid var(--gp-linen);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--t-fast), box-shadow var(--t-fast), border-color var(--t-fast);
+    }
+    .hp-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--gp-primary-strong);
+      box-shadow: var(--shadow-md);
+    }
+    .hp-card:focus-visible {
+      outline: 3px solid var(--gp-cta);
+      outline-offset: 2px;
+    }
+    .hp-card.is-today {
+      border-color: var(--gp-cta);
+      box-shadow: 0 0 0 2px var(--gp-cta), var(--shadow-md);
+    }
+
+    .hp-thumb-wrap { position: relative; display: block; }
+    .hp-thumb {
+      display: grid;
+      grid-template-columns: repeat(var(--n, 1), 1fr);
+      grid-auto-rows: 1fr;
+      gap: 1px;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: var(--gp-linen);
+      border-radius: var(--r-md);
+      overflow: hidden;
+    }
+    .hp-thumb i { display: block; }
+    /* 无 JS 兜底：一条静态 CSS 渐变条（脚本就绪后被逐格 <i> 替换） */
+    .hp-thumb-bar {
+      grid-column: 1 / -1;
+      grid-row: 1 / -1;
+      background: var(--placeholder, linear-gradient(135deg, hsl(24 64% 78%), hsl(276 60% 50%)));
+    }
+
+    .hp-pill {
+      position: absolute;
+      top: 0.3rem;
+      right: 0.3rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: var(--r-full);
+      background: var(--gp-cta);
+      color: var(--gp-white);
+      font-size: 0.62rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      box-shadow: var(--shadow-sm);
+    }
+    .hp-pill[hidden] { display: none; }
+
+    .hp-card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.35rem;
+    }
+    .hp-card-day {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--gp-brown-900);
+      white-space: nowrap;
+    }
+    .hp-card-size {
+      flex: none;
+      padding: 0.05rem 0.4rem;
+      border: 1px solid var(--gp-linen);
+      border-radius: var(--r-full);
+      background: var(--gp-cream-warm);
+      color: var(--gp-brown-600);
+      font-size: 0.68rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+    .hp-card-cta {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--gp-cta-dark);
+    }
+    .hp-card:hover .hp-card-cta { text-decoration: underline; }
+
+    .hp-cta-box {
+      margin: 2rem 0 0;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      background: linear-gradient(150deg, var(--gp-cream-warm), var(--gp-blush));
+      border: 1px solid var(--gp-linen);
+      border-radius: var(--r-card);
+    }
+    .hp-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      min-height: var(--h-tap);
+      padding: 0.65rem 1.5rem;
+      border-radius: var(--r-full);
+      background: var(--gp-cta);
+      color: var(--gp-white);
+      font-size: var(--fs-body);
+      font-weight: var(--fw-btn);
+      box-shadow: var(--shadow-sm);
+      transition: background var(--t-fast), transform var(--t-fast);
+    }
+    .hp-cta-btn:hover { background: var(--gp-cta-dark); transform: translateY(-1px); }
+    .hp-cta-btn:focus-visible { outline: 3px solid var(--gp-cta-dark); outline-offset: 3px; }
+    .hp-cta-note {
+      margin: 0.85rem 0 0;
+      font-size: var(--fs-small);
+      color: var(--gp-brown-600);
+    }
+
+    .hp-footer {
+      border-top: 1px solid var(--gp-linen);
+      padding: 1.5rem 1rem 2rem;
+      text-align: center;
+      font-size: var(--fs-tiny);
+      color: var(--gp-brown-400);
+    }
+    .hp-footer p { margin: 0 0 0.35rem; }
+    .hp-footer a { color: var(--gp-brown-600); }
+    .hp-footer a:hover { color: var(--gp-cta-dark); text-decoration: underline; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hp-card, .hp-cta-btn { transition: none; }
+      .hp-card:hover, .hp-cta-btn:hover { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <GameNav />
+
+  <main class="hp-main" id="main-content">
+    <nav class="hp-crumb" aria-label="Breadcrumb">
+      <a href="/huepaw/">Huepaw</a>
+      <span aria-hidden="true">/</span>
+      <span>Archive</span>
+    </nav>
+
+    <h1>Huepaw <span class="accent">Archive</span></h1>
+    <p class="hp-lede">
+      Every daily Huepaw board from the last {boards} days, ready to replay. Pick a card to open that day's
+      color gradient puzzle — no account, no download, same board it was on the day it ran.
+    </p>
+
+    <div class="hp-notes">
+      <p>
+        <strong>How the archive works:</strong> a new board appears at midnight in your own time zone, so the
+        cards below are dated by your device's calendar. Board size follows the weekday — Sunday 3×3, Monday
+        5×5, Tuesday 4×4, Wednesday 5×5, Thursday 4×4, Friday 5×5, Saturday 4×4. Hints and peeks reset when you
+        replay, so a past board is a fresh, fair attempt.
+      </p>
+    </div>
+
+    <!-- SSR 快照按构建机本地日期渲染（见 data-build-day）；脚本加载后按访客本地日期重排全部卡片。 -->
+    <ol class="hp-grid" data-build-day={buildYmd} aria-label="Past daily boards">
+      {cards.map((c) => (
+        <li>
+          <a
+            class:list={['hp-card', c.isToday && 'is-today']}
+            href={c.isToday ? '/huepaw/' : `/huepaw/?d=${c.ymd}`}
+            data-archive-card
+            data-offset={c.offset}
+          >
+            <span class="hp-thumb-wrap">
+              <span
+                class="hp-thumb"
+                aria-hidden="true"
+                style={`--placeholder: linear-gradient(135deg, hsl(${c.hueA} 64% 78%), hsl(${c.hueB} 60% 50%))`}
+              ><span class="hp-thumb-bar"></span></span>
+              <span class="hp-pill" hidden={!c.isToday}>Today</span>
+            </span>
+            <span class="hp-card-meta">
+              <time class="hp-card-day" datetime={c.ymd}>{c.label}</time>
+              <span class="hp-card-size">{c.size}×{c.size}</span>
+            </span>
+            <span class="hp-card-cta">{c.isToday ? "Play today's board" : 'Play this board'}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+
+    <section class="hp-cta-box" aria-label="Play today's board">
+      <a class="hp-cta-btn" href="/huepaw/">▶ Play today's board</a>
+      <p class="hp-cta-note">
+        Archive boards are re-generated from the same daily seed, so they match the original day exactly.
+      </p>
+    </section>
+  </main>
+
+  <footer class="hp-footer">
+    <p>
+      <a href="/huepaw/">Huepaw</a> ·
+      <a href="/">GridPaw</a> ·
+      <a href="/privacy/">Privacy</a> ·
+      <a href="/terms/">Terms</a>
+    </p>
+    <p>Huepaw is a GridPaw original. Color gradient puzzles are a general puzzle genre.</p>
+  </footer>
+
+  <!-- 引擎必须先加载：缩略图用它的 target 数组逐格上色（全局 window.GradientEngine） -->
+  <script is:inline src="/gradient-engine.js"></script>
+  <script is:inline>
+    (function () {
+      'use strict';
+
+      var WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      // 引擎 DAILY_SIZES 的同表副本（[3,5,4,5,4,5,4]）：引擎没起来时尺寸徽标仍然正确
+      var DAILY_SIZES = [3, 5, 4, 5, 4, 5, 4];
+
+      function pad2(n) { return n < 10 ? '0' + n : String(n); }
+
+      // 本地午夜口径：本地日期由年月日拼字符串，任何 UTC 序列化都会跨时区错一天
+      function localYmd(date) {
+        return date.getFullYear() + '-' + pad2(date.getMonth() + 1) + '-' + pad2(date.getDate());
+      }
+      function dayLabel(date) {
+        return WEEKDAYS[date.getDay()] + ', ' + MONTHS[date.getMonth()] + ' ' + date.getDate();
+      }
+      function sizeFor(date) {
+        var engine = window.GradientEngine;
+        return engine && engine.dailySize ? engine.dailySize(date) : DAILY_SIZES[date.getDay()];
+      }
+
+      // 逐格画缩略图：一格一个 <i>，background 取 target[i]（第 i 格应有的颜色）
+      function paintThumb(thumb, ymd, size) {
+        var engine = window.GradientEngine;
+        if (!engine || !engine.generate) return; // 兜底：静态渐变条留在原地
+        var puzzle = engine.generate(size, ymd);
+        var cells = '';
+        for (var i = 0; i < puzzle.target.length; i++) {
+          cells += '<i style="background:' + puzzle.target[i] + '"></i>';
+        }
+        thumb.style.setProperty('--n', String(puzzle.size));
+        thumb.innerHTML = cells;
+      }
+
+      var now = new Date();
+      var cards = document.querySelectorAll('[data-archive-card]');
+      for (var i = 0; i < cards.length; i++) {
+        var card = cards[i];
+        var offset = parseInt(card.getAttribute('data-offset'), 10) || 0;
+        var date = new Date(now.getFullYear(), now.getMonth(), now.getDate() - offset);
+        var ymd = localYmd(date);
+        var size = sizeFor(date);
+        var isToday = offset === 0;
+
+        // 今天那张指向 /huepaw/（不带 d），往日那张带 ?d=YYYY-MM-DD
+        card.setAttribute('href', isToday ? '/huepaw/' : '/huepaw/?d=' + ymd);
+        card.classList.toggle('is-today', isToday);
+        if (isToday) card.setAttribute('aria-current', 'date');
+        else card.removeAttribute('aria-current');
+
+        var time = card.querySelector('.hp-card-day');
+        if (time) {
+          time.textContent = dayLabel(date);
+          time.setAttribute('datetime', ymd);
+        }
+        var sizeEl = card.querySelector('.hp-card-size');
+        if (sizeEl) sizeEl.textContent = size + '×' + size;
+        var cta = card.querySelector('.hp-card-cta');
+        if (cta) cta.textContent = isToday ? "Play today's board" : 'Play this board';
+
+        var pill = card.querySelector('.hp-pill');
+        if (pill) {
+          if (isToday) pill.removeAttribute('hidden');
+          else pill.setAttribute('hidden', '');
+        }
+
+        var thumb = card.querySelector('.hp-thumb');
+        if (thumb) paintThumb(thumb, ymd, size);
+      }
+    })();
+  </script>
+</body>
+</html>

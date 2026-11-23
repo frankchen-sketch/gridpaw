@@ -7,12 +7,13 @@ const GAMES = new Set([
   // GET ?game=pictomino 退化成全站混合榜；本次起三处上报统一写 game_results（旧表历史数据不混入新榜）。
   'pictomino', 'murdoku', 'meowdoku',
   'crazy-cleanup', // 2026-10-30 Crazy Cleanup 接入（14 款）
+  'huepaw', // 2026-11-23 Huepaw（每日渐变）接入；3×3 日盘最快真人 ~4s，下限见 DAILY_FLOORS
 ]);
 
 // 每游戏成绩下限（ms）：低于它必须有 24h 内 daily_start 佐证才入库（2026-10-26 加）。
 // 背景：常规关随机盘的关卡快通曾污染 daily 榜（客户端 bug + 幽灵提交 4.0s/1.0s 上了当日最快）。
 // 10×10 akari 真人不可能 <8s；5×5 shikaku daily 最快 ~5s 留余量；pictomino daily 盘 ≥8s。
-const DAILY_FLOORS: Record<string, number> = { shikaku: 5000, akari: 8000, pictomino: 8000 };
+const DAILY_FLOORS: Record<string, number> = { shikaku: 5000, akari: 8000, pictomino: 8000, huepaw: 2500 };
 
 // 双轨兼容：
 //  - 带 game     → 新 game_results，分游戏当日榜（登录用户 + 游客 anonId 都可写，2026-10-22）

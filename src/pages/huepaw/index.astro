@@ -37,6 +37,14 @@ const faqs = [
     a: 'The daily board rolls over at midnight in your own time zone. Because the date is local, players in different time zones get the new board at different moments — there is no single worldwide reset time, and today\'s board is not necessarily the same grid elsewhere.',
   },
   {
+    q: 'Can I play past daily boards?',
+    a: 'Yes. The archive lists the last 30 daily boards, and each one is rebuilt from the same date-based seed the daily board used, so it is the exact grid from that day. Replays are free and every board still comes with three hints.',
+  },
+  {
+    q: 'Is there a leaderboard?',
+    a: 'Each daily board shows its fastest times when you finish — a today-only board, no account needed. Because there is no sign-up, entries are tied to an anonymous device id rather than a name you choose.',
+  },
+  {
     q: 'Is Huepaw free?',
     a: 'Yes. Huepaw runs in your browser with no download, no account and no sign-up. Practice boards and the daily board are both free.',
   },
@@ -556,6 +564,15 @@ const ld = {
     .hw-ticket-meta { display: flex; gap: .5rem; align-items: baseline; font-size: .74rem; color: var(--text-muted); }
     .hw-ticket-meta strong { color: var(--ink); font-size: .82rem; letter-spacing: .02em; }
     .hw-next { margin-top: .45rem; font-size: .78rem; color: var(--text-muted); }
+    /* 连胜 chip（游戏内）+ 胜利弹层的今日榜 */
+    .hw-streak { color: var(--gp-primary-strong, #B45309); font-weight: 700; }
+    .hw-navlink { text-decoration: none; }
+    .hw-rank { margin-top: .5rem; font-size: .78rem; color: var(--text-muted); max-width: 22rem; }
+    .hw-rank-head { font-weight: 700; color: var(--gp-primary-strong, #B45309); }
+    .hw-rank-you { margin: 2px 0 4px; color: var(--ink); }
+    .hw-rank-list { margin: 0; padding-left: 1.1rem; text-align: left; }
+    .hw-rank-list li { margin: 1px 0; }
+    .hw-rank-list b { color: var(--ink); font-variant-numeric: tabular-nums; }
     @media (prefers-reduced-motion: reduce) {
       .hw-flow { display: none; }
       .hw-ticket.reveal { animation: none; }
@@ -643,6 +660,7 @@ const ld = {
         </div>
         <div class="game-actions">
           <button class="hint-btn" id="hw-today" aria-label="Play today's daily board"><span>🌞</span><span class="hint-word">Today</span></button>
+          <a class="hint-btn hw-navlink" id="hw-archive" href="/huepaw/archive/" aria-label="Past daily boards"><span>🗂</span><span class="hint-word">Archive</span></a>
           <button class="hint-btn" id="hw-new" aria-label="New practice board"><span>🔄</span><span class="hint-word">New</span></button>
           <button class="howto-chip" aria-label="How to play" data-gp-rules-btn><span>❓</span>how to play</button>
         </div>
@@ -675,6 +693,7 @@ const ld = {
           <span class="timer">⏱ <span id="hw-timer">0:00</span></span>
           <span id="hw-moves" class="hw-moves">0 swaps</span>
           <span id="hw-progress" class="hw-moves">0 in place</span>
+          <span id="hw-streak" class="hw-moves hw-streak" hidden></span>
         </div>
 
         <div class="hw-board-wrap">
@@ -723,6 +742,7 @@ const ld = {
         </div>
       </div>
       <div class="hw-next" id="hw-next">Next daily board: <strong>midnight, your local time</strong></div>
+      <div class="hw-rank" id="hw-rank" hidden></div>
       <button class="win-btn" id="hw-win-next">Play a practice board →</button>
       <div class="win-share-row">
         <button class="share-btn share-copy" id="hw-share-copy">📋 Copy Result</button>
@@ -763,7 +783,7 @@ const ld = {
     <section class="section prose seo-section" id="huedle" aria-label="Huepaw compared with Huedle">
       <h2>Huepaw and Huedle: What Is Different</h2>
       <p><strong>Huedle</strong> (huedle.uk) is an independent daily color-gradient game. Checked on 2026-11-23, it plays across 4×4 to 8×8, picks the grid size for you from that day's board, swaps by dragging, locks a tile once it is correct (with sound), and adds an archive of past boards, leaderboards and an optional Google sign-in. It is free and, per its own privacy page, runs no ads.</p>
-      <p>Huepaw is GridPaw's own take on the genre rather than a copy: our own generator and boards, plus a few things Huedle does not offer — you choose 3×3, 4×4 or 5×5 in practice mode, every board has a hint, a target peek and a label toggle, and there is nothing to sign up for. What Huepaw does <em>not</em> have yet is an archive, leaderboards or grids larger than 5×5. If you want past boards and score tables, Huedle is the better tool; if you want to pick your own difficulty and get a nudge when you are stuck, stay here.</p>
+      <p>Huepaw is GridPaw's own take on the genre rather than a copy: our own generator and boards, plus a few things Huedle does not offer — you choose 3×3, 4×4 or 5×5 in practice mode, every board has a hint, a target peek and a label toggle, and there is nothing to sign up for. Huepaw also keeps an <a href="/huepaw/archive/">archive of past daily boards</a> (rebuilt from the same date-based seed, so each one matches the day it was played) and shows a today-only fastest-time board when you finish. What it still does <em>not</em> have is grids larger than 5×5.</p>
       <p>Looking for <em>Huedle hints</em> or today's Huedle answer? This page will not solve another site's board for you — it gives you a fresh gradient puzzle of your own, plus the technique that makes any gradient board click: build from the corners inward, keep brightness bands together, and trust the seams.</p>
     </section>
 
@@ -814,6 +834,52 @@ const ld = {
       function localYmd(d) {
         return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
       }
+      /** 某天对应的每日盘尺寸（与引擎 DAILY_SIZES 同表；date 字符串按本地日历解析） */
+      function sizeForYmd(v) {
+        var p = v.split('-').map(Number);
+        return [3, 5, 4, 5, 4, 5, 4][new Date(p[0], p[1] - 1, p[2]).getDay()];
+      }
+      /** 游客键：与服务端 ANON_ID_RE ^anon-[0-9a-fA-F-]{6,70}$ 同口径；优先复用 funnel-track 写的同一个键 */
+      function getAnonId() {
+        try {
+          var a = localStorage.getItem('gp_anon_id');
+          if (a && /^anon-[0-9a-fA-F-]{6,70}$/.test(a)) return a;
+        } catch (e) {}
+        var fresh = 'anon-' + (typeof crypto !== 'undefined' && crypto.randomUUID
+          ? crypto.randomUUID()
+          : Date.now().toString(16) + '-' + Math.random().toString(16).slice(2, 10));
+        try { localStorage.setItem('gp_anon_id', fresh); } catch (e) {}
+        return fresh;
+      }
+      /** 本地连胜：按 huepaw:daily:<YYYY-MM-DD> 记录回扫连续天（今天没玩但昨天解过 → 连胜仍存活） */
+      function streak() {
+        var days = {};
+        try {
+          for (var i = 0; i < localStorage.length; i++) {
+            var k = localStorage.key(i);
+            if (k && k.indexOf('huepaw:daily:') === 0) days[k.slice(13)] = 1; // 'huepaw:daily:' 正好 13 字符
+          }
+        } catch (e) {}
+        var dates = Object.keys(days).sort();
+        var cur = 0, d = new Date();
+        if (!days[localYmd(d)]) d.setDate(d.getDate() - 1);
+        while (days[localYmd(d)]) { cur++; d.setDate(d.getDate() - 1); }
+        var best = 0, run = 0, prev = '';
+        for (var j = 0; j < dates.length; j++) {
+          run = prev && Math.round((new Date(dates[j] + 'T12:00:00') - new Date(prev + 'T12:00:00')) / 86400000) === 1 ? run + 1 : 1;
+          if (run > best) best = run;
+          prev = dates[j];
+        }
+        return { cur: cur, best: best, total: dates.length };
+      }
+      function updateStreakChip() {
+        var el = $('hw-streak');
+        if (!el) return;
+        var s = streak();
+        if (s.cur > 0) { el.hidden = false; el.textContent = '🔥 ' + s.cur + '-day streak'; }
+        else if (s.best > 0) { el.hidden = false; el.textContent = '🔥 best ' + s.best + (s.best === 1 ? ' day' : ' days'); }
+        else { el.hidden = true; }
+      }
 
       var boardEl = $('hw-board'), coverEl = $('hw-cover'), loadEl = $('hw-loading'), stageEl = $('play');
       var movesEl = $('hw-moves'), timerEl = $('hw-timer'), progressEl = $('hw-progress');
@@ -821,6 +887,19 @@ const ld = {
       var playBtn = $('hw-play'), targetEl = $('hw-target'), stripEl = $('hw-target-strip');
       var winEl = $('hw-win'), winDetail = $('hw-win-detail'), ticketEl = $('hw-ticket');
       var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ?d=YYYY-MM-DD → 归档盘：只认过去 60 天内的真实日期（今天等同普通 daily，未来/久远一律忽略） */
+      var archiveId = (function () {
+        var v = null;
+        try { v = new URLSearchParams(location.search).get('d'); } catch (e) {}
+        if (!v || !/^\d{4}-\d{2}-\d{2}$/.test(v)) return null;
+        var p = v.split('-').map(Number);
+        var d = new Date(p[0], p[1] - 1, p[2]);
+        if (isNaN(d.getTime()) || localYmd(d) !== v) return null;
+        var now = new Date();
+        var diff = Math.round((new Date(now.getFullYear(), now.getMonth(), now.getDate()) - d) / 86400000);
+        return (diff > 0 && diff <= 60) ? v : null;
+      })();
 
       var S = {
         engine: null, size: 5, mode: 'daily', id: '', p: null,
@@ -926,16 +1005,24 @@ const ld = {
       function stopTimer() { if (S.tickId) { clearInterval(S.tickId); S.tickId = null; } }
 
       /* ── 开局 ──────────────────────────────────────────────────── */
-      function newPuzzle(mode, size) {
+      function newPuzzle(mode, size, idOverride) {
         S.mode = mode || 'daily';
         var localSizes = [3, 5, 4, 5, 4, 5, 4];
         var now = new Date(); // 尺寸和日期必须来自同一个瞬间（否则本地午夜前后会错配）
-        S.size = size || (S.mode === 'daily'
-          ? (S.engine.dailySize ? S.engine.dailySize(now) : localSizes[now.getDay()])
-          : 5);
-        S.id = S.mode === 'daily'
-          ? (S.engine.dailyId ? S.engine.dailyId(now) : localYmd(now))
-          : 'practice-' + Math.random().toString(36).slice(2, 9);
+        if (S.mode === 'archive' && idOverride) {
+          // 归档盘：日期给定 → 尺寸按那天真实星期的表，盘面由同一 seed 确定性重建（不存任何数据）
+          var ymd = idOverride.split('-').map(Number);
+          var day = new Date(ymd[0], ymd[1] - 1, ymd[2]);
+          S.size = S.engine.dailySize ? S.engine.dailySize(day) : localSizes[day.getDay()];
+          S.id = idOverride;
+        } else {
+          S.size = size || (S.mode === 'daily'
+            ? (S.engine.dailySize ? S.engine.dailySize(now) : localSizes[now.getDay()])
+            : 5);
+          S.id = S.mode === 'daily'
+            ? (S.engine.dailyId ? S.engine.dailyId(now) : localYmd(now))
+            : 'practice-' + Math.random().toString(36).slice(2, 9);
+        }
         S.p = S.engine.generate(S.size, S.id);
         S.board = S.p.board.slice();
         S.initial = S.p.board.slice();
@@ -944,20 +1031,26 @@ const ld = {
         buildTiles(S.size);
         paint(); paintTarget();
         targetEl.hidden = true;
-        var label = S.mode === 'daily' ? 'Daily' : 'Practice';
-        badgeEl.textContent = label + ' · ' + S.size + '×' + S.size;
+        var label = S.mode === 'daily' ? 'Daily' : (S.mode === 'archive' ? 'Archive' : 'Practice');
+        badgeEl.textContent = S.mode === 'archive'
+          ? 'Archive · ' + S.id + ' · ' + S.size + '×' + S.size
+          : label + ' · ' + S.size + '×' + S.size;
         modeNameEl.textContent = label;
-        playBtn.textContent = '▶ Play Today\'s ' + S.size + '×' + S.size + ' Board';
+        playBtn.textContent = S.mode === 'archive'
+          ? '▶ Play the ' + S.id + ' board'
+          : '▶ Play Today\'s ' + S.size + '×' + S.size + ' Board';
         document.querySelectorAll('.diff-btn').forEach(function (b) {
           var on = Number(b.getAttribute('data-size')) === S.size && S.mode === 'practice';
           b.classList.toggle('active', on);
           b.setAttribute('aria-pressed', on ? 'true' : 'false');
         });
         setTimeout(ensureBoardVisible, 450); // 等教学卡/工具行布局落定后再定位一次
-        if (S.mode === 'daily' && store('huepaw:daily:' + S.id)) {
+        updateStreakChip();
+        if (S.mode !== 'practice' && store('huepaw:daily:' + S.id)) {
           try {
             var rec = JSON.parse(store('huepaw:daily:' + S.id));
-            toast('✓ You already solved today\'s board in ' + rec.moves + ' swaps (' + fmtTime(rec.ms) + ')');
+            toast('✓ You already solved ' + (S.mode === 'daily' ? "today's board" : 'this board') +
+              ' in ' + rec.moves + ' swaps (' + fmtTime(rec.ms) + ')');
           } catch (e) {}
         }
       }
@@ -989,7 +1082,7 @@ const ld = {
         } catch (e) {}
       }
 
-      function begin(mode, size) {
+      function begin(mode, size, idOverride) {
         S.userScrolled = false; // 从点击这一刻起，用户任何滚动都优先于我们的自动定位
         autoScrollTarget = -1;  // 上一局的待匹配目标不带进新局
         coverEl.hidden = true;
@@ -1004,13 +1097,16 @@ const ld = {
               stageEl.classList.add('hw-pre');
               return;
             }
-            newPuzzle(mode, size);
+            newPuzzle(mode, size, idOverride);
             track('game_start', { game: 'huepaw', mode: mode, size: S.size });
+            // daily_start 是 /api/leaderboard 成绩下限的佐证事件（<下限必须 24h 内有它）
+            if (mode !== 'practice') track('daily_start', { game: 'huepaw', mode: mode, size: S.size, date: S.id });
           });
           return;
         }
-        newPuzzle(mode, size);
+        newPuzzle(mode, size, idOverride);
         track('game_start', { game: 'huepaw', mode: mode, size: S.size });
+        if (mode !== 'practice') track('daily_start', { game: 'huepaw', mode: mode, size: S.size, date: S.id });
       }
 
       /* ── 交互 ──────────────────────────────────────────────────── */
@@ -1101,10 +1197,67 @@ const ld = {
         ticketEl.classList.remove('reveal');
         setTimeout(function () { ticketEl.classList.add('reveal'); }, reduceMotion ? 0 : 620);
         track('game_won', { game: 'huepaw', size: size, moves: S.moves, seconds: Math.round(ms / 1000), mode: S.mode, hints_used: 3 - S.hints, locked_clicks: S.lockedClicks });
-        if (S.mode === 'daily') {
-          try { store('huepaw:daily:' + S.id, JSON.stringify({ moves: S.moves, ms: ms })); } catch (e) {}
+        if (S.mode !== 'practice') {
+          // 同一盘重玩只留更快的一次（记录同时驱动"今日已解"/连胜）
+          try {
+            var prev = store('huepaw:daily:' + S.id);
+            var prevMs = prev ? (JSON.parse(prev).ms || Infinity) : Infinity;
+            if (ms < prevMs) store('huepaw:daily:' + S.id, JSON.stringify({ moves: S.moves, ms: ms }));
+          } catch (e) {}
+          // daily_solved 是连胜/徽章派生事件（_badges-derive 按日聚合）；归档盘不计连胜
+          if (S.mode === 'daily') track('daily_solved', { game: 'huepaw', size: size, seconds: Math.round(ms / 1000), date: S.id });
+          postResult(ms);
+        } else {
+          $('hw-rank').hidden = true;
         }
+        updateStreakChip();
         win._ms = ms;
+      }
+
+      /* ── 榜单：复用 /api/leaderboard（game=huepaw，日期=盘面日期；游客 anonId 也能上榜） ── */
+      function postResult(ms) {
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(S.id)) return;
+        var payload = { game: 'huepaw', date: S.id, timeMs: Math.round(ms), anonId: getAnonId() };
+        fetch('/api/leaderboard', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(function () { loadRank(ms); }).catch(function () { loadRank(ms); });
+      }
+
+      function loadRank(ms) {
+        var box = $('hw-rank');
+        if (!box) return;
+        var s = streak();
+        var head = s.cur > 0 ? '🔥 ' + s.cur + '-day streak' : 'First board today';
+        fetch('/api/leaderboard?game=huepaw&date=' + encodeURIComponent(S.id) + '&_=' + Date.now())
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (data) {
+            var entries = data && Array.isArray(data.entries) ? data.entries : null;
+            var html = '<div class="hw-rank-head">' + head + '</div>';
+            if (!entries) { box.innerHTML = html; box.hidden = false; return; } // 接口不可达/异常：不冒称名次
+            if (entries.length) {
+              var faster = 0;
+              for (var i = 0; i < entries.length; i++) if (entries[i].timeMs < Math.round(ms)) faster++;
+              var mine = 'Your time ' + fmtTime(ms) + ' · #' + (faster + 1);
+              if (entries.length >= 20 && faster >= 20) mine = 'Your time ' + fmtTime(ms) + ' · outside top 20';
+              html += '<div class="hw-rank-you">' + mine + '</div><ol class="hw-rank-list">';
+              for (var j = 0; j < Math.min(3, entries.length); j++) {
+                var e = entries[j];
+                var nm = String(e.name || 'Anonymous Cat').replace(/[<>&]/g, '');
+                html += '<li>' + nm + (e.guest ? ' · guest' : '') + ' <b>' + fmtTime(e.timeMs) + '</b></li>';
+              }
+              html += '</ol>';
+            } else {
+              html += '<div class="hw-rank-you">Your time ' + fmtTime(ms) + " — first result on this board.</div>";
+            }
+            box.innerHTML = html;
+            box.hidden = false;
+          })
+          .catch(function () {
+            box.innerHTML = '<div class="hw-rank-head">' + head + '</div>';
+            box.hidden = false;
+          });
       }
 
       function shareText() {
@@ -1123,7 +1276,14 @@ const ld = {
       }
 
       /* ── 绑定 ──────────────────────────────────────────────────── */
-      playBtn.addEventListener('click', function () { begin('daily'); });
+      playBtn.addEventListener('click', function () { begin(archiveId ? 'archive' : 'daily', null, archiveId); });
+      if (archiveId) {
+        var coverSub = document.querySelector('.hw-cover-sub');
+        var archSize = sizeForYmd(archiveId);
+        if (coverSub) coverSub.textContent = 'Replaying the ' + archiveId + ' daily board — same tiles as that day.';
+        playBtn.textContent = '▶ Play the ' + archiveId + ' board';
+        badgeEl.textContent = 'Archive · ' + archiveId + ' · ' + archSize + '×' + archSize;
+      }
       $('hw-hint').addEventListener('click', doHint);
       $('hw-peek').addEventListener('click', peek);
       $('hw-restart').addEventListener('click', function () {
@@ -1211,6 +1371,7 @@ const ld = {
           }
           return;
         }
+        if (archiveId) return; // 归档盘封面文案属于那一天，不随今日尺寸刷新
         badgeEl.textContent = 'Daily · ' + size + '×' + size;
         playBtn.textContent = '▶ Play Today\'s ' + size + '×' + size + ' Board';
       }
