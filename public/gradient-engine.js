@@ -22,8 +22,10 @@ var GradientEngine = (() => {
   __export(gradient_engine_exports, {
     buildTarget: () => buildTarget,
     dailyId: () => dailyId,
+    dailySize: () => dailySize,
     generate: () => generate,
     hint: () => hint,
+    isLocked: () => isLocked,
     isSolved: () => isSolved,
     misplacedCount: () => misplacedCount,
     swap: () => swap
@@ -52,6 +54,11 @@ var GradientEngine = (() => {
     const m = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     return `${y}-${m}-${day}`;
+  }
+  var DAILY_SIZES = [3, 5, 4, 5, 4, 5, 4];
+  function dailySize(d) {
+    const date = d || /* @__PURE__ */ new Date();
+    return DAILY_SIZES[date.getDay()];
   }
   function buildTarget(size, seed) {
     const rand = mulberry32(seed);
@@ -100,39 +107,46 @@ var GradientEngine = (() => {
     const board = shuffled(n * n, mulberry32(seed ^ 2654435769));
     return { id, size: n, target, board };
   }
-  function isSolved(p, board) {
-    const b = board || p.board;
-    if (b.length !== p.target.length) return false;
-    for (let i = 0; i < b.length; i++) if (b[i] !== i) return false;
-    return true;
-  }
   function misplacedCount(p, board) {
     const b = board || p.board;
     let wrong = 0;
     for (let i = 0; i < b.length; i++) if (b[i] !== i) wrong++;
     return wrong;
   }
-  function hint(p, board) {
+  function isSolved(p, board) {
     const b = board || p.board;
-    for (let i = 0; i < b.length; i++) {
-      if (b[i] === i) continue;
-      const wanted = i;
-      for (let j = 0; j < b.length; j++) {
-        if (j === i) continue;
-        if (b[j] === wanted && b[i] !== j) return { from: i, to: j };
-      }
-    }
-    const wrong = [];
-    for (let i = 0; i < b.length; i++) if (b[i] !== i) wrong.push(i);
-    if (wrong.length >= 2) return { from: wrong[0], to: wrong[1] };
-    return null;
+    if (b.length !== p.target.length) return false;
+    return misplacedCount(p, b) === 0;
+  }
+  function isLocked(board, cell) {
+    return board[cell] === cell;
   }
   function swap(board, a, b) {
+    if (a === b || isLocked(board, a) || isLocked(board, b)) return board.slice();
     const out = board.slice();
     const tmp = out[a];
     out[a] = out[b];
     out[b] = tmp;
     return out;
+  }
+  function hint(p, board) {
+    const b = board || p.board;
+    const before = misplacedCount(p, b);
+    if (before === 0) return null;
+    const movable = [];
+    for (let i = 0; i < b.length; i++) if (!isLocked(b, i)) movable.push(i);
+    let best = null;
+    for (let a = 0; a < movable.length; a++) {
+      for (let c = a + 1; c < movable.length; c++) {
+        const i = movable[a];
+        const j = movable[c];
+        const after = misplacedCount(p, swap(b, i, j));
+        if (best === null || after < best.wrong) best = { from: i, to: j, wrong: after };
+        if (after === before - 2) return { from: i, to: j };
+      }
+    }
+    if (best && best.wrong < before) return { from: best.from, to: best.to };
+    return null;
   }
   return __toCommonJS(gradient_engine_exports);
 })();

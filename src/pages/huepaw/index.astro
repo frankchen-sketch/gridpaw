@@ -7,40 +7,46 @@ import SideAd from '../../components/SideAd.astro';
 import GameSwitcher from '../../components/GameSwitcher.astro';
 import GameCoach from '../../components/GameCoach.astro';
 
-// ── Huepaw — daily colour-gradient puzzle (GridPaw original) ───────────────
-// Engine: public/gradient-engine.js (global GradientEngine), bundled by
-// scripts/bundle-engine.mjs from src/lib/puzzle-core/gradient-engine.ts.
-// Board model: board[cell] = colourIndex; solved when board[i] === i.
-// Loaded lazily on Play (no engine work on first paint).
-const title = "Huepaw — Daily Color Gradient Puzzle (Free Online)";
-const description = "Play Huepaw, a free daily colour gradient puzzle: swap tiles until the gradient flows again. Huedle-style daily colour puzzle in your browser — no download, no sign-up.";
-const now = new Date();
-const seedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+// ── Huepaw — daily color gradient game (GridPaw original) ─────────────────
+// 目标词（plan-final.md）：主 `color gradient game`（KD 5.6）、辅 `daily color puzzle`
+// （KD 9.7）。刻意不打 `color gradient puzzle` / `gradient puzzle` —— 那两个词的
+// SERP 是实体拼图商品（Amazon / Ravensburger），意图不匹配。
+// 全页美式拼写 color（不是 colour）；meta 不出现 Huedle 品牌词，对比段只在正文。
+// 时区策略：本地午夜换题（不是全球同板）——dailyId/dailySize 都走浏览器本地日期。
+// 引擎：public/gradient-engine.js（global GradientEngine），由
+// scripts/bundle-engine.mjs 从 src/lib/puzzle-core/gradient-engine.ts 编译。
+const title = 'Huepaw — Daily Color Gradient Game';
+const description =
+  'Huepaw is a free daily color puzzle: swap scrambled tiles back into a smooth gradient, with hints, peek and 3 grid sizes. No download, no sign-up.';
 
 const faqs = [
   {
-    q: 'What is a colour gradient puzzle?',
-    a: 'A colour gradient puzzle is a grid of coloured tiles that were shuffled out of a smooth colour ramp. You swap two tiles at a time until every tile sits back where the gradient expects it — top-left lightest, bottom-right deepest, hues flowing left to right.',
+    q: 'What is a color gradient game?',
+    a: 'A color gradient game is a grid of colored tiles that were shuffled out of a smooth color ramp. You swap two tiles at a time until every tile sits back where the gradient expects it — lightest at the top left, deepest at the bottom right, hues flowing left to right.',
   },
   {
-    q: 'Is Huepaw free to play?',
-    a: 'Yes. Huepaw is completely free in your browser, with no download, no account and no payment. There is one shared daily board for everyone plus a practice mode with three grid sizes.',
+    q: 'How do I play Huepaw?',
+    a: 'Tap one tile to pick it up, then tap another tile to swap them. A tile that lands in its home spot locks in place, so you cannot accidentally move it again. Finish the whole board and the gradient flows from corner to corner.',
   },
   {
-    q: 'Is Huepaw the same as Huedle?',
-    a: 'No. Huedle is an independent daily colour-gradient game at huedle.uk. Huepaw is GridPaw\'s own version of the same genre: it plays in your browser, needs no account, and adds grid-size choice, hints, and a practice mode. If you already play Huedle, you will recognise the goal instantly.',
+    q: 'What size is the daily board?',
+    a: 'The size rotates by weekday: Sunday 3×3, Monday 5×5, Tuesday 4×4, Wednesday 5×5, Thursday 4×4, Friday 5×5, Saturday 4×4. Practice mode lets you pick 3×3, 4×4 or 5×5 at any time.',
   },
   {
-    q: 'How many tiles does the daily board have?',
-    a: 'The daily board is 5×5 — 25 tiles. Easy (3×3) and medium (4×4) boards are available any time in practice mode, and the daily board rotates through the three sizes so some days are gentle and some are hard.',
+    q: 'When does a new board appear?',
+    a: 'The daily board rolls over at midnight in your own time zone. Because the date is local, players in different time zones get the new board at different moments — there is no single worldwide reset time, and today\'s board is not necessarily the same grid elsewhere.',
+  },
+  {
+    q: 'Is Huepaw free?',
+    a: 'Yes. Huepaw runs in your browser with no download, no account and no sign-up. Practice boards and the daily board are both free.',
   },
   {
     q: 'Can I play Huepaw on my phone?',
-    a: 'Yes. Tap one tile, then tap the tile you want to swap it with. The board resizes to your screen, and the tile labels toggle gives extra help if two colours look similar to you.',
+    a: 'Yes. Tap one tile, then tap the tile you want to swap it with. The board resizes to your screen, and the label toggle adds a number to every tile if two colors look similar to you.',
   },
   {
-    q: 'Does Huepaw need a new puzzle every day?',
-    a: 'The daily board is generated from the date, so every visitor gets the same board and a new one appears at midnight local time. Practice mode gives you an unlimited supply of random boards.',
+    q: 'What do the hints do?',
+    a: 'A hint points at two tiles that belong swapped right now — swapping that pair always moves at least one tile into its home spot. Peek shows the finished gradient for a few seconds. You get three hints and peeks per board.',
   },
 ];
 
@@ -62,18 +68,11 @@ const ld = {
     },
     {
       '@type': 'WebApplication',
-      name: 'Huepaw — Daily Color Gradient Puzzle',
+      name: 'Huepaw — Daily Color Gradient Game',
       applicationCategory: 'GameApplication',
       operatingSystem: 'Web Browser',
       url: 'https://gridpaw.com/huepaw/',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-    },
-    {
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://gridpaw.com/' },
-        { '@type': 'ListItem', position: 2, name: 'Huepaw', item: 'https://gridpaw.com/huepaw/' },
-      ],
     },
     {
       '@type': 'FAQPage',
@@ -91,7 +90,7 @@ const ld = {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <SEOHead title={title} description={description} canonical="/huepaw/" type="website" />
+  <SEOHead title={title} description={description} canonical="/huepaw/" type="website" image="/og-huepaw.png" />
   <link rel="alternate" hreflang="en" href="https://gridpaw.com/huepaw/">
   <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/huepaw/">
   <script type="application/ld+json" set:html={JSON.stringify(ld)} />
@@ -495,18 +494,32 @@ const ld = {
     }
   </style>
   <style is:global>
-    /* ── Huepaw (colour gradient puzzle) ───────────────────────────────── */
+    /* ── Huepaw (daily color gradient game) ────────────────────────────── */
+    .hw-h1 { font-size: 1.5rem; font-weight: 900; color: var(--ink); text-align: center; margin-bottom: 0.3rem; }
+    .hw-lede { text-align: center; color: var(--text-muted); font-size: 0.95rem; margin: 0 auto 1rem; max-width: 46rem; }
     .hw-stage { position: relative; }
-    .hw-board-wrap { display: flex; justify-content: center; margin: 0.6rem 0 0.4rem; }
-    .hw-board { display: grid; gap: 8px; width: min(100%, 430px); aspect-ratio: 1; padding: 8px; background: #FBF6EC; border: 2px solid var(--border); border-radius: 18px; }
+    /* .game-stage 是 flex column + align-items:center，子项会缩成内容宽 → 必须显式拉满 */
+    .hw-board-wrap { position: relative; display: flex; justify-content: center; width: 100%; flex: 0 0 auto; margin: 0.6rem 0 0.4rem; }
+    .hw-pre .game-meta-row, .hw-pre .hw-tools { visibility: hidden; }
+    /* 开局前不展示教学卡（先看封面→点 Play→教学从第 1 步开始），一屏能容下棋盘 */
+    .hw-pre .gp-coach-host { display: none; }
+    .hw-board { display: grid; gap: 8px; width: 100%; max-width: 430px; aspect-ratio: 1; padding: 8px; background: #FBF6EC; border: 2px solid var(--border); border-radius: 18px; }
     .hw-tile { position: relative; border: 0; border-radius: 10px; cursor: pointer; padding: 0; min-width: 0; box-shadow: inset 0 0 0 1px rgba(0,0,0,.07); transition: transform .12s ease, box-shadow .12s ease; }
     .hw-tile:focus-visible { outline: 3px solid var(--gp-primary-strong, #B45309); outline-offset: 2px; }
     .hw-tile.sel { transform: scale(.9); box-shadow: 0 0 0 3px #fff, 0 0 0 6px var(--gp-primary-strong, #B45309); z-index: 2; }
-    .hw-tile.hint-a, .hw-tile.hint-b { animation: hwPulse .9s ease-in-out infinite; z-index: 2; }
+    /* 提示：静态描边打底（prefers-reduced-motion 下也能看出是哪两块），脉冲只作增强 */
+    .hw-tile.hint-a, .hw-tile.hint-b { box-shadow: 0 0 0 3px #fff, 0 0 0 6px var(--gp-primary-strong, #B45309); z-index: 2; animation: hwPulse .9s ease-in-out infinite; }
     @keyframes hwPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); } 50% { box-shadow: 0 0 0 4px rgba(255,255,255,.95), 0 0 0 7px rgba(0,0,0,.18); } }
+    /* 锁定标记不靠颜色：内圈虚线圈 + 右上 ✓，色盲/低对比下同样可辨识 */
+    .hw-tile.locked { cursor: default; }
+    .hw-tile.locked::after { content: ''; position: absolute; inset: 4px; border: 2px dashed rgba(255,255,255,.85); border-radius: 7px; pointer-events: none; }
+    .hw-tile.locked .hw-lock { position: absolute; top: 2px; right: 4px; font-size: 11px; line-height: 1; color: #fff; text-shadow: 0 0 3px rgba(0,0,0,.55); opacity: 1; }
+    .hw-tile .hw-lock { opacity: 0; pointer-events: none; }
+    .hw-tile.just-locked { animation: hwLockPop .45s ease; }
+    @keyframes hwLockPop { 0% { transform: scale(1.08); } 60% { transform: scale(.96); } 100% { transform: scale(1); } }
     .hw-tile .hw-idx { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: .7rem; font-weight: 800; color: rgba(255,255,255,.92); text-shadow: 0 0 2px rgba(0,0,0,.45); opacity: 0; pointer-events: none; }
     .hw-board.show-labels .hw-tile .hw-idx { opacity: 1; }
-    .hw-target { margin: .4rem auto .2rem; width: min(100%, 430px); }
+    .hw-target { margin: .4rem auto .2rem; width: 100%; max-width: 430px; flex: 0 0 auto; }
     .hw-target[hidden] { display: none; }
     .hw-target-label { font-size: .72rem; color: var(--text-muted); display: block; margin-bottom: 4px; }
     .hw-target-strip { display: grid; grid-auto-flow: column; gap: 2px; height: 22px; border-radius: 8px; overflow: hidden; }
@@ -518,20 +531,48 @@ const ld = {
     .hw-tool.disabled, .hw-tool:disabled { opacity: .45; cursor: not-allowed; }
     .hw-cost { color: var(--text-muted); font-weight: 600; }
     .hw-moves { font-size: .85rem; color: var(--text-muted); }
-    .hw-cover { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .55rem; padding: 1rem; text-align: center; background: rgba(248,246,239,.97); border-radius: 16px; z-index: 5; }
+    /* 封面与棋盘同框：宽度对齐 board 的 430 上限，桌面端不会摊成一整条 */
+    .hw-cover { position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .45rem; padding: .8rem; text-align: center; background: rgba(248,246,239,.97); border-radius: 16px; z-index: 5; }
     .hw-cover[hidden] { display: none; }
     .hw-cover-title { font-size: 1.4rem; font-weight: 900; color: var(--ink); letter-spacing: .01em; }
     .hw-cover-sub { font-size: .86rem; color: var(--text-muted); max-width: 24rem; margin: 0; }
-    .hw-cover-tags { font-size: .72rem; color: var(--text-muted); }
+    .hw-cover-tags { display: flex; flex-wrap: wrap; gap: .3rem .6rem; justify-content: center; font-size: .72rem; color: var(--text-muted); }
+    .hw-cover-tags span { border: 1px solid var(--border); border-radius: 999px; padding: .1rem .5rem; }
     .hw-play { animation: hwFloat 2.6s ease-in-out infinite; }
     @keyframes hwFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-    .hw-loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: .5rem; font-size: .9rem; color: var(--text-muted); background: rgba(248,246,239,.93); border-radius: 16px; z-index: 6; }
+    .hw-loading { position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; border-radius: 16px; display: flex; align-items: center; justify-content: center; gap: .5rem; font-size: .9rem; color: var(--text-muted); background: rgba(248,246,239,.93); border-radius: 16px; z-index: 6; }
     .hw-loading[hidden] { display: none; }
     .hw-spinner { width: 18px; height: 18px; border-radius: 50%; border: 3px solid #E8DCC8; border-top-color: var(--gp-primary-strong, #B45309); animation: hwSpin .8s linear infinite; display: inline-block; }
     @keyframes hwSpin { to { transform: rotate(360deg); } }
+    /* 通关：对角线色流（唯一记忆点）→ 色票卡 */
+    .hw-flow { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,0) 38%, rgba(255,255,255,.85) 50%, rgba(255,255,255,0) 62%, transparent 100%); background-size: 300% 300%; }
+    .win-overlay.show .hw-flow { animation: hwFlow .62s ease-out 1; }
+    @keyframes hwFlow { 0% { opacity: .9; background-position: 100% 100%; } 100% { opacity: 0; background-position: 0% 0%; } }
+    .hw-ticket { display: none; flex-direction: column; gap: .25rem; align-items: center; margin-top: .55rem; padding: .5rem .7rem .55rem; background: #fff; border: 2px solid var(--border); border-radius: 12px; box-shadow: 0 6px 16px rgba(60,40,20,.10); }
+    .hw-ticket.reveal { display: flex; animation: hwTicketIn .35s ease-out; }
+    @keyframes hwTicketIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .hw-ticket-strip { display: grid; grid-auto-flow: column; gap: 2px; height: 26px; width: 190px; border-radius: 6px; overflow: hidden; }
+    .hw-ticket-strip i { display: block; }
+    .hw-ticket-meta { display: flex; gap: .5rem; align-items: baseline; font-size: .74rem; color: var(--text-muted); }
+    .hw-ticket-meta strong { color: var(--ink); font-size: .82rem; letter-spacing: .02em; }
+    .hw-next { margin-top: .45rem; font-size: .78rem; color: var(--text-muted); }
+    @media (prefers-reduced-motion: reduce) {
+      .hw-flow { display: none; }
+      .hw-ticket.reveal { animation: none; }
+      .hw-play, .hw-tile.hint-a, .hw-tile.hint-b, .hw-tile.just-locked { animation: none; }
+      .hw-tile.hint-a, .hw-tile.hint-b { box-shadow: 0 0 0 3px #fff, 0 0 0 6px var(--gp-primary-strong, #B45309); }
+    }
     @media (max-width: 480px) {
       .hw-board { gap: 6px; padding: 6px; }
       .hw-tile .hw-idx { font-size: .58rem; }
+      .hw-tile.locked .hw-lock { font-size: 9px; top: 1px; right: 3px; }
+      .hw-h1 { font-size: 1.22rem; }
+      .hw-cover img { width: 52px !important; height: 52px !important; }
+      .hw-cover-title { font-size: 1.15rem; }
+      .hw-cover-sub { font-size: .78rem; max-width: 17rem; }
+      .hw-cover-tags { font-size: .66rem; gap: .25rem .4rem; }
+      .hw-play { padding: .45rem 1.1rem; font-size: .92rem; }
+      .hw-cover-tags { display: none; }
     }
   </style>
 
@@ -549,10 +590,10 @@ const ld = {
 <header class="site-header">
   <div class="header-inner">
     <a href="/huepaw/" class="brand" aria-label="GridPaw home">
-      <span class="brand-logo"><img src="/assets/logo.png" alt="GridPaw cat mascot — daily colour gradient puzzle" width="40" height="40" /></span>
+      <span class="brand-logo"><img src="/assets/logo.png" alt="GridPaw cat mascot — daily color gradient game" width="40" height="40" /></span>
       <span class="brand-name">
         <span class="big">GridPaw</span>
-        <span class="small">Colour Gradient Puzzle</span>
+        <span class="small">Daily Color Gradient Game</span>
       </span>
     </a>
     <nav class="nav" aria-label="Main navigation">
@@ -585,48 +626,46 @@ const ld = {
   </div>
 </div>
 
-
 <!-- ═══════════ Main ═══════════ -->
 <div class="shell">
   <main class="main" id="main-content">
 
-    <h1 style="font-size:1.5rem;font-weight:900;color:var(--ink);text-align:center;margin-bottom:0.3rem">Daily Color Gradient Puzzle</h1>
-    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">Huepaw is GridPaw's free daily colour-gradient puzzle — swap tiles until the gradient flows again. No download, no sign-up.</p>
+    <h1 class="hw-h1">Huepaw — Daily Color Gradient Game</h1>
+    <p class="hw-lede">A free daily color puzzle: swap the scrambled tiles back into a smooth gradient. Play in your browser — no download, no sign-up.</p>
 
-    <section id="play" class="card game-card" aria-label="Huepaw colour gradient puzzle">
+    <section id="play" class="card game-card hw-pre" aria-label="Huepaw color gradient puzzle">
       <div class="game-topbar">
         <span class="level-badge">
-          <span class="difficulty-badge badge-easy" id="hw-badge">Daily · 5×5</span>
+          <span class="difficulty-badge badge-easy" id="hw-badge">Today's board</span>
         </span>
         <div class="game-center-info">
           <div class="level-title" id="hw-title">Huepaw <span id="hw-mode-name">Daily</span></div>
         </div>
         <div class="game-actions">
-          <button class="hint-btn" id="hw-hint" aria-label="Hint"><span>💡</span><span class="hint-word">Hint</span><span class="hint-count" id="hw-hint-count">(3)</span></button>
-          <button class="hint-btn" id="hw-new" aria-label="New puzzle"><span>🔄</span><span class="hint-word">New</span></button>
-          <button class="hint-btn" id="hw-restart" aria-label="Restart"><span>↩️</span><span class="hint-word">Restart</span></button>
+          <button class="hint-btn" id="hw-today" aria-label="Play today's daily board"><span>🌞</span><span class="hint-word">Today</span></button>
+          <button class="hint-btn" id="hw-new" aria-label="New practice board"><span>🔄</span><span class="hint-word">New</span></button>
           <button class="howto-chip" aria-label="How to play" data-gp-rules-btn><span>❓</span>how to play</button>
         </div>
       </div>
 
-      <div class="diff-row" role="group" aria-label="Grid size">
+      <div class="diff-row" role="group" aria-label="Practice grid size">
         <button class="diff-btn" data-size="3" aria-pressed="false">Easy <span>3×3</span></button>
         <button class="diff-btn" data-size="4" aria-pressed="false">Medium <span>4×4</span></button>
-        <button class="diff-btn active" data-size="5" aria-pressed="true">Hard <span>5×5</span></button>
+        <button class="diff-btn" data-size="5" aria-pressed="false">Hard <span>5×5</span></button>
       </div>
 
       <GameCoach
         game="huepaw"
         steps={[
           'Tap a tile, then tap the tile you want to swap it with.',
-          'The finished board is a smooth gradient: light top-left, deep bottom-right.',
-          'Stuck? Use a hint — it points at two tiles that belong swapped.',
+          'A tile that lands home locks in place — it cannot move again.',
+          'Fill the board so the gradient flows light top-left to deep bottom-right.',
         ]}
         rules={[
-          { ic: '1', text: 'Every tile belongs in exactly <b>one</b> place in the gradient.' },
+          { ic: '1', text: 'Every tile belongs to exactly <b>one</b> spot in the gradient.' },
           { ic: '2', text: 'Tap one tile to pick it up, tap another to <b>swap</b> them.' },
-          { ic: '3', text: 'Hue flows left → right, brightness falls top → bottom.' },
-          { ic: '4', text: 'Solve the whole board to finish — hints and peeks are limited to 3.' },
+          { ic: '3', text: 'Correct tiles <b>lock</b> with a ✓ — locked tiles can’t be moved.' },
+          { ic: '4', text: 'Hue flows left → right, brightness falls top → bottom. 3 hints per board.' },
         ]}
         rulesTitle="How to play Huepaw"
       />
@@ -635,32 +674,35 @@ const ld = {
         <div class="game-meta-row">
           <span class="timer">⏱ <span id="hw-timer">0:00</span></span>
           <span id="hw-moves" class="hw-moves">0 swaps</span>
+          <span id="hw-progress" class="hw-moves">0 in place</span>
         </div>
 
         <div class="hw-board-wrap">
-          <div class="hw-board" id="hw-board" role="grid" aria-label="Colour gradient board"></div>
+          <div class="hw-board" id="hw-board" role="grid" aria-label="Color gradient board"></div>
+        <!-- 开始卡片（三态之一：封面 → 加载 → 游戏，同尺寸不跳版；JS 前显示静态文案） -->
+        <div class="hw-cover" id="hw-cover">
+          <img src="/assets/logo.png" alt="GridPaw cat mascot" width="72" height="72" style="border-radius:18px;box-shadow:0 8px 20px rgba(212,122,80,.28)">
+          <div class="hw-cover-title">Huepaw</div>
+          <p class="hw-cover-sub">Swap scrambled tiles back into a smooth gradient. A fresh daily color puzzle every day.</p>
+          <button class="win-btn hw-play" id="hw-play" type="button">▶ Play today's board</button>
+          <div class="hw-cover-tags"><span>Daily rotation + Practice</span><span>Hint · Peek · Labels</span><span>No sign-up</span></div>
+        </div>
+
+        <div class="hw-loading" id="hw-loading" hidden><span class="hw-spinner"></span>Loading board…</div>
         </div>
 
         <div class="hw-target" id="hw-target" hidden>
-          <span class="hw-target-label">Target gradient (top row = top of the board)</span>
+          <span class="hw-target-label">Target gradient — top row is the top of the board</span>
           <div class="hw-target-strip" id="hw-target-strip"></div>
         </div>
 
         <div class="hw-tools">
-          <button class="hw-tool" id="hw-peek" type="button">👀 Peek at target <span class="hw-cost">1 hint</span></button>
+          <button class="hw-tool" id="hw-hint" type="button">💡 Hint <span class="hw-cost" id="hw-hint-count">3 left</span></button>
+          <button class="hw-tool" id="hw-peek" type="button">👀 Peek <span class="hw-cost">1 hint</span></button>
           <button class="hw-tool" id="hw-labels" type="button" aria-pressed="false"># Labels off</button>
+          <button class="hw-tool" id="hw-restart" type="button">↩︎ Restart</button>
         </div>
 
-        <!-- 开始卡片（三态之一：封面 → 加载 → 游戏，同尺寸不跳版） -->
-        <div class="hw-cover" id="hw-cover">
-          <img src="/assets/logo.png" alt="GridPaw cat mascot" width="72" height="72" style="border-radius:18px;box-shadow:0 8px 20px rgba(212,122,80,.28)">
-          <div class="hw-cover-title">Huepaw</div>
-          <p class="hw-cover-sub">Rebuild the gradient — one new board every day.</p>
-          <button class="win-btn hw-play" id="hw-play" type="button">▶ Play today's puzzle</button>
-          <div class="hw-cover-tags">Daily board • 3 sizes • Free forever</div>
-        </div>
-
-        <div class="hw-loading" id="hw-loading" hidden><span class="hw-spinner"></span>Loading board…</div>
       </div>
     </section>
 
@@ -669,10 +711,19 @@ const ld = {
     <!-- Win Overlay -->
     <div class="win-overlay" id="hw-win">
       <div class="win-glow"></div>
-      <div class="win-cat"><img src="/assets/logo.png" alt="GridPaw" style="width:120px;height:120px;border-radius:24px;box-shadow:0 8px 24px rgba(212,122,80,.35)"></div>
-      <div class="win-text">🎉 Gradient restored!</div>
-      <div class="win-sub" id="hw-win-detail">25 tiles in 18 swaps</div>
-      <button class="win-btn" id="hw-win-next">New board →</button>
+      <div class="hw-flow" id="hw-flow" aria-hidden="true"></div>
+      <div class="win-cat"><img src="/assets/logo.png" alt="GridPaw" style="width:110px;height:110px;border-radius:24px;box-shadow:0 8px 24px rgba(212,122,80,.35)"></div>
+      <div class="win-text">Gradient restored!</div>
+      <div class="win-sub" id="hw-win-detail">16 tiles · 21 swaps · 1:42</div>
+      <div class="hw-ticket" id="hw-ticket" aria-label="Your result card">
+        <div class="hw-ticket-strip" id="hw-ticket-strip"></div>
+        <div class="hw-ticket-meta">
+          <strong id="hw-ticket-date">2026-11-23</strong>
+          <span id="hw-ticket-size">4×4 · 21 swaps</span>
+        </div>
+      </div>
+      <div class="hw-next" id="hw-next">Next daily board: <strong>midnight, your local time</strong></div>
+      <button class="win-btn" id="hw-win-next">Play a practice board →</button>
       <div class="win-share-row">
         <button class="share-btn share-copy" id="hw-share-copy">📋 Copy Result</button>
         <button class="share-btn share-twitter" id="hw-share-twitter">𝕏 Share</button>
@@ -687,32 +738,33 @@ const ld = {
 
     <!-- ═══════════ SEO Content ═══════════ -->
     <section class="section prose seo-section" id="how-to-play" aria-label="How to play Huepaw">
-      <h2>How to Play the Colour Gradient Puzzle</h2>
-      <p>Huepaw takes a perfectly smooth colour ramp — hue running left to right, brightness running top to bottom — and shuffles every tile out of place. Your job is to put the gradient back together. It is the same idea behind <strong>Huedle</strong> and other daily colour-sorting games, built here as a browser puzzle you can pick up anywhere.</p>
+      <h2>How to Play This Color Gradient Game</h2>
+      <p>Huepaw takes a smooth color ramp — hue running left to right, brightness running top to bottom — and shuffles every tile out of place. Your job is to put the gradient back together. It is the same core idea as other daily color-sorting games, built here as a browser game you can pick up in one tap.</p>
       <ol>
         <li><strong>Pick up a tile</strong> — tap or click it once. It lifts and glows so you know it is selected.</li>
-        <li><strong>Swap it</strong> — tap any other tile. The two exchange places. Tapping the same tile again cancels the selection.</li>
-        <li><strong>Watch the flow</strong> — correct neighbours blend into each other. A seam between two tiles means at least one of them is in the wrong place.</li>
-        <li><strong>Finish the board</strong> — when every tile sits in its home spot the gradient is seamless and the board clears.</li>
+        <li><strong>Swap it</strong> — tap any unlocked tile. The two exchange places; tapping the same tile again cancels.</li>
+        <li><strong>Watch the lock</strong> — a tile that lands in its home spot locks with a ✓ and cannot be moved again, so a good placement never gets undone by a stray tap.</li>
+        <li><strong>Finish the board</strong> — when every tile is home, the gradient runs seamlessly corner to corner and the board clears.</li>
       </ol>
-      <p>Each board is generated from its date, so the daily puzzle is identical for every player and changes at midnight. Practice mode gives you an unlimited stream of random boards in 3×3, 4×4 or 5×5.</p>
+      <p>The daily board is built from your local date, so a new one appears at midnight your time. Practice mode offers an unlimited supply of boards in 3×3, 4×4 and 5×5.</p>
     </section>
 
     <section class="section prose seo-section" id="tips" aria-label="Tips and strategy">
-      <h2>Tips for Solving a Gradient Puzzle Faster</h2>
+      <h2>Tips for Solving a Daily Color Puzzle Faster</h2>
       <ul>
-        <li><strong>Corner first.</strong> The four corners are the most extreme colours — lightest, deepest, and the two hue endpoints. Placing them halves the search space immediately.</li>
-        <li><strong>Work one row at a time.</strong> Brightness is constant across a row in this variant, so all tiles in the top row belong to the same lightness band. Sort the row, then move down.</li>
+        <li><strong>Corner first.</strong> The four corners are the most extreme colors — lightest, deepest, and the two hue endpoints. Placing them halves the search space immediately.</li>
+        <li><strong>Work one row at a time.</strong> Brightness is constant across a row, so all tiles in the top row belong to the same lightness band. Sort the row, then move down.</li>
         <li><strong>Follow the seam.</strong> Two tiles that blend perfectly are probably neighbours in the final layout. Build small correct clusters instead of hunting single tiles.</li>
-        <li><strong>Use hints on the last five tiles.</strong> A hint shows two tiles that belong swapped — late in the game that saves more time than it does at the start.</li>
-        <li><strong>Turn labels on in low light.</strong> Numbers give every tile a stable identity, which also helps if you have colour-vision deficiency.</li>
+        <li><strong>Spend hints late.</strong> A hint names two tiles that belong swapped right now, which saves the most time when only a handful of tiles are left.</li>
+        <li><strong>Turn labels on in low light.</strong> Numbers give every tile a stable identity, which also helps if you have color-vision deficiency.</li>
       </ul>
     </section>
 
-    <section class="section prose seo-section" id="huedle" aria-label="Huepaw vs Huedle">
-      <h2>Is This the Same as Huedle?</h2>
-      <p><strong>Huedle</strong> (huedle.uk) is an independent daily colour-gradient game — a small, ad-free personal project that swaps tiles until a gradient is restored, with a new board each day. Huepaw is GridPaw's own take on that genre rather than a copy of it: same core idea, our own generator, our own boards, and extra modes (three grid sizes, hints, target peek, colour-blind labels, practice mode).</p>
-      <p>If you came here looking for <em>huedle hints</em>, <em>huedle answer today</em> or a <em>huedle alternative</em>, the short answer is: Huepaw will not give you the daily solution for another site's board — it gives you a fresh gradient puzzle of your own, plus the technique that makes any gradient board click: build from the corners inward, keep brightness bands together, and trust the seams.</p>
+    <section class="section prose seo-section" id="huedle" aria-label="Huepaw compared with Huedle">
+      <h2>Huepaw and Huedle: What Is Different</h2>
+      <p><strong>Huedle</strong> (huedle.uk) is an independent daily color-gradient game. Checked on 2026-11-23, it plays across 4×4 to 8×8, picks the grid size for you from that day's board, swaps by dragging, locks a tile once it is correct (with sound), and adds an archive of past boards, leaderboards and an optional Google sign-in. It is free and, per its own privacy page, runs no ads.</p>
+      <p>Huepaw is GridPaw's own take on the genre rather than a copy: our own generator and boards, plus a few things Huedle does not offer — you choose 3×3, 4×4 or 5×5 in practice mode, every board has a hint, a target peek and a label toggle, and there is nothing to sign up for. What Huepaw does <em>not</em> have yet is an archive, leaderboards or grids larger than 5×5. If you want past boards and score tables, Huedle is the better tool; if you want to pick your own difficulty and get a nudge when you are stuck, stay here.</p>
+      <p>Looking for <em>Huedle hints</em> or today's Huedle answer? This page will not solve another site's board for you — it gives you a fresh gradient puzzle of your own, plus the technique that makes any gradient board click: build from the corners inward, keep brightness bands together, and trust the seams.</p>
     </section>
 
     <section class="section prose seo-section" id="faq" aria-label="Frequently asked questions">
@@ -727,10 +779,9 @@ const ld = {
   </main>
 </div>
 
-<!-- ═══════════ Footer ═══════════ -->
 <footer class="site-footer">
-  <img src="/og-default.png" alt="GridPaw — Free Binary Puzzle Game" width="1200" height="630" style="max-width:200px;height:auto;margin:0 auto 1rem;border-radius:0.5rem" loading="lazy">
-  <p><a href="/binary/">GridPaw</a> · Free Binary Puzzle (Takuzu) Game in Your Browser</p>
+  <img src="/og-huepaw.png" alt="Huepaw — daily color gradient game by GridPaw" width="1200" height="630" style="max-width:200px;height:auto;margin:0 auto 1rem;border-radius:0.5rem" loading="lazy">
+  <p><a href="/huepaw/">Huepaw</a> · A free daily color gradient game in your browser</p>
   <p style="margin-top:0.5rem">
     <a href="/">Shikaku</a> ·
     <a href="/akari/">Akari</a> ·
@@ -738,9 +789,10 @@ const ld = {
     <a href="/nonogram/">Nonogram</a> ·
     <a href="/nurikabe/">Nurikabe</a> ·
     <a href="/pictomino/">Pictomino</a> ·
-    <a href="/kenken/">KenKen</a>
+    <a href="/kenken/">KenKen</a> ·
+    <a href="/meowdoku/">Meowdoku</a>
   </p>
-  <p class="legal-note">Takuzu® and Binairo® are acknowledged trademarks of their respective owners. GridPaw is not affiliated with any official Takuzu or Binairo publisher. This puzzle is also known as a Binary Logic Puzzle.</p>
+  <p class="legal-note">Huepaw is a GridPaw original. Huedle is an independent game at huedle.uk; GridPaw is not affiliated with it. Color gradient puzzles are a general puzzle genre — no trademark is claimed over the game mechanic.</p>
   <p style="margin-top:0.75rem">© 2026 GridPaw. All rights reserved.</p>
 </footer>
 
@@ -758,34 +810,34 @@ const ld = {
       }
       function $(id) { return document.getElementById(id); }
       function pad(n) { return n < 10 ? '0' + n : '' + n; }
+      /** 本地 YYYY-MM-DD（引擎缺 dailyId 时的兜底；toISOString 是 UTC，会破本地午夜承诺） */
+      function localYmd(d) {
+        return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+      }
 
-      var boardEl = $('hw-board'), coverEl = $('hw-cover'), loadEl = $('hw-loading');
-      var movesEl = $('hw-moves'), timerEl = $('hw-timer'), hintCountEl = $('hw-hint-count');
-      var badgeEl = $('hw-badge'), modeNameEl = $('hw-mode-name'), targetEl = $('hw-target'), stripEl = $('hw-target-strip');
-      var winEl = $('hw-win'), winDetail = $('hw-win-detail');
+      var boardEl = $('hw-board'), coverEl = $('hw-cover'), loadEl = $('hw-loading'), stageEl = $('play');
+      var movesEl = $('hw-moves'), timerEl = $('hw-timer'), progressEl = $('hw-progress');
+      var hintCountEl = $('hw-hint-count'), badgeEl = $('hw-badge'), modeNameEl = $('hw-mode-name');
+      var playBtn = $('hw-play'), targetEl = $('hw-target'), stripEl = $('hw-target-strip');
+      var winEl = $('hw-win'), winDetail = $('hw-win-detail'), ticketEl = $('hw-ticket');
+      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       var S = {
         engine: null, size: 5, mode: 'daily', id: '', p: null,
         board: [], initial: [], sel: -1, moves: 0, hints: 3,
-        t0: 0, tickId: null, over: false, firstMove: false, started: false
+        t0: 0, tickId: null, over: false, firstMove: false, lockedClicks: 0
       };
+      var hintTimer = null;
 
-      function todayId() {
-        var d = new Date();
-        return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
-      }
-      function dailySize() {
-        // 周日 3×3、周三/周六 4×4，其余 5×5 —— 每天难度有起伏（文案里已写「轮换」）
-        var dow = new Date().getDay();
-        return [3, 5, 4, 5, 4, 5, 4][dow];
+      function store(key, val) {
+        try {
+          if (val === undefined) return localStorage.getItem(key);
+          localStorage.setItem(key, val);
+        } catch (e) { return null; }
       }
       function fmtTime(ms) {
         var s = Math.max(0, Math.floor(ms / 1000));
-        var m = Math.floor(s / 60);
-        return m + ':' + pad(s % 60);
-      }
-      function store(key, val) {
-        try { if (val === undefined) return localStorage.getItem(key); localStorage.setItem(key, val); } catch (e) { return null; }
+        return Math.floor(s / 60) + ':' + pad(s % 60);
       }
 
       /* ── 引擎懒加载 ─────────────────────────────────────────────── */
@@ -811,22 +863,28 @@ const ld = {
           b.className = 'hw-tile';
           b.setAttribute('data-i', String(i));
           b.setAttribute('role', 'gridcell');
-          b.innerHTML = '<span class="hw-idx"></span>';
+          b.innerHTML = '<span class="hw-lock"></span><span class="hw-idx"></span>';
           boardEl.appendChild(b);
         }
       }
       function paint() {
-        var kids = boardEl.children;
+        var kids = boardEl.children, home = 0;
         for (var i = 0; i < kids.length; i++) {
           var tile = kids[i];
-          var c = S.p.target[S.board[i]];
-          tile.style.background = c;
+          var c = S.board[i];
+          var locked = c === i;
+          if (locked) home++;
+          tile.style.background = S.p.target[c];
+          tile.classList.toggle('locked', locked);
           tile.classList.toggle('sel', S.sel === i);
-          tile.querySelector('.hw-idx').textContent = String(S.board[i] + 1);
-          tile.setAttribute('aria-label', 'Tile ' + (i + 1) + ' of ' + S.board.length + ', colour ' + (S.board[i] + 1) + (S.board[i] === i ? ', correct' : ''));
+          tile.setAttribute('aria-disabled', locked ? 'true' : 'false');
+          tile.querySelector('.hw-lock').textContent = locked ? '✓' : '';
+          tile.querySelector('.hw-idx').textContent = String(c + 1);
+          tile.setAttribute('aria-label', 'Tile ' + (i + 1) + ' of ' + S.board.length + ', color ' + (c + 1) + (locked ? ', locked in place' : ''));
         }
         movesEl.textContent = S.moves + (S.moves === 1 ? ' swap' : ' swaps');
-        hintCountEl.textContent = '(' + S.hints + ')';
+        progressEl.textContent = home + ' in place';
+        hintCountEl.textContent = S.hints + ' left';
         $('hw-hint').classList.toggle('disabled', S.hints <= 0);
         $('hw-peek').classList.toggle('disabled', S.hints <= 0);
       }
@@ -843,56 +901,93 @@ const ld = {
       function startTimer() {
         if (S.tickId) return;
         S.t0 = Date.now();
-        S.tickId = setInterval(function () {
-          timerEl.textContent = fmtTime(Date.now() - S.t0);
-        }, 500);
+        S.tickId = setInterval(function () { timerEl.textContent = fmtTime(Date.now() - S.t0); }, 500);
       }
       function stopTimer() { if (S.tickId) { clearInterval(S.tickId); S.tickId = null; } }
 
       /* ── 开局 ──────────────────────────────────────────────────── */
       function newPuzzle(mode, size) {
         S.mode = mode || 'daily';
-        S.size = size || (S.mode === 'daily' ? dailySize() : 5);
-        S.id = S.mode === 'daily' ? todayId() : 'practice-' + Math.random().toString(36).slice(2, 9);
+        var localSizes = [3, 5, 4, 5, 4, 5, 4];
+        var now = new Date(); // 尺寸和日期必须来自同一个瞬间（否则本地午夜前后会错配）
+        S.size = size || (S.mode === 'daily'
+          ? (S.engine.dailySize ? S.engine.dailySize(now) : localSizes[now.getDay()])
+          : 5);
+        S.id = S.mode === 'daily'
+          ? (S.engine.dailyId ? S.engine.dailyId(now) : localYmd(now))
+          : 'practice-' + Math.random().toString(36).slice(2, 9);
         S.p = S.engine.generate(S.size, S.id);
         S.board = S.p.board.slice();
         S.initial = S.p.board.slice();
-        S.sel = -1; S.moves = 0; S.hints = 3; S.over = false; S.firstMove = false;
-        S.started = true;
+        S.sel = -1; S.moves = 0; S.hints = 3; S.over = false; S.firstMove = false; S.lockedClicks = 0;
         stopTimer(); timerEl.textContent = '0:00';
         buildTiles(S.size);
         paint(); paintTarget();
         targetEl.hidden = true;
-        badgeEl.textContent = (S.mode === 'daily' ? 'Daily' : 'Practice') + ' · ' + S.size + '×' + S.size;
-        modeNameEl.textContent = S.mode === 'daily' ? 'Daily' : 'Practice';
+        var label = S.mode === 'daily' ? 'Daily' : 'Practice';
+        badgeEl.textContent = label + ' · ' + S.size + '×' + S.size;
+        modeNameEl.textContent = label;
+        playBtn.textContent = '▶ Play Today\'s ' + S.size + '×' + S.size + ' Board';
         document.querySelectorAll('.diff-btn').forEach(function (b) {
-          var on = Number(b.getAttribute('data-size')) === S.size;
+          var on = Number(b.getAttribute('data-size')) === S.size && S.mode === 'practice';
           b.classList.toggle('active', on);
           b.setAttribute('aria-pressed', on ? 'true' : 'false');
         });
-        var done = S.mode === 'daily' ? store('huepaw:daily:' + S.id) : null;
-        if (done) {
+        setTimeout(ensureBoardVisible, 450); // 等教学卡/工具行布局落定后再定位一次
+        if (S.mode === 'daily' && store('huepaw:daily:' + S.id)) {
           try {
-            var rec = JSON.parse(done);
+            var rec = JSON.parse(store('huepaw:daily:' + S.id));
             toast('✓ You already solved today\'s board in ' + rec.moves + ' swaps (' + fmtTime(rec.ms) + ')');
           } catch (e) {}
         }
       }
 
+      /* 换盘守卫：当前盘有未完成的步数/已用提示时，先确认再覆盖（daily 跨日、practice 切换都走这里） */
+      function confirmDiscard(targetLabel) {
+        if (!S.p || S.over) return true;
+        if (S.moves === 0 && S.hints === 3) return true;
+        var used = 3 - S.hints;
+        return window.confirm('Switch to ' + targetLabel + '? Your board in progress (' +
+          S.moves + (S.moves === 1 ? ' swap' : ' swaps') + (used ? ', ' + used + (used === 1 ? ' hint' : ' hints') + ' used' : '') +
+          ') will be discarded.');
+      }
+
+      /* 开局后棋盘若被教学卡/标题挤出视口，就把它滚到视口中央（游戏页常态） */
+      function ensureBoardVisible() {
+        try {
+          var r = boardEl.getBoundingClientRect();
+          var vh = window.innerHeight;
+          // 棋盘比视口还高（横屏/小窗）：不强求"完整可见"，只保证顶部露出来
+          if (r.height > vh - 24) {
+            if (r.top < 0 || r.top > vh - 140) window.scrollTo(0, Math.max(0, window.scrollY + r.top - 12));
+            return;
+          }
+          if (r.top >= 0 && r.bottom <= vh) return;
+          // 一次性即时滚动：smooth 在省电/无头环境会被吞，和用户滚动抢也没意义
+          window.scrollTo(0, Math.max(0, window.scrollY + r.top - (vh - r.height) / 2));
+        } catch (e) {}
+      }
+
       function begin(mode, size) {
         coverEl.hidden = true;
+        stageEl.classList.remove('hw-pre');
         if (!S.engine) {
           loadEl.hidden = false;
           loadEngine(function (err) {
             loadEl.hidden = true;
-            if (err) { toast('Could not load the board — check your connection and try again.'); coverEl.hidden = false; return; }
+            if (err) {
+              toast('Could not load the board — check your connection and try again.');
+              coverEl.hidden = false;
+              stageEl.classList.add('hw-pre');
+              return;
+            }
             newPuzzle(mode, size);
-            track('game_start', { game: 'huepaw', mode: mode, size: size || dailySize() });
+            track('game_start', { game: 'huepaw', mode: mode, size: S.size });
           });
           return;
         }
         newPuzzle(mode, size);
-        track('game_start', { game: 'huepaw', mode: mode, size: size || dailySize() });
+        track('game_start', { game: 'huepaw', mode: mode, size: S.size });
       }
 
       /* ── 交互 ──────────────────────────────────────────────────── */
@@ -900,42 +995,63 @@ const ld = {
         var tile = ev.target.closest('.hw-tile');
         if (!tile || S.over) return;
         var i = Number(tile.getAttribute('data-i'));
+        if (S.board[i] === i) {
+          S.lockedClicks++;
+          toast('Locked — that tile is already in its home spot.');
+          track('locked_block_click', { game: 'huepaw', size: S.size, count: S.lockedClicks });
+          return;
+        }
         if (!S.firstMove) { S.firstMove = true; startTimer(); track('first_move', { game: 'huepaw', size: S.size }); }
         if (S.sel < 0) { S.sel = i; paint(); return; }
         if (S.sel === i) { S.sel = -1; paint(); return; }
         var a = S.sel, b = i;
+        if (S.board[b] === b) { S.sel = -1; paint(); return; }
+        var before = S.board.slice();
         S.board = S.engine.swap(S.board, a, b);
         S.moves++; S.sel = -1;
-        clearHint();
-        paint();
+        clearHint(); paint();
+        var pulsing = [];
+        for (var k = 0; k < S.board.length; k++) if (S.board[k] === k && before[k] !== k) pulsing.push(k);
+        pulsing.forEach(function (idx) {
+          var el = boardEl.children[idx];
+          if (!el) return;
+          el.classList.add('just-locked');
+          setTimeout(function () { el.classList.remove('just-locked'); }, 480);
+        });
+        if (pulsing.length) track('tile_locked', { game: 'huepaw', size: S.size, gained: pulsing.length });
         if (S.engine.isSolved(S.p, S.board)) win();
       });
 
       function clearHint() {
+        clearTimeout(hintTimer);
+        hintTimer = null;
         var els = boardEl.querySelectorAll('.hint-a, .hint-b');
         for (var i = 0; i < els.length; i++) els[i].classList.remove('hint-a', 'hint-b');
       }
 
       function doHint() {
-        if (S.over) return;
-        if (S.hints <= 0) { toast('No hints left — peek costs a hint too.'); return; }
+        if (S.over || !S.p) return;
+        if (S.hints <= 0) { toast('No hints left on this board — restart or start a new one.'); return; }
         var h = S.engine.hint(S.p, S.board);
         if (!h) return;
         S.hints--;
+        S.sel = -1; // 有选中块时给提示：先取消选中，免得下一次点击把提示的砖换走
         clearHint();
         boardEl.children[h.from].classList.add('hint-a');
         boardEl.children[h.to].classList.add('hint-b');
         paint();
+        toast('Swap the two marked tiles — at least one lands home.');
         track('hint_click', { game: 'huepaw', size: S.size, hints_left: S.hints });
-        setTimeout(function () {
+        clearTimeout(hintTimer);
+        hintTimer = setTimeout(function () {
           var els = boardEl.querySelectorAll('.hint-a, .hint-b');
           for (var i = 0; i < els.length; i++) els[i].classList.remove('hint-a', 'hint-b');
-        }, 2600);
+        }, 3000);
       }
 
       function peek() {
-        if (S.over) return;
-        if (S.hints <= 0) { toast('No hints left for a peek — solve more boards to reset.'); return; }
+        if (S.over || !S.p) return;
+        if (S.hints <= 0) { toast('No hints left for a peek.'); return; }
         S.hints--; paint();
         targetEl.hidden = false;
         track('hint_click', { game: 'huepaw', size: S.size, kind: 'peek' });
@@ -943,13 +1059,25 @@ const ld = {
         peek._t = setTimeout(function () { targetEl.hidden = true; }, 3200);
       }
 
-      /* ── 胜利 ──────────────────────────────────────────────────── */
+      /* ── 胜利：色流 + 色票卡 ────────────────────────────────────── */
       function win() {
         S.over = true; stopTimer();
         var ms = S.t0 ? Date.now() - S.t0 : 0;
-        winDetail.textContent = S.size * S.size + ' tiles in ' + S.moves + ' swaps · ' + fmtTime(ms);
+        var size = S.size;
+        winDetail.textContent = size * size + ' tiles · ' + S.moves + ' swaps · ' + fmtTime(ms);
+        $('hw-ticket-date').textContent = S.mode === 'daily' ? S.id : 'Practice board';
+        $('hw-ticket-size').textContent = size + '×' + size + ' · ' + S.moves + ' swaps';
+        var ts = $('hw-ticket-strip');
+        ts.innerHTML = '';
+        for (var i = 0; i < S.p.target.length; i++) {
+          var bar = document.createElement('i');
+          bar.style.background = S.p.target[i];
+          ts.appendChild(bar);
+        }
         winEl.classList.add('show');
-        track('game_won', { game: 'huepaw', size: S.size, moves: S.moves, seconds: Math.round(ms / 1000), mode: S.mode, hints_used: 3 - S.hints });
+        ticketEl.classList.remove('reveal');
+        setTimeout(function () { ticketEl.classList.add('reveal'); }, reduceMotion ? 0 : 620);
+        track('game_won', { game: 'huepaw', size: size, moves: S.moves, seconds: Math.round(ms / 1000), mode: S.mode, hints_used: 3 - S.hints, locked_clicks: S.lockedClicks });
         if (S.mode === 'daily') {
           try { store('huepaw:daily:' + S.id, JSON.stringify({ moves: S.moves, ms: ms })); } catch (e) {}
         }
@@ -957,8 +1085,8 @@ const ld = {
       }
 
       function shareText() {
-        var d = S.mode === 'daily' ? S.id : 'practice';
-        return 'Huepaw ' + d + ' — ' + S.size + '×' + S.size + ' gradient solved in ' + S.moves + ' swaps, ' + fmtTime(win._ms || 0) + ' 🎨';
+        var when = S.mode === 'daily' ? S.id : 'practice';
+        return 'Huepaw ' + when + ' — ' + S.size + '×' + S.size + ' gradient solved in ' + S.moves + ' swaps (' + fmtTime(win._ms || 0) + '). New board every midnight, local time.';
       }
 
       /* ── Toast ─────────────────────────────────────────────────── */
@@ -972,19 +1100,39 @@ const ld = {
       }
 
       /* ── 绑定 ──────────────────────────────────────────────────── */
-      $('hw-play').addEventListener('click', function () { begin('daily'); });
+      playBtn.addEventListener('click', function () { begin('daily'); });
       $('hw-hint').addEventListener('click', doHint);
       $('hw-peek').addEventListener('click', peek);
       $('hw-restart').addEventListener('click', function () {
         if (!S.p) { begin('daily'); return; }
-        S.board = S.initial.slice(); S.moves = 0; S.sel = -1; S.hints = 3; S.over = false;
+        var usedHints = 3 - S.hints;
+        if (S.moves > 0 && !window.confirm('Restart this board? Your progress (' + S.moves +
+            (S.moves === 1 ? ' swap' : ' swaps') + (usedHints ? ', ' + usedHints + (usedHints === 1 ? ' hint' : ' hints') + ' used' : '') +
+            ') will be reset.')) return;
+        S.board = S.initial.slice(); S.moves = 0; S.sel = -1; S.hints = 3; S.over = false; S.lockedClicks = 0;
         stopTimer(); timerEl.textContent = '0:00'; S.firstMove = false;
         targetEl.hidden = true; clearHint(); paint();
-        winEl.classList.remove('show');
+        winEl.classList.remove('show'); ticketEl.classList.remove('reveal');
         toast('Board reset — same tiles, clean slate.');
       });
+      $('hw-today').addEventListener('click', function () {
+        var todayId = localYmd(new Date());
+        // 当天盘还在进行中：保留进度（清空只能走 Restart），只把棋盘带回视野
+        if (S.p && S.mode === 'daily' && S.id === todayId && !S.over) {
+          ensureBoardVisible();
+          toast("You're already on today's board — Restart clears it.");
+          return;
+        }
+        // 其余情况（练习盘、或昨天的盘还没解完）统一走换盘守卫，旧盘不会被静默覆盖
+        var label = (S.p && S.mode === 'daily' && S.id !== todayId) ? "today's board (a new day)" : "today's board";
+        if (!confirmDiscard(label)) return;
+        winEl.classList.remove('show'); ticketEl.classList.remove('reveal');
+        clearHint();
+        begin('daily');
+      });
       $('hw-new').addEventListener('click', function () {
-        winEl.classList.remove('show');
+        if (!confirmDiscard('a new practice board')) return;
+        winEl.classList.remove('show'); ticketEl.classList.remove('reveal');
         if (!S.engine) { begin('practice', S.size); return; }
         newPuzzle('practice', S.size);
       });
@@ -996,12 +1144,14 @@ const ld = {
       });
       document.querySelectorAll('.diff-btn').forEach(function (b) {
         b.addEventListener('click', function () {
-          winEl.classList.remove('show');
-          begin('practice', Number(b.getAttribute('data-size')));
+          var size = Number(b.getAttribute('data-size'));
+          if (!confirmDiscard('a ' + size + '×' + size + ' practice board')) return;
+          winEl.classList.remove('show'); ticketEl.classList.remove('reveal');
+          begin('practice', size);
         });
       });
       $('hw-win-next').addEventListener('click', function () {
-        winEl.classList.remove('show');
+        winEl.classList.remove('show'); ticketEl.classList.remove('reveal');
         newPuzzle('practice', S.size);
       });
       $('hw-share-copy').addEventListener('click', function () {
@@ -1011,22 +1161,43 @@ const ld = {
         track('share_copy', { game: 'huepaw', size: S.size });
       });
       $('hw-share-twitter').addEventListener('click', function () {
-        var url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText()) + '&url=' + encodeURIComponent('https://gridpaw.com/huepaw/');
-        window.open(url, '_blank', 'noopener');
+        window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText()) + '&url=' + encodeURIComponent('https://gridpaw.com/huepaw/'), '_blank', 'noopener');
         track('share_twitter', { game: 'huepaw', size: S.size });
       });
       $('hw-share-reddit').addEventListener('click', function () {
-        var url = 'https://www.reddit.com/submit?url=' + encodeURIComponent('https://gridpaw.com/huepaw/') + '&title=' + encodeURIComponent(shareText());
-        window.open(url, '_blank', 'noopener');
+        window.open('https://www.reddit.com/submit?url=' + encodeURIComponent('https://gridpaw.com/huepaw/') + '&title=' + encodeURIComponent(shareText()), '_blank', 'noopener');
         track('share_reddit', { game: 'huepaw', size: S.size });
       });
 
-      // 埋点：进入视口但未开局的曝光（与 akari 同款 lazy start 观测）
-      var startedOnce = false;
+      // JS 就绪后把封面的静态文案换成今天的真实尺寸（JS 前不得出现错误尺寸）。
+      // 这里刻意不加载引擎（三态要求：点了才加载），尺寸表与 engine 的
+      // DAILY_SIZES 是同一份 [3,5,4,5,4,5,4]，引擎侧由 scripts/selftest-gradient.mjs 守着。
+      var DAILY_SIZES = [3, 5, 4, 5, 4, 5, 4];
+      function refreshCoverLabels() {
+        var now = new Date();
+        var size = (window.GradientEngine && window.GradientEngine.dailySize)
+          ? window.GradientEngine.dailySize(now) : DAILY_SIZES[now.getDay()];
+        if (S.p) {
+          // 正在玩昨天的每日盘：提示新盘已就绪（不强制替换，用顶部 Today 自己决定）
+          var todayId = localYmd(now);
+          if (S.mode === 'daily' && S.id !== todayId && S.noticedId !== todayId) {
+            S.noticedId = todayId; // 按日期去重，跨多个午夜也能再提示
+            toast("A new daily board is ready — tap Today's board.");
+          }
+          return;
+        }
+        badgeEl.textContent = 'Daily · ' + size + '×' + size;
+        playBtn.textContent = '▶ Play Today\'s ' + size + '×' + size + ' Board';
+      }
+      refreshCoverLabels();
+      document.addEventListener('visibilitychange', function () { if (!document.hidden) refreshCoverLabels(); });
+      setInterval(refreshCoverLabels, 60000); // 前台跨本地午夜也能换封面尺寸/发新盘提示
+
+      var viewed = false;
       if ('IntersectionObserver' in window) {
         var io = new IntersectionObserver(function (entries) {
           entries.forEach(function (en) {
-            if (en.isIntersecting && !startedOnce) { startedOnce = true; track('game_view', { game: 'huepaw' }); }
+            if (en.isIntersecting && !viewed) { viewed = true; track('game_view', { game: 'huepaw' }); }
           });
         }, { threshold: 0.4 });
         io.observe($('play'));

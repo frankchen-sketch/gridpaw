@@ -36,6 +36,7 @@ const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const FAST = [
   { file: 'selftest-nonogram.mjs', name: 'nonogram', reads: 'public' },
   { file: 'akari-room-selftest.mjs', name: 'akari', reads: 'src' },
+  { file: 'selftest-gradient.mjs', name: 'gradient', reads: 'public' },
 ];
 
 const SLOW = [
