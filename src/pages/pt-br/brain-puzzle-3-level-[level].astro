@@ -123,9 +123,11 @@ const cardGroups = d.stepCards || [];
       <p>{d.quickAnswer}</p>
     </div>
 
-    <a href="#video" aria-label={`Ir para o vídeo da solução do nível ${d.level}`}>
-      <img class="hero" src={d.hero} alt={`Brain Puzzle 3 nível ${d.level} — ${d.namePt}`} loading="lazy" />
-    </a>
+    {d.hero && (
+      <a href="#video" aria-label={`Ir para o vídeo da solução do nível ${d.level}`}>
+        <img class="hero" src={d.hero} alt={`Brain Puzzle 3 nível ${d.level} — ${d.namePt}`} loading="lazy" />
+      </a>
+    )}
 
     <h2>Veja a solução completa<span class="accent">.</span></h2>
     <p>{d.videoIntro}</p>
