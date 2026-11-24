@@ -265,8 +265,10 @@ const faqJsonLd = {
       <div class="board" id="roomBoard" style={`aspect-ratio:${lvl.bgW}/${lvl.bgH};background-image:url(${lvl.bg})`}>
         {lvl.items.map((it: any) => {
           const [fn, x, y, fx, fy, ang, w, h, type] = it;
+          // 游戏世界是 y 向上（geometry.js: mask 行 0 → +h/2），屏幕 y 向下，所以这里取反。
+          // 之前按 y 向下算，133 关的物品全被画到上半空（2026-11-24 用户截图 + 商店截图对照实锤）。
           const left = ((lvl.bgW / 2 + x) / lvl.bgW) * 100;
-          const top = ((lvl.bgH / 2 + y) / lvl.bgH) * 100;
+          const top = ((lvl.bgH / 2 - y) / lvl.bgH) * 100;
           return (
             <img
               class="it"
@@ -277,7 +279,7 @@ const faqJsonLd = {
               alt={`${typeName[type] ?? 'Item'} in ${lvl.name}`}
               loading="lazy"
               decoding="async"
-              style={`left:${left.toFixed(2)}%;top:${top.toFixed(2)}%;width:${((w / lvl.bgW) * 100).toFixed(2)}%;transform:translate(-50%,-50%) rotate(${ang}deg) scale(${fx},${fy})`}
+              style={`left:${left.toFixed(2)}%;top:${top.toFixed(2)}%;width:${((w / lvl.bgW) * 100).toFixed(2)}%;transform:translate(-50%,-50%) rotate(${-ang}deg) scale(${fx},${fy})`}
             />
           );
         })}
