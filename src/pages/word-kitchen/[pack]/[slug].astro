@@ -21,6 +21,7 @@ export function getStaticPaths() {
 
 const { lvl, pack, prev, next } = Astro.props;
 const packName = pack.name;
+const maxLevel = Math.max(...pack.levels.map((l: any) => l.level));
 const total = lvl.words.length;
 const longest = Math.max(...lvl.words.map((w: string) => w.length));
 const byLen: Record<number, string[]> = {};
@@ -28,16 +29,21 @@ for (const w of lvl.words) (byLen[w.length] ||= []).push(w);
 const lens = Object.keys(byLen).map(Number).sort((a, b) => b - a);
 const tray = lvl.letters.toUpperCase().split('');
 const keyWord = lvl.key.toUpperCase();
+const hasFull = !!lvl.has_full && keyWord.length === tray.length;
 const otherFull = lvl.full_length.filter((w: string) => w !== lvl.key).map((w: string) => w.toUpperCase());
 
-const title = `Word Kitchen ${packName} Level ${lvl.level} Answers: ${keyWord}`;
-const description = `Word Kitchen ${packName} Level ${lvl.level} answer: the letters are ${tray.join(' ')}. The full-size word is ${keyWord}, and these tiles spell ${total} common English words — every one listed by length.`;
+const title = hasFull
+  ? `Word Kitchen ${packName} Level ${lvl.level} Answers: ${keyWord}`
+  : `Word Kitchen ${packName} Level ${lvl.level} Answers: Every Word`;
+const description = `Word Kitchen ${packName} Level ${lvl.level} answer: the letters are ${tray.join(' ')}. ${hasFull ? `The full-size word is ${keyWord}` : `The longest word is ${keyWord} (${keyWord.length} of ${tray.length} tiles)`}, and these tiles spell ${total} common English words — every one listed by length.`;
 const canonical = `/word-kitchen/${pack.slug}/level-${lvl.level}`;
 
 const faq = [
   {
     q: `What is the answer to Word Kitchen ${packName} Level ${lvl.level}?`,
-    a: `The tray holds ${tray.join(', ')}. The word that uses all ${tray.length} letters at once is ${keyWord}${otherFull.length ? ` (${otherFull.join(' and ')} works too)` : ''}. Below that the same tiles make ${total} common English words, from ${longest} letters down to 3.`,
+    a: hasFull
+      ? `The tray holds ${tray.join(', ')}. The word that uses all ${tray.length} letters at once is ${keyWord}${otherFull.length ? ` (${otherFull.join(' and ')} works too)` : ''}. Below that the same tiles make ${total} common English words, from ${longest} letters down to 3.`
+      : `The tray holds ${tray.join(', ')} — ${tray.length} tiles, and no single word uses every one of them. The longest is ${keyWord} (${keyWord.length} letters). The same tiles spell ${total} common words here, and the level's slots are filled from the long end of that list.`,
   },
   {
     q: `How many words are in ${packName} Level ${lvl.level}?`,
@@ -141,15 +147,19 @@ const faqJsonLd = {
   </div>
 
   <main class="wrap">
-    <h1>Word Kitchen {packName} Level {lvl.level} Answers: {keyWord}</h1>
-    <p class="lede">Tray letters <strong>{tray.join(' ')}</strong> — the full-size word is <strong class="key-word">{keyWord}</strong>, and the same tiles spell <strong>{total}</strong> common words.</p>
+    <h1>Word Kitchen {packName} Level {lvl.level} Answers{hasFull ? `: ${keyWord}` : ''}</h1>
+    <p class="lede">Tray letters <strong>{tray.join(' ')}</strong> — {hasFull ? 'the full-size word is' : 'the longest word is'} <strong class="key-word">{keyWord}</strong>, and the same tiles spell <strong>{total}</strong> common words.</p>
 
     <div class="answer-box">
       <span class="label">Quick answer</span>
       <div class="tray">
         {tray.map((t) => <span class="tile">{t}</span>)}
       </div>
-      <p class="big">Use all {tray.length} letters: <span class="key-word">{keyWord}</span></p>
+      {hasFull ? (
+        <p class="big">Use all {tray.length} letters: <span class="key-word">{keyWord}</span></p>
+      ) : (
+        <p class="big">Longest word: <span class="key-word">{keyWord}</span> — {keyWord.length} of the {tray.length} tiles</p>
+      )}
       {otherFull.length > 0 && <p>Other words that use all {tray.length} tiles: {otherFull.join(', ')}</p>}
       <p>{total} words total · longest {longest} letters · shortest 3</p>
     </div>
@@ -177,7 +187,7 @@ const faqJsonLd = {
 
     <h2>How the <span class="accent">{packName}</span> pack works</h2>
     <div class="mech">
-      <p>Word Kitchen does not number levels globally — each dessert pack runs its own <strong>1 to 18</strong> count. {packName} is one of those packs, so "Level {lvl.level}" always means <strong>{packName} - {lvl.level}</strong> in the game's header.</p>
+      <p>Word Kitchen does not number levels globally — each dessert pack runs its own <strong>1 to {maxLevel}</strong> count. {packName} is one of those packs, so "Level {lvl.level}" always means <strong>{packName} - {lvl.level}</strong> in the game's header.</p>
       <ul>
         <li><strong>The tray never changes inside a level.</strong> All {tray.length} tiles stay available until the level ends, so every word above can be entered at any point.</li>
         <li><strong>Long words first.</strong> The game's slots almost always include the {longest}-letter word; finding it usually unlocks the layout of the rest.</li>
@@ -225,7 +235,15 @@ const faqJsonLd = {
     <SideAd />
 
     <p class="evidence">
-      <strong>Where these letters come from:</strong> the tray for each level was read from the 1080p recording of the {packName} playthrough by {pack.source.channel} (video {pack.source.video}), then checked by anagram — the letters have to spell a real word, which catches misreads. Word lists are generated from the ENABLE dictionary filtered to the 50,000 most common English words, so nothing on this page is copied from another answers site.
+      {pack.source.type === 'video' ? (
+        <>
+          <strong>Where these letters come from:</strong> read off the 1080p recording of the {packName} playthrough by {pack.source.channel} (video {pack.source.video}), then checked by anagram — the letters have to spell a real word, which catches misreads.
+        </>
+      ) : (
+        <>
+          <strong>How these letters were checked:</strong> every tray was validated against the level's own key word ({keyWord}) letter for letter, plus an anagram test against the ENABLE dictionary — a tray that could not spell a real word would be caught before publishing.
+        </>
+      )}{' '}Word lists are generated from the ENABLE dictionary filtered to the 50,000 most common English words; the wording, layout and solver on this page are original.
     </p>
   </main>
 </body>

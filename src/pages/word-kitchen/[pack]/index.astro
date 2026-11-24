@@ -12,17 +12,18 @@ export function getStaticPaths() {
 const { pack } = Astro.props;
 const levels = pack.levels;
 const covered = levels.length;
+const maxLevel = Math.max(...levels.map((l: any) => l.level));
 const totalWords = levels.reduce((n: number, l: any) => n + l.words.length, 0);
 const fullWords = levels.slice(0, 6).map((l: any) => `${l.key.toUpperCase()} (level ${l.level})`);
 
-const title = `Word Kitchen ${pack.name} Answers — Levels 1 to 18`;
+const title = `Word Kitchen ${pack.name} Answers — Levels 1 to ${maxLevel}`;
 const description = `Word Kitchen ${pack.name} answers: the tray letters for each level, the word that uses every tile, and every common word those tiles spell. ${covered} levels online, each read from a real playthrough.`;
 const canonical = `/word-kitchen/${pack.slug}`;
 
 const faq = [
   {
     q: `How many levels are in the ${pack.name} pack?`,
-    a: `${pack.name} runs from level 1 to level 18. The number in the game header ("${pack.name} - 7") is the level inside this pack — Word Kitchen restarts the count for every dessert pack, so there is no global level 137.`,
+    a: `${pack.name} runs from level 1 to level ${maxLevel}. The number in the game header ("${pack.name} - 7") is the level inside this pack — Word Kitchen restarts the count for every dessert pack, so there is no global level 137.`,
   },
   {
     q: `What letters are in ${pack.name} level 1?`,
@@ -108,9 +109,9 @@ const faqJsonLd = {
   </div>
 
   <main class="wrap">
-    <h1>Word Kitchen {pack.name} Answers — Levels 1 to 18</h1>
-    <p>{pack.name} is one of the dessert packs in Word Kitchen, and it counts its own levels 1 to 18 — the header reads <strong>{pack.name} - N</strong> while you play. Every page below keeps that numbering: tray letters, the word that uses every tile, and the full list of common words those tiles spell.</p>
-    <p>{covered} of the 18 levels are online. Each tray was read off a 1080p playthrough and cross-checked by anagram, so a misread letter cannot slip through — the tiles have to spell a real word.</p>
+    <h1>Word Kitchen {pack.name} Answers — Levels 1 to {maxLevel}</h1>
+    <p>{pack.name} is one of the dessert packs in Word Kitchen, and it counts its own levels 1 to {maxLevel} — the header reads <strong>{pack.name} - N</strong> while you play. Every page below keeps that numbering: tray letters, the word that uses every tile, and the full list of common words those tiles spell.</p>
+    <p>{covered} of the {maxLevel} levels are online. Each tray was read off a 1080p playthrough and cross-checked by anagram, so a misread letter cannot slip through — the tiles have to spell a real word.</p>
 
     <div class="cta">
       <p>Already stuck with a tray open?</p>
@@ -130,7 +131,7 @@ const faqJsonLd = {
     </div>
 
     {covered < 18 && (
-      <p class="note">Levels {covered + 1}–18 are being read now. They will land on the same URL pattern — nothing gets renamed or renumbered.</p>
+      <p class="note">Levels {covered + 1}–{maxLevel} are being read now. They will land on the same URL pattern — nothing gets renamed or renumbered.</p>
     )}
 
     <InContentAd />
