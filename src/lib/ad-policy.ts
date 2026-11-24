@@ -19,6 +19,7 @@ export const PLAY_SURFACES = new Set([
   '/akari', '/binary', '/crazy-cleanup', '/hashi', '/kakuro', '/kenken',
   '/meowdoku', '/murdoku', '/nonogram', '/nurikabe', '/slitherlink', '/star-battle',
   '/solver', '/akari/solver', '/hashi/solver', '/nonogram/solver', '/kenken/solver',
+  '/word-kitchen/solver',  // 2026-11-24：第三方游戏（Gimica Word Kitchen）字母求解器，交互工具页按解题器口径
   // 同族真棋盘页（2026-11-08 补）：不是 /akari/ 主入口但同样直接渲染可玩棋盘
   '/akari/akari-puzzle', '/akari/cat-logic-puzzle', '/akari/create', '/akari/daily',
   '/akari/light-up-puzzle', '/akari/logic-puzzle', '/akari/sudoku-with-pictures',
