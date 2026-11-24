@@ -22,36 +22,62 @@ export function getStaticPaths() {
 const { lvl, pack, prev, next } = Astro.props;
 const packName = pack.name;
 const maxLevel = Math.max(...pack.levels.map((l: any) => l.level));
-const total = lvl.words.length;
-const longest = Math.max(...lvl.words.map((w: string) => w.length));
-const byLen: Record<number, string[]> = {};
-for (const w of lvl.words) (byLen[w.length] ||= []).push(w);
-const lens = Object.keys(byLen).map(Number).sort((a, b) => b - a);
 const tray = lvl.letters.toUpperCase().split('');
 const keyWord = lvl.key.toUpperCase();
+const answers: string[] = lvl.answers ?? [];
+const extras: string[] = lvl.extra ?? [];
+const hasAnswers = answers.length > 0;
+const total = hasAnswers ? answers.length : lvl.words.length;
+const longestWord = hasAnswers ? answers[0] : lvl.key;
 const hasFull = !!lvl.has_full && keyWord.length === tray.length;
-const otherFull = lvl.full_length.filter((w: string) => w !== lvl.key).map((w: string) => w.toUpperCase());
+
+const groupOf = (list: string[]) => {
+  const byLen: Record<number, string[]> = {};
+  for (const w of list) (byLen[w.length] ||= []).push(w);
+  return Object.keys(byLen).map(Number).sort((a, b) => b - a).map((len) => ({ len, words: byLen[len] }));
+};
+const answerGroups = groupOf(answers);
+const extraGroups = groupOf(extras);
+
+// 托盘：按游戏里的「锅」摆位（单环 ≤8 个字母，多则内环）
+const N = tray.length;
+const outer = N <= 8 ? N : Math.ceil(N / 2);
+const needC: Record<string, number> = {};
+for (const ch of keyWord.toLowerCase()) needC[ch] = (needC[ch] ?? 0) + 1;
+const panTiles = tray.map((ch: string, i: number) => {
+  const inOuter = i < outer;
+  const idx = inOuter ? i : i - outer;
+  const count = inOuter ? outer : N - outer;
+  const r = inOuter ? 92 : 50;
+  const ang = -Math.PI / 2 + (2 * Math.PI * idx) / count;
+  const lc = ch.toLowerCase();
+  const used = (needC[lc] ?? 0) > 0;
+  if (used) needC[lc] -= 1;
+  return { ch, used, cx: 170 + r * Math.cos(ang), cy: 150 + r * Math.sin(ang), size: inOuter ? 36 : 30 };
+});
+const shownWords = hasAnswers ? answers : lvl.words;
+const shownGroups = hasAnswers ? answerGroups : groupOf(lvl.words);
+const shortestLen = Math.min(...shownWords.map((w: string) => w.length));
+const maxGroupCount = Math.max(...shownGroups.map((g) => g.words.length));
 
 const title = hasFull
   ? `Word Kitchen ${packName} Level ${lvl.level} Answers: ${keyWord}`
-  : `Word Kitchen ${packName} Level ${lvl.level} Answers: Every Word`;
-const description = `Word Kitchen ${packName} Level ${lvl.level} answer: the letters are ${tray.join(' ')}. ${hasFull ? `The full-size word is ${keyWord}` : `The longest word is ${keyWord} (${keyWord.length} of ${tray.length} tiles)`}, and these tiles spell ${total} common English words — every one listed by length.`;
+  : `Word Kitchen ${packName} Level ${lvl.level} Answers: ${total} Words`;
+const description = `Word Kitchen ${packName} Level ${lvl.level} answers: the tray holds ${tray.join(' ')}. The level asks for ${total} words — longest ${keyWord.toUpperCase()} (${keyWord.length} letters)${extras.length ? `, and the same tiles also spell ${extras.length} bonus words` : ''}.`;
 const canonical = `/word-kitchen/${pack.slug}/level-${lvl.level}`;
 
 const faq = [
   {
     q: `What is the answer to Word Kitchen ${packName} Level ${lvl.level}?`,
-    a: hasFull
-      ? `The tray holds ${tray.join(', ')}. The word that uses all ${tray.length} letters at once is ${keyWord}${otherFull.length ? ` (${otherFull.join(' and ')} works too)` : ''}. Below that the same tiles make ${total} common English words, from ${longest} letters down to 3.`
-      : `The tray holds ${tray.join(', ')} — ${tray.length} tiles, and no single word uses every one of them. The longest is ${keyWord} (${keyWord.length} letters). The same tiles spell ${total} common words here, and the level's slots are filled from the long end of that list.`,
+    a: `Level ${lvl.level} of ${packName} uses the tray ${tray.join(', ')} and asks for ${total} words. The longest is ${keyWord.toUpperCase()} (${keyWord.length} letters)${hasFull ? ', which uses every tile' : ''}. The full list, longest first: ${answers.map((w) => w.toUpperCase()).join(', ')}.`,
   },
   {
-    q: `How many words are in ${packName} Level ${lvl.level}?`,
-    a: `The level's slots only ask for a handful of them, but these tiles can spell ${total} common words. If you are stuck on one slot, work down the ${longest}-letter and ${longest - 1}-letter groups first — the long words are the ones the game usually wants.`,
+    q: `How many words are there in ${packName} Level ${lvl.level}?`,
+    a: `${hasAnswers ? `${total} answer words fill` : `${total} common words can be spelled from`} this level's tray${extras.length ? `, and ${extras.length} further words are spellable but unconfirmed as bonus words` : ''}. They run from ${longestWord.length} letters down to ${shortestLen}.`,
   },
   {
-    q: `Why does the game reject a word that is on this list?`,
-    a: `Word Kitchen checks words against its own dictionary, which is narrower than the ENABLE word list used here. Short or unusual entries (slang, abbreviations, dialect) may be rejected even though they are real words. If the game refuses one, move to the next length group.`,
+    q: `Why does the game reject a word I typed?`,
+    a: `The tray can spell more words than the level asks for. The ${extras.length} extras listed at the bottom of this page are real words built from the same letters, but the game only accepts the ${total} slot words above unless it counts the word as a bonus.`,
   },
   {
     q: `Is there a faster way to solve a Word Kitchen level?`,
@@ -106,18 +132,37 @@ const faqJsonLd = {
     .lede { font-size: 1rem; color: #6b5b4c; }
     .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
     .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.45rem; }
-    .tray { display: flex; gap: 0.45rem; justify-content: center; margin: 0.35rem 0 0.7rem; flex-wrap: wrap; }
-    .tile { width: 46px; height: 46px; border-radius: 10px; background: #FFF3DF; border: 2px solid #E9C48B; color: #8A5A12; font-weight: 900; font-size: 1.25rem; display: flex; align-items: center; justify-content: center; }
+    .pan { display: block; width: 100%; max-width: 330px; height: auto; margin: 0.4rem auto 0.6rem; }
+    .pan-handle { fill: #2F2A26; }
+    .pan-body { fill: #2F2A26; }
+    .pan-rim { fill: #453C35; }
+    .pan-inner { fill: #38302A; stroke: #574B41; stroke-width: 2; }
+    .pan-tile { fill: #FFF3DF; stroke: #E9C48B; stroke-width: 2; }
+    .pan-letter { fill: #8A5A12; font-weight: 900; text-anchor: middle; dominant-baseline: middle; font-family: 'Nunito', sans-serif; }
+    .pan-tile.used { fill: #DFF3E4; stroke: #15803D; }
+    .pan-letter.used { fill: #15803D; }
+    .pan-legend { text-align: center; font-size: 0.82rem; color: var(--light); margin: 0 0 0.5rem; }
+    .len-chart { background: #fff; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.8rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .len-chart figcaption { font-size: 0.8rem; font-weight: 800; color: var(--light); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .len-row { display: flex; align-items: center; gap: 0.6rem; margin: 0.22rem 0; }
+    .len-lab { width: 1.2rem; text-align: right; font-weight: 900; font-size: 0.85rem; color: var(--amber-ink); }
+    .len-track { flex: 1; background: #FBF3E7; border-radius: 999px; height: 14px; overflow: hidden; }
+    .len-bar { display: block; height: 100%; background: linear-gradient(90deg, #E9A23B, #D97706); border-radius: 999px; }
+    .len-cnt { width: 1.6rem; font-size: 0.8rem; font-weight: 800; color: var(--light); }
+    .len-note { font-size: 0.75rem; color: var(--light); margin-top: 0.4rem; }
     .answer-box p { font-weight: 700; color: var(--text); margin: 0.25rem 0; }
     .answer-box .big { font-size: 1.15rem; }
     .key-word { color: var(--green); }
+    .answer-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.5rem 0 0.2rem; padding: 0; }
+    .answer-chips li { font-size: 0.95rem; font-weight: 800; letter-spacing: 0.04em; background: #E8F5EC; border: 1px solid #9ED3AE; border-radius: 8px; padding: 0.22rem 0.6rem; color: #15803D; }
+    .answer-chips li.lead { background: #15803D; color: #fff; border-color: #15803D; }
     .word-groups { margin: 0.8rem 0; }
     .group { background: #fff; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.8rem 1rem; margin: 0.7rem 0; box-shadow: var(--shadow); }
     .group h3 { font-size: 0.95rem; margin: 0; display: flex; align-items: center; gap: 0.5rem; }
     .group .pill { font-size: 0.7rem; font-weight: 900; background: #FFF0D4; color: var(--amber-ink); border-radius: 999px; padding: 0.1rem 0.55rem; letter-spacing: 0.04em; text-transform: uppercase; }
     .group ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.6rem 0 0; padding: 0; }
     .group li { font-size: 0.92rem; font-weight: 700; letter-spacing: 0.06em; background: #FFFBF2; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.2rem 0.55rem; color: #6b5320; }
-    .group li.is-key { background: #E8F5EC; border-color: #9ED3AE; color: #15803D; }
+    .group.extra li { background: #FAF7F2; border-color: #E8E0D4; color: #8a7c6c; font-weight: 600; }
     .group .also { font-size: 0.82rem; color: var(--light); margin-top: 0.5rem; }
     .mech { background: #fff; border-left: 4px solid var(--amber); border-radius: 8px; padding: 0.8rem 1rem; margin: 1rem 0; }
     .mech ul { padding-left: 1.2rem; color: #555; margin: 0.4rem 0 0; }
@@ -134,6 +179,9 @@ const faqJsonLd = {
     details.faq summary { font-weight: 800; cursor: pointer; color: var(--text); }
     details.faq p { margin: 0.5rem 0 0; font-size: 0.94rem; }
     .evidence { font-size: 0.8rem; color: var(--light); border-top: 1px solid var(--border); margin-top: 2rem; padding-top: 0.7rem; line-height: 1.6; }
+    .video-block { margin: 1.2rem 0; }
+    .video-block p { font-size: 0.92rem; }
+    .video-block .yt-facade { max-width: 640px; margin: 0.6rem auto 0; }
     .level-strip { display: grid; grid-template-columns: repeat(auto-fill, minmax(58px, 1fr)); gap: 0.4rem; margin: 0.7rem 0; }
     .level-strip a { display: block; text-align: center; background: #fff; border: 1.5px solid var(--border); border-radius: 8px; padding: 0.35rem 0; text-decoration: none; font-weight: 800; font-size: 0.85rem; color: var(--text); }
     .level-strip a:hover { border-color: var(--amber); color: var(--amber-ink); }
@@ -148,51 +196,80 @@ const faqJsonLd = {
 
   <main class="wrap">
     <h1>Word Kitchen {packName} Level {lvl.level} Answers{hasFull ? `: ${keyWord}` : ''}</h1>
-    <p class="lede">Tray letters <strong>{tray.join(' ')}</strong> — {hasFull ? 'the full-size word is' : 'the longest word is'} <strong class="key-word">{keyWord}</strong>, and the same tiles spell <strong>{total}</strong> common words.</p>
+    <p class="lede">Tray letters <strong>{tray.join(' ')}</strong> — {hasAnswers ? 'this level asks for' : 'these tiles spell'} <strong>{total}</strong> common words, longest <strong class="key-word">{keyWord}</strong>{hasFull ? ` (all ${tray.length} tiles)` : ` (${keyWord.length} of ${tray.length} tiles)`}.</p>
 
     <div class="answer-box">
-      <span class="label">Quick answer</span>
-      <div class="tray">
-        {tray.map((t) => <span class="tile">{t}</span>)}
-      </div>
-      {hasFull ? (
-        <p class="big">Use all {tray.length} letters: <span class="key-word">{keyWord}</span></p>
-      ) : (
-        <p class="big">Longest word: <span class="key-word">{keyWord}</span> — {keyWord.length} of the {tray.length} tiles</p>
-      )}
-      {otherFull.length > 0 && <p>Other words that use all {tray.length} tiles: {otherFull.join(', ')}</p>}
-      <p>{total} words total · longest {longest} letters · shortest 3</p>
+      <span class="label">{hasAnswers ? 'Quick answer — every word in this level' : 'Words this tray can spell'}</span>
+      <svg class="pan" viewBox="0 0 360 300" role="img" aria-label={`Tray for this level: ${tray.join(', ')}`}>
+        <rect class="pan-handle" x="292" y="140" width="62" height="20" rx="10" />
+        <circle class="pan-body" cx="170" cy="150" r="132" />
+        <circle class="pan-rim" cx="170" cy="150" r="122" />
+        <circle class="pan-inner" cx="170" cy="150" r="112" />
+        {panTiles.map((t) => (
+          <g>
+            <rect class={t.used ? 'pan-tile used' : 'pan-tile'} x={t.cx - t.size / 2} y={t.cy - t.size / 2} width={t.size} height={t.size} rx="8" />
+            <text class={t.used ? 'pan-letter used' : 'pan-letter'} x={t.cx} y={t.cy + 1} font-size={t.size * 0.56}>{t.ch}</text>
+          </g>
+        ))}
+      </svg>
+      <p class="pan-legend">Green tiles are the ones <strong>{keyWord.toUpperCase()}</strong> takes — {hasFull ? 'all ' + tray.length + ' of them' : keyWord.length + ' of ' + tray.length}.</p>
+      <ul class="answer-chips">
+        {answers.map((w) => <li class={w === lvl.key ? 'lead' : ''}>{w.toUpperCase()}</li>)}
+      </ul>
+      <p>{total} {hasAnswers ? 'answers' : 'words'} · longest {longestWord.length} letters · shortest {shortestLen} letters{extras.length ? ` · + ${extras.length} extra words` : ''}</p>
     </div>
 
-    <h2>Every word these letters spell</h2>
-    <p>Grouped by length, longest first. Green entries use the whole tray — start there if you are stuck on the last slot.</p>
+    <h2>Answers by <span class="accent">length</span></h2>
+    <p>Longest first — the game's slots always include the {longestWord.length}-letter word, and filling the long ones usually reveals the short ones.</p>
+
+    <figure class="len-chart">
+      <figcaption>How the {shownWords.length} words spread across word lengths</figcaption>
+      {shownGroups.map((g) => (
+        <div class="len-row">
+          <span class="len-lab">{g.len}</span>
+          <span class="len-track"><span class="len-bar" style={`width:${(g.words.length / maxGroupCount) * 100}%`}></span></span>
+          <span class="len-cnt">{g.words.length}</span>
+        </div>
+      ))}
+      <p class="len-note">letters on the left · number of words on the right</p>
+    </figure>
 
     <div class="word-groups">
-      {lens.map((len) => (
+      {answerGroups.map((g) => (
         <div class="group">
-          <h3>{len} letters <span class="pill">{byLen[len].length} {byLen[len].length === 1 ? 'word' : 'words'}</span></h3>
+          <h3>{g.len} letters <span class="pill">{g.words.length} {g.words.length === 1 ? 'word' : 'words'}</span></h3>
           <ul>
-            {byLen[len].map((w) => (
-              <li class={lvl.full_length.includes(w) ? 'is-key' : ''}>{w.toUpperCase()}</li>
-            ))}
+            {g.words.map((w) => <li class={w === lvl.key ? 'is-key' : ''}>{w.toUpperCase()}</li>)}
           </ul>
-          {len === longest && otherFull.length > 0 && (
-            <p class="also">Every one of these uses all {tray.length} tiles, so any of them may be the slot you are missing.</p>
-          )}
         </div>
       ))}
     </div>
 
     <InContentAd />
 
+    {extras.length > 0 && (
+      <>
+        <h2>More words from the <span class="accent">same tray</span></h2>
+        <p>These {extras.length} words can be spelled from the same {tray.length} tiles but are not on this level's answer list, so they will not fill a slot. Word Kitchen pays bonus coins for some off-list words and refuses others — we list the spellable candidates and flag them as unconfirmed rather than pretending they all pay.</p>
+        <div class="word-groups">
+          {extraGroups.map((g) => (
+            <div class="group extra">
+              <h3>{g.len} letters <span class="pill">{g.words.length}</span></h3>
+              <ul>{g.words.map((w) => <li>{w.toUpperCase()}</li>)}</ul>
+            </div>
+          ))}
+        </div>
+      </>
+    )}
+
     <h2>How the <span class="accent">{packName}</span> pack works</h2>
     <div class="mech">
-      <p>Word Kitchen does not number levels globally — each dessert pack runs its own <strong>1 to {maxLevel}</strong> count. {packName} is one of those packs, so "Level {lvl.level}" always means <strong>{packName} - {lvl.level}</strong> in the game's header.</p>
+      <p>Word Kitchen does not number levels globally — each pack runs its own <strong>1 to {maxLevel}</strong> count. {packName} is one of those packs, so “Level {lvl.level}” always means <strong>{packName} - {lvl.level}</strong> in the game's header.</p>
       <ul>
         <li><strong>The tray never changes inside a level.</strong> All {tray.length} tiles stay available until the level ends, so every word above can be entered at any point.</li>
-        <li><strong>Long words first.</strong> The game's slots almost always include the {longest}-letter word; finding it usually unlocks the layout of the rest.</li>
-        <li><strong>Bonus words are separate.</strong> The book icon marks extra words that do not fill slots — the list above covers both kinds.</li>
-        <li><strong>Repeats matter.</strong> If a tile appears twice, the word has to use it twice. This page already accounts for that: each list only contains words the tray can actually spell.</li>
+        <li><strong>Long words first.</strong> The {longestWord.length}-letter word {keyWord.toUpperCase()} uses {hasFull ? 'the whole tray' : `${keyWord.length} of the ${tray.length} tiles`}; finding it usually unlocks the rest.</li>
+        <li><strong>Bonus words are separate.</strong> The game has a book icon for words it accepts off-list; we only publish candidate words we can prove from the tray, marked as unconfirmed.</li>
+        <li><strong>Repeats matter.</strong> If a tile appears twice, the word has to use it twice. Every list here is checked against the tray, so nothing on this page is unmakeable.</li>
       </ul>
     </div>
 
@@ -201,6 +278,17 @@ const faqJsonLd = {
       <p>Type any tray into the solver and get every combination instantly.</p>
       <a class="btn" href="/word-kitchen/solver/">Open the Word Kitchen solver →</a>
     </div>
+
+    {pack.video && (
+      <div class="video-block">
+        <h2>Watch the <span class="accent">{packName}</span> playthrough</h2>
+        <p>One continuous run through all {maxLevel} {packName} levels. If a tray on your screen does not match the tiles above, look for this level in the video before trusting any other site.</p>
+        <div class="yt-facade" data-yt={pack.video.id} data-title={pack.video.title} role="button" tabindex="0" aria-label={`Play video: ${pack.video.title}`}>
+          <img src={`https://i.ytimg.com/vi/${pack.video.id}/maxresdefault.jpg`} alt={pack.video.title} loading="lazy" decoding="async" width="1280" height="720"
+            onerror={`this.onerror=null;this.src='https://i.ytimg.com/vi/${pack.video.id}/hqdefault.jpg'`} />
+        </div>
+      </div>
+    )}
 
     <h2>Other {packName} levels</h2>
     <div class="level-strip">
@@ -235,15 +323,7 @@ const faqJsonLd = {
     <SideAd />
 
     <p class="evidence">
-      {pack.source.type === 'video' ? (
-        <>
-          <strong>Where these letters come from:</strong> read off the 1080p recording of the {packName} playthrough by {pack.source.channel} (video {pack.source.video}), then checked by anagram — the letters have to spell a real word, which catches misreads.
-        </>
-      ) : (
-        <>
-          <strong>How these letters were checked:</strong> every tray was validated against the level's own key word ({keyWord}) letter for letter, plus an anagram test against the ENABLE dictionary — a tray that could not spell a real word would be caught before publishing.
-        </>
-      )}{' '}Word lists are generated from the ENABLE dictionary filtered to the 50,000 most common English words; the wording, layout and solver on this page are original.
+      <strong>Where this comes from:</strong> the tray letters were read off the 1080p recording of the {packName} playthrough by {pack.source.channel} (video {pack.source.video}); the {total}-word answer list was cross-checked against the same tray — every answer has to be spellable from {tray.join(' ')} and no answer may use a letter the tray lacks. The bonus-word lists are generated from the ENABLE dictionary. Wording, layout and solver on this page are original.
     </p>
   </main>
 </body>
