@@ -130,3 +130,17 @@ items without sprite 0
 - `est_pass_rate_pct` 仅 1–59 关，是客户端离线估算（难度标签展示用），不是后台真实数据。
 - 第一次跑脚本时 `level-odds.js` 用 JSON 解析失败（JS 对象键未加引号），已改为正则提取 `bands` 与 `levels` 数字对。
 - `README.md` 里的示例关卡 JSON 为节选（items/boxes 各截断），完整数据在 `amochiroom_levels.json`。
+
+---
+
+## 主会话复核（2026-11-24 18:40，同一份数据）
+
+1. **第 92 行「箱子容量默认 3、实验组 4」措辞要纠正**：来源是 `ORDER_SLOTS` / `services/order-capacity.js`
+   的 `four_boxes`，指的是**货架上并列的箱子位个数**（3 个，A/B 组 4 个），
+   **不是每箱装几件**。每箱件数是 `boxes[].capacity`，实测 3–9（4–6 为主），
+   130≠… 校验靠 `Σ capacity == item_count` 兜住，两者不可混写。
+2. 该 A/B（four_boxes）与 buffer 四档（`buffer-failure.js`）都意味着**同一关在不同玩家手机上
+   槽位尺寸不同**，因此对外文案只写标准包口径 + 一句"游戏也有第四箱/更大 buffer 的测试变体"，
+   不写成绝对规则。
+3. 其余结论（133 关、5,091 箱、25,943 件、Σ 校验 133/133、贴图映射全命中、关号重排算法）
+   主会话已逐条复算，与导出 JSON 一致，已采纳为发布口径。
