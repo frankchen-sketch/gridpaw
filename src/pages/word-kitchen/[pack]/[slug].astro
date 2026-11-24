@@ -3,21 +3,24 @@ import SEOHead from '../../../components/SEOHead.astro';
 import GameNav from '../../../components/GameNav.astro';
 import SideAd from '../../../components/SideAd.astro';
 import InContentAd from '../../../components/InContentAd.astro';
-import bk from '../../../data/word-kitchen-bebinca.json';
+import data from '../../../data/word-kitchen-packs.json';
 
 export function getStaticPaths() {
-  return bk.levels.map((lvl, i) => ({
-    params: { pack: bk.pack_slug, slug: `level-${lvl.level}` },
-    props: {
-      lvl,
-      prev: i > 0 ? bk.levels[i - 1] : null,
-      next: i < bk.levels.length - 1 ? bk.levels[i + 1] : null,
-    },
-  }));
+  return data.packs.flatMap((p: any) =>
+    p.levels.map((lvl: any, i: number) => ({
+      params: { pack: p.slug, slug: `level-${lvl.level}` },
+      props: {
+        lvl,
+        pack: p,
+        prev: i > 0 ? p.levels[i - 1] : null,
+        next: i < p.levels.length - 1 ? p.levels[i + 1] : null,
+      },
+    })),
+  );
 }
 
-const { lvl, prev, next } = Astro.props;
-const pack = bk.pack;
+const { lvl, pack, prev, next } = Astro.props;
+const packName = pack.name;
 const total = lvl.words.length;
 const longest = Math.max(...lvl.words.map((w: string) => w.length));
 const byLen: Record<number, string[]> = {};
@@ -27,18 +30,18 @@ const tray = lvl.letters.toUpperCase().split('');
 const keyWord = lvl.key.toUpperCase();
 const otherFull = lvl.full_length.filter((w: string) => w !== lvl.key).map((w: string) => w.toUpperCase());
 
-const title = `Word Kitchen ${pack} Level ${lvl.level} Answers: ${keyWord}`;
-const description = `Word Kitchen ${pack} Level ${lvl.level} answer: the letters are ${tray.join(' ')}. The full-size word is ${keyWord}, and these five tiles spell ${total} common English words — every one listed by length.`;
-const canonical = `/word-kitchen/${bk.pack_slug}/level-${lvl.level}`;
+const title = `Word Kitchen ${packName} Level ${lvl.level} Answers: ${keyWord}`;
+const description = `Word Kitchen ${packName} Level ${lvl.level} answer: the letters are ${tray.join(' ')}. The full-size word is ${keyWord}, and these tiles spell ${total} common English words — every one listed by length.`;
+const canonical = `/word-kitchen/${pack.slug}/level-${lvl.level}`;
 
 const faq = [
   {
-    q: `What is the answer to Word Kitchen ${pack} Level ${lvl.level}?`,
+    q: `What is the answer to Word Kitchen ${packName} Level ${lvl.level}?`,
     a: `The tray holds ${tray.join(', ')}. The word that uses all ${tray.length} letters at once is ${keyWord}${otherFull.length ? ` (${otherFull.join(' and ')} works too)` : ''}. Below that the same tiles make ${total} common English words, from ${longest} letters down to 3.`,
   },
   {
-    q: `How many words are in ${pack} Level ${lvl.level}?`,
-    a: `The level's slots only ask for a handful of them, but the five tiles can spell ${total} common words. If you are stuck on one slot, work down the ${longest}-letter and ${longest - 1}-letter groups first — the long words are the ones the game usually wants.`,
+    q: `How many words are in ${packName} Level ${lvl.level}?`,
+    a: `The level's slots only ask for a handful of them, but these tiles can spell ${total} common words. If you are stuck on one slot, work down the ${longest}-letter and ${longest - 1}-letter groups first — the long words are the ones the game usually wants.`,
   },
   {
     q: `Why does the game reject a word that is on this list?`,
@@ -69,7 +72,7 @@ const faqJsonLd = {
     description={description}
     canonical={canonical}
     type="article"
-    breadcrumbTitle={`Word Kitchen ${pack} Level ${lvl.level}`}
+    breadcrumbTitle={`Word Kitchen ${packName} Level ${lvl.level}`}
   />
   <link rel="alternate" hreflang="en" href={`https://gridpaw.com${canonical}/`} />
   <link rel="alternate" hreflang="x-default" href={`https://gridpaw.com${canonical}/`} />
@@ -134,12 +137,12 @@ const faqJsonLd = {
 <body>
   <GameNav />
   <div class="breadcrumb">
-    <a href="/">Home</a> › <a href="/word-kitchen/">Word Kitchen Answers</a> › <a href="/word-kitchen/">Bebinca</a> › Level {lvl.level}
+    <a href="/">Home</a> › <a href="/word-kitchen/">Word Kitchen Answers</a> › <a href={`/word-kitchen/${pack.slug}/`}>{packName}</a> › Level {lvl.level}
   </div>
 
   <main class="wrap">
-    <h1>Word Kitchen {pack} Level {lvl.level} Answers: {keyWord}</h1>
-    <p class="lede">Tray letters <strong>{tray.join(' ')}</strong> — the full-size word is <strong class="key-word">{keyWord}</strong>, and the same five tiles spell <strong>{total}</strong> common words.</p>
+    <h1>Word Kitchen {packName} Level {lvl.level} Answers: {keyWord}</h1>
+    <p class="lede">Tray letters <strong>{tray.join(' ')}</strong> — the full-size word is <strong class="key-word">{keyWord}</strong>, and the same tiles spell <strong>{total}</strong> common words.</p>
 
     <div class="answer-box">
       <span class="label">Quick answer</span>
@@ -172,9 +175,9 @@ const faqJsonLd = {
 
     <InContentAd />
 
-    <h2>How the <span class="accent">{pack}</span> pack works</h2>
+    <h2>How the <span class="accent">{packName}</span> pack works</h2>
     <div class="mech">
-      <p>Word Kitchen does not number levels globally — each dessert pack runs its own <strong>1 to 18</strong> count. {pack} is the first pack, so "Level {lvl.level}" always means <strong>{pack} - {lvl.level}</strong> in the game's header.</p>
+      <p>Word Kitchen does not number levels globally — each dessert pack runs its own <strong>1 to 18</strong> count. {packName} is one of those packs, so "Level {lvl.level}" always means <strong>{packName} - {lvl.level}</strong> in the game's header.</p>
       <ul>
         <li><strong>The tray never changes inside a level.</strong> All {tray.length} tiles stay available until the level ends, so every word above can be entered at any point.</li>
         <li><strong>Long words first.</strong> The game's slots almost always include the {longest}-letter word; finding it usually unlocks the layout of the rest.</li>
@@ -189,10 +192,10 @@ const faqJsonLd = {
       <a class="btn" href="/word-kitchen/solver/">Open the Word Kitchen solver →</a>
     </div>
 
-    <h2>Other {pack} levels</h2>
+    <h2>Other {packName} levels</h2>
     <div class="level-strip">
-      {bk.levels.map((l) => (
-        <a href={`/word-kitchen/${bk.pack_slug}/level-${l.level}/`} class={l.level === lvl.level ? 'here' : ''}>{l.level}</a>
+      {pack.levels.map((l: any) => (
+        <a href={`/word-kitchen/${pack.slug}/level-${l.level}/`} class={l.level === lvl.level ? 'here' : ''}>{l.level}</a>
       ))}
     </div>
 
@@ -206,13 +209,13 @@ const faqJsonLd = {
 
     <div class="pager">
       {prev ? (
-        <a href={`/word-kitchen/${bk.pack_slug}/level-${prev.level}/`}>
+        <a href={`/word-kitchen/${pack.slug}/level-${prev.level}/`}>
           <span>Previous</span>
           Level {prev.level} ({prev.letters.toUpperCase()})
         </a>
       ) : <span />}
       {next ? (
-        <a class="next" href={`/word-kitchen/${bk.pack_slug}/level-${next.level}/`}>
+        <a class="next" href={`/word-kitchen/${pack.slug}/level-${next.level}/`}>
           <span>Next</span>
           Level {next.level} ({next.letters.toUpperCase()})
         </a>
@@ -222,7 +225,7 @@ const faqJsonLd = {
     <SideAd />
 
     <p class="evidence">
-      <strong>Where these letters come from:</strong> the tray for each level was read from the 1080p recording of the {pack} playthrough by {bk.source.channel} (video {bk.source.video}, {Math.floor(lvl.t / 60)}:{String(lvl.t % 60).padStart(2, '0')}–{Math.floor(lvl.end / 60)}:{String(lvl.end % 60).padStart(2, '0')}). Every tray was checked by anagram: the letters have to spell a real word, which catches misreads. Word lists are generated from the ENABLE dictionary filtered to the 50,000 most common English words, so nothing on this page is copied from another answers site.
+      <strong>Where these letters come from:</strong> the tray for each level was read from the 1080p recording of the {packName} playthrough by {pack.source.channel} (video {pack.source.video}), then checked by anagram — the letters have to spell a real word, which catches misreads. Word lists are generated from the ENABLE dictionary filtered to the 50,000 most common English words, so nothing on this page is copied from another answers site.
     </p>
   </main>
 </body>
