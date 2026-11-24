@@ -2,7 +2,7 @@
 // GameNav 给内容页头部混排内容页链接，GameSwitcher 是游戏页内切换的纯游戏列表）。
 // 本脚本只防「静默分叉」：GameSwitcher 的每个游戏必须在 GameNav 也有（新游戏漏改即红）。
 // 有意省略的游戏例外写 EXCEPTIONS（当前为空；murdoku 漏改 2026-10-16 已补）。
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 
 const EXCEPTIONS = new Set();
 const gameHrefs = (file) =>
@@ -120,3 +120,56 @@ if (orphan.length || hubMissing.length) {
   process.exit(1);
 }
 if (!pending.length) console.log(`✓ 大格数独集群导航：${audited.length} 页都有入口`);
+
+// ── 动态路由板块可达性（2026-11-24 新增）────────────────────────────────────
+// 判据：一级目录里只要存在动态路由（src/pages/<dir>/…/[...].astro），该板块就会生成几十上百页，
+// 它的 hub（/<dir>/）就必须在 GameNav 里有入口（games 或 guides 都算——两者都渲染在内容页头部）。
+// 为什么只收动态路由：那类板块一上线就是成批页面，漏登记的代价最大（全站无头部入口 = 孤岛），
+// 而此前没有任何闸门会拦。2026-11-24 /amochiroom/ 133 个关页就是这么上线的；
+// 本闸门第一次跑还顺带查出 /word-kitchen/（17 关页 + solver）一直是孤岛。
+// 一次性静态页不在范围内：漏登记代价小，强行收全只会制造一堆豁免噪声。
+const DYNAMIC_SECTION_EXEMPT = new Map([
+  // ['/some-section', '为什么有意不挂导航'],
+  // 语言区域版：入口约定是 hreflang 三连，GameNav 是英文导航，混排会把 pt 页塞进英文菜单
+  ['/pt-br', 'locale 版（hreflang 为约定入口；GameNav 仅英文）'],
+]);
+
+function hasDynamicRoute(dir, depth) {
+  if (depth < 0) return false;
+  let entries;
+  try {
+    entries = readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return false;
+  }
+  for (const e of entries) {
+    const p = `${dir}/${e.name}`;
+    if (e.isDirectory()) {
+      if (hasDynamicRoute(p, depth - 1)) return true;
+    } else if (e.name.endsWith('.astro') && /\[[^\]]+\]/.test(e.name)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+const dynamicSections = readdirSync('src/pages', { withFileTypes: true })
+  .filter((e) => e.isDirectory() && existsSync(`src/pages/${e.name}/index.astro`))
+  .map((e) => `/${e.name}`)
+  .filter((route) => hasDynamicRoute(`src/pages${route}`, 3));
+
+const orphanSections = dynamicSections.filter((r) => !navAll.has(r) && !DYNAMIC_SECTION_EXEMPT.has(r));
+
+if (orphanSections.length) {
+  console.error('✗ 动态路由板块孤岛：这些目录会生成成批页面，但 hub 不在 GameNav（games / guides 任一）：');
+  for (const r of orphanSections) console.error(`  ${r}`);
+  console.error('  补进 src/components/GameNav.astro，或有意不挂导航则写进本文件 DYNAMIC_SECTION_EXEMPT。');
+  process.exit(1);
+}
+const auditedSections = dynamicSections.filter((r) => !DYNAMIC_SECTION_EXEMPT.has(r));
+console.log(
+  `✓ 动态路由板块导航：${auditedSections.length} 个板块都有头部入口（${auditedSections.join(' ')}）` +
+    (dynamicSections.length - auditedSections.length
+      ? `，${dynamicSections.length - auditedSections.length} 个已豁免（${[...DYNAMIC_SECTION_EXEMPT.keys()].join(' ')}）`
+      : '')
+);

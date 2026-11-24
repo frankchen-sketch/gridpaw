@@ -133,7 +133,8 @@ const LEVEL_SEQUENCE_VERSION="compact-v11",
 
 ## 6. 验证证据（不是估计）
 
-1. **条目数**：133 关、25,943 个物品、5,091 个箱子、422 个类别标签。
+1. **条目数**：133 关、25,943 个物品、5,091 个箱子；箱子上实际出现的不同标签 **345 个**
+   （`types` 表 422 条，其余未在任何箱子里使用——对外口径用 345）。
 2. **容量守恒**：逐关 `Σ boxes[].capacity == items.length` 且按 type 分组后 `capacity == 物品数`，**133/133 关全部通过**（`meta.integrity` 为空数组）。
 3. **双源交叉验证**：APK 内另有一份 `assets/data/storage-legacy/level-1…135.json`（旧格式）。对 130 个基线关逐关比对 `order`（type+count）与 `content`（id/x/y/scale/angle），**130 关完全一致，0 差异**。
 4. **贴图全覆盖**：25,943 个物品都在 `manifest.json` 的 `items`（4,340 条 id→webp）里找到贴图路径，缺失 0。
