@@ -70,7 +70,7 @@ order+content **130/130 零差异**，说明两条链路同源。
 - 解包产物（APK、`assets/www/`、游戏 JS/CSS/美术）**一律不入库**：
   已加 `.git/info/exclude` → `research/amochiroom/unpack/`（跨 worktree 生效），并在 `.gitignore` 记一条。
 - **美术使用口径（2026-11-24 法老拍板「用」）**：页面引用游戏自己的房间背景与物品贴图，
-  但只入库**降采样衍生图**（物品最长边 96–256px 按需 / 背景宽 720px / 索引缩略图宽 240px，webp），
+  但只入库**降采样衍生图**（物品最长边 96–288px 按需（按 3x 屏取） / 背景宽 720px / 索引缩略图宽 240px，webp），
   原始 337MB APK 与原始 webp 不进仓库。每页正文与页脚均写明 "art belongs to ABF ALPENHOF,
   shown here for identification"，页首有非官方声明。风险与取舍记在此处，改动前先问法老。
 - lint 曾因扫到解包 JS 报 100+ 假错，隔离后 `pnpm run verify` 全绿。

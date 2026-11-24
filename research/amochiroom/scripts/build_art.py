@@ -35,9 +35,9 @@ OUT_DATA = os.path.join(ROOT, 'src/data/amochiroom-levels.json')
 PUB = os.path.join(ROOT, 'public/amochiroom/art')
 
 ITEM_MAX = 96          # 下限：小件保持 96px
-ITEM_CAP = 256         # 上限：再大就没意义（板上限 420 CSS px × 2 DPR）
+ITEM_CAP = 288         # 上限（板上限 420 CSS px × 3 DPR = 1260 的 23%，够大件用）
 BOARD_MAX_CSS = 420    # 页面 .board 的 max-width，改页面要同步改这里
-DPR = 2                # 按 2x 屏取分辨率
+DPR = 3                # 按 3x 屏（iPhone / 旗舰安卓）取分辨率，2x 桌面自然降采样
 ITEM_Q = 78
 BG_W = 720
 BG_Q = 76
