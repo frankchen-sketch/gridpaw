@@ -102,7 +102,7 @@ const band: Record<string, string> = { easy: 'easy', middle: 'mid', hard: 'hard'
     .level-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.9rem; margin: 0.8rem 0; }
     .level-card { display: flex; flex-direction: column; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); text-decoration: none; color: var(--text); transition: transform 0.15s, border-color 0.15s; }
     .level-card:hover { transform: translateY(-2px); border-color: var(--amber); }
-    .level-card .thumb { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; border-bottom: 1.5px solid var(--border); background: #F7ECE0; }
+    .level-card .thumb { width: 100%; height: auto; aspect-ratio: 1/1; object-fit: cover; display: block; border-bottom: 1.5px solid var(--border); background: #F7ECE0; }
     .level-card .meta { padding: 0.6rem 0.7rem 0.75rem; display: block; }
     .level-card .lvl { font-size: 0.68rem; font-weight: 900; color: var(--amber-ink); text-transform: uppercase; letter-spacing: 0.06em; display: block; }
     .level-card .name { font-size: 0.85rem; font-weight: 800; line-height: 1.3; margin-top: 0.15rem; color: var(--text); display: block; min-height: 2.2em; }
@@ -200,7 +200,7 @@ const band: Record<string, string> = { easy: 'easy', middle: 'mid', hard: 'hard'
     <div class="level-grid">
       {levels.map((l: any) => (
         <a class="level-card" href={`/amochiroom/level-${l.level}/`}>
-          <img class="thumb" src={l.thumb} alt={`${l.name} room in Amochiroom Room Sort`} loading="lazy" decoding="async" width="240" height="150" />
+          <img class="thumb" src={l.thumb} alt={`${l.name} room in Amochiroom Room Sort`} loading="lazy" decoding="async" width="240" height="240" />
           <span class="meta">
             <span class="lvl">Level {l.level}</span>
             <span class="name">{l.name}</span>

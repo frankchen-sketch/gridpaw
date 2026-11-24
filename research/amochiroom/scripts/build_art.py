@@ -34,8 +34,11 @@ CATALOG = os.path.join(UNPACK, 'apk_data/assets/www/assets/art/v3_review_2026110
 OUT_DATA = os.path.join(ROOT, 'src/data/amochiroom-levels.json')
 PUB = os.path.join(ROOT, 'public/amochiroom/art')
 
-ITEM_MAX = 96
-ITEM_Q = 76
+ITEM_MAX = 96          # 下限：小件保持 96px
+ITEM_CAP = 256         # 上限：再大就没意义（板上限 420 CSS px × 2 DPR）
+BOARD_MAX_CSS = 420    # 页面 .board 的 max-width，改页面要同步改这里
+DPR = 2                # 按 2x 屏取分辨率
+ITEM_Q = 78
 BG_W = 720
 BG_Q = 76
 THUMB_W = 240
@@ -60,15 +63,20 @@ def main():
     raw_bytes = out_bytes = 0
     missing_sprite = set()
 
-    def land_item(sprite):
+    def land_item(sprite, target=ITEM_MAX):
+        """按需分辨率落地：target = 这贴图在本站最大出现尺寸（设备像素）。"""
         nonlocal raw_bytes, out_bytes
-        if sprite in item_cache:
-            return item_cache[sprite]
         name = slug(sprite)
         dst = os.path.join(PUB, 'i', name)
+        # 已存在且够大 → 跳过（96px 老文件在需要更大时会被重编码）
         if os.path.exists(dst) and os.path.getsize(dst) > 0:
-            item_cache[sprite] = name
-            return name
+            try:
+                with Image.open(dst) as cur:
+                    if max(cur.size) >= target * 0.95:
+                        item_cache[sprite] = name
+                        return name
+            except Exception:
+                pass
         try:
             raw = z.read('assets/www/assets/' + sprite)
         except KeyError:
@@ -76,11 +84,11 @@ def main():
             return None
         raw_bytes += len(raw)
         im = Image.open(io.BytesIO(raw)).convert('RGBA')
-        im.thumbnail((ITEM_MAX, ITEM_MAX), Image.LANCZOS)
+        im.thumbnail((target, target), Image.LANCZOS)
         buf = io.BytesIO()
         im.save(buf, 'WEBP', quality=ITEM_Q, method=5)
         out_bytes += len(buf.getvalue())
-        open(os.path.join(PUB, 'i', name), 'wb').write(buf.getvalue())
+        open(dst, 'wb').write(buf.getvalue())
         item_cache[sprite] = name
         return name
 
@@ -113,27 +121,46 @@ def main():
         bg_cache[sprite] = (name, w, h)
         return bg_cache[sprite]
 
-    levels_out = []
-    for lvl in src['levels']:
-        bgname, bgw, bgh = land_bg(lvl['bg_sprite'])
-        # 画布口径：rooms/<room>_vN 用 bg_logical_size（= 相机逻辑尺寸，bg 按 cover 填进去），
+    def item_geom(it):
+        g = geom.get(it['id']) or {}
+        cw, ch = int(g.get('w') or 100), int(g.get('h') or 100)
+        # 显示尺寸 = catalog w/h × |scale|（scale 不只是镜像：rooms/<room>_vN 那 40 关
+        # 逐件给 0.18~0.85 的绝对缩放，丢了就会把物品放大 5 倍糊满整块板）
+        sx, sy = abs(it['scaleX']), abs(it['scaleY'])
+        return max(1, round(cw * sx)), max(1, round(ch * sy))
+
+    def canvas_of(lvl):
+        _, bw, bh = land_bg(lvl['bg_sprite'])
+        # rooms/<room>_vN 用 bg_logical_size（= 相机逻辑尺寸，bg 按 cover 填进去），
         # 其余关用背景原始像素 —— 物品坐标都以这个画布为单位、原点在画布中心
         logical = lvl.get('bg_logical_size')
         if logical:
-            bgw, bgh = int(logical[0]), int(logical[1])
+            bw, bh = int(logical[0]), int(logical[1])
+        return bw, bh
+
+    # 第一遍：每张贴图在本站的最大显示尺寸（设备像素）→ 决定落地分辨率。
+    # 统一 96px 时大件会被放大到 200+ 设备像素，边缘发虚（2026-11-24 用户截图实锤）。
+    need_px = {}
+    for lvl in src['levels']:
+        bw, bh = canvas_of(lvl)
+        for it in lvl['items']:
+            w, h = item_geom(it)
+            px = max(w / bw, h / bh) * BOARD_MAX_CSS * DPR
+            if px > need_px.get(it['sprite'], 0):
+                need_px[it['sprite']] = px
+
+    levels_out = []
+    for lvl in src['levels']:
+        bgname, _, _ = land_bg(lvl['bg_sprite'])
+        bgw, bgh = canvas_of(lvl)
         items = []
         by_type = {}
         for it in lvl['items']:
-            fn = land_item(it['sprite'])
+            tgt = int(min(ITEM_CAP, max(ITEM_MAX, round(need_px.get(it['sprite'], ITEM_MAX)))))
+            fn = land_item(it['sprite'], tgt)
             if fn is None:
                 continue
-            g = geom.get(it['id']) or {}
-            cw, ch = int(g.get('w') or 100), int(g.get('h') or 100)
-            # 显示尺寸 = catalog w/h × |scale|（scale 不只是镜像：rooms/<room>_vN 那 40 关
-            # 逐件给 0.18~0.85 的绝对缩放，丢了就会把物品放大 5 倍糊满整块板）
-            sx, sy = abs(it['scaleX']), abs(it['scaleY'])
-            w = max(1, round(cw * sx))
-            h = max(1, round(ch * sy))
+            w, h = item_geom(it)
             fx = -1 if it['scaleX'] < 0 else 1
             fy = -1 if it['scaleY'] < 0 else 1
             ang = it['angle'] or 0
