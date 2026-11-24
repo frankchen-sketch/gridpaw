@@ -27,6 +27,11 @@ const smallest = boxes[boxes.length - 1];
 const avg = (lvl.itemCount / lvl.boxCount).toFixed(1);
 const sixPlus = boxes.filter((b: any) => b.count >= 6).length;
 
+// 难度带：游戏自己的 LEVEL_ODDS 表（仅 1–59 关有），如实标注为"游戏给定的目标通关率"
+const band: Record<string, string> = { easy: 'an easy room', middle: 'a mid-difficulty room', hard: 'a hard room' };
+const bandText = lvl.difficulty ? band[lvl.difficulty] : null;
+const hasRate = typeof lvl.passRate === 'number';
+
 // 每关最大容量分布，用于策略段（真实统计，非模板空话）
 const capNote = {
   3: 'at the small end — every box wants 3 items',
@@ -157,7 +162,14 @@ const faqJsonLd = {
       <div class="fact"><b>{lvl.boxCount}</b><span>Boxes</span></div>
       <div class="fact"><b>{lvl.itemCount}</b><span>Items</span></div>
       <div class="fact"><b>{avg}</b><span>Items / box</span></div>
+      {hasRate && <div class="fact"><b>{lvl.passRate}%</b><span>Target clear rate</span></div>}
     </div>
+
+    {hasRate && (
+      <p class="lede" style="font-size:0.92rem;margin-top:0.6rem;">
+        The game files this level as <strong>{bandText}</strong> with a design target of about <strong>{lvl.passRate}%</strong> of players clearing it — that number ships in the game's own difficulty table, so treat it as the designer's intention rather than a live statistic.
+      </p>
+    )}
 
     <h2>Every box in Level {lvl.level}</h2>
     <p>The manifest this level ships with, largest box first. Counts are exact — the sum is {lvl.itemCount}, which is every item on the board. Use it to decide what to save your buffer for.</p>

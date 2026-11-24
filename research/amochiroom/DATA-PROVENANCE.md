@@ -1,47 +1,56 @@
 # Amochiroom 关卡数据集 — 来源与复现
 
-产物：`src/data/amochiroom-levels.json`（130 关）+ `src/pages/amochiroom/`。
+产物：`src/data/amochiroom-levels.json`（**133 关**）+ `src/pages/amochiroom/`。
 本文件记录数据从哪来、怎么重算、哪些结论不能从数据里推出来。
 
 ## 一、数据来源（全部取自官方 APK，无第三方站引用）
 
-APK：`com.gamefactory.roomsort` **1.0.20**（2026-11-21 上架版本），337MB **XAPK**。
+APK：`com.gamefactory.roomsort` **1.0.20（versionCode 20）**，337MB **XAPK**。
 下载链：apkcombo 下载页 `POST soqplay_download_file=<sha256>` → 303 → `apkcombo-transfer.*.workers.dev/file/<opaque>`。
 ⚠️ 本机 curl 必须走代理（`ALL_PROXY=http://127.0.0.1:7882`），否则全站直连超时。
 
-**关键事实：这游戏不是 Unity，是打包进 APK 的网页游戏**（`assets/www/`，9,651 个文件）。
-所以关卡数据是明文 JSON/JS，不需要 IL2CPP 逆向、不需要 UnityPy。
+**关键事实：这游戏不是 Unity，是 Android WebView + HTML5 Canvas 的混合应用**
+（`assets/www/` 下 9,932 个文件；`libil2cpp` / `assets/bin/Data` / `global-metadata` 命中 0）。
+所以关卡数据是明文 JSON，不需要 IL2CPP 逆向、不需要 UnityPy。
 
 | 取用的文件 | 内容 |
 |---|---|
-| `assets/www/assets/data/storage-legacy/level-1..135.json` | 关卡快照：`order[]`（箱子 type+count）、`content[]`（物品 id/x/y/scale/angle）、`bgFile` |
-| `assets/www/assets/data/storage-legacy/index.json` | 关卡目录（135 条 + deals） |
-| `assets/www/assets/i18n/system/en.json` | `level.<N>` 房间名、`type.<id>` 物品类别名（667 个） |
+| `assets/www/assets/art/v3_review_20261104/catalog.json`（2.85MB） | **关卡真源**：`levelSequence=compact-v11`，由 `game/src/view/assets.js::loadCatalog()` 经 `data/art-sets.json` 加载 |
+| `assets/www/assets/data/storage-legacy/level-1..135.json` | 130 关基线镜像（快照），用于交叉校验 |
+| `assets/www/assets/i18n/system/en.json` | `level.<N>` 英文房名、`type.<id>` 类别名（667 个） |
 | `game/src/services/level-sequence.js` | `REMOVED_LEVELS=[53,73,79,98,133]`、`LEVEL_SEQUENCE_VERSION=compact-v11` |
 | `game/src/core/rules.js` | `ORDER_SLOTS=3, ORDER_OPEN=2, BUFFER_SLOTS=7, BUFFER_OPEN=5, HINT_TIMES=3, HINT_IDLE_SECONDS=15, CLEAR_COUNT=3, EAGLE_MAX=5` |
-| `game/src/core/buffer-failure.js` | buffer A/B：`control`/`deadlock_notice`(5/7, failWhenFull=false)、`full_fail`(5/7,true)、`full_fail_plus_one`(6/8,true) |
-| `game/src/data/deal-variants.js` | `proofs[].path`（厂商预计算的合法点击序，按变体） |
+| `game/src/core/buffer-failure.js` | buffer A/B 四档：`control`/`deadlock_notice`(5/7, failWhenFull=false)、`full_fail`(5/7,true)、`full_fail_plus_one`(6/8,true) |
+| `game/src/data/level-odds.js` | `LEVEL_ODDS.levels[1..59]` = 每关目标通关率 + 难度带（easy/middle/hard） |
+| `game/src/data/deal-variants.js` | `proofs[].path`（厂商预计算点击序，按变体，非全局唯一解） |
 
-## 二、玩家编号如何得出
+## 二、关号如何得出（133 关，不是 130）
 
-游戏不是 1..135 直给，而是 **legacy 编号扣掉 `REMOVED_LEVELS` 后重排**（`mapLegacyLevel`）：
+旧 135 关删掉 `REMOVED_LEVELS` 后重排为 **130 关基线**，再**追加 3 关**（sourceLevel 136–138）：
+`Burger Shop`(131)、`Dental Clinic`(132)、`Lost and Found`(133)。
 
 ```
+# 130 基线
 current = legacy - count(r in REMOVED if r < legacy)
+# 追加关：136→131、137→132、138→133（同样扣 5）
 ```
 
-135 − 5 = **130 关**，连续无缺口。校验方式：`level.1=My Study`、`level.3=Messy Living Room`
-—— 与 YouTube 上 "Level 3 Messy Living Room" 的实况标题一致，说明映射正确。
+校验：`level.1=My Study`、`level.3=Messy Living Room` —— 与 YouTube 实况标题
+"Level 3 Messy Living Room" 一致；且 catalog 与 storage-legacy 逐关比对
+order+content **130/130 零差异**，说明两条链路同源。
 
-复现：`python3 scripts/extract_levels.py`（在 `research/amochiroom/` 下跑），
-依赖 `unpack/www/`（如已删，按上面链路重下 APK + `unzip` 四个目录即可）。
+复现：
+- 全量 133 关：`python3 scripts/extract_levels_full.py`（输出 `unpack/amochiroom_levels.json`，字段语义见 `EXPORT-SCHEMA.md`）
+- 130 关基线交叉校验：`python3 scripts/extract_levels_legacy_baseline.py`
 
 ## 三、数据完整性（发布前门禁）
 
-- 每关 `sum(order[].count) === content.length`，**130/130 全部精确相等**（0 例外）
-- 全站合计 4,957 个箱子 / 25,342 件物品
-- 单箱容量分布：3×7、4×1046、5×2664、6×928、7×248、8×63、9×1
-- 房间名 129 个唯一（130 关里 Level 2 "Whose Room?" 与另一关语义相近，非重复）
+- 每关 `Σ boxes[].capacity === item_count`，**133/133 全部精确相等**（0 例外）
+- 按 type 分组逐类也相等（不只是总数对）
+- 25,943 件物品在 `manifest.json` 的 4,340 条贴图映射中**全部命中**（缺 0）
+- 全站合计：**133 关 / 5,091 箱 / 25,943 件 / 422 个类别标签**
+- 难度数据只覆盖 1–59 关（12 easy / 26 middle / 21 hard），60 关以后游戏没给表 → 页面就不显示
+- 房间名 132 个唯一（`Tea Room` 出现两次，是游戏自己重复用名）
 
 ## 四、不能从数据推的结论（写作红线）
 
@@ -49,13 +58,15 @@ current = legacy - count(r in REMOVED if r < legacy)
    按玩家发牌；`fixedOrder` 只在部分关为真。任何"第 N 步点哪个"都是编的 ——
    页面因此只承诺「箱子清单 + 数量」这一层事实。
 2. **buffer 槽位数不是唯一的**（A/B 实验四档），页面写 5/7 是 control 口径，且已注明"解锁另外两格"。
-3. **不能声称官方授权**。页面已标注独立攻略、非官方关联。
-4. **不要拿 `room sort level N` 的搜索量**：那批词是 Gamincat《Room Sort – Floor Plan Puzzle》的，
+3. **线上可整关替换**：remote content packs + Firebase 实验能换掉第 1/2/3 关布局 ——
+   页面写「随包 1.0.20 的清单」，不写「永远等于你屏幕上的」。
+4. **不能声称官方授权**。页面已标注独立攻略、非官方关联。
+5. **不要拿 `room sort level N` 的搜索量**：那批词是 Gamincat《Room Sort – Floor Plan Puzzle》的，
    词面撞车、玩法不同（摆家具 vs 物品入箱）。
 
 ## 五、版权与仓库纪律
 
-- 解包产物（APK、`assets/www/`、游戏 JS/CSS/图）**一律不入库**：
+- 解包产物（APK、`assets/www/`、游戏 JS/CSS/美术）**一律不入库**：
   已加 `.git/info/exclude` → `research/amochiroom/unpack/`（跨 worktree 生效），并在 `.gitignore` 记一条。
-- 页面只用**事实性数据**：房间英文名、箱子类别名、数量。不用游戏美术、不用它的 UI 截图、不搬它的代码。
+- 页面只用**事实性数据**：房间英文名、箱子类别名、数量、难度带。不搬美术、不贴 UI 截图、不搬代码。
 - lint 曾因扫到解包 JS 报 100+ 假错，隔离后 `pnpm run verify` 全绿。
