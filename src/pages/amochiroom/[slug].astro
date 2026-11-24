@@ -168,11 +168,15 @@ const faqJsonLd = {
       display: none; border: 2.5px solid var(--amber); background: rgba(217,119,6,0.10); }
     .board .num { position: absolute; transform: translate(-50%,-50%); display: none; min-width: 17px; height: 17px;
       border-radius: 9px; background: var(--amber); color: #fff; font: 900 11px/17px -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-      text-align: center; padding: 0 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.28); pointer-events: none; }
+      text-align: center; padding: 0 3px; box-shadow: 0 0 0 1.5px #fff, 0 1px 3px rgba(0,0,0,0.28); pointer-events: none; }
     .board.dim .it { opacity: 0.34; filter: saturate(0.55); }
     .board.dim .it.on { opacity: 1; filter: none; z-index: 3; }
     .board.dim .ring.on { display: block; }
     .board.dim .num.on { display: block; }
+    @media (max-width: 480px) {
+      .board .ring { border-width: 2px; }
+      .board .num { min-width: 19px; height: 19px; border-radius: 10px; font-size: 12px; line-height: 19px; }
+    }
     .board-hint { text-align: center; font-size: 0.78rem; font-weight: 800; color: var(--amber-ink); margin: 0.5rem 0 0.2rem; }
     .box-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 0.5rem; margin: 0.8rem 0 0; }
     .box-card { display: flex; align-items: center; gap: 0.5rem; text-align: left; font: inherit; cursor: pointer;
