@@ -86,10 +86,15 @@ python3 research/amochiroom/scripts/build_art.py
   → src/data/amochiroom-levels.json   133 关，含 bg/bgW/bgH/items/boxes[].thumbs
 ```
 
-- **几何口径**：`catalog.json` 的 `items[id].w/h` 是在屏显示尺寸，物品坐标原点在背景图中心、
-  单位=背景像素；`scaleX/scaleY` 只表示镜像（±1），`angle` 为旋转角度。
+- **几何口径**：`catalog.json` 的 `items[id].w/h` 是 1x 显示尺寸（贴图原始 webp 恰好是它的 2 倍），
+  物品坐标原点在背景图中心、单位=背景像素；**显示尺寸 = catalog w/h × |scaleX|/|scaleY|**，
+  scale 的符号位才是镜像。`rooms/<room>_vN` 那 40 关（含 131-133）逐件给 0.18~0.85 的**绝对缩放**，
+  只取符号会把物品放大 5 倍、糊满整块板（2026-11-24 实锤，L131 单件占板面积 49%）。
+  这类关的画布口径另取 `bg_logical_size`（相机逻辑尺寸），其余关用背景原始像素；
   页面按 `left=(bgW/2+x)/bgW`、`width=w/bgW` 换算成百分比，因此每关自适应不同背景宽度
-  （背景 1220/1440/1461/1524/1016 五种宽度实测存在）。
+  （背景 1016/1220/1440/1461/1524 五种宽度实测存在）。
+- **几何自检（脚本每次跑都打印）**：单件占板面积 Top5。正常区间 0.2%~1%，最大件是 L1 的大件家具
+  6.4%；任何 >10% 都说明尺寸口径或坐标错了，别急着上线。
 - **命名坑（已修）**：L131–133 的背景都叫 `rooms/<room>_vN/background.webp`，直接取 basename
   会三关互相覆盖 → `rooms/` 前缀的路径改用 `<room>-bg.webp`。改脚本时勿回退。
 - 单页图片负载：中位 431 KB（背景 60 KB + 本关用到的不重复贴图），最重 591 KB（L128，164 张）；

@@ -6,8 +6,9 @@
   public/amochiroom/art/b/<file>.webp   房间背景（宽 720px）
   src/data/amochiroom-levels.json       页面用的完整数据集
 
-坐标口径与游戏一致：原点在背景图中心，单位=背景像素；物品显示尺寸取 catalog 的 w/h；
-scaleX/scaleY 只为镜像（±1），angle 为旋转角度。
+坐标口径与游戏一致：原点在背景图中心，单位=背景像素（rooms/<room>_vN 那批为 bg_logical_size
+相机尺寸）；物品显示尺寸 = catalog 的 w/h × |scaleX|/|scaleY|，scale 的符号位 = 镜像，
+angle 为旋转角度。rooms 关的 scale 是 0.18~0.85 的绝对缩放，不能只取符号。
 
 用法（在 gridpaw worktree 根目录）：
   python3 research/amochiroom/scripts/build_art.py
@@ -108,6 +109,11 @@ def main():
     levels_out = []
     for lvl in src['levels']:
         bgname, bgw, bgh = land_bg(lvl['bg_sprite'])
+        # 画布口径：rooms/<room>_vN 用 bg_logical_size（= 相机逻辑尺寸，bg 按 cover 填进去），
+        # 其余关用背景原始像素 —— 物品坐标都以这个画布为单位、原点在画布中心
+        logical = lvl.get('bg_logical_size')
+        if logical:
+            bgw, bgh = int(logical[0]), int(logical[1])
         items = []
         by_type = {}
         for it in lvl['items']:
@@ -115,7 +121,12 @@ def main():
             if fn is None:
                 continue
             g = geom.get(it['id']) or {}
-            w, h = int(g.get('w') or 100), int(g.get('h') or 100)
+            cw, ch = int(g.get('w') or 100), int(g.get('h') or 100)
+            # 显示尺寸 = catalog w/h × |scale|（scale 不只是镜像：rooms/<room>_vN 那 40 关
+            # 逐件给 0.18~0.85 的绝对缩放，丢了就会把物品放大 5 倍糊满整块板）
+            sx, sy = abs(it['scaleX']), abs(it['scaleY'])
+            w = max(1, round(cw * sx))
+            h = max(1, round(ch * sy))
             fx = -1 if it['scaleX'] < 0 else 1
             fy = -1 if it['scaleY'] < 0 else 1
             ang = it['angle'] or 0
@@ -157,6 +168,15 @@ def main():
             'boxes': boxes,
             'items': items,
         })
+
+    # 几何审计：单件占板面积（>25% 基本等于摆错或尺寸口径错，历史上 L131-133 就是这样露的）
+    worst = []
+    for L in levels_out:
+        area = L['bgW'] * L['bgH']
+        mx = max((i[6] * i[7] / area for i in L['items']), default=0)
+        worst.append((round(mx * 100, 1), L['level'], L['name']))
+    worst.sort(reverse=True)
+    print('单件占板面积 Top5:', worst[:5])
 
     meta = {
         'game': 'Amochiroom Puzzle: Room Sort',
