@@ -14,6 +14,11 @@ const rated = levels.filter((l: any) => l.difficulty).length;
 const ratedHard = levels.filter((l: any) => l.difficulty === 'hard').length;
 const smallest = [...levels].sort((a: any, b: any) => a.boxCount - b.boxCount)[0];
 const largest = [...levels].sort((a: any, b: any) => b.boxCount - a.boxCount)[0];
+const rotated = levels.reduce((n: number, l: any) => n + l.items.filter((it: any[]) => it[5]).length, 0);
+const mirrored = levels.reduce((n: number, l: any) => n + l.items.filter((it: any[]) => it[3] === -1 || it[4] === -1).length, 0);
+const itemTypes = new Set(levels.flatMap((l: any) => l.items.map((it: any[]) => it[8]))).size;
+const boxLabels = new Set(levels.flatMap((l: any) => l.boxes.map((b: any) => b.name))).size;
+const busiest = [...levels].sort((a: any, b: any) => b.itemCount - a.itemCount)[0];
 
 const title = `Amochiroom Room Sort Answers: All ${total} Rooms`;
 const description = `Every Amochiroom Puzzle: Room Sort level with its exact box list: ${totalBoxes.toLocaleString('en-US')} boxes across ${total} rooms, with counts, room maps and what each box is waiting for.`;
@@ -34,7 +39,7 @@ const faq = [
   },
   {
     q: `Is there an Amochiroom answers list with the tap order?`,
-    a: `No, and be careful with anything that claims one. Item positions and the order the boxes arrive in are dealt per player, so a fixed tap-by-tap sequence cannot be right for everyone. What is fixed — and what this site publishes for every level — is the box set: which categories the room wants and how many of each.`,
+    a: `No, and be careful with anything that claims one. What is safe to tap depends on which boxes are open right now and what you already parked in the buffer, so a fixed tap-by-tap sequence cannot be right for every run. What is fixed — and what this site publishes for every level — is the box set: which categories the room wants and how many of each. The numbered circles on each map are a sweep order for finding all of them, not a mandatory click order.`,
   },
   {
     q: `Are the levels getting harder?`,
@@ -99,6 +104,11 @@ const band: Record<string, string> = { easy: 'easy', middle: 'mid', hard: 'hard'
     .fact b { display: block; font-size: 1.15rem; color: var(--amber-ink); }
     .fact span { font-size: 0.7rem; color: var(--light); font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; }
     .mech { background: #fff; border-left: 4px solid var(--amber); border-radius: 8px; padding: 0.8rem 1rem; margin: 1rem 0; }
+    .why { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1.1rem; margin: 1rem 0 1.4rem; }
+    .why ul { margin: 0; padding-left: 1.1rem; }
+    .why li { margin: 0.55rem 0; font-size: 0.94rem; line-height: 1.62; }
+    .why li strong { color: var(--amber-ink); }
+    .why .why-close { margin: 0.9rem 0 0; padding-top: 0.7rem; border-top: 1px dashed var(--border); font-size: 0.9rem; color: var(--light); }
     .level-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.9rem; margin: 0.8rem 0; }
     .level-card { display: flex; flex-direction: column; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); text-decoration: none; color: var(--text); transition: transform 0.15s, border-color 0.15s; }
     .level-card:hover { transform: translateY(-2px); border-color: var(--amber); }
@@ -190,9 +200,10 @@ const band: Record<string, string> = { easy: 'easy', middle: 'mid', hard: 'hard'
     </div>
 
     <p>
-      <strong>There is no single tap sequence to memorise.</strong> Item positions and the order boxes are dealt in
-      vary by player and by app version, so a walkthrough video often does not match your screen. The box set does not
-      vary — that is the part you can plan against, and it is what every page below publishes.
+      <strong>There is no single tap sequence worth memorising.</strong> The room and its box set are fixed — that is why
+      the maps below match your screen — but what is safe to tap depends on which boxes are open at that moment and what you
+      have already parked in the buffer. A video of somebody else's run cannot account for that, and neither can a list that
+      numbers items as a fixed click order.
     </p>
 
     <h2>Every room, with its map<span class="accent">.</span></h2>
@@ -246,6 +257,39 @@ const band: Record<string, string> = { easy: 'easy', middle: 'mid', hard: 'hard'
         <p>{f.a}</p>
       </details>
     ))}
+
+    <h2>Why this page goes further than the rest<span class="accent">.</span></h2>
+    <p>
+      Answer lists for this game tend to be screenshots with numbers typed under them. We took the slower route,
+      and here is exactly what that bought you:
+    </p>
+    <div class="why">
+      <ul>
+        <li><strong>Every count reconciles — all {total} rooms, no exceptions.</strong> The quantities printed on the boxes
+          add up to exactly the number of items on the board: {totalBoxes.toLocaleString('en-US')} boxes,
+          {totalItems.toLocaleString('en-US')} items, zero rooms off by one. That arithmetic is the test most lists fail,
+          and it is the one thing that tells you a list is complete rather than approximate.</li>
+        <li><strong>The map is the room, not an artist's impression.</strong> Each page uses the game's own background and
+          every item at the size, angle and mirroring it ships with — {rotated.toLocaleString('en-US')} items are rotated
+          and {mirrored.toLocaleString('en-US')} are mirrored, and they are drawn that way. Nothing is nudged to look tidy,
+          because a tidy map would be a wrong map.</li>
+        <li><strong>Circles with numbers instead of a fake click order.</strong> Tap a box and its items are circled and
+          numbered in a sweep order, so a pile-up of overlapping junk does not hide where the eighth one is. We deliberately
+          do not publish “tap this first” sequences: your buffer state is yours, and a sequence that pretends otherwise is
+          theatre.</li>
+        <li><strong>{boxLabels} distinct box labels across {itemTypes} item types,</strong> including the labels that show up in
+          several rooms — the cases where a list that looks right is quietly attached to the wrong room.</li>
+        <li><strong>Difficulty comes from the game's own table</strong> ({rated} rooms carry a rating), presented as the
+          designer's intent. The game publishes no clear rates, so we do not invent percentages to look authoritative.</li>
+        <li><strong>Busy rooms are done, not skipped.</strong> {busiest.name} carries {busiest.itemCount} items and
+          {busiest.boxCount} boxes; {largest.name} has the longest box list at {largest.boxCount}. Those are the pages
+          most sites quietly leave out.</li>
+      </ul>
+      <p class="why-close">
+        Being more careful than the next site is the whole product. If a count here disagrees with your screen, that is a bug
+        on our side — say so and it gets fixed, because the numbers are the only reason to visit.
+      </p>
+    </div>
 
     <div class="cross-card">
       <img src="/og-akari-daily.png" alt="Daily Akari — new grid every midnight" loading="lazy" width="1200" height="630">

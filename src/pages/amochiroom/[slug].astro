@@ -164,8 +164,15 @@ const faqJsonLd = {
     .board { position: relative; width: 100%; max-width: 420px; margin: 0 auto; background: #f7ece0 center/cover no-repeat;
       border: 2px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: 0 3px 12px rgba(217,119,6,0.10); }
     .board .it { position: absolute; transform-origin: center; transition: opacity 0.18s, filter 0.18s; }
-    .board.dim .it { opacity: 0.22; filter: saturate(0.3); }
-    .board.dim .it.on { opacity: 1; filter: none; z-index: 3; outline: 2px solid rgba(217,119,6,0.75); outline-offset: 1px; border-radius: 6px; }
+    .board .ring { position: absolute; transform: translate(-50%,-50%); border-radius: 50%; pointer-events: none;
+      display: none; border: 2.5px solid var(--amber); background: rgba(217,119,6,0.10); }
+    .board .num { position: absolute; transform: translate(-50%,-50%); display: none; min-width: 17px; height: 17px;
+      border-radius: 9px; background: var(--amber); color: #fff; font: 900 11px/17px -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      text-align: center; padding: 0 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.28); pointer-events: none; }
+    .board.dim .it { opacity: 0.34; filter: saturate(0.55); }
+    .board.dim .it.on { opacity: 1; filter: none; z-index: 3; }
+    .board.dim .ring.on { display: block; }
+    .board.dim .num.on { display: block; }
     .board-hint { text-align: center; font-size: 0.78rem; font-weight: 800; color: var(--amber-ink); margin: 0.5rem 0 0.2rem; }
     .box-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 0.5rem; margin: 0.8rem 0 0; }
     .box-card { display: flex; align-items: center; gap: 0.5rem; text-align: left; font: inherit; cursor: pointer;
@@ -269,22 +276,32 @@ const faqJsonLd = {
           // 之前按 y 向下算，133 关的物品全被画到上半空（2026-11-24 用户截图 + 商店截图对照实锤）。
           const left = ((lvl.bgW / 2 + x) / lvl.bgW) * 100;
           const top = ((lvl.bgH / 2 - y) / lvl.bgH) * 100;
+          const rw = ((w * 1.24) / lvl.bgW) * 100;
+          const rh = ((h * 1.24) / lvl.bgH) * 100;
+          const nx = left - ((w * 0.72) / lvl.bgW) * 100;
+          const ny = top - ((h * 0.72) / lvl.bgH) * 100;
           return (
-            <img
-              class="it"
-              src={`/amochiroom/art/i/${fn}`}
-              width={w}
-              height={h}
-              data-t={type}
-              alt={`${typeName[type] ?? 'Item'} in ${lvl.name}`}
-              loading="lazy"
-              decoding="async"
-              style={`left:${left.toFixed(2)}%;top:${top.toFixed(2)}%;width:${((w / lvl.bgW) * 100).toFixed(2)}%;transform:translate(-50%,-50%) rotate(${-ang}deg) scale(${fx},${fy})`}
-            />
+            <>
+              <img
+                class="it"
+                src={`/amochiroom/art/i/${fn}`}
+                width={w}
+                height={h}
+                data-t={type}
+                data-o={top.toFixed(2)}
+                data-p={left.toFixed(2)}
+                alt={`${typeName[type] ?? 'Item'} in ${lvl.name}`}
+                loading="lazy"
+                decoding="async"
+                style={`left:${left.toFixed(2)}%;top:${top.toFixed(2)}%;width:${((w / lvl.bgW) * 100).toFixed(2)}%;transform:translate(-50%,-50%) rotate(${-ang}deg) scale(${fx},${fy})`}
+              />
+              <span class="ring" data-t={type} style={`left:${left.toFixed(2)}%;top:${top.toFixed(2)}%;width:${rw.toFixed(2)}%;height:${rh.toFixed(2)}%`} />
+              <span class="num" data-t={type} style={`left:${nx.toFixed(2)}%;top:${ny.toFixed(2)}%`} />
+            </>
           );
         })}
       </div>
-      <p class="board-hint" id="boardHint">Tap a box below → the room dims everything else</p>
+      <p class="board-hint" id="boardHint">Tap a box below → its items get circled in pickup order</p>
 
       <div class="box-grid">
         {boxes.map((b: any) => (
@@ -418,11 +435,16 @@ const faqJsonLd = {
     if (board) {
       var cards = [].slice.call(document.querySelectorAll('.box-card'));
       var items = [].slice.call(board.querySelectorAll('.it'));
+      var rings = [].slice.call(board.querySelectorAll('.ring'));
+      var nums = [].slice.call(board.querySelectorAll('.num'));
+      var HINT = 'Tap a box below → its items get circled in pickup order';
       function reset() {
         board.classList.remove('dim');
         cards.forEach(function (c) { c.classList.remove('act'); c.setAttribute('aria-pressed', 'false'); });
         items.forEach(function (i) { i.classList.remove('on'); });
-        if (hint) hint.textContent = 'Tap a box below → the room dims everything else';
+        rings.forEach(function (r) { r.classList.remove('on'); });
+        nums.forEach(function (n) { n.classList.remove('on'); n.textContent = ''; });
+        if (hint) hint.textContent = HINT;
       }
       cards.forEach(function (card) {
         card.addEventListener('click', function () {
@@ -433,13 +455,34 @@ const faqJsonLd = {
           board.classList.add('dim');
           card.classList.add('act');
           card.setAttribute('aria-pressed', 'true');
-          var n = 0;
+          var hits = [];
           items.forEach(function (i) {
-            if (types.indexOf(i.getAttribute('data-t')) !== -1) { i.classList.add('on'); n++; }
+            if (types.indexOf(i.getAttribute('data-t')) !== -1) {
+              i.classList.add('on');
+              hits.push(i);
+            }
           });
+          rings.forEach(function (r) {
+            if (types.indexOf(r.getAttribute('data-t')) !== -1) r.classList.add('on');
+          });
+          // 编号只数这一箱要的物品，按阅读顺序（先上后下、先左后右）1..N；
+          // img / ring / num 三者在 DOM 里是逐件同序生成的，所以按索引一一配对
+          hits.sort(function (a, b) {
+            return (parseFloat(a.getAttribute('data-o')) - parseFloat(b.getAttribute('data-o'))) ||
+                   (parseFloat(a.getAttribute('data-p')) - parseFloat(b.getAttribute('data-p')));
+          });
+          hits.forEach(function (i, k) { i.dataset.rank = k + 1; });
+          items.forEach(function (i) {
+            if (!i.classList.contains('on')) return;
+            var idx = items.indexOf(i);
+            var r = rings[idx], n = nums[idx];
+            if (r) r.classList.add('on');
+            if (n) { n.classList.add('on'); n.textContent = i.dataset.rank; }
+          });
+          var nHit = hits.length;
           var nm = card.querySelector('.nm');
-          if (hint) hint.textContent = (nm ? nm.textContent : 'This box') + ': ' + n + ' items lit up on the map';
-          if (window.gtag) window.gtag('event', 'box_highlight', { level: location.pathname, type: type, items: n });
+          if (hint) hint.textContent = (nm ? nm.textContent : 'This box') + ': ' + nHit + ' items circled, numbered in pickup order';
+          if (window.gtag) window.gtag('event', 'box_highlight', { level: location.pathname, type: type, items: nHit });
         });
       });
       board.addEventListener('click', function (e) {
