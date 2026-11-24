@@ -1,5 +1,7 @@
 // 徽章目录 + SVG 图标（设计稿 hermes-mobile/static/previews/gridpaw-badges-comments.html v1 逐字落地）
 // 扁平 SVG 零外部图片依赖（「禁手绘猫 emoji」红线）；三组 11 枚 + crazy-cleanup 3 枚（2026-10-30）= 14 枚。
+// ⚠️ 2026-11-25：crazy-cleanup 已下线（关卡不可通关，页面 301 → /room-sort-game-online/）。
+//    下面三枚 cc 徽章的定义**保留**：历史已授予的徽章还要能按 id 渲染出来，从 badges.astro 的 GROUPS 里已摘除。
 // game = 徽章归属组：'shikaku' 阶梯 / 'murdoku' 破案档案 / 'crazy-cleanup' 收杂物房间 / 'streak' 每日连击（无游戏卡角）。
 // 数组顺序 = 组内档位升序（GameHub 卡角取「组内最后一枚已获得」= 最高档）。
 

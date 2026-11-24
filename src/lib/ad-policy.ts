@@ -16,7 +16,7 @@
  *  29 个 play surface 逐页 elementFromPoint 采样实测（1440/1350 两档），棋盘格、按钮、文字零命中。 */
 export const PLAY_SURFACES = new Set([
   '/',
-  '/akari', '/binary', '/crazy-cleanup', '/hashi', '/kakuro', '/kenken',
+  '/akari', '/binary', '/hashi', '/kakuro', '/kenken',
   '/meowdoku', '/murdoku', '/nonogram', '/nurikabe', '/slitherlink', '/star-battle',
   '/solver', '/akari/solver', '/hashi/solver', '/nonogram/solver', '/kenken/solver',
   '/word-kitchen/solver',  // 2026-11-24：第三方游戏（Gimica Word Kitchen）字母求解器，交互工具页按解题器口径

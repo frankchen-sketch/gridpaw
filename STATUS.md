@@ -818,3 +818,15 @@ sitemap 仍不含它）。
 - **基线**：2026-11-24 21:57 首次跑 = GSC 7 天 / 28 天均 0 曝光、GA4 0 会话（页面刚上线，属预期）。此后每天对比基线看何时进索引。
 
 **部署链已加「GSC sitemap 重提交」一步（2026-11-24 收尾）**：`deploy:safe`（`scripts/deploy.sh`）与裸 `deploy`（package.json）在**线上自检通过之后**调用 `scripts/gsc-resubmit-sitemap.sh gridpaw.com` → `scripts/gsc-submit-sitemap.py` 走 GSC API 重提交 sitemap.xml。理由：**Google 不吃 IndexNow**（那是 Bing/Yandex 通道），而 GSC 自己重抓 sitemap 的节奏是几天一次（实测 11-24 上线当天，上次抓取还停在 11-23 23:34 = 新页压根没被看见）；API 重提交会当场触发一次下载（实测提交后几秒 `lastDownloaded` 就更新）。失败只报 ⚠ 不阻塞上线。服务账号走通用路径 `~/.hermes/secrets/gsc-gridpaw.json`（软链到 furriq 那份，同一账号同时有 GA4 552793510 与 gridpaw GSC 权限），可用 `GSC_KEY_FILE` / `GSC_PYTHON` 覆盖。
+
+## 2026-11-25 · Crazy Cleanup 下线（301 → /room-sort-game-online/）
+
+**法老拍板：cc 不修了，直接撤。**依据是实测而非感觉：
+
+- **数据不可通关**：20 关里开局「未被压住」的件只占 **12%–46%**（level 17 最差 24/207），而托盘只有 6 格。贪心玩家模拟（能收就收、收不动就挖最能解锁的那件）跑 6 次，**全部在 19–34/200 件时 TRAY_FULL 判负** —— 玩家玩到 2 成进度必然输。
+- **开桶随机是直接诱因**：`openNext()` 原本是 `Math.random()` 选桶，完全不看棋盘可达性，常开出「一件都点不了」的桶（level 1 修前开局只有 1 件可收）。已改成「优先开有可收件的桶、按可收件数降序取前 1/3 随机」，实测 level 1 开局可收 1 → 7–11 件。**但这只治开局，治不了关卡本身过不去**，所以不采用「修一修继续跑」。
+- **无 SEO 资产可损**：GSC 实测 `/crazy-cleanup/` 已收录（11-21 抓取，Breadcrumbs PASS）但**28 天曝光 0**。
+
+**改动**：删 `src/pages/crazy-cleanup/`、`public/crazy-cleanup/`（含 20 关 packs、自研引擎、gp-track）、`public/assets/game-icons/crazycleanup.webp`、`public/og-crazy-cleanup.jpg`；`public/_redirects` 加 `/crazy-cleanup` 与 `/crazy-cleanup/*` → `/room-sort-game-online/` 301（并把 `/from/lemmy-crazy` 改指同页）；三处游戏列表（GameHub / GameSwitcher / GameNav）、`ad-policy` 的 `PLAY_SURFACES`、`leaderboard.astro`、`badges.astro` 的 GROUPS 同步摘除；pictomino 静态页导航里的 cc 链接摘掉；**`badge-icons.ts` 里 3 枚 cc 徽章定义保留**（历史已授予的徽章还要能按 id 渲染）。
+
+**遗留**：D1 里 cc 的榜单/徽章历史行未删（无入口，不影响线上）；`src/lib/funnel-track.ts` 的 `first_pick`/`pick_miss` 注释保留为历史口径（cc 是唯一发送方，事件从此归零）。
