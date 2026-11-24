@@ -46,6 +46,8 @@ export const PLAY_SURFACES = new Set([
   // 每日盘（每张缩略图都是可点进棋盘的入口），且刻意不加任何广告组件。不登记的后果是
   // check-play-surfaces 报红，同时 SEOHead 会把 adsbygoogle loader 放进这个棋盘页。
   '/huepaw', '/huepaw/archive',
+  // 2026-11-24 新游戏：Room Sort 网页版（133 关可玩，内联渲染棋盘 = play surface，只出桌面侧栏）
+  '/room-sort-game-online',
 ]);
 
 /** 按目录整片收：单关棋盘页（/akari/puzzle/puzzle-001 … /meowdoku/levels/1 …） */
