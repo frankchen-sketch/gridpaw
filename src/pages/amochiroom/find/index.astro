@@ -1,0 +1,343 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import SideAd from '../../../components/SideAd.astro';
+import data from '../../../data/amochiroom-levels.json';
+
+const levels = data.levels;
+
+// 反查索引：类别标签 → [[关号, 该箱要几件], …]
+const index: Record<string, Array<[number, number]>> = {};
+for (const l of levels) {
+  for (const b of l.boxes) {
+    (index[b.name] ||= []).push([l.level, b.count]);
+  }
+}
+const cats = Object.keys(index).sort((a, b) => a.localeCompare(b));
+// 紧凑编码（关号:数量，逗号分隔）——避免把 5,000 条数组原样塞进 HTML
+const packed: Record<string, string> = {};
+for (const c of cats) packed[c] = index[c].map(([lv, n]) => `${lv}:${n}`).join(',');
+const boxCounts = levels.map((l: any) => l.boxCount);
+const payload = {
+  cats,
+  packed,
+  names: Object.fromEntries(levels.map((l: any) => [l.level, l.name])),
+  total: levels.length,
+  minBoxes: Math.min(...boxCounts),
+  maxBoxes: Math.max(...boxCounts),
+};
+
+const title = "Amochiroom Level Finder — Which Room Am I In?";
+const description = `Stuck partway through a room in Amochiroom Puzzle: Room Sort? Type the box labels you can see and this finds the level among all ${levels.length} rooms. Every label indexed.`;
+const canonical = '/amochiroom/find';
+
+const faqs = [
+  {
+    q: 'How does this Amochiroom level finder work?',
+    a: `Every one of the ${levels.length} rooms ships with a fixed set of box labels. Type two or three of the labels you can see on your shelf and the tool keeps only the rooms that have all of them. The more labels you add, the narrower the list — usually down to one room.`,
+  },
+  {
+    q: 'Why do several rooms share the same box labels?',
+    a: 'Rooms reuse categories: Books turn up in libraries, studies and living rooms. That is why one label rarely identifies a level — pick the rarer pair first (something like Thermoses or Incense Sticks narrows faster than Books). The tool tells you how many rooms each label appears in before you add it.',
+  },
+  {
+    q: 'Does it tell me where the items are on the board?',
+    a: 'No, and no tool honestly can. Item positions and the order boxes arrive in are dealt per player and per app version, so a fixed tap-by-tap answer would be wrong on your screen. What does not change is which boxes the room asks for — that is what this page matches on.',
+  },
+  {
+    q: 'What are the counts next to each label?',
+    a: 'They are the exact number of items that box wants in that room, read from the level data shipped with version 1.0.20 of the game. Across the whole game the box requirements add up exactly to the items on the board, so the number is not an estimate.',
+  },
+];
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical={canonical}
+    type="article"
+    breadcrumbTitle="Amochiroom Level Finder"
+  />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/amochiroom/find/" />
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/amochiroom/find/" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --amber-ink: #A35700; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #756251; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber-ink); }
+    .wrap { max-width: 840px; margin: 0 auto; padding: 1.2rem 1rem 3rem; }
+    .wrap h1 { font-size: 1.7rem; line-height: 1.3; margin: 0.6rem 0 0.4rem; }
+    .wrap h2 { font-size: 1.25rem; margin: 2rem 0 0.6rem; }
+    .wrap p { line-height: 1.75; color: #555; margin: 0.5rem 0; }
+    .wrap a { color: var(--amber-ink); }
+    .lede { font-size: 1rem; color: #6b5b4c; }
+    .tool { background: #fff; border: 2px solid var(--border); border-radius: 14px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .field { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .field input { flex: 1 1 200px; font: inherit; font-size: 1rem; padding: 0.55rem 0.7rem; border: 1.5px solid var(--border); border-radius: 10px; background: #FFFDF9; color: var(--text); }
+    .field input:focus { outline: 2px solid var(--amber); outline-offset: 1px; }
+    .field button { font: inherit; font-weight: 800; padding: 0.55rem 1rem; border: 0; border-radius: 10px; background: var(--amber-ink); color: #fff; cursor: pointer; }
+    .field button:hover { background: var(--amber); }
+    .chips { display: flex; gap: 0.4rem; flex-wrap: wrap; margin: 0.7rem 0 0; min-height: 1.6rem; }
+    .chip { display: inline-flex; align-items: center; gap: 0.35rem; background: #FFF3DF; border: 1.5px solid #E9C48B; color: #8A5A12; border-radius: 999px; padding: 0.2rem 0.35rem 0.2rem 0.7rem; font-weight: 800; font-size: 0.9rem; }
+    .chip button { border: 0; background: none; color: #8A5A12; font: inherit; font-weight: 900; cursor: pointer; padding: 0 0.2rem; line-height: 1; }
+    .chip small { font-weight: 700; color: #A98242; }
+    .hintline { font-size: 0.85rem; color: var(--light); margin: 0.5rem 0 0; }
+    .status { margin: 0.9rem 0 0.3rem; font-weight: 800; font-size: 0.95rem; }
+    .results { display: grid; gap: 0.55rem; margin: 0.4rem 0 0; }
+    .hit { display: block; background: #FFFDF9; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.65rem 0.85rem; text-decoration: none; color: var(--text); }
+    .hit:hover { border-color: var(--amber); }
+    .hit b { color: var(--amber-ink); }
+    .hit .meta { font-size: 0.82rem; color: var(--light); }
+    .hit .want { font-size: 0.85rem; color: #6b5320; margin-top: 0.25rem; }
+    .miss { font-size: 0.85rem; color: var(--light); margin-top: 0.5rem; }
+    .sugg { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.4rem; }
+    .sugg button { font: inherit; font-size: 0.82rem; font-weight: 800; background: #FFF8E6; border: 1px solid #F0DFAE; color: #8A5A12; border-radius: 999px; padding: 0.15rem 0.6rem; cursor: pointer; }
+    .note { background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.9rem; color: #7A6420; line-height: 1.65; }
+    details.faq { background: #fff; border: 1.5px solid var(--border); border-radius: 10px; padding: 0.7rem 0.9rem; margin: 0.55rem 0; }
+    details.faq summary { font-weight: 800; cursor: pointer; color: var(--text); }
+    details.faq p { margin: 0.5rem 0 0; font-size: 0.94rem; }
+    .evidence { font-size: 0.8rem; color: var(--light); border-top: 1px solid var(--border); margin-top: 2rem; padding-top: 0.7rem; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <div class="breadcrumb">
+    <a href="/">Home</a> › <a href="/amochiroom/">Amochiroom Puzzle: Room Sort</a> › Level finder
+  </div>
+
+  <main class="wrap">
+    <h1>Which Amochiroom room am I in?</h1>
+    <p class="lede">
+      Type the box labels you can see on the shelf. This page keeps only the rooms that ship with all of them —
+      out of all {levels.length} rooms in the game — so a couple of unusual labels usually lands on the exact level.
+    </p>
+
+    <div class="tool">
+      <div class="field">
+        <input id="find-input" list="find-cats" placeholder="e.g. Thermoses, Books, Cans…" autocomplete="off" aria-label="Box label" />
+        <button id="find-add" type="button">Add label</button>
+      </div>
+      <datalist id="find-cats">
+        {cats.map((c) => <option value={c}>{index[c].length} room{index[c].length === 1 ? '' : 's'}</option>)}
+      </datalist>
+      <div class="chips" id="find-chips"></div>
+      <p class="hintline">Labels are matched exactly as the game spells them in English. Rare labels narrow fastest — the datalist shows how many rooms each one appears in.</p>
+      <p class="status" id="find-status">No labels picked yet — a room has {Math.min(...boxCounts)} to {Math.max(...boxCounts)} boxes.</p>
+      <div class="results" id="find-out"></div>
+      <div id="find-sugg"></div>
+    </div>
+
+    <div class="note">
+      Why a label search and not a step-by-step answer: positions and box order are dealt per player, so any fixed
+      “tap this, then that” list is wrong for most phones. The one stable thing is the box set — that is what this
+      tool matches. Once you know the level, <a href="/amochiroom/">its page</a> has the full manifest and the plan.
+    </div>
+
+    <SideAd />
+
+    <h2>How to read the results</h2>
+    <p>
+      Each hit shows the level number and room name, how many boxes the room has in total, and — next to every label
+      you picked — the exact count that box wants. If two rooms still match, add one more label from your shelf;
+      if nothing matches, the “closest” line drops the single label that is filtering everything out.
+    </p>
+
+    <h2>FAQ</h2>
+    {faqs.map((f) => (
+      <details class="faq">
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+
+    <p class="evidence">
+      Box labels, counts and room names come from the level data shipped inside Amochiroom Puzzle: Room Sort
+      (com.gamefactory.roomsort, version 1.0.20) — {levels.length} rooms, every box requirement matching the item
+      count on the board exactly. This tool runs entirely in your browser; what you type never leaves the page.
+      Independent guide, not affiliated with the developer.
+    </p>
+  </main>
+
+  <script type="application/json" id="find-data" set:html={JSON.stringify(payload)} />
+  <script is:inline>
+    (function () {
+      var raw = document.getElementById('find-data');
+      if (!raw) return;
+      var D = JSON.parse(raw.textContent);
+      var input = document.getElementById('find-input');
+      var addBtn = document.getElementById('find-add');
+      var chipsEl = document.getElementById('find-chips');
+      var statusEl = document.getElementById('find-status');
+      var outEl = document.getElementById('find-out');
+      var suggEl = document.getElementById('find-sugg');
+
+      // 解码：类别 → {关号: 数量}
+      var byCat = {};
+      D.cats.forEach(function (c) {
+        var m = {};
+        D.packed[c].split(',').forEach(function (pair) {
+          var p = pair.split(':');
+          m[+p[0]] = +p[1];
+        });
+        byCat[c] = m;
+      });
+      // 关号 → 类别集合
+      var levelCats = {};
+      D.cats.forEach(function (c) {
+        Object.keys(byCat[c]).forEach(function (lv) {
+          (levelCats[lv] = levelCats[lv] || {})[c] = byCat[c][lv];
+        });
+      });
+      var picked = [];
+
+      function esc(s) {
+        return String(s).replace(/[&<>"]/g, function (ch) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch];
+        });
+      }
+      function canonical(v) {
+        var t = String(v || '').trim();
+        if (!t) return null;
+        var hit = D.cats.filter(function (c) { return c.toLowerCase() === t.toLowerCase(); });
+        return hit.length ? hit[0] : null;
+      }
+      function add(label) {
+        var c = canonical(label);
+        if (!c || picked.indexOf(c) >= 0) return false;
+        picked.push(c);
+        render();
+        return true;
+      }
+      function matching() {
+        var lvls = Object.keys(levelCats);
+        return lvls.filter(function (lv) {
+          var lc = levelCats[lv];
+          return picked.every(function (c) { return c in lc; });
+        }).map(Number).sort(function (a, b) { return a - b; });
+      }
+      function closest() {
+        // 去掉一条就命中的类别：用于「没有房间同时有这些」
+        var out = [];
+        picked.forEach(function (drop) {
+          var rest = picked.filter(function (c) { return c !== drop; });
+          if (!rest.length) return;
+          var hit = Object.keys(levelCats).filter(function (lv) {
+            return rest.every(function (c) { return c in levelCats[lv]; });
+          });
+          if (hit.length) out.push({ drop: drop, rooms: hit.map(Number).sort(function (a, b) { return a - b; }) });
+        });
+        return out.sort(function (a, b) { return a.rooms.length - b.rooms.length; }).slice(0, 3);
+      }
+      function chip(label, extra) {
+        var s = document.createElement('span');
+        s.className = 'chip';
+        s.innerHTML = esc(label) + (extra ? ' <small>' + esc(extra) + '</small>' : '');
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.setAttribute('aria-label', 'Remove ' + label);
+        b.textContent = '×';
+        b.onclick = function () {
+          picked = picked.filter(function (c) { return c !== label; });
+          render();
+        };
+        s.appendChild(b);
+        return s;
+      }
+      function render() {
+        chipsEl.innerHTML = '';
+        picked.forEach(function (c) {
+          var n = Object.keys(byCat[c]).length;
+          chipsEl.appendChild(chip(c, n + ' room' + (n === 1 ? '' : 's')));
+        });
+
+        var hits = matching();
+        if (!picked.length) {
+          statusEl.textContent = 'No labels picked yet — a room has ' + D.minBoxes + ' to ' + D.maxBoxes + ' boxes.';
+          outEl.innerHTML = '';
+          suggEl.innerHTML = '';
+          return;
+        }
+        if (hits.length === 1) {
+          statusEl.textContent = 'Found it — 1 room matches all ' + picked.length + ' label' + (picked.length === 1 ? '' : 's') + '.';
+        } else if (hits.length > 1) {
+          statusEl.textContent = hits.length + ' of ' + D.total + ' rooms match. Add another label to narrow it.';
+        } else {
+          statusEl.textContent = 'No room has all of those labels together.';
+        }
+        outEl.innerHTML = hits.slice(0, 24).map(function (lv) {
+          var want = picked.map(function (c) { return esc(c) + ' ×' + byCat[c][lv]; }).join(' · ');
+          var boxes = Object.keys(levelCats[lv]).length;
+          return '<a class="hit" href="/amochiroom/level-' + lv + '/">'
+            + '<b>Level ' + lv + '</b> — ' + esc(D.names[lv])
+            + '<div class="meta">' + boxes + ' boxes in the room</div>'
+            + '<div class="want">' + want + '</div></a>';
+        }).join('');
+        if (hits.length > 24) {
+          outEl.innerHTML += '<p class="miss">…and ' + (hits.length - 24) + ' more. Add another label.</p>';
+        }
+
+        suggEl.innerHTML = '';
+        if (!hits.length) {
+          var near = closest();
+          if (near.length) {
+            var p = document.createElement('p');
+            p.className = 'miss';
+            p.textContent = 'Closest rooms — drop one label and these match:';
+            suggEl.appendChild(p);
+            var box = document.createElement('div');
+            box.className = 'sugg';
+            near.forEach(function (n) {
+              var b = document.createElement('button');
+              b.type = 'button';
+              b.textContent = 'without ' + n.drop + ' → ' + n.rooms.length + ' room' + (n.rooms.length === 1 ? '' : 's');
+              b.onclick = function () {
+                picked = picked.filter(function (c) { return c !== n.drop; });
+                render();
+              };
+              box.appendChild(b);
+            });
+            suggEl.appendChild(box);
+          }
+        }
+      }
+      function submit() {
+        if (!input.value.trim()) return;
+        var ok = add(input.value);
+        if (!ok) {
+          statusEl.textContent = '“' + input.value.trim() + '” is not a label this game uses — pick one from the list.';
+        }
+        input.value = '';
+        input.focus();
+      }
+      addBtn.addEventListener('click', submit);
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); submit(); }
+      });
+      render();
+    })();
+  </script>
+</body>
+</html>

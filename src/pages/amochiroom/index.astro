@@ -1,0 +1,348 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import SideAd from '../../components/SideAd.astro';
+import InContentAd from '../../components/InContentAd.astro';
+import data from '../../data/amochiroom-levels.json';
+
+const levels = data.levels;
+const total = levels.length;
+const totalBoxes = levels.reduce((n: number, l: any) => n + l.boxCount, 0);
+const totalItems = levels.reduce((n: number, l: any) => n + l.itemCount, 0);
+const rated = levels.filter((l: any) => l.difficulty).length;
+const ratedHard = levels.filter((l: any) => l.difficulty === 'hard').length;
+const smallest = [...levels].sort((a: any, b: any) => a.boxCount - b.boxCount)[0];
+const largest = [...levels].sort((a: any, b: any) => b.boxCount - a.boxCount)[0];
+const rotated = levels.reduce((n: number, l: any) => n + l.items.filter((it: any[]) => it[5]).length, 0);
+const mirrored = levels.reduce((n: number, l: any) => n + l.items.filter((it: any[]) => it[3] === -1 || it[4] === -1).length, 0);
+const itemTypes = new Set(levels.flatMap((l: any) => l.items.map((it: any[]) => it[8]))).size;
+const boxLabels = new Set(levels.flatMap((l: any) => l.boxes.map((b: any) => b.name))).size;
+const busiest = [...levels].sort((a: any, b: any) => b.itemCount - a.itemCount)[0];
+
+const title = `Amochiroom Room Sort Answers: All ${total} Rooms`;
+const description = `Every Amochiroom Puzzle: Room Sort level with its exact box list: ${totalBoxes.toLocaleString('en-US')} boxes across ${total} rooms, with counts, room maps and what each box is waiting for.`;
+const canonical = '/amochiroom';
+
+const faq = [
+  {
+    q: `How many levels does Amochiroom Puzzle: Room Sort have?`,
+    a: `${total} levels. Version 1.0.20 of the game ships ${total} rooms, counting from ${smallest.name} (level ${smallest.level}) up to ${levels[total - 1].name} (level ${levels[total - 1].level}). Every one is listed on this page with its box count and a map of the room.`,
+  },
+  {
+    q: `What do you actually do in Amochiroom Puzzle: Room Sort?`,
+    a: `You empty a messy room into labelled boxes. Tap an item and it flies into the open box that wants that category — or, if no open box wants it, into your buffer. Boxes take roughly 3 to 9 items each, and a room is cleared when every box is full.`,
+  },
+  {
+    q: `Why do I keep failing a level?`,
+    a: `The buffer. Only two boxes are open at a time and you start with five open buffer slots out of seven. Tap anything an open box does not want and it takes a slot; once the slots are gone and no useful tap is left, the room dead-ends. The fix is boring but it works: only tap what the open boxes want, and park items only for the box that is about to open.`,
+  },
+  {
+    q: `Is there an Amochiroom answers list with the tap order?`,
+    a: `No, and be careful with anything that claims one. What is safe to tap depends on which boxes are open right now and what you already parked in the buffer, so a fixed tap-by-tap sequence cannot be right for every run. What is fixed — and what this site publishes for every level — is the box set: which categories the room wants and how many of each. The numbered circles on each map are a sweep order for finding all of them, not a mandatory click order.`,
+  },
+  {
+    q: `Are the levels getting harder?`,
+    a: `Yes, in size. ${smallest.name} is the tutorial end at ${smallest.boxCount} boxes, while ${largest.name} has ${largest.boxCount} boxes and ${largest.itemCount} items. Across all ${total} levels there are ${totalBoxes.toLocaleString('en-US')} boxes holding ${totalItems.toLocaleString('en-US')} items.`,
+  },
+];
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+const band: Record<string, string> = { easy: 'easy', middle: 'mid', hard: 'hard' };
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical={canonical}
+    type="article"
+    breadcrumbTitle="Amochiroom Room Sort Answers"
+  />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/amochiroom/" />
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/amochiroom/" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --amber-ink: #A35700; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #756251; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber-ink); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber-ink); }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber-ink); }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .facts { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 0.9rem 0 0.2rem; }
+    .fact { flex: 1 1 90px; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 10px; padding: 0.5rem 0.7rem; }
+    .fact b { display: block; font-size: 1.15rem; color: var(--amber-ink); }
+    .fact span { font-size: 0.7rem; color: var(--light); font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; }
+    .mech { background: #fff; border-left: 4px solid var(--amber); border-radius: 8px; padding: 0.8rem 1rem; margin: 1rem 0; }
+    .why { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1.1rem; margin: 1rem 0 1.4rem; }
+    .why ul { margin: 0; padding-left: 1.1rem; }
+    .why li { margin: 0.55rem 0; font-size: 0.94rem; line-height: 1.62; }
+    .why li strong { color: var(--amber-ink); }
+    .why .why-close { margin: 0.9rem 0 0; padding-top: 0.7rem; border-top: 1px dashed var(--border); font-size: 0.9rem; color: var(--light); }
+    .level-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.9rem; margin: 0.8rem 0; }
+    .level-card { display: flex; flex-direction: column; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); text-decoration: none; color: var(--text); transition: transform 0.15s, border-color 0.15s; }
+    .level-card:hover { transform: translateY(-2px); border-color: var(--amber); }
+    .level-card .thumb { width: 100%; height: auto; aspect-ratio: 1/1; object-fit: cover; display: block; border-bottom: 1.5px solid var(--border); background: #F7ECE0; }
+    .level-card .meta { padding: 0.6rem 0.7rem 0.75rem; display: block; }
+    .level-card .lvl { font-size: 0.68rem; font-weight: 900; color: var(--amber-ink); text-transform: uppercase; letter-spacing: 0.06em; display: block; }
+    .level-card .name { font-size: 0.85rem; font-weight: 800; line-height: 1.3; margin-top: 0.15rem; color: var(--text); display: block; min-height: 2.2em; }
+    .level-card .goal { font-size: 0.72rem; color: var(--light); font-style: italic; margin: 0.3rem 0 0; line-height: 1.45; display: block; }
+    table.levels { width: 100%; border-collapse: collapse; margin: 0.8rem 0; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); font-size: 0.9rem; }
+    table.levels th { background: #FFF3DF; text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: #8A5A12; padding: 0.5rem 0.6rem; }
+    table.levels td { padding: 0.42rem 0.6rem; border-top: 1px solid var(--border); }
+    table.levels td.n { text-align: right; font-weight: 800; color: var(--amber-ink); white-space: nowrap; }
+    table.levels td.lv { font-weight: 900; color: var(--amber-ink); white-space: nowrap; }
+    table.levels a { text-decoration: none; }
+    table.levels tr:hover td { background: #FFFBF2; }
+    .d { display: inline-block; font-size: 0.64rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 999px; padding: 0.08rem 0.45rem; }
+    .d.easy { background: #DCFCE7; color: #166534; }
+    .d.middle { background: #FEF3C7; color: #92400E; }
+    .d.hard { background: #FEE2E2; color: #991B1B; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber-ink); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .cross-card { margin: 1.2rem 0; background: #fff; border: 2px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(217,119,6,.08); }
+    .cross-card img { width: 100%; display: block; aspect-ratio: 1200 / 630; object-fit: contain; background: #2D3740; }
+    .cross-card .cross-body { padding: .9rem 1.1rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .cross-card .cross-kicker { font-size: .68rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; color: var(--amber-ink); }
+    .cross-card .cross-ttl { font-weight: 900; font-size: 1.05rem; margin: .1rem 0; }
+    .cross-card .cross-desc { font-size: .85rem; color: #555; margin: 0; }
+    .cross-card .cross-cta { background: var(--amber-ink); color: #fff; font-weight: 800; font-size: .88rem; border-radius: 10px; padding: .5rem 1rem; text-decoration: none; white-space: nowrap; }
+    .table-wrap { overflow-x: auto; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber-ink); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .evidence { font-size: 0.8rem; color: var(--light); border-top: 1px solid var(--border); margin-top: 2rem; padding-top: 0.7rem; line-height: 1.6; }
+    .seo-footer { text-align: center; margin: 2rem 0 1rem; font-size: 0.8rem; color: var(--light); }
+    .seo-footer a { color: var(--light); }
+    .seo-footer a:hover { color: var(--amber-ink); }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> › Amochiroom Room Sort Answers</nav>
+
+  <main class="seo-section">
+    <h1>Amochiroom Room Sort Answers: All {total} Rooms</h1>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with ABF ALPENHOF, the developer of Amochiroom Puzzle: Room Sort.</div>
+
+    <div class="verify-note">
+      Every box list here is read from the level data shipped inside the game (version 1.0.20). In all {total} rooms
+      the box requirements add up exactly to the number of items on the board, which is what makes these lists
+      complete rather than approximate. Room maps use the game’s own backgrounds and the shipped item coordinates.
+    </div>
+
+    <p>
+      Amochiroom Puzzle: Room Sort is the tidy-up game where a wrecked room has to be emptied into labelled boxes:
+      every item goes in the box that wants its category, and anything you pick up too early sits in a buffer with
+      only a few slots. This is the answer index — <strong>every room in the game</strong>, with its exact box list,
+      counts and a map of the room.
+    </p>
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>{total} rooms, {totalBoxes.toLocaleString('en-US')} boxes, {totalItems.toLocaleString('en-US')} items — every count here matches the game file exactly.</p>
+      <p>Stuck right now? <a href="/amochiroom/find/">Type the box labels you can see</a> and the finder names the room.</p>
+    </div>
+
+    <div class="facts">
+      <div class="fact"><b>{total}</b><span>Rooms</span></div>
+      <div class="fact"><b>{totalBoxes.toLocaleString('en-US')}</b><span>Boxes listed</span></div>
+      <div class="fact"><b>{totalItems.toLocaleString('en-US')}</b><span>Items accounted for</span></div>
+      <div class="fact"><b>{rated}</b><span>With a difficulty rating</span></div>
+    </div>
+
+    <h2>How a room actually clears<span class="accent">.</span></h2>
+    <div class="mech">
+      <p>These are the rules the game runs on, and the reason most rooms are lost:</p>
+      <ul>
+        <li><strong>Three boxes on the shelf, two open.</strong> The third opens as boxes fill up; a new one arrives from the level’s queue.</li>
+        <li><strong>Seven buffer slots, five open.</strong> An item with no matching open box goes to the buffer. The two locked slots are a rescue you unlock, not something you start with.</li>
+        <li><strong>A full buffer is only fatal if nothing legal is left.</strong> Slots full and no open box wants anything you can reach is what ends the room.</li>
+        <li><strong>Items can be covered.</strong> Something lying under another item cannot be picked up until the one on top moves, so clearing the surface comes first.</li>
+        <li><strong>Three hints, offered after 15 idle seconds.</strong> Undo returns the last buffered item, and the clear-buffer rescue returns up to three — both free.</li>
+      </ul>
+    </div>
+
+    <p>
+      <strong>There is no single tap sequence worth memorising.</strong> The room and its box set are fixed — that is why
+      the maps below match your screen — but what is safe to tap depends on which boxes are open at that moment and what you
+      have already parked in the buffer. A video of somebody else's run cannot account for that, and neither can a list that
+      numbers items as a fixed click order.
+    </p>
+
+    <h2>Every room, with its map<span class="accent">.</span></h2>
+    <p>One card per room: the room itself, how many boxes it has, and what those boxes add up to.</p>
+    <div class="level-grid">
+      {levels.map((l: any) => (
+        <a class="level-card" href={`/amochiroom/level-${l.level}/`}>
+          <img class="thumb" src={l.thumb} alt={`${l.name} room in Amochiroom Room Sort`} loading="lazy" decoding="async" width="240" height="240" />
+          <span class="meta">
+            <span class="lvl">Level {l.level}</span>
+            <span class="name">{l.name}</span>
+            <span class="goal">{l.boxCount} boxes · {l.itemCount} items{l.difficulty ? ` · ${band[l.difficulty]}` : ''}</span>
+          </span>
+        </a>
+      ))}
+    </div>
+
+    <InContentAd />
+
+    <h2>All {total} levels, box by box<span class="accent">.</span></h2>
+    <p>The same list as a table, for scanning: boxes per room, how many distinct labels those boxes carry (the game hands out several boxes of the same kind — Level 3 has three Books boxes), items per room, and the difficulty band where the game ships one.</p>
+    <div class="table-wrap">
+      <table class="levels">
+        <thead>
+          <tr><th>Level</th><th>Room</th><th style="text-align:right">Boxes</th><th style="text-align:right">Labels</th><th style="text-align:right">Items</th><th>Band</th></tr>
+        </thead>
+        <tbody>
+          {levels.map((l: any) => (
+            <tr>
+              <td class="lv"><a href={`/amochiroom/level-${l.level}/`}>{l.level}</a></td>
+              <td><a href={`/amochiroom/level-${l.level}/`}>{l.name}</a></td>
+              <td class="n">{l.boxCount}</td>
+              <td class="n">{new Set(l.boxes.map((b: any) => b.name)).size}</td>
+              <td class="n">{l.itemCount}</td>
+              <td>{l.difficulty ? <span class={`d ${l.difficulty}`}>{band[l.difficulty]}</span> : '—'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cta-box">
+      <p>Not sure which room you are staring at?</p>
+      <p>Type the labels printed on the boxes you can see — the finder narrows it down. <a href="/amochiroom/find/">Open the level finder →</a></p>
+    </div>
+
+    <h2>FAQ<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+
+    <h2>Why this page goes further than the rest<span class="accent">.</span></h2>
+    <p>
+      Answer lists for this game tend to be screenshots with numbers typed under them. We took the slower route,
+      and here is exactly what that bought you:
+    </p>
+    <div class="why">
+      <ul>
+        <li><strong>Every count reconciles — all {total} rooms, no exceptions.</strong> The quantities printed on the boxes
+          add up to exactly the number of items on the board: {totalBoxes.toLocaleString('en-US')} boxes,
+          {totalItems.toLocaleString('en-US')} items, zero rooms off by one. That arithmetic is the test most lists fail,
+          and it is the one thing that tells you a list is complete rather than approximate.</li>
+        <li><strong>The map is the room, not an artist's impression.</strong> Each page uses the game's own background and
+          every item at the size, angle and mirroring it ships with — {rotated.toLocaleString('en-US')} items are rotated
+          and {mirrored.toLocaleString('en-US')} are mirrored, and they are drawn that way. Nothing is nudged to look tidy,
+          because a tidy map would be a wrong map.</li>
+        <li><strong>Circles with numbers instead of a fake click order.</strong> Tap a box and its items are circled and
+          numbered in a sweep order, so a pile-up of overlapping junk does not hide where the eighth one is. We deliberately
+          do not publish “tap this first” sequences: your buffer state is yours, and a sequence that pretends otherwise is
+          theatre.</li>
+        <li><strong>{boxLabels} distinct box labels across {itemTypes} item types,</strong> including the labels that show up in
+          several rooms — the cases where a list that looks right is quietly attached to the wrong room.</li>
+        <li><strong>Difficulty comes from the game's own table</strong> ({rated} rooms carry a rating), presented as the
+          designer's intent. The game publishes no clear rates, so we do not invent percentages to look authoritative.</li>
+        <li><strong>Busy rooms are done, not skipped.</strong> {busiest.name} carries {busiest.itemCount} items and
+          {busiest.boxCount} boxes; {largest.name} has the longest box list at {largest.boxCount}. Those are the pages
+          most sites quietly leave out.</li>
+      </ul>
+      <p class="why-close">
+        Being more careful than the next site is the whole product. If a count here disagrees with your screen, that is a bug
+        on our side — say so and it gets fixed, because the numbers are the only reason to visit.
+      </p>
+    </div>
+
+    <div class="cross-card">
+      <img src="/og-akari-daily.png" alt="Daily Akari — new grid every midnight" loading="lazy" width="1200" height="630">
+      <div class="cross-body">
+        <div>
+          <span class="cross-kicker">Tonight's Puzzle</span>
+          <p class="cross-ttl">Daily Akari Challenge</p>
+          <p class="cross-desc">New grid every midnight. Light it up. No sign-up, no download.</p>
+        </div>
+        <a class="cross-cta" href="/akari/daily/">Play today's Akari →</a>
+      </div>
+    </div>
+
+    <p class="evidence">
+      Level names, box labels, box counts and item counts are read from the level data shipped inside Amochiroom
+      Puzzle: Room Sort (package com.gamefactory.roomsort, version 1.0.20), the same build the game distributes. In
+      every one of the {total} levels the box requirements add up exactly to the number of items on the board, which
+      is what makes these manifests complete rather than approximate. Room backgrounds and item art belong to ABF
+      ALPENHOF and are shown here for identification. Rules quoted above — two of three shelf boxes open, five of
+      seven buffer slots, three hints after 15 idle seconds — come from that build’s own rule constants.
+      {ratedHard} of the {rated} rated rooms are filed as hard. Amochiroom Puzzle: Room Sort is developed by ABF
+      ALPENHOF; this page is an independent guide and is not affiliated with the developer.
+    </p>
+  </main>
+
+  <AdSlot />
+  <SideAd />
+
+  <script is:inline>
+  (function () {
+    function track(event, params) {
+      if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
+      if (typeof window.clarity === 'function') window.clarity('event', event);
+      if (window.gpTrack) window.gpTrack(event, params || {});
+    }
+    document.addEventListener('click', function (e) {
+      var a = e.target && e.target.closest ? e.target.closest('a') : null;
+      if (!a) return;
+      var card = a.closest('.level-card');
+      var box = a.closest('.cta-box');
+      var cross = a.closest('.cross-card');
+      if (!card && !box && !cross) return;
+      track('cta_click', {
+        target: a.getAttribute('href') || '',
+        placement: card ? 'level-grid' : box ? 'cta-box' : 'cross-card',
+        from: location.pathname
+      });
+    }, true);
+  })();
+  </script>
+
+  <footer class="seo-footer">
+    <p><a href="/amochiroom/find/">Level finder</a> · <a href="/">GridPaw</a></p>
+  </footer>
+</body>
+</html>

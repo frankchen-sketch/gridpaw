@@ -34,6 +34,11 @@ const EXEMPT = {
   // demo iframe 的内容页：棋盘在 public/*/demo.html 里，本页只有 iframe，
   // 广告位按内容页处理是既定口径（AGENTS.md「内嵌 demo 的内容页故意保留广告」）。
   '/japanese-logic-puzzles': 'demo iframe 内容页',
+  // /amochiroom/level-N 的 #roomBoard 是静态参考图：游戏背景 + 物品缩略图按出厂坐标摆位，
+  // 点击只做「高亮这个箱子要的东西」过滤，没有落子/计分/胜负，不是可玩棋盘。
+  // 与 /arrows-puzzle-walkthrough 同型（攻略页的只读复盘），内容页全档广告是有意的；
+  // 板上限 420px 居中，不贴视口底部、无底部控件可压。
+  '/amochiroom/*': '攻略页静态房间参考图（点选仅高亮过滤，非可玩棋盘）',
 };
 
 const src = readFileSync(POLICY, 'utf8');
