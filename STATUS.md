@@ -803,3 +803,12 @@ sitemap 仍不含它）。
 **破例留痕**：本次未走 `pnpm run deploy:safe` —— ① `pnpm run build` 在本机崩（`ERR_PNPM_ABORTED_REMOVE_MODULES_DIR_NO_TTY`：pnpm 认为 node_modules 与 lockfile 不同步，想跑 `pnpm install` 清目录；而 `/tmp/gp-backfill/node_modules` 是软链到主 worktree 的共享目录，不能让它 purge）；② deploy.sh 的「其它 worktree 有游离 commit」闸会拦（`fix/bp3-level-alignment` 4 个、`feat/2026-11-24-room-sort` 4 个，均未验收）。改用等价手动链：全量 build 脚本逐条执行（`check-nav/play-surfaces/indexnow-key/gen-*/bundle/selftest --fast/astro build/stamp-sw/fix-sitemap/sitemap-lastmod`）→ `check-sitemap-noindex` 绿 → `wrangler pages deploy dist --branch main` → indexnow。**未跑 `selftest-engines --all`（4 分钟）——本次改动不碰引擎，但下次改动引擎前必须补跑。** 上述两个在飞分支上线需各自会话负责。
 
 **未做**：其余 88 包（等命令）、`/word-kitchen/` 的包卡搜索量排序（当前按字母序）、答案表规模化抓取脚本（本轮 web_extract 单页手抄，2 包已够；铺量前要先解决 90 包批量抓取通道）。
+
+### 2026-11-24 收尾 · WK 数据监测 cron 已挂
+
+`cron 76ebaa91689d`「[GridPaw] WK 答案页数据监测（每日）」每天 **09:20（东八区）** 跑，输出落 `~/.hermes/cron-output/gridpaw-wk-latest.txt` + 每日追加 `gridpaw-wk-monitor.jsonl`。
+
+- **脚本**：`~/.hermes/scripts/gridpaw_wk_monitor.sh` → `gridpaw_wk_monitor.py`（不在仓库里，属本机 Hermes 侧）；数据源 GSC `sc-domain:gridpaw.com` + GA4 属性 552793510，**均带 `hostName=gridpaw.com` 过滤**（否则 localhost/pages.dev 自测污染，历史实测约 9%）。凭据 `~/.hermes/scripts/furriq-daily-brief-e15ace04af1c.json`（该账号同时有 GA4 与 gridpaw GSC 权限，已探明）。
+- **口径**：GSC 滞后 2 天，脚本窗口自动 `today-2`；看 7/28 天滚动，不看日环比。过滤 `page contains /word-kitchen/`。
+- **代理**：脚本内部 `os.environ` 兜底 `http://127.0.0.1:7882`（google-auth 的 token 刷新只认环境变量，且必须在 import 前设好）。
+- **基线**：2026-11-24 21:57 首次跑 = GSC 7 天 / 28 天均 0 曝光、GA4 0 会话（页面刚上线，属预期）。此后每天对比基线看何时进索引。
