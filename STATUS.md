@@ -830,3 +830,19 @@ sitemap 仍不含它）。
 **改动**：删 `src/pages/crazy-cleanup/`、`public/crazy-cleanup/`（含 20 关 packs、自研引擎、gp-track）、`public/assets/game-icons/crazycleanup.webp`、`public/og-crazy-cleanup.jpg`；`public/_redirects` 加 `/crazy-cleanup` 与 `/crazy-cleanup/*` → `/room-sort-game-online/` 301（并把 `/from/lemmy-crazy` 改指同页）；三处游戏列表（GameHub / GameSwitcher / GameNav）、`ad-policy` 的 `PLAY_SURFACES`、`leaderboard.astro`、`badges.astro` 的 GROUPS 同步摘除；pictomino 静态页导航里的 cc 链接摘掉；**`badge-icons.ts` 里 3 枚 cc 徽章定义保留**（历史已授予的徽章还要能按 id 渲染）。
 
 **遗留**：D1 里 cc 的榜单/徽章历史行未删（无入口，不影响线上）；`src/lib/funnel-track.ts` 的 `first_pick`/`pick_miss` 注释保留为历史口径（cc 是唯一发送方，事件从此归零）。
+
+## 2026-11-25 · 自研平面图谜题 `/floorplan/` 一期（Gamincat 同玩法，代码/关卡自造）
+
+**动机**：`/room-sort-game-online/` 现在挂的是 amochi 解包版（物品入箱玩法），却吃着 `room sort` 这个「平面图」词族 —— 词面错配 + 美术版权靠标注。法老拍板「等 Gamincat 自研挪过来」，所以先做自研版。
+
+**机制取证**（Gamincat 商店页 + 三个网页版攻略站，2026-11-25 抓）：黄色 footprint 内部每格必须被房间块铺满、块不可重叠、块边缘的门必须与邻格的门对上、拖动时绿格预览落点、每关先小图后大图且部分标 HARD。**规则文本与实现全部自写**，不抄代码。
+
+**产出**：`scripts/gen-floorplan-levels.mjs`（生成器，已挂 build 链）+ `public/floorplan/{game.html,game.js,levels.json}` + `research/floorplan/README.md`。
+
+- **60 关，7.7–35 格、3–9 间房**，生成方式 = 先随机长 footprint → 多源生长切房间 → 房间图取随机生成树当门 → 拆成托盘。**生成即带解**，生成器自带验解（铺满 + 门成对 + 不越界），任一关失败 `exit 1`。
+- **引擎校验三条拒绝路径全部实测命中**：越界（`outside the plan`）、重叠（`already taken`）、门撞墙（`open into a wall`，用例 L2/L3/L4）。
+- **60/60 全关通关实测**：按托盘顺序逐块调用真实 `place()` 摆解法，60 关全部被增量校验接受并触发通关，0 例外 —— 证明校验器不会误杀正解。
+- **交互**：拖拽（pointer events，含取消判定：松手还在托盘上=取消）+ 点选后点格子（点按路径实测可用）；已摆块点一下退回托盘；提示 3 次，会先把冲突块退回再落正确位置；进度存 localStorage。
+- **手机 390 实测**：`scrollHeight === innerHeight`（首屏不滚动）、`scrollWidth === innerWidth`（无横向溢出）、托盘单行横滑（scrollWidth 467 > clientWidth 348）、托盘高从 573px 压到 185px（块按 0.55 比例缩、名字移到块下方）。
+
+**尚未挂上线**：`/floorplan/game.html` 带 `noindex`，是脚手架；替换 `/room-sort-game-online/` 前还要做：页面文案/FAQ 重写（现文案通篇讲物品入箱）、`ad-policy.ts` 的 PLAY_SURFACES 登记、OG 图。
