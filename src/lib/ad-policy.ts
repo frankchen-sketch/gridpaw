@@ -50,12 +50,14 @@ export const PLAY_SURFACES = new Set([
 export const PLAY_PREFIXES = ['/akari/puzzle/', '/meowdoku/levels/'];
 
 /** 永久零广告（连侧栏都不出）：
- *   /murdoku、/murdoku/trail —— main 是 1152px 全宽（2026-10-14「侧栏吞点击」事故的同一个布局债），
+ *   /murdoku、/murdoku/trail、/murdoku/daily —— main 是 1152px 全宽（2026-10-14「侧栏吞点击」事故的同一个布局债），
  *     侧栏会落在网格上；实测 25/25 采样点命中 main.main。要么先把它收到 840，要么继续全零。
+ *     （/murdoku/daily 首版按卡片要求「默认沿用零广告」登记；它的 .main 已收窄到 52.5rem，
+ *      要开侧栏需单独拍板，登记改到 PLAY_SURFACES 即可。）
  *   /unlock-all、/ad-free —— 售卖页，用户是来买/关广告的。
  *   /train-tracks-puzzle* —— 2026-11-19 用户拍板：Train Tracks 三页不挂任何广告。 */
 export const NEVER_ADS = new Set([
-  '/murdoku', '/murdoku/trail', '/unlock-all', '/ad-free',
+  '/murdoku', '/murdoku/trail', '/murdoku/daily', '/unlock-all', '/ad-free',
   '/train-tracks-puzzle', '/train-tracks-puzzle/solver', '/train-tracks-puzzle/printable',
 ]);
 
