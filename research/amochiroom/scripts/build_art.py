@@ -11,13 +11,20 @@
 angle 为旋转角度。rooms 关的 scale 是 0.18~0.85 的绝对缩放，不能只取符号。
 
 用法（在 gridpaw worktree 根目录）：
-  python3 research/amochiroom/scripts/build_art.py
+  /usr/bin/python3 research/amochiroom/scripts/build_art.py
+  （homebrew 的 python3 没装 Pillow；系统自带的 /usr/bin/python3 有）
 """
 import io
 import json
 import os
+import sys
 import zipfile
-from PIL import Image
+
+try:
+    from PIL import Image
+except ModuleNotFoundError:  # homebrew 的 python3 没装 Pillow，系统自带的那个有
+    sys.exit('缺 Pillow：改用 /usr/bin/python3 跑本脚本（实测 3.9.6 + Pillow 11.3 可用），'
+             '或 pip install Pillow 到当前解释器。')
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 UNPACK = os.path.join(ROOT, 'research/amochiroom/unpack')
