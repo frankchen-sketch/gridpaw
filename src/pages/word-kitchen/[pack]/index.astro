@@ -1,0 +1,156 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import bk from '../../../data/word-kitchen-bebinca.json';
+
+export function getStaticPaths() {
+  return [{ params: { pack: bk.pack_slug }, props: { levels: bk.levels } }];
+}
+
+const { levels } = Astro.props;
+const pack = bk.pack;
+const covered = levels.length;
+const totalWords = levels.reduce((n: number, l: any) => n + l.words.length, 0);
+const fullWords = levels.map((l: any) => `${l.key.toUpperCase()} (level ${l.level})`).slice(0, 6);
+
+const title = `Word Kitchen Bebinca Answers — Levels 1 to 18`;
+const description = `Word Kitchen Bebinca answers: the tray letters for each level, the word that uses every tile, and every common word those tiles spell. ${covered} levels online, each read from a real playthrough.`;
+const canonical = `/word-kitchen/${bk.pack_slug}`;
+
+const faq = [
+  {
+    q: 'How many levels are in the Bebinca pack?',
+    a: 'Bebinca runs from level 1 to level 18. The number in the game header ("Bebinca - 7") is the level inside this pack — Word Kitchen restarts the count for every dessert pack, so there is no global level 137.',
+  },
+  {
+    q: 'What letters are in Bebinca level 1?',
+    a: 'Level 1 gives you P, A, R, T and Y. The five tiles spell PARTY using every letter, plus 17 shorter common words such as TRAP, TRAY and PRAY.',
+  },
+  {
+    q: 'Does the tray change inside a level?',
+    a: 'No. The letters in the pan stay the same until the level ends, so every word on a level page can be entered at any point.',
+  },
+  {
+    q: 'Why do other sites number these levels differently?',
+    a: 'Some answer sites flatten every pack into one long sequence and call it "level 43" or "level 137". The game never shows those numbers, so the mapping only works if both sides agree on the pack order. Pages here keep the pack name in the URL, which cannot drift.',
+  },
+];
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical={canonical}
+    type="article"
+    breadcrumbTitle={`Word Kitchen ${pack}`}
+  />
+  <link rel="alternate" hreflang="en" href={`https://gridpaw.com${canonical}/`} />
+  <link rel="alternate" hreflang="x-default" href={`https://gridpaw.com${canonical}/`} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --amber-ink: #A35700; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #756251; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber-ink); }
+    .wrap { max-width: 840px; margin: 0 auto; padding: 1.2rem 1rem 3rem; }
+    .wrap h1 { font-size: 1.75rem; line-height: 1.3; margin: 0.6rem 0 0.5rem; }
+    .wrap h2 { font-size: 1.3rem; margin: 2rem 0 0.6rem; }
+    .wrap h2 .accent { color: var(--amber-ink); }
+    .wrap h3 { font-size: 1.05rem; margin: 1.2rem 0 0.4rem; }
+    .wrap p { line-height: 1.75; color: #555; margin: 0.5rem 0; }
+    .wrap a { color: var(--amber-ink); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.6rem; margin: 0.8rem 0; }
+    .card { display: block; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.7rem 0.8rem; text-decoration: none; color: var(--text); box-shadow: var(--shadow); transition: transform 0.15s, border-color 0.15s; }
+    .card:hover { transform: translateY(-2px); border-color: var(--amber); }
+    .card .n { font-size: 0.72rem; font-weight: 800; color: var(--light); text-transform: uppercase; letter-spacing: 0.05em; }
+    .card .k { font-size: 1.05rem; font-weight: 900; letter-spacing: 0.08em; color: var(--amber-ink); margin: 0.15rem 0; }
+    .card .w { font-size: 0.78rem; color: var(--light); }
+    .cta { margin: 1.4rem 0; padding: 1rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta a.btn { display: inline-block; margin-top: 0.5rem; background: var(--amber-ink); color: #fff; font-weight: 800; text-decoration: none; padding: 0.55rem 1.1rem; border-radius: 10px; }
+    .note { background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.9rem; color: #7A6420; }
+    .evidence { font-size: 0.8rem; color: var(--light); border-top: 1px solid var(--border); margin-top: 2rem; padding-top: 0.7rem; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <div class="breadcrumb">
+    <a href="/">Home</a> › <a href="/word-kitchen/">Word Kitchen Answers</a> › Bebinca
+  </div>
+
+  <main class="wrap">
+    <h1>Word Kitchen {pack} Answers — Levels 1 to 18</h1>
+    <p>Bebinca is the opening pack in Word Kitchen, and it counts its own levels 1 to 18 — the header reads <strong>{pack} - N</strong> while you play. Every page below keeps that numbering: tray letters, the word that uses every tile, and the full list of common words those tiles spell.</p>
+    <p>{covered} of the 18 levels are online. Each tray was read off a 1080p playthrough and cross-checked by anagram, so a misread letter cannot slip through — the tiles have to spell a real word.</p>
+
+    <div class="cta">
+      <p>Already stuck with a tray open?</p>
+      <p>The solver works on any letters, not just this pack.</p>
+      <a class="btn" href="/word-kitchen/solver/">Open the solver →</a>
+    </div>
+
+    <h2>{pack} level answers</h2>
+    <div class="grid">
+      {levels.map((l: any) => (
+        <a class="card" href={`/word-kitchen/${bk.pack_slug}/level-${l.level}/`}>
+          <span class="n">Level {l.level}</span>
+          <span class="k">{l.letters.toUpperCase()}</span>
+          <span class="w">{l.key.toUpperCase()} · {l.words.length} words</span>
+        </a>
+      ))}
+    </div>
+
+    <p class="note">Levels {covered + 1}–18 are being read now. They will land on the same URL pattern — nothing gets renamed or renumbered.</p>
+
+    <InContentAd />
+
+    <h2>What the full-size word looks like in {pack}</h2>
+    <p>Every {pack} level hides one word that uses the entire tray, and it is almost always a required slot. So far the set runs: {fullWords.join(', ')}. If you are stuck on the last empty slot, try that word first — the game unlocks the row layout once it lands.</p>
+
+    <h3>Reading a level page</h3>
+    <ul>
+      <li><strong>Quick answer box</strong> — the tray as tiles, the full-size word, and how many words the tray can spell.</li>
+      <li><strong>Word groups</strong> — every common word, longest first, with the all-tile words highlighted in green.</li>
+      <li><strong>Mechanics notes</strong> — how the pack numbers its levels and what the book icon (bonus words) actually tracks.</li>
+    </ul>
+
+    <h2>FAQ</h2>
+    {faq.map((f) => (
+      <details class="faq" style="background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:.7rem .9rem;margin:.55rem 0">
+        <summary style="font-weight:800;cursor:pointer">{f.q}</summary>
+        <p style="margin:.5rem 0 0;font-size:.94rem">{f.a}</p>
+      </details>
+    ))}
+
+    <SideAd />
+
+    <p class="evidence">
+      <strong>Method:</strong> trays read from a 1080p playthrough of {pack} ({bk.source.channel}, video {bk.source.video}) and verified by anagram; word lists generated from the ENABLE dictionary filtered to the 50,000 most common English words ({totalWords} entries across the {covered} levels online). No content copied from another answers site.
+    </p>
+  </main>
+</body>
+</html>
