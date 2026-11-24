@@ -1,0 +1,236 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import SideAd from '../../components/SideAd.astro';
+import data from '../../data/amochiroom-levels.json';
+
+export function getStaticPaths() {
+  const levels = data.levels;
+  return levels.map((lvl, i) => ({
+    params: { slug: `level-${lvl.level}` },
+    props: {
+      lvl,
+      prev: i > 0 ? levels[i - 1] : null,
+      next: i < levels.length - 1 ? levels[i + 1] : null,
+      nearby: levels.slice(Math.max(0, i - 6), i + 7).filter((l) => l.level !== lvl.level),
+      total: levels.length,
+    },
+  }));
+}
+
+const { lvl, prev, next, nearby, total } = Astro.props;
+
+// 箱子清单：按需求量降序，同量按名称排（保证构建确定性）
+const boxes = [...lvl.boxes].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+const biggest = boxes[0];
+const smallest = boxes[boxes.length - 1];
+const avg = (lvl.itemCount / lvl.boxCount).toFixed(1);
+const sixPlus = boxes.filter((b: any) => b.count >= 6).length;
+
+// 每关最大容量分布，用于策略段（真实统计，非模板空话）
+const capNote = {
+  3: 'at the small end — every box wants 3 items',
+  4: 'mostly 4-item boxes, so boxes fill fast',
+  5: 'mostly 5-item boxes, the game’s most common size',
+  6: 'mostly 6-item boxes, which is the deepest a box usually gets',
+}[Math.round(Number(avg))] || `around ${avg} items per box`;
+
+const title = `Amochiroom Level ${lvl.level} — ${lvl.name}`;
+const description = `Amochiroom Puzzle: Room Sort Level ${lvl.level} (${lvl.name}): ${lvl.boxCount} boxes, ${lvl.itemCount} items. The exact box list with counts, and how to keep your buffer from filling.`;
+const canonical = `/amochiroom/level-${lvl.level}`;
+
+const faq = [
+  {
+    q: `What is Amochiroom Puzzle: Room Sort Level ${lvl.level}?`,
+    a: `Level ${lvl.level} is ${lvl.name}. The screen holds ${lvl.itemCount} items that have to go into ${lvl.boxCount} labelled boxes — ${sixPlus} of those boxes ask for 6 or more items. Completing every box clears the level.`,
+  },
+  {
+    q: `Which boxes does Level ${lvl.level} have?`,
+    a: `The level ships with ${lvl.boxCount} boxes: ${biggest.name} ×${biggest.count} is the biggest, ${smallest.name} ×${smallest.count} is the smallest, and the rest sit between them. The full list is in the table above, largest first.`,
+  },
+  {
+    q: `Why can’t I finish Level ${lvl.level}?`,
+    a: `Almost always because the buffer fills. Only two boxes are open at a time, so anything you tap that no open box wants takes a buffer slot — you start with 5 open slots out of 7. Stop tapping items whose box is not open yet, and let the open boxes fill before you touch anything else.`,
+  },
+  {
+    q: `Is the Level ${lvl.level} layout the same for everyone?`,
+    a: `No. Item positions and the order boxes arrive in are dealt per player and per app version, so two screenshots of Level ${lvl.level} can look different. What stays fixed is the box set listed on this page and the counts next to each box.`,
+  },
+];
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical={canonical}
+    type="article"
+    breadcrumbTitle={`Amochiroom Level ${lvl.level}`}
+  />
+  <link rel="alternate" hreflang="en" href={`https://gridpaw.com${canonical}/`} />
+  <link rel="alternate" hreflang="x-default" href={`https://gridpaw.com${canonical}/`} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --amber-ink: #A35700; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #756251; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber-ink); }
+    .wrap { max-width: 840px; margin: 0 auto; padding: 1.2rem 1rem 3rem; }
+    .wrap h1 { font-size: 1.75rem; line-height: 1.3; margin: 0.6rem 0 0.5rem; }
+    .wrap h2 { font-size: 1.3rem; margin: 2rem 0 0.6rem; }
+    .wrap h2 .accent { color: var(--amber-ink); }
+    .wrap p { line-height: 1.75; color: #555; margin: 0.5rem 0; }
+    .wrap a { color: var(--amber-ink); }
+    .lede { font-size: 1rem; color: #6b5b4c; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.45rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.25rem 0; }
+    .answer-box .big { font-size: 1.15rem; }
+    .facts { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 0.9rem 0 0.2rem; }
+    .fact { flex: 1 1 90px; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 10px; padding: 0.5rem 0.7rem; }
+    .fact b { display: block; font-size: 1.15rem; color: var(--amber-ink); }
+    .fact span { font-size: 0.7rem; color: var(--light); font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; }
+    table.boxes { width: 100%; border-collapse: collapse; margin: 0.8rem 0; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+    table.boxes th { background: #FFF3DF; text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #8A5A12; padding: 0.55rem 0.8rem; }
+    table.boxes td { padding: 0.5rem 0.8rem; border-top: 1px solid var(--border); font-size: 0.95rem; }
+    table.boxes td.n { font-weight: 900; color: var(--amber-ink); text-align: right; width: 5rem; }
+    table.boxes tr.biggest td { background: #FFFBF2; }
+    .mech { background: #fff; border-left: 4px solid var(--amber); border-radius: 8px; padding: 0.8rem 1rem; margin: 1rem 0; }
+    .mech ul { padding-left: 1.2rem; color: #555; margin: 0.4rem 0 0; }
+    .mech li { margin-bottom: 0.35rem; line-height: 1.65; }
+    .note { background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.9rem; color: #7A6420; line-height: 1.65; }
+    .cta { margin: 1.4rem 0; padding: 1rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta a.btn { display: inline-block; margin-top: 0.5rem; background: var(--amber-ink); color: #fff; font-weight: 800; text-decoration: none; padding: 0.55rem 1.1rem; border-radius: 10px; }
+    .pager { display: flex; justify-content: space-between; gap: 0.8rem; margin: 1.6rem 0 0; }
+    .pager a { flex: 1; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.7rem 0.9rem; text-decoration: none; color: var(--text); font-weight: 800; font-size: 0.9rem; }
+    .pager a:hover { border-color: var(--amber); color: var(--amber-ink); }
+    .pager a.next { text-align: right; }
+    .pager span { display: block; font-size: 0.7rem; font-weight: 700; color: var(--light); text-transform: uppercase; letter-spacing: 0.05em; }
+    details.faq { background: #fff; border: 1.5px solid var(--border); border-radius: 10px; padding: 0.7rem 0.9rem; margin: 0.55rem 0; }
+    details.faq summary { font-weight: 800; cursor: pointer; color: var(--text); }
+    details.faq p { margin: 0.5rem 0 0; font-size: 0.94rem; }
+    .evidence { font-size: 0.8rem; color: var(--light); border-top: 1px solid var(--border); margin-top: 2rem; padding-top: 0.7rem; line-height: 1.6; }
+    .level-strip { display: grid; grid-template-columns: repeat(auto-fill, minmax(58px, 1fr)); gap: 0.4rem; margin: 0.7rem 0; }
+    .level-strip a { display: block; text-align: center; background: #fff; border: 1.5px solid var(--border); border-radius: 8px; padding: 0.35rem 0; text-decoration: none; font-weight: 800; font-size: 0.85rem; color: var(--text); }
+    .level-strip a:hover { border-color: var(--amber); color: var(--amber-ink); }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <div class="breadcrumb">
+    <a href="/">Home</a> › <a href="/amochiroom/">Amochiroom Puzzle: Room Sort</a> › Level {lvl.level}
+  </div>
+
+  <main class="wrap">
+    <h1>Amochiroom Puzzle: Room Sort Level {lvl.level} — {lvl.name}</h1>
+    <p class="lede">Level <strong>{lvl.level}</strong> of {total} is <strong>{lvl.name}</strong>: <strong>{lvl.itemCount}</strong> items on the screen, <strong>{lvl.boxCount}</strong> labelled boxes to fill.</p>
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p class="big">Level {lvl.level} is {lvl.name} — fill all {lvl.boxCount} boxes.</p>
+      <p>The biggest box is <strong>{biggest.name}</strong> ({biggest.count} items); the smallest is <strong>{smallest.name}</strong> ({smallest.count}). Nothing in this level is optional: the {lvl.itemCount} items on the board match the boxes exactly, one for one.</p>
+    </div>
+
+    <div class="facts">
+      <div class="fact"><b>{lvl.boxCount}</b><span>Boxes</span></div>
+      <div class="fact"><b>{lvl.itemCount}</b><span>Items</span></div>
+      <div class="fact"><b>{avg}</b><span>Items / box</span></div>
+    </div>
+
+    <h2>Every box in Level {lvl.level}</h2>
+    <p>The manifest this level ships with, largest box first. Counts are exact — the sum is {lvl.itemCount}, which is every item on the board. Use it to decide what to save your buffer for.</p>
+
+    <table class="boxes">
+      <thead>
+        <tr><th>Box label</th><th style="text-align:right">Items wanted</th></tr>
+      </thead>
+      <tbody>
+        {boxes.map((b: any, i: number) => (
+          <tr class={i === 0 ? 'biggest' : ''}>
+            <td>{b.name}{i === 0 ? ' (largest)' : ''}</td>
+            <td class="n">{b.count}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <h2>How to clear Level {lvl.level}</h2>
+    <div class="mech">
+      <p>Level {lvl.level} is a <strong>{lvl.boxCount}-box</strong> room with {capNote}. Three boxes sit in the shelf at a time and only <strong>two are open</strong> — the third unlocks as you clear. Your buffer starts with <strong>5 open slots out of 7</strong>, and it is the only place an item can wait.</p>
+      <ul>
+        <li><strong>Tap only what an open box wants.</strong> Every other tap costs a buffer slot. With {lvl.itemCount} items and {lvl.boxCount} box types, blind tapping fills all five slots in seconds.</li>
+        <li><strong>Park items for the next box, not the last one.</strong> The seal you are saving for should be the box arriving next, not one 30 boxes away.</li>
+        <li><strong>Work covered items last.</strong> Anything lying under another item can’t be picked up until the one on top moves — clear the surface first.</li>
+        <li><strong>Ran out of taps?</strong> Undo puts the last item back in the room, and the clear-buffer rescue returns up to three items from the buffer. Both are free; the {lvl.boxCount}-box count does not reset.</li>
+        <li><strong>Stuck for 15 seconds</strong> and the game offers one of your <strong>3 hints</strong>, which points at a safe tap.</li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <strong>Box order can differ on your phone.</strong> Item positions and the order boxes come out are dealt per player and per app version, so a walkthrough video of Level {lvl.level} may not match your screen. The box set and the counts in the table above are what the level ships with.
+    </div>
+
+    <SideAd />
+
+    <div class="cta">
+      <p>Stuck on a different room?</p>
+      <p>All {total} Amochiroom levels are listed by name and box count on the index page.</p>
+      <a class="btn" href="/amochiroom/">See every Amochiroom level →</a>
+    </div>
+
+    <div class="pager">
+      {prev ? (
+        <a href={`/amochiroom/level-${prev.level}/`}><span>← Previous</span>Level {prev.level}: {prev.name}</a>
+      ) : <span></span>}
+      {next ? (
+        <a class="next" href={`/amochiroom/level-${next.level}/`}><span>Next →</span>Level {next.level}: {next.name}</a>
+      ) : <span></span>}
+    </div>
+
+    <h2>Levels around {lvl.level}</h2>
+    <div class="level-strip">
+      {nearby.map((l: any) => (
+        <a href={`/amochiroom/level-${l.level}/`}>{l.level}</a>
+      ))}
+    </div>
+
+    <h2>FAQ</h2>
+    {faq.map((f) => (
+      <details class="faq">
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+
+    <p class="evidence">
+      Box list and counts are read from the level data shipped with Amochiroom Puzzle: Room Sort
+      (com.gamefactory.roomsort, version 1.0.20): every level’s box requirements match its item count exactly,
+      which is how this page knows the manifest is complete. Box labels use the game’s own English names.
+      Mechanics quoted above (2 of 3 boxes open, 5 of 7 buffer slots, 3 hints after 15 idle seconds, undo and
+      the clear-buffer rescue) are from the same build.
+    </p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,187 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import SideAd from '../../components/SideAd.astro';
+import InContentAd from '../../components/InContentAd.astro';
+import data from '../../data/amochiroom-levels.json';
+
+const levels = data.levels;
+const total = levels.length;
+const totalBoxes = levels.reduce((n: number, l: any) => n + l.boxCount, 0);
+const totalItems = levels.reduce((n: number, l: any) => n + l.itemCount, 0);
+const smallest = [...levels].sort((a: any, b: any) => a.boxCount - b.boxCount)[0];
+const largest = [...levels].sort((a: any, b: any) => b.boxCount - a.boxCount)[0];
+
+const title = `Amochiroom Puzzle: Room Sort — All ${total} Levels`;
+const description = `All ${total} levels of Amochiroom Puzzle: Room Sort: room names, box counts, and exactly what each box wants. Plus the buffer rules that decide whether you clear a room.`;
+const canonical = '/amochiroom';
+
+const faq = [
+  {
+    q: `How many levels does Amochiroom Puzzle: Room Sort have?`,
+    a: `${total} levels. Version 1.0.20 of the game ships ${total} rooms, counting from ${smallest.name} (level ${smallest.level}) up to ${levels[total - 1].name} (level ${levels[total - 1].level}). Every one is listed on this page with its box count.`,
+  },
+  {
+    q: `What do you actually do in Amochiroom Puzzle: Room Sort?`,
+    a: `You empty a messy room into labelled boxes. Tap an item and it flies into the open box that wants that category — or, if no open box wants it, into your buffer. Boxes take roughly 3 to 9 items each, and a room is cleared when every box is full.`,
+  },
+  {
+    q: `Why do I keep failing a level?`,
+    a: `The buffer. Only two boxes are open at a time and you start with five open buffer slots out of seven. Tap anything an open box does not want and it takes a slot; once the slots are gone and no useful tap is left, the room dead-ends. The fix is boring but it works: only tap what the open boxes want, and park items only for the box that is about to open.`,
+  },
+  {
+    q: `Is there an Amochiroom answers list with the tap order?`,
+    a: `No, and be careful with anything that claims one. Item positions and the order the boxes arrive in are dealt per player, so a fixed tap-by-tap sequence cannot be right for everyone. What is fixed — and what this site publishes for every level — is the box set: which categories the room wants and how many of each. That is the part that does not change.`,
+  },
+  {
+    q: `Are the levels getting harder?`,
+    a: `Yes, in size. ${smallest.name} is the tutorial end at ${smallest.boxCount} boxes, while ${largest.name} has ${largest.boxCount} boxes and ${largest.itemCount} items. Across all ${total} levels there are ${totalBoxes.toLocaleString('en-US')} boxes holding ${totalItems.toLocaleString('en-US')} items.`,
+  },
+];
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical={canonical}
+    type="article"
+    breadcrumbTitle="Amochiroom Puzzle: Room Sort"
+  />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/amochiroom/" />
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/amochiroom/" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --amber-ink: #A35700; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #756251; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber-ink); }
+    .wrap { max-width: 840px; margin: 0 auto; padding: 1.2rem 1rem 3rem; }
+    .wrap h1 { font-size: 1.8rem; line-height: 1.3; margin: 0.6rem 0 0.5rem; }
+    .wrap h2 { font-size: 1.3rem; margin: 2rem 0 0.6rem; }
+    .wrap h2 .accent { color: var(--amber-ink); }
+    .wrap p { line-height: 1.75; color: #555; margin: 0.5rem 0; }
+    .wrap a { color: var(--amber-ink); }
+    .lede { font-size: 1.02rem; color: #6b5b4c; }
+    .stats { display: flex; gap: 0.7rem; flex-wrap: wrap; margin: 1rem 0 0.5rem; }
+    .stat { flex: 1 1 120px; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.7rem 0.9rem; box-shadow: var(--shadow); }
+    .stat b { display: block; font-size: 1.3rem; color: var(--amber-ink); }
+    .stat span { font-size: 0.78rem; color: var(--light); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.6rem; margin: 0.8rem 0; }
+    .card { display: block; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.7rem 0.8rem; text-decoration: none; color: var(--text); box-shadow: var(--shadow); transition: transform 0.15s, border-color 0.15s; }
+    .card:hover { transform: translateY(-2px); border-color: var(--amber); }
+    .card .n { font-size: 0.72rem; font-weight: 800; color: var(--light); text-transform: uppercase; letter-spacing: 0.05em; }
+    .card .k { font-size: 0.98rem; font-weight: 900; color: var(--amber-ink); margin: 0.15rem 0; line-height: 1.3; }
+    .card .w { font-size: 0.78rem; color: var(--light); }
+    .mech { background: #fff; border-left: 4px solid var(--amber); border-radius: 8px; padding: 0.8rem 1rem; margin: 1rem 0; }
+    .mech ul { padding-left: 1.2rem; color: #555; margin: 0.4rem 0 0; }
+    .mech li { margin-bottom: 0.35rem; line-height: 1.65; }
+    .note { background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.9rem; color: #7A6420; line-height: 1.65; }
+    .cta { margin: 1.4rem 0; padding: 1rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta a.btn { display: inline-block; margin-top: 0.5rem; background: var(--amber-ink); color: #fff; font-weight: 800; text-decoration: none; padding: 0.55rem 1.1rem; border-radius: 10px; }
+    details.faq { background: #fff; border: 1.5px solid var(--border); border-radius: 10px; padding: 0.7rem 0.9rem; margin: 0.55rem 0; }
+    details.faq summary { font-weight: 800; cursor: pointer; color: var(--text); }
+    details.faq p { margin: 0.5rem 0 0; font-size: 0.94rem; }
+    .evidence { font-size: 0.8rem; color: var(--light); border-top: 1px solid var(--border); margin-top: 2rem; padding-top: 0.7rem; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <div class="breadcrumb"><a href="/">Home</a> › Amochiroom Puzzle: Room Sort</div>
+
+  <main class="wrap">
+    <h1>Amochiroom Puzzle: Room Sort — all {total} levels</h1>
+    <p class="lede">
+      Amochiroom Puzzle: Room Sort is the tidy-up game where a wrecked room has to be emptied into labelled boxes:
+      every item goes in the box that wants its category, and anything you pick up too early sits in a buffer that
+      only has a few slots. This page lists <strong>every level</strong> in the game, in order, with the English room
+      name the game shows you and exactly what the boxes in that room want.
+    </p>
+
+    <div class="stats">
+      <div class="stat"><b>{total}</b><span>Levels</span></div>
+      <div class="stat"><b>{totalBoxes.toLocaleString('en-US')}</b><span>Boxes listed</span></div>
+      <div class="stat"><b>{totalItems.toLocaleString('en-US')}</b><span>Items accounted for</span></div>
+    </div>
+
+    <h2>How a room actually clears</h2>
+    <div class="mech">
+      <p>These are the rules the game runs on, and the reason most players get stuck is the third one.</p>
+      <ul>
+        <li><strong>Three boxes on the shelf, two open.</strong> The third opens as boxes fill up; a new one arrives from the level’s queue.</li>
+        <li><strong>Seven buffer slots, five open.</strong> An item with no matching open box goes to the buffer. The two locked slots are a rescue you unlock, not something you start with.</li>
+        <li><strong>A full buffer is only fatal if nothing legal is left.</strong> Tapping into a dead end — slots full and no open box wants anything you can reach — ends the room.</li>
+        <li><strong>Items can be covered.</strong> Something lying under another item cannot be picked up until the one on top moves, so clearing the surface comes first.</li>
+        <li><strong>Three hints, offered after 15 idle seconds.</strong> Undo returns the last buffered item and the clear-buffer rescue returns up to three — both free.</li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <strong>There is no single solution sequence to memorise.</strong> Item positions and the order boxes are dealt in vary by player and by app version, so walkthrough videos often do not match your screen. What does not vary is the box set: this site publishes the exact catalogue of boxes for all {total} levels, which is the part you can actually plan against.
+    </div>
+
+    <InContentAd />
+
+    <h2>Every level, in order</h2>
+    <p>Tap a level for its full box list with exact counts. Rooms are numbered the way the game numbers them, so “Level {levels[2].level}” here is the same “Level {levels[2].level}” on your screen.</p>
+
+    <div class="grid">
+      {levels.map((l: any) => (
+        <a class="card" href={`/amochiroom/level-${l.level}/`}>
+          <span class="n">Level {l.level}</span>
+          <span class="k">{l.name}</span>
+          <span class="w">{l.boxCount} boxes · {l.itemCount} items</span>
+        </a>
+      ))}
+    </div>
+
+    <div class="cta">
+      <p>Want a different kind of tidy-up puzzle?</p>
+      <p>GridPaw has hand-built logic games that need no download and no account.</p>
+      <a class="btn" href="/crazy-cleanup/">Play Crazy Cleanup →</a>
+    </div>
+
+    <h2>FAQ</h2>
+    {faq.map((f) => (
+      <details class="faq">
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+
+    <p class="evidence">
+      Level names, box labels, box counts and item counts are read from the level data shipped inside
+      Amochiroom Puzzle: Room Sort (package com.gamefactory.roomsort, version 1.0.20), the same build the
+      game distributes. In every one of the {total} levels the box requirements add up exactly to the number of
+      items on the board, which is what makes these manifests complete rather than approximate. Rules quoted
+      here — two of three boxes open, five of seven buffer slots, three hints after 15 idle seconds — come from
+      that build’s own rule constants. Amochiroom Puzzle: Room Sort is developed by ABF ALPENHOF; this page is an
+      independent guide and is not affiliated with the developer.
+    </p>
+  </main>
+
+  <SideAd />
+</body>
+</html>
