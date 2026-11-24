@@ -1,0 +1,229 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import bk from '../../../data/word-kitchen-bebinca.json';
+
+export function getStaticPaths() {
+  return bk.levels.map((lvl, i) => ({
+    params: { pack: bk.pack_slug, slug: `level-${lvl.level}` },
+    props: {
+      lvl,
+      prev: i > 0 ? bk.levels[i - 1] : null,
+      next: i < bk.levels.length - 1 ? bk.levels[i + 1] : null,
+    },
+  }));
+}
+
+const { lvl, prev, next } = Astro.props;
+const pack = bk.pack;
+const total = lvl.words.length;
+const longest = Math.max(...lvl.words.map((w: string) => w.length));
+const byLen: Record<number, string[]> = {};
+for (const w of lvl.words) (byLen[w.length] ||= []).push(w);
+const lens = Object.keys(byLen).map(Number).sort((a, b) => b - a);
+const tray = lvl.letters.toUpperCase().split('');
+const keyWord = lvl.key.toUpperCase();
+const otherFull = lvl.full_length.filter((w: string) => w !== lvl.key).map((w: string) => w.toUpperCase());
+
+const title = `Word Kitchen ${pack} Level ${lvl.level} Answers: ${keyWord}`;
+const description = `Word Kitchen ${pack} Level ${lvl.level} answer: the letters are ${tray.join(' ')}. The full-size word is ${keyWord}, and these five tiles spell ${total} common English words — every one listed by length.`;
+const canonical = `/word-kitchen/${bk.pack_slug}/level-${lvl.level}`;
+
+const faq = [
+  {
+    q: `What is the answer to Word Kitchen ${pack} Level ${lvl.level}?`,
+    a: `The tray holds ${tray.join(', ')}. The word that uses all ${tray.length} letters at once is ${keyWord}${otherFull.length ? ` (${otherFull.join(' and ')} works too)` : ''}. Below that the same tiles make ${total} common English words, from ${longest} letters down to 3.`,
+  },
+  {
+    q: `How many words are in ${pack} Level ${lvl.level}?`,
+    a: `The level's slots only ask for a handful of them, but the five tiles can spell ${total} common words. If you are stuck on one slot, work down the ${longest}-letter and ${longest - 1}-letter groups first — the long words are the ones the game usually wants.`,
+  },
+  {
+    q: `Why does the game reject a word that is on this list?`,
+    a: `Word Kitchen checks words against its own dictionary, which is narrower than the ENABLE word list used here. Short or unusual entries (slang, abbreviations, dialect) may be rejected even though they are real words. If the game refuses one, move to the next length group.`,
+  },
+  {
+    q: `Is there a faster way to solve a Word Kitchen level?`,
+    a: `Yes — type the tray letters into the Word Kitchen solver and it returns every combination that fits, including words that are not on this page. It runs in the browser and needs no download.`,
+  },
+];
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical={canonical}
+    type="article"
+    breadcrumbTitle={`Word Kitchen ${pack} Level ${lvl.level}`}
+  />
+  <link rel="alternate" hreflang="en" href={`https://gridpaw.com${canonical}/`} />
+  <link rel="alternate" hreflang="x-default" href={`https://gridpaw.com${canonical}/`} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --amber-ink: #A35700; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #756251; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber-ink); }
+    .wrap { max-width: 840px; margin: 0 auto; padding: 1.2rem 1rem 3rem; }
+    .wrap h1 { font-size: 1.75rem; line-height: 1.3; margin: 0.6rem 0 0.5rem; }
+    .wrap h2 { font-size: 1.3rem; margin: 2rem 0 0.6rem; }
+    .wrap h2 .accent { color: var(--amber-ink); }
+    .wrap p { line-height: 1.75; color: #555; margin: 0.5rem 0; }
+    .wrap a { color: var(--amber-ink); }
+    .lede { font-size: 1rem; color: #6b5b4c; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.45rem; }
+    .tray { display: flex; gap: 0.45rem; justify-content: center; margin: 0.35rem 0 0.7rem; flex-wrap: wrap; }
+    .tile { width: 46px; height: 46px; border-radius: 10px; background: #FFF3DF; border: 2px solid #E9C48B; color: #8A5A12; font-weight: 900; font-size: 1.25rem; display: flex; align-items: center; justify-content: center; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.25rem 0; }
+    .answer-box .big { font-size: 1.15rem; }
+    .key-word { color: var(--green); }
+    .word-groups { margin: 0.8rem 0; }
+    .group { background: #fff; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.8rem 1rem; margin: 0.7rem 0; box-shadow: var(--shadow); }
+    .group h3 { font-size: 0.95rem; margin: 0; display: flex; align-items: center; gap: 0.5rem; }
+    .group .pill { font-size: 0.7rem; font-weight: 900; background: #FFF0D4; color: var(--amber-ink); border-radius: 999px; padding: 0.1rem 0.55rem; letter-spacing: 0.04em; text-transform: uppercase; }
+    .group ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.6rem 0 0; padding: 0; }
+    .group li { font-size: 0.92rem; font-weight: 700; letter-spacing: 0.06em; background: #FFFBF2; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.2rem 0.55rem; color: #6b5320; }
+    .group li.is-key { background: #E8F5EC; border-color: #9ED3AE; color: #15803D; }
+    .group .also { font-size: 0.82rem; color: var(--light); margin-top: 0.5rem; }
+    .mech { background: #fff; border-left: 4px solid var(--amber); border-radius: 8px; padding: 0.8rem 1rem; margin: 1rem 0; }
+    .mech ul { padding-left: 1.2rem; color: #555; margin: 0.4rem 0 0; }
+    .mech li { margin-bottom: 0.3rem; line-height: 1.6; }
+    .cta { margin: 1.4rem 0; padding: 1rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta a.btn { display: inline-block; margin-top: 0.5rem; background: var(--amber-ink); color: #fff; font-weight: 800; text-decoration: none; padding: 0.55rem 1.1rem; border-radius: 10px; }
+    .pager { display: flex; justify-content: space-between; gap: 0.8rem; margin: 1.6rem 0 0; }
+    .pager a { flex: 1; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.7rem 0.9rem; text-decoration: none; color: var(--text); font-weight: 800; font-size: 0.9rem; }
+    .pager a:hover { border-color: var(--amber); color: var(--amber-ink); }
+    .pager a.next { text-align: right; }
+    .pager span { display: block; font-size: 0.7rem; font-weight: 700; color: var(--light); text-transform: uppercase; letter-spacing: 0.05em; }
+    details.faq { background: #fff; border: 1.5px solid var(--border); border-radius: 10px; padding: 0.7rem 0.9rem; margin: 0.55rem 0; }
+    details.faq summary { font-weight: 800; cursor: pointer; color: var(--text); }
+    details.faq p { margin: 0.5rem 0 0; font-size: 0.94rem; }
+    .evidence { font-size: 0.8rem; color: var(--light); border-top: 1px solid var(--border); margin-top: 2rem; padding-top: 0.7rem; line-height: 1.6; }
+    .level-strip { display: grid; grid-template-columns: repeat(auto-fill, minmax(58px, 1fr)); gap: 0.4rem; margin: 0.7rem 0; }
+    .level-strip a { display: block; text-align: center; background: #fff; border: 1.5px solid var(--border); border-radius: 8px; padding: 0.35rem 0; text-decoration: none; font-weight: 800; font-size: 0.85rem; color: var(--text); }
+    .level-strip a:hover { border-color: var(--amber); color: var(--amber-ink); }
+    .level-strip a.here { background: #FFF0D4; border-color: var(--amber); color: var(--amber-ink); }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <div class="breadcrumb">
+    <a href="/">Home</a> › <a href="/word-kitchen/">Word Kitchen Answers</a> › <a href="/word-kitchen/">Bebinca</a> › Level {lvl.level}
+  </div>
+
+  <main class="wrap">
+    <h1>Word Kitchen {pack} Level {lvl.level} Answers: {keyWord}</h1>
+    <p class="lede">Tray letters <strong>{tray.join(' ')}</strong> — the full-size word is <strong class="key-word">{keyWord}</strong>, and the same five tiles spell <strong>{total}</strong> common words.</p>
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <div class="tray">
+        {tray.map((t) => <span class="tile">{t}</span>)}
+      </div>
+      <p class="big">Use all {tray.length} letters: <span class="key-word">{keyWord}</span></p>
+      {otherFull.length > 0 && <p>Other words that use all {tray.length} tiles: {otherFull.join(', ')}</p>}
+      <p>{total} words total · longest {longest} letters · shortest 3</p>
+    </div>
+
+    <h2>Every word these letters spell</h2>
+    <p>Grouped by length, longest first. Green entries use the whole tray — start there if you are stuck on the last slot.</p>
+
+    <div class="word-groups">
+      {lens.map((len) => (
+        <div class="group">
+          <h3>{len} letters <span class="pill">{byLen[len].length} {byLen[len].length === 1 ? 'word' : 'words'}</span></h3>
+          <ul>
+            {byLen[len].map((w) => (
+              <li class={lvl.full_length.includes(w) ? 'is-key' : ''}>{w.toUpperCase()}</li>
+            ))}
+          </ul>
+          {len === longest && otherFull.length > 0 && (
+            <p class="also">Every one of these uses all {tray.length} tiles, so any of them may be the slot you are missing.</p>
+          )}
+        </div>
+      ))}
+    </div>
+
+    <InContentAd />
+
+    <h2>How the <span class="accent">{pack}</span> pack works</h2>
+    <div class="mech">
+      <p>Word Kitchen does not number levels globally — each dessert pack runs its own <strong>1 to 18</strong> count. {pack} is the first pack, so "Level {lvl.level}" always means <strong>{pack} - {lvl.level}</strong> in the game's header.</p>
+      <ul>
+        <li><strong>The tray never changes inside a level.</strong> All {tray.length} tiles stay available until the level ends, so every word above can be entered at any point.</li>
+        <li><strong>Long words first.</strong> The game's slots almost always include the {longest}-letter word; finding it usually unlocks the layout of the rest.</li>
+        <li><strong>Bonus words are separate.</strong> The book icon marks extra words that do not fill slots — the list above covers both kinds.</li>
+        <li><strong>Repeats matter.</strong> If a tile appears twice, the word has to use it twice. This page already accounts for that: each list only contains words the tray can actually spell.</li>
+      </ul>
+    </div>
+
+    <div class="cta">
+      <p>Letters not matching this level?</p>
+      <p>Type any tray into the solver and get every combination instantly.</p>
+      <a class="btn" href="/word-kitchen/solver/">Open the Word Kitchen solver →</a>
+    </div>
+
+    <h2>Other {pack} levels</h2>
+    <div class="level-strip">
+      {bk.levels.map((l) => (
+        <a href={`/word-kitchen/${bk.pack_slug}/level-${l.level}/`} class={l.level === lvl.level ? 'here' : ''}>{l.level}</a>
+      ))}
+    </div>
+
+    <h2>FAQ</h2>
+    {faq.map((f) => (
+      <details class="faq">
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+
+    <div class="pager">
+      {prev ? (
+        <a href={`/word-kitchen/${bk.pack_slug}/level-${prev.level}/`}>
+          <span>Previous</span>
+          Level {prev.level} ({prev.letters.toUpperCase()})
+        </a>
+      ) : <span />}
+      {next ? (
+        <a class="next" href={`/word-kitchen/${bk.pack_slug}/level-${next.level}/`}>
+          <span>Next</span>
+          Level {next.level} ({next.letters.toUpperCase()})
+        </a>
+      ) : <span />}
+    </div>
+
+    <SideAd />
+
+    <p class="evidence">
+      <strong>Where these letters come from:</strong> the tray for each level was read from the 1080p recording of the {pack} playthrough by {bk.source.channel} (video {bk.source.video}, {Math.floor(lvl.t / 60)}:{String(lvl.t % 60).padStart(2, '0')}–{Math.floor(lvl.end / 60)}:{String(lvl.end % 60).padStart(2, '0')}). Every tray was checked by anagram: the letters have to spell a real word, which catches misreads. Word lists are generated from the ENABLE dictionary filtered to the 50,000 most common English words, so nothing on this page is copied from another answers site.
+    </p>
+  </main>
+</body>
+</html>

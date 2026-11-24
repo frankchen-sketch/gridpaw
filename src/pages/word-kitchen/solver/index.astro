@@ -1,0 +1,303 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameSwitcher from '../../../components/GameSwitcher.astro';
+import SolverTiles from '../../../components/SolverTiles.astro';
+import SideAd from '../../../components/SideAd.astro';
+
+const title = "Word Kitchen Solver — Unscramble Any Tray (Free)";
+const description = "Free Word Kitchen solver: type the letters from any tray and get every word they make, sorted by length. Works offline in your browser, no download, no account.";
+const canonical = "/word-kitchen/solver";
+
+const faqs = [
+  { q: "How do I use the Word Kitchen solver?", a: "Type the letters exactly as they sit in the tray — Word Kitchen tiles are the letters of one key word, shuffled. Duplicates matter: if the tray shows two A tiles, type AA. The solver then lists every English word those tiles can spell, longest first." },
+  { q: "Does it know which words a specific level requires?", a: "No, and it does not pretend to. Word Kitchen picks a subset of the words your tray can make as required answers, and pays a coin bonus for the rest. The letters are public; which words the game insists on is stored on the game's own server, per pack and per level. What this tool gives you is the complete candidate list, so the word you are missing is in there even when you cannot see it." },
+  { q: "Why do some trays give dozens of words and others only a handful?", a: "It depends on the letter mix. A tray with an S, an E and two common vowels (like PARTY or SALAD) fans out into twenty or more valid words; a tray with a rare consonant pairs down to a few. Longer trays do not automatically mean more words — a pile of letters with no vowels makes almost nothing." },
+  { q: "Does it accept two-letter words?", a: "Yes, and you can switch the minimum length to 3, 4 or 5 if you only want the longer answers. Word Kitchen does use a few short ones — HE, AT, IT, SO — so leaving the minimum at 2 is the safe setting when a level feels stuck on its last slot." },
+  { q: "How many levels does Word Kitchen have?", a: "The current build groups its levels as packs of 12 to 18, and there is no single global level number inside the game — you pick a pack (Bebinca, Malicoco, Apple Pie and so on) and then a level inside it. That is why guides and videos label levels by pack first and number second; a bare 'level 7' means nothing without the pack." },
+  { q: "Is this the same as a Scrabble or Words With Friends cheat?", a: "The search is the same idea — match a letter multiset against a dictionary — but the rules are different. Word Kitchen does not use a board or score letters, so there are no tile values, no hooks and no premium squares to worry about. Any English word the tray can spell is a candidate." },
+  { q: "Why is a word I know missing from the list?", a: "The solver answers from the ENABLE word list, the standard reference for word games: about 105,000 words from two to nine letters. It leaves out proper nouns, abbreviations and most brand names, plus multi-word phrases. If a coin-bonus word in Word Kitchen is not here, it is almost always one of those categories." },
+  { q: "Does the tool work on a phone, and is it free?", a: "Yes to both. The page is plain HTML and JavaScript, so it runs on any phone browser, and the word list is fetched once and cached. No account, no app install, no limit on searches — and the letters you type never leave your device." },
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <SEOHead title={title} description={description} canonical={canonical} type="article" image="/og-shikaku.png" breadcrumbTitle="Word Kitchen Solver" />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } }))
+  })} />
+  <style is:global>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"SF Pro Rounded","Segoe UI","Noto Sans SC",system-ui,sans-serif;background:linear-gradient(180deg,#f8f6ef,#f8f6ef);color:#342421;min-height:100vh}
+    .container{max-width:720px;margin:0 auto;padding:1rem}
+    h1{font-size:1.75rem;color:#342421;text-align:center;margin:.5rem 0;line-height:1.3}
+    .sub{text-align:center;color:#6f5651;margin-bottom:1.2rem;line-height:1.55}
+    .site-header{border-bottom:2px solid #e7dacf;background:#f8f6ef}
+    .header-inner{max-width:720px;margin:0 auto;padding:.6rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:.5rem;text-decoration:none;color:#342421}
+    .brand img{display:block;border-radius:8px}
+    .brand-name{display:flex;flex-direction:column;line-height:1.1}
+    .brand-name .big{font-weight:700;font-size:1.05rem}
+    .brand-name .small{font-size:.7rem;color:#6f5651}
+    .nav{display:flex;align-items:center;gap:.75rem;font-size:.9rem;flex-wrap:wrap}
+    .nav a{color:#6f5651;text-decoration:none}
+    .nav a:hover{color:#E8A888}
+    .tool{background:#fff;border:2px solid #e7dacf;border-radius:14px;padding:1rem;margin:1rem 0}
+    .tray-label{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:#6f5651;margin-bottom:.35rem;font-weight:600}
+    #letters{width:100%;font-size:2rem;letter-spacing:.28em;text-transform:uppercase;padding:.6rem .8rem;border:2px solid #e7dacf;border-radius:10px;background:#fdfbf6;color:#342421;font-family:inherit}
+    #letters:focus{outline:none;border-color:#E8A888;box-shadow:0 0 0 3px rgba(232,168,136,.22)}
+    .row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-top:.75rem}
+    #must{width:4.2rem;font-size:1.3rem;text-align:center;text-transform:uppercase;padding:.35rem;border:2px solid #e7dacf;border-radius:8px;background:#fdfbf6;color:#342421;font-family:inherit}
+    .row label{font-size:.85rem;color:#6f5651}
+    .chip{border:1.5px solid #e7dacf;background:#fdfbf6;color:#6f5651;border-radius:999px;padding:.3rem .7rem;font-size:.85rem;cursor:pointer;font-family:inherit}
+    .chip[aria-pressed="true"]{background:#F0B898;border-color:#F0B898;color:#fff;font-weight:600}
+    .btn{border:none;border-radius:999px;padding:.45rem .95rem;font-size:.9rem;cursor:pointer;font-family:inherit;background:#e7dacf;color:#6f5651}
+    .btn:hover{background:#dfd0c0}
+    #status{margin-top:.7rem;font-size:.85rem;color:#6f5651;min-height:1.2em}
+    .count{font-weight:700;color:#342421}
+    .group{margin-top:1rem}
+    .group h3{font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:#a58c86;margin-bottom:.45rem;font-weight:700}
+    .words{display:flex;flex-wrap:wrap;gap:.4rem}
+    .word{background:#FDF3EA;border:1.5px solid #F2D9C8;color:#7a4b34;border-radius:8px;padding:.28rem .6rem;font-size:.95rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+    .word.full{background:#F0B898;border-color:#E09878;color:#fff}
+    .empty{color:#a58c86;font-size:.9rem;padding:.5rem 0}
+    .seo-content{margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e7dacf}
+    .seo-content p{margin:.6rem 0;line-height:1.75}
+    .seo-content ol,.seo-content ul{padding-left:1.5rem;margin:.6rem 0}
+    .seo-content li{margin-bottom:.45rem;line-height:1.7}
+    .seo-content a{color:#E8A888;text-decoration:underline}
+    .seo-content h2{font-size:1.3rem;color:#342421;margin:1.6rem 0 .5rem}
+    .seo-content h3{font-size:1.05rem;color:#342421;margin:1.1rem 0 .3rem}
+    details{margin:.5rem 0;padding:.6rem .9rem;background:#fdfbf6;border:1.5px solid #e7dacf;border-radius:10px}
+    summary{cursor:pointer;font-weight:600;color:#b06a48}
+    details p{margin:.5rem 0 0;line-height:1.7}
+    footer{text-align:center;margin:2rem 0 1rem;font-size:.8rem;color:#6f5651}
+    footer a{color:#6f5651}
+    @media(max-width:420px){#letters{font-size:1.6rem}}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="GridPaw">
+        <img src="/assets/logo.png" alt="GridPaw cat mascot" width="36" height="36" loading="lazy" />
+        <span class="brand-name">
+          <span class="big">GridPaw</span>
+          <span class="small">Puzzle Tools</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <GameSwitcher />
+        <a href="/word-kitchen/solver/">Solver</a>
+        <a href="#how-it-works">How it works</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>Word Kitchen Solver — Type the Tray, Get Every Word</h1>
+    <p class="sub">Paste the letters from any Word Kitchen level and the solver lists every English word they can spell, longest first. The word that is blocking you is in the list.</p>
+
+    <section class="tool" aria-label="Word Kitchen solver">
+      <div class="tray-label" id="tray-label">Letters in the tray</div>
+      <input id="letters" type="text" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" maxlength="14" aria-labelledby="tray-label" placeholder="PARTY" />
+      <div class="row">
+        <label for="must">Must use</label>
+        <input id="must" type="text" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" maxlength="1" placeholder="—" aria-label="Optional letter the word must contain" />
+        <span style="font-size:.85rem;color:#6f5651">Min length</span>
+        <button class="chip" data-min="2" aria-pressed="true" type="button">2</button>
+        <button class="chip" data-min="3" aria-pressed="false" type="button">3</button>
+        <button class="chip" data-min="4" aria-pressed="false" type="button">4</button>
+        <button class="chip" data-min="5" aria-pressed="false" type="button">5</button>
+      </div>
+      <div class="row">
+        <button class="btn" id="copy" type="button">Copy all words</button>
+        <button class="btn" id="clear" type="button">Clear</button>
+      </div>
+      <div id="status" role="status" aria-live="polite">Type the tray letters to begin.</div>
+      <div id="results"></div>
+    </section>
+
+    <SolverTiles current="/word-kitchen/solver/" />
+
+    <section class="seo-content">
+      <h2 id="how-it-works">How the Word Kitchen solver works</h2>
+      <p>Every Word Kitchen level is one key word's letters, shuffled onto a tray. The game then splits what those letters can spell into two buckets: the answers it asks you for, and the extra words it pays a coin bonus for. The letters are the same for everyone playing that level, so the whole puzzle reduces to one question — what can this exact set of letters spell?</p>
+      <p>That is the question this page answers. Type the tray and the solver checks every word in a 105,000-word English dictionary against your letters, counting duplicates properly: two A tiles let you spell words with two A's, and nothing more. Results come back longest first, because the longest word is usually the one holding the level up.</p>
+
+      <h3>Reading the tray correctly</h3>
+      <ul>
+        <li><strong>Type the letters, not the answer.</strong> The tray is the scrambled key word — it is already a complete English word somewhere in the list.</li>
+        <li><strong>Duplicates are real.</strong> If the tray shows two O tiles, type OO. Dropping the second O silently kills every word that needs two of them.</li>
+        <li><strong>Word order never matters.</strong> WOKRT and TWORK are the same tray; the solver sorts letters internally before matching.</li>
+        <li><strong>Nothing else is on the tray.</strong> Word Kitchen does not hide letters behind tiles, so the visible set is the whole set.</li>
+      </ul>
+
+      <h3>Why guides label levels by pack, not by number</h3>
+      <p>Word Kitchen's own level select groups its levels into themed packs — Bebinca, Malicoco, Hoegaarden, Apple Pie, Crab Soup and dozens more — with roughly 12 to 18 levels in each. There is no single global level number inside the app, which is why a search for "word kitchen level 7" returns a dozen different trays on a dozen different sites. A pack name plus a number inside that pack is the only label that means one specific tray.</p>
+      <p>For solvers this barely matters: the letters are on your screen regardless of what the level is called. It matters when you are following a written guide or a video, where the same tray can be labelled 7, 23 or 41 depending on whose numbering you are reading.</p>
+
+      <h3>What the solver cannot tell you</h3>
+      <p>It cannot say which words a specific level counts as required. That split lives on the game's server, inside each pack's data, and it changes when the developers retune a level. Two consequences worth knowing: a word missing from a guide does not mean the level rejects it, and a word a guide lists as required may still be a bonus word in your build. Use the list as candidates, then feed them into the game.</p>
+
+      <h2>Frequently asked questions</h2>
+      {faqs.map(f => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </section>
+
+    <footer>
+      <p><a href="/">GridPaw Shikaku</a> · <a href="/nonogram/solver/">Nonogram Solver</a> · <a href="/kenken/solver/">KenKen Solver</a> · <a href="/akari/solver/">Akari Solver</a></p>
+    </footer>
+  </div>
+
+  <SideAd />
+
+  <script is:inline>
+  (function () {
+    'use strict';
+    var lettersEl = document.getElementById('letters');
+    var mustEl = document.getElementById('must');
+    var statusEl = document.getElementById('status');
+    var resultsEl = document.getElementById('results');
+    var copyBtn = document.getElementById('copy');
+    var clearBtn = document.getElementById('clear');
+    var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
+    var minLen = 2;
+    var WORDS = null;
+    var lastWords = [];
+    var loadState = 0;
+
+    function setStatus(html) { statusEl.innerHTML = html; }
+
+    function loadWords() {
+      if (WORDS) return Promise.resolve(WORDS);
+      if (loadState === 1) return null;
+      loadState = 1;
+      setStatus('Loading the word list…');
+      return fetch('/data/wk-words.txt').then(function (r) {
+        if (!r.ok) throw new Error('http ' + r.status);
+        return r.text();
+      }).then(function (t) {
+        WORDS = t.split('\n');
+        return WORDS;
+      }).catch(function () {
+        loadState = 0;
+        setStatus('<b>The word list did not load.</b> Check your connection and type again.');
+        return null;
+      });
+    }
+
+    function clean(s) { return (s || '').toLowerCase().replace(/[^a-z]/g, ''); }
+
+    function solve(letters, must) {
+      var counts = Object.create(null);
+      for (var i = 0; i < letters.length; i++) counts[letters[i]] = (counts[letters[i]] || 0) + 1;
+      var maxLen = letters.length;
+      var out = [];
+      for (var w = 0; w < WORDS.length; w++) {
+        var word = WORDS[w];
+        if (word.length < minLen || word.length > maxLen) continue;
+        if (must && word.indexOf(must) === -1) continue;
+        var ok = true;
+        var local = Object.create(null);
+        for (var j = 0; j < word.length; j++) {
+          var ch = word[j];
+          local[ch] = (local[ch] || 0) + 1;
+          if (local[ch] > (counts[ch] || 0)) { ok = false; break; }
+        }
+        if (ok) out.push(word);
+      }
+      out.sort(function (a, b) { return b.length - a.length || (a < b ? -1 : a > b ? 1 : 0); });
+      return out;
+    }
+
+    function render() {
+      var letters = clean(lettersEl.value);
+      var must = clean(mustEl.value).slice(0, 1);
+      resultsEl.innerHTML = '';
+      lastWords = [];
+      if (!letters) { setStatus('Type the tray letters to begin.'); return; }
+      if (letters.length < 2) { setStatus('At least two letters, please.'); return; }
+      var list = solve(letters, must);
+      lastWords = list;
+      if (!list.length) {
+        setStatus('No words found for <b>' + letters.toUpperCase() + '</b>. Check the letters — a typo or a dropped duplicate is the usual cause.');
+        return;
+      }
+      var full = list.filter(function (w) { return w.length === letters.length; });
+      var rest = list.filter(function (w) { return w.length < letters.length; });
+      var byLen = {};
+      rest.forEach(function (w) { (byLen[w.length] = byLen[w.length] || []).push(w); });
+      var lens = Object.keys(byLen).map(Number).sort(function (a, b) { return b - a; });
+
+      setStatus('<span class="count">' + list.length + '</span> words from <b>' + letters.toUpperCase() + '</b>' + (must ? ' containing <b>' + must.toUpperCase() + '</b>' : '') + (full.length ? ' — ' + full.length + ' uses every letter' : ''));
+
+      if (full.length) {
+        var gf = document.createElement('div');
+        gf.className = 'group';
+        gf.innerHTML = '<h3>Every letter used (' + letters.length + ')</h3>';
+        var wf = document.createElement('div');
+        wf.className = 'words';
+        full.forEach(function (w) { var s = document.createElement('span'); s.className = 'word full'; s.textContent = w; wf.appendChild(s); });
+        gf.appendChild(wf); resultsEl.appendChild(gf);
+      }
+      lens.forEach(function (n) {
+        if (!byLen[n].length) return;
+        var g = document.createElement('div');
+        g.className = 'group';
+        g.innerHTML = '<h3>' + n + ' letters (' + byLen[n].length + ')</h3>';
+        var wrap = document.createElement('div');
+        wrap.className = 'words';
+        byLen[n].forEach(function (w) { var s = document.createElement('span'); s.className = 'word'; s.textContent = w; wrap.appendChild(s); });
+        g.appendChild(wrap); resultsEl.appendChild(g);
+      });
+    }
+
+    var t = null;
+    function schedule() {
+      clearTimeout(t);
+      t = setTimeout(function () { loadWords().then(function (w) { if (w) render(); }); }, 120);
+    }
+
+    lettersEl.addEventListener('input', function () {
+      var pos = lettersEl.selectionStart;
+      lettersEl.value = lettersEl.value.toUpperCase();
+      try { lettersEl.setSelectionRange(pos, pos); } catch (e) {}
+      schedule();
+    });
+    mustEl.addEventListener('input', function () { mustEl.value = mustEl.value.toUpperCase(); schedule(); });
+    chips.forEach(function (c) {
+      c.addEventListener('click', function () {
+        minLen = parseInt(c.getAttribute('data-min'), 10);
+        chips.forEach(function (o) { o.setAttribute('aria-pressed', o === c ? 'true' : 'false'); });
+        if (WORDS) render();
+      });
+    });
+    copyBtn.addEventListener('click', function () {
+      if (!lastWords.length) { setStatus('Nothing to copy yet — type a tray first.'); return; }
+      var text = lastWords.join(', ');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { setStatus('Copied <b>' + lastWords.length + '</b> words.'); });
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); setStatus('Copied <b>' + lastWords.length + '</b> words.'); } catch (e) {}
+        document.body.removeChild(ta);
+      }
+    });
+    clearBtn.addEventListener('click', function () {
+      lettersEl.value = ''; mustEl.value = ''; resultsEl.innerHTML = ''; lastWords = [];
+      setStatus('Type the tray letters to begin.'); lettersEl.focus();
+    });
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import SideAd from '../../components/SideAd.astro';
+import bk from '../../data/word-kitchen-bebinca.json';
+
+const title = 'Word Kitchen Answers: Every Bebinca Level (1–18)';
+const description = 'Word Kitchen answers for the Bebinca pack — the letters behind each level, the full-size word, and every common word those tiles spell. Plus a free solver that handles any tray.';
+const canonical = '/word-kitchen';
+
+const levels = bk.levels;
+const covered = levels.length;
+const totalWords = levels.reduce((n, l) => n + l.words.length, 0);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical={canonical}
+    type="article"
+    breadcrumbTitle="Word Kitchen Answers"
+  />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/word-kitchen/" />
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/word-kitchen/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --amber-ink: #A35700; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #756251; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber-ink); }
+    .wrap { max-width: 840px; margin: 0 auto; padding: 1.2rem 1rem 3rem; }
+    .wrap h1 { font-size: 1.75rem; line-height: 1.3; margin: 0.6rem 0 0.5rem; }
+    .wrap h2 { font-size: 1.3rem; margin: 2rem 0 0.6rem; }
+    .wrap h2 .accent { color: var(--amber-ink); }
+    .wrap p { line-height: 1.75; color: #555; margin: 0.5rem 0; }
+    .wrap a { color: var(--amber-ink); }
+    .stats { display: flex; gap: 0.7rem; flex-wrap: wrap; margin: 1rem 0 0.5rem; }
+    .stat { flex: 1 1 120px; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.7rem 0.9rem; box-shadow: var(--shadow); }
+    .stat b { display: block; font-size: 1.3rem; color: var(--amber-ink); }
+    .stat span { font-size: 0.78rem; color: var(--light); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.6rem; margin: 0.8rem 0; }
+    .card { display: block; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.7rem 0.8rem; text-decoration: none; color: var(--text); box-shadow: var(--shadow); transition: transform 0.15s, border-color 0.15s; }
+    .card:hover { transform: translateY(-2px); border-color: var(--amber); }
+    .card .n { font-size: 0.72rem; font-weight: 800; color: var(--light); text-transform: uppercase; letter-spacing: 0.05em; }
+    .card .k { font-size: 1.05rem; font-weight: 900; letter-spacing: 0.08em; color: var(--amber-ink); margin: 0.15rem 0; }
+    .card .w { font-size: 0.78rem; color: var(--light); }
+    .cta { margin: 1.4rem 0; padding: 1rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta a.btn { display: inline-block; margin-top: 0.5rem; background: var(--amber-ink); color: #fff; font-weight: 800; text-decoration: none; padding: 0.55rem 1.1rem; border-radius: 10px; }
+    .note { background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.9rem; color: #7A6420; }
+    .evidence { font-size: 0.8rem; color: var(--light); border-top: 1px solid var(--border); margin-top: 2rem; padding-top: 0.7rem; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <div class="breadcrumb"><a href="/">Home</a> › Word Kitchen Answers</div>
+
+  <main class="wrap">
+    <h1>Word Kitchen Answers</h1>
+    <p>Word Kitchen is a cozy word game with a dessert theme: each pack is named after a sweet, and every pack counts its own levels <strong>1 to 18</strong>. There is no global level number, which is why a page called "level 137" would send you to the wrong place. Every page here uses the game's own numbering — <strong>pack name + level number</strong> — exactly as it appears in the header while you play.</p>
+
+    <div class="stats">
+      <div class="stat"><b>{covered}</b><span>Levels online</span></div>
+      <div class="stat"><b>{totalWords}</b><span>Words listed</span></div>
+      <div class="stat"><b>1</b><span>Pack covered</span></div>
+    </div>
+
+    <div class="cta">
+      <p>Stuck on a tray right now?</p>
+      <p>The solver does not need this page — it works on any letters.</p>
+      <a class="btn" href="/word-kitchen/solver/">Open the solver →</a>
+    </div>
+
+    <h2>Bebinca — <span class="accent">levels 1 to 18</span></h2>
+    <p>Bebinca is the opening pack. Below are the levels we have read off a full playthrough; each page lists the tray, the word that uses every tile, and the complete set of common words those letters spell.</p>
+
+    <div class="grid">
+      {levels.map((l) => (
+        <a class="card" href={`/word-kitchen/${bk.pack_slug}/level-${l.level}/`}>
+          <span class="n">Bebinca · Level {l.level}</span>
+          <span class="k">{l.letters.toUpperCase()}</span>
+          <span class="w">{l.key.toUpperCase()} · {l.words.length} words</span>
+        </a>
+      ))}
+    </div>
+
+    <p class="note">Bebinca level {covered + 1} onward will be added as we finish reading them. The plan is one pack at a time, in the game's own order — no invented numbering, no filler pages.</p>
+
+    <h2>How to use these answers</h2>
+    <p>Each level page is built the same way, so you know what you are looking at:</p>
+    <ul>
+      <li><strong>The tray</strong> — the letters in the pan, in the order they appear on screen.</li>
+      <li><strong>The full-size word</strong> — the one that uses every tile. It is almost always a required slot.</li>
+      <li><strong>The word list</strong> — every common English word those tiles can spell, grouped by length. Bonus words are in there too; the game's book icon tracks those separately.</li>
+    </ul>
+    <p>If a word is refused, it is usually because Word Kitchen's dictionary is narrower than the ENABLE list these pages are generated from — short slang and abbreviations are the usual suspects. Drop to the next length group and try again.</p>
+
+    <h2>Why the numbers look different on other sites</h2>
+    <p>Some Word Kitchen answer sites flatten every pack into one long sequence and call the result "level 43" or "level 137". The game never shows those numbers, so the mapping only works if you happen to be on the same pack — and it breaks the moment a pack is added or reordered. We keep the pack name in the URL (<code>/word-kitchen/bebinca/level-3/</code>) so a link can never point at the wrong puzzle.</p>
+
+    <SideAd />
+
+    <p class="evidence">
+      <strong>Method:</strong> trays are read from a 1080p playthrough of the Bebinca pack ({bk.source.channel}, video {bk.source.video}), then cross-checked by anagram — the letters must spell a real word, which catches misreads. Word lists are generated from the ENABLE dictionary and filtered to the 50,000 most common English words. Nothing here is copied from another answers site.
+    </p>
+  </main>
+</body>
+</html>
