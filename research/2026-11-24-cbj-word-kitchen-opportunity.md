@@ -5,10 +5,13 @@
 
 ## 结论先说
 
+> **2026-11-24 法老裁决（终）**：CBJ 整条线关闭，连 solver 页都不做。Word Kitchen 走 B（视频读盘面）+ C（求解器），不做解包。
+> **解包结论**：关卡数据不在 APK 里（Unity IL2CPP，assets 里只有广告埋点，最大 MonoBehaviour 是字体图集，`Bebinca/Malicoco` 零命中）；真正位置是 Firebase RC 指向的 `games.justplayapi.com`（Spring，凭据加密，端点全 404）。这条路线到此为止。
+
 | 游戏 | 该不该做 | 怎么做 | 预期 |
 |---|---|---|---|
-| **Word Kitchen** | ✅ **先做** | 拿游戏本体关卡数据 → 30 包 hub + 534 关页 + 字母求解器 | 头词 4,400-6,600/月、KD 50、对手最弱 DR 27 → 首年 1-2 万点击/月量级可期 |
-| **Color Block Jam** | ⚠️ 只做**求解器工具**，不做 2,600 关页 | 棋盘→解法的 solver（1 页工具）+ 少数爆量关页 | "solver" 480/月稳；关卡词 KD 70 且被 YouTube/TikTok 锁死 |
+| **Word Kitchen** | ✅ **先做** | 视频读盘面 → 包 hub + 关页 + 字母求解器（solver 已上线） | 头词 4,400-6,600/月、KD 50、对手最弱 DR 27 → 首年 1-2 万点击/月量级可期 |
+| **Color Block Jam** | ❌ **不做**（11-24 关闭） | — | level 词一年掉 80-98%、品牌 4,400→2,900，solver 仅 480/月，1 页收益不抵维护 |
 
 ## 一、Word Kitchen（Gimica GmbH，`com.gimica.wordkitchen`）
 
