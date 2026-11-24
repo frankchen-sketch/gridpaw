@@ -317,3 +317,14 @@ cron（job 1329cf1d31a5）去重真源。状态：`reported`（已报告未动�
 - **判据（上线后 2 周）**：巴西 BP3 葡语 query 的 CTR ≥5%（现在 3.3%）且 28d 点击 ≥40 → **立刻补第二批 18 关到 30**；CTR <3% → 说明不是语言问题而是排名问题，30 关也不铺。
 - **审读门（2026-11-09，三 agent）**：①巴西母语审读 6/10 → P0：`arrastões`（巴西=抢劫，L40 出现 6 次）/`arrastes`（命令式当名词）、L31 步骤卡漏灭火器一步（照卡做会卡关）、verifyNote 与页面事实矛盾、L40「四拖落狗和幼崽」事实错；②事实核验：12 关 11 关逐条对齐，L31 步卡漏步为唯一 P0；③复验：抓到单数 `arrastão` 8 处、L45 名词 `arraste` 3 处、FAQ 问句 `Level` 12 处、L24 `destinatária` 等一批机械替换漏网。全部修完，dist 复验 0 残留。
 - **上线状态**：commit `efe6145` + 二轮修复，已 push `origin/feat/pt-br-bp3`，**未部署、未动 main**。
+
+## Murdoku Daily（2026-11-24，`/murdoku/daily/`，分支 `ops/2026-11-24-murdoku-daily`，未合并未部署）
+
+- **定位（卡 t_7ff6a578 原话）**：留存/差异化件，**不是流量件**。成败判据只看回访与完赛率，不看曝光/排名。需求侧已实测：`murdoku hints` 40 / `answers` 40 / help 族近零，daily 类词同样近零 ⇒ 这页的价值是「每天有新案」的说辞与回访，不是承接词。
+- **口径（写死，与 akari daily 有意不同）**：日期键 = **UTC 日历日** `YYYY-MM-DD`（`toISOString().slice(0,10)`）；页面给 UTC 零点倒计时；盘面按 UTC 星期轮换（周一至周五 4×4 / 周六周日 6×6，对齐 akari Weekend Super 先例）；seed = FNV-1a 32bit(`'murdoku-daily|'` + 日期键)；streak 只认「完成当天那盘」，不认开页/登录；只存最近 7 天（今天 + 前 6 天），不做月历/archive。
+- **实现**：确定性核心抽纯函数 `src/lib/murdoku-daily.ts`（日期键/轮换/seed/倒计时/streak 状态机/存档键，node 可直接断言）；页面 `src/pages/murdoku/daily.astro`（.main = 52.5rem 840px 内容列契约）。4×4 同步出题（实测均 7ms / 最慢 29ms），6×6 走 `/murdoku/worker.js`（实测均 412ms / 最慢 1295ms / 均 1.45 次尝试）；**重试序列与 worker 逐字同序**（`seed + tries*7919`，40 次封顶，再用则整段后移 40 步），否则同一天不同设备会出不同盘。出题后必须 `checkSolution` 断言真人解（4×4 另跑 `solveCount===1`）。
+- **广告**：按卡片「默认沿用零广告」进 `NEVER_ADS`（`/murdoku`、`/murdoku/trail` 同族）；`.main` 虽已收窄到 840，要开侧栏需单独拍板（改登记到 `PLAY_SURFACES`）。
+- **埋点**：只用既有白名单事件 `game_start`（visibility 门控）/ `daily_start` / `first_move`（不早于 game_start）/ `hint_click` / `daily_solved` / `streak_milestone`（3/7/14/30）/ `streak_break`（按 lastSolved 去重）/ `level_up` / `share_*`；`funnel-track.ts` 与 `_funnel-sql.ts` 两处白名单均已有，无新增事件。
+- **内链**：`/murdoku/` 顶栏 Daily + 游戏卡下 Daily banner；`/murdoku/trail/` 顶栏 + 「How the Case Trail Works」段尾交叉链；`/murder-sudoku/` FAQ「Where can I play murder sudoku online?」补每日同盘一句（**未动两边 TDK**，TDK A+ 的 4 周判据窗口不受影响）。
+- **验收**：引擎断言 4×4 20/20、6×6 20/20 唯一解 100%（40/40 同日重生成逐格一致）；UTC 换日/streak 状态机断言全绿；`pnpm run build` 全绿（check-play-surfaces 已登记）；双端 390×844 / 1280×900 真实浏览器走查见交付说明。
+- **停手条件（写死）**：上线 4 周，若 `daily_start` 累计 < 30 会话，或 `daily_solved / daily_start < 40%`，或 D1 的 7 日回访无变化 → **不扩**（不做 streak 徽章、不做月历、不做 printable/solver 追齐），数据交法老决定去留。
