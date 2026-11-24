@@ -812,3 +812,5 @@ sitemap 仍不含它）。
 - **口径**：GSC 滞后 2 天，脚本窗口自动 `today-2`；看 7/28 天滚动，不看日环比。过滤 `page contains /word-kitchen/`。
 - **代理**：脚本内部 `os.environ` 兜底 `http://127.0.0.1:7882`（google-auth 的 token 刷新只认环境变量，且必须在 import 前设好）。
 - **基线**：2026-11-24 21:57 首次跑 = GSC 7 天 / 28 天均 0 曝光、GA4 0 会话（页面刚上线，属预期）。此后每天对比基线看何时进索引。
+
+**部署链已加「GSC sitemap 重提交」一步（2026-11-24 收尾）**：`deploy:safe`（`scripts/deploy.sh`）与裸 `deploy`（package.json）在**线上自检通过之后**调用 `scripts/gsc-resubmit-sitemap.sh gridpaw.com` → `scripts/gsc-submit-sitemap.py` 走 GSC API 重提交 sitemap.xml。理由：**Google 不吃 IndexNow**（那是 Bing/Yandex 通道），而 GSC 自己重抓 sitemap 的节奏是几天一次（实测 11-24 上线当天，上次抓取还停在 11-23 23:34 = 新页压根没被看见）；API 重提交会当场触发一次下载（实测提交后几秒 `lastDownloaded` 就更新）。失败只报 ⚠ 不阻塞上线。服务账号走通用路径 `~/.hermes/secrets/gsc-gridpaw.json`（软链到 furriq 那份，同一账号同时有 GA4 552793510 与 gridpaw GSC 权限），可用 `GSC_KEY_FILE` / `GSC_PYTHON` 覆盖。
