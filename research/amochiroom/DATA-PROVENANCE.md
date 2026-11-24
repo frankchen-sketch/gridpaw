@@ -69,5 +69,29 @@ order+content **130/130 零差异**，说明两条链路同源。
 
 - 解包产物（APK、`assets/www/`、游戏 JS/CSS/美术）**一律不入库**：
   已加 `.git/info/exclude` → `research/amochiroom/unpack/`（跨 worktree 生效），并在 `.gitignore` 记一条。
-- 页面只用**事实性数据**：房间英文名、箱子类别名、数量、难度带。不搬美术、不贴 UI 截图、不搬代码。
+- **美术使用口径（2026-11-24 法老拍板「用」）**：页面引用游戏自己的房间背景与物品贴图，
+  但只入库**降采样衍生图**（物品最长边 96px / 背景宽 720px / 索引缩略图宽 240px，webp），
+  原始 337MB APK 与原始 webp 不进仓库。每页正文与页脚均写明 "art belongs to ABF ALPENHOF,
+  shown here for identification"，页首有非官方声明。风险与取舍记在此处，改动前先问法老。
 - lint 曾因扫到解包 JS 报 100+ 假错，隔离后 `pnpm run verify` 全绿。
+
+## 六、美术流水线（`research/amochiroom/scripts/build_art.py`）
+
+一条命令重建「图 + 数据」两件产物，输入全部来自 gitignored 的 `unpack/`：
+
+```
+python3 research/amochiroom/scripts/build_art.py
+  → public/amochiroom/art/i/*.webp    2362 张物品贴图（最长边 96px）
+  → public/amochiroom/art/b/*.webp    133 张背景（宽 720）+ t-*.webp 缩略图（宽 240）
+  → src/data/amochiroom-levels.json   133 关，含 bg/bgW/bgH/items/boxes[].thumbs
+```
+
+- **几何口径**：`catalog.json` 的 `items[id].w/h` 是在屏显示尺寸，物品坐标原点在背景图中心、
+  单位=背景像素；`scaleX/scaleY` 只表示镜像（±1），`angle` 为旋转角度。
+  页面按 `left=(bgW/2+x)/bgW`、`width=w/bgW` 换算成百分比，因此每关自适应不同背景宽度
+  （背景 1220/1440/1461/1524/1016 五种宽度实测存在）。
+- **命名坑（已修）**：L131–133 的背景都叫 `rooms/<room>_vN/background.webp`，直接取 basename
+  会三关互相覆盖 → `rooms/` 前缀的路径改用 `<room>-bg.webp`。改脚本时勿回退。
+- 单页图片负载：中位 431 KB（背景 60 KB + 本关用到的不重复贴图），最重 591 KB（L128，164 张）；
+  贴图跨 133 页共享、可缓存。
+- 数据体量：`amochiroom-levels.json` 2.0 MB（25,943 条物品，紧凑数组 `[file,x,y,fx,fy,angle,w,h,type]`）。
