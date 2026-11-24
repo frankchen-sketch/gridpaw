@@ -73,9 +73,11 @@ const capNote =
     7: 'several 7-item boxes, which is deep for this game',
   }[Math.round(Number(avg))] || `around ${avg} items per box`;
 
-const shortTitle = `Amochiroom Level ${lvl.level} Answer: ${lvl.name}`;
-const title = shortTitle.length <= 50 ? shortTitle : `Amochiroom Level ${lvl.level} — ${lvl.name}`;
-const description = `Amochiroom Room Sort Level ${lvl.level} answer (${lvl.name}): ${lvl.boxCount} boxes, ${lvl.itemCount} items, exact counts and a room map of what each box wants.`;
+// 品类词优先：`room sort level N` 是 SERP 空位（第一页只有 YouTube/Reddit，无攻略站），
+// 品牌词 amochiroom 搜索量极低（autocomplete 只出拼写变体），所以 title 让品类词连续出现。
+const shortTitle = `Room Sort Level ${lvl.level} Answer — Amochiroom ${lvl.name}`;
+const title = shortTitle.length <= 62 ? shortTitle : `Room Sort Level ${lvl.level} Answer — ${lvl.name}`;
+const description = `Room Sort Level ${lvl.level} answer for Amochiroom Puzzle (${lvl.name}): ${lvl.boxCount} boxes, ${lvl.itemCount} items, exact counts and a room map of what each box wants.`;
 const canonical = `/amochiroom/level-${lvl.level}`;
 
 const faq = [
@@ -163,7 +165,7 @@ const faqJsonLd = {
     .room-tool { margin: 1rem 0 0.6rem; }
     .board { position: relative; width: 100%; max-width: 420px; margin: 0 auto; background: #f7ece0 center/cover no-repeat;
       border: 2px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: 0 3px 12px rgba(217,119,6,0.10); }
-    .board .it { position: absolute; transform-origin: center; transition: opacity 0.18s, filter 0.18s; }
+    .board .it { position: absolute; transform-origin: center; height: auto; transition: opacity 0.18s, filter 0.18s; }
     .board .ring { position: absolute; transform: translate(-50%,-50%); border-radius: 50%; pointer-events: none;
       display: none; border: 2.5px solid var(--amber); background: rgba(217,119,6,0.10); }
     .board .num { position: absolute; transform: translate(-50%,-50%); display: none; min-width: 17px; height: 17px;
