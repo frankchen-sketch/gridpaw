@@ -16,10 +16,15 @@ import DetectiveWall from '../../components/DetectiveWall.astro';
 // 6×6 generation (~470ms + retries) goes through public/murdoku/worker.js;
 // 4×4 is fast enough to generate synchronously.
 // UI reference: design/murdoku-preview-v3.html (watercolor picture-book art).
-// Naming: "Murdoku" is a third-party puzzle-book series — generic name
-// "murder sudoku" in TDK/H1; Murdoku only in educational body mentions.
-const title = "Murder Sudoku Game - Play Free Online";
-const description = "Play murder sudoku free online: place cat suspects, follow witness statements, and find the killer in your browser. 4x4 and 6x6 cases, no download.";
+// Naming: "Murdoku" is a third-party puzzle-book series by Manuel Garand. Since
+// 2026-11-24 (user decision A+) the brand is woven into the TDK as nominative
+// descriptive use ("Murdoku Online") next to the generic "murder sudoku", while
+// the H1 and the in-app game name stay generic and the not-affiliated
+// disclaimer stays in the footer + FAQ. Reason: brand queries were 88% of this
+// page's clicks (GSC 28d to 11-24) while the old generic-only title matched
+// none of them — /meowdoku/ at the same position band converts 21.3% vs 7.6%.
+const title = "Murdoku Online — Free Murder Sudoku Game";
+const description = "Play Murdoku online free: a cat-themed murder sudoku with witness statements and exactly-one-solution cases. 4×4 and 6×6 in your browser, no download.";
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -57,6 +62,10 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
       {
         "@type": "FAQPage",
         "mainEntity": [
+          {
+            "@type": "Question", "name": "Is this Murdoku online?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes, in the sense that this is a free browser version of the Murdoku format — not the official Murdoku site. Murdoku is a puzzle-book series by Manuel Garand; GridPaw is not affiliated with it. Every case here is generated with exactly one solution and plays in your browser with no download." }
+          },
           {
             "@type": "Question", "name": "How do you play murder sudoku?",
             "acceptedAnswer": { "@type": "Answer", "text": "Place each named suspect on the grid so that no two figures share a row or column, guided by the witness statements. Every statement is true. When all suspects are placed, the suspect who is alone in the room with the victim is the killer — hit Accuse! to close the case." }
@@ -335,7 +344,7 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
   <main class="main" id="main-content">
     <!-- ═══════════ Game Card ═══════════ -->
     <h1 style="font-size:1.5rem;font-weight:900;color:var(--ink);text-align:center;margin-bottom:0.3rem">Murder Sudoku</h1>
-    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">Play free online: the cat-approved whodunit logic puzzle, no download needed.</p>
+    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">Play Murdoku online free: the cat-approved whodunit logic puzzle, no download needed.</p>
 
     <section id="play" class="card game-card" aria-label="GridPaw Murder Sudoku game">
       <div class="game-topbar">
@@ -446,6 +455,7 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
     </section>
     <section class="section" id="faq">
       <h2>Murder Sudoku FAQ</h2>
+      <details class="faq-item"><summary>Is this Murdoku online?</summary><div class="faq-answer">Yes, in the sense that this is a free browser version of the Murdoku format — not the official Murdoku site. Murdoku is a puzzle-book series by Manuel Garand; GridPaw is not affiliated with it. Every case here is generated with exactly one solution and plays in your browser with no download.</div></details>
       <details class="faq-item"><summary>How do you play murder sudoku?</summary><div class="faq-answer">Place each named suspect on the grid so that no two figures share a row or column, guided by the witness statements. Every statement is true. When all suspects are placed, the suspect who is alone in the room with the victim is the killer — hit Accuse! to close the case.</div></details>
       <details class="faq-item"><summary>Is every case solvable without guessing?</summary><div class="faq-answer">Yes. Every GridPaw case is generated with exactly one arrangement that satisfies all witness statements, the room rules, and the row and column rule. The Hint button reveals the correct row, column, and room for the selected suspect.</div></details>
       <details class="faq-item"><summary>What does "at a wall" mean?</summary><div class="faq-answer">Only the outside edge of the whole board counts as a wall. The thin lines separating rooms are partitions, not walls — a suspect standing against a partition is not "at a wall". The same rule applies to "in a corner": only the four corners of the board itself.</div></details>
@@ -468,7 +478,7 @@ const description = "Play murder sudoku free online: place cat suspects, follow 
     <a href="/nurikabe/">Nurikabe</a> ·
     <a href="/pictomino/">Pictomino</a>
   </p>
-  <p class="legal-note">Murdoku is a puzzle-book series; "murder sudoku" is the general puzzle type. GridPaw is not affiliated with or endorsed by any puzzle-book publisher. This game is GridPaw's own educational take on the murder sudoku formula.</p>
+  <p class="legal-note">Murdoku is a puzzle-book series by Manuel Garand; "murder sudoku" is the general puzzle type. GridPaw is not affiliated with or endorsed by Manuel Garand or any puzzle-book publisher. This game is GridPaw's own educational take on the murder sudoku formula.</p>
   <p style="margin-top:0.75rem">© 2026 GridPaw. All rights reserved.</p>
 </footer>
 
