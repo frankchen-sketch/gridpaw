@@ -3,30 +3,32 @@ import SEOHead from '../../../components/SEOHead.astro';
 import GameNav from '../../../components/GameNav.astro';
 import SideAd from '../../../components/SideAd.astro';
 import InContentAd from '../../../components/InContentAd.astro';
-import bk from '../../../data/word-kitchen-bebinca.json';
+import data from '../../../data/word-kitchen-packs.json';
 
 export function getStaticPaths() {
-  return [{ params: { pack: bk.pack_slug }, props: { levels: bk.levels } }];
+  return data.packs.map((p: any) => ({ params: { pack: p.slug }, props: { pack: p } }));
 }
 
-const { levels } = Astro.props;
-const pack = bk.pack;
+const { pack } = Astro.props;
+const levels = pack.levels;
 const covered = levels.length;
-const totalWords = levels.reduce((n: number, l: any) => n + l.words.length, 0);
-const fullWords = levels.map((l: any) => `${l.key.toUpperCase()} (level ${l.level})`).slice(0, 6);
+const maxLevel = Math.max(...levels.map((l: any) => l.level));
+const totalAnswers = levels.reduce((n: number, l: any) => n + (l.answers?.length ?? l.words.length), 0);
+const totalExtras = levels.reduce((n: number, l: any) => n + (l.extra?.length ?? 0), 0);
+const fullWords = levels.slice(0, 6).map((l: any) => `${l.key.toUpperCase()} (level ${l.level})`);
 
-const title = `Word Kitchen Bebinca Answers — Levels 1 to 18`;
-const description = `Word Kitchen Bebinca answers: the tray letters for each level, the word that uses every tile, and every common word those tiles spell. ${covered} levels online, each read from a real playthrough.`;
-const canonical = `/word-kitchen/${bk.pack_slug}`;
+const title = `Word Kitchen ${pack.name} Answers — Levels 1 to ${maxLevel}`;
+const description = `Word Kitchen ${pack.name} answers: the tray letters for each level, the word that uses every tile, and every common word those tiles spell. ${covered} levels online, each read from a real playthrough.`;
+const canonical = `/word-kitchen/${pack.slug}`;
 
 const faq = [
   {
-    q: 'How many levels are in the Bebinca pack?',
-    a: 'Bebinca runs from level 1 to level 18. The number in the game header ("Bebinca - 7") is the level inside this pack — Word Kitchen restarts the count for every dessert pack, so there is no global level 137.',
+    q: `How many levels are in the ${pack.name} pack?`,
+    a: `${pack.name} runs from level 1 to level ${maxLevel}. The number in the game header ("${pack.name} - 7") is the level inside this pack — Word Kitchen restarts the count for every dessert pack, so there is no global level 137.`,
   },
   {
-    q: 'What letters are in Bebinca level 1?',
-    a: 'Level 1 gives you P, A, R, T and Y. The five tiles spell PARTY using every letter, plus 17 shorter common words such as TRAP, TRAY and PRAY.',
+    q: `What letters are in ${pack.name} level 1?`,
+    a: `Level 1 gives you ${levels[0].letters.toUpperCase().split('').join(', ')} and asks for ${levels[0].answers?.length ?? levels[0].words.length} words: ${(levels[0].answers ?? [levels[0].key]).map((w: string) => w.toUpperCase()).join(', ')}.`,
   },
   {
     q: 'Does the tray change inside a level?',
@@ -57,7 +59,7 @@ const faqJsonLd = {
     description={description}
     canonical={canonical}
     type="article"
-    breadcrumbTitle={`Word Kitchen ${pack}`}
+    breadcrumbTitle={`Word Kitchen ${pack.name}`}
   />
   <link rel="alternate" hreflang="en" href={`https://gridpaw.com${canonical}/`} />
   <link rel="alternate" hreflang="x-default" href={`https://gridpaw.com${canonical}/`} />
@@ -83,29 +85,44 @@ const faqJsonLd = {
     .wrap h3 { font-size: 1.05rem; margin: 1.2rem 0 0.4rem; }
     .wrap p { line-height: 1.75; color: #555; margin: 0.5rem 0; }
     .wrap a { color: var(--amber-ink); }
+    .wrap ul { padding-left: 1.3rem; color: #555; }
+    .wrap li { line-height: 1.7; margin-bottom: 0.3rem; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.6rem; margin: 0.8rem 0; }
     .card { display: block; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.7rem 0.8rem; text-decoration: none; color: var(--text); box-shadow: var(--shadow); transition: transform 0.15s, border-color 0.15s; }
     .card:hover { transform: translateY(-2px); border-color: var(--amber); }
     .card .n { font-size: 0.72rem; font-weight: 800; color: var(--light); text-transform: uppercase; letter-spacing: 0.05em; }
     .card .k { font-size: 1.05rem; font-weight: 900; letter-spacing: 0.08em; color: var(--amber-ink); margin: 0.15rem 0; }
     .card .w { font-size: 0.78rem; color: var(--light); }
+    .video-block { margin: 1.2rem 0; }
+    .video-block .yt-facade { max-width: 640px; margin: 0.6rem auto 0; }
+    .answers-table { width: 100%; border-collapse: collapse; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; margin: 0.8rem 0; box-shadow: var(--shadow); font-size: 0.9rem; }
+    .answers-table th { text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--light); background: #FFFBF2; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--border); }
+    .answers-table td { padding: 0.55rem 0.6rem; border-bottom: 1px solid #F7EDE0; vertical-align: top; }
+    .answers-table tr:last-child td { border-bottom: 0; }
+    .answers-table td.lvl a { font-weight: 900; color: var(--amber-ink); text-decoration: none; white-space: nowrap; }
+    .answers-table td.tray { font-weight: 800; letter-spacing: 0.12em; color: #8A5A12; white-space: nowrap; }
+    .answers-table .word { display: inline-block; background: #E8F5EC; border: 1px solid #9ED3AE; color: #15803D; border-radius: 6px; padding: 0.05rem 0.35rem; margin: 0.1rem 0.15rem 0.1rem 0; font-weight: 700; font-size: 0.82rem; }
+    .answers-table .word.lead { background: #15803D; color: #fff; border-color: #15803D; }
     .cta { margin: 1.4rem 0; padding: 1rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
     .cta p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
     .cta a.btn { display: inline-block; margin-top: 0.5rem; background: var(--amber-ink); color: #fff; font-weight: 800; text-decoration: none; padding: 0.55rem 1.1rem; border-radius: 10px; }
     .note { background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.9rem; color: #7A6420; }
+    details.faq { background: #fff; border: 1.5px solid var(--border); border-radius: 10px; padding: 0.7rem 0.9rem; margin: 0.55rem 0; }
+    details.faq summary { font-weight: 800; cursor: pointer; }
+    details.faq p { margin: 0.5rem 0 0; font-size: 0.94rem; }
     .evidence { font-size: 0.8rem; color: var(--light); border-top: 1px solid var(--border); margin-top: 2rem; padding-top: 0.7rem; line-height: 1.6; }
   </style>
 </head>
 <body>
   <GameNav />
   <div class="breadcrumb">
-    <a href="/">Home</a> › <a href="/word-kitchen/">Word Kitchen Answers</a> › Bebinca
+    <a href="/">Home</a> › <a href="/word-kitchen/">Word Kitchen Answers</a> › {pack.name}
   </div>
 
   <main class="wrap">
-    <h1>Word Kitchen {pack} Answers — Levels 1 to 18</h1>
-    <p>Bebinca is the opening pack in Word Kitchen, and it counts its own levels 1 to 18 — the header reads <strong>{pack} - N</strong> while you play. Every page below keeps that numbering: tray letters, the word that uses every tile, and the full list of common words those tiles spell.</p>
-    <p>{covered} of the 18 levels are online. Each tray was read off a 1080p playthrough and cross-checked by anagram, so a misread letter cannot slip through — the tiles have to spell a real word.</p>
+    <h1>Word Kitchen {pack.name} Answers — Levels 1 to {maxLevel}</h1>
+    <p>{pack.name} is one of the packs in Word Kitchen, and it counts its own levels 1 to {maxLevel} — the header reads <strong>{pack.name} - N</strong> while you play. Every page below keeps that numbering: the tray letters and the exact answer words for that level.</p>
+    <p>{covered} of the {maxLevel} levels are online. Each tray was read off a 1080p playthrough, and every answer word is checked letter by letter against that tray — an answer that could not be spelled from the tiles is dropped before publishing.</p>
 
     <div class="cta">
       <p>Already stuck with a tray open?</p>
@@ -113,43 +130,67 @@ const faqJsonLd = {
       <a class="btn" href="/word-kitchen/solver/">Open the solver →</a>
     </div>
 
-    <h2>{pack} level answers</h2>
-    <div class="grid">
-      {levels.map((l: any) => (
-        <a class="card" href={`/word-kitchen/${bk.pack_slug}/level-${l.level}/`}>
-          <span class="n">Level {l.level}</span>
-          <span class="k">{l.letters.toUpperCase()}</span>
-          <span class="w">{l.key.toUpperCase()} · {l.words.length} words</span>
-        </a>
-      ))}
-    </div>
+    {pack.video && (
+      <div class="video-block">
+        <h2>Watch the <span class="accent">{pack.name}</span> playthrough</h2>
+        <p>A single run through all {maxLevel} levels — the trays in it are the ones these pages are built from.</p>
+        <div class="yt-facade" data-yt={pack.video.id} data-title={pack.video.title} role="button" tabindex="0" aria-label={`Play video: ${pack.video.title}`}>
+          <img src={`https://i.ytimg.com/vi/${pack.video.id}/maxresdefault.jpg`} alt={pack.video.title} loading="lazy" decoding="async" width="1280" height="720"
+            onerror={`this.onerror=null;this.src='https://i.ytimg.com/vi/${pack.video.id}/hqdefault.jpg'`} />
+        </div>
+      </div>
+    )}
 
-    <p class="note">Levels {covered + 1}–18 are being read now. They will land on the same URL pattern — nothing gets renamed or renumbered.</p>
+    <h2>All {pack.name} answers, level by level</h2>
+    <p>Every level's tray and answer words on one screen. The bold word is the longest answer — the one the level's main slot always wants.</p>
+    <table class="answers-table">
+      <thead>
+        <tr><th>Level</th><th>Tray</th><th>Answers ({totalAnswers} across the pack)</th></tr>
+      </thead>
+      <tbody>
+        {levels.map((l: any) => (
+          <tr>
+            <td class="lvl"><a href={`/word-kitchen/${pack.slug}/level-${l.level}/`}>{l.level}</a></td>
+            <td class="tray">{l.letters.toUpperCase()}</td>
+            <td>
+              {(l.answers ?? [l.key]).map((w: string) => (
+                <span class={w === l.key ? 'word lead' : 'word'}>{w.toUpperCase()}</span>
+              ))}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p class="note">Each level links to its own page with the answers by length and the bonus words those same tiles can spell.{totalExtras ? ` Across the pack there are ${totalExtras} bonus words on top of the ${totalAnswers} answers.` : ''}</p>
+
+    {covered < 18 && (
+      <p class="note">Levels {covered + 1}–{maxLevel} are being read now. They will land on the same URL pattern — nothing gets renamed or renumbered.</p>
+    )}
 
     <InContentAd />
 
-    <h2>What the full-size word looks like in {pack}</h2>
-    <p>Every {pack} level hides one word that uses the entire tray, and it is almost always a required slot. So far the set runs: {fullWords.join(', ')}. If you are stuck on the last empty slot, try that word first — the game unlocks the row layout once it lands.</p>
+    <h2>Longest answer in each {pack.name} level</h2>
+    <p>Each level's main slot always wants its longest word, so start there: {fullWords.join(', ')}. Once the longest word lands, the shorter slots usually fall into place.</p>
 
     <h3>Reading a level page</h3>
     <ul>
-      <li><strong>Quick answer box</strong> — the tray as tiles, the full-size word, and how many words the tray can spell.</li>
-      <li><strong>Word groups</strong> — every common word, longest first, with the all-tile words highlighted in green.</li>
+      <li><strong>Quick answer box</strong> — the tray as tiles and every answer word for that level, longest marked.</li>
+      <li><strong>Answers by length</strong> — the level's answers grouped longest first, then the bonus words those same tiles can spell.</li>
       <li><strong>Mechanics notes</strong> — how the pack numbers its levels and what the book icon (bonus words) actually tracks.</li>
     </ul>
 
     <h2>FAQ</h2>
     {faq.map((f) => (
-      <details class="faq" style="background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:.7rem .9rem;margin:.55rem 0">
-        <summary style="font-weight:800;cursor:pointer">{f.q}</summary>
-        <p style="margin:.5rem 0 0;font-size:.94rem">{f.a}</p>
+      <details class="faq">
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
       </details>
     ))}
 
     <SideAd />
 
     <p class="evidence">
-      <strong>Method:</strong> trays read from a 1080p playthrough of {pack} ({bk.source.channel}, video {bk.source.video}) and verified by anagram; word lists generated from the ENABLE dictionary filtered to the 50,000 most common English words ({totalWords} entries across the {covered} levels online). No content copied from another answers site.
+      <strong>Method:</strong> trays read from a 1080p playthrough of {pack.name} ({pack.source.channel}, video {pack.source.video}) and verified by anagram; {totalAnswers} answer words across the {covered} levels online, each one checked letter by letter against its tray; bonus words generated from the ENABLE dictionary. Wording and layout are original.
     </p>
   </main>
 </body>

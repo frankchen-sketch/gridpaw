@@ -154,6 +154,12 @@ for u in / /kenken/solver/ /nonogram/solver/ /unlock-all/; do
 done
 [ "$FAIL" -eq 0 ] || exit 4
 
+say "── 收尾 GSC sitemap 重提交 ──"
+# Google 不吃 IndexNow（那是 Bing/Yandex 通道）；GSC 自己重抓 sitemap 是几天一次，
+# 走 API 重提交会当场触发一次下载（实测提交后几秒 lastDownloaded 就更新），新页发现快得多。
+# 放在自检之后：先证明生产跑的是这份构建，再告诉 Google 来抓。失败不阻塞上线。
+bash scripts/gsc-resubmit-sitemap.sh gridpaw.com || say "⚠ GSC sitemap 重提交失败（不阻塞上线）"
+
 say ""
 say "✅ 上线完成：${EXPECTED}"
 [ "$AHEAD" -gt 0 ] && say "⚠ 别忘了 git push origin HEAD:main（否则下次部署会把它回滚掉）"

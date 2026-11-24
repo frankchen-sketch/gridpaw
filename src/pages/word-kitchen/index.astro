@@ -2,15 +2,15 @@
 import SEOHead from '../../components/SEOHead.astro';
 import GameNav from '../../components/GameNav.astro';
 import SideAd from '../../components/SideAd.astro';
-import bk from '../../data/word-kitchen-bebinca.json';
+import data from '../../data/word-kitchen-packs.json';
 
-const title = 'Word Kitchen Answers: Every Bebinca Level (1–18)';
-const description = 'Word Kitchen answers for the Bebinca pack — the letters behind each level, the full-size word, and every common word those tiles spell. Plus a free solver that handles any tray.';
+const packs = data.packs;
+const totalLevels = packs.reduce((n, p) => n + p.levels.length, 0);
+const totalWords = packs.reduce((n, p) => n + p.levels.reduce((m, l) => m + l.words.length, 0), 0);
+
+const title = 'Word Kitchen Answers: Every Pack, Every Level';
+const description = `Word Kitchen answers for ${packs.length} dessert packs — the tray letters behind each level, the word that uses every tile, and every common word those tiles spell. Plus a free solver for any tray.`;
 const canonical = '/word-kitchen';
-
-const levels = bk.levels;
-const covered = levels.length;
-const totalWords = levels.reduce((n, l) => n + l.words.length, 0);
 ---
 
 <!DOCTYPE html>
@@ -43,22 +43,24 @@ const totalWords = levels.reduce((n, l) => n + l.words.length, 0);
     .wrap h1 { font-size: 1.75rem; line-height: 1.3; margin: 0.6rem 0 0.5rem; }
     .wrap h2 { font-size: 1.3rem; margin: 2rem 0 0.6rem; }
     .wrap h2 .accent { color: var(--amber-ink); }
+    .wrap h3 { font-size: 1.05rem; margin: 1.2rem 0 0.4rem; }
     .wrap p { line-height: 1.75; color: #555; margin: 0.5rem 0; }
     .wrap a { color: var(--amber-ink); }
+    .wrap ul { padding-left: 1.3rem; color: #555; }
+    .wrap li { line-height: 1.7; margin-bottom: 0.3rem; }
     .stats { display: flex; gap: 0.7rem; flex-wrap: wrap; margin: 1rem 0 0.5rem; }
     .stat { flex: 1 1 120px; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.7rem 0.9rem; box-shadow: var(--shadow); }
     .stat b { display: block; font-size: 1.3rem; color: var(--amber-ink); }
     .stat span { font-size: 0.78rem; color: var(--light); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.6rem; margin: 0.8rem 0; }
-    .card { display: block; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.7rem 0.8rem; text-decoration: none; color: var(--text); box-shadow: var(--shadow); transition: transform 0.15s, border-color 0.15s; }
-    .card:hover { transform: translateY(-2px); border-color: var(--amber); }
-    .card .n { font-size: 0.72rem; font-weight: 800; color: var(--light); text-transform: uppercase; letter-spacing: 0.05em; }
-    .card .k { font-size: 1.05rem; font-weight: 900; letter-spacing: 0.08em; color: var(--amber-ink); margin: 0.15rem 0; }
-    .card .w { font-size: 0.78rem; color: var(--light); }
+    .pack { display: block; background: #fff; border: 1.5px solid var(--border); border-radius: 14px; padding: 0.9rem 1rem; margin: 0.7rem 0; text-decoration: none; color: var(--text); box-shadow: var(--shadow); transition: transform 0.15s, border-color 0.15s; }
+    .pack:hover { transform: translateY(-2px); border-color: var(--amber); }
+    .pack .t { font-weight: 900; font-size: 1.1rem; color: var(--amber-ink); }
+    .pack .d { font-size: 0.85rem; color: var(--light); margin-top: 0.2rem; }
+    .pack .chips { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .pack .chip { font-size: 0.75rem; font-weight: 800; letter-spacing: 0.05em; background: #FFFBF2; border: 1px solid #F0DFAE; border-radius: 6px; padding: 0.12rem 0.4rem; color: #6b5320; }
     .cta { margin: 1.4rem 0; padding: 1rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
     .cta p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
     .cta a.btn { display: inline-block; margin-top: 0.5rem; background: var(--amber-ink); color: #fff; font-weight: 800; text-decoration: none; padding: 0.55rem 1.1rem; border-radius: 10px; }
-    .note { background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.9rem; color: #7A6420; }
     .evidence { font-size: 0.8rem; color: var(--light); border-top: 1px solid var(--border); margin-top: 2rem; padding-top: 0.7rem; line-height: 1.6; }
   </style>
 </head>
@@ -68,12 +70,12 @@ const totalWords = levels.reduce((n, l) => n + l.words.length, 0);
 
   <main class="wrap">
     <h1>Word Kitchen Answers</h1>
-    <p>Word Kitchen is a cozy word game with a dessert theme: each pack is named after a sweet, and every pack counts its own levels <strong>1 to 18</strong>. There is no global level number, which is why a page called "level 137" would send you to the wrong place. Every page here uses the game's own numbering — <strong>pack name + level number</strong> — exactly as it appears in the header while you play.</p>
+    <p>Word Kitchen is a cozy word game with a dessert theme: each pack is named after a sweet, and every pack counts its own levels from <strong>1</strong>. There is no global level number, which is why a page called "level 137" would send you to the wrong place. Every page here uses the game's own numbering — <strong>pack name + level number</strong> — exactly as it appears in the header while you play.</p>
 
     <div class="stats">
-      <div class="stat"><b>{covered}</b><span>Levels online</span></div>
+      <div class="stat"><b>{packs.length}</b><span>Packs online</span></div>
+      <div class="stat"><b>{totalLevels}</b><span>Levels online</span></div>
       <div class="stat"><b>{totalWords}</b><span>Words listed</span></div>
-      <div class="stat"><b>1</b><span>Pack covered</span></div>
     </div>
 
     <div class="cta">
@@ -82,20 +84,16 @@ const totalWords = levels.reduce((n, l) => n + l.words.length, 0);
       <a class="btn" href="/word-kitchen/solver/">Open the solver →</a>
     </div>
 
-    <h2>Bebinca — <span class="accent">levels 1 to 18</span></h2>
-    <p>Bebinca is the opening pack. Below are the levels we have read off a full playthrough; each page lists the tray, the word that uses every tile, and the complete set of common words those letters spell.</p>
-
-    <div class="grid">
-      {levels.map((l) => (
-        <a class="card" href={`/word-kitchen/${bk.pack_slug}/level-${l.level}/`}>
-          <span class="n">Bebinca · Level {l.level}</span>
-          <span class="k">{l.letters.toUpperCase()}</span>
-          <span class="w">{l.key.toUpperCase()} · {l.words.length} words</span>
-        </a>
-      ))}
-    </div>
-
-    <p class="note">Bebinca level {covered + 1} onward will be added as we finish reading them. The plan is one pack at a time, in the game's own order — no invented numbering, no filler pages.</p>
+    <h2>The <span class="accent">packs</span></h2>
+    {packs.map((p) => (
+      <a class="pack" href={`/word-kitchen/${p.slug}/`}>
+        <div class="t">{p.name}</div>
+        <div class="d">{p.levels.length} levels online · {p.levels.reduce((n, l) => n + l.words.length, 0)} words listed</div>
+        <div class="chips">
+          {p.levels.slice(0, 8).map((l) => <span class="chip">{l.letters.toUpperCase()}</span>)}
+        </div>
+      </a>
+    ))}
 
     <h2>How to use these answers</h2>
     <p>Each level page is built the same way, so you know what you are looking at:</p>
@@ -112,7 +110,7 @@ const totalWords = levels.reduce((n, l) => n + l.words.length, 0);
     <SideAd />
 
     <p class="evidence">
-      <strong>Method:</strong> trays are read from a 1080p playthrough of the Bebinca pack ({bk.source.channel}, video {bk.source.video}), then cross-checked by anagram — the letters must spell a real word, which catches misreads. Word lists are generated from the ENABLE dictionary and filtered to the 50,000 most common English words. Nothing here is copied from another answers site.
+      <strong>Method:</strong> trays are read from 1080p playthroughs of each pack (Go Answer channel), then cross-checked by anagram — the letters must spell a real word, which catches misreads. Word lists are generated from the ENABLE dictionary and filtered to the 50,000 most common English words. Nothing here is copied from another answers site.
     </p>
   </main>
 </body>
