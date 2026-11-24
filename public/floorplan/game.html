@@ -48,13 +48,17 @@
     pointer-events:none;overflow-wrap:break-word}
   .tile .dr{position:absolute;background:var(--door);box-shadow:inset 0 0 0 1px rgba(150,100,35,.5);border-radius:3px;z-index:2}
 
-  .tray{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:14px;min-height:20px}
-  .tray .tile-slot{background:#FFFDF7;border:1.5px dashed var(--amber-line);border-radius:12px;padding:5px 5px 4px;position:relative;flex:0 0 auto}
-  .tray .tile-slot.on{background:#FFF3D6;border-style:solid;border-color:var(--amber)}
+  .tray{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:12px;padding-top:10px;
+    border-top:1px dashed var(--amber-line);min-height:20px}
+  .tray .tile-slot{background:none;border:0;border-radius:10px;padding:3px;position:relative;flex:0 0 auto;
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+    transition:transform .1s ease,box-shadow .12s ease}
+  .tray .tile-slot:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(120,85,30,.14)}
+  .tray .tile-slot.on{background:rgba(217,119,6,.10)}
   .tray .tile-slot .inner{position:relative}
   .tray .tile-slot[data-sel="1"]{box-shadow:0 0 0 2px var(--amber)}
-  .tray .tile-slot .nm{text-align:center;font-size:10px;font-weight:800;color:var(--ink);margin-top:3px;max-width:100%;
-    line-height:1.1;overflow-wrap:break-word}
+  .tray .tile-slot .nm{text-align:center;font-size:11px;font-weight:800;color:var(--ink);margin-top:4px;max-width:100%;
+    line-height:1.15;overflow-wrap:break-word}
 
   .hud{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
   button{font:inherit;font-weight:700;border-radius:11px;border:1.5px solid var(--amber-line);
