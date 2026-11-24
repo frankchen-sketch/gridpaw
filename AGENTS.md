@@ -38,11 +38,18 @@ pnpm run deploy       # 裸版 = wrangler pages deploy + IndexNow 提交（勿�
                       # `npx -y wrangler pages deploy dist --project-name gridpaw --commit-dirty=true`
                       # + `node scripts/indexnow-ping.mjs` 手动等价执行（OAuth 凭据实路径 = **~/.wrangler/config/default.toml**
                       #    ——wrangler 4.158+ 从这里读；`~/Library/Preferences/...` 是旧位置，照旧文档排障会看错文件，2026-11-09 实测）
-                      # ✅ **首选 API Token（2026-11-09 起，别再靠 OAuth）**：`gridpaw/.env.production` 存 `CLOUDFLARE_API_TOKEN`，
-                      #    值 = `~/.hermes/secrets/cloudflare-api-token`（**11-05 就已存在的长期 token**，含 Pages/R2/KV/Workers/D1 编辑；无过期。
+                      # ✅ **首选 API Token（2026-11-09 起，别再靠 OAuth）**：token 值在 `~/.hermes/secrets/cloudflare-api-token`
+                      #    （**11-05 就已存在的长期 token**，含 Pages/R2/KV/Workers/D1 编辑；无过期。
                       #    今天之前全站还在用 OAuth 硬扛 → 这才是「隔几周掉一次」的真因：工具早有，没人用）。
+                      #    **凭据入口 = `scripts/cf-auth.sh`**（`deploy.sh` 第 31 行已 source 它）：从
+                      #    `$CLOUDFLARE_TOKEN_FILE`（默认 `~/.hermes/secrets/cloudflare-api-token`）与
+                      #    `~/.hermes/secrets/cloudflare-account-id` 读进环境变量，已导出时不动（显式覆盖优先）。
+                      #    ⚠️ **仓库里根本没有 `.env.production`**（2026-11-24 实测 `ls .env*` 空；本文档曾这么写，害人
+                      #    按它 `set -a && . ./.env.production` 直接 exit 127）。且 wrangler 只加载 `.env`、**永不读
+                      #    `.env.production`** —— 把 token 写在那儿对 wrangler 是隐形的，它会静默回退 OAuth。
+                      #    所以日常只需 `pnpm run deploy:safe`，**不用手动 export**；手动跑裸命令时才 `. ./scripts/cf-auth.sh`。
                       #    whoami 已显示 email（2026-11-09 补了 User policy → 用户详细信息: 读取；User policy 无需绑资源，Account/Zone policy 才要）。
-                      #    用法：`set -a && . ./.env.production && set +a && npx -y wrangler pages deploy dist --project-name gridpaw --branch main`
+                      #    用法：`. ./scripts/cf-auth.sh && npx -y wrangler pages deploy dist --project-name gridpaw --branch main`
                       #    ⚠️ 设了 env var 后 wrangler **不回退 OAuth**：token 缺权限的命令直接失败（`d1 execute` 曾报 7403，补 D1:Edit 后通）。
                       #    加权限：dashboard → API 令牌 → 行末「操作」→「编辑」→「Add new policy」→「Add new Account policy」→
                       #    搜权限名 → 勾「编辑」→ **必须点「Show options」把 Account 资源选上**（资源为空会让「继续以显示摘要」无声失败）→
