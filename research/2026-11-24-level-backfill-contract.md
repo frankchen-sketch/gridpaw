@@ -32,6 +32,7 @@ R&E 同理读 `2026-11-24-rxe-backfill-queue.json` 取前 1 条。
 
 - 代理端口以 `~/.config/mihomo/PROXY_STATUS.md` 现值为准（7880 已换，2026-11-18 起是 33210）
 - `yt-dlp -f 137`（1080p）→ 失败退 `-f 136`；`--continue` 断点续传，**禁 `--no-part`**
+- **YouTube 必须走 7882（mihomo）**：33210（Tiger）已被判 bot（`Sign in to confirm you're not a bot`），换 7882 立刻成功（2026-11-24 实测两次复现）。端口现值以 `~/.config/mihomo/PROXY_STATUS.md` 为准，但 YouTube 优先 7882
 - 完整性**只能靠解码验证**：`ffmpeg -i f -f null -` 取实际解码时长，`>= 元数据*0.97` 才算完整
 - 抽帧 `ffmpeg -vf fps=1 -q:v 3 lN/f_%04d.jpg`
 - **读帧必须用 `vision_analyze`**（纯文本模型看不了拖拽物，2026-11-24 实测：grok-4-fast 把"红边时钟"当拖拽物、把字幕判成无文字）。同一道具要两次独立读数一致才算确认
