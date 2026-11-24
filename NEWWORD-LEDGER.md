@@ -15,6 +15,9 @@ cron（job 1329cf1d31a5）去重真源。状态：`reported`（已报告未动�
 
 两条主线的互补关系：哥飞服务 = 搜索侧需求的"已冒头"信号（覆盖广、滞后于 App 上架）；品类反推 = 供给侧的"会冒头"信号（开发者新品确定、词族可预测、可提前建页）；cron 窄管 = 私有情报线（T1 词族是哥飞不知道我们监控谁的那部分）。同词两路命中 = 最高优先级。
 
+> **2026-11-25 起：本表不再是唯一池——机器池在 `~/workspace/tools/webcafe-data/data/opportunities.jsonl`**（`scripts/pool.py` 读写，状态机 candidate/gated-out/approved/building/preview/live/dropped）。本表继续记「已报告给人看」的线索与结论，机器流转走池。整条流水线（6 源 → 池 → G1-G5 硬闸门 → 解包/内页/可玩页一条龙 → 预览 → 上线）见 **`~/workspace/tools/webcafe-data/PIPELINE.md`**。
+> 供给侧采集器 `scripts/supply_watch.py`（0 积分）：iTunes Search API 管新品发现 + Play 搜索页管家族成员枚举。**门铃对手机游戏词结构性失效**（heat 全 0），room sort 这类词只能靠供给侧抓。
+
 | 日期 | 词 | 月搜(US) | 哥飞KD | 形状判断 | 状态 | 来源 | 备注 |
 |---|---|---|---|---|---|---|---|
 | 2026-10-10 | cat in the hat | 246,000 | 30 | 上升+55%，逐月 135k→550k，疑电影事件需求 | dropped | cron | 商标/IP 词，需绕开官方名，待定替代词（如 cat hat puzzle）再评估 |
