@@ -1,201 +1,221 @@
 ---
-// HomeTools — homepage tool clusters (Solvers / Walkthroughs / Help).
-// 三簇布局：大簇给 Solvers 权重，右侧上下两小簇做辅助（2026-11-17 法老定稿版式：
-// 「不像 v1 那么拥挤，更有规划感」）。
-//
-// ⚠️ 数据必须与站内真实存在的页面一致——这里只列已上线的工具页。
-// 新增 solver/guide 页时，在本文件数组里加一条即可（不要改组件结构）。
-// ⚠️ 图标用工具系 SVG（不是游戏 webp 插画）：法老明确要求「solver 的图标不能
-// 用这版游戏图标形象」，游戏插画=入口语义、工具线稿=功能语义，两套体系分开。
-interface ToolItem {
-  href: string;
-  icon: string;
-  name: string;
-  desc: string;
-  wide?: boolean;
-}
-interface Props {
-  solvers?: ToolItem[];
-  walkthroughs?: ToolItem[];
-  helps?: ToolItem[];
-}
-
-// ---- Solvers：站内真实存在的 4 个专用 solver + 索引页 ----
-const solvers: ToolItem[] = [
-  { href: '/solver/', icon: 'grid', name: 'All solvers', desc: 'Every solver in one index', wide: true },
-  { href: '/akari/solver/', icon: 'bulb', name: 'Akari Solver', desc: 'Verify a bulb layout is unique' },
-  { href: '/hashi/solver/', icon: 'bridge', name: 'Hashi Solver', desc: 'Check bridge connectivity' },
-  { href: '/kenken/solver/', icon: 'cage', name: 'KenKen Solver', desc: 'Break down each arithmetic cage' },
-  { href: '/nonogram/solver/', icon: 'pixel', name: 'Nonogram Solver', desc: 'Rebuild the picture from clues' },
+// HomeTools — 首页 S3 工具带（v9 第 2 批）
+// 版面：section-head → clay 通栏 3 等分 → 6:6 解题示意 → 三列「更多工具」
+// ⚠️ 数据必须与站内真实存在的页面一致；稿子里的 Printable Puzzles 站内不存在，换成真实工具，不许造假入口。
+// ⚠️ 三个簇合计 16 条内链（5 solver + 4 walkthrough + 7 rules）：首页主要内链来源，条数只能增不能减。
+const solveTools = [
+  { href: '/nonogram/solver/', name: 'Nonogram Solver', desc: 'Rebuild the picture from its clues', art: 'pixel' },
+  { href: '/kenken/solver/', name: 'KenKen Solver', desc: 'Break down each arithmetic cage', art: 'cage' },
+  { href: '/solver/', name: 'All solvers', desc: 'Every solver, one index', art: 'grid' },
+];
+const moreSolvers = [
+  { href: '/akari/solver/', name: 'Akari Solver', desc: 'Verify a bulb layout is unique' },
+  { href: '/hashi/solver/', name: 'Hashi Solver', desc: 'Check bridge connectivity' },
+];
+const walkthroughs = [
+  { href: '/arrows-puzzle-walkthrough/', name: 'Arrows Puzzle Walkthrough', desc: 'Strategy for every level' },
+  { href: '/the-loop-past-answers/', name: 'The Loop Answers', desc: "Today's answer & past rings" },
+  { href: '/block-blast-hints/', name: 'Block Blast Hints', desc: '10+ score strategies' },
+  { href: '/meowdoku-guide/', name: 'Meowdoku Guide', desc: 'Hints & games like it' },
+];
+const helps = [
+  { href: '/help/shikaku/', name: 'Shikaku rules', desc: 'Rectangle partition' },
+  { href: '/help/akari/', name: 'Akari rules', desc: 'Light every cell' },
+  { href: '/help/kakuro/', name: 'Kakuro rules', desc: 'Cross sums' },
+  { href: '/help/nonogram/', name: 'Nonogram rules', desc: 'Pictures from clues' },
+  { href: '/help/nurikabe/', name: 'Nurikabe rules', desc: 'Islands and sea' },
+  { href: '/help/pictomino/', name: 'Pictomino rules', desc: 'Block placement' },
+  { href: '/rules/', name: 'All rule cards', desc: 'Every game at a glance' },
 ];
 
-// ---- Walkthroughs：已上线的攻略页 ----
-const walkthroughs: ToolItem[] = [
-  { href: '/arrows-puzzle-walkthrough/', icon: 'book', name: 'Arrows Puzzle Walkthrough', desc: 'Strategy for every level' },
-  { href: '/the-loop-past-answers/', icon: 'loop', name: 'The Loop Answers', desc: "Today's answer & past rings" },
-  { href: '/block-blast-hints/', icon: 'blocks', name: 'Block Blast Hints', desc: '10+ score strategies' },
-  { href: '/meowdoku-guide/', icon: 'book', name: 'Meowdoku Guide', desc: 'Hints & games like it' },
-];
-
-// ---- Help：规则页 ----
-const helps: ToolItem[] = [
-  { href: '/help/shikaku/', icon: 'grid', name: 'Shikaku rules', desc: 'Rectangle partition, step by step' },
-  { href: '/help/akari/', icon: 'bulb', name: 'Akari rules', desc: 'Light every cell, no crossfire' },
-  { href: '/help/kakuro/', icon: 'sum', name: 'Kakuro rules', desc: 'Cross sums without repeats' },
-  { href: '/help/nonogram/', icon: 'pixel', name: 'Nonogram rules', desc: 'Pixel pictures from clues' },
-  { href: '/help/nurikabe/', icon: 'island', name: 'Nurikabe rules', desc: 'Islands and sea' },
-  { href: '/help/pictomino/', icon: 'blocks', name: 'Pictomino rules', desc: 'Spatial block placement' },
-  { href: '/rules/', icon: 'check', name: 'All rule cards', desc: 'Every game at a glance' },
-];
-
-// ---- 工具系 SVG（34×34，暖色线稿；与游戏插画图标明确区分）----
-const ICONS: Record<string, string> = {
-  grid: '<rect x="8.5" y="8.5" width="23" height="23" rx="2.5"/><path d="M8.5 19h23M19 8.5v23"/>',
-  bulb: '<circle cx="20" cy="17" r="6"/><path d="M16 24.5h8M17.5 28h5"/><path d="M20 7.5v2M11.5 11l1.5 1.5M28.5 11L27 12.5M7.5 18h2M30.5 18h2"/>',
-  bridge: '<circle cx="12" cy="12" r="3.4"/><circle cx="28" cy="12" r="3.4"/><circle cx="12" cy="28" r="3.4"/><circle cx="28" cy="28" r="3.4"/><path d="M15.6 11.4h8.8M15.6 14h8.8"/>',
-  cage: '<rect x="8.5" y="8.5" width="23" height="23" rx="2.5"/><path d="M8.5 17h23M17 8.5v23"/><path d="M26.5 21v5M24 23.5h5"/>',
-  pixel: '<rect x="9" y="9" width="9.5" height="9.5" rx="2" fill="currentColor" stroke="none"/><rect x="21.5" y="9" width="9.5" height="9.5" rx="2"/><rect x="9" y="21.5" width="9.5" height="9.5" rx="2"/><rect x="21.5" y="21.5" width="9.5" height="9.5" rx="2" fill="currentColor" stroke="none"/>',
-  book: '<path d="M8.5 10.5h9a2.5 2.5 0 012.5 2.5v17a2 2 0 00-2-2h-9.5z"/><path d="M31.5 10.5h-9a2.5 2.5 0 00-2.5 2.5v17a2 2 0 012-2h9.5z"/>',
-  loop: '<path d="M11 11h18v18H11z" stroke-dasharray="3.2 3.2"/><circle cx="20" cy="20" r="1.8" fill="currentColor" stroke="none"/>',
-  blocks: '<rect x="8.5" y="8.5" width="11" height="11" rx="2"/><rect x="21" y="8.5" width="10.5" height="11" rx="2"/><rect x="21" y="21" width="10.5" height="10.5" rx="2" fill="currentColor" stroke="none"/>',
-  sum: '<rect x="8.5" y="8.5" width="23" height="23" rx="2.5"/><path d="M13 15h6M13 22h6M24 13v8M20 17h8"/>',
-  island: '<rect x="9" y="8.5" width="12" height="9" rx="2"/><path d="M9 25c2.2-2.4 4.3 2.4 6.5 0s4.3 2.4 6.5 0 4.3 2.4 6.5 0"/>',
-  check: '<rect x="8.5" y="8.5" width="23" height="23" rx="2.5"/><path d="M13 20l4 4 8-8"/>',
+// 120×90 工具示意（线稿，工具语义；不用游戏插画）
+const ART: Record<string, string> = {
+  pixel: '<rect x="14" y="10" width="30" height="30" rx="2"/><path d="M24 10v30M34 10v30M14 20h30M14 30h30"/><path d="M24 20h10v10H24z" fill="currentColor" stroke="none"/><path d="M72 20h40M72 34h28M72 48h40M72 62h20" stroke-dasharray="3 3"/>',
+  cage: '<rect x="12" y="12" width="40" height="40" rx="2"/><path d="M25 12v40M39 12v40M12 25h40M12 39h40"/><path d="M31 18h6M34 15v6" stroke-width="2.2"/><rect x="27" y="29" width="10" height="10" rx="1.5" fill="currentColor" stroke="none"/><path d="M70 24h38M70 40h30"/><path d="M100 50l8 8 14-18"/>',
+  grid: '<rect x="14" y="12" width="40" height="40" rx="2"/><path d="M27 12v40M41 12v40M14 25h40M14 39h40"/><circle cx="34" cy="32" r="3" fill="currentColor" stroke="none"/><path d="M70 20h40M70 34h30M70 48h40"/>',
 };
 
-const clusterSolvers = solvers;
-const clusterWalks = walkthroughs;
-const clusterHelps = helps;
-
-function icon(svg: string) {
-  return `<svg viewBox="0 0 40 40" width="32" height="32" aria-hidden="true"><rect width="40" height="40" rx="11" fill="var(--gp-tool-bg)"/><g fill="none" stroke="var(--gp-tool-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${svg}</g></svg>`;
+// Nonogram 解题示意（行列线索 + 猫形像素）
+// 9×9 猫脸：耳朵 + 眼睛（第 5 行两个空）+ 鼻嘴（第 7 行两空）。col0/col8 = 7 格，对上 caption
+const CAT = [
+  [1, 1, 0, 0, 0, 0, 0, 1, 1],
+  [1, 1, 1, 0, 0, 0, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 0, 1, 1, 1, 0, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 0, 1, 0, 1, 1, 1],
+  [0, 1, 1, 1, 1, 1, 1, 1, 0],
+  [0, 0, 1, 1, 1, 1, 1, 0, 0],
+];
+const CELL = 28, X0 = 118, Y0 = 46;
+function runs(arr: number[]): number[] {
+  const out: number[] = [];
+  let n = 0;
+  for (const v of arr) {
+    if (v) n++;
+    else if (n) { out.push(n); n = 0; }
+  }
+  if (n) out.push(n);
+  return out;
 }
+const colClues = CAT[0].map((_, c) => runs(CAT.map((row) => row[c])));
+const rowClues = CAT.map((row) => runs(row));
 ---
 
-<nav class="gp-tools" aria-label="Puzzle tools">
-  <div class="gp-tools-grid">
-    <section class="gp-cluster gp-cluster-main">
-      <h2 class="gp-cluster-title">Solvers <span>Paste a board, get the answer</span></h2>
-      <div class="gp-tool-list gp-tool-list-two">
-        {clusterSolvers.map((t) => (
-          <a href={t.href} class:list={['gp-tool', t.wide && 'gp-tool-wide']}>
-            <Fragment set:html={icon(ICONS[t.icon] ?? ICONS.grid)} />
-            <div><b>{t.name}</b><span>{t.desc}</span></div>
-          </a>
-        ))}
-      </div>
-    </section>
-    <div class="gp-cluster-stack">
-      <section class="gp-cluster">
-        <h2 class="gp-cluster-title gp-title-walk">Walkthroughs <span>Level by level</span></h2>
-        <div class="gp-tool-list">
-          {clusterWalks.map((t) => (
-            <a href={t.href} class="gp-tool">
-              <Fragment set:html={icon(ICONS[t.icon] ?? ICONS.book)} />
-              <div><b>{t.name}</b><span>{t.desc}</span></div>
-            </a>
-          ))}
-        </div>
-      </section>
-      <section class="gp-cluster">
-        <h2 class="gp-cluster-title gp-title-help">Help <span>Rules first</span></h2>
-        <div class="gp-tool-list">
-          {clusterHelps.map((t) => (
-            <a href={t.href} class="gp-tool">
-              <Fragment set:html={icon(ICONS[t.icon] ?? ICONS.check)} />
-              <div><b>{t.name}</b><span>{t.desc}</span></div>
-            </a>
-          ))}
-        </div>
-      </section>
+<section class="tools" id="tools" data-block="tools">
+  <header class="tools-head">
+    <div class="tools-eyebrow">02 — TOOLS</div>
+    <div class="tools-headrow">
+      <h2 class="tools-h2">When a board fights back</h2>
+      <p class="tools-intro">Stuck mid-puzzle? Every solver explains the next deduction instead of just handing you the answer. Free, no account, nothing uploaded.</p>
+    </div>
+  </header>
+
+  <div class="tools-band">
+    {solveTools.map((t) => (
+      <a class="band-item" href={t.href}>
+        <svg class="band-art" viewBox="0 0 120 90" aria-hidden="true" set:html={ART[t.art]} />
+        <b>{t.name}</b>
+        <span>{t.desc}</span>
+        <em>Open →</em>
+      </a>
+    ))}
+  </div>
+
+  <div class="tools-split">
+    <figure class="tools-figure">
+      <svg viewBox="0 0 420 306" role="img" aria-label="Nonogram board with row and column clues filled in to reveal a cat face">
+        {colClues.map((clue, c) => clue.map((n, k) => (
+          <text x={X0 + c * CELL + CELL / 2} y={24 + k * 13} text-anchor="middle" class="clue">{n}</text>
+        )))}
+        {rowClues.map((clue, r) => clue.map((n, k) => (
+          <text x={X0 - 14 - (clue.length - 1 - k) * 16} y={Y0 + r * CELL + CELL / 2 + 4} text-anchor="middle" class="clue">{n}</text>
+        )))}
+        {CAT.map((row, r) => row.map((v, c) => (
+          <rect x={X0 + c * CELL} y={Y0 + r * CELL} width={CELL} height={CELL} class={v ? 'cell on' : 'cell'} />
+        )))}
+      </svg>
+      <figcaption class="tools-cap">Clues first: the column of 7 pins this edge on its own — every other cell follows by counting, not guessing.</figcaption>
+    </figure>
+
+    <div class="tools-steps">
+      <div class="tools-eyebrow">INSIDE THE SOLVER</div>
+      <h3 class="tools-h3">Clues first, guesses never</h3>
+      <ol class="step-list">
+        <li><b>01</b><span>Type the row and column clues. The solver rebuilds every line the clues already force.</span></li>
+        <li><b>02</b><span>It fills what is certain, marks what is impossible, and repeats until the board stops moving.</span></li>
+        <li><b>03</b><span>What remains is explained deduction by deduction, so the next board of the same size goes faster.</span></li>
+      </ol>
+      <p class="tools-close">Works on phone as well as desktop — the board is the same either way.</p>
     </div>
   </div>
-</nav>
+
+  <div class="tools-more">
+    <div class="more-col">
+      <h4>More solvers</h4>
+      {moreSolvers.map((t) => <a href={t.href}><b>{t.name}</b><span>{t.desc}</span></a>)}
+    </div>
+    <div class="more-col">
+      <h4>Walkthroughs</h4>
+      {walkthroughs.map((t) => <a href={t.href}><b>{t.name}</b><span>{t.desc}</span></a>)}
+    </div>
+    <div class="more-col">
+      <h4>Rules</h4>
+      {helps.map((t) => <a href={t.href}><b>{t.name}</b><span>{t.desc}</span></a>)}
+    </div>
+  </div>
+</section>
 
 <style>
-  .gp-tools {
-    --gp-tool-bg: #FDF0E8;
-    --gp-tool-ink: #C4703F;
-    max-width: 1120px; /* UI 契约 --w-page：桌面页宽统一 1120（原 1020 自造第 4 种宽度） */
-    margin: 1.4rem auto 0;
-    padding: 0 1rem;
+  .tools { max-width: var(--w-page); margin: 2.6rem auto 0; padding: 0 1rem; }
+  .tools-eyebrow {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--gp-stone);
   }
-  .gp-tools-grid {
-    display: grid;
-    grid-template-columns: 1.62fr 1fr;
-    gap: 14px;
-    align-items: start;
+  .tools-headrow { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin: 6px 0 18px; }
+  .tools-h2 {
+    font-family: var(--ff-display, 'Cormorant Garamond', Georgia, serif);
+    font-size: var(--fs-h2); line-height: 1.1; font-weight: 700; color: var(--gp-ink); margin: 0; max-width: 18ch;
   }
-  .gp-cluster {
-    background: linear-gradient(160deg, #FFFCF9, #FDF4EC);
-    border: 1px solid #F2E3D6;
-    border-radius: 18px;
-    padding: 14px 16px 16px;
+  .tools-intro { margin: 0; max-width: 40ch; font-size: var(--fs-small); line-height: 1.55; color: var(--gp-stone); }
+
+  /* clay 通栏：整屏唯一强色块（C31 中调承载） */
+  .tools-band {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    background: var(--gp-clay); border-radius: var(--r-card); overflow: hidden;
+    color: var(--gp-white); gap: 1px;
   }
-  .gp-cluster-title {
-    font-size: 0.92rem;
-    font-weight: 900;
-    color: #C4703F;
-    margin: 0;
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-    flex-wrap: wrap;
+  .band-item {
+    display: flex; flex-direction: column; gap: 4px; padding: 22px 22px 20px;
+    text-decoration: none; color: inherit; min-height: 236px;
+    background: var(--gp-clay); transition: background .14s ease;
   }
-  .gp-cluster-title span {
-    font-size: 0.74rem;
-    font-weight: 500;
-    color: #A99C90;
+  .band-item + .band-item { box-shadow: inset 1px 0 0 color-mix(in srgb, var(--gp-white) 18%, transparent); }
+  .band-item:hover, .band-item:focus-visible { background: var(--gp-clay-deep); }
+  .band-art {
+    width: 120px; height: 90px; margin-bottom: 10px;
+    fill: none; stroke: color-mix(in srgb, var(--gp-white) 88%, transparent);
+    stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
   }
-  .gp-title-walk { color: #A8628C; }
-  .gp-title-help { color: #8A7A5E; }
-  .gp-tool-list { display: grid; gap: 8px; margin-top: 11px; }
-  .gp-tool-list-two { grid-template-columns: 1fr 1fr; }
-  /* 入口条横跨两列：Solvers 有 5 项，放 2 列会落单一张 */
-  .gp-tool-wide {
-    grid-column: 1 / -1;
-    background: linear-gradient(135deg, #FFF7F1, #FDEDE2);
-    border-color: #F3D5BE;
+  .band-item b { font-size: 1.14rem; font-weight: 700; letter-spacing: -.01em; }
+  .band-item span { font-size: var(--fs-small); line-height: 1.45; color: color-mix(in srgb, var(--gp-white) 82%, transparent); }
+  .band-item em {
+    margin-top: auto; padding-top: 14px; font-style: normal;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: .12em;
   }
-  .gp-tool {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    background: #fff;
-    border: 1px solid #F0E4DA;
-    border-radius: 12px;
-    padding: 9px 11px;
-    text-decoration: none;
-    color: #3D3D3D;
-    transition: border-color .15s, box-shadow .15s;
+
+  .tools-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; margin-top: 18px; align-items: stretch; }
+  .tools-figure {
+    margin: 0; padding: 16px; border-radius: var(--r-card);
+    background: var(--gp-parchment); border: 1px solid color-mix(in srgb, var(--gp-clay-deep) 16%, transparent);
   }
-  .gp-tool:hover,
-  .gp-tool:focus-visible {
-    border-color: #E8A888;
-    box-shadow: 0 5px 16px rgba(201, 106, 66, 0.13);
+  .tools-figure svg { width: 100%; height: auto; display: block; }
+  .tools-figure .cell { fill: var(--gp-cream); stroke: color-mix(in srgb, var(--gp-clay-deep) 26%, transparent); stroke-width: 1; }
+  .tools-figure .cell.on { fill: var(--gp-clay-deep); stroke: var(--gp-clay-deep); }
+  .tools-figure .eye { fill: var(--gp-parchment); }
+  .tools-figure .clue { fill: var(--gp-stone); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+  .tools-cap { margin: 12px 2px 0; font-size: var(--fs-tiny); line-height: 1.5; color: var(--gp-stone); }
+
+  .tools-steps { padding: 4px 4px 0; display: flex; flex-direction: column; }
+  .tools-h3 {
+    font-family: var(--ff-display, 'Cormorant Garamond', Georgia, serif);
+    font-size: 1.6rem; line-height: 1.15; font-weight: 700; color: var(--gp-ink); margin: 6px 0 14px;
   }
-  .gp-tool b {
-    display: block;
-    font-size: 0.82rem;
-    font-weight: 750;
-    line-height: 1.28;
+  .step-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .step-list li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 10px; align-items: baseline; }
+  .step-list b {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: .08em;
+    color: var(--gp-clay); padding-top: 2px;
   }
-  .gp-tool span {
-    display: block;
-    font-size: 0.72rem;
-    color: #7E736A;
-    line-height: 1.34;
+  .step-list span { font-size: var(--fs-small); line-height: 1.55; color: var(--gp-stone); }
+  .tools-close { margin: auto 0 0; padding-top: 14px; font-size: var(--fs-tiny); color: var(--gp-stone); }
+
+  .tools-more {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px;
+    margin-top: 26px; padding-top: 20px;
+    border-top: 1px solid color-mix(in srgb, var(--gp-clay-deep) 16%, transparent);
   }
-  .gp-cluster-stack { display: grid; gap: 14px; }
-  /* 2026-11-19 UI-1: 桌面三列等宽（Solvers / Walkthroughs / Help 各一列）
-     此前 1.62fr 1fr 两列 → Solvers 289px、Walkthroughs 182px 不等宽，Help 被挤到第二行右侧空一格 */
-  @media (min-width: 1024px) {
-    .gp-tools-grid { grid-template-columns: repeat(3, 1fr); }
-    .gp-cluster-stack { display: contents; }
-    .gp-tool-wide { grid-column: auto; }
+  .more-col { display: grid; gap: 8px; align-content: start; }
+  .more-col h4 {
+    margin: 0 0 2px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--gp-clay); font-weight: 700;
   }
-  @media (max-width: 860px) {
-    .gp-tools-grid { grid-template-columns: 1fr; }
-    .gp-tool-list-two { grid-template-columns: 1fr; }
+  .more-col a { display: block; text-decoration: none; color: var(--gp-ink); padding: 6px 0; border-bottom: 1px solid color-mix(in srgb, var(--gp-clay-deep) 10%, transparent); }
+  .more-col a:last-child { border-bottom: 0; }
+  .more-col a b { display: block; font-size: .92rem; font-weight: 650; line-height: 1.3; }
+  .more-col a span { display: block; font-size: var(--fs-tiny); color: var(--gp-stone); line-height: 1.35; }
+  .more-col a:hover b { color: var(--gp-clay); }
+
+  @media (max-width: 900px) {
+    .tools { margin-top: 2rem; }
+    .tools-headrow { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .tools-h2 { max-width: none; }
+    .tools-band { grid-template-columns: minmax(0, 1fr); }
+    .band-item { min-height: 0; padding: 16px 18px; }
+    .band-item + .band-item { box-shadow: inset 0 1px 0 color-mix(in srgb, var(--gp-white) 18%, transparent); }
+    .band-art { width: 84px; height: 63px; margin-bottom: 4px; }
+    .tools-split { grid-template-columns: minmax(0, 1fr); }
+    .tools-more { grid-template-columns: minmax(0, 1fr); gap: 14px; }
   }
 </style>

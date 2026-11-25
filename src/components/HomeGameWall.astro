@@ -1,0 +1,164 @@
+---
+// HomeGameWall — 首页 S2 游戏墙（v9 第 2 批）
+// 只用于首页；游戏页仍用 GameHub（15 页在用它，不动）。
+// 数据真源：与 GameHub 同一批 href —— 站内真实存在的 15 款游戏（改这里必须同步 GameHub）。
+// 契约：CONTRACT.md v1.1 C31 风格指纹（沙底卡 ≥10% 中调）/ C1 内容完整（数字必须真）/ C25 响应式（minmax(0,1fr)）
+const games = [
+  { href: '/', name: 'Shikaku', desc: 'Rectangles', level: 2, shape: 'shikaku' },
+  { href: '/akari/', name: 'Akari', desc: 'Light Up', level: 2, shape: 'akari' },
+  { href: '/kakuro/', name: 'Kakuro', desc: 'Cross-sum', level: 3, shape: 'kakuro' },
+  { href: '/nonogram/', name: 'Nonogram', desc: 'Picture logic', level: 2, shape: 'nonogram' },
+  { href: '/nurikabe/', name: 'Nurikabe', desc: 'Islands & sea', level: 3, shape: 'nurikabe' },
+  { href: '/pictomino/', name: 'Pictomino', desc: 'Spatial blocks', level: 2, shape: 'pictomino' },
+  { href: '/kenken/', name: 'KenKen', desc: 'Math cages', level: 3, shape: 'kenken' },
+  { href: '/murdoku/', name: 'Murdoku', desc: 'Cat mystery', level: 2, shape: 'murdoku', isNew: true },
+  { href: '/binary/', name: 'Binary', desc: 'Takuzu logic', level: 2, shape: 'binary' },
+  { href: '/star-battle/', name: 'Star Battle', desc: 'Two Not Touch', level: 3, shape: 'star' },
+  { href: '/hashi/', name: 'Hashi', desc: 'Bridges', level: 2, shape: 'hashi' },
+  { href: '/slitherlink/', name: 'Slitherlink', desc: 'Loop drawing', level: 3, shape: 'slitherlink' },
+  { href: '/crazy-cleanup/', name: 'Crazy Cleanup', desc: 'Tidy & sort', level: 1, shape: 'cleanup', isNew: true },
+  { href: '/meowdoku/', name: 'Meowdoku', desc: 'Cat Queens', level: 2, shape: 'meowdoku', isNew: true },
+  { href: '/huepaw/', name: 'Huepaw', desc: 'Color gradient', level: 1, shape: 'huepaw', isNew: true },
+];
+const total = games.length;
+
+// 56×56 形态示意（几何线稿，不用游戏插画：插画=入口语义，这里要的是「玩法形态」）
+const S: Record<string, string> = {
+  shikaku: '<g class="s"><rect x="4.5" y="4.5" width="47" height="47" rx="3"/><path d="M20 4.5v47M36 4.5v47M4.5 20h47M4.5 36h47"/><rect class="f" x="21.5" y="5.5" width="14" height="14"/><rect class="f" x="5.5" y="21.5" width="14" height="14" opacity=".55"/></g>',
+  akari: '<g class="s"><rect x="4.5" y="4.5" width="47" height="47" rx="3"/><path d="M20 4.5v47M36 4.5v47M4.5 20h35M4.5 36h35"/><circle class="f" cx="43" cy="28" r="6"/><path d="M43 15v3M43 38v3M33 28h3M50 28h3"/></g>',
+  kakuro: '<g class="s"><rect x="4.5" y="4.5" width="47" height="47" rx="3"/><path d="M4.5 20h47M4.5 36h47M20 4.5v47M36 4.5v47M4.5 4.5l15.5 15.5M4.5 20l15.5 15.5"/><rect class="f" x="21.5" y="21.5" width="14" height="14"/></g>',
+  nonogram: '<g class="s"><rect x="4.5" y="4.5" width="47" height="47" rx="3"/><path d="M16 4.5v47M27.5 4.5v47M39 4.5v47M4.5 16h47M4.5 27.5h47M4.5 39h47"/><rect class="f" x="5.5" y="5.5" width="10" height="10"/><rect class="f" x="28.5" y="5.5" width="10" height="10" opacity=".55"/><rect class="f" x="17" y="17" width="10" height="10"/><rect class="f" x="28.5" y="28.5" width="10" height="10"/><rect class="f" x="40" y="40" width="10" height="10" opacity=".55"/></g>',
+  nurikabe: '<g class="s"><rect x="4.5" y="4.5" width="47" height="47" rx="3"/><rect class="f" x="9" y="9" width="15" height="12" rx="3"/><rect class="f" x="32" y="20" width="14" height="11" rx="3" opacity=".55"/><path d="M6 41c3-3 6 3 9 0s6 3 9 0 6 3 9 0 6 3 9 0 6 3 9 0"/></g>',
+  pictomino: '<g class="s"><rect class="f" x="8" y="8" width="15" height="15" rx="2"/><rect x="26" y="8" width="15" height="15" rx="2"/><rect class="f" x="8" y="26" width="15" height="15" rx="2" opacity=".55"/><rect x="26" y="26" width="15" height="15" rx="2"/><path d="M23 15.5h3M15.5 23v3"/></g>',
+  kenken: '<g class="s"><rect x="4.5" y="4.5" width="47" height="47" rx="3"/><path d="M20 4.5v47M36 4.5v47M4.5 20h47M4.5 36h47"/><path class="f" d="M28 10v5M25.5 12.5h5"/><rect class="f" x="37.5" y="21.5" width="11" height="11" opacity=".55"/></g>',
+  murdoku: '<g class="s"><rect x="4.5" y="4.5" width="47" height="47" rx="3"/><path d="M20 4.5v47M36 4.5v47M4.5 20h47M4.5 36h47"/><circle cx="28" cy="26" r="10"/><path d="M35 33l7 7"/><circle class="f" cx="24.5" cy="24" r="1.6"/><circle class="f" cx="31.5" cy="24" r="1.6"/></g>',
+  binary: '<g class="s"><rect x="4.5" y="4.5" width="47" height="47" rx="3"/><path d="M20 4.5v47M36 4.5v47M4.5 20h47M4.5 36h47"/><circle class="f" cx="12" cy="12" r="5"/><circle cx="28" cy="12" r="5"/><circle cx="44" cy="12" r="5"/><circle cx="12" cy="28" r="5"/><circle class="f" cx="28" cy="28" r="5"/><circle cx="12" cy="44" r="5"/><circle cx="44" cy="44" r="5"/></g>',
+  star: '<g class="s"><rect x="4.5" y="4.5" width="47" height="47" rx="3"/><path d="M20 4.5v47M36 4.5v47M4.5 20h47M4.5 36h47"/><path class="f" d="M28 9l3.4 7 7.6 1.1-5.5 5.4 1.3 7.6L28 26.5l-6.8 3.6 1.3-7.6-5.5-5.4 7.6-1.1z"/><path class="f" d="M44 34l1.7 3.5 3.8.6-2.8 2.7.7 3.8L44 43l-3.4 1.6.7-3.8-2.8-2.7 3.8-.6z" opacity=".55"/></g>',
+  hashi: '<g class="s"><circle class="f" cx="14" cy="14" r="5.5"/><circle class="f" cx="42" cy="14" r="5.5"/><circle class="f" cx="14" cy="42" r="5.5"/><circle class="f" cx="42" cy="42" r="5.5"/><path d="M19.5 11.5h17M19.5 16.5h17M11.5 19.5v17M16.5 19.5v17M33 42c4.5 0 9-4 9-9"/></g>',
+  slitherlink: '<g class="s"><path d="M14 4.5v47M28 4.5v47M42 4.5v47M4.5 14h47M4.5 28h47M4.5 42h47" opacity=".35" stroke-dasharray="2 3"/><path d="M14 14h14v14h14v14H14z"/><rect class="f" x="19" y="19" width="8" height="8" rx="1.5"/><rect class="f" x="33" y="33" width="8" height="8" rx="1.5" opacity=".55"/></g>',
+  cleanup: '<g class="s"><rect x="7" y="20" width="42" height="28" rx="4"/><path d="M7 29h42"/><rect class="f" x="13" y="9" width="10" height="9" rx="2"/><rect class="f" x="24" y="6" width="10" height="12" rx="2" opacity=".55"/><rect class="f" x="35" y="11" width="9" height="7" rx="2"/><path d="M20 37h16"/></g>',
+  meowdoku: '<g class="s"><rect x="4.5" y="4.5" width="47" height="47" rx="3"/><path d="M20 4.5v47M36 4.5v47M4.5 20h47M4.5 36h47"/><path class="f" d="M18 18l4 5h12l4-5v13a12 12 0 0 1-20 0z"/><circle cx="24" cy="26" r="1.4" fill="var(--gp-parchment)" stroke="none"/><circle cx="32" cy="26" r="1.4" fill="var(--gp-parchment)" stroke="none"/></g>',
+  huepaw: '<g class="s"><rect class="f" x="7" y="10" width="42" height="10" rx="3"/><rect class="f" x="7" y="23" width="42" height="10" rx="3" opacity=".6"/><rect class="f" x="7" y="36" width="42" height="10" rx="3" opacity=".3"/><path d="M17 15h.1M24 28h.1M31 41h.1" stroke-width="4"/></g>',
+};
+---
+
+<section class="wall" id="games" data-block="games">
+  <header class="wall-head">
+    <div class="wall-eyebrow">01 — THE GAMES</div>
+    <div class="wall-headrow">
+      <h2 class="wall-h2">Fifteen boards on one table</h2>
+      <p class="wall-intro">Every GridPaw board is a small rule set and one guaranteed solution — Shikaku, Akari, Kakuro, Nonogram and eleven more. No timers, no sign-up, nothing to install.</p>
+    </div>
+  </header>
+
+  <div class="wall-grid">
+    {games.map((g, i) => (
+      <a class="gcard" href={g.href}>
+        <span class="gcard-num">{String(i + 1).padStart(2, '0')}</span>
+        {g.isNew && <span class="gcard-new">NEW</span>}
+        <span class="gcard-shape" aria-hidden="true" set:html={`<svg viewBox="0 0 56 56">${S[g.shape]}</svg>`} />
+        <b class="gcard-name">{g.name}</b>
+        <span class="gcard-desc">{g.desc}</span>
+        <span class="gcard-dots" aria-label={`Difficulty ${g.level} of 3`}>
+          {[1, 2, 3].map((n) => <i class:list={['gdot', n <= g.level && 'on']} />)}
+        </span>
+      </a>
+    ))}
+    <a class="gcard gcard-all" href="/rules/">
+      <span class="gcard-allnum">ALL {total}</span>
+      <b class="gcard-name">See every rule card</b>
+      <span class="gcard-desc">One page, all fifteen games</span>
+      <span class="gcard-arrow">BROWSE →</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .wall { max-width: var(--w-page); margin: 2.6rem auto 0; padding: 0 1rem; }
+  .wall-eyebrow {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--gp-stone);
+  }
+  .wall-headrow { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin: 6px 0 18px; }
+  .wall-h2 {
+    font-family: var(--ff-display, 'Cormorant Garamond', Georgia, serif);
+    font-size: var(--fs-h2); line-height: 1.1; font-weight: 700;
+    color: var(--gp-ink); margin: 0; max-width: 20ch;
+  }
+  .wall-intro { margin: 0; max-width: 40ch; font-size: var(--fs-small); line-height: 1.65; color: var(--gp-stone); }
+
+  .wall-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+
+  .gcard {
+    position: relative; display: flex; flex-direction: column; align-items: flex-start;
+    gap: 2px; padding: 16px 16px 14px;
+    background: var(--gp-parchment); border: 1px solid color-mix(in srgb, var(--gp-clay-deep) 18%, transparent);
+    border-radius: var(--r-card); text-decoration: none; color: var(--gp-ink);
+    transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+  }
+  .gcard:hover, .gcard:focus-visible {
+    transform: translateY(-2px); border-color: var(--gp-clay);
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--gp-clay-deep) 16%, transparent);
+  }
+  .gcard-shape { display: block; width: 56px; height: 56px; margin-bottom: 8px; }
+  .gcard-shape :global(svg) { width: 56px; height: 56px; display: block; }
+  .gcard-shape :global(.s) { fill: none; stroke: var(--gp-clay-deep); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .gcard-shape :global(.f) { fill: var(--gp-clay); stroke: none; }
+  .gcard-name { font-size: 1.06rem; font-weight: 700; line-height: 1.2; letter-spacing: -.01em; }
+  .gcard-desc { font-size: var(--fs-tiny); color: var(--gp-stone); line-height: 1.35; }
+  .gcard-num {
+    position: absolute; top: 12px; right: 14px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px; color: color-mix(in srgb, var(--gp-clay-deep) 42%, transparent);
+  }
+  .gcard-new {
+    position: absolute; top: 10px; left: 12px;
+    font-size: 9px; font-weight: 800; letter-spacing: .08em;
+    color: var(--gp-white); background: var(--gp-clay-deep);
+    border-radius: var(--r-sm); padding: 2px 5px;
+  }
+  .gcard-dots { display: flex; gap: 4px; margin-top: 10px; }
+  .gdot { width: 6px; height: 6px; border-radius: 50%; background: color-mix(in srgb, var(--gp-clay-deep) 30%, transparent); }
+  .gdot.on { background: var(--gp-clay-deep); }
+
+  .gcard-all {
+    background: var(--gp-clay-deep); border-color: var(--gp-clay-deep); color: var(--gp-white);
+    justify-content: space-between; gap: 6px; padding: 18px 16px;
+  }
+  .gcard-allnum { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: .16em; opacity: .75; }
+  .gcard-all .gcard-name { font-size: 1.22rem; font-weight: 750; }
+  .gcard-all .gcard-desc { color: color-mix(in srgb, var(--gp-white) 76%, transparent); }
+  .gcard-arrow {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: .12em;
+    margin-top: auto; display: inline-block; padding: 4px 8px; border-radius: var(--r-sm);
+    border: 1px solid color-mix(in srgb, var(--gp-white) 52%, transparent); color: var(--gp-white);
+  }
+  .gcard-all:hover { background: var(--gp-clay); border-color: var(--gp-clay); }
+
+  @media (max-width: 900px) {
+    .wall { margin-top: 2rem; }
+    .wall-headrow { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .wall-h2 { max-width: none; }
+    .wall-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .gcard { padding: 13px 13px 12px; }
+    .gcard-shape, .gcard-shape :global(svg) { width: 44px; height: 44px; }
+    .gcard-name { font-size: .98rem; }
+  }
+</style>
+
+<script is:inline>
+  // 与 GameHub 同口径的 GA4 事件（source 区分来源，便于对比首页墙 vs 游戏页 hub）
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    while (t && t !== document) {
+      if (t.classList && t.classList.contains('gcard')) {
+        var target = t.getAttribute('href') || '';
+        if (typeof window.gtag === 'function')
+          window.gtag('event', 'game_nav_click', { target: target, from: location.pathname, source: 'home-wall' });
+        return;
+      }
+      t = t.parentNode;
+    }
+  }, true);
+</script>
