@@ -114,7 +114,7 @@ cleanup() {
 }
 trap cleanup EXIT
 if ! mkdir "$LOCK" 2>/dev/null; then
-  echo "✗ 另一个部署正持锁（$LOCK）。" >&2
+  echo "✗ 另一个部署正持锁（${LOCK}）。" >&2
   echo "  等它跑完；确认是残留锁再 rm -rf \"$LOCK\"。" >&2
   exit 3
 fi
