@@ -92,7 +92,16 @@ fi
 ensure_assets() {
   local d="$1"
   [ -e "$d/node_modules" ] || ln -s "$PRIMARY_TREE/node_modules" "$d/node_modules" 2>/dev/null || true
-  cp -f "$PRIMARY_TREE"/public/*.txt "$d/public/" 2>/dev/null || true
+  # 只补 git 没追踪的 txt（IndexNow key / llms-full 这类 gitignore 资产）。
+  # tracked 的 public/*.txt 一律不碰：主树里它们可能带着别的会话未提交的改动，
+  # 拷进来既会污染产物，也会让 sw 指纹打成 <sha>-dirty（审计性丢失）。2026-11-25 实测踩到。
+  local f rel
+  for f in "$PRIMARY_TREE"/public/*.txt; do
+    [ -e "$f" ] || continue
+    rel="public/$(basename "$f")"
+    git -C "$PRIMARY_TREE" ls-files --error-unmatch "$rel" >/dev/null 2>&1 && continue
+    cp -f "$f" "$d/public/" 2>/dev/null || true
+  done
 }
 ensure_assets "$WORKDIR"
 
