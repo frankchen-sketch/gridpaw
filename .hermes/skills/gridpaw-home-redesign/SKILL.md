@@ -22,7 +22,7 @@ md5 -r CONTRACT.md tokens.css contract_check.py style_fp_check.py assemble.py pa
 # 与 FROZEN.md 的清单逐行比对；任何一行不符 = 有人动了冻结件，先查 git log 再动手
 ```
 
-- 合同：`docs/design-v8/CONTRACT.md`（v1.0 FROZEN，31 条 + 3 子条）
+- 合同：`docs/design-v8/CONTRACT-v1.1.md`（v1.1 = v1.0 全部条款 + §J GEO C32–C34）；`CONTRACT.md`（v1.0）仍冻结原样，md5 必须不变
 - 勘误：`docs/design-v8/FROZEN.md` 末尾（E1：C2 写的 `src/components/ShikakuBoard.astro` 不存在，`#play` 是内联区块+内联脚本）
 - 生产路径：`docs/design-v8/PRODUCTION-PLAN.md`
 
@@ -34,7 +34,7 @@ md5 -r CONTRACT.md tokens.css contract_check.py style_fp_check.py assemble.py pa
 |---|---|
 | 15 个游戏 | `src/components/GameHub.astro` 的 name 列表 |
 | 70 道 Shikaku 题（28/27/15） | `src/data/puzzles.json` |
-| 1 个求解器（只有 Shikaku） | `src/pages/solver.astro` |
+| 7 个 solver 页 | `/solver/`（Shikaku）+ akari/hashi/kenken/nonogram/word-kitchen/train-tracks 各自的 `/solver/` |
 
 任何新写的数字先回去数一遍，数不出真源就不许上页面。
 
@@ -48,6 +48,16 @@ md5 -r CONTRACT.md tokens.css contract_check.py style_fp_check.py assemble.py pa
 ## 3. h1 是 SEO 资产：可以变可见，不许改字
 
 线上 h1 是 sr-only 的 `GridPaw: Free Shikaku Puzzle Game Online`。改版可以把它提到 hero 里做可见主标题，**文字一个字不动**；`<span class="accent">` 里的品牌词也别删。同理 4 段 `seo-section` 长文、`#walkthroughs`、`#tips-section` 是 SEO 内容骨架，**一律原样保留**。
+
+## 3.5 首页两屏的实现位置（第 2 批已落地，改版别再另起组件）
+
+| 屏 | 组件 | 谁在用 |
+|---|---|---|
+| S2 游戏墙 | `src/components/HomeGameWall.astro` | **只有首页**（15 卡 + See-all 深陶卡，4 列） |
+| S3 工具带 | `src/components/HomeTools.astro` | **只有首页**（clay 通栏 3 块 + 6:6 解题示意 + 三列更多工具，16 条内链） |
+| 游戏页的「更多游戏」 | `src/components/GameHub.astro` | **15 个游戏页**共用，改它会全站变，别当首页组件改 |
+
+首页的 `HomeTools` 合计 16 条内链（5 solver + 4 walkthrough + 7 rules），是首页内链主要来源：只许增不许减。
 
 ## 4. 迁移是逐屏换皮，不是整页替换
 
@@ -81,7 +91,7 @@ python3 docs/design-v8/style_fp_check.py <1440 全页截图>   # 风格指纹（
 - 部署只在 main worktree：`git merge` 所有在飞分支 → `pnpm run deploy:safe`（它会拦没合的分支）
 - 新 worktree 要 `pnpm install`，且 `public/` 里 gitignored 的 IndexNow key、`llms.txt` 需从主 worktree 拷
 
-## 8. GEO 骨架（2026-11-25 补齐，别再拆）
+## 8. GEO 骨架（v1.1 已升为合同条款 C32–C34，别再拆）
 
 | 层 | 位置 | 判据 |
 |---|---|---|
