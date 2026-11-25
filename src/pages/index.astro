@@ -1,4 +1,5 @@
 ---
+import '../styles/tokens.css';
 import SEOHead from '../components/SEOHead.astro';
 import ExtensionPromo from '../components/ExtensionPromo.astro';
 import GameHub from '../components/GameHub.astro';
@@ -49,7 +50,7 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
       /* ── GridPaw 视觉合同 token（STYLE.md v0.1，冻结）── */
       --gp-primary: #E8A888;
       --gp-primary-strong: #D47A50;
-      --gp-primary-dark: #C06840;
+      /* --gp-primary-dark 由 tokens.css 统一提供（v1.0 #C06A40） */
       --gp-primary-soft: #F0B898;
       --gp-brown-900: #342421;
       --gp-brown-600: #6F5651;
@@ -625,7 +626,51 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
 </head>
 <body>
 <script>if(new URLSearchParams(location.search).has("embed")){document.body.classList.add("embed-mode");}</script>
-<style>.embed-mode .site-header,.embed-mode .seo-footer,.embed-mode .seo-section:not(:first-of-type){display:none!important} .embed-mode main{padding-top:0!important}</style><!-- Sticky Header -->
+<style>.embed-mode .site-header,.embed-mode .seo-footer,.embed-mode .seo-section:not(:first-of-type){display:none!important} .embed-mode main{padding-top:0!important}</style><style>
+/* ── 首页 hero（设计稿 v1.0，CONTRACT C1/C25） ──────────────────
+   · 尺寸只给上限：C25.1；栅格用 minmax(0,1fr)：C25.2
+   · 手机（≤900px）棋盘在前，文案在后（游戏站首屏先给可玩性） */
+.hero-v9{max-width:var(--w-page);margin:0 auto;padding:10px 16px 6px;display:grid;
+  grid-template-columns:minmax(0,1.04fr) minmax(0,1fr);gap:28px;align-items:stretch}
+.hero-copy{display:flex;flex-direction:column;justify-content:flex-start;gap:14px;min-width:0;padding:2px 0}
+.hero-eyebrow{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--gp-brown-600);border-top:1px solid var(--gp-linen);
+  padding-top:10px;align-self:flex-start}
+.hero-h1{font-size:var(--fs-hero);line-height:1.06;font-weight:800;letter-spacing:-.01em;
+  color:var(--gp-brown-900);margin:0;max-width:16ch}
+.hero-h1 .accent{color:var(--gp-clay)}
+.hero-sub{font-size:var(--fs-body);line-height:1.65;color:var(--gp-brown-600);margin:0;max-width:46ch}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+.hero-btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 22px;
+  border-radius:var(--r-lg);font-weight:800;font-size:var(--fs-body);text-decoration:none;
+  border:1.5px solid transparent;line-height:1.1}
+.hero-btn--primary{background:var(--gp-clay);color:var(--gp-white)}
+.hero-btn--primary:hover{background:var(--gp-clay-deep);color:var(--gp-white)}
+.hero-btn--ghost{border-color:var(--gp-clay);color:var(--gp-clay-deep);background:transparent}
+.hero-btn--ghost:hover{background:var(--gp-clay);color:var(--gp-white);border-color:var(--gp-clay)}
+.hero-stats{display:flex;border-top:1px solid var(--gp-linen);border-bottom:1px solid var(--gp-linen);margin-top:auto}
+.hero-stat{flex:1 1 0;min-width:0;padding:11px 12px 11px 0}
+.hero-stat b{display:block;font-size:26px;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--gp-clay-deep)}
+.hero-stat span{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gp-stone);margin-top:3px}
+.hero-play{min-width:0;display:flex;flex-direction:column}
+.hero-play .game-card{width:100%;max-width:100%;margin-bottom:0}
+/* 首屏上方的登录条/每日提示：原来是两条居中大块（97px 高），收成一条贴右的细带 */
+.app > #account-area{max-width:var(--w-page);width:100%;justify-content:flex-end;margin:8px auto 0;
+  min-height:0;gap:.6rem;font-size:var(--fs-small)}
+.app > .daily-status{max-width:var(--w-page);width:100%;margin:2px auto 4px;text-align:right;
+  font-size:var(--fs-aux-m,13px);padding:0 2px}
+@media (max-width:900px){
+  .app > #account-area{justify-content:center;margin:6px auto 0}
+  .app > .daily-status{text-align:center;margin:2px auto 4px}
+  .hero-v9{grid-template-columns:minmax(0,1fr);gap:16px;padding:0 16px 4px}
+  .hero-play{order:-1}                    /* 手机上棋盘先出现 */
+  .hero-copy{gap:12px}
+  .hero-h1{max-width:none}
+  .hero-stat b{font-size:22px}
+}
+</style>
+
+<!-- Sticky Header -->
 <header class="site-header">
   <div class="header-inner">
     <a href="/" class="brand" aria-label="GridPaw home">
@@ -695,27 +740,26 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
 <div class="app" id="app">
   <div id="account-area" style="display:flex;justify-content:center;align-items:center;gap:.5rem;margin:.4rem 0;min-height:2.4rem;flex-wrap:nowrap;white-space:nowrap"></div>
   <div class="daily-status" id="dailyStatus"></div>
-  <!-- P0 结构修复：H1 提到全部 H2 section 之前（sr-only，不改变游戏区视觉；SEO 区原位降级为 h2.seo-h1 保持同款样式） -->
-  <h1 class="sr-only">GridPaw: Free <span class="accent">Shikaku</span>Puzzle Game Online</h1>
-
-  <section class="seo-content" id="daily-leaderboard" style="max-width:520px;margin:1.5rem auto;padding:0 1rem">
-    <!-- 方案 A：空排行榜位 → Today's Challenge 卡（有真实上榜数据时 JS 自动切回排行榜） -->
-    <div class="challenge-card" id="challengeCard">
-      <div class="challenge-grid-mini" aria-hidden="true"><i class="fill"></i><i></i><i class="fill"></i><i></i><i class="fill"></i><i></i><i></i><i></i><i class="fill"></i></div>
-      <div class="challenge-meta">
-        <div class="challenge-title">Daily Challenge · 6×6</div>
-        <div class="challenge-sub">🔥 Keep your streak alive</div>
+  <!-- 首页改版 v1.0（2026-11-25）：hero = 文案列 + 真棋盘。契约 docs/design-v8/CONTRACT.md
+       · h1 由 sr-only 改为可见，**文字不变**（SEO 关键词不动）；补空格修正 ShikakuPuzzle 粘连
+       · 数字带用真实数据：15 游戏（GameHub）/ 70 题（src/data/puzzles.json）/ 1 求解器（solver.astro）/ 0 注册 -->
+  <section class="hero-v9" id="home-hero">
+    <div class="hero-copy">
+      <div class="hero-eyebrow">15 games · 1 solver · no account</div>
+      <h1 class="hero-h1">GridPaw: Free <span class="accent">Shikaku</span> Puzzle Game Online</h1>
+      <p class="hero-sub">Draw rectangles on the grid — every number must sit inside exactly one. Play Shikaku plus 14 more cat-themed logic puzzles (Akari, Kakuro, Nonogram, Nurikabe…) free in your browser. No sign-up, progress saved on your own device.</p>
+      <div class="hero-cta">
+        <a class="hero-btn hero-btn--primary" href="#play">Play now</a>
+        <a class="hero-btn hero-btn--ghost" href="/how-to-play-shikaku/">How to play</a>
       </div>
-      <a class="challenge-play" href="#play" id="challengePlayNow">Play Now</a>
+      <div class="hero-stats">
+        <div class="hero-stat"><b>15</b><span>Games</span></div>
+        <div class="hero-stat"><b>70</b><span>Shikaku puzzles</span></div>
+        <div class="hero-stat"><b>0</b><span>Sign-up</span></div>
+      </div>
     </div>
-    <div class="daily-leaderboard-panel" id="dailyLeaderboardPanel" style="display:none">
-      <h2 style="text-align:center;font-size:1.25rem;margin:.8rem 0 .3rem">🏆 Today's Leaderboard</h2>
-      <p id="leaderboard-hint" style="text-align:center;font-size:.85rem;margin:0 0 1rem;color:var(--gp-brown-600)">Sign in and solve today's Daily Challenge to appear here!</p>
-      <div id="leaderboard-list"></div>
-    </div>
-  </section>
-
-  <section class="game-card" id="play" aria-label="GridPaw game">
+    <div class="hero-play">
+<section class="game-card" id="play" aria-label="GridPaw game">
     <div class="game-topbar">
       <div class="level-info" style="margin:0;padding:0">
         <div style="display:flex;align-items:center;gap:8px;justify-content:center">
@@ -758,6 +802,26 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
     </div>
     <div class="bottom-bar">
       <div id="status" style="font-size:14px;font-weight:700;color:var(--mt-text-light)">Drag to draw rectangles</div>
+    </div>
+  </section>
+    </div>
+  </section>
+
+  <!-- S4 · Today's Challenge / 排行榜：原在 hero 之上，改版后下沉到 hero 之后 -->
+  <section class="seo-content" id="daily-leaderboard" style="max-width:520px;margin:1.5rem auto;padding:0 1rem">
+    <!-- 方案 A：空排行榜位 → Today's Challenge 卡（有真实上榜数据时 JS 自动切回排行榜） -->
+    <div class="challenge-card" id="challengeCard">
+      <div class="challenge-grid-mini" aria-hidden="true"><i class="fill"></i><i></i><i class="fill"></i><i></i><i class="fill"></i><i></i><i></i><i></i><i class="fill"></i></div>
+      <div class="challenge-meta">
+        <div class="challenge-title">Daily Challenge · 6×6</div>
+        <div class="challenge-sub">🔥 Keep your streak alive</div>
+      </div>
+      <a class="challenge-play" href="#play" id="challengePlayNow">Play Now</a>
+    </div>
+    <div class="daily-leaderboard-panel" id="dailyLeaderboardPanel" style="display:none">
+      <h2 style="text-align:center;font-size:1.25rem;margin:.8rem 0 .3rem">🏆 Today's Leaderboard</h2>
+      <p id="leaderboard-hint" style="text-align:center;font-size:.85rem;margin:0 0 1rem;color:var(--gp-brown-600)">Sign in and solve today's Daily Challenge to appear here!</p>
+      <div id="leaderboard-list"></div>
     </div>
   </section>
 
@@ -2572,7 +2636,7 @@ const bannerDate = bannerEntry ? formatBannerDate(bannerEntry.date) : '';
 
 <!-- SEO Content -->
 <section class="seo-section" aria-label="About GridPaw">
-  <h2 class="seo-h1">GridPaw: Free <span class="accent">Shikaku</span>Puzzle Game Online</h2>
+  <h2 class="seo-h1">GridPaw: Free <span class="accent">Shikaku</span> Puzzle Game Online</h2>
   <p>GridPaw is a <strong>free Shikaku puzzle game</strong> with adorable cat visuals. Draw rectangles on a numbered grid so each rectangle covers exactly the number of cells shown. It's the classic <strong>Shikaku</strong> (rectangle partition) puzzle by Nikoli (the same company behind Sudoku), reimagined with cats.</p>
   <p>Whether you're new to <strong>Shikaku</strong> or a seasoned solver, GridPaw offers unlimited procedurally generated puzzles across 7 difficulty levels, from Tutorial 3×3 to Legend 8×8. Every puzzle has a unique solution reachable by pure logic. No guessing required.</p>
 
