@@ -95,3 +95,22 @@ G5 是今天事故的直接补丁：**「数据落了盘」不等于「页面上
 4. 之后列车恢复：B 档自动合 + 自动 `--sha` 部署；C 档等你点头。
 
 破例/回滚卡：`~/.hermes/scripts/feishu-ops-card.sh` → 飞书「总管 · 审批室」群（已在 11-25 16:02 验证可达）。
+
+## 九、D 道：契约/文档捷径（2026-11-25 法老定：AGENTS 与 memory 走最慢）
+
+契约 brief 是**别的会话读的输入**，不是产物 —— 它靠进 main 生效，不靠上线。但等 30 分钟列车太慢，所以开一条只收 doc-only 的捷径：
+
+| 能走捷径 | 不能走（走最慢/正常合并） |
+|---|---|
+| `docs/**`、`*.contract.md`、`STYLE.md`、`DESIGN.md` | `AGENTS.md` / `CLAUDE.md`（规则类，改的是所有会话的行为） |
+| | 一切代码/配置：`src/` `scripts/` `package.json` `wrangler*` `public/` `.github/` |
+| | memory（本就不在仓库里，天然不走） |
+
+实现：`~/.hermes/scripts/contract-lane.sh <repo> <branch>`（`--check` 只判定）
+- 三条仍守：main 只收 ff、只推自己的提交、必留痕（`ops-check --kind contract` + 飞书「总管 · 审批室」群）
+- 不部署：docs 不进产物；若某契约渲染进站点，那它就不是文档，别走这条道
+- 实测：docs-only 分支通过；带 `scripts/` 改动 exit 10 拒；落后 main exit 5 拒
+
+**消费者纪律（比推送更重要）**：会话读契约一律读 `origin/main` 版本
+（`git show origin/main:docs/x.md`），不读本地工作树副本 —— 后者可能落后好几天。
+列车合老分支时用 `git merge-base --is-ancestor <契约提交> <分支>` 标注「这分支在旧契约下写的」。
