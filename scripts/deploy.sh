@@ -57,12 +57,15 @@ MAIN_TREE="$(git rev-parse --show-toplevel)"
 PRIMARY_TREE="$(git worktree list --porcelain | awk '/^worktree /{print $2; exit}')"
 [ -n "$PRIMARY_TREE" ] || PRIMARY_TREE="$MAIN_TREE"
 BASE_SHA=""
+CARD="$HOME/.hermes/scripts/feishu-ops-card.sh"
 if [ "$ALLOW_UNMERGED" -eq 1 ]; then
   [ -z "$WHY" ] && { echo "✗ --allow-unmerged 必须配 --why \"…\"（会进台账，事后要对账）" >&2; exit 7; }
   BASE_SHA=$(git rev-parse --verify "${SHA_ARG:-HEAD}^{commit}")
   echo "⚠ 破例：发未合并提交 ${BASE_SHA:0:8}（理由：${WHY}）—— 台账会记，对账会红" >&2
+  bash "$CARD" "破例部署 $(basename "$MAIN_TREE")" "发未合并提交 ${BASE_SHA:0:8}，理由：${WHY}" >/dev/null 2>&1 || true
 elif [ "$ROLLBACK" -eq 1 ]; then
   BASE_SHA=$(bash "$MAIN_TREE/scripts/publish-gate.sh" --sha "${SHA_ARG:-}" --rollback --why "$WHY") || exit $?
+  bash "$CARD" "回滚部署 $(basename "$MAIN_TREE")" "回滚到 ${BASE_SHA:0:8}，理由：${WHY}" >/dev/null 2>&1 || true
 else
   BASE_SHA=$(bash "$MAIN_TREE/scripts/publish-gate.sh" ${SHA_ARG:+--sha "$SHA_ARG"}) || exit $?
 fi
