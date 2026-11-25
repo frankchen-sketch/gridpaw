@@ -2,19 +2,10 @@
 import SEOHead from '../../components/SEOHead.astro';
 import GameNav from '../../components/GameNav.astro';
 import SideAd from '../../components/SideAd.astro';
-import {
-  allDives,
-  fmt,
-  longDate,
-  shortDate,
-  listedCount,
-  totalListed,
-  totalSubmitted,
-  rarestOverall,
-  diveTag,
-  diveNo,
-  type Dive,
-} from '../../lib/krillion';
+import InContentAd from '../../components/InContentAd.astro';
+import '../../styles/krillion-base.css';
+import { allDives, fmt, longDate, shortDate, totalListed, totalSubmitted, rarestOverall, diveTag, diveNo, type Dive } from '../../lib/krillion';
+import { TIERS, tiersOf, compact, dayFaqs, faqJsonLd } from '../../lib/krillion-page';
 
 export function getStaticPaths() {
   const seen = new Set<string>();
@@ -27,7 +18,7 @@ export function getStaticPaths() {
     .map((d) => ({ params: { date: d.date }, props: { dive: d } }));
 }
 
-const { dive } = Astro.props;
+const { dive } = Astro.props as { dive: Dive };
 const idx = allDives.findIndex((d) => d.date === dive.date);
 const newer = idx > 0 ? allDives[idx - 1] : null;
 const older = idx < allDives.length - 1 ? allDives[idx + 1] : null;
@@ -35,19 +26,13 @@ const older = idx < allDives.length - 1 ? allDives[idx + 1] : null;
 const listed = totalListed(dive);
 const submitted = totalSubmitted(dive);
 const rarest = rarestOverall(dive);
-
 const dtag = diveTag(dive);
-const dnum = diveNo(dive);
+const minAcc = Math.min(...dive.prompts.map((p) => p.accepted));
+const maxAcc = Math.max(...dive.prompts.map((p) => p.accepted));
 
-const fact = `Krillion ${dtag || 'Dive'} (${longDate(dive.date)}) asked ${dive.promptCount} prompts. Players submitted ${fmt(
-  submitted,
-)} answers in total.${
-  rarest
-    ? ` The rarest answer accepted was “${rarest.answer.a}”, found by ${fmt(
-        rarest.answer.players,
-      )} players on “${rarest.prompt.prompt}”.`
-    : ''
-}`;
+const fact = `Krillion ${dtag || 'Dive'} (${longDate(dive.date)}) asked ${dive.promptCount} prompts. Players submitted ${fmt(submitted)} answers in total.${rarest ? ` The rarest answer accepted was “${rarest.answer.a}”, found by ${fmt(rarest.answer.players)} players on “${rarest.prompt.prompt}”.` : ''}`;
+const faqs = dayFaqs(dive, listed, minAcc, maxAcc);
+const faqLd = faqJsonLd(faqs);
 ---
 
 <!doctype html>
@@ -57,237 +42,165 @@ const fact = `Krillion ${dtag || 'Dive'} (${longDate(dive.date)}) asked ${dive.p
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <SEOHead
       title={`Krillion Answers, ${shortDate(dive.date)}${dtag ? ` (${dtag})` : ''}`}
-      description={`All ${dive.promptCount} Krillion prompts from ${dtag || 'this Dive'} on ${longDate(
-        dive.date,
-      )} — ${listed} catalogued answers with rarity tiers and real player counts.`}
+      description={`All ${dive.promptCount} Krillion prompts from ${dtag || 'this Dive'} on ${longDate(dive.date)}, with ${listed} catalogued answers sorted by rarity tier.`}
       canonical={`/krillion-answers/${dive.date}/`}
       type="article"
-      breadcrumbTitle={`${shortDate(dive.date)}${dtag ? ` (${dtag})` : ''}`}
+      breadcrumbTitle={`${dtag || shortDate(dive.date)}`}
       segmentNames={{ 'krillion-answers': 'Krillion Answers' }}
     />
     <link rel="alternate" hreflang="en" href={`https://gridpaw.com/krillion-answers/${dive.date}/`} />
     <link rel="alternate" hreflang="x-default" href={`https://gridpaw.com/krillion-answers/${dive.date}/`} />
-    <style is:global>
-      :root {
-        --amber: #d97706;
-        --amber-ink: #a35700;
-        --cream: #fffbf5;
-        --ink: #2a1e12;
-        --paper: #ffffff;
-        --line: #eadbc8;
-        --sand: #f5ebdd;
-        --muted: #7a6a58;
-      }
-      body {
-        margin: 0;
-        background: var(--cream);
-        color: var(--ink);
-        font-family: Nunito, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-        font-size: 17px;
-        line-height: 1.62;
-        -webkit-font-smoothing: antialiased;
-      }
-      .wrap {
-        max-width: 960px;
-        margin: 0 auto;
-        padding: 0 20px 64px;
-      }
-      .kr-crumb {
-        font-size: 13px;
-        color: var(--muted);
-        padding: 18px 0 6px;
-      }
-      .kr-crumb a {
-        color: var(--amber-ink);
-        text-decoration: none;
-      }
-      .kr-h1 {
-        font-family: Georgia, 'Times New Roman', serif;
-        font-size: clamp(26px, 4.4vw, 36px);
-        line-height: 1.2;
-        margin: 6px 0 8px;
-        letter-spacing: -0.01em;
-      }
-      .kr-lede {
-        font-size: 15px;
-        color: var(--muted);
-        margin: 0 0 4px;
-      }
-      .kr-lede b {
-        color: var(--ink);
-      }
-      .kr-fact {
-        background: var(--paper);
-        border: 1px solid var(--line);
-        border-left: 4px solid var(--amber);
-        border-radius: 14px;
-        padding: 16px 18px;
-        margin: 20px 0 24px;
-        font-size: 15px;
-        line-height: 1.6;
-      }
-      .kr-stats {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        background: var(--paper);
-        margin: 0 0 26px;
-        overflow: hidden;
-      }
-      .kr-stats div {
-        padding: 13px 14px;
-        border-right: 1px solid var(--line);
-      }
-      .kr-stats div:last-child {
-        border-right: 0;
-      }
-      .kr-stats b {
-        display: block;
-        font-size: 18px;
-        font-weight: 800;
-        color: var(--amber-ink);
-        line-height: 1.2;
-      }
-      .kr-stats span {
-        display: block;
-        font-size: 11px;
-        letter-spacing: 0.07em;
-        text-transform: uppercase;
-        color: var(--muted);
-        margin-top: 3px;
-      }
-      .kr-h2 {
-        font-family: Georgia, 'Times New Roman', serif;
-        font-size: 24px;
-        margin: 30px 0 4px;
-      }
-      .kr-sub {
-        font-size: 14px;
-        color: var(--muted);
-        margin: 0 0 16px;
-      }
-      .plist {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-      .plist a {
-        display: block;
-        padding: 14px 16px;
-        border-radius: 14px;
-        border: 1px solid var(--line);
-        background: var(--paper);
-        text-decoration: none;
-        color: var(--ink);
-      }
-      .plist a:hover {
-        border-color: var(--amber);
-        background: var(--sand);
-      }
-      .plist b {
-        font-size: 15.5px;
-        display: block;
-        line-height: 1.4;
-      }
-      .plist small {
-        color: var(--muted);
-        font-size: 12.5px;
-      }
-      .nav2 {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-        margin-top: 26px;
-      }
-      .nav2 a {
-        flex: 1 1 auto;
-        padding: 12px 15px;
-        border-radius: 10px;
-        border: 1px solid var(--line);
-        background: var(--paper);
-        text-decoration: none;
-        color: var(--amber-ink);
-        font-weight: 700;
-        font-size: 14px;
-      }
-      .nav2 a:hover {
-        background: var(--sand);
-      }
-      .nav2 a:last-child {
-        text-align: right;
-      }
-      .src {
-        margin-top: 30px;
-        padding: 14px 16px;
-        border: 1px dashed var(--line);
-        border-radius: 10px;
-        font-size: 13px;
-        color: var(--muted);
-        line-height: 1.55;
-      }
-      @media (max-width: 560px) {
-        .kr-stats {
-          grid-template-columns: 1fr;
-        }
-        .kr-stats div {
-          border-right: 0;
-          border-bottom: 1px solid var(--line);
-        }
-        .kr-stats div:last-child {
-          border-bottom: 0;
-        }
-      }
-    </style>
+    <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
   </head>
   <body>
     <GameNav />
-    <main class="wrap">
-      <nav class="kr-crumb" aria-label="Breadcrumb">
-        <a href="/">GridPaw</a> › <a href="/krillion-answers/">Krillion Answers</a> ›
-        <a href="/krillion-answers/archive/">Archive</a> › <span>{shortDate(dive.date)}</span>
-      </nav>
 
-      <h1 class="kr-h1">Krillion Answers — {longDate(dive.date)}</h1>
-      <p class="kr-lede">
-        {dtag || 'Dive'} · {dive.promptCount} prompts · {fmt(submitted)} answers submitted
-      </p>
-
-      <p class="kr-fact">{fact}</p>
-
-      <div class="kr-stats">
-        <div><b>{fmt(submitted)}</b><span>answers submitted</span></div>
-        <div><b>{fmt(dive.prompts.reduce((n, p) => n + p.accepted, 0))}</b><span>accepted answers</span></div>
-        <div><b>{listed}</b><span>catalogued here</span></div>
+    <header class="hero">
+      <div class="hero-in">
+        <div class="crumb">
+          <a href="/">GridPaw</a> › <a href="/krillion-answers/archive/">Daily Answers</a> ›
+          <a href="/krillion-answers/">Krillion</a>
+        </div>
+        <div class="hero-grid">
+          <div class="hero-main">
+            <div class="kicker">{dtag || 'Dive'} · {longDate(dive.date)}</div>
+            <h1>Krillion Answers <span class="num">{shortDate(dive.date)}</span></h1>
+            <p class="sub">
+              Every prompt from {dtag || 'this Dive'}, with the accepted answers that actually change your
+              score — sorted from the crowd down to the trench.
+            </p>
+            <div class="hero-links">
+              {newer && <a href={`/krillion-answers/${newer.date}/`}>← Newer{diveNo(newer) ? ` (Dive #${diveNo(newer)})` : ''}</a>}
+              {older && <a href={`/krillion-answers/${older.date}/`}>Older{diveNo(older) ? ` (Dive #${diveNo(older)})` : ''} →</a>}
+              <a href="/krillion-answers/">Today's answers →</a>
+            </div>
+          </div>
+          <div class="hero-side">
+            <ol class="gauge" aria-hidden="true">
+              {TIERS.map((t) => (
+                <li class={`g-${t.key}`}>
+                  <span>{t.label}</span>
+                  <b>{t.pts}</b>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
       </div>
+    </header>
 
-      <h2 class="kr-h2">All {dive.promptCount} prompts</h2>
-      <p class="kr-sub">Tap a prompt for its full answer breakdown.</p>
-      <div class="plist">
-        {dive.prompts.map((p) => (
-          <a href={`/krillion-answers/q/${p.slug}/`}>
-            <b>
-              {p.n}. {p.prompt}
-            </b>
-            <small>
-              {fmt(p.answersGiven)} answers given · {fmt(p.accepted)} accepted · {listedCount(p)} catalogued
-              {p.one[0] ? ` · rarest “${p.one[0].a}”` : ''}
-            </small>
-          </a>
+    <div class="stats-wrap">
+      <div class="hero-in">
+        <div class="stats">
+          <div class="stat"><b>{compact(submitted)}</b><span>answers submitted</span></div>
+          <div class="stat"><b>{dive.promptCount}</b><span>prompts</span></div>
+          <div class="stat"><b>{fmt(minAcc)}–{fmt(maxAcc)}</b><span>answers / prompt</span></div>
+          <div class="stat"><b>{fmt(listed)}</b><span>documented answers</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <p class="fact">{fact}</p>
+
+      <h2 class="sec">The {dive.promptCount} prompts</h2>
+      <p class="sec-sub">Tap a prompt to open its answer bank. Answers are grouped by the tier they score.</p>
+      <div id="prompts">
+        {dive.prompts.map((p, i) => (
+          <details class="pcard" open={i === 0}>
+            <summary>
+              <div class="pnum">{i + 1}</div>
+              <div class="pbody">
+                <p class="pq">{p.prompt}</p>
+                <div class="pmeta">
+                  <span class="tag">Prompt {p.n}</span>
+                  <span>{fmt(p.accepted)} accepted answers</span>
+                  <span>·</span>
+                  <span>{fmt(p.deepCuts)} Deep Cuts</span>
+                </div>
+              </div>
+              <div class="caret">▶</div>
+            </summary>
+            <div class="pinner">
+              {tiersOf(p).map((g) => (
+                <div class={`tier t-${g.key}`}>
+                  <div class="tbadge">
+                    {g.label}
+                    <i>{g.pts} pts</i>
+                  </div>
+                  <div class="tans">
+                    {g.items.map((it) => (
+                      <span class="chip">
+                        <a href={`/krillion-answers/q/${p.slug}/`}>{it.name}</a>
+                        {it.note ? <em>{it.note}</em> : null}
+                      </span>
+                    ))}
+                    {g.more > 0 && <span class="more">+{fmt(g.more)} more</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </details>
         ))}
       </div>
 
-      <div class="nav2">
-        <span>{newer ? <a href={`/krillion-answers/${newer.date}/`}>← {shortDate(newer.date)} (newer)</a> : <span />}</span>
-        <span>{older ? <a href={`/krillion-answers/${older.date}/`}>Older: {shortDate(older.date)} →</a> : <span />}</span>
+      {rarest && (
+        <>
+          <h2 class="sec">Rarest answer</h2>
+          <p class="sec-sub">Only the sharpest divers reached this one.</p>
+          <div class="rare-grid">
+            <div class="rare-row">
+              <div>
+                <b>{rarest.answer.a}</b>
+                <span>{rarest.prompt.prompt}</span>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      <InContentAd />
+
+      <h2 class="sec">Keep diving</h2>
+      <div class="arch">
+        {newer && (
+          <a href={`/krillion-answers/${newer.date}/`}>
+            {diveNo(newer) ? `Dive #${diveNo(newer)}` : shortDate(newer.date)}
+            <small>{shortDate(newer.date)}</small>
+          </a>
+        )}
+        {older && (
+          <a href={`/krillion-answers/${older.date}/`}>
+            {diveNo(older) ? `Dive #${diveNo(older)}` : shortDate(older.date)}
+            <small>{shortDate(older.date)}</small>
+          </a>
+        )}
+        <a href="/krillion-answers/">Today<small>latest dive</small></a>
+        <a href="/krillion-answers/archive/">All {allDives.length}<small>full archive</small></a>
       </div>
 
-      <p class="src">
-        <b>Sources.</b> Prompt text comes from Krillion's public daily endpoint; answer tiers and
-        player counts come from the game's public reveal data. GridPaw is independent and not
+      <h2 class="sec">Common questions</h2>
+      <div class="faq-list">
+        {faqs.map((f) => (
+          <details class="faq">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+
+      <div class="cta">
+        <a href="/krillion-answers/">Check your score for today's Dive</a>
+        <a class="ghost" href="/krillion-answers/archive/">Browse the archive</a>
+      </div>
+
+      <p class="note">
+        Sources: prompt text, Dive numbers and reset times come from Krillion's public daily endpoint; answer
+        tiers and player counts come from the game's public reveal data. GridPaw is independent and not
         affiliated with krillion.io.
       </p>
-    </main>
+    </div>
+
     <SideAd />
   </body>
 </html>
