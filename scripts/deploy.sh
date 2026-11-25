@@ -75,6 +75,9 @@ export DEPLOY_STATE_FILE="${DEPLOY_STATE_FILE:-$HOME/.agent-autoloop/work/ledger
 export DEPLOY_REPO="$PRIMARY_TREE" DEPLOY_SHA="$BASE_SHA"
 export DEPLOY_SOURCE="${DEPLOY_SOURCE:-manual: scripts/deploy.sh（$(basename "${0}")）}"
 
+OWN_TREE=0
+[ -z "$SHA_ARG" ] && [ "$ROLLBACK" -eq 0 ] && [ "$ALLOW_UNMERGED" -eq 0 ] && OWN_TREE=1
+
 WORKDIR="$MAIN_TREE"
 if [ "$(git -C "$MAIN_TREE" rev-parse HEAD)" != "$BASE_SHA" ] || [ -n "$(git -C "$MAIN_TREE" status --porcelain --untracked-files=no)" ]; then
   WORKDIR="${TMPDIR:-/tmp}/gridpaw-deploy-$$"
@@ -129,7 +132,7 @@ die() { printf '✗ %s\n' "$*" >&2; exit 2; }
 
 say "── 1/5 前置检查 ──"
 AHEAD=0
-if [ "$WORKDIR" = "$MAIN_TREE" ]; then
+if [ "$OWN_TREE" -eq 1 ]; then
 
   # ① 已跟踪文件不能有未提交改动（未跟踪文件不算：IndexNow key、loop-answers 都在此列）
   DIRTY=$(git status --porcelain --untracked-files=no)
