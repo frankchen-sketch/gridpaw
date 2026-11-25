@@ -83,12 +83,19 @@ if [ "$(git -C "$MAIN_TREE" rev-parse HEAD)" != "$BASE_SHA" ] || [ -n "$(git -C 
   WORKDIR="${TMPDIR:-/tmp}/gridpaw-deploy-$$"
   rm -rf "$WORKDIR"
   git -C "$MAIN_TREE" worktree add -q --detach "$WORKDIR" "$BASE_SHA" || { echo "✗ 建临时 worktree 失败" >&2; exit 2; }
-  ln -s "$PRIMARY_TREE/node_modules" "$WORKDIR/node_modules"
   # gitignore 的运行时资产：IndexNow key、llms-full.txt 只在主树有（.gitignore public/*.txt）
-  cp "$PRIMARY_TREE"/public/*.txt "$WORKDIR/public/" 2>/dev/null || true
   WT_TMP="$WORKDIR"
   echo "ℹ 出包用临时 worktree（主树 HEAD=$(git -C "$MAIN_TREE" rev-parse --short HEAD) ≠ 目标 ${BASE_SHA:0:8}）"
 fi
+# 出包目录必须有 node_modules 和 gitignore 运行时资产（IndexNow key 等）：
+# 临时 worktree 和专用发布 worktree 都是干净检出，这两样只在主工作树里。
+ensure_assets() {
+  local d="$1"
+  [ -e "$d/node_modules" ] || ln -s "$PRIMARY_TREE/node_modules" "$d/node_modules" 2>/dev/null || true
+  cp -f "$PRIMARY_TREE"/public/*.txt "$d/public/" 2>/dev/null || true
+}
+ensure_assets "$WORKDIR"
+
 cd "$WORKDIR"
 
 LOCK="${TMPDIR:-/tmp}/gridpaw-deploy.lock"
