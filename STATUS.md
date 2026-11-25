@@ -926,3 +926,22 @@ sitemap 仍不含它）。
 1. **side-tab**（`/room-sort-game-online/` 的 Tip 块）：原本用 `border-left: 3px solid`，是 AI 味的典型标志。改成整框 1px 描边 + 12px 圆角 + 行内 `TIP` 小标签（`::before`），不再靠一侧粗色条做强调。实测 borderLeftWidth=1px、radius=12px。
 2. **空广告框**（换体当天新加的两页踩的）：`InContentAd` 原来只看 `ADSENSE_ON && SLOT`，不看 loader 是否被允许。而 play surface 上 AdSense loader 是被 ad-policy 掐掉的 → 页面留一块固定 250px 高、标着 "Advertisement" 但永远填不满的空框，违背「未填充不发标签」。改成按 `loaderAllowed(PAGE_PATH)` 出位（play surface 与 NEVER_ADS 一并排除）。
    量化：改前 dist 里真正渲染该位且无 loader 的页 = **2**（`/amochiroom/play/`、`/room-sort-game-online/`），改后 = **0**（渲染 388 页全都有 loader）。注：按 `gp-incontent-ad` 字符串粗扫会数出 250 页，那是 SEOHead 里的全局 CSS，不是真渲染，别拿它下结论。
+
+### 2026-11-25 · 自研平面图补 GA4/D1 埋点（新游戏上线必备那一档）
+
+`public/floorplan/game.js` 原来零埋点（`grep gtag|track(` = 0），上生产就是个数据黑洞。按 skill `game-event-tracking` 补齐，
+事件名全部落在既有 D1 白名单内（`FUNNEL_EVENTS` 已含 game_start/first_move/level_up/hint_click/puzzle_reset，无需改两端白名单）：
+
+| 事件 | 触发 | 参数 |
+|---|---|---|
+| `game_start` | 首次进关，且 `visibilityState==='visible'`（后台标签不发，转可见才补） | level, difficulty(「N rooms」) |
+| `first_move` | 首次成功落子（落子前同步补发 game_start，防漏斗倒挂） | level |
+| `level_up` | 通关（记录刚完成那关） | level, difficulty |
+| `hint_click` | 用掉一次提示 | level, remaining |
+| `puzzle_reset` | 点 Reset | level |
+
+通道：页面是 `public/` 静态页、跑在 iframe 里，gtag/gpTrack/clarity 都在父页（SEOHead 注入），所以 track() 优先叫 `window.parent`
+的同名函数、单独打开时回退自己。pagePath 由父页 gpTrack 自带（= /room-sort-game-online/）。
+
+实测（本地 dist，父页包一层 gpTrack 收事件，驱动 iframe 内游戏）：事件序列 `game_start → first_move → hint_click → level_up`，
+点 Reset 再补 `puzzle_reset{level:1}`，参数逐个核对正确。

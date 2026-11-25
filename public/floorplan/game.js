@@ -339,6 +339,32 @@
     $('btnHint').disabled = state.hints <= 0 || state.placed.size === L.rooms.length;
   }
 
+  // ---------- 埋点 ----------
+  // 这是 public/ 下的静态页，正常从 /room-sort-game-online/ 的 iframe 里跑：gtag / gpTrack /
+  // clarity 都挂在父页（SEOHead 注入），所以优先叫父页的。单独打开时回退到自己。
+  function track(event, params) {
+    const host = window.parent && window.parent !== window ? window.parent : window;
+    try {
+      if (typeof host.gtag === 'function') host.gtag('event', event, params || {});
+      else if (typeof window.gtag === 'function') window.gtag('event', event, params || {});
+    } catch (e) {}
+    try {
+      if (typeof host.gpTrack === 'function') host.gpTrack(event, params || {});
+      else if (typeof window.gpTrack === 'function') window.gpTrack(event, params || {});
+    } catch (e) {}
+    try { if (typeof host.clarity === 'function') host.clarity('event', event); } catch (e) {}
+  }
+  // game_start 必须「真的被看见」才发（后台标签页不发），且 first_move 之前一定先有 game_start
+  let gsSent = false;
+  const diffLabel = (L) => L.rooms.length + ' rooms';
+  function fireGameStart(params) { if (gsSent) return; gsSent = true; track('game_start', params); }
+  function maybeGameStart(params) {
+    if (document.visibilityState === 'visible') { fireGameStart(params); return; }
+    document.addEventListener('visibilitychange', function onVis() {
+      if (document.visibilityState === 'visible') { document.removeEventListener('visibilitychange', onVis); fireGameStart(params); }
+    });
+  }
+
   const BASE_HINT = 'Drag a room onto the plan — cover every square, and every door must meet a door or an entry gap.';
 
   function setStatus(msg, kind) {
@@ -361,6 +387,10 @@
     state.selected = null;
     renderBoard(); renderTray(); renderHud();
     setStatus(BASE_HINT);
+    if (state.placed.size === 1) {
+      fireGameStart({ level: lv().id, difficulty: diffLabel(lv()) }); // 顺序硬保证：gs 先于 fm
+      track('first_move', { level: lv().id });
+    }
     if (state.placed.size === lv().rooms.length) win();
     return true;
   }
@@ -374,6 +404,7 @@
 
   function win() {
     const L = lv();
+    track('level_up', { level: L.id, difficulty: diffLabel(L) });
     state.done.add(L.id);
     saveSave();
     $('winTitle').textContent = L.hard ? 'Hard plan done!' : 'Plan complete!';
@@ -399,6 +430,7 @@
     }
     evict.forEach((id) => state.placed.delete(id));
     state.hints--;
+    track('hint_click', { level: L.id, remaining: state.hints });
     state.placed.set(rid, [room.at[0], room.at[1]]);
     state.selected = null;
     renderBoard(); renderTray(); renderHud();
@@ -504,6 +536,8 @@
     setStatus(BASE_HINT);
     renderAll();
     saveSave();
+    // 首次进入关卡才补 game_start（后台标签页不发，转可见才发）
+    maybeGameStart({ level: lv().id, difficulty: diffLabel(lv()) });
   }
 
   function buildLevels() {
@@ -520,7 +554,7 @@
   }
 
   $('btnHint').addEventListener('click', hint);
-  $('btnReset').addEventListener('click', () => start(state.idx));
+  $('btnReset').addEventListener('click', () => { track('puzzle_reset', { level: lv().id }); start(state.idx); });
   $('btnLevels').addEventListener('click', () => { buildLevels(); $('levelsOverlay').classList.add('on'); });
   $('btnCloseLevels').addEventListener('click', () => $('levelsOverlay').classList.remove('on'));
   $('btnNext').addEventListener('click', () => start(state.idx + 1));
@@ -538,7 +572,7 @@
     start(state.idx);
     // QA 钩子（自动化验收用，不影响玩家）
     window.__FP = {
-      state, validate, place, unplace, hint, start, occupancy, lv,
+      state, validate, place, unplace, hint, start, occupancy, lv, track,
       solveAll() { // 按解一次性摆满，用来验证通关判定
         const L = lv();
         L.rooms.forEach((r) => state.placed.set(r.id, [r.at[0], r.at[1]]));
