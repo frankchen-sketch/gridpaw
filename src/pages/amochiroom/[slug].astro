@@ -73,9 +73,14 @@ const capNote =
     7: 'several 7-item boxes, which is deep for this game',
   }[Math.round(Number(avg))] || `around ${avg} items per box`;
 
-const shortTitle = `Amochiroom Level ${lvl.level} Answer: ${lvl.name}`;
-const title = shortTitle.length <= 50 ? shortTitle : `Amochiroom Level ${lvl.level} — ${lvl.name}`;
-const description = `Amochiroom Room Sort Level ${lvl.level} answer (${lvl.name}): ${lvl.boxCount} boxes, ${lvl.itemCount} items, exact counts and a room map of what each box wants.`;
+// TDK 结构仿 bp3（brain-puzzle-3-level-N）：**app name 打头**。
+// 实测依据：bp3 的 `Brain Puzzle 3 Level 13 Answer: Sausage Lip SOS` 拿到单 query
+//   671 展示 / 87 点击 / pos 2.9（14 天）—— 品牌词与品类词双匹配，且 SERP 高亮落在开头。
+// 旧写法把品类词 Room Sort 放第一个词、Amochiroom 挤到第 5 个词：1M+ 装机的人搜品牌名时
+//   标题开头匹配不上，等于没埋 app name（2026-11-25 法老指出）。
+const fullTitle = `Amochiroom Room Sort Level ${lvl.level} Answer: ${lvl.name}`;
+const title = fullTitle.length <= 60 ? fullTitle : `Amochiroom Room Sort Level ${lvl.level} Answer`;
+const description = `Amochiroom Puzzle: Room Sort Level ${lvl.level} (${lvl.name}) answer: fill all ${lvl.boxCount} boxes across ${lvl.itemCount} items, with exact counts and a room map of what each box wants.`;
 const canonical = `/amochiroom/level-${lvl.level}`;
 
 const faq = [
@@ -163,7 +168,7 @@ const faqJsonLd = {
     .room-tool { margin: 1rem 0 0.6rem; }
     .board { position: relative; width: 100%; max-width: 420px; margin: 0 auto; background: #f7ece0 center/cover no-repeat;
       border: 2px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: 0 3px 12px rgba(217,119,6,0.10); }
-    .board .it { position: absolute; transform-origin: center; transition: opacity 0.18s, filter 0.18s; }
+    .board .it { position: absolute; transform-origin: center; height: auto; transition: opacity 0.18s, filter 0.18s; }
     .board .ring { position: absolute; transform: translate(-50%,-50%); border-radius: 50%; pointer-events: none;
       display: none; border: 2.5px solid var(--amber); background: rgba(217,119,6,0.10); }
     .board .num { position: absolute; transform: translate(-50%,-50%); display: none; min-width: 17px; height: 17px;
@@ -194,7 +199,9 @@ const faqJsonLd = {
     table.boxes td { padding: 0.5rem 0.8rem; border-top: 1px solid var(--border); font-size: 0.95rem; }
     table.boxes td.n { font-weight: 900; color: var(--amber-ink); text-align: right; width: 5rem; }
     table.boxes tr.biggest td { background: #FFFBF2; }
-    .mech { background: #fff; border-left: 4px solid var(--amber); border-radius: 8px; padding: 0.8rem 1rem; margin: 1rem 0; }
+    /* 与 .fact 同一语言：奶油底 + 细边框。原先 4px 琥珀左边框是 AI 味 side-tab 特征（impeccable L106 报出） */
+    .mech { background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 10px; padding: 0.8rem 1rem; margin: 1rem 0; }
+    .mech strong { color: var(--amber-ink); }
     .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
     .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
     .cta-box a { color: var(--amber-ink); font-weight: 800; text-decoration: none; }
@@ -231,7 +238,7 @@ const faqJsonLd = {
   <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> › <a href="/amochiroom/">Amochiroom Room Sort</a> › Level {lvl.level}</nav>
 
   <main class="seo-section">
-    <h1>Amochiroom Level {lvl.level} Answer: {lvl.name}</h1>
+    <h1>Amochiroom Room Sort Level {lvl.level} Answer: {lvl.name}</h1>
 
     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with ABF ALPENHOF, the developer of Amochiroom Puzzle: Room Sort.</div>
 

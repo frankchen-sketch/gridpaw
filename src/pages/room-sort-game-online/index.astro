@@ -1,0 +1,251 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import SideAd from '../../components/SideAd.astro';
+import InContentAd from '../../components/InContentAd.astro';
+
+const title = 'Room Sort — Floor Plan Puzzle, Play Free Online';
+const description =
+  'Fit every room-shaped tile into the floor plan: cover each square, and every door has to meet another door or an entry gap. 60 layouts, free in your browser, no sign-up.';
+const canonical = '/room-sort-game-online';
+
+const faq = [
+  {
+    q: 'How do you play the floor plan version of Room Sort?',
+    a: 'Drag a room-shaped tile from the tray onto the floor plan. Tiles cannot overlap or hang over the edge, and a room placed on the wrong spot is refused with the reason spelled out. You win when every square of the plan is covered and every door lines up.',
+  },
+  {
+    q: 'What makes a placement legal?',
+    a: 'Three things: the whole tile has to sit inside the plan, no two tiles may share a square, and each door on the tile has to face something real — another room’s door, or one of the entry gaps cut into the outer wall. A door that opens onto a wall or onto nothing is refused.',
+  },
+  {
+    q: 'What are the entry gaps?',
+    a: 'The outer wall of every plan has one or two openings, marked with the same door swing as the rooms. They are the only places where a door may open outward. Everything else on the boundary is solid wall, so the gaps decide which room is allowed to sit along the outer edge.',
+  },
+  {
+    q: 'How many levels are there?',
+    a: '60 layouts, growing from three rooms on an eleven-square plan to eight rooms and thirty-five squares. Every one is generated with a full solution and verified before it ships, so no level is unsolvable.',
+  },
+  {
+    q: 'Is this the same as Amochiroom Room Sort?',
+    a: 'No. Amochiroom’s Room Sort is about emptying a messy room into labelled boxes — we host a playable build of that one on its own page. This page is the floor plan puzzle that shares the Room Sort name.',
+  },
+  {
+    q: 'Does it work on a phone?',
+    a: 'Yes. The plan scales to the screen and the tray scrolls sideways in one row, so the board and the pieces stay on one screen without pinching or zooming.',
+  },
+];
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const gameJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoGame',
+  name: 'Room Sort — Floor Plan Puzzle',
+  url: 'https://gridpaw.com/room-sort-game-online/',
+  applicationCategory: 'Game',
+  gamePlatform: 'Web browser',
+  genre: 'Puzzle',
+  isAccessibleForFree: true,
+  description:
+    'Fit room-shaped tiles into a floor plan: cover every square and make every door meet another door or an entry gap.',
+};
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical={canonical}
+    type="article"
+    breadcrumbTitle="Room Sort Floor Plan"
+  />
+  <link rel="alternate" hreflang="en" href="https://gridpaw.com/room-sort-game-online/" />
+  <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/room-sort-game-online/" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(gameJsonLd)} />
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> › Room Sort — Floor Plan</nav>
+
+  <main class="fp-main">
+    <h1>Room Sort — Floor Plan Puzzle</h1>
+    <p class="fp-lede">
+      Every room in this house has a shape and at least one door. Drag the pieces onto the plan until
+      the floor is covered — and every door faces another door, or one of the entry gaps on the outer wall.
+      60 layouts, playable in your browser, nothing to install.
+    </p>
+
+    <div class="fp-frame">
+      <iframe
+        src="/floorplan/game.html?embed=1"
+        title="Room Sort floor plan puzzle — playable board"
+        loading="lazy"
+        allow="fullscreen"
+      ></iframe>
+    </div>
+    <p class="fp-note">
+      Playing in a small window? <a href="/floorplan/game.html" target="_blank" rel="noopener">Open the board full screen</a> — the embedded copy is the same build.
+    </p>
+
+    <section class="fp-sec">
+      <h2>How to play</h2>
+      <ol>
+        <li><b>Pick a piece from the tray.</b> Each piece is one room, with a name and its doors drawn as a gap, a door leaf and a quarter-circle swing.</li>
+        <li><b>Drop it on the plan.</b> It has to fit entirely inside the outline and cannot land on a square another room already owns.</li>
+        <li><b>Match the doors.</b> Two rooms side by side share one doorway: their doors have to sit on the same wall. The only exception is a door that opens through an entry gap on the outer wall.</li>
+        <li><b>Cover everything.</b> The level is done when the outline is full and no door opens onto a wall or onto nothing.</li>
+      </ol>
+      <p class="fp-tip">
+        Wrong placements are not silent: the game tells you which rule you broke — outside the plan, square already taken,
+        a door opening into a wall, or a door opening onto nothing. Read the message, it is the fastest way to learn the puzzle.
+      </p>
+    </section>
+
+    <InContentAd />
+
+    <section class="fp-sec">
+      <h2>Two games share the name Room Sort</h2>
+      <p>
+        The floor plan puzzle on this page is built from scratch here. The other Room Sort — the one where you empty a messy
+        room into labelled boxes — is Amochiroom Puzzle: Room Sort, and
+        <a href="/amochiroom/play/">you can play all 133 of its rooms here</a>, with
+        <a href="/amochiroom/">the box list for every level</a> published alongside.
+      </p>
+    </section>
+
+    <section class="fp-sec">
+      <h2>Frequently asked questions</h2>
+      {faq.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </section>
+
+    <p class="fp-evidence">
+      Built and puzzle-generated in-house. Not affiliated with Gamincat or with ABF ALPENHOF; no assets from either game
+      are used here — the layouts, the drawing style and the rules text are ours.
+    </p>
+  </main>
+
+  <AdSlot />
+  <SideAd />
+
+  <style>
+    .fp-main {
+      max-width: 52.5rem;
+      margin: 0 auto;
+      padding: 1.25rem 1rem 4rem;
+      font-family: Nunito, system-ui, sans-serif;
+      color: #2c2118;
+    }
+    .fp-main h1 {
+      font-size: clamp(1.7rem, 4vw, 2.35rem);
+      line-height: 1.15;
+      margin: 0.5rem 0 0.6rem;
+    }
+    .fp-lede {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #4a3a2c;
+      margin: 0 0 1.1rem;
+    }
+    .fp-frame {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid #e8ddcb;
+      background: #fbf7f0;
+      box-shadow: 0 10px 28px rgba(120, 90, 50, 0.1);
+    }
+    .fp-frame iframe {
+      display: block;
+      width: 100%;
+      height: min(80vh, 760px);
+      min-height: 560px;
+      border: 0;
+    }
+    .fp-note {
+      font-size: 0.85rem;
+      color: #7a6652;
+      margin: 0.5rem 0 1.6rem;
+    }
+    .fp-sec {
+      margin: 1.8rem 0;
+    }
+    .fp-sec h2 {
+      font-size: 1.25rem;
+      margin: 0 0 0.6rem;
+    }
+    .fp-sec ol,
+    .fp-sec p {
+      font-size: 1rem;
+      line-height: 1.65;
+      color: #3d2f22;
+    }
+    .fp-sec ol {
+      padding-left: 1.2rem;
+    }
+    .fp-sec li {
+      margin: 0.4rem 0;
+    }
+    .fp-tip {
+      background: #fdf6e9;
+      border: 1px solid #f0e0c6;
+      border-radius: 12px;
+      padding: 0.8rem 1rem;
+      font-size: 0.95rem;
+    }
+    .fp-tip::before {
+      content: 'Tip';
+      display: inline-block;
+      margin-right: 0.5rem;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #a4610a;
+    }
+    .fp-sec details {
+      border-bottom: 1px solid #ece2d2;
+      padding: 0.6rem 0;
+    }
+    .fp-sec summary {
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.98rem;
+    }
+    .fp-sec details p {
+      margin: 0.5rem 0 0.2rem;
+      font-size: 0.95rem;
+      color: #4a3a2c;
+    }
+    .fp-evidence {
+      font-size: 0.8rem;
+      color: #8b7963;
+      border-top: 1px solid #ece2d2;
+      padding-top: 0.9rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 560px) {
+      .fp-frame iframe {
+        height: 66vh;
+        min-height: 460px;
+      }
+    }
+  </style>
+</body>
+</html>

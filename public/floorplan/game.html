@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Room Sort — Floor Plan Puzzle</title>
+<style>
+  :root{
+    --cream:#FFF8EC; --ink:#3A2C22; --muted:#7A6452;
+    --amber:#D97706; --amber-soft:#F6C77B; --amber-line:#E8C87A;
+    --wall:#FBE9C8; --door:#FFF4DC;
+    --ok:#2F9E6A; --bad:#C2453C;
+    --cell:56px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--cream); color:var(--ink);
+    font:16px/1.45 ui-rounded,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    -webkit-tap-highlight-color:transparent; overscroll-behavior-y:contain;
+  }
+  .wrap{max-width:840px;margin:0 auto;padding:14px 14px 26px}
+  header.top{display:flex;align-items:center;gap:10px;margin:2px 0 12px}
+  header.top h1{font-size:17px;margin:0;font-weight:800;letter-spacing:.2px}
+  header.top .lvl{margin-left:auto;font-size:13px;font-weight:700;color:var(--muted)}
+  header.top .lvl b{color:var(--ink)}
+  /* 嵌进 /room-sort-game-online/ 的 iframe 时带 ?embed=1：外层已有 H1，别出双标题 */
+  body.embed header.top h1{display:none}
+  body.embed header.top .lvl{margin-left:0}
+
+  .board-card{
+    background:#fff;border:1.5px solid var(--amber-line);border-radius:18px;
+    box-shadow:0 6px 20px rgba(120,85,30,.08);padding:14px;position:relative;
+  }
+  .board-row{display:flex;gap:12px;justify-content:center}
+  #board{position:relative;width:calc(var(--cell)*var(--gw));height:calc(var(--cell)*var(--gh))}
+  .grid-dots{position:absolute;inset:0;
+    background-image:radial-gradient(circle,rgba(160,120,60,.16) 1px,transparent 1.2px);
+    background-size:var(--cell) var(--cell);background-position:calc(var(--cell)/2) calc(var(--cell)/2);pointer-events:none}
+  .cell{position:absolute;width:var(--cell);height:var(--cell)}
+  .cell.floor{background:#FFFFFF;box-shadow:inset 0 0 0 1px #E8E1D3}
+  .cell.preview-ok{background:rgba(47,158,106,.28);box-shadow:inset 0 0 0 2px var(--ok)}
+  .cell.preview-bad{background:rgba(194,69,60,.2);box-shadow:inset 0 0 0 2px var(--bad)}
+  .tile{position:absolute;cursor:grab;transition:transform .12s ease,box-shadow .12s ease;touch-action:none;z-index:2}
+  .tile svg{display:block;overflow:visible}
+  .tile.placed{cursor:pointer}
+  .tile .lbl{position:absolute;transform:translate(-50%,-50%);text-align:center;
+    font-size:calc(var(--cell) * .19);font-weight:800;color:rgba(46,28,12,.8);line-height:1.05;
+    pointer-events:none;overflow-wrap:break-word}
+  #board .plan{position:absolute;left:0;top:0;pointer-events:none;z-index:1;overflow:visible}
+
+  .tray{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:12px;padding-top:10px;
+    border-top:1px dashed var(--amber-line);min-height:20px}
+  .tray .tile-slot{background:none;border:0;border-radius:10px;padding:3px;position:relative;flex:0 0 auto;
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+    transition:transform .1s ease,box-shadow .12s ease}
+  .tray .tile-slot:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(120,85,30,.14)}
+  .tray .tile-slot.on{background:rgba(217,119,6,.10)}
+  .tray .tile-slot .inner{position:relative}
+  .tray .tile-slot[data-sel="1"]{box-shadow:0 0 0 2px var(--amber)}
+  .tray .tile-slot .nm{text-align:center;font-size:11px;font-weight:800;color:var(--ink);margin-top:4px;max-width:100%;
+    line-height:1.15;overflow-wrap:break-word}
+
+  .hud{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+  button{font:inherit;font-weight:700;border-radius:11px;border:1.5px solid var(--amber-line);
+    background:#fff;color:var(--ink);padding:9px 14px;cursor:pointer;transition:transform .08s,background .15s}
+  button:hover{background:#FFF4DE}
+  button:active{transform:translateY(1px)}
+  button.primary{background:#B45309;border-color:#B45309;color:#fff}
+  button.primary:hover{background:#92400E}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  .status{margin-top:10px;text-align:center;font-size:13px;color:var(--muted);min-height:19px}
+  .status.bad{color:var(--bad);font-weight:700}
+  .status.ok{color:var(--ok);font-weight:700}
+
+  .drag-ghost{position:fixed;pointer-events:none;z-index:60;opacity:.92;filter:drop-shadow(0 8px 14px rgba(80,50,10,.25))}
+
+  .overlay{position:fixed;inset:0;background:rgba(58,44,34,.42);display:none;align-items:center;justify-content:center;z-index:80;padding:18px}
+  .overlay.on{display:flex}
+  .sheet{background:var(--cream);border-radius:20px;padding:22px;max-width:520px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.25);text-align:center}
+  .sheet h2{margin:0 0 6px;font-size:22px}
+  .sheet p{margin:0 0 14px;color:var(--muted);font-size:14px}
+  .levels-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:8px;max-height:52vh;overflow:auto;margin:6px 0 14px;text-align:left}
+  .levels-grid button{padding:10px 0;font-size:13px;position:relative}
+  .levels-grid button.done{background:#EAF7EF;border-color:#A8D8BD;color:#20694A}
+  .levels-grid button.hard::after{content:'★';position:absolute;top:1px;right:3px;font-size:9px;color:var(--amber)}
+  .win-stars{font-size:30px;letter-spacing:4px;margin:4px 0 10px}
+
+  @media (max-width:520px){
+    .wrap{padding:10px 10px 22px}
+    .board-card{padding:10px;border-radius:14px}
+    .tray{gap:7px;flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;padding-bottom:4px;
+      -webkit-overflow-scrolling:touch;scrollbar-width:thin}
+    .hud{position:sticky;bottom:6px;background:rgba(255,248,236,.95);backdrop-filter:blur(8px);
+      padding:6px;border-radius:14px;box-shadow:0 -2px 12px rgba(120,85,30,.10)}
+    button{padding:8px 12px;font-size:14px}
+  }
+</style>
+</head>
+<body>
+<script>if (new URLSearchParams(location.search).get('embed') === '1') document.body.classList.add('embed');</script>
+<div class="wrap">
+  <header class="top">
+    <h1>🏠 Room Sort · Floor Plan</h1>
+    <div class="lvl">Room <b id="lvlLabel">1</b> / <span id="lvlTotal">60</span></div>
+  </header>
+
+  <div class="board-card">
+    <div class="board-row">
+      <div id="board"><div class="grid-dots"></div></div>
+    </div>
+    <div class="tray" id="tray"></div>
+    <div class="status" id="status">Drag a room onto the plan — cover every square, and every door must meet a door or an entry gap.</div>
+    <div class="hud">
+      <button id="btnHint">💡 Hint <span id="hintN">3</span></button>
+      <button id="btnReset">↺ Reset</button>
+      <button id="btnLevels">☰ Rooms</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="levelsOverlay">
+  <div class="sheet">
+    <h2>Pick a room</h2>
+    <p>★ = hard plan. All 60 plans are hand-checked to be solvable.</p>
+    <div class="levels-grid" id="levelsGrid"></div>
+    <button class="primary" id="btnCloseLevels">Close</button>
+  </div>
+</div>
+
+<div class="overlay" id="winOverlay">
+  <div class="sheet">
+    <div class="win-stars">🏠✨</div>
+    <h2 id="winTitle">Plan complete!</h2>
+    <p id="winSub">Every square covered, every door matched.</p>
+    <button class="primary" id="btnNext">Next room →</button>
+    <button id="btnReplay">Play again</button>
+  </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>

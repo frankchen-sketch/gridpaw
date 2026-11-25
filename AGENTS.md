@@ -1,7 +1,7 @@
 # GridPaw — Agent Rules
 
 ## 项目定位
-猫主题日式逻辑谜题游戏站。14 款游戏：11 款引擎游戏（Shikaku 首页 / Akari / Kakuro / Nonogram / Nurikabe / KenKen / Binary / Star Battle / Hashi / Slitherlink / Murder Sudoku，引擎在 `src/lib/`，部分在 `puzzle-core/` 子目录，编译到 `public/*-engine.js`）+ 3 款无独立引擎游戏（Pictomino 纯静态 `public/pictomino/`；Crazy Cleanup=静态游戏体 `public/crazy-cleanup/` + Astro hub `src/pages/crazy-cleanup/`；Meowdoku=全 Astro 页 `src/pages/meowdoku/` + `/meowdoku-guide/` + `/meowdoku/levels/`，组件 `MeowdokuPlay.astro` + 数据 `src/data/meowdoku-levels.json`）。Astro 5.x 静态站 + Cloudflare Pages 部署。
+猫主题日式逻辑谜题游戏站。13 款游戏：11 款引擎游戏（Shikaku 首页 / Akari / Kakuro / Nonogram / Nurikabe / KenKen / Binary / Star Battle / Hashi / Slitherlink / Murder Sudoku，引擎在 `src/lib/`，部分在 `puzzle-core/` 子目录，编译到 `public/*-engine.js`）+ 2 款无独立引擎游戏（Pictomino 纯静态 `public/pictomino/`；Meowdoku=全 Astro 页 `src/pages/meowdoku/` + `/meowdoku-guide/` + `/meowdoku/levels/`，组件 `MeowdokuPlay.astro` + 数据 `src/data/meowdoku-levels.json`）+ 2 个第三方游戏攻略/可玩页（Amochiroom 133 关答案页 `src/pages/amochiroom/`，其可玩版在 `/amochiroom/play/`）+ **1 款自研平面图谜题 `public/floorplan/`**（Room Sort floor plan，60 关由 `scripts/gen-floorplan-levels.mjs` 生成即带解，挂 `/room-sort-game-online/` 品类页，2026-11-25 换体）。**Crazy Cleanup 已于 2026-11-25 下线**（20 关数据不可通关，不再修，全路径 301 → `/room-sort-game-online/`）。Astro 5.x 静态站 + Cloudflare Pages 部署。
 
 ## 怎么跑
 ```bash

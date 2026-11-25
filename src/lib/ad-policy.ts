@@ -16,11 +16,12 @@
  *  29 个 play surface 逐页 elementFromPoint 采样实测（1440/1350 两档），棋盘格、按钮、文字零命中。 */
 export const PLAY_SURFACES = new Set([
   '/',
-  '/akari', '/binary', '/crazy-cleanup', '/hashi', '/kakuro', '/kenken',
+  '/akari', '/binary', '/hashi', '/kakuro', '/kenken',
   '/meowdoku', '/murdoku', '/nonogram', '/nurikabe', '/slitherlink', '/star-battle',
   '/solver', '/akari/solver', '/hashi/solver', '/nonogram/solver', '/kenken/solver',
   '/word-kitchen/solver',  // 2026-11-24：第三方游戏（Gimica Word Kitchen）字母求解器，交互工具页按解题器口径
   '/amochiroom/find',      // 2026-11-24：第三方游戏（Amochiroom Room Sort）箱子反查工具，纯前端交互，同解题器口径
+  '/amochiroom/play',      // 2026-11-25：133 关可玩版从 /room-sort-game-online 挪到品牌目录下（换体：品类页给自研平面图）
   //   配套的 /amochiroom/ 与 /amochiroom/level-N/ 是纯文字攻略页（内容页，全档广告），不登记
   // 同族真棋盘页（2026-11-08 补）：不是 /akari/ 主入口但同样直接渲染可玩棋盘
   '/akari/akari-puzzle', '/akari/cat-logic-puzzle', '/akari/create', '/akari/daily',
@@ -46,6 +47,8 @@ export const PLAY_SURFACES = new Set([
   // 每日盘（每张缩略图都是可点进棋盘的入口），且刻意不加任何广告组件。不登记的后果是
   // check-play-surfaces 报红，同时 SEOHead 会把 adsbygoogle loader 放进这个棋盘页。
   '/huepaw', '/huepaw/archive',
+  // 2026-11-24 新游戏：Room Sort 网页版（133 关可玩，内联渲染棋盘 = play surface，只出桌面侧栏）
+  '/room-sort-game-online',
 ]);
 
 /** 按目录整片收：单关棋盘页（/akari/puzzle/puzzle-001 … /meowdoku/levels/1 …） */

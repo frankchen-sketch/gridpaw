@@ -20,7 +20,7 @@ const itemTypes = new Set(levels.flatMap((l: any) => l.items.map((it: any[]) => 
 const boxLabels = new Set(levels.flatMap((l: any) => l.boxes.map((b: any) => b.name))).size;
 const busiest = [...levels].sort((a: any, b: any) => b.itemCount - a.itemCount)[0];
 
-const title = `Amochiroom Room Sort Answers: All ${total} Rooms`;
+const title = `Amochiroom Puzzle: Room Sort Answers: All ${total} Rooms`;
 const description = `Every Amochiroom Puzzle: Room Sort level with its exact box list: ${totalBoxes.toLocaleString('en-US')} boxes across ${total} rooms, with counts, room maps and what each box is waiting for.`;
 const canonical = '/amochiroom';
 
@@ -103,7 +103,9 @@ const band: Record<string, string> = { easy: 'easy', middle: 'mid', hard: 'hard'
     .fact { flex: 1 1 90px; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 10px; padding: 0.5rem 0.7rem; }
     .fact b { display: block; font-size: 1.15rem; color: var(--amber-ink); }
     .fact span { font-size: 0.7rem; color: var(--light); font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; }
-    .mech { background: #fff; border-left: 4px solid var(--amber); border-radius: 8px; padding: 0.8rem 1rem; margin: 1rem 0; }
+    /* 与 .fact 同一语言：奶油底 + 细边框。原先 4px 琥珀左边框是 AI 味 side-tab 特征（impeccable L106 报出） */
+    .mech { background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 10px; padding: 0.8rem 1rem; margin: 1rem 0; }
+    .mech strong { color: var(--amber-ink); }
     .why { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1.1rem; margin: 1rem 0 1.4rem; }
     .why ul { margin: 0; padding-left: 1.1rem; }
     .why li { margin: 0.55rem 0; font-size: 0.94rem; line-height: 1.62; }
@@ -157,7 +159,7 @@ const band: Record<string, string> = { easy: 'easy', middle: 'mid', hard: 'hard'
   <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> › Amochiroom Room Sort Answers</nav>
 
   <main class="seo-section">
-    <h1>Amochiroom Room Sort Answers: All {total} Rooms</h1>
+    <h1>Amochiroom Puzzle: Room Sort Answers: All {total} Rooms</h1>
 
     <div class="disclaimer">Unofficial fan-made guide. Not affiliated with ABF ALPENHOF, the developer of Amochiroom Puzzle: Room Sort.</div>
 
@@ -177,6 +179,7 @@ const band: Record<string, string> = { easy: 'easy', middle: 'mid', hard: 'hard'
     <div class="answer-box">
       <span class="label">Quick answer</span>
       <p>{total} rooms, {totalBoxes.toLocaleString('en-US')} boxes, {totalItems.toLocaleString('en-US')} items — every count here matches the game file exactly.</p>
+      <p>Want to play it instead of reading it? <a href="/amochiroom/play/">All {total} rooms are playable in the browser</a> — the same level data, no install.</p>
       <p>Stuck right now? <a href="/amochiroom/find/">Type the box labels you can see</a> and the finder names the room.</p>
     </div>
 

@@ -21,8 +21,8 @@ const games = [
   { href: '/star-battle/', icon: '/assets/game-icons/starbattle.webp', name: 'Star Battle', desc: 'Two Not Touch' },
   { href: '/hashi/', icon: '/assets/game-icons/hashi.webp', name: 'Hashi', desc: 'Bridges' },
   { href: '/slitherlink/', icon: '/assets/game-icons/slitherlink.webp', name: 'Slitherlink', desc: 'Loop drawing' },
-  { href: '/crazy-cleanup/', icon: '/assets/game-icons/crazycleanup.webp', name: 'Crazy Cleanup', desc: 'Tidy & sort', isNew: true, badgeGame: 'crazy-cleanup' },
   { href: '/meowdoku/', icon: '/assets/game-icons/meowdoku.webp', name: 'Meowdoku', desc: 'Cat Queens', isNew: true },
+  { href: '/room-sort-game-online/', icon: '/assets/game-icons/room-sort.webp', name: 'Room Sort', desc: 'Floor plans', isNew: true },
   { href: '/huepaw/', icon: '/assets/game-icons/huepaw.webp', name: 'Huepaw', desc: 'Color gradient', isNew: true },
 ];
 const tiles = active === '/' ? games : games.filter((g) => g.href !== active);
@@ -67,7 +67,9 @@ import { BADGES } from '../lib/badge-icons';
     padding: 10px 4px 8px; text-decoration: none; color: #3f2d1d;
     transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
   }
-  .gp-hub-badge { position: absolute; top: -6px; right: -4px; background: #C0392B; color: #fff; font-size: 8px; font-weight: 900; letter-spacing: .06em; border-radius: 999px; padding: 2px 6px; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+  /* NEW 角标：白底 + 深红字。原来红底白字在 8px 下糊成一团红点、字读不出来（2026-11-25 法老指出），
+     改白底后靠深红字承担对比（#B3261E on #FFF ≈ 7.5:1），另加 1px 描边保证在奶油卡片上能看清轮廓。 */
+  .gp-hub-tile .gp-hub-badge { position: absolute; top: -6px; right: -4px; background: #fff; color: #B3261E; border: 1px solid #E7D3BF; font-size: 9px; font-weight: 900; letter-spacing: .08em; border-radius: 999px; padding: 1px 6px; box-shadow: 0 1px 3px rgba(63,45,29,.18); }
   .gp-hub-corner { position: absolute; top: -7px; left: -5px; width: 24px; height: 24px; border-radius: 50%;
     background: #d97706; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
   .gp-hub-corner[hidden] { display: none; }
@@ -75,13 +77,14 @@ import { BADGES } from '../lib/badge-icons';
   .gp-hub-tile:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(63,45,29,.12); border-color: #d97706; }
   .gp-hub-tile img { width: 40px; height: 40px; border-radius: 9px; display: block; margin-bottom: 5px; }
   .gp-hub-tile b { font-size: .8rem; font-weight: 800; line-height: 1.2; }
-  .gp-hub-tile span { font-size: .68rem; color: #8a6f55; line-height: 1.25; margin-top: 2px; }
+  .gp-hub-tile > span:not(.gp-hub-badge):not(.gp-hub-corner) { font-size: .68rem; color: #8a6f55; line-height: 1.25; margin-top: 2px; }
   @media (max-width: 719px) {
     .gp-hub-grid { gap: 6px; }
     .gp-hub-tile { padding: 7px 2px 6px; }
     .gp-hub-tile img { width: 30px; height: 30px; border-radius: 7px; margin-bottom: 3px; }
     .gp-hub-tile b { font-size: .68rem; }
-    .gp-hub-tile span { display: none; }
+    .gp-hub-tile > span:not(.gp-hub-badge):not(.gp-hub-corner) { display: none; }
+    .gp-hub-tile .gp-hub-badge { font-size: 8px; padding: 1px 5px; letter-spacing: .06em; }
   }
 </style>
 

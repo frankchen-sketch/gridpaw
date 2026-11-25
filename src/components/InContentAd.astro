@@ -12,6 +12,7 @@ import AdGate from './AdGate.astro';
 import NativeAd from './NativeAd.astro';
 import { NATIVE_TEST_PATHS } from '../data/native-test-pages';
 import { ADSENSE_CLIENT, ADSENSE_SLOTS, ADSENSE_ENABLED } from '../lib/adsense';
+import { loaderAllowed } from '../lib/ad-policy';
 
 const ADSTERRA_OFF = true; // 2026-11-17 法老撤除（全站零广告，与 SideAd 同一开关口径）
 const ADSTERRA_ON = !ADSTERRA_OFF;
@@ -22,10 +23,14 @@ const SLOT = ADSENSE_SLOTS.incontent;
 // 清单/分组/回滚方式见 src/data/native-test-pages.ts；实验结束清空数组即全站回 iframe。
 const PAGE_PATH = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const useNative = ADSTERRA_ON && NATIVE_TEST_PATHS.has(PAGE_PATH);
+// 只在 loader 被允许的页出这个位。loaderAllowed() 已把 play surface 与 NEVER_ADS 排除掉，
+// 那些页上 ins 永远填不满 —— 留一块 250px 空白框 + "Advertisement" 标签，违背「未填充不发标签」。
+// 2026-11-25 实测：换体当天新加的两页（/amochiroom/play/、/room-sort-game-online/）就踩了这个坑。
+const loaderOk = loaderAllowed(PAGE_PATH);
 ---
 {ADSTERRA_ON && <AdGate />}
 {ADSTERRA_ON && useNative && <NativeAd />}
-{ADSENSE_ON && SLOT && (
+{ADSENSE_ON && SLOT && loaderOk && (
 <div class="gp-incontent-ad">
   <span class="gp-incontent-ad__label">Advertisement</span>
   <ins class="adsbygoogle gp-ad-ins" data-gp-pos="incontent" style="display:inline-block;width:300px;height:250px"

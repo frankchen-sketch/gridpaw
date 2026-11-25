@@ -32,6 +32,8 @@
 
 - **BP3 关卡编号对齐完成，待部署（2026-11-24，分支 `fix/bp3-level-alignment`，台账 #67）**：用**安卓模拟器实拍游戏本体**（AVD `bp3b`，包名 `com.brain.crazy.joygame`）32 页关卡簿逐页截图 + OCR，建出 **192 关游戏内真关名表**，据此对账 137 页 → **31 页本来正确 / 96 页错位 / 10 页游戏内查无此关**。**前轮「照 trickystory 编号重排」的判断已作废**：实测其 L4 写 Escape Office（游戏内 L4=Principal Coming）、L47 写 Bear Attack（游戏内 L48），第三方映射是旧版或别的变体，不可作基准。本轮已施工：96 页内容按真号重排（URL 空间不变、零 301 链）+ 德语镜像同步 + 153 素材按新号改名（缺图 0）+ en/de 枢纽各 137→127 卡（三方一致性 127/127 通过）+ pt-br 30→28 + 10 幽灵页删除并 301 到枢纽；`build` 545 页 / `verify` 194 文件全绿，dist 抽查 `L48=Bear Attack`、`L51=Ambiguous Campus`。**未合并未部署**（等法老点头走 `deploy:safe`）。遗留：12 个空号（18/25/30/31/40/56/61/63/67/68/136/137）待补 301 或补页；导航行仍留指向已删号的链接（现 301 到枢纽）；游戏 177–189 段 OCR 糊、扩页前需补真值表。流程已固化 → skill `game-level-number-realignment`；竞品侦查 R2（trickystory 深挖：编号体系来源/页面模板/抓取节奏/变现/站群指纹）排下一轮，台账 #68。
 
+- **core update 已结案 + 11-25 初查（2026-11-25 09:00 CST，cron `3490afb1c839`）**：`November 2026 core update` 已于 **11-24 22:03 CST 结案**（13d20h）；11-18~21 峰值判为**脉冲** —— 11-22~24 回落至 update 前基线的 80%/28%/24%，**B 预判**（非 A/C），正式触发等 11-25 全天 + 11-26/27，12-02 终审定档；**AdSense 自动广告 11-20 20:41 上线 = 第三候选因**（全站「零广告」窗口只有 11-17~20 这 4 天）；`December 2026 core update` 已预告 12 月发布。细节 → 下文「2026-11-23 core update 中期实况」节末的 11-25 小节。
+
 - **core update 中期实况 + 11-21 快查结论修正（2026-11-23 18:36，`research/2026-11-23-core-update-midpoint.md`）**：官方 `November 2026 core update`（11-10 10:06 PST 开始 = 11-11 01:06 CST）截至 11-23 02:17 PST **仍为 Active 未结案**。GA4 Organic Search 实测形态：11-16/17 谷底（100/98，update 前基线 **588–746**）→ 11-18~21 V 反冲到 1171（**+80% 峰**）→ 11-22 回吐 473（-60%）→ 11-23 周一 136（截至 15:xx，**仅为 update 前周一 741 的 ~18%**）。**「周内模式」已自查证伪**：本站 10-12 起单调增长 7→650，用 8 周均值算出的「周一 304 / 周六 504」是「建站初期低基数 + 11-16/17 崩溃日」的伪影 —— update 前两周实测周内差异 <25%、无周期。判读一律用**同日历周一一对齐**。**两条口径修正**：① GSC 近 2-4 天未回填完且与 GA4 反向矛盾（11-17 GSC 报 712 clicks 而 GA4 organic 仅 98），**判据只能以 GA4 Organic Search 为准**；② 11-21 快查 job（`46998d75dddb`）判「广告是主因」的推理有缺陷（把 rollout 期重算当成撤广告效果，且无法解释 11-22 起的再回落）。两个观察 job 已改判读框架并挂数据脚本 `~/.hermes/scripts/gridpaw-organic-reality.sh`：`3490afb1c839`（11-25 初查）、`d58479593939`（12-02 终审）。
 
 - **四分支合批上线（2026-11-20 21:48，main `98cc2fe`，生产指纹 `98cc2fe`，565 页）**：`deploy:safe` 全绿（前置三查 / build / IndexNow 200 推 4 URL / 线上 sw.js 指纹 = 本地 / 4 URL 自检 200）。本轮带上线的：① The Loop 两页合并 301（见下条）② bp3 L45 描述织入 `drag the hammer to the crack` ③ bp3 L60 title 命中步骤词 + L76 → L60 回链 ④ bp3 L7 title/desc 补 `13 moves in order`。**逐项线上复核**：`/the-loop-hints/` 与无斜杠两条实测 301 → `/the-loop-past-answers/?cb=…`，历史页 title 线上为 `The Loop Game Answers Today & Britannica Archive | GridPaw`；L45 线上 description 含原句、L60 title 线上一致、L76 页内 `href="/brain-puzzle-3-level-60/"` 命中 1 处。**部署账**：手动补写 `~/.agent-autoloop/work/ledger/deploy-state.json` 的 gridpaw 条目（sha `98cc2fe`，同 divination 先例），否则指挥台面板会把已上线的件显示成「已合 · 待部署」。
@@ -433,6 +435,35 @@ GSC 近 28 天（08-20~09-16）**267 曝光 / 5 点击**，均位 13.8。按设�
 
 **观察 job 已改判读框架并挂脚本**：`3490afb1c839`（11-25 09:00 初查）、`d58479593939`（12-02 09:00 终审），两者 prompt 里写死「GA4 organic 为主 + 同星期几对比 + GSC 近 4 天不可用 + 只读不改代码」。
 
+### 2026-11-25 09:00 初查（cron `3490afb1c839`）：update 已结案；11-18~21 峰值 = **脉冲**（B 预判，正式触发差 11-25 全天）
+
+**官方（一手直读 `status.search.google.com/incidents.json`）**：`November 2026 core update` **已结案**——`end = 2026-11-24T14:03Z`（= **11-24 22:03 CST**），Dashboard 原文 "The rollout was complete as of November 24, 2026"，全程 **13 天 20 小时**（11-10 18:06 UTC 起）。**同日 15:02 UTC（11-24 23:02 CST）官方另发预告：`December 2026 core update` 计划 12 月发布**（口径：长/复杂问题的理解与排序改进 + 个性化结果）。
+
+**GA4 Organic Search，同日历对齐（锚 = update 前正常日 11-02~14；不用崩溃周当基准）**：
+
+| 日期 | 星期 | organic | 锚点（update 前同日） | 变化 |
+|---|---|---|---|---|
+| 11-18 | 周三 | 859 | 11-11 = 746 | +15.1% |
+| 11-19 | 周四 | 916 | 11-12 = 649 | +41.1% |
+| 11-20 | 周五 | 1073 | 11-13 = 658 | +63.1% |
+| 11-21 | 周六 | 1171 | 11-14 = 650 | +80.2% |
+| 11-22 | 周日 | 473 | 11-08 = 588 | −19.6% |
+| 11-23 | 周一 | 205 | 11-09 = 741 | **−72.3%** |
+| 11-24 | 周二 | 151 | 11-10 = 631 | **−76.1%** |
+| 11-25 | 周三 | 36（到 09:00，未满） | 11-11 = 746 | 不可比 |
+
+脚本「vs 上周同日」列在 11-22~24 显示 +19%/+105%/+54% 是**假绿**：上周同日（11-15~17）正是崩溃日。改锚 update 前正常日后的真实形态 = **11-22 起连续三日深跌**（分别为基线的 80%/28%/24%）。
+
+**判定**：① 11-18~21 的峰值 = **脉冲，不是新基线**；② 11-25 为结案后第一个全天，09:00 只有 36 —— A 形态至少要摸到基线带下沿 594（更别说 746+），需余下 15h 跑 ≥558 ≈ 前 9h pace（4/h）的 9.3 倍，形态上排除 A；③ 但「11-24 后」的完整日窗口现为 **0 天**（11-25 未跑完），B 的正式触发要件要等 11-25 全天 + 11-26/27 复核 —— **当前结论 = B 预判（非 A、非 C）**，12-02 终审定档。
+
+**⚠️ 第三候选因（11-23 的两因框架已过时，必须记账）**：**AdSense 自动广告 11-20 20:41 已上线**（`7a29ba0`；11-20 构建 585 页中 443 页带 loader，11-21 实测 doubleclick 请求 + 265/355px 广告位）。即「零广告」窗口只有 11-17 23:00 → 11-20 20:41 这 4 天（= 11-18~21 高位段），11-22 起的跌发生在**广告以 AdSense 形态回归之后** → 11-22~24 的低谷同样不能单归因于 update 最终态，「广告是主因」既不能证实也不能证伪。11-24 19:00/23:00 两批上线（791 页）在低谷之后 = 不构成候选因，但污染 11-25 起的干净观察窗。GSC 近 3 天仍不可用（11-22 = 74 clicks，已标「未回填」）。
+
+**下一步**：
+- Hermes 11-26/27 早班跑 `~/.hermes/scripts/gridpaw-organic-reality.sh`：11-25 全天 <600（对基线带 594~746 取 -20% 的宽口径）即 B 判据成立；若仍在 150-250 档则 B 坐实无争议。
+- 12-02 终审 `d58479593939`：按 11-25~12-01 vs 基线（11-03~09）恢复率定档；<30% → 出「攻略页迁出主域」迁移方案框架（只出框架不执行）。
+- **法老 12-02 前拍板**：A 观察窗内关掉 AdSense 自动广告（回零广告；成本 ≈ $0.5/天，可把第三候选因从观察窗摘掉）/ B 维持现状接受归因不可分离。不拍板默认 B。
+- 时序约束：`December 2026 core update` 12 月内随时可能开始，B 路线若执行必须避开下次 rollout 期。
+
 ---
 
 ## 2026-11-17 首页 hub 改版（**已上线 `a562036`**，法老当日拍板提前解冻）
@@ -822,3 +853,122 @@ sitemap 仍不含它）。
 - **基线**：2026-11-24 21:57 首次跑 = GSC 7 天 / 28 天均 0 曝光、GA4 0 会话（页面刚上线，属预期）。此后每天对比基线看何时进索引。
 
 **部署链已加「GSC sitemap 重提交」一步（2026-11-24 收尾）**：`deploy:safe`（`scripts/deploy.sh`）与裸 `deploy`（package.json）在**线上自检通过之后**调用 `scripts/gsc-resubmit-sitemap.sh gridpaw.com` → `scripts/gsc-submit-sitemap.py` 走 GSC API 重提交 sitemap.xml。理由：**Google 不吃 IndexNow**（那是 Bing/Yandex 通道），而 GSC 自己重抓 sitemap 的节奏是几天一次（实测 11-24 上线当天，上次抓取还停在 11-23 23:34 = 新页压根没被看见）；API 重提交会当场触发一次下载（实测提交后几秒 `lastDownloaded` 就更新）。失败只报 ⚠ 不阻塞上线。服务账号走通用路径 `~/.hermes/secrets/gsc-gridpaw.json`（软链到 furriq 那份，同一账号同时有 GA4 552793510 与 gridpaw GSC 权限），可用 `GSC_KEY_FILE` / `GSC_PYTHON` 覆盖。
+
+## 2026-11-25 · Crazy Cleanup 下线（301 → /room-sort-game-online/）
+
+**法老拍板：cc 不修了，直接撤。**依据是实测而非感觉：
+
+- **数据不可通关**：20 关里开局「未被压住」的件只占 **12%–46%**（level 17 最差 24/207），而托盘只有 6 格。贪心玩家模拟（能收就收、收不动就挖最能解锁的那件）跑 6 次，**全部在 19–34/200 件时 TRAY_FULL 判负** —— 玩家玩到 2 成进度必然输。
+- **开桶随机是直接诱因**：`openNext()` 原本是 `Math.random()` 选桶，完全不看棋盘可达性，常开出「一件都点不了」的桶（level 1 修前开局只有 1 件可收）。已改成「优先开有可收件的桶、按可收件数降序取前 1/3 随机」，实测 level 1 开局可收 1 → 7–11 件。**但这只治开局，治不了关卡本身过不去**，所以不采用「修一修继续跑」。
+- **无 SEO 资产可损**：GSC 实测 `/crazy-cleanup/` 已收录（11-21 抓取，Breadcrumbs PASS）但**28 天曝光 0**。
+
+**改动**：删 `src/pages/crazy-cleanup/`、`public/crazy-cleanup/`（含 20 关 packs、自研引擎、gp-track）、`public/assets/game-icons/crazycleanup.webp`、`public/og-crazy-cleanup.jpg`；`public/_redirects` 加 `/crazy-cleanup` 与 `/crazy-cleanup/*` → `/room-sort-game-online/` 301（并把 `/from/lemmy-crazy` 改指同页）；三处游戏列表（GameHub / GameSwitcher / GameNav）、`ad-policy` 的 `PLAY_SURFACES`、`leaderboard.astro`、`badges.astro` 的 GROUPS 同步摘除；pictomino 静态页导航里的 cc 链接摘掉；**`badge-icons.ts` 里 3 枚 cc 徽章定义保留**（历史已授予的徽章还要能按 id 渲染）。
+
+**遗留**：D1 里 cc 的榜单/徽章历史行未删（无入口，不影响线上）；`src/lib/funnel-track.ts` 的 `first_pick`/`pick_miss` 注释保留为历史口径（cc 是唯一发送方，事件从此归零）。
+
+## 2026-11-25 · 自研平面图谜题 `/floorplan/` 一期（Gamincat 同玩法，代码/关卡自造）
+
+**动机**：`/room-sort-game-online/` 现在挂的是 amochi 解包版（物品入箱玩法），却吃着 `room sort` 这个「平面图」词族 —— 词面错配 + 美术版权靠标注。法老拍板「等 Gamincat 自研挪过来」，所以先做自研版。
+
+**机制取证**（Gamincat 商店页 + 三个网页版攻略站，2026-11-25 抓）：黄色 footprint 内部每格必须被房间块铺满、块不可重叠、块边缘的门必须与邻格的门对上、拖动时绿格预览落点、每关先小图后大图且部分标 HARD。**规则文本与实现全部自写**，不抄代码。
+
+**产出**：`scripts/gen-floorplan-levels.mjs`（生成器，已挂 build 链）+ `public/floorplan/{game.html,game.js,levels.json}` + `research/floorplan/README.md`。
+
+- **60 关，7.7–35 格、3–9 间房**，生成方式 = 先随机长 footprint → 多源生长切房间 → 房间图取随机生成树当门 → 拆成托盘。**生成即带解**，生成器自带验解（铺满 + 门成对 + 不越界），任一关失败 `exit 1`。
+- **引擎校验三条拒绝路径全部实测命中**：越界（`outside the plan`）、重叠（`already taken`）、门撞墙（`open into a wall`，用例 L2/L3/L4）。
+- **60/60 全关通关实测**：按托盘顺序逐块调用真实 `place()` 摆解法，60 关全部被增量校验接受并触发通关，0 例外 —— 证明校验器不会误杀正解。
+- **交互**：拖拽（pointer events，含取消判定：松手还在托盘上=取消）+ 点选后点格子（点按路径实测可用）；已摆块点一下退回托盘；提示 3 次，会先把冲突块退回再落正确位置；进度存 localStorage。
+- **手机 390 实测**：`scrollHeight === innerHeight`（首屏不滚动）、`scrollWidth === innerWidth`（无横向溢出）、托盘单行横滑（scrollWidth 467 > clientWidth 348）、托盘高从 573px 压到 185px（块按 0.55 比例缩、名字移到块下方）。
+
+**尚未挂上线**：`/floorplan/game.html` 带 `noindex`，是脚手架；替换 `/room-sort-game-online/` 前还要做：页面文案/FAQ 重写（现文案通篇讲物品入箱）、`ad-policy.ts` 的 PLAY_SURFACES 登记、OG 图。
+
+### 2026-11-25 追加 · 按法老反馈重做门户画法 + 加入户门洞
+
+法老原话：「room sort 这个跟 app 差得有点多，特别在下方的每个部份模块，会带各个棱角，应该是门户，要考虑这个独特的设计」。附了真机截图（Gamincat《Room Sort - Floor Plan》Level 53）。
+
+**真机画法取证**（读图）：房间块是**直角多边形**、外墙一条连续深线、内部不画格线；门 = **墙上缺口 + 垂直于墙的门板短线 + 四分之一圆弧摆幅**；平面图是白格 + 细灰网格 + 一条粗线沿 footprint 外墙走，且**外框上就有入户门洞**（也是缺口 + 弧）。
+
+**改了三处**：
+
+1. **房间块从「每格一个 div + inset 阴影」改成整块 SVG**。棱角现在是真直角（div 拼格是圆角 + 拼接缝）。外墙只画房间轮廓的边，内部不留线。
+2. **门窗统一画法**：`wallGeom / drawDoor / drawDoorLeaf` 三个函数房间块和平面图外框共用 —— 缺口把墙真实打断，门板短线垂直墙面伸进房间，弧线连另一侧墙垛到门板尖端。缩放到 2× 截图逐个数过：一局里 5 个门符号全部是「缺口 + 门板 + 弧」三件套。
+3. **新增入户门洞 `entries`**（真机外框上就有）。这不只是画法，是**规则增强**：以前「门朝房外」一律非法，现在朝外只在外框登记过的入户洞上合法。每关 1–2 个，玩家要在「对门」和「对入户洞」之间取舍。
+
+**改动后重跑验收**：60/60 关按托盘序摆解法全部通过；负向用例 L30 的 Laundry 摆在 (1,0) 时门朝外又不在入户洞 → 拒绝文案 `A door would open onto nothing — only the entry gaps are allowed`；手机 390 仍然首屏不滚动（docH 844 = vh）、无横向溢出、cell 41、托盘单行横滑（421 > 348）。
+
+### 2026-11-25 追加 · 门户去重 + 两条现实约束（法老：「为什么 2 扇门会出现相向，这不符合认知」）
+
+问题：同一道共用墙上，两间房各画一扇门 → 两个门板 + 两条弧对着开，像双开门。
+
+**改法两层**：
+
+1. **渲染层去重**（`game.js` `leafSkipMap`）：数据上每块房间仍然各带自己的门（托盘里单看一块必须看得出「这边有门」，这是拼块的身份信息），但两间房贴在一起时那道墙上只有一个开口 —— 门板/弧线只由 id 小的那间画一次。入户门洞同理，摆上房间后由那块房间自己的门盖住（几何完全重合）。
+2. **生成期加两条现实约束**（`gen-floorplan-levels.mjs` `chooseDoors` + `verify`）：
+   - 单格房间最多一扇门（一格房塞两扇门 = 走廊，人转不开身）
+   - 同一面墙上两扇门不能挨着（同侧格子间隔 ≥2，否则读作一个两格宽的大开口）
+   入户门洞的挑选也过同一套校验（连着挑两个洞可能彼此挨着，逐个复核）。
+
+**量化验收**：旧数据里 60 关存在单格双门（如 L30 Bathroom 1 格 E+W 两门），改后 **单格多门 0、同墙相邻门 0**（逐关扫过）；60/60 关按托盘序摆解法全过；每关棋盘上的门符号数 = 共用门洞数 + 入户门洞数（60 关 0 例外，说明每座门洞只画了一次）；2× 放大逐道墙核对：4 道共用墙各一扇门，无面对面、无双开。
+
+### 2026-11-25 · A 方案换体：品类页给自研平面图，amochi 133 关可玩挪 /amochiroom/play/
+
+法老选 A（换体，不是直接替掉）。原先 `/room-sort-game-online/` 挂的是 amochi 解包版（物品入箱），
+而 "room sort" 这个词 SERP 上主要是 Gamincat 式平面图摆放，词与体错配。
+
+| 页面 | 改前 | 改后 |
+|---|---|---|
+| `/room-sort-game-online/` | amochi 物品入箱可玩版，H1「Room Sort Game Online」，FAQ 里还写着「这不是 floor plan 那个游戏」 | **自研平面图谜题**（`/floorplan/game.html?embed=1` iframe 嵌在 840px 内容列里），TDK/H1/FAQ 全部重写为平面图口径，正文含玩法四步、门的三条合法路径、入户门洞 |
+| `/amochiroom/play/` | 不存在 | 原 133 关可玩版整体搬来（`git mv`，引擎与关卡资产仍在 `/room-sort/*`），H1「Amochiroom Room Sort — Play Online」，品牌目录下与答案页互链 |
+| `/amochiroom/` hub | 只有答案索引 | Quick answer 区加一条「想玩不想读？133 关可玩版」入口 |
+| 导航 | Room Sort 描述「Sort items into boxes」 | 改成「Fit rooms into a floor plan」（GameNav + GameSwitcher 两处同步） |
+| 广告口径 | `/room-sort-game-online` 已在 PLAY_SURFACES | 追加 `/amochiroom/play`（真棋盘页），答案页仍是内容页不登记 |
+
+游戏本体加了 `?embed=1`（隐藏内层 H1，避免与外层双标题）。验收：build 792 页（+1）；换体页 iframe 内 60/60 关全胜；`/amochiroom/play/` 引擎起、133 个关卡选项、房间与箱子正常渲染；桌面 1280 iframe 720px、手机 390 内层 docH=vh 不滚动、外层 scrollW=390 无横溢。
+
+### 2026-11-25 · impeccable side-tab 修复 + 顺手抓到「永不填充的空广告框」
+
+1. **side-tab**（`/room-sort-game-online/` 的 Tip 块）：原本用 `border-left: 3px solid`，是 AI 味的典型标志。改成整框 1px 描边 + 12px 圆角 + 行内 `TIP` 小标签（`::before`），不再靠一侧粗色条做强调。实测 borderLeftWidth=1px、radius=12px。
+2. **空广告框**（换体当天新加的两页踩的）：`InContentAd` 原来只看 `ADSENSE_ON && SLOT`，不看 loader 是否被允许。而 play surface 上 AdSense loader 是被 ad-policy 掐掉的 → 页面留一块固定 250px 高、标着 "Advertisement" 但永远填不满的空框，违背「未填充不发标签」。改成按 `loaderAllowed(PAGE_PATH)` 出位（play surface 与 NEVER_ADS 一并排除）。
+   量化：改前 dist 里真正渲染该位且无 loader 的页 = **2**（`/amochiroom/play/`、`/room-sort-game-online/`），改后 = **0**（渲染 388 页全都有 loader）。注：按 `gp-incontent-ad` 字符串粗扫会数出 250 页，那是 SEOHead 里的全局 CSS，不是真渲染，别拿它下结论。
+
+### 2026-11-25 · 自研平面图补 GA4/D1 埋点（新游戏上线必备那一档）
+
+`public/floorplan/game.js` 原来零埋点（`grep gtag|track(` = 0），上生产就是个数据黑洞。按 skill `game-event-tracking` 补齐，
+事件名全部落在既有 D1 白名单内（`FUNNEL_EVENTS` 已含 game_start/first_move/level_up/hint_click/puzzle_reset，无需改两端白名单）：
+
+| 事件 | 触发 | 参数 |
+|---|---|---|
+| `game_start` | 首次进关，且 `visibilityState==='visible'`（后台标签不发，转可见才补） | level, difficulty(「N rooms」) |
+| `first_move` | 首次成功落子（落子前同步补发 game_start，防漏斗倒挂） | level |
+| `level_up` | 通关（记录刚完成那关） | level, difficulty |
+| `hint_click` | 用掉一次提示 | level, remaining |
+| `puzzle_reset` | 点 Reset | level |
+
+通道：页面是 `public/` 静态页、跑在 iframe 里，gtag/gpTrack/clarity 都在父页（SEOHead 注入），所以 track() 优先叫 `window.parent`
+的同名函数、单独打开时回退自己。pagePath 由父页 gpTrack 自带（= /room-sort-game-online/）。
+
+实测（本地 dist，父页包一层 gpTrack 收事件，驱动 iframe 内游戏）：事件序列 `game_start → first_move → hint_click → level_up`，
+点 Reset 再补 `puzzle_reset{level:1}`，参数逐个核对正确。
+
+### 2026-11-25 · 新游戏站内集成：GameHub 卡片 + 每日榜（补「组件」那一档）
+
+| 件 | 落点 | 验收 |
+|---|---|---|
+| GameHub 卡片 | `GameHub.astro` + 新图标 `public/assets/game-icons/room-sort.webp`（128×128，1746B，PIL 按游戏视觉画：L 形房块 + 门缺口 + 门板 + 四分之一弧，琥珀 #D97706 / 奶油 #FDF8F5） | 卡片 211×96、图标 naturalWidth=128、NEW 角标在位、vision 复核 40px 下权重与其它卡片一致 |
+| 每日榜 | `functions/api/leaderboard.ts` GAMES +`room-sort`（DAILY_FLOORS 4000ms）；`leaderboard.astro` 加 tab `🏠 Room Sort` | `/leaderboard/?game=room-sort` 下拉选中、页面正常出两卡 |
+| 成绩提交 | `game.js` `submitScore()`：通关时 `POST /api/leaderboard {game:'room-sort', date, timeMs, size:房间数}`；<4s 不提交（服务端同一下限兜底） | 拦截 iframe fetch，载荷 `{"game":"room-sort","date":"2026-11-25","timeMs":6503,"size":3}` |
+| 通关时长 | `win()` 记 `state.t0`，弹窗副标题追加 `· m:ss` | — |
+
+**identity 口径**：iframe 同源，`/api/leaderboard` 相对路径落在站点域，`gp_gid` cookie 自动带过去（服务端优先 cookie、缺席才用 anon_id），游客照常上榜。
+
+**徽章不做**（有据）：`badge-icons.ts` 的 game 联合类型只有 `shikaku | murdoku | streak | crazy-cleanup`，且 crazy-cleanup 已下线；meowdoku / huepaw 等 7 款后加游戏都没接徽章。要接得先给这套 legacy 系统扩 derive 规则，不在本次范围。
+
+### 2026-11-25 · GameHub NEW 角标改白底（真因不是配色，是两条 span 规则把它压了）
+
+法老指出「NEW 颜色看不清楚」。查计算样式，角标 `<span class="gp-hub-badge">` 的 `color` 实际是 **#8a6f55**（不是声明的 #fff）、字号 10.88px（不是 8px）——被同层卡片描述规则 `.gp-hub-tile span` 按特异性 (0,1,1) > (0,1,0) 压掉了：**深灰褐字压在红底上**，所以糊。手机上更糟：`@media` 里 `.gp-hub-tile span { display:none }` 直接把整块角标藏掉了，NEW 在 390px 下根本不显示。
+
+修法（两层）：
+1. 描述规则收窄成 `.gp-hub-tile > span:not(.gp-hub-badge):not(.gp-hub-corner)`（桌面与手机断点两处），角标不再被描述样式和 `display:none` 波及；
+2. 角标改白底深红字 `.gp-hub-tile .gp-hub-badge{background:#fff;color:#B3261E;border:1px solid #E7D3BF;font-size:9px}`（对比 7.5:1），手机 8px。
+
+实测：桌面 1280 计算样式 bg #fff / color rgb(179,38,30) / 9px / 39×16；手机 390 → 8px / 33×15 且 `display:block`（改前为 none）；两档截图 vision 复核，描述小字仍正常显示。
