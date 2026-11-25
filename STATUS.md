@@ -958,3 +958,13 @@ sitemap 仍不含它）。
 **identity 口径**：iframe 同源，`/api/leaderboard` 相对路径落在站点域，`gp_gid` cookie 自动带过去（服务端优先 cookie、缺席才用 anon_id），游客照常上榜。
 
 **徽章不做**（有据）：`badge-icons.ts` 的 game 联合类型只有 `shikaku | murdoku | streak | crazy-cleanup`，且 crazy-cleanup 已下线；meowdoku / huepaw 等 7 款后加游戏都没接徽章。要接得先给这套 legacy 系统扩 derive 规则，不在本次范围。
+
+### 2026-11-25 · GameHub NEW 角标改白底（真因不是配色，是两条 span 规则把它压了）
+
+法老指出「NEW 颜色看不清楚」。查计算样式，角标 `<span class="gp-hub-badge">` 的 `color` 实际是 **#8a6f55**（不是声明的 #fff）、字号 10.88px（不是 8px）——被同层卡片描述规则 `.gp-hub-tile span` 按特异性 (0,1,1) > (0,1,0) 压掉了：**深灰褐字压在红底上**，所以糊。手机上更糟：`@media` 里 `.gp-hub-tile span { display:none }` 直接把整块角标藏掉了，NEW 在 390px 下根本不显示。
+
+修法（两层）：
+1. 描述规则收窄成 `.gp-hub-tile > span:not(.gp-hub-badge):not(.gp-hub-corner)`（桌面与手机断点两处），角标不再被描述样式和 `display:none` 波及；
+2. 角标改白底深红字 `.gp-hub-tile .gp-hub-badge{background:#fff;color:#B3261E;border:1px solid #E7D3BF;font-size:9px}`（对比 7.5:1），手机 8px。
+
+实测：桌面 1280 计算样式 bg #fff / color rgb(179,38,30) / 9px / 39×16；手机 390 → 8px / 33×15 且 `display:block`（改前为 none）；两档截图 vision 复核，描述小字仍正常显示。
