@@ -76,12 +76,15 @@
         return { ok: false, why: 'That spot is already taken', badCells: [[x, y]] };
       }
     }
-    // 门：必须朝屋里；对门若已摆好必须也有门
+    // 门：朝屋里算合法；朝外的只有入户门洞算合法；对门若已摆好必须也有门
     for (const [dx, dy, side] of r.doors) {
       const ax = gx + dx, ay = gy + dy;
       const [vx, vy] = DIRS[side];
       const nx = ax + vx, ny = ay + vy;
-      if (!inPlan(nx, ny)) return { ok: false, why: 'A door would face the outside', badCells: [[ax, ay]] };
+      if (!inPlan(nx, ny)) {
+        if (lv()._entrySet.has(`${ax},${ay},${side}`)) continue; // 入户门洞，合法
+        return { ok: false, why: 'A door would open onto nothing — only the entry gaps are allowed', badCells: [[ax, ay]] };
+      }
       const other = occ.get(cellKey(nx, ny));
       if (other !== undefined) {
         const or = lv().rooms[other];
@@ -121,56 +124,102 @@
     return best;
   }
 
+  // ---------- 画图工具（房间块与平面图都用同一套门窗画法）----------
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const svgEl = (tag, attrs) => {
+    const e = document.createElementNS(SVGNS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  };
+  /** 一条格子边的两个端点 + 指向房间内部的法线 */
+  function wallGeom(x, y, side, c) {
+    const x0 = x * c, y0 = y * c, x1 = x0 + c, y1 = y0 + c;
+    if (side === 'N') return { a: [x0, y0], b: [x1, y0], n: [0, 1] };
+    if (side === 'S') return { a: [x0, y1], b: [x1, y1], n: [0, -1] };
+    if (side === 'W') return { a: [x0, y0], b: [x0, y1], n: [1, 0] };
+    return { a: [x1, y0], b: [x1, y1], n: [-1, 0] };
+  }
+  /**
+   * 门户：在墙上挖一段缺口，画一扇打开的门板 + 它的圆弧摆幅。
+   * 真机（Gamincat Room Sort）就是这个画法——缺口是通口，弧线是门开的轨迹。
+   * 返回缺口两端 p1/p2、门板尖端 tip、墙方向 (ux,uy)、内法线 n，调用方据此补画两段墙。
+   */
+  function drawDoor(parent, x, y, side, cell, stroke, gapFill) {
+    const { a, b, n } = wallGeom(x, y, side, cell);
+    const g = cell * 0.6;
+    const ux = (b[0] - a[0]) / cell, uy = (b[1] - a[1]) / cell;
+    const mid = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+    const p1 = [mid[0] - ux * g / 2, mid[1] - uy * g / 2];
+    const p2 = [mid[0] + ux * g / 2, mid[1] + uy * g / 2];
+    const tip = [p1[0] + n[0] * g, p1[1] + n[1] * g];
+    const band = stroke * 1.8;
+    const gap = side === 'N' || side === 'S'
+      ? { x: Math.min(p1[0], p2[0]), y: a[1] - band / 2, width: g, height: band }
+      : { x: a[0] - band / 2, y: Math.min(p1[1], p2[1]), width: band, height: g };
+    parent.appendChild(svgEl('rect', { x: gap.x, y: gap.y, width: gap.width, height: gap.height, fill: gapFill }));
+    return { p1, p2, tip, n, ux, uy, g };
+  }
+  /** 门板 + 摆弧（细线，深色门板 / 浅色轨迹）*/
+  function drawDoorLeaf(parent, d, stroke, leafColor, arcColor) {
+    const cross = d.ux * d.n[1] - d.uy * d.n[0];
+    parent.appendChild(svgEl('line', {
+      x1: d.p1[0], y1: d.p1[1], x2: d.tip[0], y2: d.tip[1],
+      stroke: leafColor, 'stroke-width': Math.max(1.2, stroke * 0.6), 'stroke-linecap': 'round',
+    }));
+    parent.appendChild(svgEl('path', {
+      d: `M ${d.p2[0]} ${d.p2[1]} A ${d.g} ${d.g} 0 0 ${cross > 0 ? 1 : 0} ${d.tip[0]} ${d.tip[1]}`,
+      fill: 'none', stroke: arcColor, 'stroke-width': Math.max(1, stroke * 0.5), 'stroke-linecap': 'round',
+    }));
+  }
+
+  /** 房间块：整块外墙用直角折线画（棱角），门做成墙洞 + 门板 + 摆弧 */
   function buildTile(room, cell, opts) {
     const el = document.createElement('div');
     el.className = 'tile' + (opts && opts.placed ? ' placed' : '');
     el.dataset.room = room.id;
-    el.style.width = room.bw * cell + 'px';
-    el.style.height = room.bh * cell + 'px';
-    el.style.setProperty('--cell', cell + 'px');
+    const w = room.bw * cell, h = room.bh * cell;
+    el.style.width = w + 'px';
+    el.style.height = h + 'px';
     const fill = COLORS[room.id % COLORS.length];
     el.style.setProperty('--tc', fill);
-    const own = new Set(room.shape.map(([x, y]) => x + ',' + y));
-    const WALL = 'rgba(74,48,18,.55)';
-    const T = Math.max(1.5, cell * 0.045);
+    const own = new Set(room.shape.map(([x, y]) => cellKey(x, y)));
+    const stroke = Math.max(2, cell * 0.062);
+    const svg = svgEl('svg', { width: w, height: h, viewBox: `0 0 ${w} ${h}` });
+    const gFill = svgEl('g', { fill });
     for (const [sx, sy] of room.shape) {
-      const p = document.createElement('div');
-      p.className = 'part';
-      p.style.left = sx * cell + 'px';
-      p.style.top = sy * cell + 'px';
-      p.style.width = cell + 'px';
-      p.style.height = cell + 'px';
-      p.style.background = fill;
-      // 只画「房间外墙」：同一房间内部的相邻格不画线，房间才读起来是一整间而不是一堆格子
-      const sh = [];
-      if (!own.has(sx + ',' + (sy - 1))) sh.push(`inset 0 ${T}px 0 ${WALL}`);
-      if (!own.has(sx + ',' + (sy + 1))) sh.push(`inset 0 -${T}px 0 ${WALL}`);
-      if (!own.has(sx - 1 + ',' + sy)) sh.push(`inset ${T}px 0 0 ${WALL}`);
-      if (!own.has(sx + 1 + ',' + sy)) sh.push(`inset -${T}px 0 0 ${WALL}`);
-      p.style.boxShadow = sh.join(',');
-      el.appendChild(p);
+      gFill.appendChild(svgEl('rect', { x: sx * cell - .6, y: sy * cell - .6, width: cell + 1.2, height: cell + 1.2 }));
     }
-    // 门：画在格子内侧边缘，一整条通口（贴边不留缝），两端加门框小竖线
-    for (const [dx, dy, side] of room.doors) {
-      const d = document.createElement('div');
-      d.className = 'dr ' + (side === 'N' || side === 'S' ? 'h' : 'v');
-      const cx2 = dx * cell + cell / 2, cy2 = dy * cell + cell / 2;
-      const th = Math.max(4, cell * 0.18), len = cell * 0.54;
-      if (side === 'N') { d.style.left = cx2 - len / 2 + 'px'; d.style.top = cy2 - cell / 2 + 'px'; d.style.width = len + 'px'; d.style.height = th + 'px'; }
-      if (side === 'S') { d.style.left = cx2 - len / 2 + 'px'; d.style.top = cy2 + cell / 2 - th + 'px'; d.style.width = len + 'px'; d.style.height = th + 'px'; }
-      if (side === 'W') { d.style.left = cx2 - cell / 2 + 'px'; d.style.top = cy2 - len / 2 + 'px'; d.style.width = th + 'px'; d.style.height = len + 'px'; }
-      if (side === 'E') { d.style.left = cx2 + cell / 2 - th + 'px'; d.style.top = cy2 - len / 2 + 'px'; d.style.width = th + 'px'; d.style.height = len + 'px'; }
-      el.appendChild(d);
+    svg.appendChild(gFill);
+    const doorSet = new Set(room.doors.map(([x, y, s]) => `${x},${y},${s}`));
+    const gWall = svgEl('g', { stroke: '#3A2C22', 'stroke-width': stroke, 'stroke-linecap': 'butt' });
+    const gDoor = svgEl('g', {});
+    for (const [sx, sy] of room.shape) {
+      for (const side of ['N', 'E', 'S', 'W']) {
+        const [vx, vy] = DIRS[side];
+        if (own.has(cellKey(sx + vx, sy + vy))) continue; // 房间内部不留线，整间才读得出来
+        const { a, b } = wallGeom(sx, sy, side, cell);
+        if (doorSet.has(`${sx},${sy},${side}`)) {
+          const d = drawDoor(gDoor, sx, sy, side, cell, stroke, '#FFFDF7');
+          gWall.appendChild(svgEl('line', { x1: a[0], y1: a[1], x2: d.p1[0], y2: d.p1[1] }));
+          gWall.appendChild(svgEl('line', { x1: d.p2[0], y1: d.p2[1], x2: b[0], y2: b[1] }));
+          drawDoorLeaf(gDoor, d, stroke, '#3A2C22', '#B45309');
+        } else {
+          gWall.appendChild(svgEl('line', { x1: a[0], y1: a[1], x2: b[0], y2: b[1] }));
+        }
+      }
     }
-    // 房间名：贴在形状里最靠中心的那一格上，允许溢到相邻格（还是同一间房），不裁剪
-    if (cell >= 30) {
+    svg.appendChild(gWall);
+    svg.appendChild(gDoor);
+    el.appendChild(svg);
+    // 名字：放在形状里最靠中心的那一格，允许溢到相邻格（还是同一间房）
+    if (cell >= 34 && !(opts && opts.noLabel)) {
       const at = chipLabel(room);
       const lbl = document.createElement('div');
       lbl.className = 'lbl';
       lbl.textContent = room.name;
       lbl.style.left = (at[0] * cell + cell / 2) + 'px';
       lbl.style.top = (at[1] * cell + cell / 2) + 'px';
-      lbl.style.width = Math.max(cell * 1.7, 44) + 'px';
+      lbl.style.width = Math.max(cell * 1.9, 46) + 'px';
       el.appendChild(lbl);
     }
     return el;
@@ -180,7 +229,7 @@
   function renderBoard() {
     const L = lv();
     const cell = state.cell;
-    board.querySelectorAll('.cell,.tile').forEach((n) => n.remove());
+    board.querySelectorAll('.cell,.tile,.plan').forEach((n) => n.remove());
     for (const [x, y] of L.cells) {
       const c = document.createElement('div');
       c.className = 'cell floor';
@@ -189,6 +238,30 @@
       c.style.width = cell + 'px'; c.style.height = cell + 'px';
       board.appendChild(c);
     }
+    // 平面图外框：黄线沿 footprint 外墙走，入户门洞在外框上开口（真机的标志性画法）
+    const pw = L.w * cell, ph = L.h * cell;
+    const plan = svgEl('svg', { width: pw, height: ph, viewBox: `0 0 ${pw} ${ph}`, class: 'plan' });
+    const stroke = Math.max(2.5, cell * 0.07);
+    const gWall = svgEl('g', { stroke: '#D97706', 'stroke-width': stroke, 'stroke-linecap': 'butt' });
+    const gDoor = svgEl('g', {});
+    for (const [x, y] of L.cells) {
+      for (const side of ['N', 'E', 'S', 'W']) {
+        const [vx, vy] = DIRS[side];
+        if (L._cellSet.has(cellKey(x + vx, y + vy))) continue;
+        const { a, b } = wallGeom(x, y, side, cell);
+        if (L._entrySet.has(`${x},${y},${side}`)) {
+          const d = drawDoor(gDoor, x, y, side, cell, stroke, '#FFFFFF');
+          gWall.appendChild(svgEl('line', { x1: a[0], y1: a[1], x2: d.p1[0], y2: d.p1[1] }));
+          gWall.appendChild(svgEl('line', { x1: d.p2[0], y1: d.p2[1], x2: b[0], y2: b[1] }));
+          drawDoorLeaf(gDoor, d, stroke, '#8A5A12', '#B45309');
+        } else {
+          gWall.appendChild(svgEl('line', { x1: a[0], y1: a[1], x2: b[0], y2: b[1] }));
+        }
+      }
+    }
+    plan.appendChild(gWall);
+    plan.appendChild(gDoor);
+    board.appendChild(plan);
     for (const [rid, [gx, gy]] of state.placed) {
       const t = buildTile(L.rooms[rid], cell, { placed: true });
       t.style.left = gx * cell + 'px';
@@ -219,7 +292,7 @@
       inner.className = 'inner';
       inner.style.width = room.bw * cell + 'px';
       inner.style.height = room.bh * cell + 'px';
-      const t = buildTile(room, cell);
+      const t = buildTile(room, cell, { noLabel: true });
       t.style.left = '0'; t.style.top = '0';
       inner.appendChild(t);
       slot.appendChild(inner);
@@ -427,7 +500,10 @@
   // ---------- 启动 ----------
   fetch('levels.json').then((r) => r.json()).then((data) => {
     state.levels = data.levels;
-    state.levels.forEach((L) => { L._cellSet = new Set(L.cells.map(([x, y]) => cellKey(x, y))); });
+    state.levels.forEach((L) => {
+      L._cellSet = new Set(L.cells.map(([x, y]) => cellKey(x, y)));
+      L._entrySet = new Set((L.entries || []).map(([x, y, s]) => x + ',' + y + ',' + s));
+    });
     loadSave();
     start(state.idx);
     // QA 钩子（自动化验收用，不影响玩家）

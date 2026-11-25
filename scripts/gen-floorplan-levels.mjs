@@ -200,6 +200,8 @@ function makeLevel(id, opts) {
   const norm = ([x, y]) => [x - minX, y - minY];
 
   const doorSet = new Map(); // roomId -> ["x,y,side"]
+  const ownOf = new Map();   // "x,y" -> roomId
+  rooms.forEach((cells, rid) => cells.forEach(([x, y]) => ownOf.set(key(x, y), rid)));
   doors.forEach((d) => {
     const [ax, ay] = norm([d.x, d.y]);
     if (!doorSet.has(d.a)) doorSet.set(d.a, []);
@@ -210,6 +212,25 @@ function makeLevel(id, opts) {
     if (!doorSet.has(d.b)) doorSet.set(d.b, []);
     doorSet.get(d.b).push(`${bx},${by},${OPP[d.side]}`);
   });
+
+  // 入户门：房子外墙上开 1–2 个门洞（真机里 floor plan 的黄框上就有这种缺口）
+  // 规则含义：房间的门只允许朝「另一个房间的门」或「入户门洞」，别的地方一律算撞墙
+  const boundary = [];
+  for (const k of outline) {
+    const [x, y] = k.split(',').map(Number);
+    for (const d of DIRS) {
+      if (!outline.has(key(x + d.dx, y + d.dy))) boundary.push({ x, y, side: d.s, room: ownOf.get(key(x, y)) });
+    }
+  }
+  const entryCount = id <= 8 ? 1 : id <= 30 ? 1 + (rnd() < 0.5 ? 1 : 0) : 2;
+  const picked = [...boundary].sort(() => rnd() - 0.5).slice(0, entryCount);
+  const entries = [];
+  for (const e of picked) {
+    const [ex, ey] = norm([e.x, e.y]);
+    if (!doorSet.has(e.room)) doorSet.set(e.room, []);
+    doorSet.get(e.room).push(`${ex},${ey},${e.side}`);
+    entries.push([ex, ey, e.side]);
+  }
 
   const names = [...ROOM_NAMES].sort(() => rnd() - 0.5);
   const roomObjs = rooms.map((cells, i) => {
@@ -238,6 +259,8 @@ function makeLevel(id, opts) {
     w, h,
     cells: [...outline].map((k) => k.split(',').map(Number).map((v, i) => v - (i === 0 ? minX : minY))),
     rooms: roomObjs,
+    // 入户门洞：房子外墙上允许开门的位置（绝对坐标 + 朝向），门只允许朝另一个房间的门或这里
+    entries,
     // 托盘顺序（打乱，玩家拿到的顺序）
     tray: [...roomObjs.keys()].sort(() => rnd() - 0.5),
   };
@@ -265,19 +288,29 @@ function verify(lv) {
     }
   }
   if (occ.size !== lv.cells.length) return `L${lv.id}: 未铺满 ${occ.size}/${lv.cells.length}`;
-  // 门必须成对
+  const entrySet = new Set((lv.entries || []).map(([x, y, s]) => `${x},${y},${s}`));
+  // 门必须成对（或落在入户门洞上）
   for (const r of lv.rooms) {
     for (const [x, y, side] of r.doors) {
       const ax = r.at[0] + x, ay = r.at[1] + y;
       const d = DIRS.find((v) => v.s === side);
       const nx = ax + d.dx, ny = ay + d.dy;
-      if (!inb.has(`${nx},${ny}`)) return `L${lv.id}: 门朝房外 (${ax},${ay})${side}`;
+      if (!inb.has(`${nx},${ny}`)) {
+        if (!entrySet.has(`${ax},${ay},${side}`)) return `L${lv.id}: 门朝房外且不在入户门洞 (${ax},${ay})${side}`;
+        continue;
+      }
       const other = occ.get(`${nx},${ny}`);
       const or = lv.rooms[other];
       const need = [nx - or.at[0], ny - or.at[1], OPP[side]];
       if (!or.doors.some(([a, b, c]) => a === need[0] && b === need[1] && c === need[2]))
         return `L${lv.id}: 门没对上 (${ax},${ay})${side}`;
     }
+  }
+  // 入户门洞本身必须真的在外墙上
+  for (const [x, y, s] of lv.entries || []) {
+    const d = DIRS.find((v) => v.s === s);
+    if (inb.has(`${x + d.dx},${y + d.dy}`)) return `L${lv.id}: 入户门洞不在外墙 (${x},${y})${s}`;
+    if (!inb.has(`${x},${y}`)) return `L${lv.id}: 入户门洞不在 footprint 里 (${x},${y})`;
   }
   return null;
 }
