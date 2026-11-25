@@ -1,0 +1,506 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import { allDives, fmt, longDate, listedCount, diveTag, diveNo, type Dive, type Prompt } from '../../../lib/krillion';
+
+export function getStaticPaths() {
+  const paths: Array<{ params: { slug: string }; props: { dive: Dive; prompt: Prompt } }> = [];
+  const seen = new Set<string>();
+  for (const d of allDives) {
+    for (const p of d.prompts) {
+      if (seen.has(p.slug)) continue; // 同一题面重复出现时只保留最新（allDives 已是新→旧）
+      seen.add(p.slug);
+      paths.push({ params: { slug: p.slug }, props: { dive: d, prompt: p } });
+    }
+  }
+  return paths;
+}
+
+const { dive, prompt } = Astro.props;
+const dtag = diveTag(dive);
+
+const listed = listedCount(prompt);
+const one = prompt.one[0];
+const otherPrompts = dive.prompts.filter((p) => p.slug !== prompt.slug);
+
+// 可引用事实（GEO）
+const fact = `“${prompt.prompt}” appeared in Krillion ${dtag || 'Dive'} (${longDate(
+  dive.date,
+)}). ${fmt(prompt.answersGiven)} players answered it and ${fmt(
+  prompt.accepted,
+)} answers were accepted.${
+  one
+    ? ` Its rarest accepted answer was “${one.a}”, found by ${fmt(one.players)} players.`
+    : ''
+}`;
+
+const faqs = [
+  {
+    q: `What answers work for “${prompt.prompt}”?`,
+    a: `The game accepted ${fmt(prompt.accepted)} answers for this prompt in ${
+      dtag || 'this Dive'
+    }. We document ${listed} of the most valuable and most-missed ones here: ${
+      one ? `the top-tier pick is “${one.a}”; ` : ''
+    }${prompt.deep
+      .slice(0, 6)
+      .map((a) => `“${a.a}”`)
+      .join(', ')} sit in Deep Cuts, and ${
+      prompt.crowd
+        .slice(0, 4)
+        .map((a) => `“${a.a}”`)
+        .join(', ')
+    } are what most players typed.`,
+  },
+  {
+    q: `What was the rarest answer for “${prompt.prompt}”?`,
+    a: one
+      ? `“${one.a}” — a One in a Krillion answer worth 100 points, found by ${fmt(
+          one.players,
+        )} of ${fmt(prompt.answersGiven)} players.`
+      : 'This prompt had no top-tier answer recorded in our catalogue.',
+  },
+  {
+    q: `Why are only ${listed} of ${fmt(prompt.accepted)} accepted answers listed?`,
+    a: `The full answer list is revealed inside the game, and the official archive of past answers requires a one-off unlock. We catalogue the answers that actually change your score — the top tier, Deep Cuts, and the crowd favourites — rather than every low-value Plankton variant.`,
+  },
+  {
+    q: `When did “${prompt.prompt}” appear in Krillion?`,
+    a: `It was one of the ${dive.promptCount} prompts in ${dtag || 'this Dive'} on ${longDate(
+      dive.date,
+    )}. A new Dive of seven prompts goes live every day.`,
+  },
+];
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SEOHead
+      title={`“${prompt.prompt}” — Krillion Answers${dtag ? ` (${dtag})` : ''}`}
+      description={`All ${listed} catalogued answers for “${prompt.prompt}” in Krillion ${
+        dtag || 'Dive'
+      }${one ? `, including the 100-point answer “${one.a}”` : ''} — with tiers and real player counts.`}
+      canonical={`/krillion-answers/q/${prompt.slug}/`}
+      type="article"
+      breadcrumbTitle={prompt.prompt.length > 60 ? prompt.prompt.slice(0, 57) + '…' : prompt.prompt}
+      segmentNames={{ 'krillion-answers': 'Krillion Answers' }}
+    />
+    <link rel="alternate" hreflang="en" href={`https://gridpaw.com/krillion-answers/q/${prompt.slug}/`} />
+    <link rel="alternate" hreflang="x-default" href={`https://gridpaw.com/krillion-answers/q/${prompt.slug}/`} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+    <style is:global>
+      :root {
+        --amber: #d97706;
+        --amber-ink: #a35700;
+        --cream: #fffbf5;
+        --ink: #2a1e12;
+        --paper: #ffffff;
+        --line: #eadbc8;
+        --sand: #f5ebdd;
+        --ember: #c2410c;
+        --muted: #7a6a58;
+      }
+      body {
+        margin: 0;
+        background: var(--cream);
+        color: var(--ink);
+        font-family: Nunito, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+        font-size: 17px;
+        line-height: 1.62;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 20px 64px;
+      }
+      .kr-crumb {
+        font-size: 13px;
+        color: var(--muted);
+        padding: 18px 0 6px;
+      }
+      .kr-crumb a {
+        color: var(--amber-ink);
+        text-decoration: none;
+      }
+      .kr-crumb a:hover {
+        text-decoration: underline;
+      }
+      .kr-h1 {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: clamp(26px, 4.4vw, 36px);
+        line-height: 1.2;
+        margin: 6px 0 8px;
+        letter-spacing: -0.01em;
+      }
+      .kr-lede {
+        font-size: 15px;
+        color: var(--muted);
+        margin: 0 0 4px;
+      }
+      .kr-lede b {
+        color: var(--ink);
+      }
+      .kr-fact {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-left: 4px solid var(--amber);
+        border-radius: 14px;
+        padding: 16px 18px;
+        margin: 20px 0 22px;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+      .kr-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--paper);
+        margin: 0 0 26px;
+        overflow: hidden;
+      }
+      .kr-stats div {
+        padding: 13px 14px;
+        border-right: 1px solid var(--line);
+        min-width: 0;
+      }
+      .kr-stats div:last-child {
+        border-right: 0;
+      }
+      .kr-stats b {
+        display: block;
+        font-size: 19px;
+        font-weight: 800;
+        color: var(--amber-ink);
+        line-height: 1.2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .kr-stats span {
+        display: block;
+        font-size: 11px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-top: 3px;
+      }
+      .kr-h2 {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 24px;
+        margin: 32px 0 4px;
+        letter-spacing: -0.01em;
+      }
+      .kr-sub {
+        font-size: 14px;
+        color: var(--muted);
+        margin: 0 0 16px;
+      }
+      .panel {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 18px 20px;
+        margin-bottom: 10px;
+      }
+      .tierhead {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      .tbadge {
+        position: relative;
+        padding-left: 10px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      .tbadge::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 3px;
+        bottom: 3px;
+        width: 3px;
+        border-radius: 2px;
+        background: var(--amber);
+      }
+      .tierhead i {
+        font-style: normal;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .chip {
+        border-radius: 5px;
+        padding: 5px 10px;
+        font-size: 14.5px;
+        background: var(--sand);
+        border: 1px solid var(--line);
+        color: var(--ink);
+      }
+      .chip small {
+        color: var(--muted);
+        font-size: 12px;
+        margin-left: 5px;
+      }
+      .chip.one {
+        background: #fde9c8;
+        border-color: #f3cf94;
+        font-weight: 700;
+      }
+      .chip.deep {
+        background: #f9e2c5;
+        border-color: #efc998;
+      }
+      .chip.rare {
+        background: #fdf3e0;
+        border-color: #f0ddbb;
+      }
+      .pgroup + .pgroup {
+        margin-top: 10px;
+      }
+      details.faq {
+        border-bottom: 1px solid var(--line);
+      }
+      details.faq summary {
+        cursor: pointer;
+        padding: 14px 0;
+        font-weight: 700;
+        font-size: 16px;
+        list-style: none;
+      }
+      details.faq summary::-webkit-details-marker {
+        display: none;
+      }
+      details.faq summary::after {
+        content: '+';
+        float: right;
+        color: var(--amber);
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 1;
+      }
+      details.faq[open] summary::after {
+        content: '−';
+      }
+      details.faq p {
+        margin: 0 0 14px;
+        font-size: 15.5px;
+        color: #4a3b2c;
+      }
+      .oth {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        gap: 8px;
+      }
+      .oth a {
+        display: block;
+        padding: 11px 13px;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        background: var(--paper);
+        text-decoration: none;
+        color: var(--ink);
+        font-size: 14.5px;
+        line-height: 1.4;
+      }
+      .oth a:hover {
+        border-color: var(--amber);
+        background: var(--sand);
+      }
+      .oth a small {
+        display: block;
+        color: var(--muted);
+        font-size: 11.5px;
+        margin-top: 2px;
+      }
+      .src {
+        margin-top: 30px;
+        padding: 14px 16px;
+        border: 1px dashed var(--line);
+        border-radius: 10px;
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+      .cta {
+        margin: 26px 0 0;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .cta a {
+        padding: 11px 16px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 14.5px;
+      }
+      .cta a.primary {
+        background: var(--amber);
+        color: var(--ink);
+      }
+      .cta a.primary:hover {
+        background: #c96a05;
+      }
+      .cta a.ghost {
+        border: 1px solid var(--line);
+        background: var(--paper);
+        color: var(--amber-ink);
+      }
+      .cta a.ghost:hover {
+        background: var(--sand);
+      }
+      @media (max-width: 560px) {
+        .kr-stats {
+          grid-template-columns: 1fr;
+        }
+        .kr-stats div {
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+        .kr-stats div:last-child {
+          border-bottom: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <GameNav />
+    <main class="wrap">
+      <nav class="kr-crumb" aria-label="Breadcrumb">
+        <a href="/">GridPaw</a> › <a href="/krillion-answers/">Krillion Answers</a> ›
+        <a href={`/krillion-answers/${dive.date}/`}>{dtag || 'Dive'}</a> › <span>Prompt {prompt.n}</span>
+      </nav>
+
+      <h1 class="kr-h1">{prompt.prompt}</h1>
+      <p class="kr-lede">
+        Prompt {prompt.n} of {dive.promptCount} · {dtag || 'Dive'} · <b>{longDate(dive.date)}</b>
+      </p>
+
+      <p class="kr-fact">{fact}</p>
+
+      <div class="kr-stats">
+        <div><b>{fmt(prompt.answersGiven)}</b><span>answers given</span></div>
+        <div><b>{fmt(prompt.accepted)}</b><span>accepted answers</span></div>
+        <div><b>{listed}</b><span>catalogued here</span></div>
+      </div>
+
+      {prompt.summary && <p class="kr-sub" style="font-size:15px">{prompt.summary}</p>}
+
+      {one && (
+        <div class="panel">
+          <div class="tierhead">
+            <span class="tbadge">One in a Krillion</span>
+            <i>100 pts · the rarest answer the game accepted</i>
+          </div>
+          <div class="chips">
+            <span class="chip one">
+              {one.a}
+              {one.players ? <small>{fmt(one.players)} players found it</small> : null}
+            </span>
+          </div>
+        </div>
+      )}
+
+      {prompt.deep.length > 0 && (
+        <div class="panel pgroup">
+          <div class="tierhead">
+            <span class="tbadge">Deep Cuts</span>
+            <i>85 pts · {fmt(prompt.deepCuts)} exist for this prompt</i>
+          </div>
+          <div class="chips">
+            {prompt.deep.map((a) => (
+              <span class="chip deep">
+                {a.a}
+                {a.players ? <small>{fmt(a.players)}</small> : null}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {prompt.crowd.length > 0 && (
+        <div class="panel pgroup">
+          <div class="tierhead">
+            <span class="tbadge">What the crowd said</span>
+            <i>the answers most players actually typed</i>
+          </div>
+          <div class="chips">
+            {prompt.crowd.map((a) => (
+              <span class={`chip ${a.tier === 'Rare' ? 'rare' : ''}`}>
+                {a.a}
+                <small>
+                  {a.tier} {a.pts}
+                  {a.pct ? ` · ${a.pct}%` : ''}
+                </small>
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <InContentAd />
+
+      <h2 class="kr-h2">The other {otherPrompts.length} prompts in {dtag || 'this Dive'}</h2>
+      <p class="kr-sub">Same day, same seven-prompt Dive.</p>
+      <div class="oth">
+        {otherPrompts.map((p) => (
+          <a href={`/krillion-answers/q/${p.slug}/`}>
+            {p.prompt}
+            <small>
+              {fmt(p.accepted)} accepted · {listedCount(p)} catalogued
+            </small>
+          </a>
+        ))}
+      </div>
+
+      <h2 class="kr-h2">FAQ</h2>
+      <div>
+        {faqs.map((f) => (
+          <details class="faq">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+
+      <p class="src">
+        <b>Sources.</b> Prompt text comes from Krillion's public daily endpoint. Answer tiers and
+        player counts come from the game's public reveal data via community trackers; the official
+        archive of past answers sits behind a one-off unlock and isn't available to us directly.
+        GridPaw is independent and not affiliated with krillion.io.
+      </p>
+
+      <div class="cta">
+        <a class="primary" href="/krillion-answers/">All of today's Krillion answers</a>
+        <a class="ghost" href={`/krillion-answers/${dive.date}/`}>{dtag || 'Dive'} overview</a>
+        <a class="ghost" href="/krillion-answers/archive/">Browse the archive</a>
+      </div>
+    </main>
+
+    <SideAd />
+  </body>
+</html>

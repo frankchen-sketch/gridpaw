@@ -1,0 +1,879 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import SideAd from '../../components/SideAd.astro';
+import InContentAd from '../../components/InContentAd.astro';
+import {
+  latestDive as dive,
+  allDives,
+  fmt,
+  longDate,
+  shortDate,
+  listedCount,
+  totalListed,
+  totalSubmitted,
+  rarestOverall,
+  TIER_LABEL,
+  TIER_POINTS,
+  diveTag,
+  type Prompt,
+} from '../../lib/krillion';
+
+const dtag = diveTag(dive);
+const rarest = rarestOverall(dive);
+const listed = totalListed(dive);
+const submitted = totalSubmitted(dive);
+const accepted = dive.prompts.reduce((n, p) => n + p.accepted, 0);
+
+// 首条可引用事实（GEO）—— 数字全部来自数据文件，不手写
+const factLead = `Krillion ${dtag || 'Dive'} (${longDate(dive.date)}) asked ${dive.promptCount} prompts. Krillion players submitted ${fmt(
+  submitted,
+)} answers across them, and ${fmt(accepted)} were accepted.${
+  rarest
+    ? ` The rarest answer catalogued here is “${rarest.answer.a}” — found by ${fmt(
+        rarest.answer.players,
+      )} of ${fmt(rarest.prompt.answersGiven)} players on “${rarest.prompt.prompt}”.`
+    : ''
+}`;
+
+const faqs = [
+  {
+    q: 'What is Krillion?',
+    a: 'Krillion is a free daily trivia game built around one prompt at a time. Each day it publishes seven prompts such as “Name a video game company”, and players race to type an answer nobody else will think of. The rarer your accepted answer, the higher it scores.',
+  },
+  {
+    q: 'How are Krillion answers scored?',
+    a: 'Answers are grouped into fixed rarity tiers. Plankton answers score 10 points, Schooler 30, Rare 60, Deep Cuts 85, and a “One in a Krillion” answer scores the full 100. The tier is set by the game itself; the player counts shown here come from its public reveal data.',
+  },
+  {
+    q: 'What does “One in a Krillion” mean?',
+    a: `It is the top tier — 100 points. A prompt usually accepts exactly one such answer. In ${dtag || 'this Dive'} the rarest was “${
+      rarest?.answer.a ?? '—'
+    }”, which only ${fmt(rarest?.answer.players)} of ${fmt(rarest?.prompt.answersGiven)} players found.`,
+  },
+  {
+    q: 'When does Krillion reset?',
+    a: dive.resetsAt
+      ? `The next Dive unlocks at ${dive.resetsAt.replace('T', ' ').replace('.000Z', ' UTC')}. A new set of seven prompts replaces the current one; this page is regenerated after each reset.`
+      : 'A new set of seven prompts replaces the current one every day; this page is regenerated after each reset.',
+  },
+  {
+    q: 'How many answers does a Krillion prompt accept?',
+    a: `It varies wildly. In ${dtag || 'this Dive'} the widest prompt accepted ${fmt(
+      Math.max(...dive.prompts.map((p) => p.accepted)),
+    )} answers, while the narrowest accepted just ${fmt(
+      Math.min(...dive.prompts.map((p) => p.accepted)),
+    )}. We catalogue the highest-value and most-missed ones — ${listed} answers across the seven prompts.`,
+  },
+  {
+    q: 'Is this an official Krillion site?',
+    a: 'No. GridPaw is independent and not affiliated with krillion.io. Prompt text comes from the game’s public daily endpoint; answer tiers and player counts come from its public reveal data via community trackers. The official game is at krillion.io.',
+  },
+];
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const totalCrowd = dive.prompts.reduce((n, p) => n + p.crowd.length, 0);
+const totalDeep = dive.prompts.reduce((n, p) => n + p.deep.length, 0);
+const totalOne = dive.prompts.reduce((n, p) => n + p.one.length, 0);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SEOHead
+      title={`Krillion Answers Today: ${dtag || 'Dive'} (${shortDate(dive.date)})`}
+      description={`All ${dive.promptCount} prompts from Krillion ${dtag || 'Dive'} with ${listed} catalogued answers, real player counts and rarity tiers — plus a checker for what your answer scored.`}
+      canonical="/krillion-answers/"
+      type="article"
+      breadcrumbTitle="Krillion Answers"
+      segmentNames={{ 'krillion-answers': 'Krillion Answers' }}
+    />
+    <link rel="alternate" hreflang="en" href="https://gridpaw.com/krillion-answers/" />
+    <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/krillion-answers/" />
+    <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+    <style is:global>
+      :root {
+        --amber: #d97706;
+        --amber-ink: #a35700;
+        --cream: #fffbf5;
+        --ink: #2a1e12;
+        --paper: #ffffff;
+        --line: #eadbc8;
+        --sand: #f5ebdd;
+        --ember: #c2410c;
+        --muted: #7a6a58;
+      }
+      body {
+        margin: 0;
+        background: var(--cream);
+        color: var(--ink);
+        font-family: Nunito, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+        font-size: 17px;
+        line-height: 1.62;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 20px 64px;
+      }
+      .kr-crumb {
+        font-size: 13px;
+        color: var(--muted);
+        padding: 18px 0 6px;
+      }
+      .kr-crumb a {
+        color: var(--amber-ink);
+        text-decoration: none;
+      }
+      .kr-crumb a:hover {
+        text-decoration: underline;
+      }
+      .kr-h1 {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: clamp(30px, 5vw, 42px);
+        line-height: 1.15;
+        margin: 6px 0 8px;
+        letter-spacing: -0.01em;
+      }
+      .kr-h1 em {
+        font-style: normal;
+        color: var(--amber);
+      }
+      .kr-lede {
+        font-size: 15px;
+        color: var(--muted);
+        margin: 0 0 4px;
+      }
+      .kr-lede b {
+        color: var(--ink);
+        font-weight: 700;
+      }
+      .kr-fact {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-left: 4px solid var(--amber);
+        border-radius: 14px;
+        padding: 16px 18px;
+        margin: 20px 0 8px;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+      .kr-fact b {
+        color: var(--amber-ink);
+      }
+      .kr-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--paper);
+        margin: 18px 0 26px;
+        overflow: hidden;
+      }
+      .kr-stats div {
+        padding: 13px 14px;
+        border-right: 1px solid var(--line);
+        min-width: 0;
+      }
+      .kr-stats div:last-child {
+        border-right: 0;
+      }
+      .kr-stats b {
+        display: block;
+        font-size: 19px;
+        font-weight: 800;
+        color: var(--amber-ink);
+        line-height: 1.2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .kr-stats span {
+        display: block;
+        font-size: 11px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-top: 3px;
+      }
+      /* 稀有度阶梯 —— b 版核心设计 */
+      .gauge {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 26px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .gauge li {
+        border-radius: 10px;
+        padding: 9px 13px;
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 12px;
+        border: 1.5px solid var(--line);
+      }
+      .gauge li b {
+        font-weight: 800;
+      }
+      .gauge li span {
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        opacity: 0.82;
+      }
+      .g-plank {
+        width: 56%;
+        background: transparent;
+        color: var(--ink);
+        border-color: var(--line);
+      }
+      .g-plank span {
+        color: var(--ember);
+      }
+      .g-school {
+        width: 66%;
+        background: var(--sand);
+      }
+      .g-rare {
+        width: 77%;
+        background: #fbeed8;
+        border-left: 3px solid var(--amber);
+      }
+      .g-deep {
+        width: 88%;
+        background: var(--amber-ink);
+        color: var(--cream);
+        border-color: var(--amber-ink);
+      }
+      .g-one {
+        width: 100%;
+        background: var(--amber);
+        color: var(--ink);
+        border-color: var(--amber);
+      }
+      .g-one b {
+        font-weight: 900;
+      }
+      .kr-h2 {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 25px;
+        margin: 34px 0 4px;
+        letter-spacing: -0.01em;
+      }
+      .kr-sub {
+        font-size: 14px;
+        color: var(--muted);
+        margin: 0 0 16px;
+      }
+      /* 题卡 */
+      .prompts {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      details.card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        overflow: hidden;
+      }
+      details.card > summary {
+        cursor: pointer;
+        padding: 15px 17px;
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        list-style: none;
+        scroll-margin-top: 70px;
+      }
+      details.card > summary::-webkit-details-marker {
+        display: none;
+      }
+      details.card > summary::after {
+        content: '+';
+        margin-left: auto;
+        font-size: 20px;
+        font-weight: 300;
+        color: var(--amber);
+        line-height: 1;
+      }
+      details.card[open] > summary::after {
+        content: '−';
+      }
+      .cnum {
+        flex: 0 0 auto;
+        width: 26px;
+        height: 26px;
+        border-radius: 5px;
+        background: var(--sand);
+        color: var(--amber-ink);
+        font-size: 12px;
+        font-weight: 800;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        align-self: center;
+      }
+      .cq {
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 1.35;
+      }
+      .cmeta {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .cbody {
+        padding: 2px 17px 16px;
+        border-top: 1px solid var(--line);
+      }
+      .csum {
+        font-size: 13.5px;
+        color: var(--muted);
+        margin: 12px 0 14px;
+        font-style: italic;
+      }
+      .tierblock {
+        margin: 14px 0 0;
+      }
+      .tierhead {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 6px;
+      }
+      .tbadge {
+        position: relative;
+        padding-left: 10px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      .tbadge::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 3px;
+        bottom: 3px;
+        width: 3px;
+        border-radius: 2px;
+        background: var(--amber);
+      }
+      .tierhead i {
+        font-style: normal;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .chip {
+        border-radius: 5px;
+        padding: 4px 9px;
+        font-size: 14px;
+        background: var(--sand);
+        border: 1px solid var(--line);
+        color: var(--ink);
+      }
+      .chip small {
+        color: var(--muted);
+        font-size: 12px;
+        margin-left: 5px;
+      }
+      .chip.one {
+        background: #fde9c8;
+        border-color: #f3cf94;
+        font-weight: 700;
+      }
+      .chip.deep {
+        background: #f9e2c5;
+        border-color: #efc998;
+      }
+      .chip.rare {
+        background: #fdf3e0;
+        border-color: #f0ddbb;
+      }
+      .more {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 8px;
+      }
+      .more a {
+        color: var(--amber-ink);
+        font-weight: 700;
+        text-decoration: none;
+      }
+      .more a:hover {
+        text-decoration: underline;
+      }
+      /* finder */
+      .finder {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-top: 4px solid var(--amber);
+        border-radius: 14px 14px 14px 14px;
+        padding: 20px;
+        margin: 30px 0 10px;
+      }
+      .finder h2 {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 22px;
+        margin: 0 0 4px;
+      }
+      .finder p {
+        font-size: 14px;
+        color: var(--muted);
+        margin: 0 0 14px;
+      }
+      .finrow {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      #fin {
+        flex: 1 1 220px;
+        min-width: 0;
+        font: inherit;
+        font-size: 15.5px;
+        padding: 11px 13px;
+        border: 1.5px solid var(--line);
+        border-radius: 10px;
+        background: var(--cream);
+        color: var(--ink);
+      }
+      #fin:focus {
+        outline: 2px solid var(--amber);
+        outline-offset: 1px;
+      }
+      #fgo {
+        font: inherit;
+        font-size: 15px;
+        font-weight: 700;
+        padding: 11px 20px;
+        border: 0;
+        border-radius: 10px;
+        background: var(--amber);
+        color: var(--ink);
+        cursor: pointer;
+      }
+      #fgo:hover {
+        background: #c96a05;
+      }
+      #fout {
+        margin-top: 12px;
+        font-size: 15px;
+        border-radius: 10px;
+        min-height: 0;
+      }
+      .fhit {
+        padding: 10px 12px;
+        background: var(--sand);
+        border-radius: 10px;
+        margin-top: 8px;
+      }
+      .fhit b {
+        font-size: 16px;
+      }
+      .fhit .t {
+        color: var(--amber-ink);
+        font-weight: 800;
+      }
+      .fmiss {
+        padding: 10px 12px;
+        background: #fdf1e4;
+        border-radius: 10px;
+        color: var(--muted);
+        margin-top: 8px;
+      }
+      /* 归档 */
+      .arch {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 8px;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 16px;
+      }
+      .arch a {
+        display: block;
+        padding: 9px 11px;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        background: var(--cream);
+        text-decoration: none;
+        font-size: 14px;
+        color: var(--ink);
+      }
+      .arch a:hover {
+        border-color: var(--amber);
+        background: var(--sand);
+      }
+      .arch a small {
+        display: block;
+        color: var(--muted);
+        font-size: 11.5px;
+      }
+      /* FAQ */
+      details.faq {
+        border-bottom: 1px solid var(--line);
+      }
+      details.faq summary {
+        cursor: pointer;
+        padding: 14px 0;
+        font-weight: 700;
+        font-size: 16px;
+        list-style: none;
+      }
+      details.faq summary::-webkit-details-marker {
+        display: none;
+      }
+      details.faq summary::after {
+        content: '+';
+        float: right;
+        color: var(--amber);
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 1;
+      }
+      details.faq[open] summary::after {
+        content: '−';
+      }
+      details.faq p {
+        margin: 0 0 14px;
+        font-size: 15.5px;
+        color: #4a3b2c;
+      }
+      .src {
+        margin-top: 30px;
+        padding: 14px 16px;
+        border: 1px dashed var(--line);
+        border-radius: 10px;
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+      .src b {
+        color: var(--ink);
+      }
+      .cross {
+        margin-top: 26px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .cross a {
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        background: var(--paper);
+        text-decoration: none;
+        font-size: 14px;
+        color: var(--amber-ink);
+        font-weight: 700;
+      }
+      .cross a:hover {
+        background: var(--sand);
+      }
+      @media (max-width: 820px) {
+        .kr-stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .kr-stats div:nth-child(2) {
+          border-right: 0;
+        }
+        .kr-stats div:nth-child(1),
+        .kr-stats div:nth-child(2) {
+          border-bottom: 1px solid var(--line);
+        }
+        .gauge {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+        .gauge li {
+          flex: 1 1 46%;
+          width: auto !important;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 2px;
+        }
+      }
+      @media (max-width: 560px) {
+        .kr-stats {
+          grid-template-columns: 1fr 1fr;
+        }
+        .kr-stats b {
+          font-size: 16px;
+        }
+        .gauge {
+          flex-direction: column;
+        }
+        .gauge li {
+          width: 100% !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <GameNav />
+    <main class="wrap">
+      <nav class="kr-crumb" aria-label="Breadcrumb">
+        <a href="/">GridPaw</a> › <a href="/krillion-answers/">Daily Answers</a> ›
+        <span>Krillion</span>
+      </nav>
+
+      <h1 class="kr-h1">Krillion Answers <em>Today</em></h1>
+      <p class="kr-lede">
+        <b>{dtag || 'Dive'}</b> · {longDate(dive.date)} · {dive.promptCount} prompts ·
+        {fmt(submitted)} answers submitted
+      </p>
+
+      <!-- GEO：首屏可引用事实块，数字全部来自数据文件 -->
+      <p class="kr-fact">{factLead}</p>
+
+      <div class="kr-stats">
+        <div><b>{fmt(submitted)}</b><span>answers submitted</span></div>
+        <div><b>{dive.promptCount}</b><span>prompts</span></div>
+        <div><b>{listed}</b><span>answers catalogued</span></div>
+        <div><b>{fmt(accepted)}</b><span>accepted answers</span></div>
+      </div>
+
+      <h2 class="kr-h2">How Krillion scoring works</h2>
+      <p class="kr-sub">
+        Every accepted answer sits in one of five fixed tiers. Rarer tier, higher score — the tier is
+        set by the game, not by us.
+      </p>
+      <ol class="gauge">
+        <li class="g-plank"><b>Plankton</b> <span>10 pts · most answers land here</span></li>
+        <li class="g-school"><b>Schooler</b> <span>30 pts · uncommon but findable</span></li>
+        <li class="g-rare"><b>Rare</b> <span>60 pts · you had to think</span></li>
+        <li class="g-deep"><b>Deep Cut</b> <span>85 pts · almost nobody types this</span></li>
+        <li class="g-one"><b>One in a Krillion</b> <span>100 pts · exactly one per prompt</span></li>
+      </ol>
+
+      <h2 class="kr-h2" id="prompts">All {dive.promptCount} prompts from {dtag || 'this Dive'}</h2>
+      <p class="kr-sub">
+        {listed} catalogued answers across {totalOne} top-tier picks, {totalDeep} Deep Cuts and
+        {totalCrowd} crowd favourites. Tap any card for its full breakdown.
+      </p>
+      <div class="prompts">
+        {dive.prompts.map((p: Prompt) => {
+          const topCrowd = p.crowd[0];
+          return (
+            <details class="card" id={`p${p.n}`}>
+              <summary>
+                <span class="cnum">{p.n}</span>
+                <span>
+                  <span class="cq">{p.prompt}</span>
+                  <span class="cmeta">
+                    {fmt(p.answersGiven)} answers given · {fmt(p.accepted)} accepted ·{' '}
+                    {listedCount(p)} catalogued
+                  </span>
+                </span>
+              </summary>
+              <div class="cbody">
+                {p.summary && <p class="csum">{p.summary}</p>}
+
+                {p.one.length > 0 && (
+                  <div class="tierblock">
+                    <div class="tierhead">
+                      <span class="tbadge">One in a Krillion</span>
+                      <i>100 pts · rarest accepted answer</i>
+                    </div>
+                    <div class="chips">
+                      {p.one.map((a) => (
+                        <span class="chip one">
+                          {a.a}
+                          {a.players ? <small>{fmt(a.players)} found it</small> : null}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {p.deep.length > 0 && (
+                  <div class="tierblock">
+                    <div class="tierhead">
+                      <span class="tbadge">Deep Cuts</span>
+                      <i>85 pts · {fmt(p.deepCuts)} exist for this prompt</i>
+                    </div>
+                    <div class="chips">
+                      {p.deep.map((a) => (
+                        <span class="chip deep">
+                          {a.a}
+                          {a.players ? <small>{fmt(a.players)}</small> : null}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {p.crowd.length > 0 && (
+                  <div class="tierblock">
+                    <div class="tierhead">
+                      <span class="tbadge">What the crowd said</span>
+                      <i>most-typed answers and their share of players</i>
+                    </div>
+                    <div class="chips">
+                      {p.crowd.map((a) => (
+                        <span class={`chip ${a.tier === 'Schooler' ? '' : a.tier === 'Rare' ? 'rare' : ''}`}>
+                          {a.a}
+                          <small>
+                            {a.tier} {a.pts}
+                            {a.pct ? ` · ${a.pct}%` : ''}
+                          </small>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <p class="more">
+                  {topCrowd && (
+                    <>
+                      Most common answer: <b>{topCrowd.a}</b> ({topCrowd.pct}% of players) ·{' '}
+                    </>
+                  )}
+                  <a href={`/krillion-answers/q/${p.slug}/`}>
+                    See all {listedCount(p)} catalogued answers for this prompt →
+                  </a>
+                </p>
+              </div>
+            </details>
+          );
+        })}
+      </div>
+
+      <!-- 答案速查 -->
+      <section class="finder">
+        <h2>Did your answer score?</h2>
+        <p>
+          Type any answer you used in today's Dive. If it's in our catalogue you'll see its tier and
+          what it was worth.
+        </p>
+        <div class="finrow">
+          <input
+            id="fin"
+            type="text"
+            placeholder="e.g. rugby, honolulu, platypus"
+            autocomplete="off"
+            aria-label="Answer to look up"
+          />
+          <button id="fgo" type="button">Check score</button>
+        </div>
+        <div id="fout" aria-live="polite"></div>
+      </section>
+
+      <h2 class="kr-h2">Yesterday's Dives</h2>
+      <p class="kr-sub">Every Dive we've catalogued, newest first.</p>
+      <div class="arch">
+        {allDives.slice(1, 25).map((d) => (
+          <a href={`/krillion-answers/${d.date}/`}>
+            {shortDate(d.date)}
+            <small>
+              {diveTag(d) || 'Dive'} · {d.promptCount} prompts
+            </small>
+          </a>
+        ))}
+        <a href="/krillion-answers/archive/">
+          All {allDives.length} archived Dives →
+          <small>full archive</small>
+        </a>
+      </div>
+
+      <h2 class="kr-h2">Krillion answers FAQ</h2>
+      <div>
+        {faqs.map((f) => (
+          <details class="faq">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+
+      <InContentAd />
+
+      <p class="src">
+        <b>Where this data comes from.</b> Prompt text, Dive numbers and reset times are pulled from
+        Krillion's public daily endpoint. Accepted answers, their tiers and the player counts are
+        aggregated from the game's public reveal data via community trackers — the official archive
+        of past answers sits behind a one-off unlock, so it isn't available to us directly. Fetched{' '}
+        {dive.fetchedAt.slice(0, 10)}. GridPaw is independent and not affiliated with krillion.io.
+      </p>
+
+      <div class="cross">
+        <a href="/">Play Shikaku</a>
+        <a href="/akari/">Play Akari</a>
+        <a href="/nonogram/">Play Nonogram</a>
+        <a href="/japanese-logic-puzzles/">Japanese logic puzzles</a>
+      </div>
+    </main>
+
+    <SideAd />
+
+    <script is:inline define:vars={{ finderData: (() => {
+      const out = [];
+      for (const p of dive.prompts) {
+        for (const a of p.one) out.push({ a: a.a, tier: 'One in a Krillion', pts: 100, players: a.players, prompt: p.prompt, url: `/krillion-answers/q/${p.slug}/` });
+        for (const a of p.deep) out.push({ a: a.a, tier: 'Deep Cut', pts: 85, players: a.players, prompt: p.prompt, url: `/krillion-answers/q/${p.slug}/` });
+        for (const a of p.crowd) out.push({ a: a.a, tier: a.tier, pts: a.pts, pct: a.pct, prompt: p.prompt, url: `/krillion-answers/q/${p.slug}/` });
+      }
+      return out;
+    })() }}>
+      (function () {
+        var data = finderData;
+        var idx = {};
+        for (var i = 0; i < data.length; i++) {
+          var k = data[i].a.toLowerCase().trim();
+          if (!idx[k]) idx[k] = [];
+          idx[k].push(data[i]);
+        }
+        var input = document.getElementById('fin');
+        var out = document.getElementById('fout');
+        function fmt(n) {
+          return typeof n === 'number' ? n.toLocaleString('en-US') : '';
+        }
+        function run() {
+          var q = (input.value || '').toLowerCase().trim();
+          if (!q) { out.innerHTML = ''; return; }
+          var hits = idx[q];
+          if (!hits) {
+            // 宽松匹配：包含关系
+            for (var k in idx) {
+              if (k.indexOf(q) !== -1 || q.indexOf(k) !== -1) { hits = idx[k]; break; }
+            }
+          }
+          if (!hits) {
+            out.innerHTML = '<div class="fmiss">Not in our catalogue for today — it may still have been accepted in-game. Only ' + data.length + ' of the accepted answers are documented publicly.</div>';
+            return;
+          }
+          var h = hits[0];
+          var extra = h.players ? ' · ' + fmt(h.players) + ' players found it' : (h.pct ? ' · ' + h.pct + '% of players typed it' : '');
+          out.innerHTML = '<div class="fhit"><b>' + h.a + '</b> — <span class="t">' + h.tier + ' · ' + h.pts + ' pts</span>' + extra +
+            '<br><a href="' + h.url + '" style="color:var(--amber-ink);font-weight:700;font-size:13px;text-decoration:none">Open prompt breakdown →</a></div>';
+        }
+        document.getElementById('fgo').addEventListener('click', run);
+        input.addEventListener('keydown', function (e) { if (e.key === 'Enter') run(); });
+      })();
+    </script>
+  </body>
+</html>
