@@ -945,3 +945,16 @@ sitemap 仍不含它）。
 
 实测（本地 dist，父页包一层 gpTrack 收事件，驱动 iframe 内游戏）：事件序列 `game_start → first_move → hint_click → level_up`，
 点 Reset 再补 `puzzle_reset{level:1}`，参数逐个核对正确。
+
+### 2026-11-25 · 新游戏站内集成：GameHub 卡片 + 每日榜（补「组件」那一档）
+
+| 件 | 落点 | 验收 |
+|---|---|---|
+| GameHub 卡片 | `GameHub.astro` + 新图标 `public/assets/game-icons/room-sort.webp`（128×128，1746B，PIL 按游戏视觉画：L 形房块 + 门缺口 + 门板 + 四分之一弧，琥珀 #D97706 / 奶油 #FDF8F5） | 卡片 211×96、图标 naturalWidth=128、NEW 角标在位、vision 复核 40px 下权重与其它卡片一致 |
+| 每日榜 | `functions/api/leaderboard.ts` GAMES +`room-sort`（DAILY_FLOORS 4000ms）；`leaderboard.astro` 加 tab `🏠 Room Sort` | `/leaderboard/?game=room-sort` 下拉选中、页面正常出两卡 |
+| 成绩提交 | `game.js` `submitScore()`：通关时 `POST /api/leaderboard {game:'room-sort', date, timeMs, size:房间数}`；<4s 不提交（服务端同一下限兜底） | 拦截 iframe fetch，载荷 `{"game":"room-sort","date":"2026-11-25","timeMs":6503,"size":3}` |
+| 通关时长 | `win()` 记 `state.t0`，弹窗副标题追加 `· m:ss` | — |
+
+**identity 口径**：iframe 同源，`/api/leaderboard` 相对路径落在站点域，`gp_gid` cookie 自动带过去（服务端优先 cookie、缺席才用 anon_id），游客照常上榜。
+
+**徽章不做**（有据）：`badge-icons.ts` 的 game 联合类型只有 `shikaku | murdoku | streak | crazy-cleanup`，且 crazy-cleanup 已下线；meowdoku / huepaw 等 7 款后加游戏都没接徽章。要接得先给这套 legacy 系统扩 derive 规则，不在本次范围。

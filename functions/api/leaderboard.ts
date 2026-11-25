@@ -8,12 +8,13 @@ const GAMES = new Set([
   'pictomino', 'murdoku', 'meowdoku',
   'crazy-cleanup', // 2026-10-30 Crazy Cleanup 接入（14 款）
   'huepaw', // 2026-11-23 Huepaw（每日渐变）接入；3×3 日盘最快真人 ~4s，下限见 DAILY_FLOORS
+  'room-sort', // 2026-11-25 自研平面图谜题（60 关）换体上线，成绩按「当日最快完成一关」入榜
 ]);
 
 // 每游戏成绩下限（ms）：低于它必须有 24h 内 daily_start 佐证才入库（2026-10-26 加）。
 // 背景：常规关随机盘的关卡快通曾污染 daily 榜（客户端 bug + 幽灵提交 4.0s/1.0s 上了当日最快）。
 // 10×10 akari 真人不可能 <8s；5×5 shikaku daily 最快 ~5s 留余量；pictomino daily 盘 ≥8s。
-const DAILY_FLOORS: Record<string, number> = { shikaku: 5000, akari: 8000, pictomino: 8000, huepaw: 2500 };
+const DAILY_FLOORS: Record<string, number> = { shikaku: 5000, akari: 8000, pictomino: 8000, huepaw: 2500, 'room-sort': 4000 };
 
 // 尺寸阶梯榜（game_results_size）下限：按盘面最小交换数估的真人下限，
 // 不能沿用每日榜那条（huepaw 2500ms 是照 3×3 定的，6×6 会被 3 秒假成绩占满）。

@@ -365,6 +365,18 @@
     });
   }
 
+  // 每日榜提交（服务端白名单 'room-sort'，<4s 会被 floor 拦）：当日最快完成一关入榜。
+  // iframe 里跑时相对路径同样落在站点域，localStorage 的 gp_anon_id 与父页共享 → 游客也能上榜。
+  function submitScore(level, timeMs) {
+    let anonId = null;
+    try { anonId = localStorage.getItem('gp_anon_id'); } catch (e) {}
+    const body = { game: 'room-sort', date: new Date().toISOString().slice(0, 10), timeMs: Math.round(timeMs), size: lv().rooms.length };
+    if (anonId) body.anonId = anonId;
+    try {
+      fetch('/api/leaderboard', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).catch(function () {});
+    } catch (e) {}
+  }
+
   const BASE_HINT = 'Drag a room onto the plan — cover every square, and every door must meet a door or an entry gap.';
 
   function setStatus(msg, kind) {
@@ -404,11 +416,14 @@
 
   function win() {
     const L = lv();
-    track('level_up', { level: L.id, difficulty: diffLabel(L) });
+    const elapsed = Math.max(0, Date.now() - (state.t0 || Date.now()));
+    track('level_up', { level: L.id, difficulty: diffLabel(L), timeMs: elapsed });
+    if (elapsed >= 4000) submitScore(L.id, elapsed); // 低于 4s 视为非真人，不提交（服务端也有同一下限）
     state.done.add(L.id);
     saveSave();
     $('winTitle').textContent = L.hard ? 'Hard plan done!' : 'Plan complete!';
-    $('winSub').textContent = `${L.rooms.length} rooms · ${L.cells.length} squares · every door matched.`;
+    const mmss = Math.floor(elapsed / 60000) + ':' + String(Math.floor((elapsed % 60000) / 1000)).padStart(2, '0');
+    $('winSub').textContent = `${L.rooms.length} rooms · ${L.cells.length} squares · every door matched · ${mmss}`;
     $('btnNext').style.display = state.idx < state.levels.length - 1 ? '' : 'none';
     $('winOverlay').classList.add('on');
   }
@@ -532,6 +547,7 @@
     state.placed = new Map();
     state.selected = null;
     state.hints = 3;
+    state.t0 = Date.now();
     $('winOverlay').classList.remove('on');
     setStatus(BASE_HINT);
     renderAll();
