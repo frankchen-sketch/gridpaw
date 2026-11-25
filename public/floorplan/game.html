@@ -25,6 +25,9 @@
   header.top h1{font-size:17px;margin:0;font-weight:800;letter-spacing:.2px}
   header.top .lvl{margin-left:auto;font-size:13px;font-weight:700;color:var(--muted)}
   header.top .lvl b{color:var(--ink)}
+  /* 嵌进 /room-sort-game-online/ 的 iframe 时带 ?embed=1：外层已有 H1，别出双标题 */
+  body.embed header.top h1{display:none}
+  body.embed header.top .lvl{margin-left:0}
 
   .board-card{
     background:#fff;border:1.5px solid var(--amber-line);border-radius:18px;
@@ -96,6 +99,7 @@
 </style>
 </head>
 <body>
+<script>if (new URLSearchParams(location.search).get('embed') === '1') document.body.classList.add('embed');</script>
 <div class="wrap">
   <header class="top">
     <h1>🏠 Room Sort · Floor Plan</h1>

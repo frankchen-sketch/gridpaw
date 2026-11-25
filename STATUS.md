@@ -905,3 +905,18 @@ sitemap 仍不含它）。
    入户门洞的挑选也过同一套校验（连着挑两个洞可能彼此挨着，逐个复核）。
 
 **量化验收**：旧数据里 60 关存在单格双门（如 L30 Bathroom 1 格 E+W 两门），改后 **单格多门 0、同墙相邻门 0**（逐关扫过）；60/60 关按托盘序摆解法全过；每关棋盘上的门符号数 = 共用门洞数 + 入户门洞数（60 关 0 例外，说明每座门洞只画了一次）；2× 放大逐道墙核对：4 道共用墙各一扇门，无面对面、无双开。
+
+### 2026-11-25 · A 方案换体：品类页给自研平面图，amochi 133 关可玩挪 /amochiroom/play/
+
+法老选 A（换体，不是直接替掉）。原先 `/room-sort-game-online/` 挂的是 amochi 解包版（物品入箱），
+而 "room sort" 这个词 SERP 上主要是 Gamincat 式平面图摆放，词与体错配。
+
+| 页面 | 改前 | 改后 |
+|---|---|---|
+| `/room-sort-game-online/` | amochi 物品入箱可玩版，H1「Room Sort Game Online」，FAQ 里还写着「这不是 floor plan 那个游戏」 | **自研平面图谜题**（`/floorplan/game.html?embed=1` iframe 嵌在 840px 内容列里），TDK/H1/FAQ 全部重写为平面图口径，正文含玩法四步、门的三条合法路径、入户门洞 |
+| `/amochiroom/play/` | 不存在 | 原 133 关可玩版整体搬来（`git mv`，引擎与关卡资产仍在 `/room-sort/*`），H1「Amochiroom Room Sort — Play Online」，品牌目录下与答案页互链 |
+| `/amochiroom/` hub | 只有答案索引 | Quick answer 区加一条「想玩不想读？133 关可玩版」入口 |
+| 导航 | Room Sort 描述「Sort items into boxes」 | 改成「Fit rooms into a floor plan」（GameNav + GameSwitcher 两处同步） |
+| 广告口径 | `/room-sort-game-online` 已在 PLAY_SURFACES | 追加 `/amochiroom/play`（真棋盘页），答案页仍是内容页不登记 |
+
+游戏本体加了 `?embed=1`（隐藏内层 H1，避免与外层双标题）。验收：build 792 页（+1）；换体页 iframe 内 60/60 关全胜；`/amochiroom/play/` 引擎起、133 个关卡选项、房间与箱子正常渲染；桌面 1280 iframe 720px、手机 390 内层 docH=vh 不滚动、外层 scrollW=390 无横溢。

@@ -5,31 +5,35 @@ import AdSlot from '../../components/AdSlot.astro';
 import SideAd from '../../components/SideAd.astro';
 import InContentAd from '../../components/InContentAd.astro';
 
-const title = 'Room Sort Game Online — Play Free in Your Browser';
+const title = 'Room Sort — Floor Plan Puzzle, Play Free Online';
 const description =
-  'Play Room Sort online, free and without installing anything: tap an item, send it to the open box that wants it, and keep your buffer from filling up. 133 rooms, no sign-up.';
+  'Fit every room-shaped tile into the floor plan: cover each square, and every door has to meet another door or an entry gap. 60 layouts, free in your browser, no sign-up.';
 const canonical = '/room-sort-game-online';
 
 const faq = [
   {
-    q: 'How do you play Room Sort?',
-    a: 'Tap any item lying in the room. If one of the open boxes is waiting for that category, the item flies into it and counts. If no open box wants it, the item goes into your buffer. Clear every box and the room is done.',
+    q: 'How do you play the floor plan version of Room Sort?',
+    a: 'Drag a room-shaped tile from the tray onto the floor plan. Tiles cannot overlap or hang over the edge, and a room placed on the wrong spot is refused with the reason spelled out. You win when every square of the plan is covered and every door lines up.',
   },
   {
-    q: 'Why does the buffer matter so much?',
-    a: 'You start with five buffer slots out of seven, and only two boxes are open at a time. Anything you tap that no open box wants takes a slot. When all five are full and nothing left on the floor can go into an open box, the run dead-ends.',
+    q: 'What makes a placement legal?',
+    a: 'Three things: the whole tile has to sit inside the plan, no two tiles may share a square, and each door on the tile has to face something real — another room’s door, or one of the entry gaps cut into the outer wall. A door that opens onto a wall or onto nothing is refused.',
+  },
+  {
+    q: 'What are the entry gaps?',
+    a: 'The outer wall of every plan has one or two openings, marked with the same door swing as the rooms. They are the only places where a door may open outward. Everything else on the boundary is solid wall, so the gaps decide which room is allowed to sit along the outer edge.',
   },
   {
     q: 'How many levels are there?',
-    a: 'This build plays all 133 rooms from Amochiroom Puzzle: Room Sort version 1.0.20, in the order the game ships them, from My Study through Lost and Found.',
+    a: '60 layouts, growing from three rooms on an eleven-square plan to eight rooms and thirty-five squares. Every one is generated with a full solution and verified before it ships, so no level is unsolvable.',
   },
   {
-    q: 'Can I play on a phone?',
-    a: 'Yes. The room is scaled to the screen and every item is tappable; there is no separate download and no app install.',
+    q: 'Is this the same as Amochiroom Room Sort?',
+    a: 'No. Amochiroom’s Room Sort is about emptying a messy room into labelled boxes — we host a playable build of that one on its own page. This page is the floor plan puzzle that shares the Room Sort name.',
   },
   {
-    q: 'Is this the same as Room Sort - Floor Plan Game?',
-    a: 'No. That game has you fit room tiles into a floor plan. This one is the item-sorting version sold as Amochiroom Puzzle: Room Sort — you empty a messy room into labelled boxes.',
+    q: 'Does it work on a phone?',
+    a: 'Yes. The plan scales to the screen and the tray scrolls sideways in one row, so the board and the pieces stay on one screen without pinching or zooming.',
   },
 ];
 
@@ -46,14 +50,14 @@ const faqJsonLd = {
 const gameJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'VideoGame',
-  name: 'Room Sort Online',
+  name: 'Room Sort — Floor Plan Puzzle',
   url: 'https://gridpaw.com/room-sort-game-online/',
   applicationCategory: 'Game',
   gamePlatform: 'Web browser',
   genre: 'Puzzle',
   isAccessibleForFree: true,
   description:
-    'A browser version of the Room Sort item-sorting puzzle: tap items into the boxes that want them while keeping the buffer clear.',
+    'Fit room-shaped tiles into a floor plan: cover every square and make every door meet another door or an entry gap.',
 };
 ---
 
@@ -65,81 +69,64 @@ const gameJsonLd = {
     description={description}
     canonical={canonical}
     type="article"
-    breadcrumbTitle="Room Sort Game Online"
+    breadcrumbTitle="Room Sort Floor Plan"
   />
   <link rel="alternate" hreflang="en" href="https://gridpaw.com/room-sort-game-online/" />
   <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/room-sort-game-online/" />
   <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
   <script type="application/ld+json" set:html={JSON.stringify(gameJsonLd)} />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
   <GameNav />
-  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> › Room Sort Game Online</nav>
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> › Room Sort — Floor Plan</nav>
 
-  <main class="rs-main">
-    <h1>Room Sort Game Online</h1>
-    <p class="rs-lede">
-      Tap an item, send it to the open box that wants it, and keep the buffer clear. All 133 rooms of
-      Amochiroom Puzzle: Room Sort, playable right here — no download, no sign-up.
+  <main class="fp-main">
+    <h1>Room Sort — Floor Plan Puzzle</h1>
+    <p class="fp-lede">
+      Every room in this house has a shape and at least one door. Drag the pieces onto the plan until
+      the floor is covered — and every door faces another door, or one of the entry gaps on the outer wall.
+      60 layouts, playable in your browser, nothing to install.
     </p>
 
-    <div class="rs-wrap">
-      <div class="rs-bar">
-        <label class="rs-picker-label" for="rsPicker">Level</label>
-        <select id="rsPicker" class="rs-picker" aria-label="Choose a level"></select>
-        <span id="rsLevelTitle" class="rs-level-title">Loading…</span>
-        <span id="rsTimer" class="rs-timer">⏱ 0:00</span>
-        <button id="rsHint" class="rs-hint-btn" type="button">Hint (3)</button>
-        <button id="rsRestart" class="rs-restart" type="button">Restart</button>
-      </div>
-
-      <div id="rsRoom" class="rs-room" role="application" aria-label="Room with items to sort"></div>
-
-      <p class="rs-hint">Items are drawn at the positions the game ships them. Items in front can be tapped; ones behind can't.</p>
-
-      <div class="rs-panels">
-        <section class="rs-panel" aria-labelledby="rsBoxesHead">
-          <h2 id="rsBoxesHead" class="rs-panel-head">Open boxes</h2>
-          <div id="rsBoxes" class="rs-boxes"></div>
-        </section>
-        <section class="rs-panel" aria-labelledby="rsBufferHead">
-          <h2 id="rsBufferHead" class="rs-panel-head">Buffer <span id="rsBufferCount" class="rs-buffer-count">0/5</span></h2>
-          <div id="rsBuffer" class="rs-buffer"></div>
-        </section>
-      </div>
-
-      <p id="rsStatus" class="rs-status" hidden></p>
+    <div class="fp-frame">
+      <iframe
+        src="/floorplan/game.html?embed=1"
+        title="Room Sort floor plan puzzle — playable board"
+        loading="lazy"
+        allow="fullscreen"
+      ></iframe>
     </div>
+    <p class="fp-note">
+      Playing in a small window? <a href="/floorplan/game.html" target="_blank" rel="noopener">Open the board full screen</a> — the embedded copy is the same build.
+    </p>
 
-    <section class="rs-sec">
+    <section class="fp-sec">
       <h2>How to play</h2>
-      <ol class="rs-steps">
-        <li><b>Two boxes are open at a time.</b> Each one lists a category and how many items it wants.</li>
-        <li><b>Tap what they want.</b> Matching items fly in and count toward the box.</li>
-        <li><b>Everything else goes to the buffer.</b> You have five open slots out of seven.</li>
-        <li><b>Do not fill the buffer.</b> If all five slots are taken and nothing left on the floor fits an open box, the run is dead.</li>
+      <ol>
+        <li><b>Pick a piece from the tray.</b> Each piece is one room, with a name and its doors drawn as a gap, a door leaf and a quarter-circle swing.</li>
+        <li><b>Drop it on the plan.</b> It has to fit entirely inside the outline and cannot land on a square another room already owns.</li>
+        <li><b>Match the doors.</b> Two rooms side by side share one doorway: their doors have to sit on the same wall. The only exception is a door that opens through an entry gap on the outer wall.</li>
+        <li><b>Cover everything.</b> The level is done when the outline is full and no door opens onto a wall or onto nothing.</li>
       </ol>
-      <p class="rs-tip">
-        The one habit that fixes most failed runs: only park an item if the box that wants it is about to open.
-        Parking three random items early is what kills a run twenty taps later.
+      <p class="fp-tip">
+        Wrong placements are not silent: the game tells you which rule you broke — outside the plan, square already taken,
+        a door opening into a wall, or a door opening onto nothing. Read the message, it is the fastest way to learn the puzzle.
       </p>
     </section>
 
     <InContentAd />
 
-    <section class="rs-sec">
-      <h2>Stuck on a level?</h2>
+    <section class="fp-sec">
+      <h2>Two games share the name Room Sort</h2>
       <p>
-        Every room’s box list — how many boxes, which categories, how many items each one wants — is published from the
-        game’s own data. Start with <a href="/amochiroom/">all 133 Room Sort answers</a>, or use the
-        <a href="/amochiroom/find/">box finder</a> if you only remember one item that was on the floor.
+        The floor plan puzzle on this page is built from scratch here. The other Room Sort — the one where you empty a messy
+        room into labelled boxes — is Amochiroom Puzzle: Room Sort, and
+        <a href="/amochiroom/play/">you can play all 133 of its rooms here</a>, with
+        <a href="/amochiroom/">the box list for every level</a> published alongside.
       </p>
     </section>
 
-    <section class="rs-sec">
+    <section class="fp-sec">
       <h2>Frequently asked questions</h2>
       {faq.map((f) => (
         <details>
@@ -149,179 +136,105 @@ const gameJsonLd = {
       ))}
     </section>
 
-    <p class="rs-evidence">
-      Unofficial fan-made build. Level data and art come from Amochiroom Puzzle: Room Sort 1.0.20
-      (com.gamefactory.roomsort), unpacked from the shipped APK. Not affiliated with ABF ALPENHOF.
+    <p class="fp-evidence">
+      Built and puzzle-generated in-house. Not affiliated with Gamincat or with ABF ALPENHOF; no assets from either game
+      are used here — the layouts, the drawing style and the rules text are ours.
     </p>
   </main>
 
   <AdSlot />
   <SideAd />
 
-  <script is:inline src="/room-sort/engine.js"></script>
-  <script is:inline>
-    (function () {
-      function boot() {
-        if (!window.RoomSort) return;
-        window.RoomSort.init();
-        var btn = document.getElementById('rsRestart');
-        if (btn) btn.addEventListener('click', function () { window.RoomSort.restart(); });
+  <style>
+    .fp-main {
+      max-width: 52.5rem;
+      margin: 0 auto;
+      padding: 1.25rem 1rem 4rem;
+      font-family: Nunito, system-ui, sans-serif;
+      color: #2c2118;
+    }
+    .fp-main h1 {
+      font-size: clamp(1.7rem, 4vw, 2.35rem);
+      line-height: 1.15;
+      margin: 0.5rem 0 0.6rem;
+    }
+    .fp-lede {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #4a3a2c;
+      margin: 0 0 1.1rem;
+    }
+    .fp-frame {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid #e8ddcb;
+      background: #fbf7f0;
+      box-shadow: 0 10px 28px rgba(120, 90, 50, 0.1);
+    }
+    .fp-frame iframe {
+      display: block;
+      width: 100%;
+      height: min(80vh, 760px);
+      min-height: 560px;
+      border: 0;
+    }
+    .fp-note {
+      font-size: 0.85rem;
+      color: #7a6652;
+      margin: 0.5rem 0 1.6rem;
+    }
+    .fp-sec {
+      margin: 1.8rem 0;
+    }
+    .fp-sec h2 {
+      font-size: 1.25rem;
+      margin: 0 0 0.6rem;
+    }
+    .fp-sec ol,
+    .fp-sec p {
+      font-size: 1rem;
+      line-height: 1.65;
+      color: #3d2f22;
+    }
+    .fp-sec ol {
+      padding-left: 1.2rem;
+    }
+    .fp-sec li {
+      margin: 0.4rem 0;
+    }
+    .fp-tip {
+      background: #fdf6e9;
+      border-left: 3px solid #d97706;
+      border-radius: 0 8px 8px 0;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.95rem;
+    }
+    .fp-sec details {
+      border-bottom: 1px solid #ece2d2;
+      padding: 0.6rem 0;
+    }
+    .fp-sec summary {
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.98rem;
+    }
+    .fp-sec details p {
+      margin: 0.5rem 0 0.2rem;
+      font-size: 0.95rem;
+      color: #4a3a2c;
+    }
+    .fp-evidence {
+      font-size: 0.8rem;
+      color: #8b7963;
+      border-top: 1px solid #ece2d2;
+      padding-top: 0.9rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 560px) {
+      .fp-frame iframe {
+        height: 66vh;
+        min-height: 460px;
       }
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', boot);
-      } else {
-        boot();
-      }
-    })();
-  </script>
-
-  <style is:global>
-    .rs-main { max-width: 840px; margin: 0 auto; padding: 1.2rem 1rem 3rem; }
-    .rs-main h1 { font-size: clamp(1.5rem, 4vw, 2.1rem); margin: .4rem 0 .5rem; }
-    .rs-lede { color: #555; line-height: 1.6; margin: 0 0 1rem; }
-
-    .rs-wrap {
-      background: #fff; border: 2px solid var(--border, #E7E0D4); border-radius: 16px;
-      padding: .8rem; box-shadow: 0 2px 10px rgba(217,119,6,.08); margin-bottom: 1.2rem;
-    }
-    .rs-bar { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; margin-bottom: .7rem; }
-    .rs-picker-label { font-size: .78rem; font-weight: 900; letter-spacing: .05em; text-transform: uppercase; color: var(--amber-ink, #B45309); }
-    .rs-picker {
-      font: inherit; font-size: .85rem; padding: .3rem .5rem; border-radius: 8px;
-      border: 1.5px solid var(--border, #E7E0D4); background: #fff; max-width: 46vw;
-    }
-    .rs-level-title { font-size: .85rem; font-weight: 800; color: #444; }
-    .rs-restart {
-      font: inherit; font-size: .8rem; font-weight: 800; cursor: pointer;
-      background: var(--amber-ink, #B45309); color: #fff; border: 0; border-radius: 8px; padding: .35rem .8rem;
-    }
-    .rs-restart:hover { filter: brightness(1.08); }
-    .rs-timer {
-      margin-left: auto; font-size: .8rem; font-weight: 800; color: #8a7355;
-      font-variant-numeric: tabular-nums;
-    }
-    .rs-hint-btn {
-      font: inherit; font-size: .8rem; font-weight: 800; cursor: pointer;
-      background: #FFF3DF; color: var(--amber-ink, #B45309); border: 1.5px solid #F0DFAE;
-      border-radius: 8px; padding: .3rem .75rem;
-    }
-    .rs-hint-btn:hover:not(:disabled) { background: #FFE9C9; }
-    .rs-hint-btn:disabled { opacity: .45; cursor: not-allowed; }
-
-    /* 房间按宽高比缩放，高度封顶 64vh —— 玩家反馈物品本来就小、房间再小就看不清，从 52vh 抬高。
-       仍留封顶：完全不封顶时 1440×900 桌面上房间会顶到 865px，箱子栏被推出首屏。 */
-    .rs-room {
-      position: relative; width: auto; max-width: 100%; max-height: 64vh;
-      aspect-ratio: var(--rs-ar, 0.78); margin: 0 auto; border-radius: 12px; overflow: hidden;
-      background-size: cover; background-position: center; background-color: #F3EEE4;
-      touch-action: manipulation;
-    }
-    /* 手机上把房间压到 56vh 以内，否则箱子栏和缓冲栏要滚动才看得见 ——
-       玩家点物品时看不到还有哪些箱子，等于盲玩。宽度由宽高比反推，居中。 */
-    @media (max-width: 620px) {
-      /* 首屏预算 812px：房间 317 + 箱子 81 + 缓冲 60 + 间距之后，头部只剩 ~330px。
-         h1 / lede / breadcrumb 属于「进页时看一次」的信息，压掉它们把游戏顶上来。 */
-      .breadcrumb { display: none; }
-      .rs-main { padding-top: .5rem; }
-      .rs-main h1 { font-size: 1.22rem; margin: 0 0 .35rem; }
-      .rs-lede {
-        font-size: .84rem; line-height: 1.5; margin-bottom: .6rem;
-        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-      }
-      .rs-hint { display: none; }
-      .rs-wrap { padding: .55rem; }
-      .rs-picker { max-width: 100%; flex: 1 1 100%; order: 3; }
-      .rs-level-title { order: 4; flex: 1 1 100%; font-size: .8rem; }
-      .rs-bar { gap: .4rem; margin-bottom: .5rem; }
-      .rs-room { max-height: 68vh; }
-      .rs-panels { gap: .5rem; margin-top: .5rem; }
-    }
-    /* 矮屏分档：52vh 只够 900px 以上的视口，1280×800 会差十几像素，
-       640px 的小屏更会差一屏 —— 按高度降档，并把「进页看一次」的文案让位给游戏。 */
-    @media (max-height: 820px) {
-      .rs-room { max-height: 56vh; }
-    }
-    @media (max-height: 700px) {
-      .rs-lede, .rs-hint, .breadcrumb { display: none; }
-      .rs-main { padding-top: .4rem; }
-      .rs-main h1 { font-size: 1.05rem; margin: 0 0 .3rem; }
-      .rs-room { max-height: 50vh; }
-      .rs-panels { margin-top: .4rem; }
-      .rs-bar { margin-bottom: .4rem; }
-    }
-    .rs-item {
-      position: absolute; cursor: pointer; user-select: none; -webkit-user-drag: none;
-      transform-origin: center; transition: filter .12s;
-    }
-    .rs-item:hover { filter: drop-shadow(0 0 3px rgba(217,119,6,.9)); }
-    @keyframes rsHintPulse {
-      0%, 100% { filter: drop-shadow(0 0 0 rgba(217,119,6,0)); }
-      50% { filter: drop-shadow(0 0 7px rgba(217,119,6,1)); }
-    }
-    .rs-item--hint { animation: rsHintPulse .55s ease-in-out 4; z-index: 30; }
-    .rs-item--gone {
-      pointer-events: none; opacity: 0; scale: .4;
-      transition: opacity .24s linear, scale .24s ease-in;
-    }
-
-    .rs-hint { font-size: .76rem; color: #777; margin: .5rem 0 0; line-height: 1.5; }
-
-    .rs-panels { display: grid; grid-template-columns: 1.6fr 1fr; gap: .8rem; margin-top: .8rem; }
-    @media (max-width: 620px) { .rs-panels { grid-template-columns: 1fr; } }
-    .rs-panel { border: 1.5px solid var(--border, #E7E0D4); border-radius: 12px; padding: .55rem .6rem; background: #FFFDF9; }
-    .rs-panel-head {
-      font-size: .72rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase;
-      color: var(--amber-ink, #B45309); margin: 0 0 .45rem; display: flex; align-items: center; gap: .4rem;
-    }
-    .rs-buffer-count { font-weight: 800; color: #666; letter-spacing: 0; text-transform: none; }
-
-    .rs-boxes { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem; }
-    .rs-box {
-      border: 1.5px solid var(--border, #E7E0D4); border-radius: 10px; padding: .35rem .4rem;
-      background: #fff; display: flex; flex-direction: column; gap: .18rem; min-width: 0;
-    }
-    .rs-box--empty { opacity: .35; align-items: center; justify-content: center; }
-    .rs-box-name { font-size: .72rem; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .rs-box-count { font-size: .74rem; color: #666; }
-    .rs-box-count b { color: var(--amber-ink, #B45309); }
-    .rs-box-bar { display: block; height: 4px; background: #EFE7D9; border-radius: 3px; overflow: hidden; }
-    .rs-box-bar i { display: block; height: 100%; background: #D97706; transition: width .28s; }
-    .rs-box-thumbs { display: flex; gap: .15rem; margin-top: .1rem; }
-    .rs-box-thumbs img { width: 20px; height: 20px; object-fit: contain; }
-
-    .rs-buffer { display: grid; grid-template-columns: repeat(7, 1fr); gap: .3rem; }
-    .rs-slot {
-      aspect-ratio: 1; border-radius: 8px; border: 1.5px dashed #D8CFBF; background: #fff;
-      display: flex; align-items: center; justify-content: center; overflow: hidden;
-    }
-    .rs-slot--locked { background: #F0EAE0; border-style: solid; border-color: #E1D8C8; opacity: .55; }
-    .rs-slot--used { border-style: solid; border-color: var(--amber, #D97706); background: #FFF7EC; }
-    .rs-slot img { width: 88%; height: 88%; object-fit: contain; }
-
-    .rs-status { margin: .8rem 0 0; padding: .55rem .8rem; border-radius: 10px; font-weight: 800; font-size: .88rem; line-height: 1.5; }
-    .rs-status--win { background: #ECFDF5; color: #065F46; border: 1.5px solid #6EE7B7; }
-    .rs-status--fail { background: #FEF2F2; color: #991B1B; border: 1.5px solid #FCA5A5; }
-    .rs-status--warn { background: #FFFBEB; color: #92400E; border: 1.5px solid #FCD34D; }
-
-    .rs-sec { margin: 1.8rem 0; }
-    .rs-sec h2 { font-size: 1.22rem; margin: 0 0 .6rem; }
-    .rs-sec p { line-height: 1.65; }
-    .rs-steps { padding-left: 1.2rem; line-height: 1.75; }
-    .rs-steps li { margin-bottom: .35rem; }
-    .rs-tip {
-      margin-top: .8rem; padding: .7rem .9rem; background: #FFF7EC;
-      border: 1.5px solid #F0DFAE; border-radius: 10px; font-size: .92rem;
-    }
-    .rs-sec details {
-      margin: .5rem 0; padding: .55rem .85rem; background: #fff;
-      border: 1.5px solid var(--border, #E7E0D4); border-radius: 10px;
-    }
-    .rs-sec details[open] { border-color: var(--amber, #D97706); }
-    .rs-sec summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
-    .rs-sec details p { margin-top: .45rem; }
-    .rs-evidence {
-      font-size: .78rem; color: #888; border-top: 1px solid var(--border, #E7E0D4);
-      margin-top: 2rem; padding-top: .7rem; line-height: 1.6;
     }
   </style>
 </body>

@@ -1,5 +1,5 @@
 // 把 src/data/amochiroom-levels.json（6.8MB 全量）拆成按关卡的前端数据，
-// 供 /room-sort-game-online/ 的可玩引擎按需加载（首屏只取 index.json + 当前关）。
+// 供 /amochiroom/play/ 的可玩引擎按需加载（首屏只取 index.json + 当前关）。
 //
 // 用法：node scripts/export-roomsort-play.mjs
 // 输出：public/room-sort/index.json + public/room-sort/levels/{N}.json
