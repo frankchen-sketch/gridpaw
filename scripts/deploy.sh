@@ -111,6 +111,7 @@ LOCK="${TMPDIR:-/tmp}/gridpaw-deploy.lock"
 cleanup() {
   rmdir "$LOCK" 2>/dev/null || true
   [ -n "${WT_TMP:-}" ] && { git -C "$MAIN_TREE" worktree remove --force "$WT_TMP" 2>/dev/null || rm -rf "$WT_TMP"; }
+  return 0   # trap 里最后一条命令失败会把脚本退出码改成 1（实测：部署成功却报 DEPLOY FAILED）
 }
 trap cleanup EXIT
 if ! mkdir "$LOCK" 2>/dev/null; then
