@@ -115,3 +115,16 @@ node scripts/check-play-surfaces.mjs
 | 历史数据无 Dive 号 | 标题 `Dive #null` | 用 `diveNo()` 反推，不要直接拼 `dive.dive` |
 | slug 截断留横线 | URL `...listeners-/` | slugify 末尾再 `replace(/-+$/, '')` |
 | 聚合站归档滞后 | 当日 URL 404 | 今日走聚合站主页，历史走归档 URL（脚本已分派） |
+| 带 `getStaticPaths` 的页面 frontmatter 超 ~60 行 | 构建报 `Unexpected "export"`，行号随内容漂移 | 数据整理抽到 `src/lib/krillion-page.ts`，页面 frontmatter 保持 40 行内。**探针排查前必须先把坏页面 mv 出 `src/pages/`**，否则它的错误会掩盖探针结果（踩过一次，白测十几轮） |
+
+## 四页的样式与逻辑是共享的
+
+改任何一处前先认这两个文件，别在页面里各改一份：
+
+| 文件 | 内容 | 谁在用 |
+|---|---|---|
+| `src/styles/krillion-base.css` | 调色板 / 字体栈 / 圆角体系（14·10·5·2）/ 稀有度阶梯 / 题卡 / 分档块 / 归档网格 / FAQ / CTA | 四个页面全部 `import` |
+| `src/lib/krillion-page.ts` | `TIERS` / `tiersOf()` / `compact()` / `groupByYear()` / `dayFaqs()` / `promptFaqs()` / `archiveFaqs()` / `faqJsonLd()` | 四个页面 |
+
+设计基准是 `krillion-v-opus2.html`（b 版，用户批准稿，存在 scratch 里）。**改动视觉前先比对它**——上一版实现就是在「借鉴配色」的名义下丢了首屏 hero 结构、换了字体，用户一眼看出不对。
+
