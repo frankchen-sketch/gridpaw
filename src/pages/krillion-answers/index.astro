@@ -1,0 +1,389 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import SideAd from '../../components/SideAd.astro';
+import '../../styles/krillion-base.css';
+import InContentAd from '../../components/InContentAd.astro';
+import {
+  latestDive,
+  allDives,
+  fmt,
+  longDate,
+  shortDate,
+  diveNo,
+  diveTag,
+  totalListed,
+  totalSubmitted,
+  type Prompt,
+} from '../../lib/krillion';
+
+const dive = latestDive!;
+const dtag = diveTag(dive);
+
+// H1 恒为 "Today"（b 版设计），数据期号与日期在 kicker 里明示，避免正文撒谎
+const h1Accent = 'Today';
+
+const submitted = totalSubmitted(dive);
+const minAcc = Math.min(...dive.prompts.map((p) => p.accepted));
+const maxAcc = Math.max(...dive.prompts.map((p) => p.accepted));
+
+const compact = (n: number) => {
+  if (n >= 1e9) return (n / 1e9).toFixed(1).replace(/\.0$/, '') + 'B';
+  if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
+  if (n >= 1e3) return Math.round(n / 1e3) + 'K';
+  return String(n);
+};
+
+const resetsIn = (() => {
+  if (!dive.resetsAt) return 'daily';
+  const ms = new Date(dive.resetsAt).getTime() - Date.now();
+  if (ms <= 0) return 'soon';
+  const h = Math.floor(ms / 3_600_000);
+  const m = Math.floor((ms % 3_600_000) / 60_000);
+  return h > 0 ? `${h}h ${m}m` : `${m}m`;
+})();
+
+const TIERS = [
+  { key: 'plank', label: 'Plankton', pts: 10 },
+  { key: 'school', label: 'Schooler', pts: 30 },
+  { key: 'rare', label: 'Rare', pts: 60 },
+  { key: 'deep', label: 'Deep Cut', pts: 85 },
+  { key: 'one', label: 'One in a Krillion', pts: 100 },
+] as const;
+
+function tiersOf(p: Prompt) {
+  return TIERS.map((t) => {
+    if (t.key === 'one')
+      return {
+        ...t,
+        items: p.one.map((a) => ({ name: a.a, note: a.players ? fmt(a.players) : '' })),
+        more: 0,
+      };
+    if (t.key === 'deep')
+      return {
+        ...t,
+        items: p.deep.map((a) => ({ name: a.a, note: a.players ? fmt(a.players) : '' })),
+        more: Math.max(0, (p.deepCuts || 0) - p.deep.length),
+      };
+    const want = t.key === 'plank' ? 'Plankton' : t.key === 'school' ? 'Schooler' : 'Rare';
+    return {
+      ...t,
+      items: p.crowd.filter((a) => a.tier === want).map((a) => ({ name: a.a, note: a.pct ? `${a.pct}%` : '' })),
+      more: 0,
+    };
+  }).filter((t) => t.items.length > 0);
+}
+
+const rarest = dive.prompts
+  .filter((p) => p.one.length)
+  .map((p) => ({ a: p.one[0].a, q: p.prompt }));
+
+const faqs = [
+  {
+    q: 'What is Krillion?',
+    a: 'Krillion is a free daily browser game. Everyone gets the same 7 prompts, each with a 25-second timer. Obvious answers score low; rare-but-valid answers score high. A perfect dive is 700 points.',
+  },
+  {
+    q: 'How are the rarity tiers scored?',
+    a: 'Plankton 10 · Schooler 30 · Rare 60 · Deep Cut 85 · One in a Krillion 100. The game scores answers against a familiarity database plus editorial review, so the same answer always gets the same tier.',
+  },
+  {
+    q: 'When does Krillion reset?',
+    a: `The Daily Dive rolls over at 05:00 UTC (13:00 Beijing). This page is rebuilt after each reset — the newest Dive fully catalogued here is ${dtag || 'this one'} on ${longDate(dive.date)}.`,
+  },
+  {
+    q: 'Why are only some accepted answers listed?',
+    a: `A prompt can accept anywhere from ${fmt(minAcc)} to ${fmt(maxAcc)} answers. The full list is revealed inside the game and the official archive of past answers requires a one-off unlock, so we document the answers that change your score: the top tier, Deep Cuts, and the crowd favourites.`,
+  },
+  {
+    q: 'Is this the official Krillion site?',
+    a: 'No. GridPaw is independent and not affiliated with krillion.io. This is an answer archive for players who want to check a score or see what they missed. The game itself lives at krillion.io.',
+  },
+];
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const archDays = allDives.slice(1, 9);
+const bankData = (() => {
+  const out: Array<{ n: string; t: string; pts: number; tier: string; q: string; i: number; url: string }> = [];
+  const NAME: Record<string, string> = {
+    one: 'One in a Krillion',
+    deep: 'Deep Cut',
+    rare: 'Rare',
+    school: 'Schooler',
+    plank: 'Plankton',
+  };
+  const PT: Record<string, number> = { one: 100, deep: 85, rare: 60, school: 30, plank: 10 };
+  for (const p of dive.prompts) {
+    const push = (name: string, t: string) =>
+      out.push({
+        n: name.toLowerCase(),
+        t,
+        pts: PT[t],
+        tier: NAME[t],
+        q: p.prompt,
+        i: p.n,
+        url: `/krillion-answers/q/${p.slug}/`,
+      });
+    for (const a of p.one) push(a.a, 'one');
+    for (const a of p.deep) push(a.a, 'deep');
+    for (const a of p.crowd) {
+      const t = a.tier === 'Plankton' ? 'plank' : a.tier === 'Schooler' ? 'school' : a.tier === 'Rare' ? 'rare' : null;
+      if (t) push(a.a, t);
+    }
+  }
+  return out;
+})();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SEOHead
+      title={`Krillion Answers Today: ${dtag || 'Latest Dive'} (${shortDate(dive.date)})`}
+      description={`All ${dive.promptCount} prompts from Krillion ${dtag || 'Dive'} with ${totalListed(dive)} catalogued answers sorted by rarity tier — check what your answer would have scored.`}
+      canonical="/krillion-answers/"
+      type="article"
+      breadcrumbTitle="Krillion Answers"
+      segmentNames={{ 'krillion-answers': 'Krillion Answers' }}
+    />
+    <link rel="alternate" hreflang="en" href="https://gridpaw.com/krillion-answers/" />
+    <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/krillion-answers/" />
+    <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  </head>
+  <body>
+    <GameNav />
+
+    <header class="hero">
+      <div class="hero-in">
+        <div class="crumb">
+          <a href="/">GridPaw</a> › <a href="/krillion-answers/archive/">Daily Answers</a> › Krillion
+        </div>
+        <div class="hero-grid">
+          <div class="hero-main">
+            <div class="kicker">{dtag || 'Dive'} · {longDate(dive.date)}</div>
+            <h1>Krillion Answers <span class="num">{h1Accent}</span></h1>
+            <p class="sub">
+              All {dive.promptCount} prompts from the newest Daily Dive, with every accepted answer sorted by
+              rarity tier — so you can see exactly what your answer would have scored.
+            </p>
+            <div class="finder">
+              <h2>What did you answer?</h2>
+              <p>
+                Type your answer to see which rarity tier it lands in. Nothing to install — this checks the
+                same answer bank the game uses.
+              </p>
+              <div class="frow">
+                <input
+                  id="fin"
+                  type="text"
+                  placeholder="e.g. platypus, Eton wall game, Burger King…"
+                  autocomplete="off"
+                  aria-label="Answer to look up"
+                />
+                <button id="fgo" type="button">Check score</button>
+              </div>
+              <div id="fout" aria-live="polite"></div>
+            </div>
+          </div>
+          <div class="hero-side">
+            <ol class="gauge" aria-hidden="true">
+              {TIERS.map((t) => (
+                <li class={`g-${t.key}`}>
+                  <span>{t.label}</span>
+                  <b>{t.pts}</b>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="stats-wrap">
+      <div class="hero-in">
+        <div class="stats">
+          <div class="stat"><b>{compact(submitted)}</b><span>answers submitted</span></div>
+          <div class="stat"><b>{dive.promptCount}</b><span>prompts</span></div>
+          <div class="stat"><b>{fmt(minAcc)}–{fmt(maxAcc)}</b><span>answers / prompt</span></div>
+          <div class="stat"><b>{resetsIn}</b><span>until reset</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <h2 class="sec">The {dive.promptCount} prompts</h2>
+      <p class="sec-sub">
+        Tap a prompt to open its full answer bank. Answers are grouped by the tier they score.
+      </p>
+      <div id="prompts">
+        {dive.prompts.map((p: Prompt, i: number) => {
+          const groups = tiersOf(p);
+          return (
+            <details class="pcard" open={i === 0}>
+              <summary>
+                <div class="pnum">{i + 1}</div>
+                <div class="pbody">
+                  <p class="pq">{p.prompt}</p>
+                  <div class="pmeta">
+                    <span class="tag">Prompt {p.n}</span>
+                    <span>{fmt(p.accepted)} accepted answers</span>
+                    <span>·</span>
+                    <span>{fmt(p.deepCuts)} Deep Cuts</span>
+                  </div>
+                </div>
+                <div class="caret">▶</div>
+              </summary>
+              <div class="pinner">
+                {groups.map((g) => (
+                  <div class={`tier t-${g.key}`}>
+                    <div class="tbadge">
+                      {g.label}
+                      <i>{g.pts} pts</i>
+                    </div>
+                    <div class="tans">
+                      {g.items.map((it) => (
+                        <span class="chip">
+                          <a href={`/krillion-answers/q/${p.slug}/`}>{it.name}</a>
+                          {it.note ? <em>{it.note}</em> : null}
+                        </span>
+                      ))}
+                      {g.more > 0 && <span class="more">+{fmt(g.more)} more</span>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </details>
+          );
+        })}
+      </div>
+
+      <h2 class="sec">Rarest answers</h2>
+      <p class="sec-sub">
+        The single hardest answer on each prompt — only the sharpest divers reached these.
+      </p>
+      <div class="rare-grid">
+        {rarest.map((r) => (
+          <div class="rare-row">
+            <div>
+              <b>{r.a}</b>
+              <span>{r.q}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <InContentAd />
+
+      <h2 class="sec">Previous dives</h2>
+      <p class="sec-sub">
+        Every past Daily Dive, archived by date. Same {dive.promptCount}-prompt format, full answer banks.
+      </p>
+      <div class="arch">
+        {archDays.map((d) => (
+          <a href={`/krillion-answers/${d.date}/`}>
+            {diveNo(d) ? `Dive #${diveNo(d)}` : shortDate(d.date)}
+            <small>{shortDate(d.date)}</small>
+          </a>
+        ))}
+        <a href="/krillion-answers/archive/">
+          All {allDives.length}
+          <small>full archive</small>
+        </a>
+      </div>
+
+      <h2 class="sec">Common questions</h2>
+      <div class="faq-list">
+        {faqs.map((f) => (
+          <details class="faq">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+
+      <div class="cta">
+        <a href="/krillion-answers/archive/">Browse every archived Dive</a>
+        <a class="ghost" href="/">Play a puzzle on GridPaw</a>
+      </div>
+
+      <p class="note">
+        Sources: prompt text, Dive numbers and reset times come from Krillion's public daily endpoint; answer
+        tiers and player counts come from the game's public reveal data. The official archive of past answers
+        sits behind a one-off unlock, so it isn't available to us directly. GridPaw is independent and not
+        affiliated with krillion.io. Last built {dive.fetchedAt.slice(0, 10)}.
+      </p>
+    </div>
+
+    <SideAd />
+
+    <script is:inline define:vars={{ bank: bankData }}>
+      (function () {
+        var INDEX = new Map();
+        bank.forEach(function (b) {
+          if (!INDEX.has(b.n)) INDEX.set(b.n, []);
+          INDEX.get(b.n).push(b);
+        });
+        var fin = document.getElementById('fin');
+        var fgo = document.getElementById('fgo');
+        var fout = document.getElementById('fout');
+        var BANK = bank.length;
+
+        function esc(s) {
+          return String(s).replace(/[&<>"]/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+          });
+        }
+
+        function run() {
+          var q = (fin.value || '').trim().toLowerCase();
+          fout.style.display = 'block';
+          if (!q) {
+            fout.innerHTML = 'Type an answer first.';
+            return;
+          }
+          if (!INDEX.has(q)) {
+            fout.innerHTML =
+              '⌕ <b>No match in this answer bank.</b> It may still be accepted by the game — a prompt here accepts anywhere from a few dozen to hundreds of thousands of answers, and we only carry the top of each tier (' +
+              BANK +
+              ' catalogued).';
+            return;
+          }
+          fout.innerHTML = INDEX.get(q)
+            .map(function (h) {
+              return (
+                '<div class="hit t-' +
+                h.t +
+                '">Prompt ' +
+                h.i +
+                ': <b>' +
+                h.tier +
+                '</b> · ' +
+                h.pts +
+                ' pts<br><span class="hit-q">' +
+                esc(h.q) +
+                '</span> · <a href="' +
+                h.url +
+                '">open breakdown →</a></div>'
+              );
+            })
+            .join('');
+        }
+        fgo.addEventListener('click', run);
+        fin.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') run();
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,127 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import SideAd from '../../components/SideAd.astro';
+import InContentAd from '../../components/InContentAd.astro';
+import '../../styles/krillion-base.css';
+import { allDives, fmt, shortDate, totalListed, diveNo, diveTag } from '../../lib/krillion';
+import { groupByYear, monthLabel, archiveFaqs, faqJsonLd } from '../../lib/krillion-page';
+
+const groups = groupByYear(allDives);
+const newest = allDives[0];
+const oldest = allDives[allDives.length - 1];
+const totalAnswers = allDives.reduce((n, d) => n + totalListed(d), 0);
+const totalPrompts = allDives.reduce((n, d) => n + d.promptCount, 0);
+const faqs = archiveFaqs(allDives, totalAnswers);
+const faqLd = faqJsonLd(faqs);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SEOHead
+      title="Krillion Answers Archive — Every Dive We've Catalogued"
+      description={`Browse ${allDives.length} archived Krillion Dives with ${fmt(totalAnswers)} catalogued answers. Every day's seven prompts, with rarity tiers and real player counts.`}
+      canonical="/krillion-answers/archive/"
+      breadcrumbTitle="Archive"
+      segmentNames={{ 'krillion-answers': 'Krillion Answers' }}
+    />
+    <link rel="alternate" hreflang="en" href="https://gridpaw.com/krillion-answers/archive/" />
+    <link rel="alternate" hreflang="x-default" href="https://gridpaw.com/krillion-answers/archive/" />
+    <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+  </head>
+  <body>
+    <GameNav />
+
+    <header class="hero">
+      <div class="hero-in">
+        <div class="crumb">
+          <a href="/">GridPaw</a> › <a href="/krillion-answers/">Daily Answers</a> › Archive
+        </div>
+        <div class="hero-grid">
+          <div class="hero-main">
+            <div class="kicker">Every Dive · {allDives.length} archived</div>
+            <h1>Krillion Answers <span class="num">Archive</span></h1>
+            <p class="sub">
+              Every Daily Dive we've captured, newest first — each with its seven prompts and the accepted
+              answers that actually change your score.
+            </p>
+            <div class="hero-links">
+              <a href="/krillion-answers/">Today's Dive →</a>
+            </div>
+          </div>
+          <div class="hero-side"></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="stats-wrap">
+      <div class="hero-in">
+        <div class="stats">
+          <div class="stat"><b>{allDives.length}</b><span>dives archived</span></div>
+          <div class="stat"><b>{fmt(totalPrompts)}</b><span>prompts</span></div>
+          <div class="stat"><b>{fmt(totalAnswers)}</b><span>answers documented</span></div>
+          <div class="stat"><b>{shortDate(oldest.date)}</b><span>oldest dive</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      {groups.map((g) => (
+        <>
+          <h2 class="sec">{g.year}</h2>
+          {g.months.map(([key, list]) => (
+            <>
+              <p class="sec-sub">{monthLabel(list[0].date)} · {list.length} Dives</p>
+              <div class="arch">
+                {list.map((d) => (
+                  <a href={`/krillion-answers/${d.date}/`}>
+                    {diveNo(d) ? `Dive #${diveNo(d)}` : shortDate(d.date)}
+                    <small>{shortDate(d.date)}</small>
+                  </a>
+                ))}
+              </div>
+            </>
+          ))}
+        </>
+      ))}
+
+      <h2 class="sec">Rarest answer, newest Dive</h2>
+      <p class="sec-sub">The single hardest answer from {diveTag(newest) || shortDate(newest.date)}.</p>
+      <div class="rare-grid">
+        {newest.prompts
+          .filter((p) => p.one.length)
+          .slice(0, 1)
+          .map((p) => (
+            <div class="rare-row">
+              <div>
+                <b>{p.one[0].a}</b>
+                <span>{p.prompt}</span>
+              </div>
+            </div>
+          ))}
+      </div>
+
+      <InContentAd />
+
+      <h2 class="sec">Common questions</h2>
+      <div class="faq-list">
+        {faqs.map((f) => (
+          <details class="faq">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+
+      <div class="cta">
+        <a href="/krillion-answers/">Check your score for today's Dive</a>
+        <a class="ghost" href="/">Play a puzzle on GridPaw</a>
+      </div>
+    </div>
+
+    <SideAd />
+  </body>
+</html>

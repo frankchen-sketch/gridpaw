@@ -1,0 +1,206 @@
+---
+import SEOHead from '../../components/SEOHead.astro';
+import GameNav from '../../components/GameNav.astro';
+import SideAd from '../../components/SideAd.astro';
+import InContentAd from '../../components/InContentAd.astro';
+import '../../styles/krillion-base.css';
+import { allDives, fmt, longDate, shortDate, totalListed, totalSubmitted, rarestOverall, diveTag, diveNo, type Dive } from '../../lib/krillion';
+import { TIERS, tiersOf, compact, dayFaqs, faqJsonLd } from '../../lib/krillion-page';
+
+export function getStaticPaths() {
+  const seen = new Set<string>();
+  return allDives
+    .filter((d) => {
+      if (seen.has(d.date)) return false;
+      seen.add(d.date);
+      return true;
+    })
+    .map((d) => ({ params: { date: d.date }, props: { dive: d } }));
+}
+
+const { dive } = Astro.props as { dive: Dive };
+const idx = allDives.findIndex((d) => d.date === dive.date);
+const newer = idx > 0 ? allDives[idx - 1] : null;
+const older = idx < allDives.length - 1 ? allDives[idx + 1] : null;
+
+const listed = totalListed(dive);
+const submitted = totalSubmitted(dive);
+const rarest = rarestOverall(dive);
+const dtag = diveTag(dive);
+const minAcc = Math.min(...dive.prompts.map((p) => p.accepted));
+const maxAcc = Math.max(...dive.prompts.map((p) => p.accepted));
+
+const fact = `Krillion ${dtag || 'Dive'} (${longDate(dive.date)}) asked ${dive.promptCount} prompts. Players submitted ${fmt(submitted)} answers in total.${rarest ? ` The rarest answer accepted was “${rarest.answer.a}”, found by ${fmt(rarest.answer.players)} players on “${rarest.prompt.prompt}”.` : ''}`;
+const faqs = dayFaqs(dive, listed, minAcc, maxAcc);
+const faqLd = faqJsonLd(faqs);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SEOHead
+      title={`Krillion Answers, ${shortDate(dive.date)}${dtag ? ` (${dtag})` : ''}`}
+      description={`All ${dive.promptCount} Krillion prompts from ${dtag || 'this Dive'} on ${longDate(dive.date)}, with ${listed} catalogued answers sorted by rarity tier.`}
+      canonical={`/krillion-answers/${dive.date}/`}
+      type="article"
+      breadcrumbTitle={`${dtag || shortDate(dive.date)}`}
+      segmentNames={{ 'krillion-answers': 'Krillion Answers' }}
+    />
+    <link rel="alternate" hreflang="en" href={`https://gridpaw.com/krillion-answers/${dive.date}/`} />
+    <link rel="alternate" hreflang="x-default" href={`https://gridpaw.com/krillion-answers/${dive.date}/`} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+  </head>
+  <body>
+    <GameNav />
+
+    <header class="hero">
+      <div class="hero-in">
+        <div class="crumb">
+          <a href="/">GridPaw</a> › <a href="/krillion-answers/archive/">Daily Answers</a> ›
+          <a href="/krillion-answers/">Krillion</a>
+        </div>
+        <div class="hero-grid">
+          <div class="hero-main">
+            <div class="kicker">{dtag || 'Dive'} · {longDate(dive.date)}</div>
+            <h1>Krillion Answers <span class="num">{shortDate(dive.date)}</span></h1>
+            <p class="sub">
+              Every prompt from {dtag || 'this Dive'}, with the accepted answers that actually change your
+              score — sorted from the crowd down to the trench.
+            </p>
+            <div class="hero-links">
+              {newer && <a href={`/krillion-answers/${newer.date}/`}>← Newer{diveNo(newer) ? ` (Dive #${diveNo(newer)})` : ''}</a>}
+              {older && <a href={`/krillion-answers/${older.date}/`}>Older{diveNo(older) ? ` (Dive #${diveNo(older)})` : ''} →</a>}
+              <a href="/krillion-answers/">Today's answers →</a>
+            </div>
+          </div>
+          <div class="hero-side">
+            <ol class="gauge" aria-hidden="true">
+              {TIERS.map((t) => (
+                <li class={`g-${t.key}`}>
+                  <span>{t.label}</span>
+                  <b>{t.pts}</b>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="stats-wrap">
+      <div class="hero-in">
+        <div class="stats">
+          <div class="stat"><b>{compact(submitted)}</b><span>answers submitted</span></div>
+          <div class="stat"><b>{dive.promptCount}</b><span>prompts</span></div>
+          <div class="stat"><b>{fmt(minAcc)}–{fmt(maxAcc)}</b><span>answers / prompt</span></div>
+          <div class="stat"><b>{fmt(listed)}</b><span>documented answers</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <p class="fact">{fact}</p>
+
+      <h2 class="sec">The {dive.promptCount} prompts</h2>
+      <p class="sec-sub">Tap a prompt to open its answer bank. Answers are grouped by the tier they score.</p>
+      <div id="prompts">
+        {dive.prompts.map((p, i) => (
+          <details class="pcard" open={i === 0}>
+            <summary>
+              <div class="pnum">{i + 1}</div>
+              <div class="pbody">
+                <p class="pq">{p.prompt}</p>
+                <div class="pmeta">
+                  <span class="tag">Prompt {p.n}</span>
+                  <span>{fmt(p.accepted)} accepted answers</span>
+                  <span>·</span>
+                  <span>{fmt(p.deepCuts)} Deep Cuts</span>
+                </div>
+              </div>
+              <div class="caret">▶</div>
+            </summary>
+            <div class="pinner">
+              {tiersOf(p).map((g) => (
+                <div class={`tier t-${g.key}`}>
+                  <div class="tbadge">
+                    {g.label}
+                    <i>{g.pts} pts</i>
+                  </div>
+                  <div class="tans">
+                    {g.items.map((it) => (
+                      <span class="chip">
+                        <a href={`/krillion-answers/q/${p.slug}/`}>{it.name}</a>
+                        {it.note ? <em>{it.note}</em> : null}
+                      </span>
+                    ))}
+                    {g.more > 0 && <span class="more">+{fmt(g.more)} more</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </details>
+        ))}
+      </div>
+
+      {rarest && (
+        <>
+          <h2 class="sec">Rarest answer</h2>
+          <p class="sec-sub">Only the sharpest divers reached this one.</p>
+          <div class="rare-grid">
+            <div class="rare-row">
+              <div>
+                <b>{rarest.answer.a}</b>
+                <span>{rarest.prompt.prompt}</span>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      <InContentAd />
+
+      <h2 class="sec">Keep diving</h2>
+      <div class="arch">
+        {newer && (
+          <a href={`/krillion-answers/${newer.date}/`}>
+            {diveNo(newer) ? `Dive #${diveNo(newer)}` : shortDate(newer.date)}
+            <small>{shortDate(newer.date)}</small>
+          </a>
+        )}
+        {older && (
+          <a href={`/krillion-answers/${older.date}/`}>
+            {diveNo(older) ? `Dive #${diveNo(older)}` : shortDate(older.date)}
+            <small>{shortDate(older.date)}</small>
+          </a>
+        )}
+        <a href="/krillion-answers/">Today<small>latest dive</small></a>
+        <a href="/krillion-answers/archive/">All {allDives.length}<small>full archive</small></a>
+      </div>
+
+      <h2 class="sec">Common questions</h2>
+      <div class="faq-list">
+        {faqs.map((f) => (
+          <details class="faq">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+
+      <div class="cta">
+        <a href="/krillion-answers/">Check your score for today's Dive</a>
+        <a class="ghost" href="/krillion-answers/archive/">Browse the archive</a>
+      </div>
+
+      <p class="note">
+        Sources: prompt text, Dive numbers and reset times come from Krillion's public daily endpoint; answer
+        tiers and player counts come from the game's public reveal data. GridPaw is independent and not
+        affiliated with krillion.io.
+      </p>
+    </div>
+
+    <SideAd />
+  </body>
+</html>

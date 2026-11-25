@@ -1,0 +1,169 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import '../../../styles/krillion-base.css';
+import { allDives, fmt, longDate, shortDate, listedCount, diveTag, type Dive, type Prompt } from '../../../lib/krillion';
+import { TIERS, tiersOf, promptFaqs, faqJsonLd } from '../../../lib/krillion-page';
+
+export function getStaticPaths() {
+  const paths: Array<{ params: { slug: string }; props: { dive: Dive; prompt: Prompt } }> = [];
+  const seen = new Set<string>();
+  for (const d of allDives) {
+    for (const p of d.prompts) {
+      if (seen.has(p.slug)) continue;
+      seen.add(p.slug);
+      paths.push({ params: { slug: p.slug }, props: { dive: d, prompt: p } });
+    }
+  }
+  return paths;
+}
+
+const { dive, prompt } = Astro.props as { dive: Dive; prompt: Prompt };
+const dtag = diveTag(dive);
+const listed = listedCount(prompt);
+const one = prompt.one[0];
+const deepest = one ?? prompt.deep[0] ?? prompt.crowd[0];
+const otherPrompts = dive.prompts.filter((p) => p.slug !== prompt.slug);
+const groups = tiersOf(prompt);
+
+const crowdTop = prompt.crowd[0];
+const insight = [
+  crowdTop ? `“${crowdTop.a}” took the largest share of the crowd at ${crowdTop.pct}%` : '',
+  one ? `the rarest accepted answer, “${one.a}”, was found by ${fmt(one.players)} of ${fmt(prompt.answersGiven)} players` : '',
+  `${fmt(prompt.accepted)} answers were accepted for this prompt in total`,
+].filter(Boolean).join('; ');
+
+const fact = `“${prompt.prompt}” appeared in Krillion ${dtag || 'Dive'} (${longDate(dive.date)}). ${fmt(prompt.answersGiven)} players answered it and ${fmt(prompt.accepted)} answers were accepted.${one ? ` Its rarest accepted answer was “${one.a}”, found by ${fmt(one.players)} players.` : ''}`;
+const faqs = promptFaqs(dive, prompt, listed);
+const faqLd = faqJsonLd(faqs);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SEOHead
+      title={`“${prompt.prompt}” — Krillion Answers${dtag ? ` (${dtag})` : ''}`}
+      description={`${fmt(prompt.accepted)} answers were accepted for “${prompt.prompt}” in ${dtag || 'this Krillion Dive'}. ${listed} documented here with rarity tiers${one ? ` — top pick ${one.a}` : ''}.`}
+      canonical={`/krillion-answers/q/${prompt.slug}/`}
+      type="article"
+      breadcrumbTitle={`${dtag || shortDate(dive.date)}`}
+      segmentNames={{ 'krillion-answers': 'Krillion Answers' }}
+    />
+    <link rel="alternate" hreflang="en" href={`https://gridpaw.com/krillion-answers/q/${prompt.slug}/`} />
+    <link rel="alternate" hreflang="x-default" href={`https://gridpaw.com/krillion-answers/q/${prompt.slug}/`} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+  </head>
+  <body>
+    <GameNav />
+
+    <header class="hero">
+      <div class="hero-in">
+        <div class="crumb">
+          <a href="/">GridPaw</a> › <a href="/krillion-answers/">Krillion</a> ›
+          <a href={`/krillion-answers/${dive.date}/`}>{dtag || shortDate(dive.date)}</a> › Prompt {prompt.n}
+        </div>
+        <div class="hero-grid">
+          <div class="hero-main">
+            <div class="kicker">Prompt {prompt.n} of {dive.promptCount} · {dtag || 'Dive'} · {longDate(dive.date)}</div>
+            <h1 class="q-title">{prompt.prompt}</h1>
+            <p class="sub">{insight}.</p>
+            <div class="hero-links">
+              <a href={`/krillion-answers/${dive.date}/`}>← All {dive.promptCount} prompts from {dtag || 'this Dive'}</a>
+              <a href="/krillion-answers/">Today's Dive →</a>
+            </div>
+          </div>
+          <div class="hero-side">
+            <ol class="gauge" aria-hidden="true">
+              {TIERS.map((t) => (
+                <li class={`g-${t.key}`}>
+                  <span>{t.label}</span>
+                  <b>{t.pts}</b>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="stats-wrap">
+      <div class="hero-in">
+        <div class="stats">
+          <div class="stat"><b>{fmt(prompt.answersGiven)}</b><span>players answered</span></div>
+          <div class="stat"><b>{fmt(prompt.accepted)}</b><span>answers accepted</span></div>
+          <div class="stat"><b>{fmt(prompt.deepCuts)}</b><span>Deep Cuts</span></div>
+          <div class="stat"><b>{deepest && deepest.players ? fmt(deepest.players) : '—'}</b><span>rarest answer found by</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <p class="fact">{fact}</p>
+
+      <h2 class="sec">The answer bank</h2>
+      <p class="sec-sub">{listed} documented answers, grouped by the tier they score. Player counts are from the game's public reveal data.</p>
+      <div class="pcard-open">
+        {groups.map((g) => (
+          <div class={`tier t-${g.key}`}>
+            <div class="tbadge">
+              {g.label}
+              <i>{g.pts} pts</i>
+            </div>
+            <div class="tans">
+              {g.items.map((it) => (
+                <span class="chip">
+                  {it.name}
+                  {it.note ? <em>{it.note}</em> : null}
+                </span>
+              ))}
+              {g.more > 0 && <span class="more">+{fmt(g.more)} more</span>}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <InContentAd />
+
+      <h2 class="sec">The other {otherPrompts.length} prompts in {dtag || 'this Dive'}</h2>
+      <p class="sec-sub">Same Dive, same scoring — see what else players were asked that day.</p>
+      <div class="arch arch-wide">
+        {otherPrompts.map((p) => (
+          <a href={`/krillion-answers/q/${p.slug}/`}>
+            Prompt {p.n}
+            <small>{p.prompt.length > 46 ? p.prompt.slice(0, 46) + '…' : p.prompt}</small>
+          </a>
+        ))}
+        <a href={`/krillion-answers/${dive.date}/`}>
+          {dtag || shortDate(dive.date)}
+          <small>full day</small>
+        </a>
+      </div>
+
+      <h2 class="sec">Common questions</h2>
+      <div class="faq-list">
+        {faqs.map((f) => (
+          <details class="faq">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+
+      <div class="cta">
+        <a href="/krillion-answers/">Check your score for today's Dive</a>
+        <a class="ghost" href="/krillion-answers/archive/">Browse the archive</a>
+      </div>
+
+      <p class="note">
+        Sources: prompt text comes from Krillion's public daily endpoint; answer tiers and player counts come
+        from the game's public reveal data. GridPaw is independent and not affiliated with krillion.io.
+      </p>
+    </div>
+
+    <SideAd />
+  </body>
+</html>
