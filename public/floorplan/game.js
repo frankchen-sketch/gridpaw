@@ -311,6 +311,8 @@
     $('btnHint').disabled = state.hints <= 0 || state.placed.size === L.rooms.length;
   }
 
+  const BASE_HINT = 'Drag a room onto the plan — cover every square, and every door must meet a door or an entry gap.';
+
   function setStatus(msg, kind) {
     statusEl.textContent = msg;
     statusEl.className = 'status' + (kind ? ' ' + kind : '');
@@ -330,7 +332,7 @@
     state.placed.set(rid, [gx, gy]);
     state.selected = null;
     renderBoard(); renderTray(); renderHud();
-    setStatus('');
+    setStatus(BASE_HINT);
     if (state.placed.size === lv().rooms.length) win();
     return true;
   }
@@ -471,7 +473,7 @@
     state.selected = null;
     state.hints = 3;
     $('winOverlay').classList.remove('on');
-    setStatus('Drag a room onto the plan — every square must be covered and every door must meet another door.');
+    setStatus(BASE_HINT);
     renderAll();
     saveSave();
   }
