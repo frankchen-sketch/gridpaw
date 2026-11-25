@@ -67,6 +67,11 @@ else
   BASE_SHA=$(bash "$MAIN_TREE/scripts/publish-gate.sh" ${SHA_ARG:+--sha "$SHA_ARG"}) || exit $?
 fi
 
+# 记账目标（G6 幂等闸与收尾写账共用；必须在闸门之前定好）
+export DEPLOY_STATE_FILE="${DEPLOY_STATE_FILE:-$HOME/.agent-autoloop/work/ledger/deploy-state.json}"
+export DEPLOY_REPO="$PRIMARY_TREE" DEPLOY_SHA="$BASE_SHA"
+export DEPLOY_SOURCE="${DEPLOY_SOURCE:-manual: scripts/deploy.sh（$(basename "${0}")）}"
+
 WORKDIR="$MAIN_TREE"
 if [ "$(git -C "$MAIN_TREE" rev-parse HEAD)" != "$BASE_SHA" ] || [ -n "$(git -C "$MAIN_TREE" status --porcelain --untracked-files=no)" ]; then
   WORKDIR="${TMPDIR:-/tmp}/gridpaw-deploy-$$"
@@ -93,6 +98,30 @@ if ! mkdir "$LOCK" 2>/dev/null; then
 fi
 
 say() { printf '%s\n' "$*"; }
+
+REMOTE="origin"
+remote_head() { git ls-remote "$REMOTE" "refs/heads/main" | awk '{print $1}'; }
+
+# ── G3 发布基线复核（防并发顶掉）─────────────────────────────────
+# 构建要几分钟，期间别人可能把 main 推进了；拿旧 sha 出包上线 = 整包回滚别人的改动。
+# 拿锁后核一次、出包后再核一次，任一不等就让位（不硬上）。
+RH=$(remote_head)
+if [ "${RH}" != "$BASE_SHA" ] && [ "$ALLOW_UNMERGED" -eq 0 ] && [ "$ROLLBACK" -eq 0 ]; then
+  echo "✗ 让位：调 origin 期间 main 已推进到 ${RH:0:8}（本次目标 ${BASE_SHA:0:8}）。重跑一次拿最新。" >&2
+  exit 8
+fi
+
+# ── G6 幂等闸：同一个 sha 不重复部署（除非 --force）─────────────
+if [ "${FORCE_REDEPLOY:-0}" != "1" ] && [ "$ROLLBACK" -eq 0 ] && [ "$ALLOW_UNMERGED" -eq 0 ]; then
+  PREV=$(node -e 'const f=process.env.DEPLOY_STATE_FILE;try{const d=JSON.parse(require("fs").readFileSync(f,"utf8"));const r=d[process.env.DEPLOY_REPO]||{};if(r.ok&&r.sha)console.log(r.sha+" "+r.version)}catch(e){}' 2>/dev/null || true)
+  if [ -n "$PREV" ]; then
+    PREV_SHA=${PREV%% *}; PREV_VER=${PREV#* }
+    if [ "${PREV_SHA:0:12}" = "${BASE_SHA:0:12}" ]; then
+      echo "✓ 幂等：${BASE_SHA:0:8} 已经部署过（版本 ${PREV_VER}）。确需重发：FORCE_REDEPLOY=1"
+      exit 0
+    fi
+  fi
+fi
 die() { printf '✗ %s\n' "$*" >&2; exit 2; }
 
 say "── 1/5 前置检查 ──"
@@ -172,6 +201,12 @@ else
   say "✓ 引擎自测全部通过"
 fi
 
+RH2=$(remote_head)
+if [ "${RH2}" != "$BASE_SHA" ] && [ "$ALLOW_UNMERGED" -eq 0 ] && [ "$ROLLBACK" -eq 0 ]; then
+  echo "✗ 让位：出包期间 main 被推进到 ${RH2:0:8}（本次目标 ${BASE_SHA:0:8}），这批包作废，重跑。" >&2
+  exit 8
+fi
+
 say "── 3/5 部署（--branch main = 打进生产柜）──"
 npx -y wrangler pages deploy dist --project-name gridpaw --branch main --commit-dirty=true 2>&1 | tee /tmp/gridpaw-deploy.log | grep -E "Uploaded|Deployment complete|Deployment alias" || true
 grep -q "Deployment complete" /tmp/gridpaw-deploy.log || die "部署回执里没有 Deployment complete（看 /tmp/gridpaw-deploy.log）"
@@ -210,15 +245,13 @@ for u in / /kenken/solver/ /nonogram/solver/ /unlock-all/; do
 done
 [ "$FAIL" -eq 0 ] || exit 4
 
-export DEPLOY_STATE_FILE="${DEPLOY_STATE_FILE:-$HOME/.agent-autoloop/work/ledger/deploy-state.json}"
-export DEPLOY_REPO="$PRIMARY_TREE" DEPLOY_SHA="$BASE_SHA" DEPLOY_VERSION="$EXPECTED"
-export DEPLOY_SOURCE="${DEPLOY_SOURCE:-manual: scripts/deploy.sh（$(basename "${0}")）}"
-
 say "── 收尾 GSC sitemap 重提交 ──"
 # Google 不吃 IndexNow（那是 Bing/Yandex 通道）；GSC 自己重抓 sitemap 是几天一次，
 # 走 API 重提交会当场触发一次下载（实测提交后几秒 lastDownloaded 就更新），新页发现快得多。
 # 放在自检之后：先证明生产跑的是这份构建，再告诉 Google 来抓。失败不阻塞上线。
 bash scripts/gsc-resubmit-sitemap.sh gridpaw.com || say "⚠ GSC sitemap 重提交失败（不阻塞上线）"
+
+export DEPLOY_VERSION="$EXPECTED"
 
 # 记账：deploy-state.json 是「线上到底跑哪个 sha」的唯一真源，I1 对账（origin/main == 已部署 sha）读它。
 # 手动部署也写，否则对账会把人工上线误报成"没上线"。
