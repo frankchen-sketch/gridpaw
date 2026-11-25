@@ -31,62 +31,118 @@ cd "$(git rev-parse --show-toplevel)"
 . ./scripts/cf-auth.sh
 
 ALLOW_DIRTY=0
-[ "${1:-}" = "--allow-dirty" ] && ALLOW_DIRTY=1
+SHA_ARG=""; ROLLBACK=0; WHY=""; ALLOW_UNMERGED=0
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --allow-dirty)   ALLOW_DIRTY=1; shift ;;
+    --sha)           SHA_ARG="${2:-}"; shift 2 ;;
+    --rollback)      ROLLBACK=1; shift ;;
+    --why)           WHY="${2:-}"; shift 2 ;;
+    --allow-unmerged) ALLOW_UNMERGED=1; shift ;;
+    *) echo "未知参数：$1" >&2; exit 2 ;;
+  esac
+done
+
+# ── 发布对象：一个 sha，不是一个工作树（2026-11-25 深修）─────────────────
+# 旧模型「部署必须在主 tree 上跑」把合并列车和日更全绑在主树身上：主树一分叉，
+# 发布就断（11-23~11-25 gridpaw 一条都没合上、Loop 日更断更就是这么来的）。
+# 新模型：deploy 只认 sha，且这个 sha 必须证明「有 main 血统」（scripts/publish-gate.sh）。
+#   · 默认：部署 origin/main 的头
+#   · --sha <sha>：必须是 origin/main 的祖先且等于头（回滚用 --rollback --why）
+#   · 分支会话要发未合并代码：--allow-unmerged --why "…"（会写台账并出卡，10 分钟内对账会红）
+# 部署一律在干净的临时 worktree 里出包，主树可以停在任意分支干活，不再阻塞发布。
+MAIN_TREE="$(git rev-parse --show-toplevel)"
+# 主工作树（第一个 worktree）= node_modules 和 gitignore 运行时资产的家；
+# 在二级 worktree 里跑 deploy 时，资产要从这里取，不能从当前树取。
+PRIMARY_TREE="$(git worktree list --porcelain | awk '/^worktree /{print $2; exit}')"
+[ -n "$PRIMARY_TREE" ] || PRIMARY_TREE="$MAIN_TREE"
+BASE_SHA=""
+if [ "$ALLOW_UNMERGED" -eq 1 ]; then
+  [ -z "$WHY" ] && { echo "✗ --allow-unmerged 必须配 --why \"…\"（会进台账，事后要对账）" >&2; exit 7; }
+  BASE_SHA=$(git rev-parse --verify "${SHA_ARG:-HEAD}^{commit}")
+  echo "⚠ 破例：发未合并提交 ${BASE_SHA:0:8}（理由：${WHY}）—— 台账会记，对账会红" >&2
+elif [ "$ROLLBACK" -eq 1 ]; then
+  BASE_SHA=$(bash "$MAIN_TREE/scripts/publish-gate.sh" --sha "${SHA_ARG:-}" --rollback --why "$WHY") || exit $?
+else
+  BASE_SHA=$(bash "$MAIN_TREE/scripts/publish-gate.sh" ${SHA_ARG:+--sha "$SHA_ARG"}) || exit $?
+fi
+
+WORKDIR="$MAIN_TREE"
+if [ "$(git -C "$MAIN_TREE" rev-parse HEAD)" != "$BASE_SHA" ] || [ -n "$(git -C "$MAIN_TREE" status --porcelain --untracked-files=no)" ]; then
+  WORKDIR="${TMPDIR:-/tmp}/gridpaw-deploy-$$"
+  rm -rf "$WORKDIR"
+  git -C "$MAIN_TREE" worktree add -q --detach "$WORKDIR" "$BASE_SHA" || { echo "✗ 建临时 worktree 失败" >&2; exit 2; }
+  ln -s "$PRIMARY_TREE/node_modules" "$WORKDIR/node_modules"
+  # gitignore 的运行时资产：IndexNow key、llms-full.txt 只在主树有（.gitignore public/*.txt）
+  cp "$PRIMARY_TREE"/public/*.txt "$WORKDIR/public/" 2>/dev/null || true
+  WT_TMP="$WORKDIR"
+  echo "ℹ 出包用临时 worktree（主树 HEAD=$(git -C "$MAIN_TREE" rev-parse --short HEAD) ≠ 目标 ${BASE_SHA:0:8}）"
+fi
+cd "$WORKDIR"
 
 LOCK="${TMPDIR:-/tmp}/gridpaw-deploy.lock"
+cleanup() {
+  rmdir "$LOCK" 2>/dev/null || true
+  [ -n "${WT_TMP:-}" ] && { git -C "$MAIN_TREE" worktree remove --force "$WT_TMP" 2>/dev/null || rm -rf "$WT_TMP"; }
+}
+trap cleanup EXIT
 if ! mkdir "$LOCK" 2>/dev/null; then
   echo "✗ 另一个部署正持锁（$LOCK）。" >&2
   echo "  等它跑完；确认是残留锁再 rm -rf \"$LOCK\"。" >&2
   exit 3
 fi
-trap 'rmdir "$LOCK" 2>/dev/null || true' EXIT
 
 say() { printf '%s\n' "$*"; }
 die() { printf '✗ %s\n' "$*" >&2; exit 2; }
 
 say "── 1/5 前置检查 ──"
+AHEAD=0
+if [ "$WORKDIR" = "$MAIN_TREE" ]; then
 
-# ① 已跟踪文件不能有未提交改动（未跟踪文件不算：IndexNow key、loop-answers 都在此列）
-DIRTY=$(git status --porcelain --untracked-files=no)
-if [ -n "$DIRTY" ] && [ "$ALLOW_DIRTY" -eq 0 ]; then
-  printf '%s\n' "$DIRTY" >&2
-  die "工作区有未提交的已跟踪改动。先 commit 或 stash（确需带脏上线：--allow-dirty）"
-fi
-
-# ①b src/ 下不允许有未跟踪文件
-#    build 会把它们一起编译进 dist 上线。① 只查已跟踪文件，多会话并行时
-#    "新建组件/页面但没 git add" 的半成品会静默漏网 —— 这条专治这种漏网。
-if [ "$ALLOW_DIRTY" -eq 0 ]; then
-  UNTRACKED_SRC=$(git status --porcelain --untracked-files=all -- src | awk '$1=="??"{print $2}')
-  if [ -n "$UNTRACKED_SRC" ]; then
-    printf '%s\n' "$UNTRACKED_SRC" >&2
-    die "src/ 下有未跟踪文件（新建但没 git add）：build 会把它们编译进 dist 带上线。先 commit 或挪出工作区"
+  # ① 已跟踪文件不能有未提交改动（未跟踪文件不算：IndexNow key、loop-answers 都在此列）
+  DIRTY=$(git status --porcelain --untracked-files=no)
+  if [ -n "$DIRTY" ] && [ "$ALLOW_DIRTY" -eq 0 ]; then
+    printf '%s\n' "$DIRTY" >&2
+    die "工作区有未提交的已跟踪改动。先 commit 或 stash（确需带脏上线：--allow-dirty）"
   fi
+
+  # ①b src/ 下不允许有未跟踪文件
+  #    build 会把它们一起编译进 dist 上线。① 只查已跟踪文件，多会话并行时
+  #    "新建组件/页面但没 git add" 的半成品会静默漏网 —— 这条专治这种漏网。
+  if [ "$ALLOW_DIRTY" -eq 0 ]; then
+    UNTRACKED_SRC=$(git status --porcelain --untracked-files=all -- src | awk '$1=="??"{print $2}')
+    if [ -n "$UNTRACKED_SRC" ]; then
+      printf '%s\n' "$UNTRACKED_SRC" >&2
+      die "src/ 下有未跟踪文件（新建但没 git add）：build 会把它们编译进 dist 带上线。先 commit 或挪出工作区"
+    fi
+  fi
+
+  # ② 不能落后 origin/main（落后 = 你的快照缺别人的东西）
+  git fetch origin main --quiet
+  BEHIND=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
+  AHEAD=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
+  [ "$BEHIND" -gt 0 ] && die "落后 origin/main $BEHIND 个 commit —— 先 git merge origin/main，否则这次部署会整包回滚别人的改动"
+  [ "$AHEAD" -gt 0 ] && say "⚠ 本分支比 origin/main 多 $AHEAD 个 commit（正常路径下 publish-gate 会先拦；走到这说明用了 --allow-unmerged）"
+
+  # ③ 其它 worktree 若有本分支没有的 commit → 部署它们就会消失（今天的事故就是这条）
+  MISSING=""
+  while read -r line; do
+    case "$line" in
+      "worktree "*) WT="${line#worktree }" ;;
+      "branch "*)   BR="${line#branch refs/heads/}"
+                    N=$(git rev-list --count HEAD.."$BR" 2>/dev/null || echo 0)
+                    [ "$N" -gt 0 ] && MISSING="${MISSING}  ${BR}（${WT}）缺 ${N} 个 commit\n" ;;
+    esac
+  done < <(git worktree list --porcelain)
+  if [ -n "$MISSING" ]; then
+    printf '%b' "$MISSING" >&2
+    die "有 worktree 的 commit 不在当前 HEAD 里。先 merge 它们（git merge <branch>），否则部署会把它们抹掉"
+  fi
+
+  say "✓ 无脏改动 / 未落后 / 无游离 worktree"
+else
+  say "✓ 从干净提交 ${BASE_SHA:0:8} 出包（看的是 commit，不是谁的树 —— 主树脏/在别的分支都不影响）"
 fi
-
-# ② 不能落后 origin/main（落后 = 你的快照缺别人的东西）
-git fetch origin main --quiet
-BEHIND=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
-AHEAD=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
-[ "$BEHIND" -gt 0 ] && die "落后 origin/main $BEHIND 个 commit —— 先 git merge origin/main，否则这次部署会整包回滚别人的改动"
-[ "$AHEAD" -gt 0 ] && say "⚠ 本分支比 origin/main 多 $AHEAD 个 commit：内容会这次上线，记得随后 push 到 main"
-
-# ③ 其它 worktree 若有本分支没有的 commit → 部署它们就会消失（今天的事故就是这条）
-MISSING=""
-while read -r line; do
-  case "$line" in
-    "worktree "*) WT="${line#worktree }" ;;
-    "branch "*)   BR="${line#branch refs/heads/}"
-                  N=$(git rev-list --count HEAD.."$BR" 2>/dev/null || echo 0)
-                  [ "$N" -gt 0 ] && MISSING="${MISSING}  ${BR}（${WT}）缺 ${N} 个 commit\n" ;;
-  esac
-done < <(git worktree list --porcelain)
-if [ -n "$MISSING" ]; then
-  printf '%b' "$MISSING" >&2
-  die "有 worktree 的 commit 不在当前 HEAD 里。先 merge 它们（git merge <branch>），否则部署会把它们抹掉"
-fi
-
-say "✓ 无脏改动 / 未落后 / 无游离 worktree"
 
 say "── 2/5 构建（deploy 脚本不含 build，必须单独跑）──"
 pnpm run build > /tmp/gridpaw-build.log 2>&1 || { tail -25 /tmp/gridpaw-build.log >&2; die "build 失败（完整日志 /tmp/gridpaw-build.log）"; }
@@ -154,13 +210,27 @@ for u in / /kenken/solver/ /nonogram/solver/ /unlock-all/; do
 done
 [ "$FAIL" -eq 0 ] || exit 4
 
+export DEPLOY_STATE_FILE="${DEPLOY_STATE_FILE:-$HOME/.agent-autoloop/work/ledger/deploy-state.json}"
+export DEPLOY_REPO="$PRIMARY_TREE" DEPLOY_SHA="$BASE_SHA" DEPLOY_VERSION="$EXPECTED"
+export DEPLOY_SOURCE="${DEPLOY_SOURCE:-manual: scripts/deploy.sh（$(basename "${0}")）}"
+
 say "── 收尾 GSC sitemap 重提交 ──"
 # Google 不吃 IndexNow（那是 Bing/Yandex 通道）；GSC 自己重抓 sitemap 是几天一次，
 # 走 API 重提交会当场触发一次下载（实测提交后几秒 lastDownloaded 就更新），新页发现快得多。
 # 放在自检之后：先证明生产跑的是这份构建，再告诉 Google 来抓。失败不阻塞上线。
 bash scripts/gsc-resubmit-sitemap.sh gridpaw.com || say "⚠ GSC sitemap 重提交失败（不阻塞上线）"
 
+# 记账：deploy-state.json 是「线上到底跑哪个 sha」的唯一真源，I1 对账（origin/main == 已部署 sha）读它。
+# 手动部署也写，否则对账会把人工上线误报成"没上线"。
+node -e '
+const fs=require("fs"),path=require("path");
+const f=process.env.DEPLOY_STATE_FILE, repo=process.env.DEPLOY_REPO, sha=process.env.DEPLOY_SHA, ver=process.env.DEPLOY_VERSION;
+if(!f||!fs.existsSync(path.dirname(f))) process.exit(0);
+let d={}; try{d=JSON.parse(fs.readFileSync(f,"utf8"))}catch(e){}
+d[repo]={sha,version:ver,at:new Date().toLocaleString("sv-SE",{timeZone:"Asia/Shanghai"}).slice(0,16),ok:true,source:process.env.DEPLOY_SOURCE||"manual: scripts/deploy.sh"};
+fs.writeFileSync(f+".tmp",JSON.stringify(d,null,1)); fs.renameSync(f+".tmp",f);
+' || say "⚠ deploy-state 没写成功（不影响上线，但 I1 对账会误报）"
+
 say ""
-say "✅ 上线完成：${EXPECTED}"
-[ "$AHEAD" -gt 0 ] && say "⚠ 别忘了 git push origin HEAD:main（否则下次部署会把它回滚掉）"
+say "✅ 上线完成：${EXPECTED}（sha ${BASE_SHA:0:8}）"
 exit 0
