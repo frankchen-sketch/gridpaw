@@ -144,8 +144,10 @@
    * 真机（Gamincat Room Sort）就是这个画法——缺口是通口，弧线是门开的轨迹。
    * 返回缺口两端 p1/p2、门板尖端 tip、墙方向 (ux,uy)、内法线 n，调用方据此补画两段墙。
    */
-  function drawDoor(parent, x, y, side, cell, stroke, gapFill) {
-    const { a, b, n } = wallGeom(x, y, side, cell);
+  function drawDoor(parent, x, y, side, cell, stroke, gapFill, outward) {
+    const { a, b } = wallGeom(x, y, side, cell);
+    let { n } = wallGeom(x, y, side, cell);
+    if (outward) n = [-n[0], -n[1]];
     const g = cell * 0.6;
     const ux = (b[0] - a[0]) / cell, uy = (b[1] - a[1]) / cell;
     const mid = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
@@ -199,10 +201,12 @@
         if (own.has(cellKey(sx + vx, sy + vy))) continue; // 房间内部不留线，整间才读得出来
         const { a, b } = wallGeom(sx, sy, side, cell);
         if (doorSet.has(`${sx},${sy},${side}`)) {
-          const d = drawDoor(gDoor, sx, sy, side, cell, stroke, '#FFFDF7');
+          const hideLeaf = opts && opts.noLeaf && opts.noLeaf.has(`${sx},${sy},${side}`);
+          const d = drawDoor(gDoor, sx, sy, side, cell, stroke, '#FAF7F0');
           gWall.appendChild(svgEl('line', { x1: a[0], y1: a[1], x2: d.p1[0], y2: d.p1[1] }));
           gWall.appendChild(svgEl('line', { x1: d.p2[0], y1: d.p2[1], x2: b[0], y2: b[1] }));
-          drawDoorLeaf(gDoor, d, stroke, '#3A2C22', '#B45309');
+          // 两个房间共用的那道墙上只有一个门洞——门板只由其中一侧画，否则看起来像两扇门对开
+          if (!hideLeaf) drawDoorLeaf(gDoor, d, stroke, '#3A2C22', '#B45309');
         } else {
           gWall.appendChild(svgEl('line', { x1: a[0], y1: a[1], x2: b[0], y2: b[1] }));
         }
@@ -229,6 +233,7 @@
   function renderBoard() {
     const L = lv();
     const cell = state.cell;
+    const leafSkip = leafSkipMap();
     board.querySelectorAll('.cell,.tile,.plan').forEach((n) => n.remove());
     for (const [x, y] of L.cells) {
       const c = document.createElement('div');
@@ -250,7 +255,7 @@
         if (L._cellSet.has(cellKey(x + vx, y + vy))) continue;
         const { a, b } = wallGeom(x, y, side, cell);
         if (L._entrySet.has(`${x},${y},${side}`)) {
-          const d = drawDoor(gDoor, x, y, side, cell, stroke, '#FFFFFF');
+          const d = drawDoor(gDoor, x, y, side, cell, stroke, '#FFFFFF'); // 入户门的弧朝屋里画，摆上房间后被那块房间自己的门盖住，几何完全重合
           gWall.appendChild(svgEl('line', { x1: a[0], y1: a[1], x2: d.p1[0], y2: d.p1[1] }));
           gWall.appendChild(svgEl('line', { x1: d.p2[0], y1: d.p2[1], x2: b[0], y2: b[1] }));
           drawDoorLeaf(gDoor, d, stroke, '#8A5A12', '#B45309');
@@ -263,11 +268,34 @@
     plan.appendChild(gDoor);
     board.appendChild(plan);
     for (const [rid, [gx, gy]] of state.placed) {
-      const t = buildTile(L.rooms[rid], cell, { placed: true });
+      const t = buildTile(L.rooms[rid], cell, { placed: true, noLeaf: leafSkip.get(rid) });
       t.style.left = gx * cell + 'px';
       t.style.top = gy * cell + 'px';
       board.appendChild(t);
     }
+  }
+
+  /**
+   * 哪几扇门不该自己画门板：
+   * ① 两个房间共用的那道墙 —— 只有一个门洞，门板由 id 小的那间画（否则看起来是两扇门对开）
+   * ② 入户门洞 —— 门弧由平面图外框朝屋外画
+   */
+  function leafSkipMap() {
+    const L = lv();
+    const occ = occupancy();
+    const skip = new Map();
+    for (const [rid, [gx, gy]] of state.placed) {
+      const set = new Set();
+      for (const [dx, dy, side] of L.rooms[rid].doors) {
+        const ax = gx + dx, ay = gy + dy;
+        const rel = `${dx},${dy},${side}`;
+        const [vx, vy] = DIRS[side];
+        const other = occ.get(cellKey(ax + vx, ay + vy));
+        if (other !== undefined && other < rid) set.add(rel);
+      }
+      skip.set(rid, set);
+    }
+    return skip;
   }
 
   function renderTray() {

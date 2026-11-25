@@ -158,16 +158,39 @@ function sharedEdges(rooms) {
 }
 
 // ---------- 选门（房间图上取一棵随机生成树）----------
+// 两条现实约束（房间块是「一间房」，不是走廊）：
+// ① 单格房间只允许一扇门 —— 一格里两扇门对开，人根本转不开身
+// ② 同一面墙上两扇门不能挨着 —— 那等于一个两格宽的大开口，不是两扇门
 function chooseDoors(rooms, edges) {
   const n = rooms.length;
   const parent = Array.from({ length: n }, (_, i) => i);
   const find = (i) => (parent[i] === i ? i : (parent[i] = find(parent[i])));
+  const roomDoors = new Map();
+  const ok = (rid, x, y, side) => {
+    const list = roomDoors.get(rid) || [];
+    if (rooms[rid].length === 1 && list.length >= 1) return false;
+    for (const d of list) {
+      if (d.side !== side) continue;
+      if (side === 'N' || side === 'S') { if (Math.abs(d.x - x) < 2) return false; }
+      else if (Math.abs(d.y - y) < 2) return false;
+    }
+    return true;
+  };
+  const push = (rid, x, y, side) => {
+    if (!roomDoors.has(rid)) roomDoors.set(rid, []);
+    roomDoors.get(rid).push({ x, y, side });
+  };
   const shuffled = [...edges].sort(() => rnd() - 0.5);
   const doors = [];
   for (const e of shuffled) {
     const ra = find(e.a), rb = find(e.b);
     if (ra === rb) continue;
+    const dv = DIRS.find((v) => v.s === e.side);
+    const bx = e.x + dv.dx, by = e.y + dv.dy;
+    if (!ok(e.a, e.x, e.y, e.side) || !ok(e.b, bx, by, OPP[e.side])) continue;
     parent[ra] = rb;
+    push(e.a, e.x, e.y, e.side);
+    push(e.b, bx, by, OPP[e.side]);
     doors.push(e);
     if (doors.length === n - 1) break;
   }
@@ -223,12 +246,37 @@ function makeLevel(id, opts) {
     }
   }
   const entryCount = id <= 8 ? 1 : id <= 30 ? 1 + (rnd() < 0.5 ? 1 : 0) : 2;
-  const picked = [...boundary].sort(() => rnd() - 0.5).slice(0, entryCount);
+  // 入户门洞也要守同样的现实约束：单格房间只能有一扇门、同一面墙不挨着开门
+  const existing = new Map(); // rid -> [{x,y,side}]
+  doors.forEach((d) => {
+    const dv = DIRS.find((v) => v.s === d.side);
+    if (!existing.has(d.a)) existing.set(d.a, []);
+    existing.get(d.a).push({ x: d.x, y: d.y, side: d.side });
+    if (!existing.has(d.b)) existing.set(d.b, []);
+    existing.get(d.b).push({ x: d.x + dv.dx, y: d.y + dv.dy, side: OPP[d.side] });
+  });
+  const canAdd = (rid, x, y, side) => {
+    const list = existing.get(rid) || [];
+    if (rooms[rid].length === 1 && list.length >= 1) return false;
+    for (const d of list) {
+      if (d.side !== side) continue;
+      if (side === 'N' || side === 'S') { if (Math.abs(d.x - x) < 2) return false; }
+      else if (Math.abs(d.y - y) < 2) return false;
+    }
+    return true;
+  };
+  const picked = [...boundary]
+    .filter((e) => canAdd(e.room, e.x, e.y, e.side))
+    .sort(() => rnd() - 0.5)
+    .slice(0, entryCount);
   const entries = [];
   for (const e of picked) {
+    if (!canAdd(e.room, e.x, e.y, e.side)) continue; // 两个入户洞也可能彼此挨着，逐个复核
     const [ex, ey] = norm([e.x, e.y]);
     if (!doorSet.has(e.room)) doorSet.set(e.room, []);
     doorSet.get(e.room).push(`${ex},${ey},${e.side}`);
+    if (!existing.has(e.room)) existing.set(e.room, []);
+    existing.get(e.room).push({ x: e.x, y: e.y, side: e.side });
     entries.push([ex, ey, e.side]);
   }
 
@@ -312,6 +360,18 @@ function verify(lv) {
     if (inb.has(`${x + d.dx},${y + d.dy}`)) return `L${lv.id}: 入户门洞不在外墙 (${x},${y})${s}`;
     if (!inb.has(`${x},${y}`)) return `L${lv.id}: 入户门洞不在 footprint 里 (${x},${y})`;
   }
+  // 现实约束：单格房间最多一扇门；同一面墙上两扇门不能挨着
+  for (const r of lv.rooms) {
+    if (r.shape.length === 1 && r.doors.length > 1) return `L${lv.id}: 单格房间 ${r.name} 有 ${r.doors.length} 扇门`;
+    for (let i = 0; i < r.doors.length; i++) {
+      for (let j = i + 1; j < r.doors.length; j++) {
+        const A = r.doors[i], B = r.doors[j];
+        if (A[2] !== B[2]) continue;
+        const gap = A[2] === 'N' || A[2] === 'S' ? Math.abs(A[0] - B[0]) : Math.abs(A[1] - B[1]);
+        if (gap < 2) return `L${lv.id}: ${r.name} 同一面墙两扇门挨着 (${A})(${B})`;
+      }
+    }
+  }
   return null;
 }
 
@@ -322,7 +382,7 @@ for (const lv of levels) {
 }
 if (bad) { console.error(`[gen-floorplan] ${bad} 关校验失败，中止`); process.exit(1); }
 
-const doorsTotal = levels.reduce((s, l) => s + l.rooms.reduce((a, r) => a + r.doors.length, 0), 0) / 2;
+const doorsTotal = (levels.reduce((s, l) => s + l.rooms.reduce((a, r) => a + r.doors.length, 0), 0) - levels.reduce((s, l) => s + (l.entries?.length || 0), 0)) / 2;
 fs.mkdirSync(path.dirname(OUT), { recursive: true });
 fs.writeFileSync(OUT, JSON.stringify({ generatedBy: 'scripts/gen-floorplan-levels.mjs', count: levels.length, levels }));
 const kb = (fs.statSync(OUT).size / 1024).toFixed(1);
