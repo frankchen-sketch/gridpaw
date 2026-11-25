@@ -12,10 +12,21 @@ export const ADSENSE_CLIENT = 'ca-pub-5225990079437405';
 
 // 后台 → 广告 → 按广告单元 → 新建。尺寸必须与代码里的位一致，否则 AdSense 拒绝或变形。
 // 命名建议：gridpaw-<位置>-<尺寸>
+//
+// ⚠️ 2026-11-25 16:5x 全部清空 = **零广告实验**（法老批准，7 天观察 bp3 是否恢复）。
+//    起因：11-20 20:41 自动广告上线 → 11-22 起 bp3 organic 会话连续三日腰斩
+//    （877→360→162→102，崩前 539），而 11-17~20 零广告窗口内 bp3 反而冲到 707~898。
+//    **为什么必须连手动位一起清空**：ADSENSE_LOADER = AUTO || 任一位有 id，
+//    只关 AUTO 时 loader 仍注入 → Google 后台自动广告照样插位，实验无效（物理零广告才算复现）。
+//    判据（2026-12-02 读）：bp3 organic 会话回到 ≥300/天 → 广告是主因，保持零广告；
+//    仍在 ~100 → 是 core update 最终态，广告嫌疑排除，看板/正文内容再议。
+//    恢复：把下面 6 个 id 填回去 + ADSENSE_AUTO 改回 true（原值见 git 历史）。
 export const ADSENSE_SLOTS = {
   // 桌面 ≥1350 左右侧栏（落在 840px 内容列之外的 gutter，29 页 elementFromPoint 实测零命中）
-  left: '3408078063', // 160×600  gridpaw-rail-left-160x600（2026-11-21 建，固定尺寸）
-  right: '1600172373', // 160×600  gridpaw-rail-right-160x600（2026-11-21 建，固定尺寸）
+  // left: '3408078063', // 160×600  gridpaw-rail-left-160x600（2026-11-21 建，固定尺寸）
+  // right: '1600172373', // 160×600  gridpaw-rail-right-160x600（2026-11-21 建，固定尺寸）
+  left: '',
+  right: '',
   // 平板 768–1349 底部 sticky（fixed，body 预留 100px；play surface 永不出）
   sticky: '', // 728×90   gridpaw-sticky-728x90
   // 手机 <768 顶部（插在 header 之后、棋盘之上；play surface 永不出）
@@ -23,7 +34,8 @@ export const ADSENSE_SLOTS = {
   // 手机正文底部第二信息流（零预留高度，未填充整块 0 高）
   mobilefoot: '', // 300×250  gridpaw-mobilefoot-300x250
   // 正文内 300×250（攻略/内容页，视频或正文中段）
-  incontent: '6686471388', // 300×250  gridpaw-incontent-300x250
+  // incontent: '6686471388', // 300×250  gridpaw-incontent-300x250
+  incontent: '',
 } as const;
 
 export type AdPosition = keyof typeof ADSENSE_SLOTS;
@@ -37,8 +49,11 @@ export type AdPosition = keyof typeof ADSENSE_SLOTS;
  *
  * 开这个开关 = 内容页会加载 adsbygoogle.js（play surface 与永零页仍不加载，见 src/lib/ad-policy.ts）。
  * 手动位（ADSENSE_SLOTS）保持空串即可单独关掉手动位，两者互不牵连。
+ *
+ * ⚠ 2026-11-25 关停做零广告实验（ADSTERRA_OFF 同型纪律：先零广告、看排名、再谈恢复）。
+ *   注意：光改这里不够，loader 还看 ADSENSE_SLOTS，见该常量上方注释。
  */
-export const ADSENSE_AUTO = true;
+export const ADSENSE_AUTO = false;
 
 /** 是否注入 loader 脚本：开了自动广告，或至少一个手动位有 unit id */
 export const ADSENSE_LOADER = ADSENSE_AUTO || Object.values(ADSENSE_SLOTS).some(Boolean);
