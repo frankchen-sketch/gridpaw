@@ -920,3 +920,9 @@ sitemap 仍不含它）。
 | 广告口径 | `/room-sort-game-online` 已在 PLAY_SURFACES | 追加 `/amochiroom/play`（真棋盘页），答案页仍是内容页不登记 |
 
 游戏本体加了 `?embed=1`（隐藏内层 H1，避免与外层双标题）。验收：build 792 页（+1）；换体页 iframe 内 60/60 关全胜；`/amochiroom/play/` 引擎起、133 个关卡选项、房间与箱子正常渲染；桌面 1280 iframe 720px、手机 390 内层 docH=vh 不滚动、外层 scrollW=390 无横溢。
+
+### 2026-11-25 · impeccable side-tab 修复 + 顺手抓到「永不填充的空广告框」
+
+1. **side-tab**（`/room-sort-game-online/` 的 Tip 块）：原本用 `border-left: 3px solid`，是 AI 味的典型标志。改成整框 1px 描边 + 12px 圆角 + 行内 `TIP` 小标签（`::before`），不再靠一侧粗色条做强调。实测 borderLeftWidth=1px、radius=12px。
+2. **空广告框**（换体当天新加的两页踩的）：`InContentAd` 原来只看 `ADSENSE_ON && SLOT`，不看 loader 是否被允许。而 play surface 上 AdSense loader 是被 ad-policy 掐掉的 → 页面留一块固定 250px 高、标着 "Advertisement" 但永远填不满的空框，违背「未填充不发标签」。改成按 `loaderAllowed(PAGE_PATH)` 出位（play surface 与 NEVER_ADS 一并排除）。
+   量化：改前 dist 里真正渲染该位且无 loader 的页 = **2**（`/amochiroom/play/`、`/room-sort-game-online/`），改后 = **0**（渲染 388 页全都有 loader）。注：按 `gp-incontent-ad` 字符串粗扫会数出 250 页，那是 SEOHead 里的全局 CSS，不是真渲染，别拿它下结论。
