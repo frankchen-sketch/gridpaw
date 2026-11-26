@@ -1,0 +1,368 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 4 Level 2 Walkthrough: Power and Security";
+const description = "Rooms & Exits Chapter 4 Level 2 Power and Security walkthrough: the 149 note and the dial on the red tool chest, the sliding-block board in the locker room, the work lamp and pegboard, the 5×5 circuit board inside the high-voltage panel, the wall outlet that boots the monitor wall, and the fifteen-card table that feeds the exit keypad. Every printed number was read twice from separate frames.";
+
+const faq = [
+  {
+    q: "What is the code for the dial on the red tool chest in Power and Security?",
+    a: "It is <b>149</b>. Three separate reads agree on it: the assembled note shows <b>149</b> in coloured segments at 2:18 (1 purple, 4 green, 9 pink), the three-digit dial is turned to <b>149</b> at 2:35, and the note sits in the inventory labelled <b>Note(149)</b> at 5:14. Setting the dial to 149 pops the top drawer of the red rolling tool chest.",
+  },
+  {
+    q: "Where does the 149 note come from?",
+    a: "The locker room hands it to you in pieces. The sliding-block board's reward at 1:25 is a <b>Piece of paper</b>, and by 2:18 the inventory holds a note assembled from <b>three scraps</b>. The assembled note is the only place the three digits appear together; the individual scraps on their own are line drawings, not numbers. Read the finished note, not the pieces.",
+  },
+  {
+    q: "What do I do with the duct tape and the scissors?",
+    a: "Combine them. At 4:02 the inventory shows <b>Duct tape</b> and <b>Scissors</b> side by side, and the run produces a <b>Piece of tape</b> from them. What the video does <i>not</i> show is where that piece of tape gets stuck: the player taps the electrical panel at 4:20, gets the message <b>It's too dangerous right now!</b>, and the tile board opens two seconds later. Taping the panel's exposed wiring is the obvious reading, but no frame shows the tape on anything, so this page does not print it as a confirmed step.",
+  },
+  {
+    q: "How do I solve the tile board in the electrical panel?",
+    a: "The panel's interior holds a <b>5×5 grid of square tiles</b>, each printed with a blue line segment. Rotating the tiles re-joins those segments, and the goal is one unbroken run of blue line across the board. The run works it from 4:22 and finishes at about 4:38: the line turns <b>red</b> when the loop closes, the panel's indicator light goes from red to <b>green</b>, and the room's power is on. It is a rotation puzzle, not a code — there is nothing to type.",
+  },
+  {
+    q: "How do I turn the monitors on?",
+    a: "There is a wall outlet to the left of the blue exit door, with a black cable plugged into it and a white toggle switch beside the socket. When you find it the <b>red</b> indicator is lit and the switch is <b>down</b>. Flip the switch up at 4:49 and the green indicator lights instead; at 4:53 the whole monitor wall boots and shows a security-camera feed and a door status panel.",
+  },
+  {
+    q: "What is the J=12 clue for?",
+    a: "It is handwritten in black on the yellow wall on the left side of the control room, near the overflowing trash can and the blue plastic bag — visible at 2:06 and again at 5:26. It tells you how to read the playing cards on the round table: a <b>Jack counts as 12</b>, not 11. Without that rule the three face-down cards cannot be turned into keypad digits at all, which is why the level bothers to write it on the wall.",
+  },
+  {
+    q: "What is the answer to the card puzzle?",
+    a: "This page does not print the digits, because the video never shows them being typed and our two reads of the card ranks do not agree. What the layout does give you is reliable: <b>fifteen cards in three rows of five</b>, each row a single suit — diamonds on top, spades in the middle, hearts at the bottom — with exactly <b>one face-down card per row</b>. Combine that with J=12 and the keypad on the exit door, and the three hidden values are what the lock is waiting for.",
+  },
+  {
+    q: "What is the exit door code?",
+    a: "Unknown. The exit door raises a numeric <b>ENTER PASSCODE</b> keypad at 5:32, and the run clears it, but the digits are never legible in any frame we pulled — the entry is masked. So the code is on the page as a method, not as a number.",
+  },
+  {
+    q: "Does the recording show the level being completed?",
+    a: "Yes, and this one ends properly. The run is complete to the last frame: the keypad closes, the door opens, and at <b>5:44</b> the game cuts to <b>LEVEL COMPLETED!</b> with <b>10/10 efficiency</b>, <b>Time 5:42</b> and a <b>+50</b> coin reward. That is a cleaner ending than most of the Chapter 3 pages on this site, where the video fades on the exit arrow.",
+  },
+  {
+    q: "Where does Power and Security sit in Chapter 4?",
+    a: "Chapter 4 is <i>Pharaoh's Bride</i> and it has <b>15 rooms</b>. Power and Security is room <b>2 of 15</b> — straight after Pharaoh's Tomb and before The Office. Mechanically it is a two-room level: a yellow control room with the exit door, the monitor wall and the electrical panel, and a green locker room where most of the items and both paper pickups live.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-4-level-2"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 4 Level 2"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #fff; border: 1.5px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 4 &gt; Level 2</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 4 Level 2 Walkthrough: Power and Security</h1>
+
+    <p>Power and Security is room <b>2 of 15</b> in Chapter 4, <i>Pharaoh's Bride</i>, and it is the first two-room level in the chapter. Pharaoh's Tomb was one exhibit hall with eleven stations; this one splits into a yellow control room and a green locker room joined by a single doorway, and it makes you run between them. The control room holds the things you are trying to fix — a dead monitor wall and an open, live electrical panel. The locker room holds the things you fix them with.</p>
+
+    <p>The spine of the level is short and readable. A sliding-block board in the locker room gives up the first scrap of a torn note; the finished note reads <b>149</b> and that number opens the top drawer of the red tool chest; the chest and the shelves around the workbench hand you the parts for a work lamp and a roll of duct tape. Then it is back to the control room to finish the panel's <b>5×5</b> tile board, flip the wall outlet, wake the monitors, and read a card table with three cards face-down. It ends on the exit door keypad at <b>5:32</b> and a real LEVEL COMPLETED card at <b>5:44</b>.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame at one frame per second from the <b>full 5:46 run</b> (346 frames, 1080p). The number <b>149</b> was read three ways — the assembled note at 2:18, the dial itself at 2:35, and the inventory label at 5:14 — and all three agree. The tile board's size (5×5) and the card table's shape (15 cards, three rows of five, one face-down per row) were each read twice from separate frames. Anything that only read one way, or that two passes read differently, is listed under "What this page could not verify" instead of being printed as a code.</div>
+
+    <LevelSelector chapter={4} current={2} variant="jump" label="Chapter 4 · Pharaoh's Bride" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Power and Security is room 2 of 15 in Chapter 4. The dial code is <b>149</b>, the panel is a <b>5×5</b> rotating-line puzzle, and the exit is a numeric keypad fed by the card table plus the <b>J=12</b> wall rule.</p>
+      <ol>
+        <li>Go left through the doorway into the green locker room. The blue panel on the middle lockers is a <b>5×5 sliding-block board</b> — clear it and take the <b>Piece of paper</b> (1:25).</li>
+        <li>Collect as you go: <b>Hammer</b> (1:46), <b>LED Light Bulb</b> (1:58), <b>Wrench</b> (2:04) from the shelves and floor around the workbench, and the <b>Screwdriver</b> (3:16) from inside an open locker.</li>
+        <li>The torn note assembles to <b>149</b> (2:18). Set the red tool chest's three-digit dial to <b>149</b> and its top drawer opens (2:36).</li>
+        <li>Fit the <b>LED bulb</b> to the work lamp (3:32); it lights and throws a white line diagram on the wall behind the bench.</li>
+        <li>Take the blue <b>Duct tape</b> from the pegboard cubby (3:52) and combine it with the <b>Scissors</b> into a <b>Piece of tape</b> (4:02).</li>
+        <li>In the control room, solve the electrical panel's <b>5×5 tile board</b> (4:22–4:38): the blue line turns red and the panel light goes green.</li>
+        <li>Flip the wall outlet switch beside the exit door (4:49). The monitor wall boots at 4:53.</li>
+        <li>Read the fifteen cards on the round table (5:16) with the <b>J=12</b> rule from the wall (5:26), then enter the passcode at the exit door (5:32).</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="Olmbm4RcS2U" data-title="Rooms &amp; Exits Level 2 Power and Security Walkthrough Chapter 4"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 2 Power and Security walkthrough">
+        <img src="https://i.ytimg.com/vi/Olmbm4RcS2U/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 4 Level 2 Power and Security walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/Olmbm4RcS2U/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The Power and Security run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c4l2-control-room.jpg" alt="Rooms and Exits Chapter 4 Level 2 Power and Security: the yellow control room with an open electrical panel and fire extinguisher on the left wall, a wall of nine monitors over a desk at the back, the blue exit door on the right, and a round card table in the foreground" width="1200" height="776" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>The control room is one wide yellow box with a checkerboard floor and exposed ducting at the ceiling. The left wall carries the doorway you come in through, the open <b>electrical panel</b>, a red fire extinguisher and a step ladder, with an overflowing trash can, a blue plastic bag and a cardboard box heaped underneath. The back wall is the working end: blue pipes, a red fire-hose cabinet, and a long desk under a <b>nine-monitor array</b> — eight small screens around one large central one — with two mesh office chairs pushed up to it. On the right, a wall outlet with a white toggle switch sits beside the blue <b>exit door</b> and its green EXIT sign. In the middle of the floor: a coiled black cable, a round dark table with four blue chairs, a scatter of playing cards, and a red-and-black backpack leaning on one chair.</p>
+
+    <p>The locker room through the left doorway is a different palette entirely — green walls, a grey tiled floor, two banks of red-and-blue lockers, wooden benches with hard hats and folded clothes on them, a coat rack, and a workbench with three shelves over it and a red rolling tool chest beside it. The pegboard hangs between the shelves and the chest, and the bins and the cardboard box on the floor are where the wrench is lying.</p>
+
+    <p>Structurally this is a relay, not a hub. Almost nothing in either room works on its own: the note opens the chest, the chest and shelves feed the lamp and the tape, and only then does the control room's panel make sense. The one part you can do in any order is the sweep for tools, so do it early — the run spends its first four minutes on exactly that.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Everything we could identify, and what it is for.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Sliding-block board</td><td>Full-screen overlay; the blue panel on the middle lockers behind it</td><td><b>5×5</b> pack with one 2×2 orange square, pink, yellow and blue pieces and a single red ball. Cleared 0:16–1:21.</td></tr>
+        <tr><td>Piece of paper</td><td>Board reward, 1:25</td><td>One of the torn-note scraps. Labelled <b>Piece of paper</b>.</td></tr>
+        <tr><td>Torn note</td><td>Inventory, assembled by 2:18</td><td>Three scraps that read <b>149</b> together — 1 purple, 4 green, 9 pink.</td></tr>
+        <tr><td>Red rolling tool chest</td><td>Right of the workbench</td><td>Three-digit dial on the top drawer; set to <b>149</b> and it opens.</td></tr>
+        <tr><td>Work lamp</td><td>On the bench under the shelves</td><td>Takes the <b>LED Light Bulb</b>; lights at 3:36 and throws white line shapes on the wall.</td></tr>
+        <tr><td>Pegboard</td><td>Wall between shelves and tool chest</td><td>Three circular outlines (screwdriver, hammer, wrench), a row of open-end wrenches, an angle grinder, and a cubby holding <b>Duct tape</b> and <b>Scissors</b>.</td></tr>
+        <tr><td>Electrical panel</td><td>Left wall of the control room</td><td>Energy meter, voltmeter, two rows of breakers, two large C32/DK breakers with yellow handles, and the <b>5×5 tile board</b>.</td></tr>
+        <tr><td>Wall outlet + switch</td><td>Left of the exit door</td><td>Red indicator lit, switch down. Flip up at 4:49 to power the monitor wall.</td></tr>
+        <tr><td>Monitor wall</td><td>Back wall, over the desk</td><td>Nine screens, dark until 4:53, then a camera feed and a door status panel.</td></tr>
+        <tr><td>Card table</td><td>Centre of the control room, four blue chairs</td><td><b>15 cards in 3 rows of 5</b>, one face-down per row. Diamonds / spades / hearts, top to bottom.</td></tr>
+        <tr><td>J=12 graffiti</td><td>Yellow wall, left side, by the trash can and blue bag</td><td>The rule that lets you convert the face-down cards: a Jack counts as <b>12</b>.</td></tr>
+        <tr><td>Exit keypad</td><td>Blue exit door, right wall</td><td><b>ENTER PASSCODE</b>. Digits never legible on camera.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>The order below follows the recording. Timestamps are video time; the links jump to the matching second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:02</span>
+      <strong>Read the control room before touching anything</strong>
+      The level opens on the yellow control room with the HUD still fading in. Take the whole frame in before you tap: the electrical panel is already hanging open on the left wall, the nine monitors over the desk are completely dead, the blue exit door on the right is shut, and there is a card table sitting in the middle of the floor with cards already dealt on it. Every one of those is a station you will come back to. The only thing that works right now is the doorway on the left.
+      <img src="/rooms-and-exits/c4l2-control-room.jpg" alt="The yellow control room in Power and Security with the electrical panel and fire extinguisher on the left, nine dead monitors over a desk, the blue exit door on the right and a round table with cards" width="1200" height="776" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=2s" target="_blank" rel="noopener">0:02</a></div>
+    </div>
+    <InContentAd />
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:14</span>
+      <strong>Go left, into the green locker room</strong>
+      The doorway on the left wall drops you into the locker room, and this is where the level actually starts. Two banks of red-and-blue lockers, benches with hard hats and folded clothes, a coat rack, a workbench with three shelves over it and a pegboard, and the red rolling tool chest. Note the blue panel on the middle locker bank — that is the sliding-block board you are about to open.
+      <img src="/rooms-and-exits/c4l2-locker-room.jpg" alt="The green locker room in Power and Security with red and blue lockers, wooden benches, a coat rack, a workbench with shelves and a red rolling tool chest" width="1200" height="776" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=14s" target="_blank" rel="noopener">0:14</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:16 to 1:21 · the sliding blocks</span>
+      <strong>A 5×5 pack with one red ball</strong>
+      The board comes up as a full-screen overlay with the locker room behind it: a <b>5×5</b> grid on a bright blue background, filled with a single large <b>2×2 orange square</b>, pink, yellow and blue blocks of one and two units, and one <b>red ball</b> sitting in the top-left quadrant. The block shapes are the constraint — the 2×2 square can only travel in straight lines until a 1-wide lane opens for it — so free the narrow lanes first and save the orange square for last. The run clears it in about a minute and the board pays out a <b>Piece of paper</b> at 1:25.
+      <img src="/rooms-and-exits/c4l2-sliding-block.jpg" alt="The 5 by 5 sliding block board in Power and Security with a large orange square, pink yellow and blue blocks and a red ball" width="1200" height="776" loading="lazy" />
+      <img src="/rooms-and-exits/c4l2-piece-of-paper.jpg" alt="The Piece of paper reward in Power and Security, a white sheet with green line segments" width="1200" height="776" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=16s" target="_blank" rel="noopener">0:16</a> · <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=85s" target="_blank" rel="noopener">1:25</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 1:46 to 2:04 · the sweep</span>
+      <strong>Hammer, LED bulb, wrench</strong>
+      Three pickups in under twenty seconds, all clustered around the workbench. The <b>Hammer</b> comes off the utility shelves at 1:46, the <b>LED Light Bulb</b> off the same shelves at 1:58, and the <b>Wrench</b> off the floor at 2:04, next to the cardboard box and the black cabinet under the bench. Take them in that order and the run flows without any backtracking — the shelves are one tap zone.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=106s" target="_blank" rel="noopener">1:46</a> · <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=118s" target="_blank" rel="noopener">1:58</a> · <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=124s" target="_blank" rel="noopener">2:04</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 2:18 · the number on the wall</span>
+      <strong>149, and the J=12 rule next door</strong>
+      The assembled note reads <b>149</b>: the 1 is purple, the 4 green, the 9 pink. That is the only number the locker room gives you, and it is the code for the next lock. Before you leave, look at the yellow wall on the control-room side of the doorway — at 2:06 there is a handwritten <b>J=12</b> beside the trash can and the blue bag. It is not for the chest; it is for the card table you have not reached yet. Two rules, two different locks.
+      <img src="/rooms-and-exits/c4l2-note-149.jpg" alt="The assembled note in Power and Security reading 149 in purple, green and pink segments" width="1200" height="776" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=138s" target="_blank" rel="noopener">2:18</a> · <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=126s" target="_blank" rel="noopener">2:06</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 2:36 · the red tool chest</span>
+      <strong>Three digits, then the top drawer pops</strong>
+      The red rolling tool chest by the workbench has a <b>three-digit dial</b> on its top drawer, and the drawer is the level's first real lock. Set it to <b>149</b> from the note and the drawer slides open at 2:36: inside is a coiled black cable and the game hands you a <b>yellow rail-like part</b>. Watch the inventory after that — the part arrives as a single slot but it reads as a stacked pair, so keep both halves when you move on.
+      <img src="/rooms-and-exits/c4l2-red-tool-chest.jpg" alt="The red rolling tool chest in Power and Security with its top drawer open, a coiled cable inside, and a saw and gloves on top" width="1200" height="776" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=156s" target="_blank" rel="noopener">2:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 3:16 · the screwdriver</span>
+      <strong>Inside an open locker</strong>
+      The <b>Screwdriver</b> is lying on the wooden slats inside one of the open lockers, not on the pegboard: the close-up at 3:16 shows an orange-handled flat-head resting across two planks with a dark jacket hanging behind it. The popup confirms it as <b>Screwdriver</b>. This is the only tool you find loose rather than on a shelf or on the board.
+      <img src="/rooms-and-exits/c4l2-screwdriver.jpg" alt="The Screwdriver pickup in Power and Security, an orange-handled screwdriver lying on wooden slats inside an open locker" width="1200" height="776" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=196s" target="_blank" rel="noopener">3:16</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 3:22 to 3:52 · the pegboard</span>
+      <strong>Three outlines, and the cubby with the tape</strong>
+      The pegboard is the tool room's index. Across the top are <b>three circular outlines</b> — screwdriver, hammer, adjustable wrench — and the wrenches you have been collecting either fill them or hang on the row below. Under the outlines sit a row of open-end wrenches, an angle grinder, and a small cubby holding a blue roll of <b>Duct tape</b> and a pair of <b>Scissors</b>. Take the tape at 3:52; it goes with the scissors later, in the control room.
+      <img src="/rooms-and-exits/c4l2-pegboard.jpg" alt="The pegboard in Power and Security with tool outlines, open-end wrenches, and a cubby holding blue duct tape and scissors" width="1200" height="776" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=230s" target="_blank" rel="noopener">3:50</a> · <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=232s" target="_blank" rel="noopener">3:52</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 3:32 to 3:36 · the work lamp</span>
+      <strong>The bulb goes in, and the wall lights up</strong>
+      The bench lamp is the reason the bulb is on your list. Fit the <b>LED Light Bulb</b> to it at 3:32, and by 3:36 it is burning white — and the interesting part is behind it: the lamp throws a pattern of <b>white line segments</b> onto the green wall, a diagonal, a T-shape and a short dash. Those shapes are the same family as the segments on the panel's tile board, so treat the lit lamp as a clue you can read, not just as decoration.
+      <img src="/rooms-and-exits/c4l2-work-lamp.jpg" alt="The work lamp in Power and Security lit with a white LED bulb, throwing white line segments onto the green wall behind the bench" width="1200" height="776" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=212s" target="_blank" rel="noopener">3:32</a> · <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=216s" target="_blank" rel="noopener">3:36</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 4:02 · cut the tape</span>
+      <strong>Duct tape plus scissors makes a Piece of tape</strong>
+      Open the inventory with the duct tape selected, use <b>Combine</b> with the scissors, and the game turns the roll into a <b>Piece of tape</b>. That is the whole interaction: no mini-game, no second pickup. The piece of tape is then carried into the control room, and this is where the video gets coy — the player taps the panel at 4:20 and gets <b>It's too dangerous right now!</b>, and two seconds later the tile board is open. No frame shows the tape being stuck to anything, so do not expect a confirmation animation.
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=242s" target="_blank" rel="noopener">4:02</a> · <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=260s" target="_blank" rel="noopener">4:20</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 4:22 to 4:38 · the panel</span>
+      <strong>One unbroken line through a 5×5 board</strong>
+      The electrical panel on the left wall opens as a proper close-up and it is dense: an energy meter reading 0000145 kWh, a voltmeter on 218 V, two rows of breakers, two large C32/DK breakers with yellow handles, and a red/green indicator pair at the bottom. Tapping the panel gives you <b>This is a high voltage panel. Be careful!</b> The puzzle is the <b>5×5 grid of square tiles</b> in the middle, each printed with a blue line segment. Rotate the tiles until the segments join into one continuous run; when the loop closes at 4:38 the line turns <b>red</b> and the panel's indicator flips to <b>green</b>. Nothing is typed, so there is no code to memorise here.
+      <img src="/rooms-and-exits/c4l2-electrical-panel.jpg" alt="The open electrical panel in Power and Security with an energy meter, voltmeter, two rows of breakers and a 5 by 5 tile puzzle of blue line segments" width="1200" height="776" loading="lazy" />
+      <img src="/rooms-and-exits/c4l2-tile-solved.jpg" alt="The 5 by 5 tile board in Power and Security solved, with the line turned red and the panel indicator green" width="1200" height="776" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=262s" target="_blank" rel="noopener">4:22</a> · <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=278s" target="_blank" rel="noopener">4:38</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 4:49 · the outlet</span>
+      <strong>Flip the switch, wake the monitor wall</strong>
+      With the panel live, go to the wall outlet just left of the blue exit door. The close-up shows a black cable plugged into the socket, two indicator lights (green above red) and a white toggle switch on the right. When you arrive the <b>red</b> light is on and the switch is <b>down</b>. Flip it up at 4:49: the green light takes over and at <b>4:53</b> the nine monitors over the desk boot — first as a bright test pattern, then as a camera feed with a door status panel.
+      <img src="/rooms-and-exits/c4l2-outlet-switch.jpg" alt="The wall outlet and toggle switch in Power and Security with a cable plugged in, a red indicator lit and the switch down" width="1200" height="776" loading="lazy" />
+      <img src="/rooms-and-exits/c4l2-monitors-on.jpg" alt="The nine-monitor wall in Power and Security after the switch is flipped, showing a security camera feed and a door status panel" width="1200" height="776" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=289s" target="_blank" rel="noopener">4:49</a> · <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=293s" target="_blank" rel="noopener">4:53</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 5:16 · the card table</span>
+      <strong>Fifteen cards, three rows of five, three face-down</strong>
+      The cards on the round table open as a full-screen overlay, and this is the level's real clue. <b>Fifteen cards in three rows of five</b>, each row a single suit: <b>diamonds</b> on top, <b>spades</b> in the middle, <b>hearts</b> at the bottom. Exactly <b>one card per row is face-down</b> — second from the left on the top row, third on the middle row, fourth on the bottom row. Pair that with the <b>J=12</b> written on the wall at 5:26 and you have everything the exit keypad is built on. This page does not print the three hidden ranks, because the video never shows the digits being entered and our two reads of the ranks do not agree.
+      <img src="/rooms-and-exits/c4l2-card-table.jpg" alt="The fifteen playing cards in Power and Security arranged in three rows of five with three cards face-down, over the control room" width="1200" height="776" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=316s" target="_blank" rel="noopener">5:16</a> · <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=326s" target="_blank" rel="noopener">5:26</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 5:32 to 5:46 · the exit</span>
+      <strong>The keypad, and the one clean ending in this chapter so far</strong>
+      The blue exit door raises an <b>ENTER PASSCODE</b> keypad at 5:32 — the same screen comes up once on the monitor at 5:02. The run types the code and the door opens, but the digits are masked in every frame we pulled, so the entry stays a method here rather than a number. Then the game does something the Chapter 3 videos never did: at <b>5:44</b> it cuts to a real <b>LEVEL COMPLETED!</b> card — <b>10/10 efficiency</b>, <b>Time 5:42</b>, <b>+50</b> coins, with the piggy-bank panel underneath.
+      <img src="/rooms-and-exits/c4l2-exit-keypad.jpg" alt="The ENTER PASSCODE keypad in Power and Security with empty digit boxes and a number pad" width="1200" height="776" loading="lazy" />
+      <img src="/rooms-and-exits/c4l2-level-complete.jpg" alt="The LEVEL COMPLETED screen for Power and Security in Rooms and Exits, showing 10 out of 10 efficiency, Time 5:42 and a +50 coin reward" width="1200" height="776" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=332s" target="_blank" rel="noopener">5:32</a> · <a href="https://www.youtube.com/watch?v=Olmbm4RcS2U&t=345s" target="_blank" rel="noopener">5:45</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>You try to fix the panel first.</b> The control room is where you spawn, and the panel is hanging open in front of you, so it reads like step one. It is step eleven. The panel's tile board is solvable, but the rest of the level does not light up until you have been through the locker room and come back — the run leaves the panel alone for four minutes.</p>
+    <p><b>You treat the torn paper as one clue and the J=12 as another for the same lock.</b> They are two different locks. <b>149</b> is the three-digit dial on the red tool chest. <b>J=12</b> is the conversion rule for the card table, which feeds the exit keypad. Mixing them up is the most common way to waste ten minutes on this level.</p>
+    <p><b>You look for the screwdriver on the pegboard.</b> It is not there — the pegboard has the outlines and the wrenches, but the screwdriver itself is lying on the slats inside an open locker (3:16). The hammer and the bulb come off the shelves, the wrench off the floor, the screwdriver out of a locker.</p>
+    <p><b>You wait for the piece of tape to do something visible.</b> It doesn't. The combine happens in the inventory at 4:02, the panel refuses a tap with <b>It's too dangerous right now!</b> at 4:20, and the tile board opens at 4:22. There is no frame where the tape is visibly stuck to a wire. If you are hunting for a taped cable to confirm you did it right, you will not find one.</p>
+    <p><b>You count the cards instead of the hidden ones.</b> Fifteen cards is the decoy number. What matters is that each row is one suit with one card face-down — three hidden cards, and a keypad that wants a numeric answer. Then J=12 tells you how to convert a face card when you get there.</p>
+
+    <h2>Where Power and Security sits in Chapter 4<span class="accent">.</span></h2>
+    <p>Chapter 4 is <i>Pharaoh's Bride</i> and it runs <b>15 rooms</b>. Power and Security is room <b>2 of 15</b>, between <a href="/rooms-and-exits/chapter-4-level-1/">Pharaoh's Tomb</a> and The Office. Where Pharaoh's Tomb was a single exhibit hall with eleven stations, this one is deliberately split down the middle: a yellow control room that holds the problems, and a green locker room that holds the parts.</p>
+    <p>That split is the level's whole personality, and it is a good calibration for the rest of the chapter. The run is only <b>5:46</b> long — one of the shortest in the game — but it crosses between the two rooms at least three times, and the crossings are the puzzle. Once you accept that the locker room is the toolbox and the control room is the machine, the order stops being ambiguous.</p>
+
+    <LevelSelector chapter={4} current={2} compact={true} label="Chapter 4 · Pharaoh's Bride" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-4-level-1/">Chapter 4 Level 1 — Pharaoh's Tomb</a></p>
+      <p>Next room: Chapter 4 Level 3 — The Office <span style="color:#9C8B7B">(guide in progress)</span></p>
+      <p>Back to: <a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Four things, stated plainly so you know which parts of this page are reads and which are reconstruction.
+      <br><br>
+      <b>1. The exit passcode and the three face-down cards.</b> The keypad is on camera twice (5:02 and 5:32) and the entry is masked both times, so there is no digit string to print. The card table is readable as a shape — fifteen cards, three rows of five, one face-down per row, diamonds/spades/hearts — but the face-up ranks changed between our two independent reads (the bottom row came back as 3-4-5-?-7 once and A-3-5-?-7 another time), which means any code derived from them would be a guess wearing a number's clothes. So the page gives you the method and not the answer.
+      <br><br>
+      <b>2. Where the piece of tape goes.</b> The roll and the scissors are on the pegboard, the combine happens at 4:02, and the panel refuses a tap at 4:20 with <b>It's too dangerous right now!</b> — but no frame in the 346 we pulled shows tape stuck to a cable, a terminal or a door. We are not going to print "tape the exposed wire" as a step when the evidence is a two-second gap.
+      <br><br>
+      <b>3. The name of the yellow part from the tool chest drawer.</b> The drawer's close-up shows a coiled black cable, and the inventory slot that appears afterwards is a yellow channel-shaped part that reads as a stacked pair — but the game never shows a pickup label for it, so this page describes it rather than naming it.
+      <br><br>
+      <b>4. What the two yellow-handled C32/DK breakers do.</b> They are readable in the panel (one handle up, one down, both labelled C32 with a DK marking) and the panel's red/green indicator pair is readable too. What is not readable is whether either breaker is interactive: the run never taps them, and the panel's power state changes when the tile board is solved, not when a breaker is thrown.
+    </div>
+  </main>
+  <AdSlot />
+  <SideAd />
+</body>
+</html>
