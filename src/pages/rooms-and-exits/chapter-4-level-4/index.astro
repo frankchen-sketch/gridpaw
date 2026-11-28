@@ -1,0 +1,378 @@
+---
+import SEOHead from '../../../components/SEOHead.astro';
+import GameNav from '../../../components/GameNav.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import SideAd from '../../../components/SideAd.astro';
+import InContentAd from '../../../components/InContentAd.astro';
+import LevelSelector from '../../../components/LevelSelector.astro';
+
+const title = "Rooms & Exits Chapter 4 Level 4 Walkthrough: Planetarium";
+const description = "Rooms & Exits Chapter 4 Level 4 Planetarium walkthrough: the dome auditorium with its six planet displays, the metal plate whose numbered contacts and movable knob open the cabinet, the telescope and the six-panel constellation board that pays out the Key, the periodic table poster and the H / N / Mg notes, and the graph-paper subtraction 41268 − 7935 = 33333 behind the wall passcode. Every printed number was read more than once.";
+
+const faq = [
+  {
+    q: "What is the passcode in the Planetarium?",
+    a: "It is a four-digit number taken from the graph-paper subtraction on the desk: <b>4 1 2 6 8 − 7 9 3 5 = 3 3 3 3 3</b>, with the four digits of the subtracted row boxed and shaded blue. Those four digits read <b>7 9 3 5</b>, and the arithmetic checks out exactly (41268 − 7935 = 33333). Start with <b>7935</b>. One caveat we have to state: the four circles on the wall keypad read <b>7 9 3 6</b> across five consecutive frames of our capture, one digit away from the paper. See the last section of this page.",
+  },
+  {
+    q: "Where do I find the four-digit code for the wall keypad?",
+    a: "On the study desk, on a sheet of graph paper: a column subtraction with the top row, the subtracted row and a result of <b>33333</b>. Four digits of the subtracted row are boxed and filled in pale blue — that is the number the wall panel wants. If the desk is not lit up for you yet, you have not finished the constellation board: solving it is what makes the study's interactive items start sparkling.",
+  },
+  {
+    q: "How do I open the cabinet in the planetarium hall?",
+    a: "There is a metal plate screwed to a wooden cabinet near the seating. Its upper half is a network of numbered contacts with <b>one movable knob</b>; its lower half is a red keypad with the digits <b>1 to 9</b> in two rows and a row of small indicator lights along the bottom of the plate. You move the knob along the track to connect the contacts in order, and the keypad takes the matching digits. The run finishes it at about <b>1:12</b> and the cabinet opens on the spot.",
+  },
+  {
+    q: "What is in the cabinet?",
+    a: "A single pickup. The run lifts it at about <b>1:17</b> and the cabinet is left empty. Treat the cabinet as a one-shot container rather than a puzzle you can re-enter: once the plate is solved there is nothing else to find in it.",
+  },
+  {
+    q: "What is the telescope for?",
+    a: "It is the constellation board's answer key. The telescope stands on the window sill in the study, pointed at a star-filled night sky over a city skyline; looking through it shows the star field. The board on the wall holds six framed panels of star fields — turning the panels to rebuild the sky the telescope is pointed at is the puzzle. The telescope itself takes no item and is never adjusted.",
+  },
+  {
+    q: "What do I get for solving the constellation board?",
+    a: "A <b>Key</b>. At <b>2:52</b> the six panels line up, the board clears and the game awards an item simply labelled <b>Key</b> — a silver key with a round bow. It is the only key-shaped reward in the level, so if your inventory has no key you have not finished the star field.",
+  },
+  {
+    q: "What do the three yellow notes say?",
+    a: "<b>H</b>, <b>N</b> and <b>Mg</b> — three chemical symbols on three square sticky notes, pinned in a row on the pale yellow wall to the right of the bookshelf. They are element symbols (hydrogen, nitrogen, magnesium), and they sit right above a fan of rolled-up blueprints. The periodic table poster hangs on the same wall, in the room's other corner, which is why the two belong together.",
+  },
+  {
+    q: "Where is the disc, and what do I do with it?",
+    a: "The disc lies flat on the top shelf of the bookshelf, next to the pink binders. Pick it up (about <b>4:00</b>) and take it to the laptop on the study desk: at <b>5:44</b> the disc is loaded and the game renames it <b>Burned disc</b>. The laptop's screen shows a disc icon the whole time, so the disc is the only thing that machine is waiting for.",
+  },
+  {
+    q: "What is the solar system model on the desk?",
+    a: "A brass orrery: a sun in the middle and thin arms carrying small planets — a tan one, an orange-red one, a banded brown one, a ringed one, a pale blue one and a darker blue one. It is a placement puzzle, not a display piece: at least one planet starts off the arms, and you have to seat each planet on its arm in the right order. The run finishes it at about <b>7:56</b>.",
+  },
+  {
+    q: "Do I need the globe?",
+    a: "No. The small Earth globe sits on the window sill beside the telescope and is never picked up, used or combined in this run. It is the kind of prop that looks like an inventory item and is not one — the same goes for the rolled-up charts and the space posters.",
+  },
+  {
+    q: "Does the recording show the level being completed?",
+    a: "Yes. The run goes from the orrery straight to the exit, and the video ends on a <b>LEVEL COMPLETED!</b> card at <b>8:46</b>. Our capture stops on that card, so this page does not print a coin count or a clock time for the level: those numbers are on the reward screen that follows, and it is not in the recording.",
+  },
+  {
+    q: "Where does Planetarium sit in Chapter 4?",
+    a: "Chapter 4 is <i>Pharaoh's Bride</i> and it has <b>15 rooms</b>. Planetarium is room <b>4 of 15</b>, right after <a href=\"/rooms-and-exits/chapter-4-level-3/\">The Office</a> and before Dino World. It is the first room in the chapter that splits into two connected spaces — the dome auditorium and the study behind it — instead of being one set.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a.replace(/<[^>]+>/g, "") },
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    canonical="/rooms-and-exits/chapter-4-level-4"
+    type="article"
+    breadcrumbTitle="Rooms & Exits Chapter 4 Level 4"
+  />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --amber: #D97706; --cream: #FFFBF5; --green: #15803D;
+      --text: #3A2F28; --light: #9C8B7B; --border: #F2E4D4;
+      --shadow: 0 2px 8px rgba(217,119,6,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .breadcrumb { font-size: 12px; color: var(--light); padding: 14px 16px 0; text-align: center; }
+    .breadcrumb a { color: var(--light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .seo-section { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 1rem; }
+    .seo-section h1 { font-size: 1.7rem; margin: 1rem 0 0.5rem; line-height: 1.3; }
+    .seo-section h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; line-height: 1.3; }
+    .seo-section h2 .accent { color: var(--amber); }
+    .seo-section h3 { font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+    .seo-section p { margin: 0.5rem 0; line-height: 1.75; color: #555; }
+    .seo-section ul, .seo-section ol { padding-left: 1.5rem; margin: 0.5rem 0; color: #555; }
+    .seo-section li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .seo-section a { color: var(--amber); }
+    .seo-section img { max-width: 100%; height: auto; }
+    .answer-box { background: #fff; border: 2px solid var(--green); border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; box-shadow: var(--shadow); }
+    .answer-box .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); display: block; margin-bottom: 0.3rem; }
+    .answer-box p { font-weight: 700; color: var(--text); margin: 0.2rem 0; }
+    .answer-box ol { margin: 0.4rem 0 0; }
+    .answer-box li { color: var(--text); font-weight: 600; }
+    .step-card { background: #FFFBF2; border: 1.5px solid #F0DFAE; border-radius: 10px; padding: 0.9rem 1rem; margin: 0.8rem 0; box-shadow: var(--shadow); }
+    .step-card .step-num { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: #FFF0D4; color: #B26A00; border-radius: 999px; padding: 0.12rem 0.6rem; margin-bottom: 0.4rem; }
+    .step-card strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step-card img { width: 100%; height: auto; border-radius: 8px; border: 1.5px solid var(--border); display: block; margin: 0.5rem 0; }
+    .step-card .ts { font-size: 0.78rem; color: var(--light); margin-top: 0.3rem; }
+    .step-card .ts a { color: var(--amber); text-decoration: none; font-weight: 700; }
+    .disclaimer { font-size: 0.82rem; color: var(--light); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0 1rem; }
+    .verify-note { font-size: 0.85rem; background: #FFF8E6; border: 1px solid #F0DFAE; border-radius: 8px; padding: 0.5rem 0.8rem; margin: 0.6rem 0; color: #7A6420; }
+    .video-wrap { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; margin: 0.8rem auto; }
+    .video-wrap .yt-facade { height: 100%; aspect-ratio: auto; }
+    .video-cap { font-size: 0.78rem; color: var(--light); text-align: center; margin: 0.2rem 0 0.8rem; }
+    .hero { width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid var(--border); margin: 0.8rem 0; }
+    .warn { background: #FFF4E5; border: 1.5px solid #F3C98B; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; color: #7A4A08; margin: 0.8rem 0; }
+    .warn b { color: #8A3B00; }
+    .cta-box { margin: 1.2rem 0; padding: 0.9rem 1.1rem; background: #fff; border: 2px dashed var(--amber); border-radius: 12px; text-align: center; }
+    .cta-box p { margin: 0.2rem 0; font-weight: 700; color: var(--text); }
+    .cta-box a { color: var(--amber); font-weight: 800; text-decoration: none; }
+    .cta-box a:hover { text-decoration: underline; }
+    .seo-section details { margin: 0.6rem 0; padding: 0.6rem 0.9rem; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .seo-section details[open] { border-color: var(--amber); }
+    .seo-section summary { cursor: pointer; font-weight: 800; line-height: 1.5; }
+    .seo-section summary:hover { color: var(--amber); }
+    .seo-section details p { margin-top: 0.5rem; }
+    .grid-note { font-size: 0.86rem; color: var(--light); margin: 0.4rem 0 0.8rem; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); }
+    .item-table th, .item-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); color: #555; vertical-align: top; }
+    .item-table th { background: #FFF6E8; color: #8A3B00; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .item-table tr:last-child td { border-bottom: 0; }
+    @media (max-width: 480px) { .seo-section h1 { font-size: 1.4rem; } .seo-section h2 { font-size: 1.2rem; } .item-table { font-size: 0.82rem; } }
+  </style>
+</head>
+<body>
+  <GameNav />
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/rooms-and-exits/">Rooms &amp; Exits</a> &gt; Chapter 4 &gt; Level 4</nav>
+
+  <main class="seo-section">
+    <h1>Rooms &amp; Exits Chapter 4 Level 4 Walkthrough: Planetarium</h1>
+
+    <p>The Planetarium is room <b>4 of 15</b> in Chapter 4, <i>Pharaoh's Bride</i>, and it is the first room in the chapter that is two spaces instead of one. The front half is a domed auditorium: tiered rows of wooden seats on grey carpet, a stage with a lectern, two yellow armchairs and a little table, and six round displays set into the blue walls, each showing a different planet. The back half, reached through the side door, is a working study — a desk with two monitors and a laptop, a bookshelf, a wall-mounted periodic table, and a telescope pointed at the window.</p>
+
+    <p>The spine of the level is a chain of four clue carriers and four locks. The metal plate by the seating opens a cabinet; the telescope tells you what the six-panel constellation board should look like and the board pays out a <b>Key</b>; the periodic table and the three sticky notes reading <b>H, N, Mg</b> sit on the study wall; the disc on the bookshelf goes into the laptop and comes back as a <b>Burned disc</b>; and a graph-paper subtraction on the desk — <b>41268 − 7935 = 33333</b> — is the wall keypad's number. The last station is a brass orrery that has to be assembled planet by planet before the exit opens.</p>
+
+    <div class="disclaimer">Unofficial fan-made guide. Not affiliated with Webelinx Games, the developer of Rooms &amp; Exits: Escape Room Games.</div>
+
+    <div class="verify-note">Rebuilt frame by frame at one frame per second from the <b>full 8:46 run</b> (527 frames, 1080p). Two numbers are printed on this page and both were read more than once: the subtraction <b>4 1 2 6 8 − 7 9 3 5 = 3 3 3 3 3</b> (each row read twice at high zoom, and the arithmetic checks out exactly) and the four digits the run types on the wall keypad, <b>7 9 3 6</b> (five consecutive frames, and the last digit was matched glyph-for-glyph against the keypad's own 5 and 6 buttons). Those two disagree by one digit, and the disagreement is written up at the bottom of this page instead of being smoothed over.</div>
+
+    <LevelSelector chapter={4} current={4} variant="jump" label="Chapter 4 · Pharaoh's Bride" />
+
+    <div class="answer-box">
+      <span class="label">Quick answer</span>
+      <p>Planetarium is room 4 of 15 in Chapter 4. The wall keypad wants the four digits of the graph-paper subtraction, <b>7935</b>; the constellation board gives the <b>Key</b>; the disc from the bookshelf becomes a <b>Burned disc</b> in the laptop; the level ends with the orrery on the desk.</p>
+      <ol>
+        <li>In the dome, solve the <b>metal plate</b>: one movable knob on a track of numbered contacts, then the red <b>1–9 keypad</b> underneath (about 0:40–1:12). The cabinet opens.</li>
+        <li>Take the item from the cabinet (<b>1:17</b>) and go through to the study.</li>
+        <li>Look through the <b>telescope</b> at the window (<b>1:40</b>) — that is the picture the constellation board wants.</li>
+        <li>Turn the six <b>constellation panels</b> on the wall board until the star field is whole; the game awards the <b>Key</b> at <b>2:52</b>.</li>
+        <li>Read the study wall: the <b>periodic table</b> poster, and the three notes reading <b>H</b>, <b>N</b> and <b>Mg</b> beside the bookshelf (<b>3:30</b>).</li>
+        <li>Take the <b>Disc</b> from the top shelf of the bookshelf (<b>4:00</b>).</li>
+        <li>Solve the desk's graph-paper subtraction — <b>41268 − 7935 = 33333</b> — and type its four boxed digits into the wall's <b>ENTER PASSCODE</b> panel (<b>5:20</b>).</li>
+        <li>Put the disc in the <b>laptop</b>: it becomes a <b>Burned disc</b> (<b>5:44</b>).</li>
+        <li>Assemble the <b>orrery</b> on the desk — planets onto their arms in order (<b>6:20–7:56</b>) — then leave. <b>LEVEL COMPLETED!</b> at <b>8:46</b>.</li>
+      </ol>
+    </div>
+
+    <div class="video-wrap">
+      <div class="yt-facade" data-yt="w5GD5eGy1BY" data-title="Rooms &amp; Exits Level 4 Planetarium Walkthrough Chapter 4"
+           role="button" tabindex="0" aria-label="Play video: Rooms &amp; Exits Level 4 Planetarium walkthrough">
+        <img src="https://i.ytimg.com/vi/w5GD5eGy1BY/maxresdefault.jpg"
+             alt="Rooms and Exits Chapter 4 Level 4 Planetarium walkthrough video" loading="lazy" decoding="async" width="1280" height="720"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/w5GD5eGy1BY/hqdefault.jpg'">
+      </div>
+    </div>
+    <p class="video-cap">The Planetarium run used for every frame on this page.</p>
+
+    <img class="hero" src="/rooms-and-exits/c4l4-planetarium.jpg" alt="Rooms and Exits Chapter 4 Level 4 Planetarium: the domed auditorium with tiered wooden seating, a stage with a lectern and two yellow armchairs, six round planet displays set into the blue walls, and a golden sarcophagus standing at the right" width="1200" height="527" />
+
+    <h2>What this level actually is<span class="accent">.</span></h2>
+    <p>The dome is the room you spawn in, and it is mostly theatre. Tiered rows of wooden seats with pale cushions step down toward a grey stage; the stage holds a wooden lectern with a microphone and a potted plant, two yellow armchairs with a low table between them, and a golden sarcophagus standing upright at the far right of the stage. Six circular displays glow along the curved blue walls — a banded gas giant, Earth, a dark moon, a yellow-brown world, a blue world and a red one. Two grey doors lead off the stage, one of them under a green EXIT sign.</p>
+
+    <p>The study behind it is where the level lives. It is a corner office with a blue feature wall and a window onto a night skyline: a tall bookshelf packed with pink, blue and orange binders, a wall-mounted periodic table covered in sparkles, a long desk with two monitors and a laptop, a green office chair with a backpack on it, and a blue telescope on a tripod standing at the window with a small Earth globe on the sill beside it. Two space posters hang on the blue wall.</p>
+
+    <p>The design joke of the room is that the dome has almost nothing to solve in it. The planet displays are scenery — they never light up, never rotate, never open. The one interactive thing in the hall is the metal plate near the seating, and everything else you will touch is in the study. If you have been walking circles around the auditorium looking for a puzzle, that is why.</p>
+
+    <h2>The map: what is where<span class="accent">.</span></h2>
+    <p>Everything we could identify and what it is for. Timestamps are video time.</p>
+    <table class="item-table">
+      <thead><tr><th>Object</th><th>Where</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Metal plate</td><td>Dome, on a wooden cabinet near the seating</td><td>Upper half: a track of numbered contacts with <b>one movable knob</b>. Lower half: red keypad, digits <b>1–9</b> in two rows, indicator lights along the plate's bottom edge. Opens the cabinet at about 1:12.</td></tr>
+        <tr><td>Cabinet</td><td>Dome</td><td>One pickup at about 1:17, then empty.</td></tr>
+        <tr><td>Planet displays</td><td>Dome, six round panels in the walls</td><td>Scenery. Six different worlds, no interaction in this run.</td></tr>
+        <tr><td>Sarcophagus</td><td>Dome, right of the stage</td><td>Scenery and a chapter callback to Pharaoh's Tomb.</td></tr>
+        <tr><td>Telescope</td><td>Study, at the window</td><td>Shows the star field the constellation board has to be rebuilt into (1:40). Not adjustable.</td></tr>
+        <tr><td>Earth globe</td><td>Study, window sill</td><td>Prop. Never picked up, never used.</td></tr>
+        <tr><td>Constellation board</td><td>Study, on the wall</td><td>Six framed panels of star fields on a gold board. Turn them to complete the sky; awards the <b>Key</b> at 2:52.</td></tr>
+        <tr><td>Periodic table</td><td>Study, wall poster</td><td>Reference sheet, sparkling as an interactive object. No code readable from it at our resolution.</td></tr>
+        <tr><td>Three sticky notes</td><td>Study, pale wall right of the bookshelf</td><td><b>H</b>, <b>N</b>, <b>Mg</b> — element symbols, above a fan of rolled blueprints.</td></tr>
+        <tr><td>Bookshelf</td><td>Study</td><td>Three shelves of binders; the <b>Disc</b> lies flat on the top shelf (4:00).</td></tr>
+        <tr><td>Graph-paper sheet</td><td>Study, on the desk</td><td>Column subtraction <b>41268 − 7935 = 33333</b>; the subtracted row's four digits are boxed and shaded blue.</td></tr>
+        <tr><td>Wall keypad</td><td>Study/dome wall, starfield screen</td><td><b>ENTER PASSCODE</b>, four circles and a 4-column keypad. The run types <b>7 9 3 6</b>; the panel closes at 5:34.</td></tr>
+        <tr><td>Laptop</td><td>Study desk</td><td>Shows a disc icon. The Disc goes in at 5:44 and comes back as a <b>Burned disc</b>.</td></tr>
+        <tr><td>Orrery</td><td>Study desk</td><td>Brass solar system model: a sun, arms, and planet spheres. Placement puzzle, finished at 7:56.</td></tr>
+        <tr><td>Exit</td><td>Far right of the room</td><td>Leads to the <b>LEVEL COMPLETED!</b> card at 8:46.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Step by step<span class="accent">.</span></h2>
+    <p>The order below follows the recording. Timestamps are video time; the links jump to the matching second.</p>
+
+    <div class="step-card">
+      <span class="step-num">Step 1 · 0:05</span>
+      <strong>Read the dome before you touch it</strong>
+      The run opens on the auditorium and holds there long enough to take an inventory of it. Count what is actually interactive: the tiered seating, the stage, the lectern, the two yellow armchairs, the sarcophagus on the right, six planet displays, two doors. Of those, exactly one thing will take an input, and it is not on the stage — it is the metal plate on the wooden cabinet off to the side of the seating. Everything else in this hall is set dressing.
+      <img src="/rooms-and-exits/c4l4-planetarium.jpg" alt="The Planetarium dome in Rooms and Exits Chapter 4 Level 4, with tiered seating, a stage with a lectern and two yellow armchairs, six round planet displays and a golden sarcophagus" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=w5GD5eGy1BY&t=5s" target="_blank" rel="noopener">0:05</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 2 · 0:36 · the plate</span>
+      <strong>A track of numbered contacts and one knob</strong>
+      The plate is screwed to the cabinet in two halves. The top half is a network of circular contacts joined by recessed channels, with numbers stamped beside them, and exactly one knob — a small metal ball — that you slide from contact to contact along the channels. The bottom half is a red keypad carrying the digits <b>1</b> to <b>9</b> in two rows, with a run of small indicator lights along the bottom of the plate. The dial in the recording is the same shape at every step: connect, then key in, and the lights at the bottom keep the running score.
+      <img src="/rooms-and-exits/c4l4-dot-panel.jpg" alt="The metal plate in the Planetarium with a track of numbered contacts and a single movable knob above a red keypad" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=w5GD5eGy1BY&t=36s" target="_blank" rel="noopener">0:36</a></div>
+    </div>
+    <InContentAd />
+
+    <div class="step-card">
+      <span class="step-num">Step 3 · 0:52 · the keypad</span>
+      <strong>Nine red buttons, and the last light</strong>
+      By <b>0:52</b> the top half is finished and the run is on the keypad, working the digits that match the contacts it just joined. The buttons are big, red and round with gold digits; pressing one lights the plate's indicator run from the left, and the plate gives you a restart if a light comes back wrong. When the last light holds, the plate stops taking input.
+      <img src="/rooms-and-exits/c4l4-keypad.jpg" alt="The red nine-button keypad on the Planetarium plate, digits one to nine in two rows, with indicator lights along the bottom edge" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=w5GD5eGy1BY&t=52s" target="_blank" rel="noopener">0:52</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 4 · 1:17 · the cabinet</span>
+      <strong>One pickup, then empty</strong>
+      The cabinet beside the plate pops open and the run takes the single item inside at about <b>1:17</b>. The crate is left open and empty; nothing else is behind it. Then the camera turns, the seating drops away, and the run walks through the side door into the study — from here on, the dome has no more jobs for you.
+      <img src="/rooms-and-exits/c4l4-study.jpg" alt="The Planetarium study in Rooms and Exits Chapter 4 Level 4: a blue window wall with a telescope and an Earth globe, a bookshelf of binders, a periodic table poster, and a long desk with monitors, a laptop and an office chair" width="1200" height="527" loading="lazy" />
+      <img src="/rooms-and-exits/c4l4-cabinet-pickup.jpg" alt="The opened wooden cabinet in the Planetarium with a single item being collected" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=w5GD5eGy1BY&t=77s" target="_blank" rel="noopener">1:17</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 5 · 1:40 · the window</span>
+      <strong>The telescope is the answer key</strong>
+      In the study, the blue telescope stands on the window sill with the night sky behind it and a small Earth globe on the sill beside it. Looking through it gives a star field — that is the whole purpose of the object. You do not align it, focus it or combine anything with it, and the globe next to it is not an inventory item however much it looks like one.
+      <img src="/rooms-and-exits/c4l4-telescope.jpg" alt="The blue telescope on the window sill in the Planetarium study, with an Earth globe beside it and a starry night sky over a city skyline behind" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=w5GD5eGy1BY&t=100s" target="_blank" rel="noopener">1:40</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 6 · 2:20 · the constellation board</span>
+      <strong>Six star panels on a gold board</strong>
+      The board on the study wall holds half a dozen framed panels, each showing a patch of night sky with its own constellation, arranged around a central plate on a gold surround. The panels turn; the trick is that the star lines have to join up across the frame edges, so you are rebuilding one sky out of six pieces rather than solving six pictures. The telescope's view is what "right" looks like.
+      <img src="/rooms-and-exits/c4l4-constellations.jpg" alt="The constellation board in the Planetarium study, six framed panels of star fields arranged around a gold central plate" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=w5GD5eGy1BY&t=140s" target="_blank" rel="noopener">2:20</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 7 · 2:52 · the reward</span>
+      <strong>A key, and nothing else</strong>
+      The board clears and the game drops an item into the centre of the frame, labelled simply <b>Key</b>: a silver key with a round bow and a cut blade. It is the only key-shaped reward in Planetarium, so it doubles as a progress check — if the study still looks inert and there is no key in your inventory, the star field is the thing you have not finished.
+      <img src="/rooms-and-exits/c4l4-star-key.jpg" alt="The silver Key awarded by the constellation board in the Planetarium, floating over the board" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=w5GD5eGy1BY&t=172s" target="_blank" rel="noopener">2:52</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 8 · 3:30 · the study wall</span>
+      <strong>Periodic table on one side, H N Mg on the other</strong>
+      Two clue carriers sit on the same pale wall. The big periodic table poster sparkles like an interactive object — it is a reference sheet, and at our resolution nothing useful is legible on it beyond the layout itself. Beside the bookshelf, three square yellow notes are pinned in a row and they <b>are</b> legible: <b>H</b>, <b>N</b> and <b>Mg</b>. Below them a fan of rolled blueprints leans against the wall. Whatever reads these symbols, it is not this recording's problem: no frame shows them applied to anything.
+      <img src="/rooms-and-exits/c4l4-chemical-notes.jpg" alt="The Planetarium study wall with the bookshelf and three yellow sticky notes reading H, N and Mg above a fan of rolled blueprints" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=w5GD5eGy1BY&t=210s" target="_blank" rel="noopener">3:30</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 9 · 4:00 · the disc</span>
+      <strong>Flat on the top shelf</strong>
+      The bookshelf's top shelf is a row of pink and magenta binders with one shiny disc lying flat among them. That disc is the study's one carryable object: pick it up and the shelf is done. Do not go looking for a CD case or a tray — the disc is stored loose between the binders.
+      <img src="/rooms-and-exits/c4l4-disc-shelf.jpg" alt="The top shelf of the Planetarium bookshelf with pink binders and a silver disc lying flat among them" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=w5GD5eGy1BY&t=240s" target="_blank" rel="noopener">4:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 10 · 5:00 · the graph paper</span>
+      <strong>A subtraction, and four boxed digits</strong>
+      The desk carries a sheet of graph paper with a column subtraction drawn on it in blue ink, with a red margin line down the left. Three rows: the top number <b>4 1 2 6 8</b>, the minus row <b>7 9 3 5</b>, and a result of <b>3 3 3 3 3</b> under the line, with a stray digit written further down the page. The four digits of the minus row are boxed and filled in pale blue — that shading is the game telling you which digits the keypad wants. As arithmetic it is exact: 41268 − 7935 = 33333.
+      <img src="/rooms-and-exits/c4l4-math-paper.jpg" alt="The graph-paper subtraction on the Planetarium desk: 41268 minus 7935 equals 33333, with the four digits of the subtracted row boxed and shaded blue" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=w5GD5eGy1BY&t=300s" target="_blank" rel="noopener">5:00</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 11 · 5:20 · the wall panel</span>
+      <strong>ENTER PASSCODE</strong>
+      The panel is a starfield screen with four circles in a row and a keypad underneath — four columns, digits <b>1–4</b> on the first row, <b>5–8</b> on the second, clear, zero and a backspace on the third. The run fills the circles left to right, and the digits it has entered read <b>7 9 3 6</b>. The panel holds for a few seconds and then the whole screen collapses at <b>5:34</b>, which is what a lock does when it lets you through. One caveat on the last digit — see the bottom of this page.
+      <img src="/rooms-and-exits/c4l4-passcode.jpg" alt="The ENTER PASSCODE screen in the Planetarium with four filled circles and a four-column number keypad" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=w5GD5eGy1BY&t=320s" target="_blank" rel="noopener">5:20</a> · <a href="https://www.youtube.com/watch?v=w5GD5eGy1BY&t=334s" target="_blank" rel="noopener">5:34</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 12 · 5:44 · the laptop</span>
+      <strong>Disc in, Burned disc out</strong>
+      The laptop sits open on the desk between the two monitors, with a disc icon burning on its screen. Load the disc and the game renames the inventory item: <b>Disc</b> becomes <b>Burned disc</b>. That is the whole interaction — no password, no menu, no second item. The open book and the reading glasses beside it are props.
+      <img src="/rooms-and-exits/c4l4-burned-disc.jpg" alt="The laptop on the Planetarium desk with a burning disc icon on screen and the disc beside it on the desk" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=w5GD5eGy1BY&t=344s" target="_blank" rel="noopener">5:44</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 13 · 6:20 · the orrery</span>
+      <strong>Six planets, six arms, one sun</strong>
+      The last station is the brass orrery: a textured golden sun at the centre of a round base, with thin arms radiating out and a small planet on the end of each — tan, orange-red, a banded brown gas giant, a ringed one, a pale blue one and a darker blue one. It is not a display: at least one planet starts off its arm, and the job is to seat each sphere on the arm it belongs to. The run works it for well over a minute.
+      <img src="/rooms-and-exits/c4l4-orrery.jpg" alt="The brass orrery on the Planetarium desk: a glowing sun at the centre with thin arms carrying small planets in a line" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=w5GD5eGy1BY&t=380s" target="_blank" rel="noopener">6:20</a></div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">Step 14 · 7:50 to 8:46 · out</span>
+      <strong>The orrery completes, then the exit</strong>
+      Once the planets are home the orrery stops taking input and the run turns for the exit at the far right of the room. The recording ends on the <b>LEVEL COMPLETED!</b> card at <b>8:46</b>. That is where our capture stops — the reward screen with the coins and the clock is the next screen and is not in this video, so those numbers are not printed here.
+      <img src="/rooms-and-exits/c4l4-level-complete.jpg" alt="The LEVEL COMPLETED card at the end of Rooms and Exits Chapter 4 Level 4 Planetarium" width="1200" height="527" loading="lazy" />
+      <img src="/rooms-and-exits/c4l4-orbit-puzzle.jpg" alt="The orrery placement puzzle in the Planetarium study, with planets being seated on their arms around the sun" width="1200" height="527" loading="lazy" />
+      <div class="ts">Watch: <a href="https://www.youtube.com/watch?v=w5GD5eGy1BY&t=470s" target="_blank" rel="noopener">7:50</a> · <a href="https://www.youtube.com/watch?v=w5GD5eGy1BY&t=526s" target="_blank" rel="noopener">8:46</a></div>
+    </div>
+
+    <h2>Where people get stuck<span class="accent">.</span></h2>
+    <p><b>You keep searching the auditorium.</b> The dome looks like a puzzle room — six glowing planet displays, a stage, a sarcophagus — and almost none of it is interactive. The only thing in the hall that takes an input is the metal plate on the cabinet, and after the cabinet opens the hall is finished. The study is where the level actually is.</p>
+    <p><b>You try to read the periodic table.</b> It sparkles like an object you can use, and it is genuinely a clue carrier in spirit — but on a 1080p capture nothing on it is legible, and the run never zooms into a single cell. The letters that matter on that wall are the three sticky notes: <b>H</b>, <b>N</b>, <b>Mg</b>.</p>
+    <p><b>You treat the globe as an item.</b> The Earth globe on the window sill is a prop. It is never picked up, never combined, and never placed on the orrery — the orrery's planets come with the model.</p>
+    <p><b>You look for the passcode on the panel instead of the desk.</b> The wall panel gives you nothing but four circles; the number is on the graph paper on the desk, and the shading on that paper is the only hint the level gives you about which digits to take.</p>
+    <p><b>You stop when the orrery looks "done".</b> It is the level's last lock and it takes a while: the run spends most of its final two minutes on it. If the exit will not open, the orrery is the reason, not the door.</p>
+
+    <h2>Where Planetarium sits in Chapter 4<span class="accent">.</span></h2>
+    <p>Chapter 4 is <i>Pharaoh's Bride</i> and it runs <b>15 rooms</b>. Planetarium is room <b>4 of 15</b>, between <a href="/rooms-and-exits/chapter-4-level-3/">The Office</a> and Dino World. Where The Office was a floor of small locks and Power and Security was one machine in two rooms, this one is a two-stage level: a dome you clear in the first ninety seconds and a study that carries everything else.</p>
+    <p>It is also the first room in the chapter where the clue chain is longer than the locks it feeds. You will collect a key, a disc and a burned disc, read a periodic table and three element notes, and only ever use two of those things on a mechanism. Expect to finish with a full inventory and a short list of what the level never asked you to use.</p>
+
+    <LevelSelector chapter={4} current={4} compact={true} label="Chapter 4 · Pharaoh's Bride" />
+
+    <div class="cta-box">
+      <p>Previous room: <a href="/rooms-and-exits/chapter-4-level-3/">Chapter 4 Level 3 — The Office</a></p>
+      <p>Next room: Chapter 4 Level 5 — Dino World <span style="color:#9C8B7B">(guide in progress)</span></p>
+      <p>Back to: <a href="/rooms-and-exits/">All Rooms &amp; Exits walkthroughs</a></p>
+    </div>
+
+    <h2>Frequently asked questions<span class="accent">.</span></h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p set:html={f.a} />
+      </details>
+    ))}
+
+    <h2>What this page could not verify<span class="accent">.</span></h2>
+    <div class="warn">
+      Three things, stated plainly so you know which parts of this page are reads and which are reconstruction.
+      <br><br>
+      <b>1. The last digit of the passcode.</b> The graph paper's subtracted row reads <b>7 9 3 5</b> — two independent high-zoom passes agree, and the arithmetic only balances with that row (41268 − 7935 = 33333). But the four circles on the wall panel read <b>7 9 3 6</b> across five consecutive frames, and the final glyph was matched against the keypad's own 5 and 6 buttons, where it matches the <b>6</b>. Both readings are multi-pass, both are internally consistent, and they differ by exactly one stroke. Start with the paper's <b>7935</b>; if the panel refuses it, the recorded entry was <b>7936</b>. This page does not have a frame that shows the panel accepting a code, only one that shows it closing.
+      <br><br>
+      <b>2. What the first plate's code is.</b> The plate's track and keypad are both fully visible, but the digits only exist as the knob's position and the lit keys at a given instant, and our reads of the lit state are not stable enough to print a sequence. The method on this page — connect the contacts with the knob, then key in the matching digits, and the indicator run at the bottom tracks your progress — is what the recording shows. The sequence itself is not printed.
+      <br><br>
+      <b>3. What the H / N / Mg notes and the periodic table feed.</b> Both are real, readable clues sitting on the same wall, and no frame in this run shows either being used on a lock. They may belong to a step this recording skips, or to a later room. The page lists them and says nothing about a target.
+    </div>
+  </main>
+  <AdSlot />
+  <SideAd />
+</body>
+</html>
